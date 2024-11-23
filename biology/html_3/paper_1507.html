@@ -1,0 +1,526 @@
+<article>
+<section>
+<h1 id="header">Protocol combining tree-based Maximum Parsimony and web-like Phylogenetic Networks analyses to investigate reticulate human evolution</h1>
+<p><time datetime="2022-03-18">Published: March 18, 2022</time></p>
+<p>Miguel Caparros<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup> and Sandrine Prat<sup><a href="#aff1">1</a></sup></p>
+<p id="aff1"><sup>1</sup>UMR 7194 "Histoire naturelle de l'Homme préhistorique" CNRS-MNHN-UPVD, Alliance Sorbonne Université, Musée de l’Homme, Palais de Chaillot, 17 place du Trocadéro, 75116 Paris, France</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:capmig@aol.com">capmig@aol.com</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2022.101191">10.1016/j.xpro.2022.101191</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Our protocol combines Maximum Parsimony and Phylogenetic Networks approaches to understand the phylogenetic relationships and evolutionary processes of hominin species that might have shared inheritance from multiple ancestors. By addressing the questions of pattern and process in human phylogeny, the protocol can be used to clarify the taxonomic definition(s) of diverse hominin groups and ascertain whether or not the mode of evolution of genus <i>Homo</i> is reticulate. Using high quality and informative phenotypic data sets is necessary to yield meaningful results.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref8">Caparros and Prat (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Combine Maximum Parsimony and Phylogenetic Networks in human phylogenetic research</li>
+<li>Maximum Parsimony (MP) is used to clarify taxonomic definitions of hominin groups</li>
+<li>MP results are validated by comparing them with alternative statistical analysis</li>
+<li>Phylogenetic Networks approach used to make inferences about modes of evolution</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Conceptual background</h3>
+<p>Human evolution is often portrayed as a phyletic linear anagenetic process with each species changing over time into another one (<a href="#bib33">Mayr and Ashlock, 1991</a>). This popular misrepresentation has been substituted by a branching cladogenetic approach with species sharing common ancestors evolving by a dichotomous process of speciation (<a href="#bib9">Cela-Conde and Ayala, 2007</a>). In that respect, methods of phylogeny reconstruction assume an evolutionary tree-like model represented by an optimal rooted phylogenetic cladogram (tree) with internal nodes symbolizing hypothetical last common ancestors (LCAs) emerging from speciation events, and are in general geared at clarifying an underlying evolutionary pattern, but not its process. This dichotomous approach does not fully capture the complexity of evolutionary processes, particularly if the optimal solution is not unique as illustrated in many Maximum Parsimony phylogenetic studies where a run generates more than one most parsimonious tree.</p>
+<p>Methods of phylogeny reconstruction can be divided into statistical methods requiring an explicit model of evolution, such as for example Bayesian phylogenetic methods based on Monte Carlo Markov chains (BMCMC) used by <a href="#bib13">Dembo et al. (2016)</a>, and non-statistical methods such as cladistic Maximum Parsimony (MP) used by <a href="#bib8">Caparros and Prat (2021)</a> that do not require a model of evolution. MP is the most commonly used method of phylogenetic reconstruction in Paleoanthropology (<a href="#bib45">Strait et al., 2015</a>), and is an integral part of the Phylogenetic Systematics school of thoughts in taxonomy, commonly known as cladistics (<a href="#bib26">Hennig, 1966</a>). In essence, cladistics is the analysis of individual characters (anatomical or genetic) free to evolve independently with the application of the principle of maximization of the number of evolutionary novelties on the cladogram (tree), and the consequent discovery of the hierarchical order of the various groups of species of the data set.</p>
+<p>MP is the initial focal point of the protocol we are presenting. It is a method of mathematical programming based on graph theory with optimization of an objective function subject to linear constraints (<a href="#bib12">Darlu and Tassy, 2019</a>). Its aim is to find out of millions of tree combinations, the one(s) that maximize(s) the number of one-time character-state changes (apomorphies) subject to these constraints. When multiple most parsimonious trees possess a number of similar branches (monophyletic sister groups), these are retained as such in a consensus tree, while distinct branches not in agreement are expressed as polytomous branches (polytomies) in the consensus tree. The explanatory power of consensus trees comes from the fact that they identify informative coherent subgroups of taxa and provide a good indication of the information content of the data set (<a href="#bib3">Anderberg and Tehler, 1990</a>). However, the amalgamation of conflicting hypotheses from incompatible multiple trees into a consensus tree is deemed to represent a loss of phylogenetic information emanating from polytomies. In order to decipher this loss of information, we recommend using the method of Phylogenetic Networks (<a href="#bib28">Huson et al., 2010</a>), method extensively employed in molecular biology to represent evolutionary relationships when the history of a set of taxa includes inheritance from multiple ancestors (<a href="#bib34">Morrison, 2011</a>).</p>
+<h3 id="sec1.2">Initial <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>
+</h3>
+<p>The initial complete data set will be called <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>. For a paleoanthropological study of human evolution, gather a <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> made up of discrete anatomical coded characters of hominin species. Since the characters are coded subjectively, the choice of characters and their coding should be consistent with already published studies by authoritative authors to avoid observational biases.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> ought to minimize the percentage of missing data, but in many instances missing data are unavoidable due to the fragmentary nature of some specimens. Compile <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> with the largest degree of universality possible, i.e., that encompasses the greatest number of fossil hominin taxa or taxonomic units, and ensure that the outgroup is made up of the oldest extinct, or extant, species preferably belonging to the closest taxonomic subfamily homininae. This will enable to obtain more informative results and enhance the comparison with studies based on alternative methodologies. Morphological data inputs ought to be in NEXUS format (<a href="#bib31">Maddison et al., 1997</a>), format used in most phylogenetic reconstruction analysis softwares (<a href="https://evolution.genetics.washington.edu/phylip/software.html#Parsimony">https://evolution.genetics.washington.edu/phylip/software.html#Parsimony</a>) such as PAUP, PHYLIP, Mr Bayes and Mesquite.</div>
+<div class="note">
+<span class="note-title">Note:</span> Some authors use continuous variables such as for example craniodental measurements and angles between anatomical landmarks as proxy of characters. The coding of these pseudo-characters generally normalized is arguable for phylogenetic reconstruction. This type of continuous data is better treated with conventional morphometric multivariate statistical techniques (<a href="#bib42">Sokal and Rohlf, 1995</a>), or agglomerative techniques such as UPGMA or Neighbor-Joining (<a href="#bib38">Rohlf and Sokal, 1981</a>; <a href="#bib39">Saitou, 1991</a>) emphasizing overall phenetic similarities based on distance metrics (<a href="#bib43">Sokal and Sneath, 1963</a>).</div>
+<h3 id="sec1.3">Required software packages</h3>
+<p>Two software packages are required to process the data sets of the protocol: PAUP and SplitsTree. The MacClade software can be used as an option to visualize the results of the tree-based MP analysis using the complete character <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> executed with PAUP.</p>
+<h3 id="sec1.4">Prior use of the protocol</h3>
+<p>We used the present protocol with its specific steps in a study offering a new perspective on reticulate evolution of the genus <i>Homo</i> (<a href="#bib8">Caparros and Prat, 2021</a>) based on a morphological paleoanthropological data set of pre-defined hominin species compiled by <a href="#bib13">Dembo et al. (2016)</a>. Our methodological approach followed the three steps of the phylogenetic protocol illustrated in <a href="#fig1">Figure 1</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Protocol combining tree-based Maximum Parsimony and web-like Phylogenetic Networks analyses</div>
+<p>The three Major Steps of the protocol are as follows:</p>
+<p>(A) Tree-based MP analysis.</p>
+<p>(B) Intermediate tree-based MP analysis.</p>
+<p>(C) Reticulate PN analysis.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<p>All software packages used for the analyses are publicly available.</p>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a></td>
+<td>Dryad Digital Repository (<a href="https://doi.org/10.5061/dryad.d7r4g.2">https://doi.org/10.5061/dryad.d7r4g.2</a>) and this paper.</td>
+<td>
+<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>. Complete character data set from Dembo_et_al_2016_JHE, related to step 1.</td>
+</tr>
+<tr>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a></td>
+<td>This paper.</td>
+<td>
+<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>. MPMAX 74 apomorphous characters, related to step 6.</td>
+</tr>
+<tr>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a></td>
+<td>This paper.</td>
+<td>
+<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a>. MMPT trees, related to step 11.</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Phylogenetic Analysis Using Parsimony (PAUP) Version 4.0a.</td>
+<td>
+<a href="#bib47">Swofford (2020)</a>. Phylogenetic Analysis Using Parsimony (PAUP), Version 4.0a.</td>
+<td><a href="https://paup.phylosolutions.com">https://paup.phylosolutions.com</a></td>
+</tr>
+<tr>
+<td>MacClade v. 4.08a.</td>
+<td>
+<a href="#bib32">Maddison and Maddison (2005)</a>. MacClade software v. 4.08a, Sinauer Associates, Sunderland Massachusetts.</td>
+<td><a href="http://www.macclade.org/download.html">http://www.macclade.org/download.html</a></td>
+</tr>
+<tr>
+<td>SplitsTree 4.</td>
+<td>
+<a href="#bib27">Huson and Bryant (2006)</a>. Application of Phylogenetic Networks in Evolutionary Studies. Mol. Biol. Evol. 23, 254–267.</td>
+<td><a href="https://software-ab.informatik.uni-tuebingen.de/download/splitstree4/welcome.html">https://software-ab.informatik.uni-tuebingen.de/download/splitstree4/welcome.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Tree-based MP analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day to a few days</div>
+<div class="note">
+<span class="note-title">Note:</span> Timing depends on the size and complexity of the data set matrix, and also of PAUP software execution times of 16 MP and 16 bootstrap runs.</div>
+<p>For the MP analysis with the complete initial <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>, take into consideration three kinds of constraints in the execution of the runs: the type of characters, the presence of polymorphic characters in multistate taxa, and with regard to the weighing of characters use two options, i.e., initially apply same weights and reweigh characters after the initial runs.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is essential to discard preconceived subjective biases with regard to these constraints, and conduct the MP analysis with all possible numerical options available in order to objectively select the most parsimonious evolutionary scenario, without postulating <i>a priori</i> how morphological character changes evolve, what type of multistate taxa setting to use, and whether characters should be reweighed or not.</div>
+<p>Once a most parsimonious evolutionary scenario is selected, the supporting derived characters (apomorphies and eventually informative homoplasies) at the nodes of the cladogram (LCAs) ought to be visualized such as for example in Figures S9 and S10 of <a href="#bib8">Caparros and Prat (2021)</a> showing graphically the apomorphies listed in Tables S2 and S3 of that paper. The visualization will facilitate the discussion of the anatomic modifications of an adaptive nature or the result of epigenetic processes that come in support of the evolutionary changes.</p>
+<p>Finally, the most parsimonious evolutionary scenario must be validated by comparing a bootstrap simulation based on the same MP parsimony settings with an alternative statistical method such as for example BMCMC.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Doubts have been expressed as to whether phylogeny reconstruction ought to be considered as a statistical question, with the suggestion that phylogenetic inference is best viewed in non-statistical terms (<a href="#bib18">Farris, 1983</a>). In studies of phylogenetic reconstruction both the non-statistical method such as MP and the statistical ones, such as BMCMC and bootstrap analyses, must be used and compared for a better interpretation of the data. However, in light of contrary views concerning the adequacy of MP or statistical methods to make phylogenetic inferences (<a href="#bib50">Wright and Hillis, 2014</a>; <a href="#bib30">Kolaczkowski and Thornton, 2004</a>), as far as statistical methods are concerned caution must be exercised with regard to the question of statistical consistency, the complexity and empirical basis of the evolutionary models used, and what epistemological considerations support the use of these specific models of evolution.</div>
+<ol>
+<li>Execute 16 MP runs and 16 corresponding bootstrap runs With <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> and the PAUP software execute 16 MP runs corresponding to 16 different evolutionary tree scenarios with two settings for weights (equal weight and Rescaled Consistency Index RC reweight), four character types (Fitch, Wagner, Camin-Sokal or Dollo), and two settings for multistate taxa (uncertainty or polymorphism). The runs can be executed with a search algorithm in two phases: one phase with equal weights and one with characters reweighed. We show below the relevant dropdown menus used to execute the 2 phases.
+<div class="note">
+<span class="note-title">Note:</span> With regard to the computational MP tree search methods, there exists three algorithms available in PAUP:</div>
+<i>Exhaustive Search</i>: exact algorithm that evaluates every possible tree and can be used for a maximum of 12 terminal taxa.
+<figure id="unfig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig2.jpg" alt="InFig2.jpg"></figure>
+<i>Branch-and-Bound Search</i>: also an exact search option that can be used for more than 12 taxa; however, this algorithm works computationally for data sets of a limited size.
+<figure id="unfig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig3.jpg" alt="InFig3.jpg"></figure>
+<i>Heuristic search</i>: when the processing with the branch-and-bound algorithm is not feasible with a large data set, the only alternative to process the data is by heuristic search that operates by hill-climbing methods, and is computationally effective. In <a href="#bib8">Caparros and Prat (2021)</a> all the runs were conducted by heuristic search with simple stepwise addition and TBR branch swapping.
+<figure id="unfig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig4.jpg" alt="InFig4.jpg"></figure>
+For further explanations of the search parameters consult the PAUP manual (<a href="http://phylosolutions.com/paup-documentation/paupmanual.pdf">http://phylosolutions.com/paup-documentation/paupmanual.pdf</a>).
+<ol type="a">
+<li>MP runs corresponding to 8 scenarios with initial equal character weights In a first phase, execute 8 equal weight runs with the appropriate search method and the following parameters:
+<ol type="i">
+<li>Equal character weights.
+<figure id="unfig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig5.jpg" alt="InFig5.jpg"></figure>
+</li>
+<li>Four character-types.
+<figure id="unfig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig6.jpg" alt="InFig6.jpg"></figure>
+Runs are executed with the four character types optimality criteria (Fitch-unordered, Wagner-ordered, Camin-Sokal-irreversible or Dollo-reversible). For Dollo and Irrev types two modes are available: Up (normal) and Down (reversed); these modes are related to the polarity of the coded observed states, with Up starting with the lowest observed ancestral state and Down the highest. We used Up polarity in <a href="#bib8">Caparros and Prat (2021)</a>.
+<div class="note">
+<span class="note-title">Note:</span> There are four main character type options to choose from PAUP to conduct MP analysis runs . The four parsimony optimality criteria represent four models of evolutionary paths applied to character changes, subject to constraints as to the polarity or reversibility of the characters. If one does not want any constraint, one then uses unordered Fitch setting (<a href="#bib22">Fitch, 1971</a>) which permits any state of a character to transform directly to any other state. If one wants to impose a constraint as to the direction (polarity) of the state changes, one uses Wagner ordered setting (<a href="#bib16">Farris, 1970</a>; <a href="#bib48">Swofford and Maddison, 1987</a>) which is bidirectional, i.e., in a three states 0,1,2 character there is no requirement that 0 be the ancestral state, only the resulting tree will determine which state is ancestral after orienting the tree (graph) with an outgroup. Wagner parsimony makes convergence and reversion possible, as in Fitch parsimony. If one considers that evolution is irreversible as suggested by <a href="#bib40">Simpson (1953)</a>, then one chooses the Camin-Sokal criterion (<a href="#bib6">Camin and Sokal, 1965</a>) which is equivalent to ordered characters with the additional constraint of irreversibility, or unidirectionality from a plesiomorphic state or less derived state to a more derived state. Finally, if one assumes that a derived character can change only once from the plesiomorphic state to the derived state, and can revert more than once to the plesiomorphic state, then the Dollo criterion (<a href="#bib17">Farris, 1977</a>), which only allows homoplasy under the form of reversal, is required. For a more comprehensive description of these four main choices we refer to Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Supplemental Information/Transparent Methods 1. Maximum Parsimony (MP) optimality criteria), and show below their graphical representation.</div>
+<figure id="unfig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig7.jpg" alt="InFig7.jpg"></figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> In most MP published studies in Paleoanthropology, authors commonly use the unordered character type (Fitch parsimony) or ordered type (Wagner parsimony), or a combination of both (<a href="#bib10">Collard and Wood, 2000</a>; <a href="#bib46">Strait and Grine, 2004</a>), whereas the ones favoring convergent homoplasies (Camin-Sokal parsimony) or reversals (Dollo parsimony) are never selected. The use of Fitch and/or Wagner character types would indicate that authors make <i>a priori</i> assumptions about the process of evolution with regard to character-state changes. Thus, to avoid any bias with regard to which model of evolutionary path a character type should follow, we strongly recommend that the four character types be used in the analysis runs.</div>
+</li>
+<li>Uncertainty or polymorphism setting for multistate taxa For each of the 4 character types execute runs with uncertainty and polymorphism settings for multistate taxa.
+<figure id="unfig17"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig8.jpg" alt="InFig8.jpg"></figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Many authors tend to discard polymorphic characters in multistate taxa. Ignoring polymorphism results in a loss of information (<a href="#bib49">Wiens, 1999</a>); this is the reason why we recommend that polymorphic characters in multistate taxa be coded and kept in the data set. For further discussion of the multistate taxa choices (uncertainty or polymorphism), we refer to Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Supplemental Information/Transparent Methods 2. Treatment of multistate taxa).</div>
+<div class="note">
+<span class="note-title">Note:</span> Caution is required in interpreting the results with regard to uncertainty or polymorphism setting for multistate taxa. After running the parsimony algorithm, PAUP assigns one of the states of a multistate character to the terminal taxon, i.e., the algorithm treats the multistate character as an ambiguity, and by optimization assigns one of the features to the terminal in the output. Conceptually one may construe the selected chosen state in the output terminal as if the polymorphism had resulted in the monomorphic dominant fixation of the trait in the concerned species.</div>
+Thus, using the distinct character types (4) and multistate settings (2), 8 runs will be executed in total with equal character weights.</li>
+</ol>
+</li>
+<li>MP runs corresponding to 8 scenarios with reweighed characters In a second phase, execute 8 runs with characters reweighed by the respective Rescaled Consistency indices (RC) obtained from the previous corresponding equal weight runs, with the same character types and multistate settings. The relevant parameters are as follows:
+<ol type="i">
+<li>RC reweighed characters.
+<figure id="unfig18"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig9.jpg" alt="InFig9.jpg"></figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Weighing of characters in cladistics is a controversial issue, one argument being that reweighing characters after an initial run leads to unparsimonious hypotheses (<a href="#bib29">Kluge, 1997</a>). However, <a href="#bib18">Farris (1983)</a> considered that characters with more homoplasy are less reliable and suggested that parsimony is not equivalent to equal weights; he argued on the basis that some characters represent stronger evidence than others, that consequently they should be weighed. Reweighing of morphological data sets produces substantial increases in jackknife frequencies, and results compared to equal weighing become more stable with lower error rates (<a href="#bib25">Goloboff et al., 2008</a>). This supports the affirmation that “it is not that parsimony does not preclude weighing, but rather that it requires weighing" (<a href="#bib23">Goloboff, 1993</a>). Successive weighing is successful when cladistically reliable characters such as apomorphies are outnumbered by homoplasies (<a href="#bib15">Farris, 1969</a>), which is generally the case in most studies. Thus, should the characters originally with equal weight be reweighed after a first run? The answer is definitely yes as is evident in Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a>, Table 1) showing that reweighing produces higher tree Retention Indices RIs. Higher tree RIs imply a more coherent degree of overall synapomorphy and a more consistent phylogenetic information signal. The use of the character rescaled consistency index rc = retention index (ri) x consistency index (ci) from the first phase runs is recommended as a weighing criterion (<a href="#bib19">Farris, 1989a</a>) of the respective characters.</div>
+</li>
+<li>Four character-types (Fitch-unordered, Wagner-ordered, Camin-Sokal-irreversible or Dollo-reversible) are used as in step 1, a, ii.</li>
+<li>Uncertainty or polymorphism settings for multistate taxa are used as in step 1, a, iii.<br> Thus, using the distinct character types (4) and multistate settings (2), 8 runs will be executed in total with character RC reweighing.</li>
+</ol>
+</li>
+<li>Execute 16 bootstrap runs To assess the branch support of the 16 MP tree scenarios individually, execute bootstrap runs concurrently to the MP runs with the same parsimony settings used in each MP run.
+<figure id="unfig19"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig10.jpg" alt="InFig10.jpg"></figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Bootstrapping, a random resampling method developed by <a href="#bib14">Efron (1979)</a> to evaluate the accuracy of statistical estimates, was proposed by <a href="#bib21">Felsenstein (1985)</a> to assess the confidence intervals in phylogenetic analyses. There seems to exist some confusion with regard to the use of bootstrap simulation in MP analysis. In some phylogenetic studies, the MP bootstrap consensus tree is used as a final result and considered as an end in itself, without relating it to or showing the relevant MP tree it is supposed to evaluate. For comparative purposes, it is imperative to show graphically the 50% majority rule bootstrap consensus tree with its relevant bootstrap branch replicate values along with the corresponding tree figure (single or consensus) of the MP scenario, as for example in Figures S3–S6 of <a href="#bib8">Caparros and Prat (2021)</a>.</div>
+<div class="note">
+<span class="note-title">Note:</span> Bootstrap values in general are negatively affected by the number of characters, the number of non-informative characters, the number of missing characters in some taxa, and by the sample size and the nature of the search algorithms (<a href="#bib44">Soltis and Soltis, 2003</a>). One should not exclude the possibility that a tree topography with very low support values of an extensive and complex data set might still be phylogenetically closer to the "true" tree than a tree topology with higher support values from a limited and related data set. It is thus paradoxical that the more extensive a data set is, the lower the support values may be.</div>
+<div class="note">
+<span class="note-title">Note:</span> Since the bootstrap analysis is a random resampling method, it is not certain that the resulting bootstrapping consensus tree will be exactly identical to the MP tree (single or consensus) obtained with the same settings, and various bootstrapping runs might generate slightly different results. Refer to troubleshooting <a href="#sec5.1">problem 1</a> for a potential solution.</div>
+</li>
+<li>Output After an MP run PAUP provides two types of output:
+<ol type="i">
+<li>
+<i>Tree(s)-cladogram(s).</i> The run may generate one most parsimonious tree or multiple trees that are also most parsimonious. A run producing more than one most parsimonious tree can be expressed for analytical purposes under the form of a consensus tree (see troubleshooting <a href="#sec5.3">problem 2</a>). We recommend to use the 50% majority rule consensus tree of the resulting minimal trees, the most robust commonly used method that allows one to retain all groups found in over half of the rival trees.</li>
+<li>A<i>nalytical descriptive parameters.</i> In addition to the most parsimonious tree(s) and eventual consensus tree resulting from the analysis, extensive descriptive output data are available for each run from the Describe Trees menu. The following information is available to conduct an in-depth analysis of the results: main result parameters (along with the cladogram, number of most parsimonious trees, number of steps, tree Retention Index and Consistency Index; these may be summarized in a table for all the 16 runs as for example in (<a href="#bib8">Caparros and Prat, 2021</a>, Table 1), branch lengths and linkages of terminal taxa and nodes (LCAs) to other nodes, possible character-state assignments to internal nodes, data matrix and reconstructed states for internal nodes on the basis of the optimization algorithm selected to resolve ambiguities (ACCTRAN or DELTRAN), character change lists showing at which nodes/terminal taxa each character changes, apomorphy lists showing for every branch which characters change and how, and character diagnostics list providing for each character the Minimum, Actual and Maximum number of steps (changes) allowing the computation of character consistency indices (ci), retention indices (ri) and rescaled consistency indices (rc). From this last list you will select the apomorphies with character retention index ri = 1 that will compose <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> for the intermediate MP analysis.
+<figure id="unfig20"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig11.jpg" alt="InFig11.jpg"></figure>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Selection of the most parsimonious tree scenario
+<ol type="a">
+<li>Why do apomorphies matter?<br> An apomorphy is the sharing of an anatomical novelty by two species as a sign of close relatedness (<a href="#bib26">Hennig, 1966</a>). By contrast, a novelty not shared by an immediate common ancestor is designated as an homoplasy such as convergence or reversal (<a href="#bib41">Simpson, 1961</a>). For further information on the concepts of apomorphy and homoplasy refer to Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Transparent Methods. Foundations of the phylogenetic concept of Maximum Parsimony). As a general rule if a character shows n states, an apomorphous character will result in n-1 one-time character state changes in the cladogram, and for a homoplastic character there will be at least n character-states changes. The most parsimonious tree(s) that you are searching is(are) the one(s) that reveals the maximum number of apomorphies or equivalently minimizes the number of homoplasies inherent to the tree.</li>
+<li>How to identify apomorphies?<br> The discovery of apomorphies (synapomorphies shared downstream in a tree or autapomorphies specific to a branch) represents an important aim of the MP analysis because before conducting the analysis the researcher does not know which character-state changes are apomorphous. An apomorphy is not a declaration <i>ex ante</i> of a character-state derived change; an apomorphy emerges from the results of the run, and the easiest and most elegant way to identify apomorphies after a PAUP run is to select characters with a retention index ri = 1 from the "character diagnostics" list of the Describe Trees output menu, as shown for example in Table S1 of <a href="#bib8">Caparros and Prat (2021)</a>.</li>
+<li>The character retention index The character retention index ri is "the fraction of apparent synapomorphy in the character that is retained as synapomorphy on the tree" (<a href="#bib20">Farris, 1989b</a>). We illustrate graphically in <a href="#fig2">Figure 2</a> reproduced from Figure S8 (<a href="#bib8">Caparros and Prat, 2021</a>) the ri character retention index's behavior related to the coherence of the MP tree; it expresses the degree of <i>a posteriori</i> homology apparent in the character, i.e., its information content. If ri = 1 the character change represents an apomorphy while values of 0 &lt; ri &lt; 1 represent homoplasies. The lower this index the more homoplastic the character is; thus, the quantity 1- ri represents the degree of homoplasy inherent to this character in the MP tree.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Character retention index ri formula and description of how it behaves as a function of changes in character state variables</div>
+<p>Yellow color: three variables m, s and g provided in the character diagnostic output of the first PAUP run.</p>
+<p>Pink color: homoplasy definitions based on variables m, s and g.</p>
+<p>Green color: behavior standardized from 0 to 1 of character retention index ri and its complement d observed homoplasy index.</p>
+<p>Blue color: inference interpretations drawn from behavior from 0 to 1 of character retention index ri.</p>
+<p>Reproduced from Figure S8 of <a href="#bib8">Caparros and Prat (2021)</a>.</p>
+</figcaption>
+</figure>
+</li>
+<li>From the character retention index to the tree retention index<br> A distinction should be made between a single character retention index ri and an overall tree retention index RI. The tree Retention Index RI is the sum over all the individual-character retention indices ri calculated as per the formula (∑ g − ∑ s) / (∑ g − ∑ m) with g, s and m as defined in <a href="#fig2">Figure 2</a>.</li>
+<li>Metric to select the most parsimonious scenario The tree RI is the best metric to select the most informative run because it measures accurately the overall degree of synapomorhy of the MP tree (<a href="#bib19">Farris, 1989a</a>, <a href="#bib20">1989b</a>; <a href="#bib7">Caparros, 1997</a>), i.e., the scenario with the highest tree RI is the most coherent and phylogenetically informative. The tree RI is a better indicator of the level of synapomorphy than the Consistency Index CI, and represents a robust proxy for confidence and accuracy estimate in the selection of the most informative and coherent MP scenario (<a href="#bib7">Caparros, 1997</a>; <a href="#bib19">Farris, 1989a</a>, <a href="#bib20">1989b</a>; <a href="#bib35">Mounier and Caparros, 2015</a>; <a href="#bib36">Mounier et al., 2016</a>). In essence, a high value of the RI index is indicative of a high degree of overall synapomorphy inherent to the tree, and thus of its phylogenetic information content. In Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Figure 1, Table 1) we called MPMAX the scenario with the highest RI.
+<div class="note">
+<span class="note-title">Note:</span> Some workers may object to the use of the tree RI to select the most parsimonious scenario. In such eventuality, refer to troubleshooting <a href="#sec5.5">problem 3</a>.</div>
+<div class="note">
+<span class="note-title">Note:</span> The total number of steps of a PAUP run is not a reliable parameter to select the most parsimonious scenario due to the fact that the constraints (models of character type, equal weight or reweighing, and multistate taxa settings) affect the scale of the number of steps as evidenced in Table 1 of <a href="#bib8">Caparros and Prat (2021)</a>.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Visualization of the most parsimonious scenario results and character support
+<ol type="a">
+<li>Elliptic graphic representation The results of an MP run are normally expressed as a tree (single or consensus) where the nodes of the branches represent the hypothetical LCAs. Hennig (<a href="#bib26">Hennig, 1966</a> Figure 18, p.71) was the first to present an elliptic phylogenetic graphic representation equivalent to a cladogram. For illustrative purposes we show in <a href="#fig3">Figure 3</a> the similarities between an elliptic representation and the MP cladogram from Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Figures 1 and S7). The identifying node numbers of the LCAs of the cladogram are expressed as numbered stem species elliptic boundaries. The difference between the cladogram and the elliptic representation is the way the phylogenetic relationship is expressed between the stem species and its successor sister groups. In the cladogram, it is represented by the nodes (hypothetical ancestors) linking the dichotomous branches to its successors (two other nodes, or a node and a terminal, or two terminals) whereas in the elliptic representation, the boundary lines of the stem species are drawn around their successor species. The elliptic boundaries illustrate more accurately than the tree-based representation the formation of higher taxa monophyletic groups in conformity with the hierarchic system of Phylogenetic Systematics, and facilitate the interpretation of the ancestor-descendant relationships among the various species under study.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. MPMAX cladogram and its elliptic representation</div>
+<p>MPMAX cladogram (A) and its elliptic representation (B) reproduced from Figures 1 and S7 of <a href="#bib8">Caparros and Prat (2021)</a>. The nodes of the tree are indicated in black numbers with arrows. In the elliptic representation the LCA nodes are expressed as equivalent elliptic boundaries. Refer to the legend of <a href="#bib8">Caparros and Prat (2021)</a> Figure 1 for sister group definitions.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> The elliptic representation applies only to a fully resolved tree, i.e., it cannot be used with a tree that has polytomies. No software exists for the elliptic representation which must be done manually, with the character state changes coming in support of the branches (as illustrated for example in <a href="#fig4">Figure 4</a> reproduced from Figure S9 (<a href="#bib8">Caparros and Prat, 2021</a>)) obtained from the PAUP run Describe Trees output.</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Character-state changes (apomorphies) in support of stem species elliptic boundaries 40 to 26 (tree nodes - LCAs) of MPMAX scenario</div>
+<p>Meaning of symbols are as follows: numbered stem boundaries correspond to nodes of equivalent tree, arrows from boxes to stem boundaries indicate supporting apomorphous character-state changes, ==&gt; unambiguous characters and --&gt; ACCTRAN resolved ambiguous characters. ACCTRAN optimization (<a href="#bib2">Agnarsson and Miller, 2008</a>) was used for the treatment of ambiguities. Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure S9.</p>
+</figcaption>
+</figure>
+</li>
+<li>Visualization of apomorphies in support of LCAs Contrary to probability-based methods of phylogeny reconstruction, MP identifies clearly the character-state changes that support the various clades, e.g., in Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Tables S1 and S2) 74 apomorphies in support of the LCAs were identified from the MPMAX run output with character retention index ri = 1. We show in <a href="#fig4">Figure 4</a> the one-time character-state changes (apomorphies) in support of stem species elliptic boundaries 40 to 26 (tree nodes - LCAs) of this scenario that encompasses the <i>Homo</i> genus species definitions.
+<div class="critical">
+<span class="critical-title">Critical:</span> We strongly recommend that the apomorphies in support of the various clades be graphically visualized as a prior step to the discussion of the anatomical significance regarding the appearance of morphological novelties.</div>
+<div class="note">
+<span class="note-title">Note:</span> In <a href="#fig4">Figure 4</a> the character changes highlighted for nested elliptic boundaries (stem taxa) A, B, C, D, E, F, 34 and terminal <i>Hsap</i> (<i>H. sapiens</i>) are synapomorphies, i.e., morphological novelties passed on to succeeding nested monophyletic groups, whereas the novelties of the remaining lower sister groups J, I, H, G and stem boundaries 26, 31 and 33 are autapomorphies specific to these groups.</div>
+</li>
+<li>Projection of individual characters on to the cladogram The PAUP software after conducting a run provides extensive detailed output data from the Describe Trees menu which are very useful in analyzing the anatomical features of individual character state changes and their relevant phylogenetic significance. However, PAUP does not provide an easy way to visualize synthetically this rich output material. In our opinion, the best software to visualize these results is MacClade which happens to be compatible with PAUP. Both the MacClade software (<a href="#bib32">Maddison and Maddison, 2005</a>) and the PAUP software (<a href="#bib47">Swofford, 2020</a>) use the NEXUS format, e.g., one can set up a character data matrix in MacClade and execute the MP run in PAUP with this matrix, or vice-versa visualize with MacClade the tree output of a PAUP run from a given outsourced data set.
+<div class="critical">
+<span class="critical-title">Critical:</span> The freely available MacClade software works well only on old PowerPC Mac computers under a classic operating environment and on Intel Macs under operating systems up to MacOS 10.6. Unfortunately, it does not work under MacOS X 10.7 or later versions of the MacOS, and cannot run under Windows; thus, to benefit from this very helpful visualization tool one needs to use an old Mac computer with one of the operating systems just mentioned. We are not aware of any other phylogenetic software having the versatile features of MacClade for visualizing and rendering with high precision the results obtained from PAUP.</div>
+<ol type="i">
+<li>Setting up a data matrix in MacClade This is done easily with the data editor, with the possibility of entering additionally the character state names along with the coded symbols if necessary.
+<figure id="unfig21"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig12.jpg" alt="InFig12.jpg"></figure>
+<figure id="unfig22"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig13.jpg" alt="InFig13.jpg"></figure>
+</li>
+<li>Projection of individual characters on to the cladogram One attractive feature of MacClade is the possibility to project individual characters on to the cladogram from the resulting PAUP analysis run. To use this feature, read in MacClade <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> and the relevant resolved tree saved from the PAUP run. This projection allows one to verify graphically for each character its status either as an apomorphy or homoplasy, and in the case of homoplasy to ascertain its status as convergence or reversal provided one insures that the projection is unconstrained by selecting an unordered mode. These projections are useful to explain the anatomical changes that took place along the evolutionary path of the tree. Below are four examples of character state projections (<a href="#fig5">Figure 5</a>) from the MPMAX output of Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Figure S8) with (B) example of synapomorphy of mandibular fossa position character, (C) example of autapomorphy in <i>Paranthropus</i> clade of lingual shape of maxillary canine character, (D) example of convergence homoplasy of suprameatal spine character, and (E) example of reversal homoplasy of external auditory meatus size character.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Four examples of character state projections with MacClade based on the MPMAX cladogram</div>
+<p>Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure S8</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> To project the characters on to the cladogram with MacClade, use the Trace menu and scroll through them one at a time to visualize them. Should a character be ambiguous with several possible most parsimonious reconstructions (MPRs), as shown for <i>H. antecessor</i> in the illustration below, it is possible to view each ambiguity using the "Show MPRs Mode" in the menu. To find a resolved state based on ACCTRAN or DELTRAN optimization option see troubleshooting <a href="#sec5.7">problem 4</a>.</div>
+<figure id="unfig23"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig14.jpg" alt="InFig14.jpg"></figure>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Validation of the most parsimonious scenario by statistical comparison
+<ol type="a">
+<li>Comparison of non-statistical MP and statistical BMCMC results with same data set<br> An empirical objective for a better interpretation of the data in studies of human phylogenetic reconstruction requires that MP, a non-statistical numerical method based on mathematical graph theory (<a href="#bib12">Darlu and Tassy, 2019</a>), be compared with a statistical one such as for example BMCMC (<a href="#bib24">Goloboff and Pol, 2005</a>; <a href="#bib11">Cummings et al., 2003</a>). However, the two methods are not directly comparable since the measure of coherence of MP such as the tree RI is unrelated to the posterior probabilities produced by the BMCMC analysis. An indirect way of comparing the two methods is to execute a bootstrap run with the same settings as the MP run, and compare the proportions of bootstrap replicates values P<sub>boot</sub> of the bootstrap tree to the posterior probability values P<sub>post</sub> of the BMCMC tree resulting from the Bayesian analysis with the same data set.</li>
+<li>Are P<sub>boot</sub> and P<sub>post</sub> comparable?<br> The question is, are the values of P<sub>boot</sub> and P<sub>post</sub> comparable? The proportion of bootstrap replicate value P<sub>boot</sub> in which a clade is identified is subject to various interpretations in phylogenetic analysis (<a href="#bib44">Soltis and Soltis, 2003</a>). Some view P<sub>boot</sub> as a measure of repeatability, others as a measure of accuracy, i.e., closeness to the true tree, or a measure of statistical confidence. Most systematists view bootstrap values as a relative assessment of clade support rather than a strict statistical confidence statement of the nodes, or joint confidence for the entire tree. Simulations of maximum likelihood bootstrap and BMCMC analyses performed on the same sequence data set show that over various model spaces values P<sub>boot</sub> and P<sub>post</sub> are not significantly different (<a href="#bib11">Cummings et al., 2003</a>). These findings are corroborated in a set of simulations showing that P<sub>post</sub> estimated by Mr Bayes software and P<sub>boot</sub> calculated by PAUP software were almost exactly the same (<a href="#bib24">Goloboff and Pol, 2005</a>). Thus, the search method with the highest support values will indicate relatively a higher coherence level in the relationships expressed phylogenetically by the clades.</li>
+<li>Example of scenario validation further to the comparison <a href="#bib8">Caparros and Prat (2021)</a> compared the bootstrap values P<sub>boot</sub> of MPMAX to the P<sub>post</sub> probabilities of a BMCMC analysis from <a href="#bib13">Dembo et al. (2016)</a> executed with the same data set. <a href="#fig6">Figure 6</a> shows the results of the comparison by means of an elliptic phylogenetic representation. The MPMAX scenario had a systematically higher support in practically all of the sister groups with a higher resolution concordant with paleoanthropological paradigms, and the conclusion was that the bootstrap tree identical to the MPMAX tree with the same settings validated this most phylogenetically informative and coherent evolutionary scenario.
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Phylogenetic support comparison between MPMAX scenario and best BMCMC Dembo scenario</div>
+<p>(A) MPMAX bootstrap elliptic representation with replicate P<sub>boot</sub> values (B) BMCMC Dembo elliptic representation with posterior probability values P<sub>post</sub>. P<sub>boot</sub> and P<sub>post</sub> are shown in red and expressed in %. Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure 2.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.2">Intermediate MP analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> a few hours</div>
+<ol start="5">
+<li>Is the most parsimonious scenario MPMAX indicative of a process of reticulate evolution?</li>
+</ol>
+<p>Could a sequential hierarchical order in the most parsimonious MPMAX cladogram be indicative of a process of reticulate evolution among some of the species of this scenario? Prior to answering this question, you need to verify the phylogenetic signal related to the various sister groups by following the fundamental principle of Phylogenetic Systematics. This principle stipulates that the evolutionary history of taxa is reconstituted from characters by the sharing of apomorphies while homoplasies, resemblance not due to inheritance from a close common ancestor, represent features of an adaptive nature and are therefore phylogenetically less informative; in other words, "The more characters certainly interpretable as apomorphous (not characters in general) are present in a number of different species, the better founded is the assumption that these species form a monophyletic group (<a href="#bib26">Hennig, 1966</a>)".</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> In essence, only apomorphies ought to be relevant in finding monophyletic groups " not characters in general". To obtain the response to the question whether the most parsimonious scenario is indicative of reticulate evolution, it is advisable to re-run the MP analysis with apomorphous characters.</div>
+<ol start="6">
+<li>Re-run the parsimony analysis with apomorphous characters as prior step to the PN analysis</li>
+</ol>
+<p>In keeping with the Hennigian principle that only apomorphies are relevant in finding monophyletic groups, re-run the MP analysis with apomorphies (and if necessary add informative homoplasies as per troubleshooting <a href="#sec5.9">problem 5</a> below) resulting from the most parsimonious scenario MPMAX. Select apomorphous characters with retention index ri = 1 to make up <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> from the MPMAX character diagnostics output. With Data S2 execute an MP run with the same settings as the most parsimonious scenario from <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> selected with the highest tree RI. In Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a>, Table S1) apomorphies of the MPMAX scenario (Dollo type algorithm, RC reweighing and uncertainty setting for multistate taxa) were selected with character retention index ri = 1, and generated a reduced <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> of 74 apomorphous characters. There was no need to execute a second run with reweighed characters since the selected apomorphies of <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> had an ri = 1 and ci = 1, with a reweighing parameter rc (ri x ci) = 1 identical to the initial run equal weights. We reproduce below Table S1 of <a href="#bib8">Caparros and Prat (2021)</a> showing character diagnostics from output of MPMAX run. The list shows for each informative character its consistency index ci, retention index ri and rescaled consistency index rc = ci x ri. Apomorphies for the subsequent intermediate MP analysis were selected on the basis of their character ri = 1.</p>
+<figure id="unfig24"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig15.jpg" alt="InFig15.jpg"></figure>
+<ol start="7">
+<li>Example - Intermediate MP analysis results from <a href="#bib8">Caparros and Prat (2021)</a>
+</li>
+</ol>
+<p>The run with 74 apomorphous characters generated a set of 3213 MP trees called MMPT (multiple most parsimonious trees) which make up <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a>, with perfect tree congruence indices RI = 1 and CI = 1 for all the trees. The 50% majority consensus tree of MMPT trees resulting from the analysis based on <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> is reproduced in <a href="#fig7">Figure 7</a>; it confirmed the existence of four highly resolved ancestral monophyletic sister groups identified in the MPMAX scenario (PreHs, Her, NalSed and Par in <a href="#fig3">Figure 3</a> - elliptic representation) and showed four polytomies that regroup incompatible parts of the multiple trees.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. 50% majority consensus tree from MP run with apomorphous Data S2 that generated 3213 Dollo MP trees (MMPT) with RI=1 and CI=1 for all trees</div>
+<p>Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure 3.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> More polytomies become apparent when the number of homoplastic character decreases in the executed <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>, while the number of most parsimonious trees increases substantially, as observed in <a href="#bib7">Caparros (1997)</a>. Polytomies may be construed as background noise defined as N = (1 - RI∗), RI∗ being the tree retention index of the MPMAX scenario from analysis with the full <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> and the value 1 representing the perfect tree retention index from the intermediate analysis with the apomorphous <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>. Conceptually N represents the contribution of removing homoplastic characters to the diminution of the RI between the two types of analyses, and may be considered as a loss of phylogenetic information.</div>
+<p>As shown below, polytomies thought to be generally uninformative resulted in being of utmost importance in the PN analysis, i.e., deciphering this apparent loss of information embedded in the polytomies allowed to conduct the PN analysis with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> composed of the MMPT multiple most parsimonious trees.</p>
+<h3 id="sec2.3">Phylogenetic Networks analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> a few hours</div>
+<ol start="8">
+<li>Transition from a tree to a network to explain human evolution</li>
+</ol>
+<p>Phylogenetic trees may not be the best tool to represent phylogenetic history in light of the complex biological processes such as hybridization that may generate evolutionary reticulation; networks are therefore the solution if one conceives that a network is a tree with reticulations. The question methodologically is how do we make the transition from a tree to a network to explain evolution. In a hybrid species, its genome comes partly from one parent and partly from the other, so the resulting hybrid genome will have different evolutionary histories; therefore, the analysis will endeavor to reconstruct and blend the different phylogenetic trees of the genomes. In the construction of a hybridization network the conflicting gene trees will be processed, and not the original genomic data. More generally, the question becomes how do we represent evolutionary relationships when the history of a set of taxa includes inheritance from multiple ancestors across hybridized taxa.</p>
+<ol start="9">
+<li>Empirical assumptions to link MP and PN analyses</li>
+</ol>
+<p>Based on the analogy of hybrid species sharing multiple ancestral evolutionary histories, in <a href="#bib8">Caparros and Prat (2021)</a> we used a Phylogenetic Networks conceptual approach extensively employed in molecular biology to test the hypothesis of phenotypic hominin evolutionary reticulation. To establish a link between the MP and the PN analyses, we made two empirical assumptions: 1) apomorphous character-state changes represent analogous proxies of gene sequence changes evolving from common ancestors, and 2) the 3213 MP trees (MMPT) making up <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> (resulting from the parsimony PAUP run with apomorphies of <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>) are methodologically analogous to gene trees from a set of species, and are thus used as input in the PN analysis.</p>
+<ol start="10">
+<li>Types of phylogenetic networks <a href="#bib27">Huson and Bryant (2006)</a> distinguish three main types of phylogenetic networks:
+<ol type="a">
+<li>Phylogenetic trees used to summarize taxonomic relationships between biological entities.</li>
+<li>Splits networks used to represent incompatibilities in data sets reflected for example by polytomies in consensus trees.</li>
+<li>Reticulate networks used to explain evolutionary histories with edges representing lineages of descent or reticulate events, and internal nodes representing hypothetical ancestors. In <a href="#bib8">Caparros and Prat (2021)</a>, to shed some further light on the taxonomic threshold between the genus <i>Homo</i> and other hominin sister groups, we tested the hypothesis of phenotypic hominin evolutionary reticulation based on these three types of phylogenetic networks.
+<div class="note">
+<span class="note-title">Note:</span> For a review of Phylogenetic Networks methods, we refer to the comprehensive syntheses of the field by <a href="#bib28">Huson et al. (2010)</a> along with the freely available application software SplitsTree (<a href="#bib27">Huson and Bryant, 2006</a>), and <a href="#bib34">Morrison (2011)</a>.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Steps used in <a href="#bib8">Caparros and Prat (2021)</a> as example of PN analysis With the MMPT <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> and using the SplitsTree software (<a href="#bib27">Huson and Bryant, 2006</a>), we computed the majority consensus tree, the consensus network and the reticulate network which we reproduce here in <a href="#fig8">Figure 8</a>.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Phylogenetic networks graphical results</div>
+<p>Tree and network computations were executed with the program SplitsTree (<a href="#bib27">Huson and Bryant, 2006</a>) based on <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> (MMPT = 3213 trees) obtained from the Intermediate MP analysis with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>.</p>
+<p>(A) Unrooted majority consensus tree with mean edge weights (pipeline Taxa=24 [Trees &gt; ConsensusTree &gt; EqualAngle]).</p>
+<p>(B) Consensus network computed with threshold = 0.10, mean edge weights and splits convex hull transformation (pipeline Taxa=24 [Trees &gt; ConsensusNetwork &gt; ConvexHull]).</p>
+<p>(C) Rooted reticulate network with first taxon as outgroup and 180 equal angle (pipeline Taxa=24 [Trees &gt; ConsensusNetwork &gt; ReticulateNetwork]).</p>
+<p>Reproduced from Figure 4 in <a href="#bib8">Caparros and Prat (2021)</a>.</p>
+</figcaption>
+</figure>
+Read the MMPT <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> nexus file with the SplitsTree software and hit Apply. The sequence of steps with the dropdown menus to produce the 3 panels of <a href="#fig8">Figure 8</a> are illustrated as follows:
+<ol type="a">
+<li>Consensus tree
+<ol type="i">
+<li>Screenshot for Consensus Tree run.
+<figure id="unfig25"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig16.jpg" alt="InFig16.jpg"></figure>
+</li>
+<li>Screenshot of resulting Consensus Tree.
+<figure id="unfig26"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig17.jpg" alt="InFig17.jpg"></figure>
+</li>
+</ol>
+</li>
+<li>Consensus network
+<ol type="i">
+<li>Screenshot for Consensus Splits of trees.
+<figure id="unfig27"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig18.jpg" alt="InFig18.jpg"></figure>
+</li>
+<li>Screenshot of resulting Consensus Network with EqualAngle.
+<figure id="unfig28"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig19.jpg" alt="InFig19.jpg"></figure>
+</li>
+<li>Screenshot for splits graph obtained with ConvexHull.
+<figure id="unfig29"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig20.jpg" alt="InFig20.jpg"></figure>
+</li>
+<li>Screenshot of resulting Consensus Network obtained with ConvexHull.
+<figure id="unfig30"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig21.jpg" alt="InFig21.jpg"></figure>
+</li>
+</ol>
+</li>
+<li>Reticulate network
+<ol type="i">
+<li>Screenshot for Reticulate Network.
+<figure id="unfig31"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig22.jpg" alt="InFig22.jpg"></figure>
+</li>
+<li>Screenshot of resulting Reticulate Network.
+<figure id="unfig32"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig23.jpg" alt="InFig23.jpg"></figure>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>As indicated graphically in Figure 1 of <a href="#bib27">Huson and Bryant (2006)</a> showing the different types of Phylogenetic Networks concepts and inputs required, our suggested Phylogenetic Networks approach is not based on characters per se but on the multiple most parsimonious trees (MMPT) resulting from the tree-based MP analysis with apomorphous characters, in the same way that gene trees from a set of species are used to generate consensus networks and reticulate networks in molecular biology.</p>
+<div class="note">
+<span class="note-title">Note:</span> It is generally thought that polytomies have no value-added information in tree-based MP phylogenetic reconstruction, but the reverse is true in PN methods. Polytomies in a consensus tree represent conflicting patterns of incompatible trees; however, the information embedded in them allows the construction of consensus and reticulate networks along with the stable sister groups. This is precisely illustrated in <a href="#fig9">Figure 9</a> reproduced from (<a href="#bib8">Caparros and Prat, 2021</a>) where one can observe in the consensus tree that the parts of the multiple trees that are incompatible are expressed as polytomies of unresolved nodes, while the consensus network focuses on these conflicting patterns by means of split parallelograms that may cause reticulation.</div>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Highlight of multiple trees conflicting patterns expressed as polytomies in consensus tree, and expressed in the consensus network by means of split parallelograms that may induce reticulation</div>
+<p>Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure 4.</p>
+</figcaption>
+</figure>
+<p>The expected outcome from a reticulate network analysis is to detect phylogenetic hierarchical patterns among the species under study that may allow inferences about evolutionary processes that gave rise to their diversity. The evolutionary reticulate network displays evolutionary events that have a causal relationship, the cause being subject to varying interpretation.</p>
+<div class="note">
+<span class="note-title">Note:</span> By way of inferential example, in <a href="#fig10">Figure 10</a> reproduced from <a href="#bib8">Caparros and Prat (2021)</a>, reticulation in coexisting taxa may be thought as resulting from biological processes expressed by phenotypic morphological apomorphies. Three types of inferences with regard to the modes of evolution were drawn from this reticulate network. Among the late Miocene - Pliocene hominin taxa up to <i>Australopithecus africanus</i> there is no apparent evidence of ancestral radiations but rather a process of anagenesis, that is to say phyletic gradualism. One may observe probable cladogenetic events at the root of the network and further upstream from <i>Australopithecus africanus.</i> Most significantly, evolutionary events that gave rise to the diverse species of the genus <i>Homo</i> are represented by a rooted hybridization subnetwork.</div>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Inferences drawn with regard to the modes of evolution of the group of hominin species covering the period Late Miocene to the Holocene</div>
+<p>Reproduced from <a href="#bib8">Caparros and Prat (2021)</a> Figure 4.</p>
+</figcaption>
+</figure>
+<p>Numerous paleogenomics studies have shown that hybridization by means of gene exchanges between divergent taxonomic groups might be the rule rather than the exception in human evolution, particularly as it relates to the origin of <i>Homo sapiens</i> (<a href="#bib1">Ackermann et al., 2016</a>). Furthermore, interbreeding with parental back crossing between individuals of genetically differentiated but not too distant taxa, a process known as introgressive hybridization, may be the principal cause of the appearance of phenotypic novelties and the evolutionary emergence of new species (<a href="#bib4">Arnold, 1992</a>, <a href="#bib5">1997</a>). Thus, the web-like hybridization subnetwork in <a href="#fig10">Figure 10</a> may be interpreted most probably as events of multiple introgressive speciations that led to the emergence of the only surviving extant species, <i>Homo sapiens</i>. We hope that our present protocol will be of help to further research in the study of reticulate human evolution.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Our protocol relying on phenotypic features represents a first attempt in the study of human evolution to combine a tree-based Maximum Parsimony phylogenetic reconstruction method with a Phylogenetic Networks approach. The interpretation of the resulting most parsimonious tree scenario and phylogenetic network may be subject to debate if one is to argue with the quality of the initial <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>. To carry out the study in <a href="#bib8">Caparros and Prat (2021)</a>, we selected among already published large data sets of craniodental morphological features, the one which in our opinion as of today is the most comprehensive, and was analyzed using Bayesian phylogenetic methods (<a href="#bib13">Dembo et al., 2016</a>). These authors compiled a supermatrix of 391 morphological characters from craniodental matrices used in 14 previous studies, and made some alterations to a mix of trait observations as described in their publication. It is clear that this data set has a high information content across parsimony character types as reflected in Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Table 1) where for the reweighed runs the tree RIs vary between 0.7936 and 0.8805, which translate into a very high apomorphous content. This is confirmed by the fact that the MPMAX scenario provided an unusually high number of 74 apomorphies which allowed to conduct effectively the intermediate tree-based MP analysis with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> and the subsequent PN analysis with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a>. The main limitation of the protocol therefore is the quality of the initial <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>. Having tried the protocol with data sets of a recent publication, it becomes apparent that its applicability is hindered by the number of apomorphies that can be generated and the apomorphous content of the data set further to MP runs as explained in troubleshooting <a href="#sec5.9">problem 5</a>.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Since the bootstrap analysis is a random resampling method, it is not absolutely certain that the resulting majority-rule bootstrapping consensus tree will be exactly identical to the MP tree (single or consensus) obtained with the same settings, and various bootstrapping runs might generate slightly different results.</p>
+<h3 id="sec5.2">Potential solution 1</h3>
+<p>We suggest that the bootstrap analysis be rerun several times, with different number of replicates, to ascertain with a high degree of confidence the repeatability of the results as compared with the results of the MP analysis. In the eventuality of an extensive data set with a bootstrap simulation that might computationally be heavy and time constraining, we suggest to run a "Fast" stepwise-addition search instead of a heuristic search.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Oftentimes an MP run generates more than one parsimonious tree.</p>
+<h3 id="sec5.4">Potential solution 2</h3>
+<p>To analyze the significance of this run, one must rely on a consensus tree that graphically retains in a dichotomous manner the similar branches of the numerous most parsimonious trees representing monophyletic sister groups while showing distinct branches not in agreement as polytomous branches. Consensus trees summarize the concordance of trees of minimal length, and theoretically should not be interpreted as a phylogenetic scenario. In PAUP there are four types of consensus trees: Strict, Semistrict, Adams and Majority-rule as shown below. We recommend the use of the 50% majority rule consensus tree.</p>
+<figure id="unfig33"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig24.jpg" alt="InFig24.jpg"></figure>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Some workers may object to the use of the tree RI to select the most parsimonious scenario.</p>
+<h3 id="sec5.6">Potential solution 3</h3>
+<p>If the tree RI is objectionable to select the most parsimonious scenario, which to our knowledge is without foundation, an alternative empirical approach is to implement a selection procedure that follows the scientific method advocated by <a href="#bib37">Popper (1963)</a> of falsification based on scrutiny of all the available evidence from the 16 scenarios. Such an approach, which might be subject to debate, would focus on identifying phylogenetic inconsistencies by blending low bootstrap support of tree scenarios with some paleoanthropological commonly accepted paradigms as conducted in Caparros and Prat (<a href="#bib8">Caparros and Prat, 2021</a> - Table 2 and Transparent Methods 4. Criteria to select the most parsimonious tree). In <a href="#bib8">Caparros and Prat (2021)</a> the popperian approach yielded the same result for the selection of the most parsimonious scenario as the RI approach.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Further to a numerical PAUP run, some apomorphies and homoplasies may be subject to ambiguities regarding the possible assignment of character-state changes at some nodes of the MP tree.</p>
+<h3 id="sec5.8">Potential solution 4</h3>
+<p>Ambiguities may be resolved by a process of selective arguments, or as illustrated in <a href="#fig4">Figure 4</a> by one commonly used optimization algorithm, such as ACCTRAN or DELTRAN (<a href="#bib2">Agnarsson and Miller, 2008</a>). The character state assignments to the internal nodes are provided in the "possible state assignments" option of the Describe Trees menu output of PAUP based on the chosen optimization algorithm (ACCTRAN or DELTRAN) used to resolve ambiguities and selected before the run. In MacClade, for unordered and ordered character types, the Trace menu allows also one to choose either DELTRAN or ACCTRAN as optimization option for ambiguous character state changes and to visualize the projection of the resolved state accordingly (Screenshot to resolve ambiguities, step 3cii in step-by-step method details). The ambiguity of the character at the level of <i>H. antecessor</i> shown in screenshot for trace show MPRs mode is resolved by DELTRAN.</p>
+<figure id="unfig34"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-InFig25.jpg" alt="InFig25.jpg"></figure>
+<div class="note">
+<span class="note-title">Note:</span> A word of caution is required given that ACCTRAN or DELTRAN may result in numerous equivocal resolutions when there is substantial amount of missing data, as illustrated for example in Figure S10 of <a href="#bib8">Caparros and Prat (2021)</a>.</div>
+<h3 id="sec5.9">Problem 5</h3>
+<p>To conduct a proper Intermediate MP analysis, one way to measure the quality of an initial data set is to be able, in our opinion, to generate with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> a most parsimonious tree RI after reweighing of at least 0.80, and to get after this first run a number of apomorphies of at least twice the number of terminal taxa. Short of these two hurdles, it is very probable that the resolution of the most parsimonious scenario will be suboptimal to conduct a significant PN analysis given the poor quality of the initial data set.</p>
+<h3 id="sec5.10">Potential solution 5</h3>
+<p>If the number of apomorphies to make up <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> generated from a most parsimonious run with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> does not meet the above target, there is an alternative approach for the Intermediate tree-based MP analysis. It would consist, in addition to a limited number of apomorphies with ri = 1, to add to <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> a certain number of homoplasies from the output with character retention index threshold for example of at least ri = 0.75. To be able to execute a meaningful PN analysis, it is up to the researcher conducting the study to build a <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> composed of a limited number of apomorphies supplemented by informative homoplasies that eventually will hopefully provide some significant result as far as the tree RI of the intermediate tree-based MP analysis is concerned. Short of this, it is most likely that a PN analysis cannot be implemented.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Ackermann, R.R., Mackay, A., and Arnold, M.L. (2016). The hybrid origin of "modern humans. Evol. Biol. <i>43</i>, 1-11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref1">View at publisher</a></p>
+<p id="bib2">Agnarsson, I. and Miller, J.A. (2008). Is ACCTRAN better tha DELTRAN. Cladistics <i>24</i>, 1-7. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref2">View at publisher</a></p>
+<p id="bib3">Anderberg, A. and Tehler, A. (1990). Consensus trees, a necessity in taxonomic practice. Cladistics <i>6</i>, 399-402. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref3">View at publisher</a></p>
+<p id="bib4">Arnold, M.L. (1992). Natural hybridization as an evolutionary process. Annu. Rev. Ecol. Syst. <i>23</i>, 237-261. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref4">View at publisher</a></p>
+<p id="bib5">Arnold, M.L. (1997). Natural Hybridization and Evolution (Oxford University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref5">View at publisher</a></p>
+<p id="bib6">Camin, J.H. and Sokal, R.R. (1965). A method for deducing branching sequences in phylogeny. Evolution <i>19</i>, 311-326. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref6">View at publisher</a></p>
+<p id="bib7">Caparros, M. (1997). <i>Homo sapiens</i> archaïques : un ou plusieurs taxons (espèces) ? Analyse cladistique et morphométrique (Muséum National d'Histoire Naturelle), PhD dissertation. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref7">View at publisher</a></p>
+<p id="bib8">Caparros, M. and Prat, S. (2021). A Phylogenetic Networks perspective on reticulate human evolution. iScience <i>24</i>, 102359. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref8">View at publisher</a></p>
+<p id="bib9">Cela-Conde, C.J. and Ayala, F.J. (2007). Human Evolution. Trails from the Past (Oxford University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref9">View at publisher</a></p>
+<p id="bib10">Collard, M. and Wood, B.A. (2000). How reliable are human phylogenetic hypotheses? PNAS <i>97</i>, 5003-5006. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref10">View at publisher</a></p>
+<p id="bib11">Cummings, M.P., Handley, S., Myers, S.D., Reed, D., Rokas, A., and Winka, K. (2003). Comparing bootstrap and posterior probability values in the four-taxon case. Syst. Biol. <i>52</i>, 477-487. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref11">View at publisher</a></p>
+<p id="bib12">Darlu, P. and Tassy, P. (2019). La reconstruction phylogénétique: Concepts et méthodes (Editions Matériologiques). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref12">View at publisher</a></p>
+<p id="bib13">Dembo, M., Radovčić, D., Garvin, H., Laird, M., Schroeder, L., Scott, J., Brophy, J., Ackermann, R., Musiba, C., de Ruiter, D.J., et al. (2016). The evolutionary relationships and age of <i>Homo naledi</i>: an assessment using dated Bayesian phylogenetic methods. J. Hum. Evol. <i>97</i>, 17-26. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref13">View at publisher</a></p>
+<p id="bib14">Efron, B. (1979). Bootstrapping methods: another look at the jackknife. Ann. Stat. <i>7</i>, 1-26. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref14">View at publisher</a></p>
+<p id="bib15">Farris, J.S. (1969). A successive approximations approach to character weighting. Syst. Zool. <i>18</i>, 374-385. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref15">View at publisher</a></p>
+<p id="bib16">Farris, J.S. (1970). Methods for computing wagner. Trees. Syst. Zool. <i>19</i>, 83-92. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref16">View at publisher</a></p>
+<p id="bib17">Farris, J.S. (1977). Phylogenetic analysis under Dollo's law. Syst. Zool. <i>26</i>, 77-88. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref17">View at publisher</a></p>
+<p id="bib18">Farris, J.S. (1983). The logical basis of phylogenetic analysis. In Advances in Cladistics 2: Proceedings of the Second Meeting of the Willi Hennig Society, N.I. Platnick and V.A. Funk, eds. (Columbia University Press), pp. 7-36. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref18">View at publisher</a></p>
+<p id="bib19">Farris, J.S. (1989a). The retention index and the rescaled consistency index. Cladistics <i>5</i>, 417-419. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref19">View at publisher</a></p>
+<p id="bib20">Farris, J.S. (1989b). The retention index and homoplasy excess. Syst. Zool. <i>38</i>, 406-407. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref20">View at publisher</a></p>
+<p id="bib21">Felsenstein, J. (1985). Confidence limits on phylogenies: an approach using the bootstrap. Evolution <i>39</i>, 783-791. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref21">View at publisher</a></p>
+<p id="bib22">Fitch, W.M. (1971). Toward defining the course of evolution: minimal change for a specific tree topology. Syst. Zool. <i>20</i>, 406-416. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref22">View at publisher</a></p>
+<p id="bib23">Goloboff, P.A. (1993). Estimating character weights during tree search. Cladistics <i>9</i>, 83-91. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref23">View at publisher</a></p>
+<p id="bib24">Goloboff, P.A. and Pol, D. (2005). Parsimony and Bayesian phylogenetics. In Parsimony, Phylogeny, and Genomics, V.A. Albert, ed. (Oxford University Press), pp. 148-159. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref24">View at publisher</a></p>
+<p id="bib25">Goloboff, P.A., Carpenter, J.M., Arias, J.S., and Esquivel, D.R.M. (2008). Weighing against homoplasy improves phylogenetic analysis of morphological data sets. Cladistics <i>24</i>, 758-773. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref25">View at publisher</a></p>
+<p id="bib26">Hennig, W. (1966). Phylogenetic Systematics, Translated by D. Davis and R. Zangerl (University of Illinois Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref26">View at publisher</a></p>
+<p id="bib27">Huson, D.H. and Bryant, D. (2006). Application of phylogenetic networks in evolutionary studies. Mol. Biol. Evol. <i>23</i>, 254-267. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref27">View at publisher</a></p>
+<p id="bib28">Huson, D.H., Rupp, R., and Scornavacca, C. (2010). Phylogenetic Networks: Concepts, Algorithms and Applications (Cambridge University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref28">View at publisher</a></p>
+<p id="bib29">Kluge, A. (1997). Sophisticated falsification and research cycles: consequences for differential character weighting in phylogenetic systematics. Zool. Scr. <i>26</i>, 349-360. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref29">View at publisher</a></p>
+<p id="bib30">Kolaczkowski, B. and Thornton, J.W. (2004). Performance of maximum parsimony and likelihood phylogenetics when evolution is heterogeneous. Nature <i>431</i>, 980-984. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref30">View at publisher</a></p>
+<p id="bib31">Maddison, D.R., Swofford, D.L., and Maddison, W.P. (1997). NEXUS: an extensible file format for systematic information. Syst. Biol. <i>46</i>, 590-621. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref31">View at publisher</a></p>
+<p id="bib32">Maddison, D.R. and Maddison, W.P. (2005). MacClade Software V. 4.08a (Sinauer Associates). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref32">View at publisher</a></p>
+<p id="bib33">Mayr, E. and Ashlock, P.D. (1991). Principle of Systematic Zoology (McGraw-Hil). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref33">View at publisher</a></p>
+<p id="bib34">Morrison, D.A. (2011). An Introduction to Phylogenetic Networks (RJR Productions). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref34">View at publisher</a></p>
+<p id="bib35">Mounier, A. and Caparros, M. (2015). The phylogenetic status of <i>Homo heidelbergensis</i> - a cladistic study of middle pleistocene hominins. BMSAP <i>27</i>, 110-134. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref35">View at publisher</a></p>
+<p id="bib36">Mounier, A., Balzeau, A., Caparros, M., and Grimaud-Hervé, D. (2016). Brain, calvarium, cladistics: a new approach to an old question, who are modern humans and Neandertals?. J. Hum. Evol. <i>92</i>, 22-36. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref36">View at publisher</a></p>
+<p id="bib37">Popper, K. (1963). Conjectures and Refutations: The Growth of Scientific Knowledge (Routledge). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref37">View at publisher</a></p>
+<p id="bib38">Rohlf, F.J. and Sokal, R.R. (1981). Comparing numerical taxonomic studies. Syst. Zool. <i>30</i>, 459-490. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref38">View at publisher</a></p>
+<p id="bib39">Saitou, N. (1991). Statistical methods for phylogenetic tree reconstruction. In Handbook of Statistics, <i>8</i>, R. Rao and R. Chakraborty, eds. (Elsevier), pp. 317-346. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref39">View at publisher</a></p>
+<p id="bib40">Simpson, G.G. (1953). The Major Features of Evolution (Columbia University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref40">View at publisher</a></p>
+<p id="bib41">Simpson, G.G. (1961). Principles of Animal Taxonomy (Columbia University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref41">View at publisher</a></p>
+<p id="bib42">Sokal, R.R. and Rohlf, F.J. (1995). Biometry (W. H. Freeman and Company). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref42">View at publisher</a></p>
+<p id="bib43">Sokal, R.R. and Sneath, P.H.A. (1963). Principles of Numerical Taxonomy (Freeman). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref43">View at publisher</a></p>
+<p id="bib44">Soltis, P.S. and Soltis, D.E. (2003). Applying the bootstrap in phylogeny reconstruction. Stat. Sci. <i>18</i>, 256-267. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref44">View at publisher</a></p>
+<p id="bib45">Strait, D.S., Grine, F.E., and Fleagle, J.G. (2015). Analyzing hominin phylogeny: cladistic approach. In Handbook of Paleoanthropology, W. Henke and I. Tattersall, eds. (Springer-Verlag), pp. 1989-2014. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref45">View at publisher</a></p>
+<p id="bib46">Strait, D.S. and Grine, F.E. (2004). Inferring hominoid and early hominid phylogeny using craniodental characters: the role of fossil taxa. J. Hum. Evol. <i>47</i>, 399-452. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref46">View at publisher</a></p>
+<p id="bib47">Swofford, D.L. (2020). Phylogenetic Analysis Using Parsimony (PAUP), Version 4.0a. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref47">View at publisher</a></p>
+<p id="bib48">Swofford, D.L. and Maddison, W.P. (1987). Reconstructing ancestral character states under Wagner parsimony. Math. Biosci. <i>87</i>, 199-229. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref48">View at publisher</a></p>
+<p id="bib49">Wiens, J.J. (1999). Polymorphism in systematics and comparative biology. Ann. Rev. Ecol. Syst. <i>30</i>, 327-362. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref49">View at publisher</a></p>
+<p id="bib50">Wright, A.M. and Hillis, D.M. (2014). Bayesian analysis using a simple likelihood model outperforms parsimony for estimation of phylogeny from discrete morphological data. PLoS One <i>9</i>, e109210. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00071-5/sref50">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources should be directed to and will be fulfilled by Miguel Caparros, <a href="mailto:capmig@aol.com">capmig@aol.com</a>.</p>
+<h4>Materials availability</h4>
+<p>No materials were newly generated for this paper.</p>
+<h4>Data and code availability</h4>
+<p>The data supporting the findings of <a href="#bib8">Caparros and Prat (2021)</a>, used as example in the text, are available as follows:</p>
+<p>Fossil hypodigms, character matrix and nexus file of the original <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> (<a href="#bib13">Dembo et al., 2016</a>) are freely available at Dryad Digital Repository <a href="https://doi.org/10.5061/dryad.d7r4g.2">https://doi.org/10.5061/dryad.d7r4g.2</a>. The nexus matrix file <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a> is made available here. Characters, character definitions, and character states are available from Supplementary Material (<a href="#bib13">Dembo et al., 2016</a>) at <a href="https://doi.org/10.1016/j.jhevol.2016.04.008">https://doi.org/10.1016/j.jhevol.2016.04.008</a>.</p>
+<p><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">S3</a> generated and analyzed in the study are available here: <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a> in NEXUS format represents the 74 apomorphous characters selected from the most parsimonious scenario MPMAX executed with <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1</a>, while <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3</a> represents the multiple MP trees (MMPT) that result from the intermediate MP run based on Dollo type characters and uncertainty setting for multistate taxa executed with the 74 apomorphies of <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2</a>.</p>
+<p>Code availability. All software packages used for the analyses are publicly available as follows:</p>
+<p>PAUP <a href="http://phylosolutions.com/paup-test/">http://phylosolutions.com/paup-test/</a>, SplitsTree <a href="https://software-ab.informatik.uni-tuebingen.de/download/splitstree4/welcome.html">https://software-ab.informatik.uni-tuebingen.de/download/splitstree4/welcome.html</a></p>
+<p>MacClade <a href="http://www.macclade.org/download.html">http://www.macclade.org/download.html</a></p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc1.zip">Data S1. Complete character data set from Dembo_et_al_2016_JHE related to step 1, in Tree-based MP analysis</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc2.zip">Data S2. MPMAX 74 apomorphous characters related to step 6, in Intermediate MP analysis</a></p>
+<p><a id="mmc3" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1507-Mmc3.zip">Data S3. MMPT trees related to step 11, in Reticulate PN analysis</a></p>
+<h3>Acknowledgments</h3>
+<p>We thank Mana Dembo and Arne Mooers for providing the workable Nexus file of the data set employed in the analyses of <a href="#bib8">Caparros and Prat (2021)</a>, the findings of which are used as examples in the text. We thank Josephine Herbelin/atelier Nous Travaillons Ensemble for her help in the graphic design of Figure 22. We express our thanks to professor Pascal Tassy from the Muséum national d'Histoire naturelle for his teaching and numerous published works on cladistics which inspired our research in human Phylogenetic Systematics. We would also like to express our appreciation to the editor of iScience Dr. Alessio Bolognesi for his guidance during the review process of <a href="#bib8">Caparros and Prat (2021)</a>. We thank Dr. Shawnna Buttery and her colleagues of STAR Protocols for guiding us through the editing and publishing process, and the three anonymous reviewers of the present paper for their comments, queries, and very helpful suggestions. S.P. is partly supported by <a href="https://doi.org/10.13039/501100001665">Agence Nationale de la Recherche</a> (France) ANR-17-CE27-0005. One of us (MC) would like to pay homage and express his thanks to the late professors Pierre Rosenstiehl and Gérard Worms who taught him the intricacies of operations research and graph theory during his years as undergraduate at HEC.</p>
+<h3>Author contributions</h3>
+<p>M.C. designed the protocol, conducted all analyses, and wrote the manuscript. M.C. and S.P. conceived the study, interpreted the results, and wrote the manuscript of <a href="#bib8">Caparros and Prat (2021)</a>, which is used as an example.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

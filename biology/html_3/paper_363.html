@@ -1,0 +1,1468 @@
+<article>
+<section>
+<h1 id="header">Extensible combinatorial CRISPR screening in mammalian cells</h1>
+<p><time datetime="2021-01-15">Published: January 15, 2021</time></p>
+<p>Peng Zhou,<sup><a href="#aff1">1</a></sup> Yuk Kei Wan,<sup><a href="#aff1">1</a></sup> Becky K.C. Chan,<sup><a href="#aff1">1</a></sup> Gigi C.G. Choi,<sup><a href="#aff1">1</a></sup> and Alan S.L. Wong<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Laboratory of Combinatorial Genetics and Synthetic Biology, School of Biomedical Sciences, The University of Hong Kong, Pokfulam, Hong Kong SAR, China</p>
+<p id="aff2"><sup>2</sup>Department of Electrical and Electronic Engineering, The University of Hong Kong, Pokfulam, Hong Kong SAR, China</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:aslw@hku.hk">aslw@hku.hk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100255">10.1016/j.xpro.2020.100255</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The CRISPR-Cas system coupled with Combinatorial Genetics <i>En Masse</i> (CombiGEM) enables systematic analysis of high-order genetic perturbations that are important for understanding biological processes and discovering therapeutic target combinations. Here, we present detailed steps and technical considerations for building multiplexed guide RNA libraries and carrying out a combinatorial CRISPR screen in mammalian cells. We also present an analytical pipeline, CombiPIPE, for mapping two- and three-way genetic interactions.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib14">Zhou et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Engineered promoter and scaffold sequences for multiplexed guide RNA expression</li>
+<li>Extensible assembly and screening of barcoded multiplexed guide RNA libraries</li>
+<li>CombiPIPE established for analyzing CombiGEM-CRISPR screen results</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Overview</h3>
+<p>The CombiGEM-CRISPR v2.0 toolkit has storage vectors harboring hH1/hU6/mU6 with modified ends and other engineered parts including wild-type/v1/v2 sgRNA scaffold sequences. These part variants are used to reduce sequence similarity among multiple sgRNA expression units to minimize vector recombination. The parts are designed in a way that only one set of barcoded sgRNA oligo pairs is required to generate different sgRNA expression units carrying different promoters and scaffold variants. Here, the protocol starts with how sgRNA are designed and annealed oligos are mixed in a pool for a ligation of the one-way sgRNA storage libraries. Then, we set out the steps for the successive one-pot insertion of each one-way sgRNA expression library into the destination vectors to give a higher-order combinations of sgRNAs. Lastly, we describe how the library is delivered to mammalian cells for multiplexed CRISPR screens, and the subsequent steps for sample preparation for barcode sequencing and data analysis using CombiPIPE.</p>
+<h3 id="sec1.2">Design sgRNA spacer-containing oligos for library construction</h3>
+<p>Multiple sgRNA design tools have been developed (<a href="#bib5">Chuai et al., 2017</a>). Here we use the GPP sgRNA Designer (<a href="#bib6">Doench et al., 2016</a>; <a href="#bib9">Sanson et al., 2018</a>) as an example to illustrate sgRNA selection.</p>
+<ol>
+<li>Submit job for designing sgRNAs for the genes of interest following the instructions on the web site: <a href="https://portals.broadinstitute.org/gpp/public/analysis-tools/sgrna-design">https://portals.broadinstitute.org/gpp/public/analysis-tools/sgrna-design</a>.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The parameter “Pick Quota” could be left unchecked while we recommend checking the box “Report Unpicked Sequences?” for further selection of sgRNAs based on the criteria listed in step 2.</div>
+<ol start="2">
+<li>When the job is completed, two result files are generated. “sgRNA Picking Results” lists out all candidate sgRNAs designed by the software, where “sgRNA Picking Summary” lists out the selected sgRNAs according to the “Pick Quota.” For CombiGEM-CRISPR v2.0 experiments, we recommend further selection of sgRNAs from the lists based on the following criteria:
+<ol type="a">
+<li>With on-target efficacy score &gt; 0.6 based on Azimuth 2.0.</li>
+<li>Exclude sgRNAs that are lying too close to target sites of other selected ones (Spacing Violation).</li>
+<li>Exclude sgRNAs containing restriction digestion sites for the plasmid library construction (e.g., BamHI, EcoRI, BglII, MfeI, and BpiI used in this cloning scheme).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We observed that the on-target efficacy score largely predicts the efficiency of sgRNAs in OVCAR8-ADR cells ( <a href="#bib14">Zhou et al., 2020</a>). A score of &gt; 0.6 is a good start. Based on the above criteria, lists of pre-selected sgRNAs for all human and mouse coding genes are included in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Mmc1.xlsx">Tables S1</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Mmc2.xlsx">S2</a>. Using wild-type SpCas9, sgRNAs with off-target ranks &lt; 100 can be selected. When a high-fidelity SpCas9 variant (such as Opti-SpCas9 ( <a href="#bib4">Choi et al., 2019</a>)) that is compatible with sgRNAs containing a starting 5′ guanine preferred for transcription initiation under U6 promoter is employed, sgRNAs with higher on-target scores could be selected despite they may have higher off-target ranks. sgRNAs with multiple perfect or near-perfect target sites can also be identified using GuideScan (<a href="#bib7">Perez et al., 2017</a>; <a href="#bib8">Perez et al., 2019</a>) and discarded. sgRNAs can be further selected based on whether they target the sites locating within 5%–65% of the protein-coding sequence or functional domains of the protein-coding sequence (<a href="#bib11">Shi et al., 2015</a>), and the predictions to generate high percentage of frameshift mutations (<a href="#bib2">Allen et al., 2018</a>; <a href="#bib10">Shen et al., 2018</a>). The information relating to criteria b. and “sites locating within 5%–65% of the protein-coding sequence” can be found in column “Picking Notes” of the sgRNA-designs table (output of GPP sgRNA Designer).</div>
+<ol start="3">
+<li>Assign 8-nucleotide (nt) randomized barcode sequences for each sgRNA.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> We recommend the GC content of the barcodes to be around 50% and allow at least 2-nt differences to differentiate true identities of sgRNAs from PCR or sequencing errors. A list of compatible barcodes that was used in our previous study (<a href="#bib14">Zhou et al., 2020</a>) is included in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Mmc3.xlsx">Table S3</a>.</div>
+<ol start="4">
+<li>Design oligo sequences for synthesis (oligos synthesized in this study are DSL-purified). The forward oligo sequence is 5′-CACCG-N(20)- GTTTGGGTCTTCGAGAAGACCTATTC-N(8)-C-3′; the reverse oligo sequence is 5′-AATTG-N(8)- GAATAGGTCTTCTCGAAGACCCAAAC-N(20)-C-3′, where N(20) represents the sgRNA spacer and N(8) is barcode sequence. The linker between sgRNA and barcode contains two BpiI digestion sites (<a href="#fig1">Figure 1</a> ).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Workflow for constructing barcoded single sgRNA storage vector libraries</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>New England Biolabs</td>
+<td>Cat#M0202T</td>
+</tr>
+<tr>
+<td>T4 DNA ligase reaction buffer</td>
+<td>New England Biolabs</td>
+<td>Cat#B0202S</td>
+</tr>
+<tr>
+<td>T4 polynucleotide kinase (T4 PNK)</td>
+<td>New England Biolabs</td>
+<td>Cat#M0201S</td>
+</tr>
+<tr>
+<td>FastDigest BpiI (BbsI)</td>
+<td>Thermo Scientific</td>
+<td>Cat#FD1014</td>
+</tr>
+<tr>
+<td>FastDigest MunI (MfeI)</td>
+<td>Thermo Scientific</td>
+<td>Cat#FD0753</td>
+</tr>
+<tr>
+<td>FastDigest green buffer</td>
+<td>Thermo Scientific</td>
+<td>Cat#B72</td>
+</tr>
+<tr>
+<td>FastDigest BglII</td>
+<td>Thermo Scientific</td>
+<td>Cat#FD0083</td>
+</tr>
+<tr>
+<td>FastDigest BamHI</td>
+<td>Thermo Scientific</td>
+<td>Cat#FD0054</td>
+</tr>
+<tr>
+<td>FastDigest EcoRI</td>
+<td>Thermo Scientific</td>
+<td>Cat#FD0274</td>
+</tr>
+<tr>
+<td>SYBR Safe DNA Gel Stain</td>
+<td>Invitrogen</td>
+<td>Cat#S33102</td>
+</tr>
+<tr>
+<td>UltraPure H<sub>2</sub> O</td>
+<td>Invitrogen</td>
+<td>Cat#10977015</td>
+</tr>
+<tr>
+<td>DMEM</td>
+<td>Gibco</td>
+<td>Cat#10569010</td>
+</tr>
+<tr>
+<td>Fetal bovine serum (FBS)</td>
+<td>Gibco</td>
+<td>Cat#10270106</td>
+</tr>
+<tr>
+<td>Antibiotic-antimycotic (100×)</td>
+<td>Gibco</td>
+<td>Cat#15240062</td>
+</tr>
+<tr>
+<td>Opti-MEM</td>
+<td>Gibco</td>
+<td>Cat#31985062</td>
+</tr>
+<tr>
+<td>FuGene HD transfection reagent</td>
+<td>Promega</td>
+<td>Cat#E2312</td>
+</tr>
+<tr>
+<td colspan="3">Bacterial strains</td>
+</tr>
+<tr>
+<td>XL10-Gold ultracompetent cells</td>
+<td>Agilent</td>
+<td>Cat#200317</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity PCR Master Mix</td>
+<td>New England Biolabs</td>
+<td>Cat#M0531S</td>
+</tr>
+<tr>
+<td>Quant-iT PicoGreen dsDNA Assay kit</td>
+<td>Life Technologies</td>
+<td>Cat#P11496</td>
+</tr>
+<tr>
+<td>Kapa HiFi Hotstart Ready-mix</td>
+<td>Kapa Biosystems</td>
+<td>Cat#KK2602</td>
+</tr>
+<tr>
+<td>5× KAPA HiFi Fidelity w/ Mg <sup>2+</sup> buffer</td>
+<td>Kapa Biosystems</td>
+<td>Cat#KB2500</td>
+</tr>
+<tr>
+<td>Agencourt AMPure XP beads</td>
+<td>Beckman Coulter</td>
+<td>Cat#A63881</td>
+</tr>
+<tr>
+<td>Kapa SYBR Fast qPCR Master Mix</td>
+<td>Kapa Biosystems</td>
+<td>Cat#KK4600</td>
+</tr>
+<tr>
+<td>NEBNext Library Quant Kit for Illumina</td>
+<td>New England Biolabs</td>
+<td>Cat#E7630S</td>
+</tr>
+<tr>
+<td>QIAGEN DNeasy Blood and Tissue kit</td>
+<td>QIAGEN</td>
+<td>Cat#69506</td>
+</tr>
+<tr>
+<td>QIAGEN Plasmid Midi kit</td>
+<td>QIAGEN</td>
+<td>Cat#12945</td>
+</tr>
+<tr>
+<td>QIAGEN Plasmid Maxi kit</td>
+<td>QIAGEN</td>
+<td>Cat#12162</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>WT sgRNA scaffold F: 5′-GTTTTAGAGCTAGAAATAGCAAGTTAAAA TAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGG TGCTTTTTTGGATCCGCAACGGA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>WT sgRNA scaffold R: 5′-GAATTCCGTTGCGGATCCAAAAAAGCAC CGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTA TTTTAACTTGCTATTTCTAGCTCTA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>v1 sgRNA scaffold F: 5′-GTTTTAGAGGATGAAAATCCAAGTTAAAA TAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGG TGCTTTTTTGGATCCGCAACGGA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>v1 sgRNA scaffold R: 5′-GAATTCCGTTGCGGATCCAAAAAAGCAC CGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTA TTTTAACTTGGATTTTCATCCTCTA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>v2 sgRNA scaffold F: 5′-GTTTTAGAGCGAGAAATCGCAAGTTAAAA TAAGGCTAGTCCGTATTCAACTTGAAAAAGTGGCACCGAGTCGG TGCTTTTTTGGATCCGCAACGGA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>v2 sgRNA scaffold R: 5′-GAATTCCGTTGCGGATCCAAAAAAGCACC GACTCGGTGCCACTTTTTCAAGTTGAATACGGACTAGCCTTATTTTA ACTTGCGATTTCTCGCTCTA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SA157: 5′-GGATCCGCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SA158: 5′-GGTTGCGTCAGCAAACACAG-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SA159: 5′-CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTT CAGACGTGTGCTCTTCCGATCTGGTTGCGTCAGCAAACACAG-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA160: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTTCCAGGCATGGATCCG CAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA161: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTATGCAGCTACGGATCC GCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA162: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTGATCAATGTTCGGATCC GCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA163: 5′-AATGATACGGCGACCACCGAGATCTACA CTCTTTCCCTACACGACGCTCTTCCGATCTCGATCTGGCGAAGG ATCCGCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA164: 5′-AATGATACGGCGACCACCGAGATCTACA CTCTTTCCCTACACGACGCTCTTCCGATCTTCGTTCCTGGGATCC GCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA165: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTATCAGAACATGGATCC GCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA166: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTGATGCGATTGCGGATC CGCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primer SA167: 5′-AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCTCGATTTTGAGGTGGATC CGCAACGGAATTC-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SA60: 5′-AATGATACGGCGACCACCGA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SA61: 5′-CAAGCAGAAGACGGCATACGA-3′</td>
+<td>This study</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pAWp28</td>
+<td>Addgene</td>
+<td>#73850</td>
+</tr>
+<tr>
+<td>pAWp92</td>
+<td>Addgene</td>
+<td>#157975</td>
+</tr>
+<tr>
+<td>pAWp100</td>
+<td>Addgene</td>
+<td>#157977</td>
+</tr>
+<tr>
+<td>pAWp12</td>
+<td>Addgene</td>
+<td>#72732</td>
+</tr>
+<tr>
+<td>pCMV-VSV-G</td>
+<td>Addgene</td>
+<td>#8454</td>
+</tr>
+<tr>
+<td>pCMV-dR8.2 dvpr</td>
+<td>Addgene</td>
+<td>#8455</td>
+</tr>
+<tr>
+<td>pAWp30</td>
+<td>Addgene</td>
+<td>#73857</td>
+</tr>
+<tr>
+<td>pAWp63-clone32 (Opti-SpCas9)</td>
+<td>Addgene</td>
+<td>#131736</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>MatLab R2018b</td>
+<td>MathWorks</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CombiPIPE</td>
+<td>This study</td>
+<td><a href="https://github.com/AWHKU/CombiPIPE">https://github.com/AWHKU/CombiPIPE</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>0.45 μm filter</td>
+<td>Pall</td>
+<td>Cat#4614</td>
+</tr>
+<tr>
+<td>Amicon Ultra-15 centrifugal filter unit</td>
+<td>Millipore</td>
+<td>Cat#UFC910096</td>
+</tr>
+<tr>
+<td>BD LSR Fortessa flow cytometer</td>
+<td>BD Biosciences</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>BD Influx cell sorter</td>
+<td>BD Biosciences</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>1.5 mL DNA LoBind tubes</td>
+<td>Eppendorf</td>
+<td>Cat#022431021</td>
+</tr>
+<tr>
+<td>DynaMag- spin magnet</td>
+<td>Invitrogen</td>
+<td>Cat#12320D</td>
+</tr>
+<tr>
+<td>Agilent 2100 bioanalyzer</td>
+<td>Agilent</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Construction of barcoded single sgRNA storage vector libraries</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 weeks</div>
+<p>This section describes the stepwise insertion of annealed barcoded sgRNA spacer-containing oligos and WT/v1/v2 sgRNA scaffold variants into storage vectors that contain engineered hH1/hU6/mU6 promoters to drive the expression of individual sgRNAs (<a href="#fig1">Figure 1</a>).</p>
+<ol>
+<li>Anneal the oligo pairs.
+<ol type="a">
+<li>Reconstitute each oligo to 25 μM with UltraPure H<sub>2</sub>O.</li>
+<li>Anneal the forward and reverse oligo pairs individually by the following recipe:
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward oligo 1 (25 μM)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Reverse oligo 1 (25 μM)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10× Ligase buffer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>T4 polynucleotide kinase (PNK)</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+Incubate the mixture at 37°C for 30 min for T4 PNK to phosphorylate the 5′ -hydroxyl terminus of each oligo, then anneal the oligo pair by denaturing at 98°C for 5 min and ramping down to 25°C at a rate of 1°C/s with a thermocycler.</li>
+<li>Pool 1 μL of each annealed product, then dilute 5 μL of the mixture by 50-fold with UltraPure H <sub>2</sub>O for the following ligation reaction in step 3. Store the rest of the annealed products at −20°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In (<a href="#bib14">Zhou et al., 2020</a>), 159 pairs of sgRNA spacer-containing oligos were annealed to give a pairwise sgRNA library which consists 25,281 combinations (159 X 159 sgRNAs). In building the three-way library, 32,768 combinations (32 X 32 X 32 sgRNAs) were built from 32 pairs of sgRNA spacer-containing oligos. The oligos can be synthesized and delivered in a 96- or 384-well microplate format, and multi-channel pipettes can be used to increase the handling throughput without robotic assistance. Alternatively, a customized size of pooled oligos can be synthesized on a chip for cloning into the storage vectors.</div>
+<ol start="2">
+<li>Digest storage vectors, pAWp28 (Addgene: #73850), pAWp92 (Addgene: #157975), and pAWp100 (Addgene: #157977) by BpiI and MfeI.
+<ol type="a">
+<li>Prepare the following reaction for each storage vector:
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage vector (1 μg)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>10× FastDigest Green Buffer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>BpiI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>MfeI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>13</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 37°C for 15 min.</li>
+<li>Separate the digestion products by electrophoresis using 1% agarose gel stained with SYBR Safe DNA Gel Stain.
+<div class="note">
+<span class="note-title">Note:</span> The sizes of the digested fragments from pAWp28 are 4,231 bp, 113 bp, and 42 bp; from pAWp92 are 4,207 bp, 113 bp, and 36 bp; and from pAWp100 are 4,296 bp, 113 bp, and 26 bp.</div>
+</li>
+<li>Extract the &gt; 4 kb vector fragments by gel extraction kit, and elute the products in 20 μL UltraPure H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Ligate the annealed sgRNA spacer-containing oligos into the storage vectors.
+<ol type="a">
+<li>Prepare the following reaction:
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vector fragment (50 ng) (from step 2)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>50-fold diluted annealed product mixture (from step 1)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10× Ligase buffer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>1</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>3</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 16°C for 16–18 h, then store the products at 4°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The 3′ end of the promoter sequences of hH1 and mU6 were modified to give the same compatible sticky ends such that the same annealed pool of gRNA oligos (from step 1) can be ligated to the three different vector fragments (from step 2) independently.</div>
+<ol start="4">
+<li>Transform the ligation products into Agilent X10-Gold Ultracompetent cells following manufacturer’s instruction.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> After the recovery step of the transformation, we recommend taking small diluted portions of the total volume to spread on a LB-ampicillin agar plate, inoculate the rest into LB-ampicillin medium, and grow both the plate and liquid culture at 32°C for 16–20 h.</div>
+<ol start="5">
+<li>Quantify and sequence-verify the transformants.
+<ol type="a">
+<li>Count the colony number on the plate, then the transformants in liquid culture could be estimated by multiplying the colony number by the proportion, e.g., number of colonies on agar plate × dilution factor = number of transformants.</li>
+<li>Extract plasmid DNA from the liquid culture by plasmid purification kit such as QIAGEN Plasmid Midi or Maxi kit.</li>
+<li>Pick multiple colonies on the plate to be verified by Sanger sequencing.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> We recommend generating transformants with at least 80-fold representation of the library size. Repeat ligation until sufficient fold representation is reached. Combine the plasmids from different batches by the molar ratio of 1:1 to achieve higher library coverage without introducing bias.</div>
+<ol start="6">
+<li>Prepare vector fragments of single sgRNA spacer-containing storage vector libraries.
+<ol type="a">
+<li>Digest each of the single sgRNA spacer-containing storage vector libraries generated in step 5 by BpiI:
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single sgRNA storage vector (1 μg)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10× FastDigest Green Buffer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>BpiI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>15.5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 37°C for 15 min.</li>
+<li>Separate the digested products by electrophoresis using 1% agarose gel with SYBR Safe DNA Gel Stain.</li>
+<li>Extract the &gt; 4 kb vector fragments from gel slice by gel extraction kit, and elute in 20 μL UltraPure H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Ligate the linearized single sgRNA spacer-containing storage vector libraries with annealed oligos containing the wild-type/v1/v2 sgRNA scaffold sequences.
+<ol type="a">
+<li>Anneal oligos WT sgRNA scaffold F + WT sgRNA scaffold R, v1 sgRNA scaffold F + v1 sgRNA scaffold R, and v2 sgRNA scaffold F + v2 sgRNA scaffold R to prepare the wild-type, v1, and v2 sgRNA scaffold sequence inserts, respectively. The reaction is performed as described in step 1.</li>
+<li>Prepare the following ligation reaction:
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vector fragment (50 ng) (from step 6)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>50-fold diluted annealed products (from (a))</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10× Ligase buffer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>1</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>3</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 16°C for 16–18 h, then store the products at 4°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In the current design of CombiGEM-CRISPR v2.0, the annealed products harboring wild-type, v1, and v2 sgRNA scaffold sequence inserts are ligated to the digested vectors containing hH1, hU6, and mU6, respectively.</div>
+<ol start="8">
+<li>Transform the products into Agilent X10-Gold Ultracompetent cells as in step 4.</li>
+<li>Quantify and sequence-verify the transformants as in step 5. Similarly, we recommend the total number of transformants collected to be at least 80-fold representation of the library size.</li>
+</ol>
+<h3 id="sec2.2">Assembly of barcoded multiplexed sgRNA libraries</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 weeks</div>
+<p>This section provides detailed procedures to build the two- and three-way sgRNA libraries. Steps 10–14 describes the generation of the one-way lentiviral vector-based sgRNA-expressing library; step 15 describes the assembly of the two-way sgRNA library; and step 16 describes the assembly of the three-way sgRNA library ( <a href="#fig2">Figure 2</a> ). The multiplexed sgRNA expression cassettes are built with combinations of sgRNA scaffold variants and promoters, including human H1, human U6, and mouse U6, that have been reported to efficiently express sgRNAs in mammalian cells (<a href="#bib1">Adamson et al., 2016</a>). In (<a href="#bib14">Zhou et al., 2020</a>), these promoter and scaffold variants were tested to give similar gene knockout efficiency, suggesting that there was no promoter usage bias and that similar amounts of sgRNAs were generated to evenly knock out individual genes.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Workflow for assembling barcoded multiplexed sgRNA libraries</div>
+</figcaption>
+</figure>
+<ol start="10">
+<li>Prepare the insert fragments from the single sgRNA storage vector libraries.
+<ol type="a">
+<li>Digest each of the single sgRNA storage vector libraries (from step 9) by BglII and MfeI.
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sgRNA storage vector library (1 μg)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10× FastDigest Green Buffer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>BglII</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>MfeI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>15</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 37°C for 15 min.</li>
+<li>Separate the fragments by electrophoresis using 1% agarose gel with SYBR Safe DNA Gel Stain.</li>
+<li>Extract the ∼400 bp fragments (see the Note below) from gel slice by gel extraction kit, then elute in 20 μL UltraPure H <sub>2</sub>O and measure DNA concentration by NanoDrop spectrometer.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The insert fragment harboring H1 promoter and wildtype sgRNA scaffold together with the sgRNA library (stored in pAWp92) has a size of 365 bp; the insert fragment harboring U6 promoter and v1 sgRNA scaffold together with the sgRNA library (stored in pAWp28) has a size of 389 bp; and the insert fragment harboring mU6 promoter and v2 sgRNA scaffold together with the sgRNA library (stored in pAWp100) has a size of 454 bp.</div>
+<ol start="11">
+<li>Prepare the lentiviral vector.
+<ol type="a">
+<li>Digest the destination lentiviral backbone, pAWp12 (Addgene: #72732), by BamHI and EcoRI.
+<table id="undtbl7">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pAWp12 (1 μg)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10× FastDigest Green Buffer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>BamHI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>EcoRI</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>15</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 37°C for 15 min.</li>
+<li>Separate the fragments electrophoresis using 1% agarose gel with SYBR Safe DNA Gel Stain.</li>
+<li>Extract the 9.3 kb vector fragments from gel slice by gel extraction kit, then elute in 20 μL UltraPure H<sub>2</sub>O and measure DNA concentration by NanoDrop spectrometer.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Ligate the single sgRNA expression cassette into lentiviral vector to assemble the one-way lentiviral vector-based sgRNA-expressing library
+<ol type="a">
+<li>Prepare the following ligation reaction:
+<table id="undtbl8">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digested pAWp12 (50 ng) (from step 11)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Insert fragment stored in pAWp92 (5 ng) (from step 10)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10× Ligase buffer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>1</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>3</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 16°C for 16–18 h, then store the products at 4°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Transform the products into Agilent XL10-Gold Ultracompetent cells as in step 4.</li>
+<li>Collect sufficient number of transformants and sequence-verify them as in step 5.</li>
+<li>To build the two-way sgRNA library, repeat steps 11–14 with two adjustments: (i) using the insert fragment stored in pAWp28 instead of pAWp92 in step 10; (ii) using the one-way lentiviral vector-based sgRNA-expressing library (from step 14) instead of pAWp12 in step 11.</li>
+<li>To build the three-way sgRNA library, repeat steps 11–14 with two adjustments: (i) using the insert fragment stored in pAWp100 instead of pAWp92 in step 10; (ii) using the two-way lentiviral vector-based sgRNA-expressing library (from step 15) instead of pAWp12 in step 11.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Again, we recommend generating transformants with at least 80-fold representation of the library size for each of the above libraries. Repeat ligation until sufficient fold representation is reached.</div>
+<div class="note">
+<span class="note-title">Note:</span> In addition to sequence-verify the transformants, restriction digestion reactions could also be used to check for expected band sizes excised from the correctly assembled one-, two-, and three- way plasmid library pools. The expected band sizes after digestion by BglII and EcoRI are ∼9.3 kb plus ∼400 bp (for the one-way library), ∼1 kb (for the two-way library), or ∼1.5 kb (for the three-way library). With the every additional step in the cloning process, it is anticipated that some of the library members may be depleted. While the library coverage of the three-way sgRNA pool was 99.8% as revealed by sequencing, comparison of sgRNA composition between the three-way sgRNA plasmid library products (harboring 32,768 total sgRNA combinations described in (<a href="#bib14">Zhou et al., 2020</a>)) and their corresponding parental two-way sgRNA plasmid library products revealed that three-way combinations of which their parental two-way constructs had lower abundance in the pool could be more prone to depletion ( <a href="#fig3">Figure 3</a>). Overall, only a small number of library members are depleted or lost in the process.</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Comparison of sgRNA composition between the pools of three-way sgRNA plasmid library products and their parent two-way sgRNA library products</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Other orderings of promoters and sgRNA scaffold variants are possible while those configurations should be tested for efficiency before the assembly of combinatorial sgRNA libraries.</div>
+<h3 id="sec2.3">Delivery of multiplexed sgRNA library for screening in mammalian cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 weeks (varies among the screening phenotypes)</div>
+<p>This section outlines the steps for preparing lentiviral particles to transduce the mammalian cells of interest with the sgRNA library.</p>
+<ol start="17">
+<li>Produce lentiviral particles for delivering the sgRNA library into mammalian cells that stably express <i>Streptococcus pyogenes</i> Cas9 (SpCas9).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For packaging the multiplexed sgRNA library assembled in pAWp12, 2<sup>nd</sup> generation packaging plasmids (i.e., pCMV-dR8.2 dvpr [Addgene: #8455] and pCMV-VSV-G [Addgene: #8454]) can be used. 3<sup>rd</sup> generation packaging plasmids can also be used. A detailed protocol for lentivirus production was described in (<a href="#bib3">Brown et al., 2020</a>). The lentiviral-based plasmids that express wild-type SpCas9 (Addgene: #73857) and high-fidelity SpCas9 such as Opti-SpCas9 (Addgene: #131736) could be used for generating the stable SpCas9-expressing cell line.</div>
+<ol start="18">
+<li>Estimate the titer of the lentiviral particles.
+<ol type="a">
+<li>Seed mammalian cells onto a 24-well cell culture plate at a confluence of 30% in 0.34 mL complete culture medium.</li>
+<li>Add a serial volume of viral medium (e.g., 10, 40, 80, and 160 μL) into each well, and top up the total volume of each well to 0.5 mL by complete culture medium. Leave one well without virus as negative control.</li>
+<li>Replace medium of each transduced well after 24 h.</li>
+<li>Incubate the cells for another 4–5 days.</li>
+<li>Determine the GFP-positive cell population under each condition by flow cytometry.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The amount of viral medium needed for efficiently infecting the cells of interest varies among different cell types, and it has to be empirically determined if prior information is not available. For some difficult-to-infect cell types, the viral medium can be concentrated using a filtration unit such as the Amicon Centrifugal filter. The green fluorescent protein (GFP) expressed from the lentiviral vector pAWp12 serves as a transduction marker. The virus amount for approximately 30% transduction, which infers a multiplicity of infection (MOI) of 0.3–0.5, could be estimated from the data plot.</div>
+<ol start="19">
+<li>Transduce mammalian cells with the lentiviral particles.
+<ol type="a">
+<li>Seed the required number of cells at a confluence of 30% in complete culture medium.</li>
+<li>Add viruses to transduce cells at a MOI of 0.3–0.5. The virus volume needed can be determined from step 18 and scaled up proportionally based on the number of cells needed for the screening.</li>
+<li>Change medium of transduced cells after 24 h.</li>
+<li>Maintain the cells for another 4–5 days with confluence lower than 80%.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The number of cells being transduced should reach at least 300-fold representation of the library size. A higher fold representation (e.g., 3,000-fold) is recommended if cells are not limited.</div>
+<ol start="20">
+<li>Perform cell sorting by flow cytometry to enrich infected cells with GFP signal.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The actual transduction rate can be determined at this point.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The number of cells being sorted into the GFP-positive gate should reach at least 100-fold representation of the library size. Again, a higher fold representation (e.g., 1,000-fold) is recommended if cells are not limited. It is recommended to take at least 100-fold representation of the sorted cells for genomic DNA extraction as the initial sample of cell library. We recommend collecting the initial cell library sample as early as possible, to minimize any gene knockout effect that could be introduced to the library distribution.</div>
+<ol start="21">
+<li>Screen the cell library based on the phenotypes of interest. For example, to identify the combinatorial effects of double- or triple-gene knockout on cell proliferation, the cell library can be propagated for a certain period. Collect genomic DNA from the cells at different time points. Compare the change in the barcode abundance between the later time points and the initial time point to reveal combinations with enrichment or depletion.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> During the propagation of the cell pool, cell confluency should not exceed 80%. If cell passaging is needed during the course of an assay, cell number of no less than 100-fold representation of the library size should be passaged to the new culture dish. Again, a higher fold representation (e.g., 1,000-fold) is recommended. If multiple culture dishes are used, cells from all dishes after trypsinization should be combined and mixed before taking sufficient cells to new dishes.</div>
+<h3 id="sec2.4">Sample preparation for barcode sequencing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This section describes the steps to extract barcodes from the plasmid and infected cell libraries for high-throughput sequencing.</p>
+<ol start="22">
+<li>Extract genomic DNA from cells using the QIAGEN DNasey Blood and Tissue Kit, following the manufacturer’s instructions. Measure the DNA concentration by NanoDrop spectrometer.</li>
+</ol>
+<ol start="23">
+<li>PCR amplification of the barcode region from genomic DNA and plasmid DNA library samples.
+<ol type="a">
+<li>Prepare the following PCR reaction for genomic DNA template.
+<table id="undtbl9">
+<thead>
+<tr>
+<th>Reagent per one PCR reaction tube</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genomic DNA (800 ng)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>SA157 (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>SA158 (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>KAPA HiFi RM (2×)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>19.5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Prepare the following PCR reaction for plasmid DNA template.
+<table id="undtbl10">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plasmid library (0.5 ng)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SA157 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>SA158 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>KAPA HiFi RM (2×)</td>
+<td>6.25</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>4.85</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>12.5 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Run the PCR according to the following cycling conditions.
+<table id="undtbl11">
+<thead>
+<tr>
+<th colspan="4">PCR Cycling Conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">18 cycles (for genomic DNA) 14 cycles (for plasmid)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>20 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>16°C</td>
+<td colspan="2"> </td>
+</tr>
+</tbody>
+</table>
+The expected band sizes should be 298 bp for two-way library and 312 bp for three-way library.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The optimal PCR cycle number was determined by qPCR to ensure the amplification lies in the exponential phase (<a href="#bib12">Wong et al., 2015</a>; <a href="#bib13">Wong et al., 2016</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> We do not recommend exceeding 800 ng of genomic DNA per 50 μL reaction; therefore, to cover the library by at least 100-fold representation, one needs to calculate how many PCR reactions are required. For example, one copy of the normal human genome is estimated to weigh 6.5 × 10<sup>−12</sup> g. Given a library size of 30,000 combinations, the genomic DNA input for 100-fold representation would be approximately 1.95 × 10<sup>4</sup> ng, which requires 25 reactions. 0.5 ng of the plasmid DNA library is estimated to contain approximately 3 × 10 <sup>7</sup> copies of library elements; therefore, one reaction is enough.</div>
+<ol start="24">
+<li>For genomic DNA samples, select and purify the PCR products of expected size using AMPure XP beads (0.95–0.5×) following the manufacturer’s instruction.
+<ol type="a">
+<li>Combine all PCR products for each sample and mix by low-speed vortexing.</li>
+<li>Take 200 μL of the PCR products to mix with 100 μL (0.5×) of resuspended AMPure XP beads in a 1.5-mL tube.</li>
+<li>Incubate the mixture at 20°C–25°C for 5 min, then put the tube onto a magnetic stand, such as DynaMag- Spin Magnet (Invitrogen).</li>
+<li>Transfer the 300 μL of supernatant into a new 1.5-mL LoBind tube and mix with 90 μL (0.95×) of resuspended AMPure XP beads.</li>
+<li>Incubate the mixture at 20°C–25°C for 5 min, then put the tube onto a magnetic stand.</li>
+<li>Remove the supernatant carefully by pipetting and wash beads with 500 μL of freshly prepared 85% ethanol once.</li>
+<li>Aspirate the supernatant and allow the beads to air-dry for 1–2 min.</li>
+<li>Elute the products in 41 μL UltraPure H<sub>2</sub>O.</li>
+<li>Transfer the supernatant to a clean PCR tube.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Sufficient amount of PCR product should be applied for purification. We use 200 μL of PCR product for each purification and size selection in one reaction tube.</div>
+<ol start="25">
+<li>To generate next-generation sequencing-compatible and indexed libraries for sequencing, incorporate adapters and indexes to amplicons during library amplification.
+<ol type="a">
+<li>Prepare the following PCR reaction for genomic DNA amplicons (from step 24).
+<table id="undtbl12">
+<thead>
+<tr>
+<th>Reagent per reaction</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purified genomic DNA amplicons</td>
+<td>10</td>
+</tr>
+<tr>
+<td>SA159 (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>Index primer (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>KAPA HiFi RM (2×)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>13.5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Prepare the following PCR reaction for plasmid DNA amplicons (from step 23).
+<table id="undtbl13">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unpurified plasmid amplicons</td>
+<td>5</td>
+</tr>
+<tr>
+<td>SA159 (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>Index primer (20 μM)</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>KAPA HiFi RM (2×)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>18.5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Run the PCR according to the following cycling conditions.
+<table id="undtbl14">
+<thead>
+<tr>
+<th colspan="4">PCR Cycling Conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">8 – 10 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>20 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>16°C</td>
+<td colspan="2"> </td>
+</tr>
+</tbody>
+</table>
+The expected band sizes should be 423 bp for two-way library and 437 bp for three-way library (1–4 bp variation in length of the products according to the index primer used).</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> To minimize any bias introduced by the PCR, the cycle number should be maintained as low as possible.</div>
+<ol start="26">
+<li>Purify the PCR products from plasmid and cell libraries (from step 25) by AMPure XP beads (0.95–0.5×) as described in step 25 and with reaction volumes scaled down accordingly. Elute the products in 11 μL of UltraPure H<sub>2</sub>O.</li>
+</ol>
+<ol start="27">
+<li>Quantification of the resultant barcode-containing libraries (from step 26) by qPCR (NEB kit and SYBR Green PCR Mix).
+<ol type="a">
+<li>Prepare serial dilutions using 1 μL of the libraries (e.g., from 1,000- to 20,000-fold) using UltraPure H<sub>2</sub>O. One of the serial dilutions should fall within the dynamic range of the DNA standards.</li>
+<li>Prepare the following PCR reaction for library samples.
+<table id="undtbl15">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diluted library</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SA60 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>SA61 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>2× SYBR premix</td>
+<td>5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Prepare the following PCR reaction for standards.
+<table id="undtbl16">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEB standard</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>SA60 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>SA61 (20 μM)</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>2× SYBR premix</td>
+<td>5</td>
+</tr>
+<tr>
+<td>UltraPure H <sub>2</sub> O</td>
+<td>4.1</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Run the reactions on qPCR machine to obtain C<sub>T</sub> values, and calculate the molar concentration accordingly.</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>Pool the indexed libraries at equal molar ratio to a final concentration of 20 nM in approximately 20 μL, and run 1 μL of purified products on the Bioanalyzer. Check peak distribution.</li>
+<li>Run the sample using Illumina HiSeq.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To help with sequencing low-complexity libraries, 10%–30% Phi-X can be spiked in. Alternatively, staggered primer design (i.e., with stagger regions of different lengths in the index primers) can be introduced to maintain sequence diversity. Other high-throughput sequencing platforms such as NovaSeq could be used and the adaptor sequences may need to be modified accordingly. The architecture of the sequencing the barcodes for a pairwise sgRNA library and reads using HiSeq and NovaSeq is shown in <a href="#fig4">Figure 4</a> as an example.</div>
+<h3 id="sec2.5">Sequencing data analysis using CombiPIPE</h3>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Architecture of sequencing libraries</div>
+</figcaption>
+</figure>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable (typically up to 40 min for an 8 Gb fastq file, depending on the computer used for the analysis, size of the library, and sequencing depth; ∼1 min for the test dataset provided on GitHub)</div>
+<p>This section describes a step-by-step walkthrough of CombiPIPE, an analysis pipeline containing the steps for processing raw sequencing data generated from the CombiGEM-CRISPR v2.0 platform and outputting files with the following information for each combination calculated: counts per million reads (CPM), log <sub>2</sub> fold change (log<sub>2</sub>FC), -log p-value (-log<sub>10</sub>PV), genetic interaction (GI), Dunnett test adjusted p-value (<a href="#fig5">Figure 5</a> ). The CombiPIPE pipeline can be accessed at <a href="https://github.com/awhku/combipipe">https://github.com/awhku/combipipe</a>. The pipeline is written in nextflow, and running the pipeline requires nextflow installation (<a href="https://nf-co.re/usage/installation">https://nf-co.re/usage/installation</a>). In addition, CombiPIPE depends on python3 and requires the python packages regex ( <a href="https://pypi.org/project/regex/">https://pypi.org/project/regex/</a>), scipy (<a href="https://pypi.org/project/scipy/">https://pypi.org/project/scipy/</a>), and numpy (<a href="https://pypi.org/project/numpy/">https://pypi.org/project/numpy/</a>), and the R package DescTools (<a href="https://www.rdocumentation.org/packages/DescTools/versions/0.99.37">https://www.rdocumentation.org/packages/DescTools/versions/0.99.37</a>) to be installed to run CombiPIPE successfully:</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Workflow of CombiPIPE</div>
+</figcaption>
+</figure>
+<ul>
+<li>The bin directory contains the scripts in python and R for each process in CombiPIPE:
+<ul>
+<li>process1_sortSamples.py sorts the FASTQ entries to their according samples.</li>
+<li>process2_newBCanalyzer.py maps the FASTQ entries in each sample to the barcodes representing the gene targets.</li>
+<li>process3_calcFCPV.py calculates log<sub>2</sub>FC and -log<sub>10</sub>PV for each combination and filters out combinations with repeated gRNAs.</li>
+<li>process4_calcGI.py calculates the GI value by comparing the expected log <sub>2</sub>FC, the sum of the corresponding single gene knockouts, and the observed log<sub>2</sub>FC.</li>
+<li>process5_DunnettTest.R takes in the Dunnett test inputs and performs Dunnett tests on combinations included in FCPV.py.</li>
+<li>process6_mergeDunnetts.py merges the Dunnett test adjusted p-values from process 5.</li>
+</ul>
+</li>
+<li>The nextflow.config file contains all arguments used when running CombiPIPE.
+<ul>
+<li>--fastq: path to the FASTQ raw sequence file generated using the CombiGEM-CRISPR v2.0 platform.</li>
+<li>--sampleinfo: a CSV file with three columns without headers:</li>
+</ul>
+</li>
+</ul>
+<table id="undtbl17">
+<thead></thead>
+<tbody>
+<tr>
+<td>Sample Sequence Tag</td>
+<td>Sample Name</td>
+<td>Sample Condition</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li style="list-style-type: none;">
+<ul>
+<li>--barcodes: a CSV file with three columns without headers:</li>
+</ul>
+</li>
+</ol>
+<table id="undtbl18">
+<thead></thead>
+<tbody>
+<tr>
+<td>Barcode</td>
+<td>Number Tag</td>
+<td>gRNA target</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li style="list-style-type: none;">
+<ul>
+<li>--pattern: the first 7 letters in the first line of each FASTQ entry.</li>
+<li>--dimension: the combination dimension.</li>
+<li>--linker: the linker sequence connecting the barcodes.</li>
+<li>--dummysgs: the number tags for the dummy sgRNA controls (default: 1,2).</li>
+</ul>
+</li>
+<li>The CombiGEM.nf file is the nextflow pipeline that connects the processes in CombiPIPE.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> For demonstration of the pipeline and testing purposes, a minimal test dataset was generated from the three-way gene knockout screen described in (<a href="#bib14">Zhou et al., 2020</a>) and can be found under the test-dataset directory. This directory contains a compressed fastq file and the corresponding sample information file (sampleInfo.csv) and barcode information file (barcode_list.csv) required for sorting samples in the library and mapping the raw sequence data to the barcodes representing the gene targets.</div>
+<ol start="30">
+<li>Clone or download the pipeline in your project directory using the link reported on GitHub:
+<ul>
+<li style="list-style-type: none;">$ git clone <a href="https://github.com/AWHKU/CombiPIPE.git">https://github.com/AWHKU/CombiPIPE.git</a>
+</li>
+</ul>
+</li>
+<li>Get into the CombiPIPE directory:
+<ul>
+<li style="list-style-type: none;">$ cd CombiPIPE</li>
+</ul>
+</li>
+<li>Uncompress the fastq file in the test-dataset directory:
+<ul>
+<li style="list-style-type: none;">$ gunzip test-dataset/OVARIAN_testdataset.fastq.gz</li>
+</ul>
+</li>
+<li>Run the pipeline with nextflow:
+<ul>
+<li style="list-style-type: none;">$ nextflow CombiGEM.nf --fastq test-dataset/OVARIAN_testdataset.fastq --sampinfo test-dataset/sampleInfo.csv --barcodes test-dataset/barcode_list.csv --pattern @D00691 --dimensions 3 --linker CAATTC --dummysgs 1,2</li>
+</ul>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>When CombiPIPE finishes running without errors, the following files should be generated ( <a href="#fig6">Figure 6</a> ):</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/363-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Sample output after CombiPIPE analysis</div>
+</figcaption>
+</figure>
+<ul>
+<li style="list-style-type: none;">├ outputs_sortSamples
+<ul>
+<li style="list-style-type: none;">└ &lt;sample_sequence_tag&gt;_&lt;sample_name&gt;.fastq</li>
+</ul>
+</li>
+<li style="list-style-type: none;">├ outputs_newBCanalyzer
+<ul>
+<li style="list-style-type: none;">└ sample_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;.csv</li>
+<li style="list-style-type: none;">└ sample_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;_report.csv</li>
+<li style="list-style-type: none;">└ BCcount_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;.csv</li>
+</ul>
+</li>
+<li style="list-style-type: none;">├ outputs_FCPV
+<ul>
+<li style="list-style-type: none;">└ FCPV.csv</li>
+</ul>
+</li>
+<li style="list-style-type: none;">├ outputs_pairwiseGI
+<ul>
+<li style="list-style-type: none;">└ genelevelGI.csv</li>
+<li style="list-style-type: none;">└ &lt;combination_name&gt;_Dunnettin.csv</li>
+</ul>
+</li>
+<li style="list-style-type: none;">├ outputs_DunnettTest
+<ul>
+<li style="list-style-type: none;">└ Dunnett&lt;combination_name&gt;_Dunnettin.csv</li>
+</ul>
+</li>
+<li style="list-style-type: none;">├ outputs_mergedDunnettTests</li>
+<li style="list-style-type: none;">└ genlevelGIdunnettPV.csv</li>
+<li>outputs_sortSamples: this directory contains the FASTQ files from samples indicated in the sample information CSV file.</li>
+<li>outputs_newBCanalyzer: this directory contains the following files:
+<ul>
+<li>The sample_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;.csv files contain the barcodes of the successfully mapped entries.</li>
+<li>The sample_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;_report.csv files contain the counts for the total, successfully mapped, discarded reads</li>
+<li>The BCcount_&lt;sample_name&gt;.fastq_&lt;sample_sequence_tag&gt;.csv files contain the counts and CPM for each of the barcode combinations.</li>
+</ul>
+</li>
+<li>outputs_FCPV: this directory contains the FCPV.csv file, which contains the observed log<sub>2</sub>FCs and -log<sub>10</sub>PVs.</li>
+<li>outputs_pairwiseGI: this directory contains the following files:
+<ul>
+<li>The genelevelGI.csv file contains the expected log<sub>2</sub>FCs, observed log <sub>2</sub>FCs, GI values for all combinations in FCPV.csv.</li>
+<li>The &lt;combination_name&gt;_Dunnettin.csv file(s) as Dunnett test inputs.</li>
+</ul>
+</li>
+<li>outputs_DunnettTest: this directory contains all output files generated from running Dunnett test on each combination.</li>
+<li>outputs_mergedDunnettTests: this directory contains the genlevelGIdunnettPV.csv file, which contains expected log<sub>2</sub>FCs, observed log<sub>2</sub>FCs, GI values, and Dunnett test adjusted p-values for all combinations in FCPV.csv.</li>
+</ul>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Each read produced from the CombiGEM-CRISPR v2.0 platform is ordered from barcode <sub>n</sub> to barcode<sub>1</sub> due to how the combinatorial sgRNA library is assembled. Barcodes are mapped to each FASTQ entry with a maximum hamming distance of 1. Based on our experience, we observed an average of about 95.8% (ranged from 84.9% to 99.6%) of mappable barcodes as assessed by NGS. Counts of each barcode combination are normalized to CPM (counts per million reads). Log <sub>2</sub>FC (fold change) and -log<sub>10</sub>PV (p-value) are calculated based on pre- and post-treatment sample replicates. GI (genetic interaction) value is calculated by <i>observed log</i> <sub>2</sub> <i>FC - expected log</i> <sub>2</sub> <i>FC</i>, which is the sum of the corresponding single gene knockouts. The Dunnett test is performed on combinations without repeated sgRNAs by comparing the highest order of combinatorial knockout population to its respective lower order of combinatorial and/or single knockout populations.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol is suitable for two- and three-way combinatorial sgRNA libraries. We do not recommend one to generate even higher-order combinations based on the reagents provided due to the possibility of homologues recombination of the vectors. However, if more sequence-diversified PoI III promoters and sgRNA scaffold variants could be employed, higher-order combinations are achievable according to this protocol. The packaging capacity of the lentiviral vector is also a limitation for one to consider when extending the combinatorial libraries with long DNA elements.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Transformation has efficiency lower than expected.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Transformation efficiency could vary among batches of competent cells. Avoid freeze-and-thaw cycles of competent cells to maintain their competence. Other chemically competent or electrocompetent cells can also be used for transformation.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Sanger sequencing of colonies from the pool of transformants identifies original vector plasmid sequence with no insert.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>The restriction digestion reactions have to be performed at their optimal buffered conditions to ensure complete digestion of the destination vectors, since any residual undigested vectors could result in its amplification after transformation. Our experience with the above listed restriction enzymes can result in very efficient digestions.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Insufficient PCR products after library sample preparation for barcode sequencing.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Add minimal number of PCR cycles in step 25.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The restriction enzymes used in the library construction by the CombiGEM-CRISPR v2.0 approach are not compatible with other destination vectors required for your specific cell systems because they carry those restriction sites.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Other enzyme pairs that give compatible ends for ligation can be used for CombiGEM-CRISPR v2.0. It is best to choose enzymes that can cut efficiently in a single buffer for a double digestion. We do not recommend doing sequential digestion that has a lower recovery rate of digested vectors/inserts, since it is harder to maintain the representation of library members during the cloning process.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Adamson, B., Norman, T.M., Jost, M., Cho, M.Y., Nunez, J.K., Chen, Y., Villalta, J.E., Gilbert, L.A., Horlbeck, M.A., Hein, M.Y., et al. (2016). A multiplexed single-cell CRISPR screening platform enables systematic dissection of the unfolded protein response. Cell <i>167</i>, 1867-1882.e21.</p>
+<p id="bib2">Allen, F., Crepaldi, L., Alsinet, C., Strong, A.J., Kleshchevnikov, V., De Angeli, P., Palenikova, P., Khodak, A., Kiselev, V., Kosicki, M., et al. (2018). Predicting the mutations generated by repair of Cas9-induced double-strand breaks. Nat Biotechnol. <a href="https://doi.org/10.1038/nbt.4317">https://doi.org/10.1038/nbt.4317</a></p>
+<p id="bib3">Brown, L.Y., Dong, W., and Kantor, B. (2020). An improved protocol for the production of lentiviral vectors. STAR Protoc. <i>1</i>, 100152.</p>
+<p id="bib4">Choi, G.C.G., Zhou, P., Yuen, C.T.L., Chan, B.K.C., Xu, F., Bao, S., Chu, H.Y., Thean, D., Tan, K., Wong, K.H., et al. (2019). Combinatorial mutagenesis en masse optimizes the genome editing activities of SpCas9. Nat. Methods <i>16</i>, 722-730.</p>
+<p id="bib5">Chuai, G.H., Wang, Q.L., and Liu, Q. (2017). In silico meets in vivo: towards computational CRISPR-based sgRNA design. Trends Biotechnol. <i>35</i>, 12-21.</p>
+<p id="bib6">Doench, J.G., Fusi, N., Sullender, M., Hegde, M., Vaimberg, E.W., Donovan, K.F., Smith, I., Tothova, Z., Wilen, C., Orchard, R., et al. (2016). Optimized sgRNA design to maximize activity and minimize off-target effects of CRISPR-Cas9. Nat. Biotechnol. <i>34</i>, 184-191.</p>
+<p id="bib7">Perez, A.R., Pritykin, Y., Vidigal, J.A., Chhangawala, S., Zamparo, L., Leslie, C.S., and Ventura, A. (2017). GuideScan software for improved single and paired CRISPR guide RNA design. Nat. Biotechnol. <i>35</i>, 347-349.</p>
+<p id="bib8">Perez, A.R., Sala, L., Perez, R.K., and Vidigal, J.A. (2019). Correction of off-targeting in CRISPR screens uncovers genetic dependencies in melanoma cells. bioRxiv 809970.</p>
+<p id="bib9">Sanson, K.R., Hanna, R.E., Hegde, M., Donovan, K.F., Strand, C., Sullender, M.E., Vaimberg, E.W., Goodale, A., Root, D.E., Piccioni, F., et al. (2018). Optimized libraries for CRISPR-Cas9 genetic screens with multiple modalities. Nat. Commun. <i>9</i>, 5416.</p>
+<p id="bib10">Shen, M.W., Arbab, M., Hsu, J.Y., Worstell, D., Culbertson, S.J., Krabbe, O., Cassa, C.A., Liu, D.R., Gifford, D.K., and Sherwood, R.I. (2018). Predictable and precise template-free CRISPR editing of pathogenic variants. Nature <i>563</i>, 646-651.</p>
+<p id="bib11">Shi, J., Wang, E., Milazzo, J.P., Wang, Z., Kinney, J.B., and Vakoc, C.R. (2015). Discovery of cancer drug targets by CRISPR-Cas9 screening of protein domains. Nat. Biotechnol. <i>33</i>, 661-667.</p>
+<p id="bib12">Wong, A.S., Choi, G.C., Cheng, A.A., Purcell, O., and Lu, T.K. (2015). Massively parallel high-order combinatorial genetics in human cells. Nat. Biotechnol. <i>33</i>, 952-961.</p>
+<p id="bib13">Wong, A.S., Choi, G.C., Cui, C.H., Pregernig, G., Milani, P., Adam, M., Perli, S.D., Kazer, S.W., Gaillard, A., Hermann, M., et al. (2016). Multiplexed barcoded CRISPR-Cas9 screening enabled by CombiGEM. Proc. Natl. Acad. Sci. U S A <i>113</i>, 2544-2549.</p>
+<p id="bib14">Zhou, P., Chan, B.K.C., Wan, Y.K., Yuen, C.T.L., Choi, G.C.G., Li, X., Tong, C.S.W., Zhong, S.S.W., Sun, J., Bao, Y., et al. (2020). A three-way combinatorial CRISPR screen for analyzing interactions among druggable targets. Cell Rep. <i>32</i>, 108020.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Alan S.L. Wong (<a href="mailto:aslw@hku.hk">aslw@hku.hk</a>).</p>
+<h4>Materials availability</h4>
+<p>Plasmids described have been deposited to Addgene.</p>
+<h4>Data and code availability</h4>
+<p>The pipeline and codes for analyzing CombiGEM-CRISPR v2.0 data are available on <a href="https://github.com/AWHKU/CombiPIPE">https://github.com/AWHKU/CombiPIPE</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank members of the Wong lab for helpful discussions. This work was supported by the <a href="https://doi.org/10.13039/501100002920">Hong Kong Research Grants Council</a> ( ECS-27105716, GRF-17102218, and TRS-T12-710/16-R ), <a href="https://doi.org/10.13039/501100003452">Innovation and Technology Commission</a> (ITS/133/18 ), and <a href="https://doi.org/10.13039/501100005407">Food and Health Bureau</a> ( HMRF-04151416) (to A.S.L.W.).</p>
+<h3>Author Contributions</h3>
+<p>P.Z., Y.K.W., B.K.C.C., G.C.G.C., and A.S.L.W. wrote the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors have filed patent applications based on this system.</p>
+</section>
+</article>

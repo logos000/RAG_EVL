@@ -1,0 +1,1043 @@
+<article>
+<section>
+<h1 id="header">An antigen microarray protocol for COVID-19 serological analysis</h1>
+<p><time datetime="2021-09-17">Published: September 17, 2021</time></p>
+<p>Joseph Longworth<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> and Gunnar Dittmar<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Luxembourg Institute of Health, RPPA Platform, 1A-B, rue Thomas Edison, 1445 Strassen, Luxembourg</p>
+<p id="aff2"><sup>2</sup>Proteomics of Cellular Signaling, Luxembourg of Health, 1A, Rue Thomas Edison, 1445 Strassen, Luxembourg</p>
+<p id="aff3"><sup>3</sup>Department of Life Sciences and Medicine, University of Luxembourg, 4367 Belvaux, Luxembourg</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:joseph.longworth@lih.lu">joseph.longworth@lih.lu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:gunnar.dittmar@lih.lu">gunnar.dittmar@lih.lu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100815">10.1016/j.xpro.2021.100815</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The emergence of the coronavirus disease 2019 pandemic increased the interest in analysis of immunoglobulin responses. ELISA and lateral flow assays are widely used but are restricted by a single response value to an antigen or antigen pool. Here, we describe antigen microarrays, an alternative allowing simultaneous assessment of multiple interactions between antigens and the immunoglobulin content of patient sera. The technique requires minimal reagents and sample input and can be adapted to a wide variety of potential antigenic targets of interest.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Quantification of COVID-19 immunoglobulin response</li>
+<li>High-throughput analysis of patient cohorts</li>
+<li>Multiplexed analysis for IgG, IgA, and IgM</li>
+<li>R shiny data analysis software with web-based interface</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the steps for the production and analysis of antigen microarrays (<a href="#bib1">de Assis et al., 2021</a>; <a href="#bib9">Okba et al., 2019</a>; <a href="#bib10">Reusken et al., 2013</a>). This includes printing of arrays, staining, measuring and finally analyzing the recorded data.</p>
+<p>First, the microarrays are printed in a 64-array format on a nitrocellulose backed microscope slide using noncontact printing on a Nanoplotter 2.1. Each array consisting of 64 spots representing a panel of 20 SARS-CoV-2 antigens (<a href="#key-resources-table">key resources table</a>, <a href="#fig2">Figure 2</a>). Each antigen being spotted three times on the array at three dilution points. The selected proteins are the envelope protein, nucleocapsid protein and the spike protein. The spike protein (S) is included in its intact form and its fragments: S1, S2, N-terminal domain (NTD) and receptor-binding domain (RBD). Four S1 proteins from the other human coronaviruses 229E, NL63, HKU1 and OC43 (<a href="#bib3">Burrell et al., 2017</a>) were included on the array as well as the RBD of SARS-CoV-1.</p>
+<p>To measure the response to Covid-19 variants, several recombinant protein fragments of the S protein containing mutations of B1.1.7 (Alpha variant)(S, S1 and RBD) and B.1.351 (Beta variant) (S, RBD and NTD) were included as antigen targets.</p>
+<p>The described 20 antigens used within this study were selected as of interest and commercially available at time of production. The same procedure is however widely applicable and alternative antigens in relation to SARS-CoV-2 such as the membrane protein, Papain-like Protease or Nonstructural proteins 1, 7, 8, 10 and 16 could be included. Beyond SARS-CoV-2 research, antigen panels could include targets from other viruses, bacteria or suspected allogenic antigens.</p>
+<p>Second, we describe the procedure for assessing a panel of 48 serum samples per slide with inclusion of controls and the detection of IgG, IgM and IgA binding. This is followed by a protocol for scanning the signals on an InnoScan 710 IR. Finally, a bioinformatics Web application toolkit written in R-based Shiny is provided and described for processing of antigen microarrays, fitting both antigen dilution series and multiple gain scans to a unified response intensity.</p>
+<p>The positive and negative patient pools were created from serum collected in the Predi-COVID cohort with ethical approval (CNER 2022009/01).</p>
+<h3 id="sec1.1">Prepare buffers and reagents</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.5–4 h</div>
+<ol>
+<li>If needed, prepare buffers following the recipes in the “<a href="#materials-and-equipment">materials and equipment</a>”. Make sure that there is enough of all needed solutions, apart from those indicated as “prepare fresh on the day”.</li>
+<li>Prepare 50 μL aliquots of the antigens and store at −80°C until ready for use (up 12 months). Here we describe the preparation of the purchased recombinant protein fragments stocks.
+<ol type="a">
+<li>Reconstitute lyophilized proteins a final concentration of 0.25 μg/μL using ddH<sub>2</sub>O.</li>
+<li>Incubate on a rocker for 30 min until fully dissolved.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Antigens, which are not fully dissolved, will disturb the printing process.</div>
+<ol start="3">
+<li>Prepare 50 μL aliquots of immunoglobulin (IgG, IgM and IgA) controls and store at −80°C until ready for use (up to 12 months).
+<ol type="a">
+<li>Reconstitute Immunoglobulin G, M and A to a final concentration of 0.75 mg/mL in a 50:50 mix of ddH<sub>2</sub>O: glycerol.</li>
+<li>Aliquot immunoglobulin solutions into 50 μL and store at −80°C until ready for use.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The inclusion of three immunoglobulins as well as a mixed pool as controls at the corner of each array both aids in assessment of secondary staining but also aids in image recognition during quantification of the arrays.</div>
+<div class="note">
+<span class="note-title">Note:</span> The protocol below describes the use of 20 specific antigens of interest to the research of Covid-19. If a different list of target antigens is to be investigated, optimization of the printing concentration may be necessary.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Goat Anti-Human Serum IgA Alexa Fluor 790, working concentration: 0.75mg/mL</td>
+<td>Jackson ImmunoResearch Laboratories</td>
+<td>Cat#109-655-011; RRID:AB_2889014</td>
+</tr>
+<tr>
+<td>Goat Anti-Human Serum IgG Alexa Fluor 790, working concentration: 0.75mg/mL</td>
+<td>Jackson ImmunoResearch Laboratories</td>
+<td>Cat#109-655-190; RRID:AB_2889015</td>
+</tr>
+<tr>
+<td>Goat Anti-Human Serum IgM Alexa Fluor 790, working concentration: 0.75mg/mL</td>
+<td>Jackson ImmunoResearch Laboratories</td>
+<td>Cat#109-655-129; RRID:AB_2337908</td>
+</tr>
+<tr>
+<td>Anti-SARS-CoV-2 RBD Potent Neutralizing Antibody, Human IgG1 (AM18), working concentration: 0.75mg/mL</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPD-M180</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S protein RBD, His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPD-C52H3</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S1 protein NTD, His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#S1D-C52H6</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 Envelope protein, GST,His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#ENN-C5128</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 Nucleocapsid protein, His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#NUN-C5227</td>
+</tr>
+<tr>
+<td>SARS S protein RBD, His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPD-S52H6</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 Spike S1(D614G)-His Recombinant Protein, HPLC-verified</td>
+<td>Sino Biological</td>
+<td>Cat#40591-V08H3</td>
+</tr>
+<tr>
+<td>Human coronavirus HKU1 (isolate N1) (HCoV-HKU1) Spike/S1 Protein (S1 Subunit, His Tag)</td>
+<td>Sino Biological</td>
+<td>Cat#40021-V08H</td>
+</tr>
+<tr>
+<td>Human coronavirus (HCoV-229E) Spike/S1 Protein (S1 Subunit, His Tag)</td>
+<td>Sino Biological</td>
+<td>Cat#40601-V08H</td>
+</tr>
+<tr>
+<td>Human coronavirus (HCoV-NL63) Spike/S1 Protein (S1 Subunit, His Tag)</td>
+<td>Sino Biological</td>
+<td>Cat#40600-V08H</td>
+</tr>
+<tr>
+<td>Human coronavirus (HCoV-OC43) Spike S1 Protein (His Tag)</td>
+<td>Sino Biological</td>
+<td>Cat#40607-V08H1</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S1 protein (HV69-70del, N501Y, D614G), His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#S1N-C52Hk</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S protein RBD (N501Y), His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPD-C52Hn</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S protein (HV69-70del, Y144del, N501Y, A570D, D614G, P681H, T716I, S982A, D1118H), His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPN-C52H6</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S1 protein NTD (L18F, D80A, D215G, R246I), His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#S1D-C52H9</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S protein (L18F, D80A, D215G, R246I, K417N, E484K, N501Y, D614G, A701V), His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPN-C52Hc</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S protein RBD (K417N, E484K, N501Y), His Tag (MALS verified)</td>
+<td>ACROBiosystems</td>
+<td>Cat#SPD-C52Hp</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 Spike S1-His Recombinant Protein</td>
+<td>Sino Biological</td>
+<td>Cat#40591-V08B1</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 S2 protein, His Tag</td>
+<td>ACROBiosystems</td>
+<td>Cat#S2N-C52H5</td>
+</tr>
+<tr>
+<td>S1-CHO</td>
+<td>(<a href="#bib7">Johari et al., 2021</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tween™ 20</td>
+<td>Fisher Scientific</td>
+<td>Cat#BP337</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#10500-064</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Fisher Scientific</td>
+<td>Cat#BP229-1</td>
+</tr>
+<tr>
+<td>Dimethyl sulfoxide</td>
+<td>Fisher Scientific</td>
+<td>Cat#10213810</td>
+</tr>
+<tr>
+<td>TBS, Tris Buffered Saline, 10× Solution, pH 7.4</td>
+<td>Fisher Scientific</td>
+<td>Cat#BP24711</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R</td>
+<td>R Project</td>
+<td>RRID:SCR_001905 version #4.0.3</td>
+</tr>
+<tr>
+<td>Mapix</td>
+<td>Innopsys</td>
+<td>RRID:SCR_002723 version #9.0.0</td>
+</tr>
+<tr>
+<td>NP2.1 S/N:2181</td>
+<td>GeSiM</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Code and example datasets</td>
+<td>This study</td>
+<td><a href="https://github.com/JosephLongworth/AntigenMicroarray">https://github.com/JosephLongworth/AntigenMicroarray</a></td>
+</tr>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Positive patient pool</td>
+<td>Predi-COVID study.(<a href="#bib5">Fagherazzi et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Negative patient pool</td>
+<td>Predi-COVID study.(<a href="#bib5">Fagherazzi et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>384 Square well plate</td>
+<td>Greiner</td>
+<td>Cat#781201</td>
+</tr>
+<tr>
+<td>Aluminium StarSeal (PCR)</td>
+<td>STARLAB</td>
+<td>Cat#E2796-9792</td>
+</tr>
+<tr>
+<td>Nano-Plotter<sup>TM</sup> 2.1</td>
+<td>GeSiM</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Chiller</td>
+<td>GeSiM</td>
+<td>Cat#Ministat125</td>
+</tr>
+<tr>
+<td>Humidifier</td>
+<td>GeSiM</td>
+<td>Cat#AirwinC11</td>
+</tr>
+<tr>
+<td>ONCYTE® SuperNOVA 64 Pads</td>
+<td>Grace Bio-Labs</td>
+<td>Cat#705064</td>
+</tr>
+<tr>
+<td>Normal Human Serum Control</td>
+<td>Fisher Scientific</td>
+<td>Cat#10406144</td>
+</tr>
+<tr>
+<td>384 Well Deep Well Plate</td>
+<td>Corning</td>
+<td>Cat#3342</td>
+</tr>
+<tr>
+<td>quadriPERM® 4 - slide plate</td>
+<td>SARSTEDT</td>
+<td>Cat#94.6077.307</td>
+</tr>
+<tr>
+<td>ProPlate® multi-well chambers 64 well slide</td>
+<td>Grace Bio-Labs</td>
+<td>Cat#248865</td>
+</tr>
+<tr>
+<td>ProPlate® Multi-Array Slide System</td>
+<td>Grace Bio-Labs</td>
+<td>Cat#249865</td>
+</tr>
+<tr>
+<td>InnoScan 710 Microarray Scanner</td>
+<td>Innopsys</td>
+<td>Cat#InnoScan 710-IR</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>2× Print Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Glycerol</td>
+<td>40%</td>
+<td>200 mL</td>
+</tr>
+<tr>
+<td>DMSO</td>
+<td>2M</td>
+<td>71 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>229 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 4°C (maximum 3 months).</p>
+<table id="undtbl2">
+<caption>TBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× TBS</td>
+<td>1×</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 19°C–22°C (maximum 3 months).</p>
+<table id="undtbl3">
+<caption>TBS-T</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× TBS</td>
+<td>1</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>0.1%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>449.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 19°C–22°C (maximum 3 months).</p>
+<table id="undtbl4">
+<caption>TBS-T 10%FBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TBS-T</td>
+<td>n/a</td>
+<td>45 mL</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>10%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare fresh on the day of the experiment.</p>
+<table id="undtbl5">
+<caption>Print Buffer 10% FBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× Print Buffer</td>
+<td>1×</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>20 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare fresh on the day of the experiment.</p>
+<table id="undtbl6">
+<caption>TBS-T 10%FBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× Print Buffer</td>
+<td>n/a</td>
+<td>45 mL</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>10%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare fresh on the day of the experiment.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Microarray printing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 h</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol describes the use of an antigen microarray incorporating 64 microarray slides printed with microarrays of 8 by 8 spots (<a href="#fig1">Figure 1</a>). Alternative formats can be used such as 24, or 16 and 8 microarray slides allowing for the increase in targets included on each microarray though requiring the reduction of samples assessed per microarray slide. The provided bioinformatic application can be adjusted to facilitate the design of such arrays.</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Example of a 64 array with 8 × 8 matrix</div>
+</figcaption>
+</figure>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol describes the utilization of a GeSim Nanoplotter 2.1 for the production of microarrays. Other contactless and contact printers are available and can be utilized as an alternative following the operation instructions of the Nanoplotter available.</div>
+<p>In this step, the user will prepare the antigen microarrays. This includes setting up the GeSim Nanoplotter, running a ‘warm-up’ test print and preparing of a ‘Print Plate’ with the antigens of interest.</p>
+<ol>
+<li>Set up the GeSim Nanoplotter 2.1. for printing.
+<ol type="a">
+<li>Preparing the GeSim Nanoplotter 2.1 for printing.
+<ol type="i">
+<li>Turn on the nanoplotter.</li>
+<li>Turn on the chiller to cool the printing surface to 17°C.</li>
+<li>Turn on the humidifier to 60% relative humidity.</li>
+<li>Wait for 1 h for the print environment to stabilize.</li>
+<li>Switch on the computer and launch the NP2.1 software.</li>
+<li>Under “System” select “Initialize Nano-Plotter” allowing it to run through its start-up processes.</li>
+<li>Whilst in “Interactive mode” under “Work Plate” select “Open Work Plate settings” and load a work plate file ∗.npw (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc1.zip">Data S1</a>) describing the physical layout of the nanoplotter with slides detailing 64 microarrays per slide with a 8 by 8 grid layout matching the dimensions of the 64 microarray ONCYTE® SuperNOVA.</li>
+</ol>
+</li>
+<li>Place glass slides in the nanoplotter for a ‘warm-up’ print run.
+<ol type="i">
+<li>Fill column A of a 384 square well plate with 1× Print Buffer to create a print plate.</li>
+<li>Place the prepared print plate on the nanoplotter and select as “usable” by right clicking the corresponding location in the GeSIM software.</li>
+<li>Place one (or more) blank glass slide onto the slide deck of the nanoplotter and select as “usable” by right clicking the corresponding location in the GeSIM software.</li>
+</ol>
+</li>
+<li>Run a ‘warm-up’ print run.
+<ol type="i">
+<li>Make sure the software is in “Run” mode.</li>
+<li>Under “Program” select “Run NPL-Application”.</li>
+<li>Select a “TransferSimMultiPlates_06A1” program with default parameters and the ‘Print Plan’ provided as <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc2.zip">Data S2</a> or prepared using the provided R-based Shiny Software provided.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A visual inspection of the printed slides can be done by eye to ensure correct printing by holding the slide to the light. Printed arrays should form an aligned grid of droplets without missing positions. If the piezoelectric tip has not been in use for some time, the tip is dirty or has degraded, then droplets may not emit from the piezoelectric tip reproducibly or may emit with an unacceptable diffraction. Such issues are commonly observed after a period of inactivity of a few day but are resolved after 2–3 blank print runs.</div>
+<ol start="2">
+<li>Prepare a ‘Print Plate’ from which microarrays will be printed (<a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Schematic of print plate layout along with corresponding array layout using the provided print plan and print design</div>
+<p>(A) Layout of the print plate. 20 antigens and their dilutions are placed in alternating positions as indicated by the different colors.</p>
+<p>(B) Arrangement of the antigens on the microarray. Antigen from the print plate has the same color in the microarray arrangement. The 20 antigens included can be seen in different colors, each represented by three spots. The different sizes are representing different dilutions. Layout of the array is randomized to prevent spatial effects. If a new print plan and print design was produced by the provided shiny-based application, the layout would be altered correspondingly.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Prepare a solution of 1× Print Buffer by diluting 10 mL of 2× Print Buffer with 10 mL ddH<sub>2</sub>O and add to a pipette basin.</li>
+<li>Using a 16-channel pipette dispense 50 μL of 1× Print Buffer to columns 3 to 6 of a 384 square well plate.
+<div class="note">
+<span class="note-title">Note:</span> These columns contain the diluted antigens and location is based on the print plan assuming a dilution shift of 32.</div>
+</li>
+<li>Dilute each antigen with 50 μL of 2× print buffer before transferring sequentially down column 1 and 7 of a 384 square well plate.</li>
+<li>Using a 16-channel pipette prepare a serial dilution of the antigen by aspirating 25 μL from column 1 and mix in column 3. Mix by pipetting 50% of the solution 5 times in the same tip avoiding foam creation.</li>
+<li>Repeat this procedure from column 2 to 4. Then using fresh tips from 3 to 5 and 4 to 6.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Add Immunoglobulin controls to the print plate.
+<ol type="a">
+<li>Dilute immunoglobulins G, M and A with 50 μL print buffer and add to wells A24, B24 and C24 respectively.</li>
+<li>Transfer 25 μL of immunoglobulins added to the print plate above and mix into well D24.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Once the print plate is prepared, it can be sealed using an adhesive Aluminium StarSeal attached to the top of the 384 square well plate and stored at −20°C for later use or after a print run for re-use in a subsequent print run.</div>
+<ol start="4">
+<li>Prepare ‘Print Plan’.
+<ol type="a">
+<li>To print the microarrays using a GeSim Nanoplotter a print plan must be created describing the arrangement of spots for the microarray printer to print. An example file is included in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc3.zip">Data S3</a>.</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Different arrangements of the antigens can be created using the R-based Shiny tool provided.</div>
+<ol start="5">
+<li>Load the nanoplotter.
+<ol type="a">
+<li>If the print plate was frozen before the print, place the plate on ice to thaw for 15 min on ice.</li>
+<li>Centrifuge the print plate at 100 x g for 5 min at room temperature (18°C–24°C).</li>
+<li>Remove the aluminium cover placing on the print plate of the Nanoplotter and selecting as “usable” in the GeSIM software.</li>
+<li>Place as many ONCYTE® SuperNOVA 64 pad slides as desired for the print run onto the Nanoplotter. Push each slide to the top right corner of the stops so each slide consistently aligns and select as “usable” in the GeSIM software.</li>
+<li>Run the nanoplotter.
+<ol type="i">
+<li>Whilst in “Run” mode under “Program” select “Run NPL-Application”.</li>
+<li>Select a “TransferSimMultiPlates_06A1” program with default parameters and the ‘Print Plan’ that was prepared above.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Removal of printed microarrays.
+<ol type="a">
+<li>Remove printed microarrays and store at 4°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Printed microarrays should be left for at least 12 h at 4°C until the spots are fully absorbed by the nitrocellulose surface.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The printed microarrays can be stored at 4°C for up to a month. Do not freeze!</div>
+<h3 id="sec3.2">Microarray staining</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<p>This section describes the preparation of the serum samples for the analysis. The antigen microarrays are blocked before incubation with the patient sera. Following the incubation step, the microarrays are washed. Finally, the bound antibodies are detected with a fluorescently labeled secondary antibody and read on a scanner.</p>
+<ol start="7">
+<li>Prepare a control mixture.
+<ol type="a">
+<li>Pool together a representative pool of positive patient sera for the cohort being investigated to create a positive pool control for the cohort. The positive control pool will serve as the positive reference. Create 100 μL positive control pool aliquots and store them at −20°C for up to one year or longer at −80°C.</li>
+<li>Pool together multiple negative patient sera to derive a negative pool control for the cohort. The negative control pool will serve as the negative reference. Create 100 μL negative control pool aliquots and store them at −20°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The experimenter has to ensure that the positive and the negative pool are representing valid controls for the experiments. In the presented example the positive sera pool was collected from patients who were tested positive in a Covid-19 PCR test. The negative pool was assembled at an early stage of the COVID-19 pandemic, where exposure to Covid-19 can be assumed to be low.</div>
+<p>The microarray contains additionally four other human Corona virae (HCoV). For these samples the negative pool will generate still signals as virus infections with HCoVs are common. For these samples a proper negative control would be the “no serum” control.</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> Reconstitute pre-2019 normalized human serum and dispense into 50 μL aliquots.</div>
+<ol start="8">
+<li>Prepare a sample plate of serum samples (<a href="#fig3">Figure 3</a>)
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Schema of the layout of a sample plate</div>
+<p>Designed to accommodate 96 serum samples and to be processed on two 64 array antigen microarrays.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> The antigen microarrays slides have 4 columns of 16 arrays allowing 64 sera assessments per slide. Reserving 16 arrays per slide for controls, a collection of 48 serum samples can be assessed per slide. <a href="#fig3">Figure 3</a> shows an example layout optimized for the transfer of half of a 96 well sample plate/box to form a sample plate.</div>
+<ol type="a">
+<li>Using a 16-channel pipette, add 190 μL of TBS-T with 10% FBS to the first 8 odd-numbered columns of a 384 Well Deep Well Plate (Corning, Cat#3342).</li>
+<li>Add 10 μL of the negative pool to wells of row M previously loaded with buffer mixing by pipetting up and down gently 5 times.</li>
+<li>Add 10 μL of the positive pool to wells of row N previously loaded with buffer mixing by pipetting up and down gently 5 times.</li>
+<li>Add 10 μL of normalized human serum to wells of row O previously loaded with buffer mixing by pipetting up and down gently 5 times.</li>
+<li>Add 10 μL of up to 96 serum sample to be assessed to rows A-L previously loaded with buffer mixing by pipetting up and down gently 5 times. If using samples stored in a 96 well/box format samples can be transferred using an 8 channel pipette rotated as shown in <a href="#fig3">Figure 3</a>.</li>
+<li>Add aluminum foil tape to the top of the plate to seal.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After preparation of the sample plate, the plate can be stored at −20°C for up to 3 months, allowing the processing on a subsequent day. If the sample plate is to be used on the same day it should be stored at 4°C to avoid freeze/thaw cycles.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>Block antigen microarrays
+<ol type="a">
+<li>To measure the different immunoglobulins (IgG, IgA, IgM) of the patient sera use three antigen microarrays per Immunoglobulin. Place each into a separate chamber of a quadriPERM® 4 - slide plate.</li>
+<li>Gently add 4.5 mL TBS-T and place on a gentle rocker for 30 min.</li>
+<li>Remove TBS-T buffer.</li>
+<li>Gently add 4.5 mL Print Buffer with 10% FBS and place on a gentle rocker for 30 min.</li>
+<li>Remove Print Buffer with 10% FBS buffer.</li>
+<li>Gently add 4.5 mL TBS-T with 10% FBS and place on a gentle rocker for 60 min.</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>Attach ProPlate (<a href="#fig4">Figure 4</a>)
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Image of the antigen microarray slide, ProPlate® multi-well chambers 64 well slide, spring clips and ProPlate® multi-array slide system</div>
+<p>Clipping the ProPlate on the Antigen microarray slide creates wells, which can be used for the incubation with different sera.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important that the slides are not drying out during the incubation. Use one slide at a time to ensure rapid processing (see <a href="#troubleshooting">troubleshooting</a> point number 5 for further details).</div>
+<ol type="a">
+<li>Remove the slide from the blocking plate and add a 64 well ProPlate on top of the slide aligning the nitrocellulose pads and the wells of the ProPlate. Keeping the Slide Tab to the upper right corner.</li>
+<li>Add the spring clips and ensure the wells are still well aligned with the slide pads.</li>
+<li>Place the slide with ProPlate frames into the ProPlate Tray maintaining the tab to the top right corner.</li>
+<li>Using a 16-channel pipette add 40 μL TBS-T with 10% FBS.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Serum incubation
+<div class="critical">
+<span class="critical-title">Critical:</span> Handling of serum must be carried out in appropriate safety conditions for primary human samples such as serum.</div>
+<ol type="a">
+<li>If the sample plate was frozen prior to use, place at 4°C until thawed.</li>
+<li>For each antigen microarray slide transfer 10 μL of sample from four columns of the sample plate prepared in step 8. Add aluminum foil tape to the top of each slide to seal.</li>
+<li>Incubate slides for 3 h on a rocker at room temperature with gentle agitation.</li>
+<li>Return the sample plate to the −20°C unless the second batch of three slides is being assessed concurrently.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Remove Serum
+<ol type="a">
+<li>Using the 16-channel pipette set to 100 μL, remove the majority of fluid from each well.</li>
+<li>Use the “pipette and mix” function to add 50 μL TBS-T to each well, cycling 25 μL 3 times to mix the well-contents.</li>
+<li>Repeat steps 14a and 14b for a total of 3 times to exchange the fluid.</li>
+<li>Using the 16-channel pipette set to 100 μL remove the majority of fluid from each well.</li>
+<li>Remove the ProPlate transferring the slide into a quadriPERM® 4 - slide plate.</li>
+<li>Gently add 4.5 mL TBS-T.</li>
+<li>Exchange the buffer in the plate for fresh TBS-T. Incubate for 3 min on the rocker with gentle agitation.</li>
+<li>Repeat the previous step for a second incubation.</li>
+<li>Exchange the buffer in the plate for fresh TBS-T 10% FBS.</li>
+</ol>
+</li>
+<li>Detection antibody staining
+<ol type="a">
+<li>Immediately prior to use prepare the detection antibody by adding 30 μL of the selected detection antibody (IgG, IgM, IgA) to 12 mL of TBS-T 10% FBS.</li>
+<li>Gently add 4 mL of the prepared detection antibody and place on a rocker with gentle agitation for 30 min at room temperature. Cover to protect from light.</li>
+<li>Remove antibody solution from the plate and gently add 4mL of TBS-T.</li>
+<li>Remove TBS-T from the plate and gently add 4mL TBS-T. Incubate on the rocker for 3 min.</li>
+<li>Remove TBS-T from the plate and gently add 4mL TBS.</li>
+<li>Remove TBS from the plate and gently add 4 mL TBS. Incubate on the rocker for 3 min.</li>
+<li>Remove slides from quadriPERM® 4 - slide plate placing into a 50 mL tube. Gently fill with ddH<sub>2</sub>O close and invert gently 5 times.</li>
+<li>Remove the slide from the 50 mL tube careful not to touch the microarrays and blow-dry with a gentle stream of nitrogen.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After drying, the slides may either be scanned immediately or stored in the dark at 4°C until ready to scan. Scanning up to 7 days later has a negligible effect on quantification.</div>
+<h3 id="sec3.3">Slide scanning</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>In this section the stained slides are scanned. Scanning is performed across several detection gains to cover a wide range of binding conditions. After scanning, the intensities are quantified through the image recognition software.</p>
+<ol start="14">
+<li>Prepare Scanner.
+<ol type="a">
+<li>Load the Mapix Software and switch on the InnoScan 710 Microarray Scanner.</li>
+<li>Connect the Mapix software to the scanner selecting “Scanner&gt;Connect”.</li>
+<li>Gently insert a validation slide into the instrument and select “Scanner&gt;Check Scanner” to validate the current performance of the scanner.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The Scanner takes some time to warm up to the working temperature. Running the validation slide 15 min before the first analysis slide is advantageous allowing the scanner’s temperature controls to normalize.</div>
+<ol start="15">
+<li>Prepare a batch method.
+<ol type="a">
+<li>Open the batch editor to begin sampling multiple gains. “Batch&gt;Batch editor”.</li>
+<li>Open an existing method (an appropriate ∗.mbt is provided in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc4.zip">Data S4</a>).</li>
+<li>Alternatively, a new batch method can be created.
+<div class="optional">
+<span class="optional-title">Optional:</span> Creation of a new batch method:</div>
+</li>
+<li>Select Add Scan Step.</li>
+<li>Under “Scan Parameters”.
+<ol type="i">
+<li>Select slide layout as “Nitrocellulose 1 Pad slide”.</li>
+<li>Click “Set scan area”.</li>
+<li>Select pixel size as “5.0”.</li>
+<li>Set Speed as “35”.</li>
+<li>Set Scan Mode as “Normal”.</li>
+<li>Set Detection as “Smooth”.</li>
+<li>Set Acquisition Mode to “785 only”.</li>
+<li>Set the Gain as 0.</li>
+<li>Set Laser power to “high”.</li>
+</ol>
+</li>
+<li>Under “Filename &amp; Directory”.
+<ol type="i">
+<li>Provide an appropriate filename for the scan.</li>
+<li>Provide a folder where the scan should be saved.</li>
+<li>Select “Export folder to all steps”.</li>
+</ol>
+</li>
+<li>Next to step 1 on the step list click to duplicate the step. This will duplicate the parameters so only the gain needs to be changed within each step. Gains of 0,1,5,10,20,25,50,75 and 100 were used to record the data provided here.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>Scan slides.
+<ol type="a">
+<li>Gently insert the analysis slide to be scanned into the scanner with a tab to the front right as orientated when loading the samples.</li>
+<li>A preview scan of the slide can be performed to visually assess the staining of the slides by selecting “Scanner&gt;Preview whole slide”.</li>
+<li>Run the batch method by opening and selecting “Start”.</li>
+<li>Upon completion of all steps of the batch scan method, the slide can be returned to the dark at 4°C for potential rescan. An example of a scanned array is provided in <a href="#fig5">Figure 5</a>.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Example slides of an antigen microarray scanned at a gain of 50</div>
+<p>Layout of serum on showing inclusion of 48 serum samples with controls NP (Negative Pool), PP (Positive Pool), NS (Normalized Serum), AB (RBD antibody) and B (Blank).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>Quantify Images.
+<ol type="a">
+<li>Open the batch editor of Mapix.
+<div class="note">
+<span class="note-title">Note:</span> The Scanner does not need to be on whilst processing analysis steps.</div>
+</li>
+<li>Click “Add Analysis Step”.</li>
+<li>Under “Quantification”.
+<ol type="i">
+<li>Select an appropriate GAL file. This can be obtained from the Nanoplotter. An appropriate file for the 64 array format used here is provided as <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc5.zip">Data S5</a>.</li>
+<li>Under “find all automatically” select “Grid + Block + Spots”.</li>
+<li>Under “Gridding” set max position offset (% pitch)” to 30 “Min. Diameter (% Dth)” to 50 and “Max. Diameter to (% Dth)” to 200.</li>
+<li>Under “Photometric calculations” set “S/B border width (pixels)” to 2 and “Background calculation” to “Locally” with “Background diameter (pitch)” set to 2.</li>
+<li>Under “Save results” select “File Format” to “Mapic Results files (∗.txt)” selecting “All blocks in a file” with desired number format.</li>
+<li>If the desired select “Save a JPEG image containing analyzed spots”.</li>
+</ol>
+</li>
+<li>Under “Files”.
+<ol type="i">
+<li>Select the ∗.tif images of the scanned arrays.</li>
+</ol>
+</li>
+<li>Run the batch method by selecting “Start”.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>To aid in understanding of the presented protocol we have included a data for nine stained slides, three each stained for response to IgG, IgM and IgA. Each slide includes 48 uknown sera samples from patients collected as part of the Predi-COVID study (<a href="#bib5">Fagherazzi et al., 2020</a>).</p>
+<h3 id="sec4.1">Slide scans</h3>
+<p>Upon scanning of the antigen microarrays, a TIFF image file is produced. Examples of which are shown in <a href="#fig5">Figure 5</a> for IgG, IgM and IgA. These provide initial overview of the arrays. With the print plan used in the example shown the detection antibody used is identifiable by the binging of the control corner spots. Due to the nature of the antigens selected and the patients tested that the response to IgG will be stronger than that of IgM or IgA is expected for most samples. This is particularly true for spots associated with the HCoV antigens 229E, HKU1, OC43 and NL63. Further, these will be the spots observed within arrays threated with the negative pool (NP) and normalized serum (NS).</p>
+<h3 id="sec4.2">Data processing</h3>
+<p>In the methodology presented, we utilize multiple dilution points for the antigens and scan across a series of gains. This is done to extend the dynamic range of the assay. This is of particular importance to cover different immunoglobulin and antigens within the same assay, although it complicates the data processing. We have provided a shiny based application for processing of such data to a unified value. <a href="#fig6">Figure 6</a> show a screenshot of the application in operation with a snapshot of the uploaded data observable in the imported data box.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Screenshot of the antigen microarrays shiny-based graphical user interphase</div>
+</figcaption>
+</figure>
+<h3 id="sec4.3">Biological interpretation</h3>
+<p>Although microarray-based assay can provide absolute quantifications, it would require the antibody validation for each antigen with known concentrations. Here we are focusing on relative quantification of the antibodies between samples and normalization to the included controls.</p>
+<p>For each slide a threshold was determined for the background binding. For SARS-CoV-2 antigens this was set at two standard deviations above the maximal observed for the negative pool. For the HCoV antigens where the negative pools samples cannot be considered negative, the background threshold was set as two standard deviations above the maximal observed for the untreated arrays. All signals below threshold were set to non-detected.</p>
+<p>Included on all slides in the cohort is a positive pool derived from the cohort and assessed in triplicate. This pooled sample is used for normalization of the entire cohort in order to provide comparable values across the cohort at a similar scale for each antigen and immunoglobulin. Alternative approaches could be normalizing by the native pool samples particularly where positive pool sample consistency throughout the cohort is in doubt. In such a case use of z scoring or other normalization method is suggested to align response values between antigens and immunoglobulins.</p>
+<p>Analysis from the large dataset of an antigen microarray can be considered in two modes. A patient centered mode, observing the profile of antigen recognition within each sample (<a href="#fig7">Figure 7</a>). In the example of three patients, shown differences can be observed in the total recognition of antigens with example sera 2 having a stronger response than example sera 1 and 3. Alternatively, an antigen centered analysis can be performed observing the changes across a cohort in recognition of several antigens as is shown in <a href="#fig8">Figure 8</a>.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Antigens included in the microarray and quantification examples</div>
+<p>(A) Collection of antigens included within the antigen array including Envelope Protein (EP) (<a href="#bib8">Mandala et al., 2020</a>), Nucleocapsid Protein (EP) (<a href="#bib6">Jayaram et al., 2006</a>) and Spike Protein (S) (<a href="#bib2">Benton et al., 2021</a>) with fragments of the Receptor binding domain and N-Terminal domain included as separated antigen targets on the array shown in red.</p>
+<p>(B) An overview of 3 patient profiles showing response profiles to all the included antigens for each immunoglobulin.</p>
+</figcaption>
+</figure>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. An overview of the observed response for 48 patient sera to the S1 fragment of spike protein for each of the four HCoV viruses as well as SARS-CoV-2</div>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>The scanned data can be further processed using the tabulated data. The scanned results are varying according to the antibody titer of the serum sample. To fit and normalize the data we recommend the in-house developed R-based Shiny application with graphical user interphase available at <a href="https://github.com/JosephLongworth/AntigenMicroarray">https://github.com/JosephLongworth/AntigenMicroarray</a>. To aid understanding of the tool we added example files in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc1.zip">supplemental information</a> (see <a href="#tbl1">Table 1</a> below). The software can process the spot intensity data table reported from the Mapix and other scanner software using the Genpix format. Scan data is first associated with descriptive data of the slide design used during the printing procedure as well as description of the antigen targets printed. The R-package SuperCurve (<a href="#bib4">Coombes et al., 2017</a>) used for RPPA (reverse phase protein array) analysis is then utilized to fit a logistic regression model against the antigen dilution series for each antigen and gain across the full dataset. This fit of the full dataset is known as a supercurve. Each sample antigen dilution series is fitted to the derived supercurve, thus determining a single intensity for each sample, antigen and gain combination. A linear model is then fitted to the intensities observed over different gains, removing saturated values. Based on this curve an intensity observed for each antigen and serum samples at the selected gain(default set to 50) a gain of 50 is reported back as the gain normalized intensity.</p>
+<table id="tbl1">
+<caption>Table 1. List of data files involved in the processing and analysis of the antigen microarrays</caption>
+<thead>
+<tr>
+<th>Data</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Print Plan</td>
+<td>The ∗.txt file used in the array printing describing the layout of the antigen microarray</td>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc3.zip">Data S3</a></td>
+</tr>
+<tr>
+<td>Print design</td>
+<td>.xlsx of the Print plan as well as dilution sample dilution information</td>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc6.zip">Data S6</a></td>
+</tr>
+<tr>
+<td>Antigen Names</td>
+<td>Description of the antigens printed in the microarray</td>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc7.zip">Data S7</a></td>
+</tr>
+<tr>
+<td>Slide Quantification</td>
+<td>Output of the quantification of spot intensities from Mapix software.</td>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc8.zip">Data S8</a></td>
+</tr>
+<tr>
+<td>Processed Output</td>
+<td>Tabulated output of fitted values for a collection of arrays.</td>
+<td><a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc9.zip">Data S9</a></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>Install the shiny application
+<ol type="a">
+<li>Following the instruction on Github (<a href="https://github.com/JosephLongworth/AntigenMicroarray">https://github.com/JosephLongworth/AntigenMicroarray</a>), download install and launch the shiny-based web GUI within a shiny server or as a standalone process on an individual computer.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Upload a new antigen array slide data and fitting the data to derive single antigen serum binned intensity.
+<ol type="a">
+<li>Navigate to the Scan Data Processing section in the taskbar on the left side.</li>
+<li>Select “New Antigen Microarray slide” to open the menu.</li>
+<li>Upload an antigen names table describing the antigens included in the array print. A template file can be downloaded from the app.</li>
+<li>Upload a print design giving the arrangement of the antigens and dilutions on the array. This file is available whilst creating the print plan in the “Print Plan Generator” section of the application.</li>
+<li>Upload the Slide Quantification for all gains associated with the slide prepared above either in Mapix of Genepix format.
+<div class="note">
+<span class="note-title">Note:</span> The processing is designed to work with scans across multiple gains fitting a response to those gains below saturation and normalising to a calculated gain value of 50. If only 1 gain is uploaded the intensity for that gain only will be reported.</div>
+</li>
+<li>Provide a slide name to identify the dataset being uploaded.</li>
+<li>Provide a sample plate name for reference to the serum samples assessed on the slide.</li>
+<li>Select the Immunoglobulin used as the detection antigen i.e., IgG.</li>
+<li>Select the intensity metric used for the analysis of the data. This is a column from the uploaded scan data. In the data presented here, the median fluorescence intensity at 785 corrected by background intensity at 785 “f785_median_b785” was used.</li>
+<li>Click on “Process Import Data”. Once the data has been processed and fitted, an overview plot of the imported data will display in the “Import Data” box.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Append multiple antigen microarray slides together.
+<ol type="a">
+<li>By clicking “Append” the uploaded antigen microarray slide data will be joined to the full dataset.</li>
+<li>In the “Full Dataset” box a list of the appended slides is reported along with buttons to download the dataset and clear the uploaded datasets.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Upload Existing Data. Upload a dataset previously downloaded.
+<ol type="a">
+<li>Select “Previously Fitted Data Upload” to open the menu.</li>
+<li>Upload a previously downloaded current dataset.</li>
+<li>Click on “Process Import Data”. Once data has been processed an overview plot of the imported data will display in the “Import Data” box.
+<div class="note">
+<span class="note-title">Note:</span> Depending on size the graphic generation can take several minutes.</div>
+</li>
+<li>Once processed, the uploaded existing data can be joined to the full dataset by clicking on “Append import data to current dataset”.</li>
+<li>In the “Full Dataset” box a list of the appended slides is reported along with buttons to download the dataset and clear the uploaded datasets.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>One of the main limitations to the described protocol is the availability and quality of antigens. This is particularly relevant for emergent variants where there can be a considerable delay between their description and commercial availability. During the protocol development, we also noted higher background binding to antigens produced in non-mammalian cells. As with other techniques, our approach relies on comparable recognition of recombinantly produced antigens that are bound to a surface. While a good approximation, it may not fully represent the antigens confirmation in vivo. The methodology presented here is designed to quantify antibody recognition and cannot detect the neutralizing activity of an antibody.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Antigen samples do not fully dissolve upon resuspension (<a href="#before-you-begin">before you begin</a> step 2).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>If the resuspension appears cloudy consider diluting that particular antigen, or centrifuge for 10 min at (15,000 g) at room temperature in a table top centrifuge and transfer the supernatant to a new tube to collect a pure solution. Determine the protein concentration using a protein quantification kit.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Condensation forming on the nitrocellulose slides during printing (step 1c).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>The setting of humidity and temperature is designed to optimize the analyte’s absorption onto the nitrocellulose slides. This is a setting close, but not at the dew point, where condensation forms on the glass surface of the array. If dew forms on the slide, consider if the humidity of the room has been affected such as during a thunderstorm or consider if the climate control of the room where the printer is located is stable. If the problem persists, the settings of relative humidity and temperature can be adjusted. See the printer manufacturer’s instructions for further advice.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Inconsistent spotting with missing spots of deflected spots unaligned to the array grid (step 1c).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Ensure the pipette tubing is free of air bubbles. Whilst in “Interactive mode” under “Functions” select “System” and “Complete Filling of Tubing and Pipettes”.</p>
+<p>Ensure proper wetting of the piezoelectric tip. It is advisable to run one or more blank print runs onto glass slides before running an actual print run. This improves reproducibility of the piezoelectric tip.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Trapped bubbles or foaming in preparation of the print plate or sample plate (step 2).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>If air is trapped below the liquid during the preparation of the print plate or sample plate, it can be removed by centrifuging at 100g for 30 s to bring the liquid to the bottom of the well.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Poor signal to noise constancy across the slide (<a href="#fig9">Figure 9</a>; step 16).</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Example image of slide with poor signal to background clarity</div>
+</figcaption>
+</figure>
+<h3 id="sec7.10">Potential solution</h3>
+<p>It is important that the slides are not drying out during the manipulation. Work with one slide at a time to ensure rapid processing. Some residual buffer will likely be released upon separation of the ProPlate and antigen microarray slide. Use an absorbent tissue to remove the buffer. The tissue needs to be discarded according to the biosafety measures.</p>
+<p>Be careful not to touch the microarray surface. Complete removal of the fluid is not necessary. Dispose of the fluid in a pipette basin. Ensure biological safety measures for handling primary human samples.</p>
+<h3 id="sec7.11">Problem 6</h3>
+<p>Selection of positive pool (step 7a).</p>
+<h3 id="sec7.12">Potential solution</h3>
+<p>Pool selection depends on the cohort in question. It is important that the pool covers all possible signals on the array at a level representative of a clear positive signal. It could be created from a subset of samples with supporting data for their positive nature for the antigens on the array or a broad selection obtaining a physical mean of the positive samples in the cohort. It should be scaled to the cohort size but should at least contain three individuals.</p>
+<h3 id="sec7.13">Problem 7</h3>
+<p>Selection of negative pool (step 7b).</p>
+<h3 id="sec7.14">Potential solution</h3>
+<p>A perfect negative control for a given antigen is sera from a human patient who has not been exposed to the selected antigen. This may be sera collected before the emergence of the antigen such as sera pre-2019 for SARS-CoV-2. For other antigens such a control may not be available. I such case we suggest utilization of a sera free blank.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">de Assis, R.R., Jain, A., Nakajima, R., Jasinskas, A., Felgner, J., Obiero, J.M., Norris, P.J., Stone, M., Simmons, G., Bagri, A., et al. (2021). Analysis of SARS-CoV-2 antibodies in COVID-19 convalescent blood using a coronavirus antigen microarray. Nat. Commun. <i>12</i>. <a class="external-link" href="https://doi.org/10.1038/s41467-020-20095-2">https://doi.org/10.1038/s41467-020-20095-2</a></p>
+<p id="bib2">Benton, D.J., Wrobel, A.G., Roustan, C., Borg, A., Xu, P., Martin, S.R., Rosenthal, P.B., Skehel, J.J., and Gamblin, S.J. (2021). The effect of the D614G substitution on the structure of the spike glycoprotein of SARS-CoV-2. Proc. Natl. Acad. Sci. U S A <i>118</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref2">View at publisher</a></p>
+<p id="bib3">Burrell, C.J., Howard, C.R., and Murphy, F.A. (2017). Coronaviruses. In Fenner and White’s Medical Virology (), pp. 437-446. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref3">View at publisher</a></p>
+<p id="bib4">Coombes, K.R., Neeley, S., Joy, C., Hu, J., Baggerly, K., and Roebuck, P. (2017). SuperCurve: RPPA analysis package. <a class="external-link" href="https://R-Forge.R-project.org/projects/supercurve/">https://R-Forge.R-project.org/projects/supercurve/</a></p>
+<p id="bib5">Fagherazzi, G., Fischer, A., Betsou, F., Vaillant, M., Ernens, I., Masi, S., Mossong, J., Staub, T., Brault, D., Bahlawane, C., et al. (2020). Protocol for a prospective, longitudinal cohort of people with COVID-19 and their household members to study factors associated with disease severity: the Predi-COVID study. BMJ Open <i>10</i>, e041834. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref5">View at publisher</a></p>
+<p id="bib6">Jayaram, H., Fan, H., Bowman, B.R., Ooi, A., Jayaram, J., Collisson, E.W., Lescar, J., and Prasad, B.V. (2006). X-Ray structures of the N- and C-Terminal domains of a coronavirus nucleocapsid protein: Implications for nucleocapsid formation. J. Virol. <i>80</i>, 6612-6620. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref6">View at publisher</a></p>
+<p id="bib7">Johari, Y.B., Jaffé, S.R.P., Scarrott, J.M., Johnson, A.O., Mozzanino, T., Pohle, T.H., Maisuria, S., Bhayat-Cammack, A., Lambiase, G., Brown, A.J., et al. (2021). Production of trimeric SARS-CoV-2 spike protein by CHO cells for serological COVID-19 testing. Biotechnol. Bioeng. <i>118</i>, 1013-1021. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref7">View at publisher</a></p>
+<p id="bib8">Mandala, V.S., McKay, M.J., Shcherbakov, A.A., Dregni, A.J., Kolocouris, A., and Hong, M. (2020). Structure and drug binding of the SARS-CoV-2 envelope protein transmembrane domain in lipid bilayers. Nat. Struct. Mol. Biol. <i>27</i>, 1202-1208. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref8">View at publisher</a></p>
+<p id="bib9">Okba, N.M.A., Raj, V.S., Widjaja, I., GeurtsvanKessel, C.H., de Bruin, E., Chandler, F.D., Park, W.B., Kim, N.J., Farag, E.A.B.A., Al-Hajri, M., et al. (2019). Sensitive and specific detection of low-level antibody responses in mild middle east respiratory syndrome coronavirus infections. Emerging Infect. Dis. <i>25</i>, 1868-1877. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref9">View at publisher</a></p>
+<p id="bib10">Reusken, C., Mou, H., Godeke, G.J., Hoek, L. van der, Meyer, B., Müller, M.A., Haagmans, B., de Sousa, R., Schuurman, N., Dittmer, U., et al. (2013). Specific serology for emerging human coronaviruses by protein microarray. Eurosurveillance <i>18</i>, 20441. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00521-9/sref10">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the technical contact, Joseph Longworth (<a href="mailto:josephlongworth@gmail.com">josephlongworth@gmail.com</a>) or the lead contact Gunnar Dittmar (<a href="mailto:gunnar.dittmar@lih.lu">gunnar.dittmar@lih.lu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The code and example datasets generated during this study are available on at Github <a href="https://github.com/JosephLongworth/AntigenMicroarray">https://github.com/JosephLongworth/AntigenMicroarray</a>.</p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc1.zip">Data S1. 64 pad workplate, related to step 1.a.vii</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc2.zip">Data S2. Warm-up_print_plan, related to step 1.c.iii</a></p>
+<p><a id="mmc3" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc3.zip">Data S3. Print_plan, related to step 4.a</a></p>
+<p><a id="mmc4" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc4.zip">Data S4. InnoScan_batch_scan_method, related to step 15.b</a></p>
+<p><a id="mmc5" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc5.zip">Data S5. 64_pad_GAL, related to step 17.c.i</a></p>
+<p><a id="mmc6" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc6.zip">Data S6. Print_design, related to step quantification and statistical analysis 2.d</a></p>
+<p><a id="mmc7" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc7.zip">Data S7. Antigen_names, related to step quantification and statistical analysis 2.c</a></p>
+<p><a id="mmc8" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc8.zip">Data S8. Slide_quantifications, related to step quantification and statistical analysis 2.e</a></p>
+<p><a id="mmc9" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/993-Mmc9.zip">Data S9. Combinded_slide_data, related to step quantification and statistical analysis 4.e</a></p>
+<h3>Acknowledgments</h3>
+<p>The COV-Array project is supported by the <a href="https://doi.org/10.13039/501100001866">Luxembourg National Research Fund</a> (FNR) (COV-Array, grant number 14879195) of the FNR (Luxembourg). We are thankful to the study participants, the Predi-COVID study group, the national ethics committee, and the funders for their support in the set-up of this initiative. The Predi-COVID study is supported by the <a href="https://doi.org/10.13039/501100001866">Luxembourg National Research Fund</a> (FNR) (Predi-COVID, grant number 14716273) and the André Losch Fondation. We thank Professor David C. James and Dr. Stephen R. P. Jaffé for kind provision of S1 protein produced in CHO cells. We would like to thank Dr. Christiane Hilger for discussion. We thank Dr. Daniel Perez Hernandez and Dr. Marta Mendes for testing the R application and providing feedback.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, J.L. and G.D.; methodology, J.L.; writing – original draft, J.L.; writing – review &amp; editing, J.L. and G.D.; funding acquisition, J.L. and G.D.; supervision, G.D.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

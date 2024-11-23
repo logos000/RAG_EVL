@@ -1,0 +1,1610 @@
+<article>
+<section>
+<h1 id="header">NAD-seq for profiling the NAD<sup>+</sup> capped transcriptome of <i>Arabidopsis thaliana</i>
+</h1>
+<p><time datetime="2021-11-19">Published: November 19, 2021</time></p>
+<p>Xiang Yu,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a></sup> Lee E. Vandivier,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and Brian D. Gregory<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biology, University of Pennsylvania, Philadelphia, PA 19104, USA</p>
+<p id="aff2"><sup>2</sup>Cell and Molecular Biology Graduate Group, Perelman School of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, PA 19104, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:bdgregor@sas.upenn.edu">bdgregor@sas.upenn.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100901">10.1016/j.xpro.2021.100901</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Eukaryotic RNAs can be modified with a non-canonical 5′ nicotinamide adenine dinucleotide (NAD<sup>+</sup>) cap. NAD-seq identifies transcriptome-wide NAD<sup>+</sup> capped RNAs. NAD-seq takes advantage of click chemistry to allow the capture of NAD<sup>+</sup> capped RNAs. Unlike other approaches, NAD-seq does not require DNA synthesis on beads, but this technique uses full NAD<sup>+</sup> capped transcripts eluted from beads as the substrates for strand-specific RNA sequencing library preparation.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref9">Yu et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol for NAD-seq allowing eukaryotic NAD<sup>+</sup> capped transcript discovery</li>
+<li>Details all steps necessary for producing NAD-seq libraries</li>
+<li>Instructions for analysis workflow to identify eukaryotic NAD<sup>+</sup> capped transcripts</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1167-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the reagents and specific experimental steps for using Arabidopsis wild-type Col-0 (hereafter Col-0) and <i>dxo1-2</i> mutant plant unopened flower buds for NAD-seq. We have also used this protocol on 12-day old Col-0 and <i>dxo1-2</i> mutant seedlings with and without abscisic acid (ABA) treatment. The initial input for this NAD-seq protocol is around 100 μg of total extracted RNA per sample after DNase I treatment. Although we describe the steps using Arabidopsis total RNA as the starting material, this protocol can be used on starting RNA from any eukaryotic organism (e.g., human culture cells) as long as the starting RNA concentration is high enough. For identifying NAD<sup>+</sup> capped RNAs, parallel total RNA-seq libraries using the same samples need to be prepared as background controls.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> All materials used in this protocol are ribonuclease (RNase)-free unless otherwise specified.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Na-HEPES</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#H7006</td>
+</tr>
+<tr>
+<td>ADP-ribosyl cyclase (ADPRC)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#A9106-1VL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Applied biosystems</td>
+<td>Cat#4392215</td>
+</tr>
+<tr>
+<td>4-pentyn-1-ol</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#302481</td>
+</tr>
+<tr>
+<td>CuSO<sub>4</sub>
+</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#C1297</td>
+</tr>
+<tr>
+<td>Tris(3-hydroxypropyltriazolylmethyl)amine(THPTA)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#762342</td>
+</tr>
+<tr>
+<td>Sodium ascorbate</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#A7631</td>
+</tr>
+<tr>
+<td>HEPES buffer, 1 M solution</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 7365-45-9</td>
+</tr>
+<tr>
+<td>Azide-PEG<sub>3</sub>-biiotin (biotin azide)</td>
+<td>Jena Bioscience</td>
+<td>Cat#CLK-AZ104P4-25</td>
+</tr>
+<tr>
+<td>Acetylated BSA</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#B8894</td>
+</tr>
+<tr>
+<td>Dynabeads MyOne Streptavidin C1</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#65001</td>
+</tr>
+<tr>
+<td>RNaseOUT</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#LS10777019</td>
+</tr>
+<tr>
+<td>T4 polynucleotide kinase</td>
+<td>New England Biolabs</td>
+<td>Cat#M0201S</td>
+</tr>
+<tr>
+<td>T4 DNA ligase buffer</td>
+<td>New England Biolabs</td>
+<td>Cat# B0202S</td>
+</tr>
+<tr>
+<td>T4 RNA ligase 1</td>
+<td>New England Biolabs</td>
+<td>Cat#M0204S</td>
+</tr>
+<tr>
+<td>T4 RNA ligase 2, truncated</td>
+<td>New England Biolabs</td>
+<td>Cat#M0242S</td>
+</tr>
+<tr>
+<td>10× NEB Buffer 2</td>
+<td>New England Biolabs</td>
+<td>Cat#B7002S</td>
+</tr>
+<tr>
+<td>10 mM ATP</td>
+<td>New England Biolabs</td>
+<td>Cat#P0756S</td>
+</tr>
+<tr>
+<td>Duplex Specific Nuclease (DSN)</td>
+<td>Evrogen</td>
+<td>Cat#EA001</td>
+</tr>
+<tr>
+<td>50 mM dNTPs (12.5 mM of each)</td>
+<td>Promega</td>
+<td>Cat#U1420</td>
+</tr>
+<tr>
+<td>Sodium Acetate (3 M), pH 5.5, RNase-free</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM9740</td>
+</tr>
+<tr>
+<td>Glycogen</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM9510</td>
+</tr>
+<tr>
+<td>Phenol:chloroform</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#77617</td>
+</tr>
+<tr>
+<td>2-propanol</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#34863</td>
+</tr>
+<tr>
+<td>EDTA, 0.5 M</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#BP2483</td>
+</tr>
+<tr>
+<td>Formamide</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#75-12-7</td>
+</tr>
+<tr>
+<td>100% ethanol</td>
+<td>Decon Labs</td>
+<td>Cat#2716</td>
+</tr>
+<tr>
+<td>Ultra Low Range DNA Ladder</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#10597012</td>
+</tr>
+<tr>
+<td>Gel Loading Buffer II</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM8547</td>
+</tr>
+<tr>
+<td>Ethidium Bromide</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>Magnesium Chloride (MgCI<sub>2</sub>), 1 M Solution</td>
+<td>Affymatrix</td>
+<td>Cat#78641</td>
+</tr>
+<tr>
+<td>NaCl, 5 M Solution</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM9760G</td>
+</tr>
+<tr>
+<td>Urea</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#BP169</td>
+</tr>
+<tr>
+<td>10<b>×</b> TBE buffer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15581044</td>
+</tr>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM9937</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>RNA Fragmentation Reagents</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM8740</td>
+</tr>
+<tr>
+<td>SuperScript II Reverse Transcriptase</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#18064014</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA Polymerase</td>
+<td>New England Biolabs</td>
+<td>Cat#M0531S</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw and processed NAD captureSeq (NADseq) data</td>
+<td>This paper</td>
+<td>GEO: GSE142390</td>
+</tr>
+<tr>
+<td>TAIR10 Arabidopsis annotation</td>
+<td>TAIR</td>
+<td><a href="http://ftp//ftp.arabidopsis.org/home/tair/Genes/%20TAIR10_genome_release/">ftp://ftp.arabidopsis.org/home/tair/Genes/ TAIR10_genome_release/</a></td>
+</tr>
+<tr>
+<td>EPIC-CoGe genome browser</td>
+<td><a href="#bib5">Lyons et al., 2008</a></td>
+<td><a href="https://genomevolution.org/coge/NotebookView.pl?nid=2708">https://genomevolution.org/coge/NotebookView.pl?nid=2708</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Arabidopsis thaliana: Col-0</td>
+<td>ABRC</td>
+<td>CS70000</td>
+</tr>
+<tr>
+<td>Arabidopsis thaliana: <i>dxo1-2</i>
+</td>
+<td>SALK</td>
+<td>SALK_032903</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>TruSeq adapters (RA3 and RA5), primers and indices</td>
+<td>Illumina</td>
+<td>TruSeq Small RNA Sample Prep Kit</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>cutadapt v1.9.1</td>
+<td><a href="#bib6">Martin, 2011</a></td>
+<td><a href="https://cutadapt.readthedocs.io/en/stable/installation.html">https://cutadapt.readthedocs.io/en/stable/installation.html</a></td>
+</tr>
+<tr>
+<td>STAR v2.4.2a</td>
+<td><a href="#bib2">Dobin et al., 2013</a></td>
+<td><a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a></td>
+</tr>
+<tr>
+<td>Hisat2</td>
+<td><a href="#bib3">Kim et al., 2019</a></td>
+<td><a href="https://daehwankimlab.github.io/hisat2/main/">https://daehwankimlab.github.io/hisat2/main/</a></td>
+</tr>
+<tr>
+<td>HTseq v0.6.0</td>
+<td><a href="#bib1">Anders et al., 2015</a></td>
+<td><a href="https://github.com/simon-anders/htseq">https://github.com/simon-anders/htseq</a></td>
+</tr>
+<tr>
+<td>DEseq2 v1.18.1</td>
+<td><a href="#bib4">Love et al., 2014</a></td>
+<td><a href="https://bioconductor.org/biocLite.R">https://bioconductor.org/biocLite.R</a></td>
+</tr>
+<tr>
+<td>edgeR v3.13</td>
+<td><a href="#bib7">McCarthy et al., 2012</a></td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">https://bioconductor.org/packages/release/bioc/html/edgeR.html</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Fisherbrand Syringe Filters - Sterile</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#09-720-3</td>
+</tr>
+<tr>
+<td>BD 30 mL Syringe</td>
+<td>BD</td>
+<td>Cat#309650</td>
+</tr>
+<tr>
+<td>15% TBE-Urea polyacrylamide gel</td>
+<td>Invitrogen</td>
+<td>Cat#EC6885BOX</td>
+</tr>
+<tr>
+<td>6% TBE polyacrylamide gel</td>
+<td>Invitrogen</td>
+<td>Cat#EC6265BOX</td>
+</tr>
+<tr>
+<td>Gel Breaker Tubes</td>
+<td>IST Engineering Inc.</td>
+<td>Cat#3388-100</td>
+</tr>
+<tr>
+<td>Spin-X column</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#CLS8160</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>5<b>×</b> ADPRC reaction buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Na-HEPES</td>
+<td>3.25 g</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>25 mM</td>
+<td>1.25 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>up to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for several years.</div>
+<table id="undtbl2">
+<caption>ADPRC stock (125 μg/mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADPRC</td>
+<td>100 μg</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>1<b>×</b> ADPRC reaction buffer</td>
+<td>n/a</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td>Glycerol (100%)</td>
+<td>50%</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td>
+<b>800</b> μL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> These aliquots can be stored at −20°C for several months. Avoid freeze-thaw cycles.</div>
+<table id="undtbl3">
+<caption>50<b>×</b> azide-PEG3-biotin (biotin azide) stocks (100 mM solutions)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>biotin azide</td>
+<td>100 mM</td>
+<td>25 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>563 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>563 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> The 1<b>×</b> solution is 2 mM. Aliquots can be stored at −20°C for up to 1 year. Never refreeze thawed aliquots.</div>
+<table id="undtbl4">
+<caption>CuSO<sub>4</sub> stock (50 mM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CuSO<sub>4</sub>
+</td>
+<td>50 mM</td>
+<td>79.8 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Aliquots can be stored at −20°C for up to 1 year. Avoid freeze-thaw cycles.</div>
+<table id="undtbl5">
+<caption>5<b>×</b> THPTA stocks (250 mM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>THPTA</td>
+<td>250 mM</td>
+<td>100 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>920 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>920 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> The 1<b>×</b> solution is 50 mM. Aliquots can be stored at −20°C for up to 1 year. Never refreeze thawed aliquots.</div>
+<table id="undtbl6">
+<caption>Sodium ascorbate stock (250 mM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sodium ascorbate</td>
+<td>250 mM</td>
+<td>495.5 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Aliquots can be stored at −20°C for up to several years.</div>
+<table id="undtbl7">
+<caption>Na-HEPES (100 mM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Na-HEPES</td>
+<td>100 mM</td>
+<td>1.3 g</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>Up to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Adjust the pH to 7.2. This buffer can be stored at 4°C for several years.</div>
+<table id="undtbl8">
+<caption>Immobilization buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Na-HEPES (pH 7.2) (100 mM)</td>
+<td>10 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>1 M</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>EDTA (0.5 M)</td>
+<td>5 mM</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>34.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for several years.</div>
+<table id="undtbl9">
+<caption>Immobilization buffer with 1000<b>×</b> BSA (100 mg/mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>acetylated BSA</td>
+<td>100 mg/mL</td>
+<td>100 mg</td>
+</tr>
+<tr>
+<td>immobilization buffer</td>
+<td>1 M</td>
+<td>Up to 1 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> The 1<b>×</b> solution is Immobilization buffer with 100 μg/mL BSA. This solution needs to be made fresh for each experiment.</div>
+<table id="undtbl10">
+<caption>Streptavidin wash buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl (pH 7.5) (1 M)</td>
+<td>50 mM</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>Urea</td>
+<td>24 g</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>Up to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Dissolving the urea may require light heating. This solution can be stored at 22°C–27°C for several years. Avoid cold temperatures and freezing, as this leads to precipitation of urea. If urea crystals form, heat to dissolve urea or replace it with fresh buffer.</div>
+<table id="undtbl11">
+<caption>Elution buffer (10 mM EDTA in 95% formamide)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Formamide</td>
+<td>95%</td>
+<td>9.5 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>10 mM</td>
+<td>0.2 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>0.3 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Formamide is toxic, wear gloves and work in a fume hood.</div>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for several years.</div>
+<table id="undtbl12">
+<caption>Hybridization buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M HEPES buffer</td>
+<td>200 mM</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>2 M</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for several years.</div>
+<table id="undtbl13">
+<caption>RT solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RNA</td>
+<td>n/a</td>
+<td>6 μL</td>
+</tr>
+<tr>
+<td>RT primer (100 μM)</td>
+<td>8 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>5<b>×</b> First Strand Buffer</td>
+<td>1<b>×</b>
+</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>dNTP mix (12.5 mM)</td>
+<td>0.5 mM</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>DTT (100 mM)</td>
+<td>8 mM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>RNase Inhibitor</td>
+<td>n/a</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>SuperScript II Reverse Transcriptase</td>
+<td>n/a</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td>
+<b>12.5</b> μL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This solution needs to be made fresh for each experiment.</div>
+<table id="undtbl14">
+<caption>PCR solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phusion Mix (2<b>×</b>)</td>
+<td>1<b>×</b>
+</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Betaine 5 mM</td>
+<td>2 mM</td>
+<td>40 μL</td>
+</tr>
+<tr>
+<td>RNA PCR Primer (RP1) (10 μM)</td>
+<td>0.2 μM</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>RNA PCR Primer Index (RPIX)∗ (10 μM)</td>
+<td>0.2 μM</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>DNA</td>
+<td>n/a</td>
+<td>6 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This solution needs to be made fresh for each experiment.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">ADPRC reaction and copper click chemistry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This step converts 5′ NAD<sup>+</sup> capped RNA into 5′ biotin-modified RNA through ADPRC treatment followed by copper click chemistry.</p>
+<ol>
+<li>For the ADPRC reaction (per sample), incubate 50 μL of RNA with ADPRC and 4-pentyn-1-ol.
+<ol type="a">
+<li>In a 1.5 mL tube, add 20 μL of 5<b>×</b> ADPRC buffer into the 50 μL of RNA.</li>
+<li>Add 10 μL of 4-pentyn-1-ol.</li>
+<li>Add 20 μL (at least 1.5U) of ADPRC. Now the volume is 100 μL.</li>
+<li>Incubate at 37°C for 30 min in an Eppendorf Thermomixer.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Halt reaction through two rounds of phenol-chloroform extraction.
+<ol type="a">
+<li>Add 100 μL of H<sub>2</sub>0, now the volume is 200 μL.</li>
+<li>Add 200 μL of Phenol:chloroform: IAA.</li>
+<li>Vortex for 15 s.</li>
+<li>Let sit at 22°C–27°C for 2 min.</li>
+<li>Spin 12,000 rpm at 4°C for 15 min.</li>
+<li>Extract as much aqueous layer as possible (∼200 μL).</li>
+<li>Repeat extraction steps b-f above.
+<div class="note">
+<span class="note-title">Note:</span> do not add more nuclease-free H<sub>2</sub>0.</div>
+</li>
+<li>Precipitate RNA by adding 600 μL of 100% EtOH, 20 μL of 3M NaOAc (pH 5.5), and 3 μL of glycogen. Store at −80°C for 2 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> If not doing the copper click reaction in the same day, leave at −80°C overnight.</div>
+</li>
+<li>Centrifuge at max speed for 40 min.</li>
+<li>Wash with 750 μL of 80% EtOH.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 20.4 μL of 5<b>×</b> ADPRC buffer and 63.7 μL of Nuclease-free H<sub>2</sub>0.</li>
+<li>Allow the samples to resuspend for 20 min on ice before proceeding.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>For copper click reaction per sample,
+<ol type="a">
+<li>Prepare copper mix.
+<ol type="i">
+<li>Add 2 μL of 50 mM CuSO<sub>4</sub>.</li>
+<li>Add 1 μL of 50 mM THPTA.</li>
+<li>Add 0.4 μL of 250 mM Sodium ascorbate.</li>
+</ol>
+</li>
+<li>Mix 84.1 μL of RNA with 12.5 μL of Biotin azide and 3.4 μL of copper mix made above.</li>
+<li>Vortex and incubate at 25°C, 30 min, shaking at 350 rpm using the shaker.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Halt reaction through two rounds of phenol-chloroform extraction.
+<ol type="a">
+<li>Add 100 μL of H<sub>2</sub>0, now the volume is 200 μL.</li>
+<li>Add 200 μL of Phenol:chloroform: IAA.</li>
+<li>Vortex for 15 s.</li>
+<li>Let sit at 22°C–27°C for 2 min.</li>
+<li>Spin 12,000 rpm at 4°C for 15 min.</li>
+<li>Extract as much aqueous layer as possible (∼200 μL).</li>
+<li>Repeat extraction steps b-f above.
+<div class="note">
+<span class="note-title">Note:</span> do not add more nuclease-free H<sub>2</sub>0.</div>
+</li>
+<li>Precipitate RNA by adding 600 μL of 100% EtOH, 20 μL of 3M NaOAc (pH 5.5), and 3 μL of glycogen. Store at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at max speed at least 40 min.</li>
+<li>Wash with 750 μL of 80% EtOH.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 40 μL of Immobilization buffer.</li>
+<li>Allow the samples to resuspend for 20 min on ice before proceeding.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">Streptavidin bead pulldown</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The purpose of this step is to pull down 5′ biotin-modified RNA using streptavidin-coated magnetic beads. Instead of performing Reverse Transcription for cDNA synthesis on beads as done in the NAD captureSeq (<a href="#bib8">Winz et al., 2017</a>) protocol, our NAD-seq elutes full NAD<sup>+</sup> capped transcripts from the beads (<a href="#bib9">Yu et al., 2021</a>).</p>
+<ol start="5">
+<li>Prepare the beads (Dynabeads MyOne Streptavidin C1).
+<ol type="a">
+<li>In a single 1.5 mL tube mix enough beads for all reactions (20 μL of beads per reaction).</li>
+<li>Place on magnet to remove storage buffer.</li>
+<li>Wash 3<b>×</b> with 300 μL of immobilization buffer.</li>
+<li>Block with immobilization buffer containing 100 μg/mL acetylated BSA. Mix end-over-end at 22°C–27°C for 20 min using a tube rotator.</li>
+<li>Wash 3<b>×</b> with 300 μL of immobilization buffer.</li>
+<li>Resuspend beads in 160 μL of immobilization buffer per reaction. Aliquot beads to round-bottom 2 mL Eppendorf tubes.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 10-fold dilution of original beads once RNA is added.</div>
+<ol start="6">
+<li>Capture biotinylated (originally NAD<sup>+</sup> capped) RNA.
+<ol type="a">
+<li>Add 40 μL of biotinylated RNA (from step 1) to beads.</li>
+<li>Mix end-over-end for 1 h at 22°C–27°C using a tube rotator.</li>
+<li>Remove supernatant and resuspend beads in 300 μL of streptavidin wash buffer.</li>
+<li>Transfer beads to a fresh 1.5 mL Eppendorf tube.</li>
+<li>Wash 3<b>×</b> with 300 μL of streptavidin wash buffer. Each time mix 5 min end-over-end using a tube rotator.</li>
+<li>Wash 3<b>×</b> with nuclease-free H<sub>2</sub>0.</li>
+<li>Elute by adding 50 μL of elution buffer and incubating at 65°C for 5 min.
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not quick spin the tube.</div>
+</li>
+<li>Immediately place on magnet and transfer supernatant to a fresh 1.5 mL Eppendorf tube.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Ethanol precipitate RNA. <a href="#sec7.1">Troubleshooting 1</a>
+<ol type="a">
+<li>Add 250 μL of Nuclease-free H<sub>2</sub>0 into the 50 μL of eluted RNA sample.
+<div class="critical">
+<span class="critical-title">Critical:</span> Formamide must be &lt;30% for precipitation to work.</div>
+</li>
+<li>Precipitate the RNA with 30 μL of 3M NaOAc (pH 5.5), 3 μL of glycogen and 900 μL of 100% EtOH. Store at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at max speed at least 40 min.<br> <b>Excepted result:</b> After spinning, a pellet should be visible, indicating that appropriate levels of NAD<sup>+</sup> capped RNAs are captured.</li>
+<li>Wash the pellet with 750 μL of 80% EtOH.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 9 μL of Nuclease-free H<sub>2</sub>O.
+<div class="note">
+<span class="note-title">Note:</span> the total volume for RNA fragmentation next step is 10 μL. Alternatively, resuspend the pellet in 10 μL of nuclease-free H<sub>2</sub>O, and use 1 μL to quantify the concentration of NAD<sup>+</sup> capped RNAs using a Nanodrop.</div>
+</li>
+<li>Allow the samples to resuspend for 20 min on ice before proceeding.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">RNA fragmentation, PNK treatment, and first size selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>The purpose of this step is to fragment the full RNA molecules into smaller fragments, convert the 5′ OH and 3′ P of fragmented RNA pieces to 5′ P and 3′ OH, and select RNA fragments within the preferred size range.</p>
+<ol start="8">
+<li>RNA fragmentation.
+<ol type="a">
+<li>Add 1 uL of 10<b>×</b> Fragmentation Reagent to each sample (total volume 10 μL).</li>
+<li>Incubate the reactions at 70°C for 5 min in the digital heating block.
+<div class="critical">
+<span class="critical-title">Critical:</span> The reaction volume and incubation time are important for obtaining RNA fragments within the preferred size range.</div>
+</li>
+<li>After 5 min, add 1 μL of stop solution to the fragmentation reaction.</li>
+<li>Bring the volume up to 100 μL by adding 89 μL of nuclease-free H<sub>2</sub>O.</li>
+<li>Precipitate the fragmented RNA by adding 10 μL of 3M NaOAc (pH 5.5), 3.0 μL of glycogen, and 300 μL of 100% EtOH.</li>
+<li>Freeze at least 1.5 h at −80°C.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> If not continuing to the next steps on the same day, leave at −80°C for 12–16 h.</div>
+</li>
+<li>Centrifuge at maximum speed for 70 min at 4°C. If only in −80°C for 1 h, spin for an extra 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 17 μL of nuclease-free H<sub>2</sub>O.
+<div class="note">
+<span class="note-title">Note:</span> the total volume for PNK treatment in the next step is 20 μL.</div>
+</li>
+<li>Allow the samples to resuspend for 20 min on ice before proceeding.</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>PNK treatment.
+<ol type="a">
+<li>In 17 μL of RNA sample, add 2 μL of 10<b>×</b> T4 DNA ligase buffer and 1 μL of T4 polynucleotide kinase (T4 PNK).
+<div class="note">
+<span class="note-title">Note:</span> Instead of using the T4 PNK buffer, NEB’s 10<b>×</b> T4 DNA ligase buffer (B0202S), which contains ATP, is used in this step.</div>
+</li>
+<li>Incubate the reactions at 37°C for 1 h in the digital heating block.</li>
+<li>Bring the volume up to 100 μL by adding 80 μL of nuclease-free H<sub>2</sub>O.</li>
+<li>Precipitate the fragmented RNA by adding 10 μL of 3M NaOAc (pH 5.5), 3.0 μL of glycogen and 300 μL of 100% EtOH.</li>
+<li>Freeze at least 1.5 h at −80°C.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 70 min at 4°C. If only in −80°C for 1 h, spin for an extra 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 10 μL of Nuclease-free H<sub>2</sub>0.</li>
+<li>Allow the samples to resuspend for 20 min on ice before proceeding.</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>First size selection
+<ol type="a">
+<li>Put 15% TBE-urea polyacrylamide gel (10 wells) in the gel box such that the wells face inward, place a balancer opposite if running only one gel, and lock it into position. Pour about 700 mL of 1<b>×</b> TBE buffer into the gel box.
+<div class="note">
+<span class="note-title">Note:</span> First filling the space between the gel and balancer and then pouring the rest on the outside.</div>
+</li>
+<li>Wash the wells out 3<b>×</b> with 1 mL pipette using the running buffer in the gel box.</li>
+<li>Pre-run the gel for 25 min at 155 V.</li>
+<li>15 min before the pre-run is complete, prepare the ladder and samples:
+<ol type="i">
+<li>Prepare the ladder by mixing 1.5 μL of Ultra Low Range DNA Ladder, 8.5 μL H<sub>2</sub>0, and 10 μL of Gel Loading Buffer II in a 1.5 mL tube.</li>
+<li>To each of the samples, add 10 μL of Gel Loading Buffer II.</li>
+<li>Put samples (BUT NOT THE LADDER) at 70°C for 5 min and then place on ice for 3 min.</li>
+</ol>
+</li>
+<li>Immediately prior to loading the gel, wash out the wells 3<b>×</b>.</li>
+<li>Load DNA ladder and samples into the gel.
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep a space between samples and avoid the end wells on the gel.</div>
+</li>
+<li>Run gel at 155 V for about 1.5 h.
+<div class="note">
+<span class="note-title">Note:</span> Purple dye runs at about 10 base pairs (bp), so stop when purple dye is ∼3/4 of the way down.</div>
+</li>
+<li>While running, poke holes in 0.5 mL tubes using a 21 G needle and place inside 2 mL tubes.
+<div class="optional">
+<span class="optional-title">Optional:</span> 0.5 mL Gel Breaker Tubes that already have holes could be used as an alternative, but the size of the holes still needs to be increased by running a 21 G needle through each hole.</div>
+</li>
+<li>Stain the gel with ethidium bromide (EtBr). Add 14 μL of 10 mg/mL EtBr to 200 mL of 1<b>×</b> TBE buffer in a clean RNase-free tray. Add the gel and rock for 10 min.</li>
+<li>Take a picture of the gel. Then cut the region of the gel corresponding to 50–250 nucleotides (nt) using a clean razor blade and put the gel slice in the 0.5 mL tubes.
+<div class="critical">
+<span class="critical-title">Critical:</span> The razor blade needs to be sterilized using 100% EtOH and should be changed when cutting each sample gel lane to avoid sample cross-contamination.</div>
+</li>
+<li>Spin the samples at 14,000 rpm speed at 4°C for 2 min. Make sure all of the gel goes through the holes. If not, spin again for 1 min and repeat until all gel is out of 0.5 mL tube, poking more holes in the tubes if necessary.</li>
+<li>Add 300 μL of 0.3M NaCl and rotate for 4 h.</li>
+<li>After 4 h, pipette the entire sample into a Spin-X column, and spin at 14,000 rpm at 4°C for 2 min. Make sure all of the liquid spins out. There should be about 300 μL. Spin longer if necessary.</li>
+<li>Precipitate the RNA by adding 3 μL glycogen, 30 μL 3M NaOAc (pH 5.5), and 900 μL 100% EtOH.</li>
+<li>Leave at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 5 μL of Nuclease-free H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">3′ and 5′ adapter ligation and second size selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>The purpose of this step is to ligate the 3′ and 5′ adapters onto the PNK-treated RNA fragments and use gel-mediated size selection to isolate adapter-ligated RNA fragments in the proper size range while removing any potential adapter-adapter dimers.</p>
+<ol start="11">
+<li>3′ adapter ligation.
+<ol type="a">
+<li>In 5 μL of PNK-treated RNA, add 1 μL of RA3 3′ adapter, mix, and spin.</li>
+<li>Incubate the tube in the pre-heated thermal cycler at 70°C for 2 min and then 4°C for 2 min.</li>
+<li>Prepare mix: add 2 μL of T4 RNA ligation buffer, 1 μL of RNase OUT, and 1 μL of T4 RNA Ligase 2 truncated, mix, and spin.</li>
+<li>Add 4 μL of the mix to each pre-heated sample (6 μL), mix, and spin. The total volume of the reaction should be 10 μL. Place back in thermal cycler at 28°C for 1:15 h.</li>
+</ol>
+</li>
+<li>5′ adapter ligation.
+<ol type="a">
+<li>With 5 min left to go, heat 1 μL of RA5 5′ adapter (25 μM) per sample at 70°C for 2 min and then put it on ice for 2 min.</li>
+<li>Prepare mix: add 1 μL of 10 mM ATP and 1 μL of T4 RNA Ligase 1. Gently pipette the entire volume up and down 6–8 times to mix thoroughly.</li>
+<li>Add the mix into the RA5 5′ adapter. Gently pipette the entire volume up and down 6–8 times to mix thoroughly.</li>
+<li>Add 3 μL of the mix from the aliquoted RA5 5′ adapter tube to the reaction from step 2 of RA 3′ adapter-linked RNA. The total volume of the reaction should be 13 μL.</li>
+<li>Place back in thermal cycler at 28°C for 1 h.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Place in −20°C freezer for 12–16 h. Unless proceeding directly to next step.</div>
+<ol start="13">
+<li>Second size selection.
+<ol type="a">
+<li>Put 15% TBE-urea polyacrylamide gel (10 wells) in the gel box such that the wells face inward, place a balancer opposite if running only one gel, and lock it into position. Pour about 700 mL of 1<b>×</b> TBE buffer into the gel box.
+<div class="note">
+<span class="note-title">Note:</span> First filling the space between the gel and balancer and then pouring the rest on the outside.</div>
+</li>
+<li>Wash the wells out 3<b>×</b> with 1 mL pipette using the running buffer in the gel box.</li>
+<li>Pre-run the gel for 25 min at 155 V.</li>
+<li>15 min before the pre-run is complete, prepare the ladder and samples:
+<ol type="i">
+<li>Prepare the ladder by mixing 1.5 μL of Ultra Low Range DNA Ladder, 8.5 μL of H<sub>2</sub>0, and 10 μL of Gel Loading Buffer II in a 1.5 mL tube.</li>
+<li>To each of the samples, add 10 μL of Gel Loading Buffer II.</li>
+<li>Put samples (BUT NOT THE LADDER) at 70°C for 5 min and then place on ice for 3 min.</li>
+</ol>
+</li>
+<li>Immediately prior to loading the gel, wash out the wells 3<b>×</b>.</li>
+<li>Load DNA ladder and samples into the gel.
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep a space between samples and avoid the end wells of the gel.</div>
+</li>
+<li>Run gel at 155 V for about 1.5 h. Purple dye runs at about 10 bp, so stop when purple dye is ∼3/4 of the way down.</li>
+<li>While running, poke holes in 0.5 mL tubes using a 21 G needle and place inside 2 mL tubes.
+<div class="optional">
+<span class="optional-title">Optional:</span> you can use 0.5 mL Gel Breaker Tubes that already have holes, but you still need to increase the size of the holes by running a 21 G needle through each hole.</div>
+</li>
+<li>Stain the gel with EtBr. Add 14 μL of 10 mg/mL EtBr to 200 mL of 1<b>×</b> TBE buffer in a clean RNase-free tray. Add the gel and rock for 10 min.</li>
+<li>Take a picture of the gel. Then cut the region of the gel that corresponds to 100–300 nt using a clean razor blade and put the gel slice in the 0.5 mL tubes.
+<div class="note">
+<span class="note-title">Note:</span> Adapter-adapter dimers are 50 nt at this point, and the first RNA size selection is 50–250 nt, so the preferred size range in this step is 100–300 nt.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The razor blade needs to be sterilized with 100% EtOH and should be changed when cutting the gel lanes corresponding to each different sample to avoid sample cross-contamination.</div>
+</li>
+<li>Spin the samples at 14,000 rpm, 4°C for 2 min. Make sure most/all of the gel goes through the holes. If not, spin again, poking more holes in the tubes if necessary.</li>
+<li>Add 300 μL of 0.3M NaCl and rotate for 4 h.</li>
+<li>After 4 h, pipette the entire sample into a Spin-X column, and spin at 14,000 rpm at 4°C for 2 min. Make sure all of the liquid spins out. There should be about 300 μL. Spin longer if necessary.</li>
+<li>Precipitate the RNA by adding 3 μL of glycogen, 30 μL of 3M NaOAc (pH 5.5), and 900 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 6 μL of nuclease-free H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.5">Reverse transcription, PCR amplification, and third size selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This step uses reverse transcription to synthesize complementary DNA of adapter-ligated RNA, amplifies these desired DNA molecules while also adding index primers to each RNA sequencing library, and uses gel-mediated size selection to isolate adapter-ligated RNA fragments in the proper size range while removing any potential adapter-adapter dimers.</p>
+<ol start="14">
+<li>Reverse transcription.
+<ol type="a">
+<li>Preheat the thermal cycler to 70°C.</li>
+<li>add 1 μL of RNA RT Primer (RTP, 100 μM) into 6 μL of 5′ and 3′ Adapter-ligated RNA.</li>
+<li>Gently pipette the entire volume up and down 6–8 times to mix thoroughly, then centrifuge briefly.</li>
+<li>Incubate the tube in the preheated thermal cycler at 70°C for 2 min and then 4°C for 2 min.</li>
+<li>Prepare the following RT mix per sample:
+<ol type="i">
+<li>Add 2 μL of 5<b>×</b> First Strand Buffer.</li>
+<li>Add 0.5 μL of 12.5 mM dNTP mix.</li>
+<li>Add 1 μL of 100 mM DTT.</li>
+<li>Add 1 μL of RNase Inhibitor.</li>
+<li>Add 1 μL of SuperScript II Reverse Transcriptase.</li>
+</ol>
+</li>
+<li>Gently pipette the entire volume up and down 6–8 times to mix thoroughly, then centrifuge briefly.</li>
+<li>Add 5.5 μL of the mix to the reaction tube from step b. Gently pipette the entire volume up and down 6–8 times to mix thoroughly, then centrifuge briefly. The total volume should now be 12.5 μL.</li>
+<li>Incubate the tube on the thermal cycler at 50°C for 1 h.</li>
+</ol>
+</li>
+</ol>
+<ol start="15">
+<li>PCR amplification.
+<ol type="a">
+<li>Set the PCR program:
+<table id="undtbl15">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">11 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Make master mix for PCR solution per sample, which is everything listed below except for the index primer.
+<ol type="i">
+<li>Add 35 μL of 2<b>×</b> Phusion Mix.</li>
+<li>Add 21 μL of 5 mM Betaine.</li>
+<li>Add 2 μL of 10 μM RNA PCR Primer.
+<div class="note">
+<span class="note-title">Note:</span> Make 10% extra reagent if you are preparing for multiple samples. A different PCR Index Primer is used for each sample, so add this directly to the sample rather than including in the master mix.</div>
+</li>
+</ol>
+</li>
+<li>Gently pipette the entire volume up and down 6–8 times to mix thoroughly, then centrifuge briefly, and place the tube on ice.</li>
+<li>Add 58 μL of the PCR master mix to each sample tube. Add 2 uL of the correct 10 μM RNA PCR Index Primer.</li>
+<li>Gently pipette the entire volume up and down 6–8 times to mix thoroughly, centrifuge briefly, and place the tube on ice. The total volume should now be 72.5 μL.</li>
+<li>Aliquot the reaction into 3 PCR tubes, with approximately 25 μL in each tube.</li>
+<li>Place in the thermal cycler and run the above PCR program.</li>
+<li>Merge 3 tubes of PCR product in a 1.5 mL tube.</li>
+<li>Precipitate the DNA by adding 3 μL of glycogen, 30 μL of 3M NaOAc (pH 5.5), and 300 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 6 μL of Nuclease-free H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>Third size selection. <a href="#sec7.3">Troubleshooting 2</a>
+<ol type="a">
+<li>Put 6% TBE polyacrylamide gel (10 wells) in the gel box such that the wells face inward, place a balancer opposite if run only one gel, and lock it into position. Pour about 700 mL of 1<b>×</b> TBE buffer into the gel box.
+<div class="note">
+<span class="note-title">Note:</span> There is no urea in this gel, so there is no need to pre-run it.</div>
+</li>
+<li>Prepare the ladder and samples:
+<ol type="i">
+<li>Mix 1.5 μL of Ultra Low Range DNA Ladder, 8.5 μL of Nuclease-free H<sub>2</sub>O, and 10 μL of Gel Loading Buffer II.</li>
+<li>Add 10 μL of Gel Loading Buffer II to each of the samples.</li>
+</ol>
+</li>
+<li>Load DNA ladder and samples into the gel.
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep a space between samples and avoid the lanes at the ends of the gel.</div>
+</li>
+<li>Run gel at 155 V for about 30 min.
+<div class="note">
+<span class="note-title">Note:</span> Until the purple dye touches the bottom of the gel.</div>
+</li>
+<li>While running, poke holes in 0.5 mL tubes using a 21 G needle and place inside 2 mL tubes.
+<div class="optional">
+<span class="optional-title">Optional:</span> you can use 0.5 mL Gel Breaker Tubes that already have holes, but you still need to increase the size of the holes by running a 21 G needle through each hole.</div>
+</li>
+<li>Stain the gel with EtBr. Add 14 μL of 10 mg/mL EtBr to 200 mL of 1<b>×</b> TBE buffer in a clean RNase-free tray. Add the gel and rock for 7 min.</li>
+<li>Take a picture of the gel. Then cut the region of the gel that corresponds to 168 bp to the end of signal using a clean razor blade and put the gel slice in the 0.5 mL tubes. <b>Excepted result:</b> The DNA signal in the gel above 168 bp should be visible, indicating the adaptor ligation and PCR amplification worked successfully.
+<div class="note">
+<span class="note-title">Note:</span> Adapter-adapter dimer is 118 bp at this point, and the first RNA size selection is 50–250 nt, so the preferred size range in this selection is 168–368 bp.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The razor blade needs to be sterilized with 100% EtOH and should be changed when cutting gel lanes corresponding to the different samples to avoid sample cross-contamination.</div>
+</li>
+<li>Spin the samples at 14,000 rpm, 4°C for 2 min. Make sure most/all of the gel goes through the holes. If not, spin again for 1 min, poking more holes in the tubes if necessary.</li>
+<li>Add 300 μL of 1<b>×</b> NEB Buffer 2 and rotate for 2 h.</li>
+<li>After 2 h, pipette the entire sample into a Spin-X column, and spin at 14000 rpm at 4°C for 2 min. Make sure all of the liquid spins out. There should be about 300 μL. Spin longer if necessary.</li>
+<li>Precipitate the DNA by adding 3 μL of glycogen, 30 μL of 3M NaOAc (pH 5.5), and 900 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 2 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 12 μL of Nuclease-free H<sub>2</sub>O.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.6">DSN treatment and PCR amplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>This step treats the DNA library samples with Duplex Specific Nuclease (DSN) normalization to reduce high abundant DNA molecules derived from rRNA and tRNA, and then amplify the DSN-treated DNA samples through a PCR reaction.</p>
+<ol start="17">
+<li>DSN Treatment. <a href="#sec7.7">Troubleshooting 4</a>
+<ol type="a">
+<li>Put a total of 100 ng of sample DNA into 13.5 μL of Nuclease-free H<sub>2</sub>O in 200 μL PCR tubes.
+<div class="note">
+<span class="note-title">Note:</span> Store the remaining library at −80°C. The DSN treatment can be repeated if more library is necessary for sequencing.</div>
+</li>
+<li>Add 4.5 μL of Hybridization buffer and mix thoroughly.</li>
+<li>Incubate samples in the thermocycler 98°C 2 min, followed by 68°C 5 h.
+<div class="note">
+<span class="note-title">Note:</span> The 5 h incubation has been found to reduce rRNA and tRNA in Arabidopsis. For other species a range of incubation times should be tested.</div>
+</li>
+<li>After 4.5 h, dilute 4 μL of 10<b>×</b> DSN Master buffer in 16 μL of Nuclease-free H<sub>2</sub>O to make 2<b>×</b> of DSN Master buffer.</li>
+<li>Incubate 2<b>×</b> DSN Master buffer at 68°C for the remainder of the 5 h incubation.</li>
+<li>Add 20 μL of 2<b>×</b> DSN Master buffer to each sample and mix thoroughly.
+<div class="note">
+<span class="note-title">Note:</span> Do not allow samples to cool down, mix by pipetting and briefly centrifuge.</div>
+</li>
+<li>Incubate samples at 68°C for another 10 min.</li>
+<li>Add 2 μL of DSN enzyme to DNA samples and mix thoroughly.
+<div class="note">
+<span class="note-title">Note:</span> Do not allow samples to cool down, mix by pipetting and briefly centrifuge.</div>
+</li>
+<li>Incubate samples at 68°C for another 25 min.</li>
+<li>Add 40 μL of DSN STOP solution (10 mM EDTA) and mix thoroughly.</li>
+<li>Transfer samples to 1.5 mL tubes and add 20 μL of Nuclease-free H<sub>2</sub>O, bringing the volume up to 100 μL.</li>
+<li>Precipitate the DNA by adding 3 μL of Glycogen, 10 μL of 3M NaOAc (pH 5.5), and 300 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 2 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C for 12–16 h at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>Resuspend DNA in 6 μL of Nuclease Free H<sub>2</sub>O. Allow samples to resuspend on ice for 25 min.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>PCR amplification.
+<ol type="a">
+<li>Put the 6 μL of DSN-treated samples in new PCR tubes.</li>
+<li>Make the Phusion PCR mix, which is everything listed below except for the index primer.
+<ol type="i">
+<li>Add 50 μL of 2<b>×</b> Phusion Mix.</li>
+<li>Add 40 μL of 5 mM Betaine.</li>
+<li>Add 2 μL of 10 μM RNA PCR Primer.
+<div class="note">
+<span class="note-title">Note:</span> Make 10% extra reagent if you are preparing multiple samples. A different PCR Index Primer is used for each sample, so add this directly to the sample rather than including in the master mix.</div>
+</li>
+</ol>
+</li>
+<li>Add 92 μL of the Phusion PCR mix and 2 μL of the appropriate PCR Index Primer to each DSN-treated sample.</li>
+<li>Divide each 100 μL of sample volume into 4 PCR tubes (25 μL/tube).</li>
+<li>Set the PCR program on PCR machine.
+<table id="undtbl16">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">11 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>65°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Merge the 100 μL of PCR product in a 1.5 mL tube.</li>
+<li>Precipitate the DNA by adding 3 μL of glycogen, 10 μL of 3M NaOAc (pH 5.5), and 300 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 1 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> If not doing the size selection the same day, leave at −80°C for 12–16 h.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>Resuspend DNA in 10 μL of Nuclease-free H<sub>2</sub>O. Allow samples to resuspend on ice for 25 min.</li>
+</ol>
+</li>
+</ol>
+<ol start="19">
+<li>Forth size selection and quantification.
+<ol type="a">
+<li>Put 6% TBE polyacrylamide gel (10 wells) in the gel box such that the wells face inward, place a balancer opposite if run only one gel, and lock it into position. Pour about 700 mL of 1<b>×</b> TBE buffer into the gel box.
+<div class="note">
+<span class="note-title">Note:</span> There is no urea in this gel, so there is no need to pre-run it.</div>
+</li>
+<li>Prepare the ladder and samples:
+<ol type="i">
+<li>Mix 1.5 μL of Ultra Low Range DNA Ladder, 8.5 μL of Nuclease-free H<sub>2</sub>O, and 10 μL of Gel Loading Buffer II.</li>
+<li>Add 10 μL of Gel Loading Buffer II to each of the samples.
+<div class="note">
+<span class="note-title">Note:</span> There is no need to pre-heat DNA sample.</div>
+</li>
+</ol>
+</li>
+<li>Load the DNA ladder and samples into the gel.
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep a space between samples and avoid the ends.</div>
+</li>
+<li>Run gel at 155 V for about 30 min.
+<div class="note">
+<span class="note-title">Note:</span> Until the purple dye touches the bottom of the gel.</div>
+</li>
+<li>While running, poke holes in 0.5 mL tubes using a 21 G needle and place inside 2 mL tubes.
+<div class="optional">
+<span class="optional-title">Optional:</span> you can use 0.5 mL Gel Breaker Tubes that already have holes, but you still need to increase the size of the holes by running a 21 G needle through each hole.</div>
+</li>
+<li>Stain the gel with ethidium bromide. Add 14 μL of 10 mg/mL EtBr to 200 mL of 1<b>×</b> TBE buffer in a clean RNase-free tray. Add the gel and rock for 7 min.</li>
+<li>Take a picture of the gel. Then cut the gel in the region corresponding to 168 bp to the end of signal using a clean razor blade and put the gel slice in the 0.5 mL tubes.
+<div class="note">
+<span class="note-title">Note:</span> Adapter-adapter dimer is 118 bp at this point, and the first RNA size selection is 50–250 nt, so the preferred size range in this selection is 168–368 bp.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The razor blade needs to be sterilized with 100% EtOH and should be changed when cutting the gel lanes corresponding to each different sample to avoid sample cross-contamination.</div>
+</li>
+<li>Spin the samples at 14,000 rpm, 4°C for 2 min. Make sure most/all of the gel goes through the holes. If not, spin again for 1 min, poking more holes in the tubes if necessary.</li>
+<li>Add 300 μL of 1<b>×</b> NEB Buffer 2 and rotate for 2 h.</li>
+<li>After 2 h, pipette the entire sample into a Spin-X column, and spin at 14000 rpm, 4°C for 2 min. Make sure all of the liquid spins out. There should be about 300 μL. Spin longer if necessary.</li>
+<li>Precipitate the DNA by adding 3 μL of glycogen, 30 μL of 3M NaOAc (pH 5.5), and 900 μL of 100% EtOH.</li>
+<li>Leave at −80°C at least 2 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> We usually leave the samples at −80°C overnight at this stage.</div>
+</li>
+<li>Centrifuge at maximum speed for at least 60 min at 4°C. If only at −80°C for 1 h, increase spin by 10 min.</li>
+<li>Remove supernatant. Wash with 750 μL of 80% EtOH.</li>
+<li>Centrifuge at maximum speed for 5 min at 4°C.</li>
+<li>Pipette out as much of the supernatant as possible without disturbing the pellet. If not able to pipette it all out, allow the tubes to dry upright.</li>
+<li>As soon as the pellet is dry, resuspend in 12 μL of Nuclease-free H<sub>2</sub>O.</li>
+<li>Quantify the library concentration using a Nanodrop and sequence the resulting libraries.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The bioanalyzer shows the sample with expected RNA fragment sizes and without contaminating adapter-adapter dimers (<a href="#fig1">Figure 1</a>).<a href="#sec7.5">Troubleshooting 3</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1167-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Example of a Bioanalyzer track for the final library from one NAD-seq samples with expected sizes from 168-368 bp, and no adapter-adapter dimers (missing peak at 118 bp)</div>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The sequencing for at least 2 replicates of both NAD-seq and total RNA-seq produces at least 4 single-end fastq files for each genotype (Col-0 and <i>dxo1-2</i>). The raw data are trimmed to remove the adapter sequences using cutadapt (v1.9.1) with default parameters (<a href="#bib6">Martin 2011</a>). Trimmed reads are aligned to the Arabidopsis genome (TAIR10) using STAR (version 2.4.2a) (<a href="#bib2">Dobin et al., 2013</a>). HTSeq (v0.6.0) is used to calculate the raw reads mapping to given transcripts in a strand-specific manner (<a href="#bib1">Anders et al., 2015</a>). At least 1.5 GB RAM are required for running these command line codes for the Arabidopsis genome. Alternatively, Hisat2 (<a href="#bib3">Kim et al., 2019</a>) can be used for reads alignment.</p>
+<div class="note">
+<span class="note-title">Note:</span> RAM requirements for STAR mapping: at least 10<b>×</b> bytes as compared to the genome size.</div>
+<ol>
+<li>The command line commands for trimming adaptors</li>
+</ol>
+<div class="textbox">
+<p><code># For each fastq file in your experiment (∗.fastq), run:</code></p>
+<p><code>for file in ∗.fastq</code></p>
+<p><code>do</code></p>
+<p><code>cutadapt -a TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCCGTCCATCTCGTATGC -o $(echo $file |</code></p>
+<p><code>sed 's/.fastq/_trimmed.fq/') $file &gt; $(echo $file | sed 's/∗.fastq/_cutadapt_report.txt/')</code></p>
+<p><code>done</code></p>
+</div>
+<ol start="2">
+<li>The command lines for building the genome index and mapping: <a href="#sec7.9">Troubleshooting 5</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>STAR --runMode genomeGenerate --genomeDir TAIR10_star_index --genomeFastaFiles</code></p>
+<p><code>TAIR10_genome.fasta</code></p>
+<p><code># For each file (∗_trimmed.fq) following the adapter trimming step, run:</code></p>
+<p><code>for file in ∗trimmed.fq</code></p>
+<p><code>do</code></p>
+<p><code>STAR --runThreadN 1 --genomeDir TAIR10_star_index --readFilesIn $file --outFilterMultimapNmax</code></p>
+<p><code>10 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.10 --outFileNamePrefix $(echo</code></p>
+<p><code>$file | sed 's/_trimmed.fq//')</code></p>
+<p><code>done</code></p>
+</div>
+<ol start="3">
+<li>The command line code for counting raw read number in each detectable annotated transcript:</li>
+</ol>
+<div class="textbox">
+<p><code># For each alignment output file (∗Aligned.out.sam), run:</code></p>
+<p><code>for file in ∗Aligned.out.sam</code></p>
+<p><code>do</code></p>
+<p><code>htseq-count $file TAIR10_GFF3_genes.gff -f sam -q -t gene -i ID -m intersection-nonempty --</code></p>
+<p><code>stranded=yes &gt;$(echo $file | sed 's/Aligned.out.sam/_geneCount.txt/')</code></p>
+<p><code>done</code></p>
+</div>
+<ol start="4">
+<li>Finally, the NAD<sup>+</sup> capped RNA enrichment in NAD-seq compared to total RNA-seq is defined using DESeq2 (<a href="#bib4">Love et al., 2014</a>) with a False Discovery Rate (FDR) &lt; 0.1. Alternatively, edgeR (<a href="#bib7">McCarthy et al., 2012</a>) can be used for defining NAD<sup>+</sup> capped RNA enrichment with the same statistical standard.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Since the proportion of NAD<sup>+</sup> capped RNAs is relatively low among the total RNA population, the protocol for NAD-seq library construction requires 50–150 μg of total RNA as initial input, which may restrict its application from some small tissues such as embryos and pollen grains. The low RNA output after streptavidin bead pull down also increases the difficulty in adding a polyA<sup>+</sup> selection step to allow the specific detection of NAD<sup>+</sup> capped mRNAs.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>At steps 5–7, low amount of RNAs are detected after Streptavidin bead pulldown.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Improve RNA input for ADPRC treatment followed by copper click chemistry, and make sure the ADPRC, azide-PEG3-biotin, and CuSO4 are freshly made.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>At step 16, No DNA signals are observed in the third gel selection step after adaptor ligation, reverse transcription, and PCR amplification</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Make sure the PNK treatment uses the ligase buffer that contains ATP, and 3′adaptor ligation uses the T4 RNA Ligase 2 truncated without addition of ATP, while 5′adaptor ligation uses T4 RNA Ligase 1 and includes the addition of ATP.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Step 19 shows that libraries contain a high abundance of adapter dimers.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Cut the gel carefully avoiding the adapter dimer size range in each step of gel-mediated size selection subsequent to adapter ligation.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>At step 17, libraries contain a high abundance of ribosomal RNA (rRNA) reads once sequencing data is analyzed.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Optimize DSN treatment to ensure decrease of rRNA from the library preps.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>At step 2 of Quantification and Statistical Analysis, unable to use the STAR tool for read alignment because of a large genome and not enough RAM.</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>Map reads to the genome using Hisat2 (<a href="#bib3">Kim et al., 2019</a>) instead, which requires less RAM as compared to the STAR tool.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Anders, S., Pyl, P.T., and Huber, W. (2015). HTSeq--a Python framework to work with high-throughput sequencing data. Bioinformatics <i>31</i>, 166-169. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref1">View at publisher</a></p>
+<p id="bib2">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref2">View at publisher</a></p>
+<p id="bib3">Kim, D., Paggi, J.M., Park, C., Bennett, C., and Salzberg, S.L. (2019). Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype. Nat. Biotechnol. <i>37</i>, 907-915. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref3">View at publisher</a></p>
+<p id="bib4">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. <i>15</i>, 550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref4">View at publisher</a></p>
+<p id="bib5">Lyons, E., Pedersen, B., Kane, J., Alam, M., Ming, R., Tang, H., Wang, X., Bowers, J., Paterson, A., Lisch, D., et al. (2008). Finding and comparing syntenic regions among Arabidopsis and the outgroups papaya, poplar, and grape: CoGe with rosids. Plant Physiol. <i>148</i>, 1772-1781. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref5">View at publisher</a></p>
+<p id="bib6">Martin, M. (2011). Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet J. <i>17</i>, 10. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref6">View at publisher</a></p>
+<p id="bib7">McCarthy, D.J., Chen, Y., and Smyth, G.K. (2012). Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation. Nucleic Acids Res. <i>40</i>, 4288-4297. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref7">View at publisher</a></p>
+<p id="bib8">Winz, M.-L., Cahová, H., Nübel, G., Frindert, J., Höfer, K., and Jäschke, A. (2017). Capture and sequencing of NAD-capped RNA sequences with NAD captureSeq. Nat. Protoc. <i>12</i>, 122-149. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref8">View at publisher</a></p>
+<p id="bib9">Yu, X., Willmann, M.R., Vandivier, L.E., Trefely, S., Kramer, M.C., Shapiro, J., Guo, R., Lyons, E., Snyder, N.W., and Gregory, B.D. (2021). Messenger RNA 5’ NAD+ capping is a dynamic regulatory epitranscriptome mark that is required for proper response to abscisic acid in Arabidopsis. Dev. Cell <i>56</i>, 125-140. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00607-9/sref9">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Dr. Brian D. Gregory (<a href="mailto:bdgregor@sas.upenn.edu">bdgregor@sas.upenn.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The data sets analyzed during this study are available at GEO: GSE142390.</p>
+<h3>Acknowledgments</h3>
+<p>The authors would like to thank both past and present members of the B.D.G. lab for helpful discussions. This work was funded by <a href="https://doi.org/10.13039/100000001">NSF</a> grants IOS-2023310 and IOS-1849708 to B.D.G. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</p>
+<h3>Author contributions</h3>
+<p>B.D.G. conceived the study. X.Y., L.E.V. and B.D.G. designed and performed experiments and analyzed the data. X.Y. and B.D.G. wrote the paper with assistance from all authors. The authors have read and approved the manuscript for publication.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

@@ -1,0 +1,905 @@
+<article>
+<section>
+<h1 id="header">Rapid Testing of CRISPR Nucleases and Guide RNAs in an <em>E. coli</em> Cell-Free Transcription-Translation System</h1>
+<p><time datetime="2019-12-26">Published: December 26, 2019</time></p>
+<p>Ryan Marshall,<sup><a href="#aff1">1</a>,<a href="#cor1">*</a></sup> Chase L. Beisel,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#cor2">**</a></sup> and Vincent Noireaux<sup><a href="#aff1">1</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Physics and Astronomy, University of Minnesota, 115 Union Street SE, Minneapolis, MN 55455, USA</p>
+<p id="aff2"><sup>2</sup>Helmholtz Institute for RNA-based Infection Research (HIRI), Helmholtz Center for Infection Research, 97080 Würzburg, Germany</p>
+<p id="aff3"><sup>3</sup>Medical Faculty, University of Würzburg, Würzburg, Germany</p>
+<p id="fn1"><sup>4</sup>Lead Contact</p>
+<p id="fn2"><sup>5</sup>Technical Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:marsh752@umn.edu">marsh752@umn.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:chase.beisel@helmholtz-hiri.de">chase.beisel@helmholtz-hiri.de</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:noireaux@umn.edu">noireaux@umn.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2019.100003">10.1016/j.xpro.2019.100003</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We present a protocol to rapidly test DNA binding and cleavage activity by CRISPR nucleases using cell-free transcription-translation (TXTL). Nuclease activity is assessed by adding DNA encoding a nuclease, a guide RNA, and a targeted reporter to a TXTL reaction and by measuring the fluorescence for several h. The reactions, performed in a few microliters, allow for parallel testing of many nucleases and guide RNAs. The protocol includes representative results for (d)Cas9 from <em>Streptococcus pyogenes</em> targeting a GFP reporter gene.</p>
+<p>For complete information on the generation and use of this protocol, please refer to the paper by <a href="#bib4">Marshall et al. (2018)</a>.</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A protocol to test DNA binding and cleavage activity by CRISPR nucleases is presented</li>
+<li>Nuclease activity is assessed by adding DNA parts to a cell-free expression reaction</li>
+<li>Quantitative measurements are performed by fluorescence using a plate reader</li>
+<li>The µl-scale reactions allow for parallel testing of many nucleases and sgRNAs</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/15-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<p>See the <a href="#krt">Key Resources Table</a> for the complete list of required materials.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Autoclaved DI water is required whenever water is listed.</div>
+<h3>Cell-Free System</h3>
+<div class="critical">
+<span class="critical-title">Critical:</span> In this protocol, we used a commercially obtained TXTL mix (sold as part of the myTXTL kit sold by Arbor Biosciences). This mix can be made in-house (<a href="#bib6">Sun et al., 2013</a>). The kit relies on <em>E. coli</em>’s native RNA polymerase and the sigma70 sigma factor.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Other cell-free expression kits are commercially available and can be integrated into the protocol below. However, be aware that most of these kits solely rely on T7 RNA polymerase for transcription. Therefore, targeting <em>E. coli</em> regulatory parts (e.g. promoters) is not possible.</div>
+<p>GamS protein (Arbor Biosciences #501024) or Chi6 DNA (see <a href="#krt">Key Resources Table</a>) should be added if linear DNA is used (<a href="#bib3">Marshall et al., 2017</a>). Both GamS and Chi6 inhibit the recBCD complex that degrades linear DNA in TXTL.</p>
+<h3>Fluorescence Measurement</h3>
+<div class="critical">
+<span class="critical-title">Critical:</span> 96 V-bottom well plates (Sigma CLS3357-100EA) and caps (sealing mat) for 96 well plate (Sigma CLS3080-100EA).</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We used a Biotek H1m plate reader pre-incubated at 29°C. However, other plate readers can be used. The plate reader needs to incorporate the following capabilities (as a minimum): read fluorescence (eGFP channel) in TXTL reactions of volume 2–10 μl, be programmable for kinetics (time lapse), heat plates between room temperature up to 29°C. The plate reader needs to be programmed for a kinetics before starting the experiment.</div>
+<h3>DNA Construct Design</h3>
+<p>The T7 promoter can be used in the myTXTL kit. In that case it is necessary to express the T7 RNAP through the plasmid P70a-T7RNAP (Arbor Biosciences) at a 0.2 nM final concentration in TXTL reactions.</p>
+<p>P70a plasmids should be amplified using the <em>E. coli </em> strain KL740.</p>
+<p>Nuclease: We recommend having the CRISPR nuclease under a strong promoter specific to the sigma factor 70, and a strong ribosome binding site (RBS). In the experiments below, dSpyCas9 (plasmid pCB453) is cloned downstream of the promoter J23109 (<a href="http://parts.igem.org/Part:BBa_J23109">http://parts.igem.org/Part:BBa_J23109</a>) and a strong RBS. In such a configuration, the concentration of the nuclease plasmid was set to ∼3 nM in the TXTL reactions.</p>
+<p>sgRNA DNA: linear DNA, either as commercial gene fragments (e.g., gblocks from IDT) or PCR products, works well as long as RecBCD is inhibited using GamS or short dsDNA containing Chi sites (see “Cell-free system” above). The sgRNA DNA is used at 1 nM in TXTL reactions. The sgRNA should be cloned under a strong promoter, such as P70a derived from the Lambda phage (<a href="#bib5">Shin and Noireaux, 2010</a>)(<a href="#bib1">Garamella et al., 2016</a>). The P70a promoter sequence flanked by the SphI and NheI restriction sites:</p>
+<p>GCATGCTGAGCTAACACCGTGCGTG<strong>TTGACA</strong>ATTTTACCTCTGGCGGT<strong>GATAAT</strong>GGTTGC<u>A</u>GCTAGC: the −35 and −10 sites are bold, start transcription is underlined. We recommend adding at least 30 bps upstream of the promoter to prevent the DNA end interfering with polymerase binding and transcriptional initiation.</p>
+<p>Target gene: can be cloned under any <em>E. coli </em> promoter specific to sigma 70. P70a-deGFP (pTXTL-p70a-deGFP, Arbor Biosciences #502056) at 100 nM or greater.</p>
+<p>Chi6 DNA oligonucleotides (<a href="#bib3">Marshall et al. ,2017</a>). The two oligos should be annealed and diluted to a concentration of 100 μM. The short Chi6 dsDNA contains 6 sites GGTGGCC specific to the <em>E. coli</em> RecBCD complex.</p>
+<p>Chi6 s: TCACTTCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCA.</p>
+<p>Chi6-as: TGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGAAGTGA).</p>
+<p>Chi6 prevents degradation of linear DNA in TXTL when added at 2 μM). An alternative to Chi6 DNA is the protein GamS from Lambda phage (<a href="#bib6">Sun et al., 2013</a>). Both Chi6 and GamS inhibit the recBCD complex that degrades linear DNA in TXTL (<a href="#bib3">Marshall et al. ,2017</a>).</p>
+<h3>Preparation of DNA Stocks</h3>
+<p>DNA parts (plasmids or linear dsDNA) stock solutions should be at 100 nM or greater.</p>
+<p>Isolated plasmids should be subjected to a second round of purification using a PCR clean-up step (e.g., PureLink PCR purification kit from ThermoFisher Scientific #K310001). A benefit of TXTL is that many pieces of DNA can be combined in a single reaction without issue.</p>
+<p>Use autoclaved DI water for all dilutions.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>GamS protein</td>
+<td>Arbor Biosciences</td>
+<td>Cat# 501024</td>
+</tr>
+<tr>
+<td>recombinant GFP</td>
+<td>Cell Biolabs</td>
+<td>Cat# STA-201</td>
+</tr>
+<tr>
+<td>PBS 1X</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# P5493</td>
+</tr>
+<tr>
+<td colspan="3">Critical Commercial Assays</td>
+</tr>
+<tr>
+<td>myTXTL</td>
+<td>Arbor Biosciences</td>
+<td>Cat# 507024</td>
+</tr>
+<tr>
+<td>PureLink PCR purification kit</td>
+<td>ThermoFisher Scientific</td>
+<td>Cat# K310001</td>
+</tr>
+<tr>
+<td>ZymoPURE II Plasmid Midiprep kit</td>
+<td>Zymo Research</td>
+<td>Cat# D4201</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Chi6-s: TCACTTCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCACTGCTGGTGGCCA</td>
+<td>(<a href="#bib3">Marshall et al., 2017</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Chi6-as: TGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGGCCACCAGCAGTGAAGTGA</td>
+<td>(<a href="#bib3">Marshall et al., 2017</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>P70a-T7RNAP</td>
+<td>Arbor Biosciences</td>
+<td>Cat# 502082</td>
+</tr>
+<tr>
+<td>pCB453 (dSpyCas9)</td>
+<td>(<a href="#bib2">Leenay et al., 2016</a>)</td>
+<td><a href="https://benchling.com/s/seq-Oh3q5TQxBriEfVXoELUF">https://benchling.com/s/seq-Oh3q5TQxBriEfVXoELUF</a></td>
+</tr>
+<tr>
+<td>P70a-deGFP</td>
+<td>Arbor Biosciences</td>
+<td>Cat# 502056, <a href="https://benchling.com/s/seq-AOkyIqECfvs2Rzbipnq0">https://benchling.com/s/seq-AOkyIqECfvs2Rzbipnq0</a>
+</td>
+</tr>
+<tr>
+<td>sg3</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-h3RGrXaT16G1HqMdSN6t">https://benchling.com/s/seq-h3RGrXaT16G1HqMdSN6t</a></td>
+</tr>
+<tr>
+<td>sg4</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-4GpA9WsuxfOvbWnPTzUy">https://benchling.com/s/seq-4GpA9WsuxfOvbWnPTzUy</a></td>
+</tr>
+<tr>
+<td>sg6</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-mpWdq4pHKO4yP4enfnHH">https://benchling.com/s/seq-mpWdq4pHKO4yP4enfnHH</a></td>
+</tr>
+<tr>
+<td>sg8</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-fFaWKbxkxB0uuuWKphzD">https://benchling.com/s/seq-fFaWKbxkxB0uuuWKphzD</a></td>
+</tr>
+<tr>
+<td>sg9</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-a9MdH5przMSdkKbS9gmJ">https://benchling.com/s/seq-a9MdH5przMSdkKbS9gmJ</a></td>
+</tr>
+<tr>
+<td>sg-NT</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td><a href="https://benchling.com/s/seq-jFe4BE3wYv2sCDA93KGC">https://benchling.com/s/seq-jFe4BE3wYv2sCDA93KGC</a></td>
+</tr>
+<tr>
+<td colspan="3">Bacterial and Virus Strains</td>
+</tr>
+<tr>
+<td>KL 740 (P70a-T7RNAP, P70a-deGFP)</td>
+<td>CGSC Yale</td>
+<td>CGSC# 4382</td>
+</tr>
+<tr>
+<td>DH5alpha (pCB453)</td>
+<td>Invitrogen</td>
+<td>Cat# 18258012</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Bioinformatics</td>
+<td><a href="http://www.bioinformatics.org/sms2/dna_mw.html">http://www.bioinformatics.org/sms2/dna_mw.html</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Molbiotools</td>
+<td><a href="http://www.molbiotools.com/dnacalculator.html">http://www.molbiotools.com/dnacalculator.html</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Deposited Data</td>
+</tr>
+<tr>
+<td>DNA sequence files</td>
+<td>(<a href="#bib4">Marshall et al., 2018</a>)</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<div class="note">
+<span class="note-title">Note:</span> A dozen of other nucleases have been tested (<a href="#bib4">Marshall et al. ,2018</a>). Tens of gRNAs have been also tested on P70a-deGFP and other <em>E. coli</em> promoters (<a href="#bib4">Marshall et al. ,2018</a>), using the method shown in <a href="#fig1">Figure 1</a>.</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/15-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Overview of the TXTL CRISPR Assay</div>
+<p>Schematic of the experiment and location of some of the guide RNAs (sg 3, 4, 6, 8, 9) that have been tested on P70a-deGFP, data from (<a href="#bib3">Marshall et al. ,2018</a>).</p>
+</figcaption>
+</figure>
+<ol>
+<li>Pre-incubate the 96 V-bottom well plate with sealing mat at 29°C for at least 30 min prior to the reactions being pipetted into the plate in step 7. Pre-incubation can be done either in the plate reader at 29°C or in a small incubator at 29°C, concurrently with the preparation of the reactions.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This step is necessary to start reactions at the optimum temperature of 29°C and to avoid bias in the kinetics due to variable times needed to heat the plate (i.e. heating the plate from room temperature to 29°C).</div>
+<ol start="2">
+<li>Retrieve DNA (stored at −20°C) and make sgRNA DNA stocks for each of six sgRNA targets (including the non-target) at 10 nM in water. Make a dSpyCas9 plasmid stock at 100 nM in water. Make a P70a-deGFP plasmid stock at 100 nM in water.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> See <a href="#krt">Key Resources Table</a> for calculations of mass and concentrations of DNA.</div>
+<p>1 bp of linear or circular dsDNA = 617.9 g/mol on average</p>
+<p>1 μg/μl of 1 kbp circular or linear dsDNA = 1.62 μM</p>
+<p>The concentration of a 4 kbp plasmid at 1 μg/μl = 405 nM</p>
+<p>1 bp of linear or circular ssDNA = 308.5 g/mol on average</p>
+<p>1 μg/μl of 1 kb circular or linear ssDNA = 3.24 μM</p>
+<ol start="3">
+<li>Retrieve the myTXTL mix from the −80°C freezer. Thaw the mix on ice. Vortex gently and spin a few seconds at room temperature in a minifuge. Return the tube to ice. One myTXTL mix contains 75 μl of mix, with a final volume of 100 μl once DNA, water, and other components are added. This one mix is sufficient for 8 reactions of 12 μl.</li>
+<li>Keep the tube on ice, add components present in all reactions to the myTXTL mix and complete with water to 90% (90 μl) so the sgRNA DNA can be added later (<a href="#tbl1">Table 1</a>):</li>
+</ol>
+<table id="tbl1">
+<caption>Table 1. Reaction Components and Required Concentrations</caption>
+<thead>
+<tr>
+<th>Reaction Components</th>
+<th>Stock Concentration and Volume</th>
+<th>Final Concentration in Reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>myTXTL mix</td>
+<td>75 µl (one tube)</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>pCB453 (dSpyCas9 plasmid)</td>
+<td>100 nM, &gt; 10 µl</td>
+<td>3 nM</td>
+</tr>
+<tr>
+<td>P70a-deGFP plasmid</td>
+<td>100 nM, &gt; 10 µl</td>
+<td>1 nM</td>
+</tr>
+<tr>
+<td>Chi6 dsDNA</td>
+<td>100 µM, &gt; 10 µl</td>
+<td>2 µM</td>
+</tr>
+<tr>
+<td>GamS protein</td>
+<td>100 µM, &gt; 10 µl</td>
+<td>2 µM</td>
+</tr>
+<tr>
+<td>sgRNA DNA</td>
+<td>10 nM, &gt; 10 µl</td>
+<td>1 nM</td>
+</tr>
+<tr>
+<td>Autoclaved DI water</td>
+<td>NA, &gt; 50 µl</td>
+<td>NA</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Add 3 μl of pCB453 at 100 nM to the myTXTL mix (3 nM final concentration).</li>
+<li>Add 1 μl of P70a-deGFP at 100 nM to the myTXTL mix (1 nM final concentration).</li>
+<li>Add 2 μl of Chi6 (or GamS) at 100 μM to the myTXTL mix (2 μM final concentration).</li>
+<li>Add 9 μl water to bring the volume to 90 μl, which corresponds to 90% of the final volume.</li>
+<li>Vortex gently and spin a few seconds at room temperature on a minifuge.</li>
+<li>The next steps are done at room temperature before loading the well plate in the plate reader.</li>
+</ol>
+<ol start="5">
+<li>Aliquot 10.8 μl to eight 1.5 mL tubes.</li>
+<li>In each tube, add 1.2 μl of a different sgRNA at 10 nM (1 nM final concentration). Vortex gently.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Include a negative control (non-targeting sgRNA: sgRNA-NT, which does not inactivate transcription). For a positive control, use sg9 (strong inactivation of deGFP expression).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> To perform quantitative measurements, the same amounts of similar DNA (e.g. targeting or non-targeting sgRNA) must be used. It is also necessary to include a reaction that contains all the components except DNA to measure background fluorescence.</div>
+<ol start="7">
+<li>For each 12 μl reaction, pipette 5 μl into each of two wells (5 μl per replicate) of the 96-well plate.</li>
+<li>Load the pre-warmed plate in the plate reader and start the kinetics. On a Biotek H1m plate reader, the excitation is fixed at 485 nm, the emission at 525 nm, the time lapse between reads is typically 3 min for 16 h.</li>
+<li>Repeat the entire protocol as necessary for replicates.</li>
+</ol>
+</section>
+<section>
+<h2 id="quantitative-analysis">Quantitative Analysis</h2>
+<p>The plate reader should export a spreadsheet, with time points in the first column, and the fluorescence intensity value for each well of the microplate in subsequent columns.</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> To convert fluorescence intensity values to the concentration of the fluorescent protein, use a standard curve calibration. To make a standard curve calibration, dilute pure recombinant GFP (Cell Biolabs STA-201) in PBS 1X (Sigma-Aldrich P5493) to concentrations of 0.1, 0.33, 1, 3.3, 10, 33 μM. Add 5 μl of each concentration of deGFP to the well plate and measure the fluorescence intensity. Fit the data to a line and extract the equation of the line. The calibration is specific to the plate-reader settings (including type of plate reader, well plate, reaction volume, optics position, gain, excitation emission wavelengths, lamp energy). This step allows reporting truly quantitative results, as opposed to data in arbitrary fluorescence units.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The following two control experiments must be included in the reaction series to analyze the data and make quantitative measurements:</div>
+<ol>
+<li>A blank reaction has all the components except DNA (replaced by water). The blank reaction is used to subtract the background signal (produced by the TXTL mix) to the other reactions.</li>
+<li>A negative control consists of using a non-targeting sgRNA (sgRNA-NT). It is used to determine the fold repression of a targeting sgRNA.</li>
+<li>Subtract the background fluorescence from the TXTL mix (<a href="#tbl2">Table 2</a>):</li>
+</ol>
+<table id="tbl2">
+<caption>Table 2. Example of Raw Data Measured on a Plate Reader</caption>
+<thead>
+<tr>
+<th rowspan="3">Time</th>
+<th rowspan="3">Temp.</th>
+<th colspan="7">Raw data</th>
+</tr>
+<tr>
+<th>Blank</th>
+<th>Blank</th>
+<th rowspan="2">Ave. blank</th>
+<th>Non-target</th>
+<th>Non-target</th>
+<th>Pos6</th>
+<th>Pos6</th>
+</tr>
+<tr>
+<th>A1</th>
+<th>A2</th>
+<th>A3</th>
+<th>A4</th>
+<th>A5</th>
+<th>A6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:00:21</td>
+<td>29</td>
+<td>204</td>
+<td>193</td>
+<td>198.5</td>
+<td>187</td>
+<td>212</td>
+<td>189</td>
+<td>211</td>
+</tr>
+<tr>
+<td>0:03:21</td>
+<td>29</td>
+<td>108</td>
+<td>168</td>
+<td>183</td>
+<td>148</td>
+<td>161</td>
+<td>153</td>
+<td>178</td>
+</tr>
+<tr>
+<td>0:06:21</td>
+<td>29</td>
+<td>187</td>
+<td>154</td>
+<td>170.5</td>
+<td>113</td>
+<td>122</td>
+<td>122</td>
+<td>133</td>
+</tr>
+<tr>
+<td>0:09:21</td>
+<td>29</td>
+<td>179</td>
+<td>144</td>
+<td>161.5</td>
+<td>96</td>
+<td>108</td>
+<td>111</td>
+<td>120</td>
+</tr>
+<tr>
+<td>0:12:21</td>
+<td>29</td>
+<td>170</td>
+<td>140</td>
+<td>155</td>
+<td>93</td>
+<td>103</td>
+<td>112</td>
+<td>119</td>
+</tr>
+<tr>
+<td>0:15:21</td>
+<td>29</td>
+<td>167</td>
+<td>136</td>
+<td>151.5</td>
+<td>99</td>
+<td>111</td>
+<td>120</td>
+<td>132</td>
+</tr>
+<tr>
+<td>0:18:21</td>
+<td>29</td>
+<td>161</td>
+<td>134</td>
+<td>147.5</td>
+<td>114</td>
+<td>129</td>
+<td>146</td>
+<td>159</td>
+</tr>
+<tr>
+<td>0:21:21</td>
+<td>29</td>
+<td>155</td>
+<td>128</td>
+<td>141.5</td>
+<td>143</td>
+<td>163</td>
+<td>183</td>
+<td>198</td>
+</tr>
+<tr>
+<td>0:24:21</td>
+<td>29</td>
+<td>151</td>
+<td>127</td>
+<td>139</td>
+<td>175</td>
+<td>211</td>
+<td>235</td>
+<td>256</td>
+</tr>
+<tr>
+<td>0:27:21</td>
+<td>29</td>
+<td>151</td>
+<td>126</td>
+<td>138.5</td>
+<td>217</td>
+<td>180</td>
+<td>301</td>
+<td>320</td>
+</tr>
+<tr>
+<td>0:30:21</td>
+<td>29</td>
+<td>148</td>
+<td>124</td>
+<td>136</td>
+<td>261</td>
+<td>351</td>
+<td>383</td>
+<td>399</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>For each time point, take the average fluorescence intensity of the blank reactions (The Ave. blank column shows the average of the two blank columns A1 and A2 in the example data above).</li>
+<li>Subtract the average fluorescence of the blank reactions from all other reactions (the example data after background subtraction is shown in <a href="#tbl3">Table 3</a>, where the “Ave. blank” column was subtracted from each of the “non-target” and “pos6” raw data columns to create the background subtracted data columns).</li>
+</ol>
+<table id="tbl3">
+<caption>Table 3. Data Analysis, Step 1</caption>
+<thead>
+<tr>
+<th colspan="4">Raw data</th>
+<th rowspan="3">Ave. blank</th>
+<th colspan="4">Background subtracted data</th>
+</tr>
+<tr>
+<th>Non-target</th>
+<th>Non-target</th>
+<th>Pos6</th>
+<th>Pos6</th>
+<th>Non-target</th>
+<th>Non-target</th>
+<th>Pos6</th>
+<th>Pos6</th>
+</tr>
+<tr>
+<th>A3</th>
+<th>A4</th>
+<th>A5</th>
+<th>A5</th>
+<th>A3*</th>
+<th>A4*</th>
+<th>A5*</th>
+<th>A6*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>187</td>
+<td>212</td>
+<td>189</td>
+<td>211</td>
+<td>198.5</td>
+<td>-11.5</td>
+<td>13.5</td>
+<td>-9.5</td>
+<td>12.5</td>
+</tr>
+<tr>
+<td>148</td>
+<td>161</td>
+<td>153</td>
+<td>178</td>
+<td>183</td>
+<td>-35</td>
+<td>-22</td>
+<td>-30</td>
+<td>-5</td>
+</tr>
+<tr>
+<td>113</td>
+<td>122</td>
+<td>122</td>
+<td>133</td>
+<td>170.5</td>
+<td>-57.5</td>
+<td>-48.5</td>
+<td>-48.5</td>
+<td>-37.5</td>
+</tr>
+<tr>
+<td>96</td>
+<td>108</td>
+<td>111</td>
+<td>120</td>
+<td>161.5</td>
+<td>-65.5</td>
+<td>-53.5</td>
+<td>-50.5</td>
+<td>-41.5</td>
+</tr>
+<tr>
+<td>93</td>
+<td>103</td>
+<td>112</td>
+<td>119</td>
+<td>155</td>
+<td>-62</td>
+<td>-52</td>
+<td>-43</td>
+<td>-36</td>
+</tr>
+<tr>
+<td>99</td>
+<td>111</td>
+<td>120</td>
+<td>132</td>
+<td>151.5</td>
+<td>-52.5</td>
+<td>-40.5</td>
+<td>-31.5</td>
+<td>-19.5</td>
+</tr>
+<tr>
+<td>114</td>
+<td>129</td>
+<td>146</td>
+<td>159</td>
+<td>147.5</td>
+<td>-33.5</td>
+<td>-18.5</td>
+<td>-1.5</td>
+<td>11.5</td>
+</tr>
+<tr>
+<td>143</td>
+<td>163</td>
+<td>183</td>
+<td>198</td>
+<td>141.5</td>
+<td>1.5</td>
+<td>21.5</td>
+<td>41.5</td>
+<td>56.5</td>
+</tr>
+<tr>
+<td>175</td>
+<td>211</td>
+<td>235</td>
+<td>256</td>
+<td>139</td>
+<td>36</td>
+<td>72</td>
+<td>96</td>
+<td>117</td>
+</tr>
+<tr>
+<td>217</td>
+<td>180</td>
+<td>301</td>
+<td>320</td>
+<td>138.5</td>
+<td>78.5</td>
+<td>41.5</td>
+<td>162.5</td>
+<td>181.5</td>
+</tr>
+<tr>
+<td>261</td>
+<td>351</td>
+<td>383</td>
+<td>399</td>
+<td>136</td>
+<td>125</td>
+<td>215</td>
+<td>247</td>
+<td>263</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Calculate the average and standard error (standard deviation) of the measurements for all repeated reactions (the example has two repeats, so the averages and standard deviations of the two “non-target” and “pos6” background subtracted data columns are shown In <a href="#tbl4">Table 4</a> on the right).</li>
+</ol>
+<table id="tbl4">
+<caption>Table 4. Data Analysis, Step 2</caption>
+<thead>
+<tr>
+<th rowspan="3">Ave. blank</th>
+<th colspan="4">Background subtracted data</th>
+<th colspan="2">Average</th>
+<th colspan="2">Standard deviation</th>
+</tr>
+<tr>
+<th>Non-target</th>
+<th>Non-target</th>
+<th>Pos6</th>
+<th>Pos6</th>
+<th>Non-target</th>
+<th>Pos6</th>
+<th>Non-target</th>
+<th>Pos6</th>
+</tr>
+<tr>
+<th>A3*</th>
+<th>A4*</th>
+<th>A5*</th>
+<th>A6*</th>
+<th>A3**</th>
+<th>A5**</th>
+<th>A3***</th>
+<th>A5***</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>198.5</td>
+<td>-11.5</td>
+<td>13.5</td>
+<td>-9.5</td>
+<td>12.5</td>
+<td>1</td>
+<td>1.5</td>
+<td>17.6776695</td>
+<td>15.5563492</td>
+</tr>
+<tr>
+<td>183</td>
+<td>-35</td>
+<td>-22</td>
+<td>-30</td>
+<td>-5</td>
+<td>-28.5</td>
+<td>-17.5</td>
+<td>9.19238816</td>
+<td>17.6776695</td>
+</tr>
+<tr>
+<td>170.5</td>
+<td>-57.5</td>
+<td>-48.5</td>
+<td>-48.5</td>
+<td>-37.5</td>
+<td>-53</td>
+<td>-43</td>
+<td>6.36396103</td>
+<td>7.77817459</td>
+</tr>
+<tr>
+<td>161.5</td>
+<td>-65.5</td>
+<td>-53.5</td>
+<td>-50.5</td>
+<td>-41.5</td>
+<td>-59.5</td>
+<td>-46</td>
+<td>8.48528137</td>
+<td>6.36396103</td>
+</tr>
+<tr>
+<td>155</td>
+<td>-62</td>
+<td>-52</td>
+<td>-43</td>
+<td>-36</td>
+<td>-57</td>
+<td>-39.5</td>
+<td>7.07106781</td>
+<td>4.94974747</td>
+</tr>
+<tr>
+<td>151.5</td>
+<td>-52.5</td>
+<td>-40.5</td>
+<td>-31.5</td>
+<td>-19.5</td>
+<td>-46.5</td>
+<td>-25.5</td>
+<td>8.48528137</td>
+<td>8.48528137</td>
+</tr>
+<tr>
+<td>147.5</td>
+<td>-33.5</td>
+<td>-18.5</td>
+<td>-1.5</td>
+<td>11.5</td>
+<td>-26</td>
+<td>5</td>
+<td>10.6066017</td>
+<td>9.19238816</td>
+</tr>
+<tr>
+<td>141.5</td>
+<td>1.5</td>
+<td>21.5</td>
+<td>41.5</td>
+<td>56.5</td>
+<td>11.5</td>
+<td>49</td>
+<td>14.1421356</td>
+<td>10.6066017</td>
+</tr>
+<tr>
+<td>139</td>
+<td>36</td>
+<td>72</td>
+<td>96</td>
+<td>117</td>
+<td>54</td>
+<td>106.5</td>
+<td>25.4558441</td>
+<td>14.8492424</td>
+</tr>
+<tr>
+<td>138.5</td>
+<td>78.5</td>
+<td>41.5</td>
+<td>162.5</td>
+<td>181.5</td>
+<td>60</td>
+<td>172</td>
+<td>26.1629509</td>
+<td>13.4350288</td>
+</tr>
+<tr>
+<td>136</td>
+<td>125</td>
+<td>215</td>
+<td>247</td>
+<td>263</td>
+<td>170</td>
+<td>255</td>
+<td>63.6396103</td>
+<td>11.3137085</td>
+</tr>
+</tbody>
+</table>
+<ol start="5">
+<li>Time-course data can now be plotted. Plot the control sgRNAs along with any targeting sgRNA run (e.g., <a href="#fig2">Figure 2</a>).</li>
+</ol>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/15-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Kinetics and Endpoint Measurements of Seven sgRNAs in TXTL CRISPR Assay Reactions</div>
+<p>Top: the location of the target and PAM is indicated by a blue line and a yellow circle, respectively. Bottom left: TXTL kinetics of a set of sgRNAs using dSpyCas9 (NT: sgRNA not targeting any of the coding parts). Bottom right: fold reduction determined at the endpoint (16 h) of the kinetics shown on the left. Error bars: standard deviations of three technical repeats.</p>
+</figcaption>
+</figure>
+<ol start="6">
+<li>To calculate the endpoint fold-repression, divide the final non-targeting sgRNA fluorescence intensity value (at 16 h) by that of the targeting sgRNA (see <a href="#fig2">Figure 2</a>).</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<ol>
+<li>Gene expression in TXTL is performed at 25–42°C, with an optimal temperature of 29°C, which may limit the characterization of CRISPR-Cas systems native to thermophilic prokaryotes.</li>
+<li>TXTL reactions lose activity after ∼16 h, potentially limiting the use of GFP as a readout for poorly expressed nucleases.</li>
+<li>TXTL is missing factors common to eukaryotic cells (e.g., long and diverse DNA sequences that impact the dynamics of target search, chromatin and other nucleoid proteins that impact the structure and availability of DNA, and proteins responsible for repair involved in eukaryotic genome editing). In addition, factors for CRISPR RNA processing besides RNase III would need to be identified (e.g., tracrRNAs), as <em>E. coli</em> would be unlikely to naturally express these factors. In addition, some factors from <em>E. coli</em> may be depleted or poorly active on the TXTL preparation.</li>
+<li>For other sequences than deGFP or the promoter P70a, we showed that the gene of interest can be cloned upstream of a reporter gene (deGFP or eGFP) as a fusion protein or as a polycistronic assembly (<a href="#bib4">Marshall et al., 2018</a>). The promoter and ribosome binding site have to be strong enough to produce a signal in the control reaction that only expresses the reporter construction. Alternatively, the concentration of the reporter construction can be titrated to get enough signal (e.g.: 0, 0.5, 1, 2, 5, 10 nM of reporter plasmid can be tested).</li>
+</ol>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem 1</h3>
+<p>Cell-free expression is weak.</p>
+<h3>Possible Cause</h3>
+<p>DNA stock solution is not clean enough.</p>
+<h3>Solution</h3>
+<p>the DNA (plasmid or linear) must be very pure. Following a plasmid preparation (mini, midi, maxi), a step of PCR cleanup (plasmid or linear DNA) is often required to get top-quality DNA. This step is also useful to increase the concentration of DNA stock solutions. Elution in water is optimal, 30-50 μl for most PCR purification kits. On a Nanodrop, a ratio 260/280 (nm/nm) of 1.8 and 260/230 (nm/nm) of 2.0-2.2 are considered as optimum for pure DNA. Below these values, the DNA stock solution may be contaminated.</p>
+<h3>Problem 2</h3>
+<p>Inconsistent results for identical experiments.</p>
+<h3>Possible Cause</h3>
+<p>stoichiometries not adjusted.</p>
+<h3>Solution</h3>
+<p>In a set of reactions, all the reactions should include the same amount of DNA from similar expression constructs, as variation in DNA concentration or expression strength can impact reporter production. For instance, the concentration of sgRNA-NT (non-targeting sgRNA) should be the same as targeting sgRNA. DNA purity can affect expression strength by several fold. See item 1 above to prepare high quality DNA for TXTL reactions.</p>
+<h3>Problem 3</h3>
+<p>Inconsistent results for identical experiments.</p>
+<h3>Possible Cause</h3>
+<p>While a simple assay, assembling TXTL reactions and pipetting them uniformly into a well plate requires very precise pipetting of small volumes. In particular, it is important to avoid bubbles when the reactions are placed in the wells. Bubbles bias the fluorescence measurements.</p>
+<h3>Solution</h3>
+<p>See the associated video (<a href="#mmc1">Video 1</a>).</p>
+<figure id="mmc1"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/15-Mmc1.mp4" type="video/mp4"></source>
+        Your browser does not support HTML5 video.
+      </video>
+<figcaption>
+<div class="figcaption-title">Video 1</div>
+<p>Pipetting in a Multi-Well Plate (Related to Troubleshooting Problem 3)</p>
+</figcaption>
+</figure>
+<p>Slowly pipet back and forth the reaction several times in the pipet tip. To place the reaction, push the plunger down to the first stop. Pushing past the first stop often creates bubbles.</p>
+<p>Use a syringe needle to pop bubbles.</p>
+<h3>Problem 4</h3>
+<p>Inconsistent results for identical experiments.</p>
+<h3>Possible Cause</h3>
+<p>The components of the reaction are not added in the right order.</p>
+<h3>Solution</h3>
+<p>The reaction (12 μl, 1.5 mL tube) is assembled the following way:</p>
+<ol type="a">
+<li>Add 9μl of TXTL mix in a 1.5 mL tube.</li>
+<li>Add 1 μl Chi6 at 24 μM (or 1 μl GamS at 24 μM).</li>
+<li>Add 1 μl dSpyCas9 plasmid at 30 nM.</li>
+<li>Add 1 μl sgRNA plasmid at 10 nM.</li>
+<li>Gently vortex, aliquot 5 μl in two wells (two replicates).</li>
+</ol>
+<h3>Problem 5</h3>
+<p>Interaction between the synthesized proteins occur too late.</p>
+<h3>Possible Cause</h3>
+<p>Kinetics of expression may be too slow for some processes to take place.</p>
+<h3>Solution</h3>
+<p>Pre-incubations can be used to express one gene for a certain time before adding another DNA. We may want to do that, for instance, to form the complex between the CRISPR nuclease and the gRNA before adding the target plasmid (e.g., P70a-deGFP in our example). The reactions (containing all the components except for P70a-deGFP) are kept in 1.5 mL tubes in an incubator at 29°C. P70a-deGFP is added to each reaction 1-3 h after the beginning of the reactions. The reactions are loaded on the well plate and the kinetics can start.</p>
+<h3>Problem 6</h3>
+<p>There is some variability in reaction rates.</p>
+<h3>Possible Cause</h3>
+<p>Different batches of TXTL are used.</p>
+<h3>Solution</h3>
+<p>This issue is often managed by including positive and negative controls for each batch. To avoid variability, it is also strongly advised to use the same myTXTL batch for a set of experiments to make sure of consistency.</p>
+<h3>Problem 7</h3>
+<p>Results are not the same when the reaction volume is different.</p>
+<h3>Possible Cause</h3>
+<p>Cell-free reactions of most TXTL systems (including myTXTL) are oxygen-dependent.</p>
+<h3>Solution</h3>
+<p>for a 1.5 mL tube, the reaction volumes should not be larger than 12 μl. At larger volume, the reaction has to be placed in a tube that creates a large surface area between the reaction and the air. For a 96 V-bottom well plate (Sigma CLS3357-100EA), the reaction volume should be 2-5 μl.</p>
+</section>
+<section>
+<h2 id="q-and-a">Q&amp;A</h2>
+<p class="question"><b>Q.</b> I do not need to measure the kinetics of Cas9 cutting for my sgRNA sequence; can I perform the assay in low-throughput and read just an endpoint measurement?</p>
+<p class="answer"><b>A.</b> Yes, most of the experiments described in this STAR Protocols can be done as endpoint measurements.</p>
+<p class="question"><b>Q</b> Can I use milliQ water instead?</p>
+<p class="answer"><b>A.</b> Yes, it also works with MilliQ water.</p>
+<p class="question"><b>Q:</b> Are there any limits to scaling up?</p>
+<p class="answer"><b>A:</b> TXTL reactions need oxygen. The volume of reaction should be kept around 12 µl. to scale up, just split your reaction into 12 µl aliquots.</p>
+<p class="question"><b>Q:</b> Do you recommend running the standard curve samples at the same time on the same plate? Or can you run the standards one day and compare with data from real samples the following day?</p>
+<p class="answer"><b>A;</b> No, it is not necessary to do the calibration curve each time. We recommend doing the standard calibration curve every 6 months for your device.</p>
+<p class="question"><b>Q:</b> Can multi-channel pipettes be used in this assay?</p>
+<p class="answer"><b>A:</b> yes, multi-channel pipettes can be used in this assay.</p>
+</section>
+<section>
+<h4>References</h4>
+<p id="bib1">Garamella, J., Marshall, R., Rustad, M., and Noireaux, V. (2016). The All E. coli TX-TL Toolbox 2.0: A platform for cell-free synthetic biology. ACS Synth. Biol. <em>5</em>, 344–355.</p>
+<p id="bib2">Leenay, R.T., Maksimchuk, K.R., Slotkowski, R.A., Agrawal, R.N., Gomaa, A.A., Briner, A.E., Barrangou, R., and Beisel, C.L. (2016). Identifying and visualizing functional PAM diversity across CRISPR-Cas systems. Mol. Cell <em>62</em>, 137–147.</p>
+<p id="bib3">Marshall, R., Maxwell, C.S., Collins, S.P., Beisel, C.L., and Noireaux, V. (2017). Short DNA containing χ sites enhances DNA stability and gene expression in E. coli cell-free transcription- translation systems. Biotechnol. Bioeng. <em>114</em>, 2137– 2141.</p>
+<p id="bib4">Marshall, R., Maxwell, C.S., Collins, S.P., Jacobsen, T., Luo, M.L., Begemann, M.B., Gray, B.N., January, E., Singer, A., He, Y., et al. (2018). Rapid and scalable characterization of CRISPR technologies using an E. coli cell-free transcription-translation system. Mol. Cell <em>69</em>, 146– 157.e3.</p>
+<p id="bib5">Shin, J., and Noireaux, V. (2010). Efficient cell-free expression with the endogenous E. Coli RNA polymerase and sigma factor 70. J. Biol. Eng. <em>4</em>, 8.</p>
+<p id="bib6">Sun, Z.Z., Hayes, C.A., Shin, J., Caschera, F., Murray, R.M., and Noireaux, V. (2013). Protocols for implementing an Escherichia coli based TX-TL cell- free expression system for synthetic biology. J. Vis. Exp. e50762.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Supplemental Information</h3>
+<p>Supplemental Information can be found online at <a href="https://doi.org/10.1016/j.xpro.2019.100003">https://doi.org/10.1016/j.xpro.2019.100003</a>.</p>
+<h3>Acknowledgments</h3>
+<p>The authors acknowledge the <a href="https://doi.org/10.13039/100000185">Defense Advanced Research Projects Agency</a>, contract HR0011-16-C-01-34 (to C.L.B. and V.N.).</p>
+<h3>Author Contributions</h3>
+<p>R.M. performed the experiments. R.M., C.L.B., and V.N. analyzed the data and wrote the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The Noireaux laboratory receives research funds from Arbor Biosciences, a distributor of the myTXTL cell-free protein synthesis kit.</p>
+</section>
+</article>

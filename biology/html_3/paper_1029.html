@@ -1,0 +1,568 @@
+<article>
+<section>
+<h1 id="header">Protocol for <i>Drosophila</i> sleep deprivation using single-chip board</h1>
+<p><time datetime="2021-09-24">Published: September 24, 2021</time></p>
+<p>Xi Jin,<sup><a href="#aff1">1</a></sup> Pengyu Gu,<sup><a href="#aff1">1</a></sup> and Junhai Han<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Life Science and Technology, the Key Laboratory of Developmental Genes and Human Disease, Southeast University, 2 Sipailou Road, Nanjing 210096, China</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:junhaihan@seu.edu.cn">junhaihan@seu.edu.cn</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100827">10.1016/j.xpro.2021.100827</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Sleep behavior is characterized by long-term quiescence and increased arousal threshold, and it is homeostatically regulated. The sleep rebound after deprivation is utilized to verify the abilities to maintain homeostasis. This protocol shows how to build a programmed mechanic oscillation system and detailed procedures to conduct sleep deprivation in <i>Drosophil</i>a. This deprivation system is featured by its programming flexibility. The knowledge of electronic circuits and a certain level of programming are both required to fulfill this protocol.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref7">Jin et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>The retrofitted oscillator is controlled by a pseudo-random trigger signal</li>
+<li>A programmable single-chip board enables system flexibility</li>
+<li>The modular design simplifies debugging and maintenance</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The single-chip computer board is used in this protocol but the control logic of mechanic oscillation is applicable. Other microcomputers may be potentially capable to fulfill a similar function as well. Here we demonstrated the function of this system in a verified oscillation mode for parameter setting: randomly oscillate for 10 s continuously within approximately 3 min.</p>
+<h3 id="sec1.1">Preparation of single-chip control board</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h if no programming is required.</div>
+<ol>
+<li>Select and purchase a single-chip control board. (<a href="#fig1">Figure 1</a>)
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Single-chip control board</div>
+<p>The left is the simulation diagram and the right is the physical diagram. The DC power is connected to the VCC and the GND which are on the top of the board. These five input pins IN1 to IN5 are next to the GND pin. The program is downloaded to the board through the GND, T, R, and +5V pins on the left of the board. The ER1 to ER4 are the relays that are embedded on the bottom of the board. Each embedded relay contains a CK pin which normally opens, a COM pin, and CB pin which normally closes. The GND, T (for TXD), R (for RXD), and +5V on the left of the board are the TTL ports to connect the USB-TTL downloader.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> In this case, we recommend the single-chip based control board provided by Shenzhen DXD Technology Company at <a href="http://Alibaba.com">Alibaba.com</a> which is shown in <a href="#fig1">Figure 1</a>. The built-in chip model is STC11F04E which supports C language programming and facilitates the construction of pseudo-random processes. The STC chip embedded control board is characterized by high speed, low power consumption, low price, and easy to erase and write programs compared to 8051 chip. The relay outputs are integrated into this board, so the step of soldering the relays on the control board is eliminated.</div>
+<p>Product Website: <a href="https://www.alibaba.com/product-detail/module-51-single-chip-control-four_1600102543788.html?spm=a2700.galleryofferlist.normal_offer.d_title.31ae2456Dw9drY">https://www.alibaba.com/product-detail/module-51-single-chip-control-four_1600102543788.html?spm=a2700.galleryofferlist.normal_offer.d_title.31ae2456Dw9drY</a></p>
+<div class="note">
+<span class="note-title">Note:</span> If there is a programming requirement, please see the datasheets of the STC11F04E chip: <a href="https://www.stcmcudata.com/datasheet/stc/STC-AD-PDF/STC11F-10Fxx-english.pdf">https://www.stcmcudata.com/datasheet/stc/STC-AD-PDF/STC11F-10Fxx-english.pdf</a>
+</div>
+<p>It takes a certain amount of time to mastery the programming on the single-chip control board. One or two days are required for those who are familiar with the C language.</p>
+<h3 id="sec1.2">Preparation of an oscillator</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="2">
+<li>Select and purchase an oscillator.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The top panel size of the oscillator is at least 18 cm wide and 30 cm long to contain four DAM2 monitors. The power or speed of the oscillator must be adjustable and the max speed which exceeds 2000 rpm is required. The start and the stop mode of the oscillator require special attention. The start button and the stop button should be the same button. Press it once and the machine will start, and press it again and the oscillation will stop (See <a href="#fig2">Figure 2</a>A and <a href="#mmc1">Methods video S1)</a>.</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Schematic diagram of the retrofitted oscillator</div>
+<p>(A) The vortexer is placed in the artificial climate box above the shock-absorbing sponge. The sponge is also placed inside the shock stage to protect the monitors from metal collision wear. The microswitch of START/STOP is behind the control panel as indicated by the red dotted frame.</p>
+<p>(B) The plastic layer indicating the button is peeled off, and the screw positions are exposed.</p>
+<p>(C) Remove the screws and the control panel can be displayed. The two contralateral pins of the microswitch are soldered with wires as indicated by the white arrow, (Also see <a href="#mmc1">Methods video S1</a> and <a href="#mmc2">S2</a>)</p>
+</figcaption>
+</figure>
+<figure id="mmc1"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Mmc1.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. The start and stop modes of the oscillator required in our protocols, related to step 2 in before you begin and step 3 in step-by-step method details</div>
+<p>The start button and the stop button should be the same button. Press it once and the machine will start, and press it again and the oscillation will stop.</p>
+</figcaption>
+</figure>
+<p>Links to products: <a href="https://www.amazon.com/gp/product/B01LXLQ9XK/ref=ox_sc_act_title_1?smid=A1M3WKYNBDGSR1&amp;psc=1">https://www.amazon.com/gp/product/B01LXLQ9XK/ref=ox_sc_act_title_1?smid=A1M3WKYNBDGSR1&amp;psc=1</a></p>
+<p><a href="https://www.alibaba.com/product-detail/DMT-2500-Multi-Tube-Vortexer-500_60509614553.html?spm=a2700.galleryofferlist.normal_offer.d_image.1d853c88GQegdD">https://www.alibaba.com/product-detail/DMT-2500-Multi-Tube-Vortexer-500_60509614553.html?spm=a2700.galleryofferlist.normal_offer.d_image.1d853c88GQegdD</a></p>
+<h3 id="sec1.3">Preparation of fruit flies</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="3">
+<li>Fly husbandry and harvest
+<ol type="a">
+<li>Raise the fly on yeast-based food at 25°C in 12h light/dark cycles unless special treatment.</li>
+<li>Keep the ambient relative humidity at 60% as much as possible.</li>
+<li>The flies are collected after emerging from the pupas.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The selection of the flies is according to experimental purpose. For example, when exploring the relevance between age and sleep homeostasis in <i>Drosophila</i>, it is necessary to select fruit flies of different ages in groups. When exploring the relationship between immunity and sleep homeostasis, it may be necessary to select the fruit flies after infection treatment. Different researchers may prefer to use female flies or male flies for sleep deprivation experiments. Here, male fruit flies about 3-day to 7-day old are subjected to sleep deprivation experiments.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>Sigma</td>
+<td>CAS#57-50-1</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>Sangon Biotech</td>
+<td>CAS#9002-18-0</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>Drosophila: w</i><sup><i>1118</i></sup>
+</td>
+<td>Bloomington <i>Drosophila</i> Stock Center</td>
+<td>RRID:BDSC_3605</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>SCAMP (<a href="#bib10">Nathan et al., 2012</a>)</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>KeilC51Vcngr</td>
+<td><a href="https://www.keil.com/c51/c51.asp">https://www.keil.com/c51/c51.asp</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>STC-ISP</td>
+<td>This protocol <a href="https://drive.google.com/file/d/12JQxDPH8DDJB2-_b3kuTnbSA-6T7Jlie/view?usp=sharing">https://drive.google.com/file/d/12JQxDPH8DDJB2-_b3kuTnbSA-6T7Jlie/view?usp=sharing</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CH340 driver</td>
+<td>This protocol <a href="https://drive.google.com/file/d/12JQxDPH8DDJB2-_b3kuTnbSA-6T7Jlie/view?usp=sharing">https://drive.google.com/file/d/12JQxDPH8DDJB2-_b3kuTnbSA-6T7Jlie/view?usp=sharing</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MATLAB R2018b</td>
+<td>MathWorks</td>
+<td>RRID: SCR_001622</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Program code for the single-chip board</td>
+<td>(<a href="#bib7">Jin et al., 2021</a>)</td>
+<td><a href="https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing">https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Multi-tube vortexer</td>
+<td><a href="https://www.amazon.com/gp/product/B01LXLQ9XK/ref=ox_sc_act_title_1?smid=A1M3WKYNBDGSR1&amp;psc=1">https://www.amazon.com/gp/product/B01LXLQ9XK/ref=ox_sc_act_title_1?smid=A1M3WKYNBDGSR1&amp;psc=1</a></td>
+<td>Cat# DMT-2500</td>
+</tr>
+<tr>
+<td>Single-chip control board</td>
+<td><a href="https://www.alibaba.com/product-detail/module-51-single-chip-control-four_1600102543788.html?spm=a2700.galleryofferlist.normal_offer.d_title.31ae2456Dw9drY">https://www.alibaba.com/product-detail/module-51-single-chip-control-four_1600102543788.html?spm=a2700.galleryofferlist.normal_offer.d_title.31ae2456Dw9drY</a></td>
+<td>Chip model: STC11F04E</td>
+</tr>
+<tr>
+<td>Relay control module</td>
+<td><a href="https://www.amazon.com/gp/product/B074TBRRTY/ref=ox_sc_act_title_1?smid=A25LEPIYFTQZF2&amp;psc=1">https://www.amazon.com/gp/product/B074TBRRTY/ref=ox_sc_act_title_1?smid=A25LEPIYFTQZF2&amp;psc=1</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Automatic STC Downloader</td>
+<td><a href="https://www.amazon.com/gp/product/B094WZLM94/ref=ox_sc_act_title_1?smid=A1U4I2CCV7K16T&amp;psc=1">https://www.amazon.com/gp/product/B094WZLM94/ref=ox_sc_act_title_1?smid=A1U4I2CCV7K16T&amp;psc=1</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Artificial climate box</td>
+<td><a href="https://www.alibaba.com/product-detail/laboratory-microbiology-incubator-precision-artificial-climate_1600102685786.html?spm=a2700.galleryofferlist.normal_offer.d_title.470c681d5MDsVs">https://www.alibaba.com/product-detail/laboratory-microbiology-incubator-precision-artificial-climate_1600102685786.html?spm=a2700.galleryofferlist.normal_offer.d_title.470c681d5MDsVs</a></td>
+<td>Cat# GPL-450A</td>
+</tr>
+<tr>
+<td>DAM2 <i>Drosophila</i> Activity Monitor</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>Cat#DAM2</td>
+</tr>
+<tr>
+<td>PSIU9 Power Supply Interface Unit</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>Cat#PSIU9</td>
+</tr>
+<tr>
+<td>Cables For DAM2 Sleep System</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>Cat#CAB2</td>
+</tr>
+<tr>
+<td>Connectors For DAM2 Sleep System</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>Cat#SPLT5</td>
+</tr>
+<tr>
+<td>Glass tubes</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+<td>Cat#PPT5x65</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>Fly food for sleep analyses</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agar</td>
+<td>1.5%</td>
+<td>2.25g</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>5%</td>
+<td>7.5g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>Up to 150mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>150mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 4°C for up to one week.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Extra 30mL ddH<sub>2</sub>O should be added at the beginning and the mixed reagents are boiled into homogeneous liquid by the microwave and the liquid should be evaporated to 150mL remains. Take care to prevent being scalded by liquid and steam.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This formula is relatively deficient in amino acids but it is simple and widely used(<a href="#bib8">Kuo and Williams, 2014</a>; <a href="#bib13">Robinson et al., 2016</a>; <a href="#bib4">Donlea et al., 2018</a>; <a href="#bib9">Liu et al., 2019</a>; <a href="#bib17">Toda et al., 2019</a>). The amino acids are supplemented by the proliferation of the yeast which is carried by the fruit fly itself(<a href="#bib1">Anagnostou et al., 2010</a>; <a href="#bib5">Ganter, 1988</a>). The standard fly food is also widely used for sleep behavior analyses(<a href="#bib16">Stahl et al., 2018</a>; <a href="#bib2">Brown et al., 2020</a>). The standard food contains the protein source and a more complex source of carbohydrates. The BDSC Standard Cornmeal Medium is recommended.</div>
+<p>Website: <a href="https://bdsc.indiana.edu/information/recipes/bloomfood.html">https://bdsc.indiana.edu/information/recipes/bloomfood.html</a></p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> SCAMP can also be found on the Vecsey Lab’s website</div>
+<p>Website: <a href="https://academics.skidmore.edu/blogs/cvecsey/">https://academics.skidmore.edu/blogs/cvecsey/</a></p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Multi-tube vortexers with the same start/end mode are suitable for this protocol. The alternative product website: <a href="https://www.alibaba.com/product-detail/DMT-2500-Multi-Tube-Vortexer-500_60509614553.html?spm=a2700.galleryofferlist.normal_offer.d_image.1d853c88GQegdD">https://www.alibaba.com/product-detail/DMT-2500-Multi-Tube-Vortexer-500_60509614553.html?spm=a2700.galleryofferlist.normal_offer.d_image.1d853c88GQegdD</a>
+</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Download the program code into the single-chip control board</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h for those who are familiar with programming</div>
+<p>The single-chip control board is programmable. We provide the verified program code which is easy to download into the single-chip control board. We also provide annotations and instructions next to the program code in the file “Program.C” for changing the parameters if necessary.</p>
+<p>The program file ”Program.C” and ”Program.hex”, the CH340 driver, the STC-ISP software, and a readme text are provided in a shared network disk.</p>
+<p>Website: <a href="https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing">https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing</a></p>
+<ol>
+<li>Program on the single-chip control board.
+<ol type="a">
+<li>Install the KeilC51Vcngr for the code compiler.</li>
+<li>Open the programming interface of KeilC51Vcngr.</li>
+<li>Open the file named “Program.C” by the KeilC51Vcngr software. Change the program code or adjust the parameters according to annotations if necessary.</li>
+<li>Save the program code and generate a new HEX file.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Please refer to the help documentation of the KeilC51Vcngr and the readme text we provided for more detailed instructions. If there is no need to change the program code, this step can be omitted.</div>
+<div class="note">
+<span class="note-title">Note:</span> For the sleep deprivation conducted by mechanical oscillation, to avoid mechanical damage as much as possible, the key principle is to use the smallest intensity and frequency of oscillations to achieve the maximum degree of sleep deprivation. In <i>Drosophila</i>, quiescence for 5 min or longer is proved and defined as a sleep episode (<a href="#bib14">Shaw et al., 2000</a>; <a href="#bib6">Hendricks et al., 2000</a>; <a href="#bib11">Nitz et al., 2002</a>). Therefore, the interval between two shocks should be close to or less than 5 min to ensure that the sleep behavior is effectively disturbed. We utilize the single-chip control board to implement a pseudo-random process: after triggering signal input, it randomly selects a time point in a 170-s interval and activates the electromagnetic relay which is embedded on the board for 10 s, and then switches it off. This process allows the oscillator to randomly select a time point in each 3-minute interval to oscillate once (we name this interval as a random event interval). Therefore, the maximum interval between oscillation events is 6 min. This pseudo-random process could be easily adjusted by changing the parameters of the program code according to the annotations we provide. As far as we tested, it seems unnecessary to shorten this random event interval, because the deprivation efficiency of the 3-minute interval is sufficient. If this random event interval is extended, the deprivation efficiency will be reduced accordingly.</div>
+<ol start="2">
+<li>Download the program code (HEX file) into the single-chip control board. (<a href="#fig3">Figure 3</a>) (Also see <a href="#sec7.1">troubleshooting 1</a>)
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Download the program code into Single-chip control board</div>
+<p>(A) The TTL ports on the control board are connected to the USB-TTL downloader.</p>
+<p>(B) The USB-TTL downloader with the diagram for wiring the pins. The GND pin of the board is connected to the GND①, the T pin of the board is connected to the TXD⑤, the R pin of the board is connected to the RXD③ and the +5V pin of the board is connected to the +5V⑦ respectively.</p>
+<p>(C) The software interface and the brief steps of the STC-ISP. Step 1, Scan, let the computer recognize the downloader. Step 2, Check MCU, let the software recognize the chip model of the control board, the prompt will present if successful. Step 3, Open Code File, open the “Program.hex”. Step 4, Download/Program, download the program into the control board, the prompt will present if successful.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Purchase a USB-TTL Automatic STC Downloader with cables.</li>
+<li>Install the CH340 driver for the Downloader we provide in the shared network disk.</li>
+<li>Install the STC-ISP which is provided by STC micro<sup>TM</sup> for program download.</li>
+<li>Connect the USB port to the computer.</li>
+<li>The TTL port contains four cables, the four cables DND, RXD, TXD, and 5V should be connected to the downloader and the control board respectively.</li>
+<li>Open the STC-ISP software and choose the English interface</li>
+<li>Click the check button to make the computer determine the chip model of the single-chip microcomputer</li>
+<li>Open the file ”Program.hex” through the STC-ISP software.</li>
+<li>Download the program into the single-chip based control board.</li>
+<li>Disconnect the USB port and the TTL port.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If a suitable downloader is purchased, this step will be relatively easy, no additional operations are required, just install the software, connect the wires and execute commands. Therefore, we recommend the Automatic STC Downloader which is easy to use.</div>
+<p>Link to the product: <a href="https://www.amazon.com/gp/product/B094WZLM94/ref=ox_sc_act_title_1?smid=A1U4I2CCV7K16T&amp;psc=1">https://www.amazon.com/gp/product/B094WZLM94/ref=ox_sc_act_title_1?smid=A1U4I2CCV7K16T&amp;psc=1</a></p>
+<div class="note">
+<span class="note-title">Note:</span> In this case, only the IN1 input pin and the ER2 output pin are used according to our program.</div>
+<h3 id="sec3.2">Lead the control lines from the oscillator</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h for those who are familiar with Circuits</div>
+<ol start="3">
+<li>Retrofit the oscillator. (<a href="#fig2">Figure 2</a>, also see <a href="#mmc1">Methods video S1</a> and <a href="#mmc2">S2</a>)
+<div class="note">
+<span class="note-title">Note:</span> In order that the oscillator can be safely controlled by an external control module, the only refit we conduct is to solder two wires on the pins of a microswitch inside the machine. It has not changed any circuits inside this machine. The working voltage of the microswitch inside the control panel is 5V and the current is 2 mA. The working voltage of the control module is 12V and the current is less than 300 mA.</div>
+<ol type="a">
+<li>Disassemble the control panel of the oscillator to find the microswitch that controls the start. <a href="#fig2">Figure 2</a>C</li>
+<li>Solder a 30 cm wire to each of any two contralateral pins of the microswitch and lead the two wires out of the oscillator. The two wires are named control line 1 and control line 2. <a href="#fig2">Figure 2</a>A</li>
+<li>Reassemble the oscillator well and confirm it could work normally after power on. (<a href="#mmc1">Methods video S1</a>)</li>
+<li>Test the lead wires from two contralateral pins. After the oscillator is energized, the oscillator should start working after control line 1 and control line 2 connect once and continue working after disconnection, and the oscillator should stop after control line 1 and control line 2 connected once again and keep in standby mode after disconnection. (<a href="#mmc2">Methods video S2</a>)</li>
+</ol>
+<figure id="mmc2"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Mmc2.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. The control mode is conducted by the control lines from two contralateral pins of the start/stop button, related to step 3 in step-by-step method details</div>
+<p>After the oscillator is energized, the oscillator should start working after control lines connected once and continue working after disconnection, and the oscillator should stop after control lines are connected once again.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This control mode is important for the following control logic design and circuit connection, please do not change it.</div>
+<ol start="4">
+<li>Place the oscillator in the artificial climate box. (<a href="#fig2">Figure 2</a>A)
+<ol type="a">
+<li>Place the shock-absorbing sponge under the oscillator to reduce the transmission of mechanical shock.</li>
+<li>Put the oscillator into the artificial climate box and test whether the oscillator can operate normally at proper speed after power on.</li>
+<li>Fix the control lines with tapes and lead the control lines out of the climate box.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Construction of the single-chip board and relay board joint control module</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h for those who are familiar with circuits.</div>
+<p>The single-chip board and the three single relay boards are worked jointly which need to be connected properly. The three single relay boards are named Relay 1, Relay 2, and Relay 3 respectively. The modular design is applied in this system to simplify the operation of the program, debugging, and maintenance. Each part of the joint control module realizes a single function which easy to adjust according to certain users. Relay 1 periodically sends out high-level signals to the single-chip board and therefore controls the cycle length of the whole system. The cycle length could be adjusted by changing the parameters of Relay 1.</p>
+<p>The single-chip board is responsible for generating stochastic signals. When the signal is triggered, the single-chip microcomputer selects a time point randomly to send a high-level signal within a given time period. The given time period could be adjusted by changing the program code with the help of the annotations we provide.</p>
+<p>Relay 2 receives the high-level signal from the single-chip board and starts the oscillation immediately by connecting the control line1 and line 2 once.</p>
+<p>Relay 3 receives the high-level signal from the single-chip board at the same time as Relay 2. The oscillation continues until the Relay 3 timer expires and connects the control line1 and line 2 again. Therefore, Eelay 3 controls the duration of continuous oscillation and it could be adjusted by changing the parameters of Relay 1.</p>
+<p>The link of the product: <a href="https://www.amazon.com/gp/product/B074TBRRTY/ref=ox_sc_act_title_1?smid=A25LEPIYFTQZF2&amp;psc=1">https://www.amazon.com/gp/product/B074TBRRTY/ref=ox_sc_act_title_1?smid=A25LEPIYFTQZF2&amp;psc=1</a></p>
+<p><a href="https://www.alibaba.com/product-detail/DC-6V-30V-Trigger-Delay-On_60784456751.html?spm=a2700.galleryofferlist.normal_offer.d_title.3b3d1f0fXXgVMl">https://www.alibaba.com/product-detail/DC-6V-30V-Trigger-Delay-On_60784456751.html?spm=a2700.galleryofferlist.normal_offer.d_title.3b3d1f0fXXgVMl</a></p>
+<p>See <a href="#fig4">Figures 4</a> and <a href="#fig5">5</a>. Please see the <a href="#sec7.3">troubleshooting 2</a>, <a href="#sec7.5">3</a>, and <a href="#sec7.7">4</a> to understand the rationale.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The diagram of the relay</div>
+<p>The left is the simulation diagram and the right is the physical diagram. The DC power is connected to the VIN pin and the GND pin which are on the upper left of the board. The relay on the right is controlled by the embedded programs. The outputs of the relay are NO pin which normally opens, COM pin, and NC pin which normally closes. The trigger signal inputs via T pin and GND-T pin which are on the lower left of the panel. The parameter setting of embedded programs is through the Operation buttons on the bottom of the board. For more details, please refer to the product link.</p>
+</figcaption>
+</figure>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The diagram of the joint control module</div>
+<p>Relay 1 controls the length of the time interval for oscillating through the input trigger signal to the single-chip board. The single-chip board is responsible for generating stochastic signals. The generated stochastic signal is transmitted both to Relay 2 and Relay 3. Relay 2 controls the start of the oscillation event. Relay 3 controls the duration of the oscillation event.</p>
+</figcaption>
+</figure>
+<ol start="5">
+<li>Connect the single-chip board and the relay board module according to <a href="#fig5">Figures 5</a> and <a href="#fig6">6</a>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Step-by-step circuit connections</div>
+<p>From top to bottom are Relay 3, Relay 2, Relay 1, and the single-chip control board respectively. Overall, in terms of circuit principle, the red wires are connected to high voltage; the black wires are connected to the COM pins except for Output1 and Output 2 are connected to the control lines. (A) Power supply. The NIV pins of relay boards and the VCC pin of the single-chip board are all connected to the +12 V pin of the 12 V DC power supply. The GND pins next to the NIV of the relay boards are all connected to the COM pin of the DC power supply. The GND pin next to the VCC pins of the single-chip board is connected to the COM pin of the DC power supply. (B) Relay 1. The NO pin of Relay 1 is connected to the IN1 pin of the single-chip board. The COM pin of Relay 1 is connected to the +12 V pin of the 12 V DC power supply. (C-D) Single-chip board. The CK pin of ER2 in the single-chip board is connected to the T pin of Relay 2. The COM pin of ER2 in the single-chip board is connected to the +12 V pin of the 12 V DC power supply. The CK pin of ER2 in the single-chip board is connected to the T pin of Relay 3. The COM pin of ER2 in the single-chip board is connected to the +12 V pin of the 12 V DC power supply. (E) Relay 2 and Relay 3. The GND-T pin next to the T pin of Relay 2 is connected to the GND pin of the Relay 2. The NO pin and the COM pin of Relay 2 are named Output1 and are connected to control line 1 and line 2 respectively. The GND-T pin next to the T pin of Relay 3 is connected to the GND pin of the Relay 3. The NO pin and the COM pin of Relay 3 are named as Output2 and are connected to control line 1 and line 2 respectively.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Power supply. The NIV pins of relay boards and the VCC pin of the single-chip board are all connected to the +12 V pin of the 12 V DC power supply. The GND pins next to the NIV of the relay boards are all connected to the COM pin of the DC power supply. The GND pin next to the VCC pins of the single-chip board is connected to the COM pin of the DC power supply. (<a href="#fig6">Figure 6</a>A)</li>
+<li>Relay 1. The NO pin of Relay 1 is connected to the IN1 pin of the single-chip board. The COM pin of Relay 1 is connected to the +12 V pin of the 12 V DC power supply. (<a href="#fig6">Figure 6</a>B)</li>
+<li>Single-chip board. The CK pin of ER2 in the single-chip board is connected to the T pin of Relay 2. The COM pin of ER2 in the single-chip board is connected to the +12 V pin of the 12 V DC power supply. (<a href="#fig6">Figure 6</a>C)</li>
+<li>Single-chip board. The CK pin of ER2 in the single-chip board is connected to the T pin of Relay 3. The COM pin of ER2 in the single-chip board is connected to the +12 V pin of the 12 V DC power supply. (<a href="#fig6">Figure 6</a>D)</li>
+<li>Relay 2. The GND-T pin next to the T pin of Relay 2 is connected to the GND pin of the Relay 2 (<a href="#fig6">Figure 6</a>C). The NO pin and the COM pin of Relay 2 are named Output1 and are connected to control line 1 and line 2 respectively. (<a href="#fig6">Figure 6</a>E)</li>
+<li>Relay 3. The GND-T pin next to the T pin of Relay 3 is connected to the GND pin of the Relay 3 (<a href="#fig6">Figure 6</a>D)The NO pin and the COM pin of Relay 3 are named as Output2 and are connected to control line 1 and line 2 respectively. (<a href="#fig6">Figure 6</a>E)</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Set the operating parameters of the relay boards.
+<div class="note">
+<span class="note-title">Note:</span> The built-in programs of relay boards are controlled by three parameters which are CL (on time), OP (off time), and LOP (cycle times). The supplier provides detailed instructions on how to set the parameters. Here, CL1, OP1, and LOP1 refer to the CL, OP, and LOP parameters of Relay 1 respectively. OP2 refers to the OP parameter of Relay 2. CL3 and OP3 refer to the CL, OP parameters of Relay 3 respectively.</div>
+<ol type="a">
+<li>Set the Relay 1 to program 3.2, the CL1 = 195 s, the OP1 = 2 s, and the LOP1 is set as infinite. The embedded relay is closed for 2 s every 197 s consequently.</li>
+<li>Set the Relay 2 to program 1.1, the OP2 = 1 s. No other parameters are needed to be set. The embedded relay is closed for 1 s after trigger signal input consequently.</li>
+<li>Set the Relay 3 to program 2, the CL3 = 10 s, the OP3 = 1 s. Consequently, after the 10 s delay, the embedded relay is closed for 1 s after trigger signal input.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The single-chip board contains five inputs: IN1-IN5. There are four relay boards embedded in the single-chip board which contains CB, CK, and COM pins. According to the program we downloaded to the board, the IN1 pin, the CK pin, and COM pin of ER2 are chosen as the input and the output ports respectively in this case.</div>
+<h3 id="sec3.4">
+<i>Drosophila</i> sleep deprivation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>The DAM2 system is used to record the efficiency of sleep deprivation and the SCAMP (<a href="#bib10">Nathan et al., 2012</a>) is used to conduct the data analyses. The power of DAM2 is supplied by the PSIU9 Interface Unit and the sleep data is uploaded by Cables and Connectors as mentioned in the resource table. The flies need to be prepared ahead as mentioned above. The selected flies are loaded to the DAM2 system and fixed on the oscillator to conduct the sleep deprivation.</p>
+<ol start="7">
+<li>Preparation of glass tubes for monitoring. See <a href="#fig7">Figure 7</a>A.
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Schematic diagrams for sleep deprivation</div>
+<p>(A) The schematic diagram of a glass tube contains a fly.</p>
+<p>(B) The glass tube is inserted into a monitor.</p>
+<p>(C) Fix the monitoring tube with rubber bands.</p>
+<p>(D) Fix the monitoring boards in the oscillator and connect the monitoring board to the data collection system.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Contaminants usually adhere to the newly purchased glass tubes. Boil and wash the glass tube in ddH<sub>2</sub>O to reduce the adhesion of contaminants. Finally, atmospheric pressure is utilized to fill the food into the glass tube</div>
+<ol type="a">
+<li>Place the glass tubes in a beaker and boil for 5–10 min in ddH<sub>2</sub>O. Clean the glass tube once with ddH<sub>2</sub>O.</li>
+<li>Bundle the clean glass tubes with rubber bands, rinse the inside of the glass tubes with ddH<sub>2</sub>O for 4 min, and dry it in an oven.</li>
+<li>Use ddH<sub>2</sub>O to prepare 150mL food solution with a final concentration of 5% sucrose and 1.5% agar as mentioned above.</li>
+<li>Pour the prepared food solution into a clean petri dish with 10 cm in diameter and 1.5 cm in depth. Quickly and stably put the bundled glass tube vertically into the petri dish, and wait for the food to cool and solidify. Under atmospheric pressure, the food liquid will enter the glass tube about 1.5 cm.</li>
+<li>Take out the monitoring tube from the petri dish, wipe off the remaining food on the outer wall of the monitoring tube, and seal the food end with a plastic plug.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Load the flies into the monitoring tubes. See <a href="#fig7">Figures 7</a>B and 7C
+<ol type="a">
+<li>Anesthetize fruit flies with carbon dioxide.</li>
+<li>Use a brush to move the fruit flies into the monitoring tube (one fruit fly per monitoring tube).</li>
+<li>Insert the monitoring tube containing the fruit fly into the monitoring board, and seal the non-food end with a perforated plastic plug (or cotton plug).</li>
+<li>Align the middle of the monitoring tube (the part without food) at the infrared detector of the monitoring board, and fix the monitoring tube with rubber bands.</li>
+</ol>
+</li>
+<li>Sleep deprivation. See <a href="#fig7">Figure 7</a>D and see <a href="#sec7.9">troubleshooting 5</a> and <a href="#sec7.11">6</a>
+<ol type="a">
+<li>Set the temperature, humidity, and time parameters of the artificial climate box.</li>
+<li>Put and fix the monitoring boards in the oscillator which is inside the artificial climate box as described above.</li>
+<li>Connect the monitoring boards to the data collection system and set the data collection interval to 1 min.</li>
+<li>According to the experimental requirements, select the appropriate time point,</li>
+<li>Turn on the power of the oscillator and maintain it in a standby state.</li>
+<li>Turn on the power of the joint control module at the chosen time of the experimental requirement and the sleep deprivation experiment begins to perform.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Common experimental paradigms are as follows. The Zeitgeber time (ZT) was defined as ZT0 with lights on and ZT12 with lights off, so the flies are under a cycle of 12 h of light/12 h of darkness. The whole night deprivation is performed. Firstly, record the baseline of sleep behavior without oscillation. Then perform the sleep deprivation at ZT12 on the second day. Next, conduct the third day record of sleep behavior without oscillation to evaluate the sleep rebound.</div>
+<div class="note">
+<span class="note-title">Note:</span> There are multiple ways to analyze the data generated by sleep deprivation experiments. In some researches, the sleep rebound was calculated as the difference in sleep between the day after sleep deprivation and the day before the deprivation at each ZT time(<a href="#bib17">Toda et al., 2019</a>) or each half hour (<a href="#bib15">Sitaraman et al., 2015</a>). In some other researches, the Individual sleep rebound is quantified every hour for 24 h by dividing the cumulative amount of regained sleep by the total amount of sleep lost during deprivation (<a href="#bib18">Tong et al., 2016</a>; <a href="#bib7">Jin et al., 2021</a>). Here, the latter method was used to present the results of the sleep deprivation experiment.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The sleep amount is significantly reduced during sleep deprivation. Sleep loss is more than 80% after deprivation. See <a href="#fig8">Figure 8</a> and see <a href="#sec7.9">troubleshooting 5</a> and <a href="#sec7.11">6</a></p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Sleep deprivation of <i>w</i><sup><i>1118</i></sup>
+</div>
+<p>The sleep behavior is continuously recorded for 3 days. Normal sleep on the first day is recorded as the baseline. Efficient sleep deprivation is performed on the night of the second day. The sleep rebound is recorded on the third day. The ratio of cumulative regained sleep compared to the total amount of sleep lost is demonstrated on the right. The random oscillation for 10 s continuously is within approximately 3 min.</p>
+<p>(A) The horizontal axis represents the time. The light is turned on At ZT0 and turn off at ZT12. The vertical axis represents the sleep amount. The data point corresponding to every half hour represents the total sleep time within this 30 min. In simple terms, the area below the sleep curves reflects the sleep amount.</p>
+<p>(B) The horizontal axis represents the time. Sleep is deprived from ZT12 to ZT0 which is indicated by the gray area. The vertical axis represents the percentage of accumulated sleep loss compared to baseline. The <i>w</i><sup><i>1118</i></sup> is utilized to conduct the sleep deprivation, n=47. Data are presented as means ± standard errors of the means (SEMs).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>The data generated by DAM2 System is in txt format files which can be analyzed by multiple sleep analysis tools. The SCAMP(<a href="#bib10">Nathan et al., 2012</a>) whose interface is clear and simple is recommended.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> It is also feasible to calculate sleep parameters through programming on MATLAB software (<a href="#bib12">Qian et al., 2017</a>; <a href="#bib19">Vienne et al., 2016</a>)</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The basic knowledge of electronic circuits and programming ability are both required which increases the difficulty for non-engineering background researchers. However, the verified program code we provide and the annotations next to the code could largely overcome the barriers of programming</p>
+<p>The control logic of mechanic shock is applicable but the types of the microcomputer board on the market are too diverse. The program code needs to be optimized to suit different control boards.</p>
+<p>There are multiple types of microcomputer embedded control modules. To our knowledge, some Programmable Logic Controller (PLC) control modules are potentially capable to generate random processes. FX Series PLCs from Mitsubishi Electric Corporation could generate the random number by RND instruction. This control module may also be suitable to generate pseudo-random processes, but it needs further verification.</p>
+<p>Links to similar products: <a href="https://www.amazon.com/gp/product/B07R3X79X9/ref=ox_sc_act_title_1?smid=A1PQ66J882YM3A&amp;psc=1">https://www.amazon.com/gp/product/B07R3X79X9/ref=ox_sc_act_title_1?smid=A1PQ66J882YM3A&amp;psc=1</a></p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>The USB-TTL Automatic STC Downloader doesn’t work as expected (step 1).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>If the STC-ISP software doesn’t show the prompt of success, the connection of the cable needs to be adjusted. As shown in <a href="#fig2">Figures 2</a>A and 2B, under most circumstances, the T pin of the board is connected to the TXD⑤ and the R pin of the board is connected to the RXD③. If it doesn’t work, please connect the T pin of the board to RXD③ and the R pin of the board to the TXD⑤ respectively instead. This fault may be caused by the compatibility of products produced by different manufacturers, but this solution can be used to solve these issues.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>The control module doesn’t work as expected (step 3).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Understand the control logic will strongly facilitate the troubleshooting. We discuss the control principle of this case in detail as follows. See <a href="#fig9">Figure 9</a>.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1029-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Schematic diagram of the control logic</div>
+<p>(A) The flow diagram of the whole system.</p>
+<p>(B) The control logic of the joint control module.</p>
+</figcaption>
+</figure>
+<p>As shown in <a href="#fig9">Figure 9</a>. Relay 1 controls the length of the time interval for oscillating events. The length of the time interval is CL1 + OP1 = 195 s + 2 s = 197 s, and the number of cycles LOP1 is set as infinite. At the 196th second of each cycle, the NO pin and the COM pin of Relay 1 are closed and input a high-level signal to the IN1 pin of the single-chip board.</p>
+<p>The single-chip board is responsible for generating stochastic signals. The single-chip board is triggered after receiving the high-level signal from Relay 1. Within 170 s, a time point is randomly selected to close the COM and CK pins of the embedded relay for 10 s and release the COM and CK pins to the open state subsequently. The high-level signal generated by the close of the COM and CK pins is transmitted to Relay 2 and Relay 3 at the same time. The single-chip board returns to a standby state in 3 min after receiving the high-level signal from Relay 1 and restores to accept the next trigger signal.</p>
+<p>Relay 2 controls the start of the oscillation event. Relay 2 is triggered after receiving the high-level signal from the single-chip board and immediately closes the NO pin and the COM pin for OP2 = 1 s. The control line 1 and control line 2 are therefore connected for OP2 = 1 s. Relay 2 enters the standby state after OP2 = 1 s and restores the NO pin and the COM pin to open state and therefore disconnected control line 1 and control line 2. The oscillator starts working.</p>
+<p>Relay 3 controls the duration of the oscillation event. It is triggered after receiving the high-level signal from the single-chip board. After the trigger, Relay 3 begins timing for CL3 = 10 s. At the end of the timer, the NO pin and the COM pin of Relay 3 are closed for OP3 = 1 s to connect the control line 1 and control line 2 once and the oscillator stop working. After OP3 = 1 s, Relay 3 enters a standby state, and control line 1 and control line 2 are disconnected.</p>
+<p>Logic errors need to avoid. CL1 and OP1 control the length of the time interval. It should be noted that when CL1 + OP1 is less than 3 min, a logic error will occur. If the experiment requires CL1 + OP1 to be less than 3 min, it can be realized by modifying the program code.</p>
+<p>Logic errors need to avoid. CL3 controls the duration of the oscillation event by defining the time between the first and the second connection of control line 1 and control line 2. The OP2 is time for the first connection which needs to be less than CL3 or the logic error occurs.</p>
+<p>Reasons for reduced randomness. If the experiment requires CL1 + OP1 to be longer, the system will inevitably not oscillate after the time of 170 s + CL3 and result in reduced randomness. It could also be fixed by reprograming the code and download it to the single-chip board. The inevitable non-oscillation time &lt; (CL1+OP1) ∗ 10% is acceptable.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>The control module doesn’t respond after power on. See <a href="#fig6">Figure 6</a>A, the damaged Relay 1 doesn’t work (step 3).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>The service life of the relay board and the single-chip board are limited. Even the LC resonance powered by the initiation of the DC power supply seriously threatens the normal work of the control module. If the display of the module does not light up after the power on, it would be damaged. If the relay indicator is on but the relay does not make a sound when it is closed, it would be damaged as well. The control module should be placed to the isolated and radiating location where is 5cm far from the high-intensity magnetic field or the strong magnetic spikes. Replace the damaged part of the control module would be a straightforward way for routine maintenance.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>The deprivation efficiency discords with expectations (step 3).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Too low speed of oscillation results in the failure of sleep deprivation. It mainly depends on the power of the oscillator. If the average sleep deprivation is below 80% of the night sleep amount, the speed of the oscillator should be increased. For the oscillator we use, 1300rpm is good. Please fix the monitors firmly in the oscillators as well.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>The mortality of the flies is excessive after the deprivation (step 4).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>Excessive speed may cause mechanical damage to the flies which increases mortality. Meanwhile, confirm the temperature and humidity parameters of the artificial climate box.</p>
+<h3 id="sec7.11">Problem 6</h3>
+<p>Individual variations after the sleep deprivation discord with expectations (step 4).</p>
+<h3 id="sec7.12">Potential solution</h3>
+<p>Normalize the culture condition of flies and check the single sleep trace of files. Those escaped flies and the impaired or dead flies should be excluded. Flies with low deprivation efficiency could be excluded if the purpose of the experiment is to verify the sleep rebound after sufficient deprivation (<a href="#bib3">Donlea et al., 2014</a>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Anagnostou, C., Dorsch, M., and Rohlfs, M. (2010). Influence of dietary yeasts on Drosophila melanogaster life-history traits. Entomol. Exp. Appl. <i>136</i>, 1-11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref1">View at publisher</a></p>
+<p id="bib2">Brown, E.B., Shah, K.D., Faville, R., Kottler, B., and Keene, A.C. (2020). Drosophila insulin-like peptide 2 mediates dietary regulation of sleep intensity. PLoS Genet. <i>16</i>, e1008270. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref2">View at publisher</a></p>
+<p id="bib3">Donlea, J.M., Pimentel, D., and Miesenbock, G. (2014). Neuronal machinery of sleep homeostasis in Drosophila. Neuron <i>81</i>, 860-872. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref3">View at publisher</a></p>
+<p id="bib4">Donlea, J.M., Pimentel, D., Talbot, C.B., Kempf, A., Omoto, J.J., Hartenstein, V., and Miesenb CK, G. (2018). Recurrent circuitry for balancing sleep need and sleep. Neuron <i>97</i>, 378-389. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref4">View at publisher</a></p>
+<p id="bib5">Ganter, P.F. (1988). The vectoring of cactophilic yeasts by Drosophila. Oecologia <i>75</i>, 400-404. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref5">View at publisher</a></p>
+<p id="bib6">Hendricks, J.C., Finn, S.M., Panckeri, K.A., Chavkin, J., Williams, J.A., Sehgal, A., and Pack, A.I. (2000). Rest in Drosophila is a sleep-like state. Neuron <i>25</i>, 129-138. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref6">View at publisher</a></p>
+<p id="bib7">Jin, X., Tian, Y., Zhang, Z.C., Gu, P., Liu, C., and Han, J. (2021). A subset of DN1p neurons integrates thermosensory inputs to promote wakefulness via CNMa signaling. Curr. Biol. <i>31</i>, 2075-2087.e6. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref7">View at publisher</a></p>
+<p id="bib8">Kuo, T.H. and Williams, J.A. (2014). Increased sleep promotes survival during a bacterial infection in Drosophila. Sleep <i>37</i>, 1077-1086. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref8">View at publisher</a></p>
+<p id="bib9">Liu, C., Meng, Z., Wiggin, T.D., Yu, J., Reed, M.L., Guo, F., Zhang, Y., Rosbash, M., and Griffith, L.C. (2019). A serotonin-modulated circuit controls sleep architecture to regulate cognitive function independent of total sleep in Drosophila. Curr. Biol. <i>29</i>, 3635-3646. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref9">View at publisher</a></p>
+<p id="bib10">Nathan, D., Kim, E.Z., Slawson, J.B., Vecsey, C.G., Robert, H., Griffith, L.C., and BRUNO, V.S. (2012). High-resolution positional tracking for long-term analysis of Drosophila sleep and locomotion using the "Tracker" program. PLoS One <i>7</i>, e37250. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref10">View at publisher</a></p>
+<p id="bib11">Nitz, D.A., Van Swinderen, B., Tononi, G., and Greenspan, R.J. (2002). Electrophysiological correlates of rest and activity in Drosophila melanogaster. Curr. Biol. <i>12</i>, 1934-1940. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref11">View at publisher</a></p>
+<p id="bib12">Qian, Y., Cao, Y., Deng, B., Yang, G., Li, J., Xu, R., Zhang, D., Huang, J., and Rao, Y. (2017). Sleep homeostasis regulated by 5HT2b receptor in a small subset of neurons in the dorsal fan-shaped body of drosophila. Elife <i>6</i>, e26519. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref12">View at publisher</a></p>
+<p id="bib13">Robinson, J.E., Paluch, J., Dickman, D.K., and Joiner, W.J. (2016). ADAR-mediated RNA editing suppresses sleep by acting as a brake on glutamatergic synaptic plasticity. Nat. Commun. <i>7</i>, 10512. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref13">View at publisher</a></p>
+<p id="bib14">Shaw, P.J., Cirelli, C., Greenspan, R.J., and Tononi, G. (2000). Correlates of sleep and waking in Drosophila melanogaster. Science <i>287</i>, 1834-1837. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref14">View at publisher</a></p>
+<p id="bib15">Sitaraman, D., Aso, Y., Jin, X., Chen, N., Felix, M., Rubin, G.M., and Nitabach, M.N. (2015). Propagation of homeostatic sleep signals by segregated synaptic microcircuits of the Drosophila mushroom body. Curr. Biol. <i>25</i>, 2915-2927. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref15">View at publisher</a></p>
+<p id="bib16">Stahl, B.A., Peco, E., Davla, S., Murakami, K., Moreno, N.A.C., Van Meyel, D.J., and Keene, A.C. (2018). The taurine transporter Eaat2 functions in ensheathing glia to modulate sleep and metabolic rate. Curr. Biol. <i>28</i>, 3700-3708. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref16">View at publisher</a></p>
+<p id="bib17">Toda, H., Williams, J.A., Gulledge, M., and Sehgal, A. (2019). A sleep-inducing gene, nemuri, links sleep and immune function in Drosophila. Science <i>363</i>, 509-515. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref17">View at publisher</a></p>
+<p id="bib18">Tong, H., Li, Q., Zhang, Z.C., Li, Y., and Han, J. (2016). Neurexin regulates nighttime sleep by modulating synaptic transmission. Sci. Rep. <i>6</i>, 38246. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref18">View at publisher</a></p>
+<p id="bib19">Vienne, J., Spann, R., Guo, F., and Rosbash, M. (2016). Age-related reduction of recovery sleep and arousal threshold in Drosophila. Sleep <i>39</i>, 1613-1624. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00533-5/sref19">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Junhai Han; <a href="mailto:junhaihan@seu.edu.cn">junhaihan@seu.edu.cn</a></p>
+<h4>Materials availability</h4>
+<p>We did not generate any new materials</p>
+<h4>Data and code availability</h4>
+<p>The program code for the single-chip board is available on the website: <a href="https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing">https://drive.google.com/drive/folders/1NhXpLkspr3mN014Ea5_oZ0JJ6yVOckyq?usp=sharing</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/501100001809">National Natural Science Foundation of China (NSFC), China</a> (31771171 to J.H.) and Shenzhen-Hong Kong Institute of Brain Science-Shenzhen Fundamental Research Institutions, China (NYKFKT2019004 to J.H.) We thank the Jing Hong Company, China (STC micro<sup>TM</sup>) for providing driver software, STC-ISP download software, and the 51 chip datasheet. We thank Hai Shen-Hao Company at Taobao, China for helping with programming.</p>
+<h3>Author contributions</h3>
+<p>X.J. contributed to the protocol and writing of the manuscript. P.G. and J.H. edited the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

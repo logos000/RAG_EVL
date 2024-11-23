@@ -1,0 +1,1464 @@
+<article>
+<section>
+<h1 id="header">Global mapping of translation initiation sites by TIS profiling in budding yeast</h1>
+<p><time datetime="2021-01-08">Published: January 8, 2021</time></p>
+<p>Ina Hollerer,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#cor1">*</a></sup> Emily N. Powers,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and Gloria A. Brar<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Molecular and Cell Biology, University of California, Berkeley, Berkeley, CA 94720, USA</p>
+<p id="aff2"><sup>2</sup>California Institute for Quantitative Biosciences (QB3), University of California, San Francisco, CA 94158, USA</p>
+<p id="aff3"><sup>3</sup>Center for Computational Biology, University of California, Berkeley, Berkeley, CA 94720, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:ina.hollerer@berkeley.edu">ina.hollerer@berkeley.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:gabrar@berkeley.edu">gabrar@berkeley.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100250">10.1016/j.xpro.2020.100250</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Translation initiation site (TIS) profiling allows for the genome-wide identification of TISs <i>in vivo</i> by exclusively capturing mRNA fragments within ribosomes that have just completed translation initiation. It leverages translation inhibitors, such as harringtonine and lactimidomycin (LTM), that preferentially capture ribosomes at start codon positions, protecting TIS-derived mRNA fragments from nuclease digestion. Here, we describe a step-by-step protocol for TIS profiling in LTM-treated budding yeast that we developed to identify TISs and open reading frames in vegetative and meiotic cells.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib2">Eisenberg et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>TIS profiling allows for genome-wide annotation of translation initiation sites</li>
+<li>LTM treatment efficiently captures ribosomes at start codon positions in yeast</li>
+<li>TIS profiling can be used to identify condition-specific TISs</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/345-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Identification of functional LTM concentration and run-off time for elongating ribosomes</h3>
+<p>Functional concentrations of LTM and run-off times for elongating ribosomes need to be individually determined for different organisms.</p>
+<ol>
+<li>Determine the ideal LTM concentration for your organism of interest by performing a growth curve experiment. For budding yeast strains, treat cells with LTM concentrations spanning from 1 μM to 10 μM. An ideal concentration is the lowest that substantially inhibits growth, as LTM acts on the first round of elongation.</li>
+<li>Determine the ideal run-off time of elongating ribosomes by treating cells with LTM for up to 30 min. We have found a treatment time between 10 and 30 min to work well in yeast. If you still see elongating ribosome footprints at the 3′ end of longer transcripts, you might want to increase run-off time.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We found that in budding yeast, LTM concentrations used for TIS profiling in mammalian cells result in footprints throughout ORFs. We attribute this to LTM’s known ability to inhibit both post-initiation and elongating ribosomes at high concentrations (<a href="#bib7">Schneider-Poetsch et al., 2010</a>). Treating yeast cells with 3 μM of LTM, a concentration ∼20-times lower than the one used for TIS-mapping in mammalian cells (<a href="#bib5">Lee et al., 2012</a>), for example, and a run-off time of 20 min resulted in the desired enrichment of footprints at translation start sites suggesting that post-initiation ribosomes are more sensitive to LTM treatment than elongating ribosomes. It is important to note that even the lowest effective LTM concentration will inhibit some elongating ribosomes and polysome peaks that are smaller compared to conventional ribosome profiling will still be present in uncut samples (see <a href="#step-by-step-method-details">Step-by-step method details</a>, <a href="#sec3.5">Footprint isolation by sucrose gradient</a>, step 25, and <a href="#fig1">Figure 1</a>).</div>
+<h3 id="sec1.2">Determining the ideal RNase I conditions for RNA footprinting in cell extracts</h3>
+<p>Determine the ideal conditions for efficient RNase I-digestion of your cell extracts before performing any downstream steps (see <a href="#step-by-step-method-details">Step-by-step method details</a>, <a href="#sec3.5">Footprint isolation by sucrose gradient</a>, step 4). The ideal RNase I condition results in an extremely small remaining disome peak, no polysomes, and a discrete rather than smeary monosome/80S peak (<a href="#fig1">Figure 1</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/345-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Polysome profiles of LTM-treated meiotic yeast cells</div>
+<p>In extracts not digested with RNase I (black lines), two smaller peaks representing the small (40S) and the large (60S) ribosome subunit will be visible. Small scanning ribosome species might appear as a peak between the 40S and the 60S peak (∗). Monosomes (80S) subsequently appear as a large peak followed by several smaller periodic peaks representing polysomes. Small polysome peaks will still be visible in uncut LTM-treated samples as even the lowest effective concentrations of LTM also inhibits some elongating ribosomes but peaks will be much smaller than seen in traditional CHX-treated ribosome profiling samples. Also note that the polysome traces depicted here are from meiotic samples and polysome peaks will be higher in most vegetative conditions. In RNase I-digested samples (red lines) less distinct 40S and 60S peaks will be present, followed by a large 80S peak. Polysomes will be absent.</p>
+</figcaption>
+</figure>
+<p>We have found 10 U RNase I per Abs<sub>260</sub> unit to work well in budding yeast.</p>
+<h3 id="sec1.3">Design antisense oligos for rRNA subtraction for your organism of interest</h3>
+<p>This protocol uses antisense biotinylated DNA oligos (see <a href="#key-resources-table">Key resources table</a>; (<a href="#bib4">Ingolia et al., 2012</a>)) for capturing and removing three highly abundant yeast-specific ribosomal RNA fragments from ribosomal footprint samples whose presence would lead to low sequencing-depth of (non-rRNA) ribosome footprints.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT OR RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>Growcells</td>
+<td>UPW-0500</td>
+</tr>
+<tr>
+<td>Cycloheximide (CHX)</td>
+<td>Sigma-Aldrich</td>
+<td>C1988</td>
+</tr>
+<tr>
+<td>Lactimidomycin (LTM)</td>
+<td>Sigma-Aldrich</td>
+<td>506291</td>
+</tr>
+<tr>
+<td>1 M Tris-HCl pH 7</td>
+<td>Invitrogen</td>
+<td>AM9850G</td>
+</tr>
+<tr>
+<td>1 M Tris-HCl pH 7.5</td>
+<td>Teknova</td>
+<td>T5075</td>
+</tr>
+<tr>
+<td>1 M Tris-HCl pH 8</td>
+<td>Invitrogen</td>
+<td>AM9855G</td>
+</tr>
+<tr>
+<td>2 M KCl</td>
+<td>Invitrogen</td>
+<td>AM9640G</td>
+</tr>
+<tr>
+<td>1 M MgCl<sub>2</sub>
+</td>
+<td>Invitrogen</td>
+<td>AM9530G</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>Invitrogen</td>
+<td>AM9760G</td>
+</tr>
+<tr>
+<td>Triton X-100 detergent</td>
+<td>Millipore</td>
+<td>648466</td>
+</tr>
+<tr>
+<td>Sucrose, ultra-pure</td>
+<td>MP biomedicals</td>
+<td>821713</td>
+</tr>
+<tr>
+<td>Acid-phenol:chloroform, pH 4.5</td>
+<td>Invitrogen</td>
+<td>AM9722</td>
+</tr>
+<tr>
+<td>Chloroform</td>
+<td>Fisher Scientific</td>
+<td>C606-1</td>
+</tr>
+<tr>
+<td>NaOAc, pH 5.5</td>
+<td>Invitrogen</td>
+<td>AM9610</td>
+</tr>
+<tr>
+<td>Isopropanol</td>
+<td>Fisher Scientific</td>
+<td>A416-1</td>
+</tr>
+<tr>
+<td>Ethanol</td>
+<td>Koptec</td>
+<td>V1016</td>
+</tr>
+<tr>
+<td>SUPERase·In</td>
+<td>Invitrogen</td>
+<td>AM2694</td>
+</tr>
+<tr>
+<td>GlycoBlue</td>
+<td>Invitrogen</td>
+<td>AM9515</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>Invitrogen</td>
+<td>15575-038</td>
+</tr>
+<tr>
+<td>Ultra-pure dithiothreitol (DTT)</td>
+<td>Invitrogen</td>
+<td>15508013</td>
+</tr>
+<tr>
+<td>RNase I</td>
+<td>Invitrogen</td>
+<td>AM2295</td>
+</tr>
+<tr>
+<td>SDS</td>
+<td>Bio-Rad</td>
+<td>1610302</td>
+</tr>
+<tr>
+<td>Growth media</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Novex TBE-Urea Sample Buffer (2×)</td>
+<td>Invitrogen</td>
+<td>LC6876</td>
+</tr>
+<tr>
+<td>10 bp DNA step ladder</td>
+<td>Promega</td>
+<td>G447A</td>
+</tr>
+<tr>
+<td>15% TBE-urea gel</td>
+<td>Invitrogen</td>
+<td>EC68852BOX</td>
+</tr>
+<tr>
+<td>10% TBE-urea gel</td>
+<td>Invitrogen</td>
+<td>EC68752BOX</td>
+</tr>
+<tr>
+<td>8% TBE gel</td>
+<td>Invitrogen</td>
+<td>EC62152BOX</td>
+</tr>
+<tr>
+<td>10× TBE buffer</td>
+<td>Invitrogen</td>
+<td>AM9863</td>
+</tr>
+<tr>
+<td>SYBR gold nucleic acid gel stain</td>
+<td>Life Technologies</td>
+<td>S11494</td>
+</tr>
+<tr>
+<td>Spin-X centrifuge tube filter columns</td>
+<td>Costar</td>
+<td>8162</td>
+</tr>
+<tr>
+<td>T4 PNK + 10× T4 PNK buffer</td>
+<td>NEB</td>
+<td>M0201S</td>
+</tr>
+<tr>
+<td>
+<i>E.coli</i> polyA polymerase + buffer + ATP</td>
+<td>NEB</td>
+<td>M0276S</td>
+</tr>
+<tr>
+<td>Sodium hydroxide (pellets)</td>
+<td>Fisher Scientific</td>
+<td>S318-500</td>
+</tr>
+<tr>
+<td>HCl</td>
+<td>Fluka</td>
+<td>318949-500ML</td>
+</tr>
+<tr>
+<td>Tween20</td>
+<td>VWR</td>
+<td>M147-1L</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>Saccharomyces cerevisiae</i>, SK1 (our study)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>SuperScript III Reverse Transcriptase + 5× First Strand Buffer, 0.1 M DTT</td>
+<td>Invitrogen</td>
+<td>18080093</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA Polymerase + 5× HF buffer</td>
+<td>NEB</td>
+<td>M0530S</td>
+</tr>
+<tr>
+<td>CircLigase ssDNA Ligase + CircLigase 10× Reaction Buffer, 1 mM ATP, 50 mM MnCl<sub>2</sub>
+</td>
+<td>Lucigen</td>
+<td>CL4115K</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>28-mer control oligo<sup><a href="#dtbl1fna">a</a></sup>5′AUGUACACGGAGUCGACCCGCAACGCGA3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>31-mer control oligo<sup><a href="#dtbl1fna">a</a></sup>5′AUGUACACGGAGUCGAGCACCCGCAACGCGA/3Phos/3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA1b<sup><a href="#dtbl1fnb">b</a></sup>5′/biosg/GATCGGTCGATTGTGCACC3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA2b<sup><a href="#dtbl1fnb">b</a></sup>5′/biosg/CCGCTTCATTGAATAAGTAAAGAAAC3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA3b<sup><a href="#dtbl1fnb">b</a></sup>5′/biosg/GACGCCTTATTCGTATCCATCTATA3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RT primer<sup><a href="#dtbl1fna">a</a></sup><sup>,</sup><sup><a href="#dtbl1fnc">c</a></sup>5′/5Phos/AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT/iSp18/GTGACTGGAGTTCAGACGTTTTTTTTTTTTTTTTTTTTVN/3′ <i>iSp18 = internal spacer 18 from IDT</i>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PCR forward primer<sup><a href="#dtbl1fna">a</a></sup><sup>,</sup><sup><a href="#dtbl1fnc">c</a></sup>5′AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT 3′</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Index primers<sup><a href="#dtbl1fna">a</a></sup><sup>,</sup><sup><a href="#dtbl1fnc">c</a></sup>5′CAAGCAGAAGACGGCATACGAGATXXXXXXXXGTGACTGGAGTTCAGACG3′<i>“XXXXXXXX” = Illumina barcodes</i>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA1b<sup><a href="#dtbl1fnb">b</a></sup> (from <a href="#bib4">Ingolia et al., 2012</a>)5′/biosg/GATCGGTCGATTGTGCACC3′ <i>biosg = 5</i>′<i>biotin with standard linker from IDT (C6)</i>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA2b<sup><a href="#dtbl1fnb">b</a></sup> (from (<a href="#bib4">Ingolia et al., 2012</a>))5′/biosg/CCGCTTCATTGAATAAGTAAAGAAAC3′ <i>biosg = 5</i>′<i>biotin with standard linker from IDT (C6)</i>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>asDNA3b<sup><a href="#dtbl1fnb">b</a></sup> (from (<a href="#bib4">Ingolia et al., 2012</a>))5′/biosg/GACGCCTTATTCGTATCCATCTATA3′ <i>biosg = 5</i>′<i>biotin with standard linker from IDT (C6)</i>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>30°C warm room (for budding yeast meiotic samples)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Culture flasks (for budding yeast samples)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Shaker (for budding yeast samples)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Styrofoam box</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>50 mL centrifuge tube</td>
+<td>Corning</td>
+<td>430829</td>
+</tr>
+<tr>
+<td>Vacuum pump</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>2 mL micro tube</td>
+<td>Sarstedt</td>
+<td>72.694.006</td>
+</tr>
+<tr>
+<td>Rack for 50 mL tubes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>BD Precisionglide needle 20G</td>
+<td>Sigma-Aldrich</td>
+<td>305175</td>
+</tr>
+<tr>
+<td>Liquid N<sub>2</sub>
+</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Large flat metal spatula</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Long tweezers</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>All-glass filter holder kit</td>
+<td>Millipore Sigma</td>
+<td>XX1514700</td>
+</tr>
+<tr>
+<td>Nitrocellulose nitrate membranes, 0.45um pore size</td>
+<td>Whatman</td>
+<td>7184-009</td>
+</tr>
+<tr>
+<td>Latex/nitrile gloves in your size and a size or two larger</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cryogloves</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Metal tongs</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Kimwipes</td>
+<td>Kimtech</td>
+<td>34155</td>
+</tr>
+<tr>
+<td>Paper towels</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Retsch MM400 mixer mill</td>
+<td>Retsch</td>
+<td>20.745.0001</td>
+</tr>
+<tr>
+<td>Grinding jars MM 400, 50 mL</td>
+<td>Retsch</td>
+<td>01.462.0216</td>
+</tr>
+<tr>
+<td>Grinding balls, 25 mm</td>
+<td>Retsch</td>
+<td>05.368.0105</td>
+</tr>
+<tr>
+<td>Curved small spatulas (two per sample)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>30°C water bath</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Centrifuge for 50 mL tubes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Centrifuge for 1.5 mL tubes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Ultrospec 2100 pro spectrophotometer</td>
+<td>Amersham Biosciences</td>
+<td>23064</td>
+</tr>
+<tr>
+<td>XL-70 ultracentrifuge</td>
+<td>Beckman Coulter</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SW41 Ti swinging bucket rotor and buckets</td>
+<td>Beckman Coulter</td>
+<td>331362</td>
+</tr>
+<tr>
+<td>Gradient master system<sup><a href="#dtbl1fnd">d</a></sup>
+</td>
+<td>BIOCOMP Instruments</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Ultracentrifuge tubes, 12 mL</td>
+<td>Seton</td>
+<td>7030</td>
+</tr>
+<tr>
+<td>Duster compressed gas</td>
+<td>Falcon</td>
+<td>DPSXL-7140D</td>
+</tr>
+<tr>
+<td>10 mL syringe</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Serological pipets</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Thermomixer C heatblock</td>
+<td>Eppendorf</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>1.5 mL low-adhesion microcentrifuge tubes</td>
+<td>USA Scientific</td>
+<td>1415-2600</td>
+</tr>
+<tr>
+<td>1.5 mL Non-stick RNase-free microfuge tubes</td>
+<td>Ambion</td>
+<td>AM12450</td>
+</tr>
+<tr>
+<td>0.5 mL Non-stick RNase-free microfuge tubes</td>
+<td>Ambion</td>
+<td>AM12350</td>
+</tr>
+<tr>
+<td>SafeImager 2.0</td>
+<td>Invitrogen</td>
+<td>G6600</td>
+</tr>
+<tr>
+<td>Saran wrap</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Bio-Rad Geldoc XR+</td>
+<td>Bio-Rad</td>
+<td>1708195</td>
+</tr>
+<tr>
+<td>Dynabeads MyOne Streptavidin C1</td>
+<td>Invitrogen</td>
+<td>65001</td>
+</tr>
+<tr>
+<td>DynaMag-1 magnet</td>
+<td>Invitrogen</td>
+<td>12321D</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl1fna" class="table-footnote"><sup>a</sup>PAGE-purified.</p>
+<p id="dtbl1fnb" class="table-footnote"><sup>b</sup>HPLC-purified.</p>
+<p id="dtbl1fnc" class="table-footnote"><sup>c</sup>The amplification primers were designed and validated by Calvin Jan and generously shared with us. The original RT primer was also designed and validated by Calvin Jan for linker ligation (see note under Poly(A)-tailing in the <a href="#step-by-step-method-details">Step-by-step method details</a> section) but modified to be compatible with poly(A)-tailing.</p>
+<p id="dtbl1fnd" class="table-footnote"><sup>d</sup>We use the BIOCOMP Gradient master system (with accessories including plotting software) that includes the gradient master for gradient formation, and the piston gradient fractionator. We use the Bio-Rad EM-1 Econo (Bio-Rad, 7318160) as the UV monitor and the Model 2110 Fraction Collector (Bio-Rad, 7318122) at our gradient station. Other UV monitors and fraction collectors may be used if compatible with the gradient station.</p>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<div class="note">
+<span class="note-title">Note:</span> All buffers and solutions need to be RNase-free.</div>
+<p><b>The following reagents can be prepared ahead of time</b> (note that the amounts per sample listed here are not exact and reflect slight excess of material to account for pipetting errors):</p>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LTM in DMSO, store at −80°C</td>
+<td>4 mM</td>
+<td>depending on your organism</td>
+</tr>
+<tr>
+<td>Triton, store at 20°C</td>
+<td>20%</td>
+<td>300 μL</td>
+</tr>
+<tr>
+<td>SDS, store at 20°C</td>
+<td>20%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>DTT, store at −20°C</td>
+<td>1 M</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>EtOH, store at −20°C</td>
+<td>80%</td>
+<td>750 μL</td>
+</tr>
+<tr>
+<td>CHX in EtOH, store at −20°C</td>
+<td>50 mg/mL</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>NaOH, store at 20°C</td>
+<td>1 M</td>
+<td>60 μL</td>
+</tr>
+<tr>
+<td>HCl, store at 20°C</td>
+<td>1 M</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>Tris-HCl pH 7, store at 20°C</td>
+<td>10 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Tris-HCl pH 8, store at 20°C</td>
+<td>10 mM</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>Tween20, store at 20°C</td>
+<td>10%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>NaCl, store at 20°C</td>
+<td>3 M</td>
+<td>200 μL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Please refer to the product information for the shelf lives of the individual reagents listed here.</div>
+<div class="note">
+<span class="note-title">Note:</span> Cycloheximide and LTM waste should be kept separate, with solid and liquid waste disposed separately by appropriate hazardous waste procedures.</div>
+<table id="undtbl2">
+<caption>Growth media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Depending on your strain</td>
+<td>N/A</td>
+<td>depending on experimental conditions</td>
+</tr>
+<tr>
+<td>Sterilize before use</td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl3">
+<caption>Dynabead B&amp;W buffer 2× + 0.01% Tween</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl pH 7.5</td>
+<td>10 mM</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>1 mM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>2 M</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>10% Tween20</td>
+<td>0.01%</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>293.5 μL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl4">
+<caption>Dynabead B&amp;W buffer 1× + 0.01% Tween</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl pH 7.5</td>
+<td>5 mM</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>500 μM</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>1 M</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>10% Tween20</td>
+<td>0.01%</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>396.5 μL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl5">
+<caption>Dynabead solution A</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M NaOH</td>
+<td>0.1 M</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>0.05 M</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>445 μL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl6">
+<caption>Dynabead solution B</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5 M NaCl</td>
+<td>0.1 M</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>490 μL</td>
+</tr>
+</tbody>
+</table>
+<p><b>The following reagents should be prepared fresh</b> (note that the amounts per sample listed here are not exact and reflect slight excess of material to account for pipetting errors):</p>
+<table id="undtbl7">
+<caption>Polysome lysis buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl pH 8.0</td>
+<td>20 mM</td>
+<td>80 μL</td>
+</tr>
+<tr>
+<td>2 M KCl</td>
+<td>140 mM</td>
+<td>280 μL</td>
+</tr>
+<tr>
+<td>1 M MgCl<sub>2</sub>
+</td>
+<td>1.5 mM</td>
+<td>6 μL</td>
+</tr>
+<tr>
+<td>50 mg/mL CHX in EtOH</td>
+<td>100 μg/mL</td>
+<td>8 μL</td>
+</tr>
+<tr>
+<td>20% Triton</td>
+<td>1%</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>3.43 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl8">
+<caption>Polysome gradient buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample (2 gradients)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl pH 8.0</td>
+<td>20 mM</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>2 M KCl</td>
+<td>140 mM</td>
+<td>1.75 mL</td>
+</tr>
+<tr>
+<td>1 M MgCl<sub>2</sub>
+</td>
+<td>5 mM</td>
+<td>125 μL</td>
+</tr>
+<tr>
+<td>50 mg/mL CHX in EtOH</td>
+<td>100 μg/mL</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>1 M DTT</td>
+<td>500 μM</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>20 U/μL SUPERase·In</td>
+<td>20 U/mL</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>DEPC-treated water</td>
+<td>N/A</td>
+<td>22.54 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl9">
+<caption>10% ultra-pure sucrose (w/v)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sucrose, ultra-pure</td>
+<td>10%</td>
+<td>1.5 g</td>
+</tr>
+<tr>
+<td>Polysome gradient buffer</td>
+<td>N/A</td>
+<td>13.9 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl10">
+<caption>50% ultra-pure sucrose (w/v)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sucrose, ultra-pure</td>
+<td>50%</td>
+<td>7.45 g</td>
+</tr>
+<tr>
+<td>Polysome gradient buffer</td>
+<td>N/A</td>
+<td>10.4 mL</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<div class="note">
+<span class="note-title">Note:</span> The protocol describes the procedure for prepping one sample at a time. Scale up as needed.</div>
+<div class="note">
+<span class="note-title">Note:</span> We advise to perform TIS profiling on two independent biological replicates when comparing two or more conditions to confidently identify true translation initiation sites.</div>
+<h3 id="sec3.1">Yeast growth</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> depends on strain, conditions used</div>
+<ol>
+<li>Prepare your strain of interest as desired.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> You will need to prepare enough culture to obtain sufficient numbers of LTM-protected fragments for optimal sequencing coverage. We have successfully used extracts with Abs<sub>260</sub> values in the range of 12 to 20 (2.4–4 Abs<sub>260</sub> units per 200 μL of extract; see <a href="#sec3.4">Preparation of cell extract for footprinting</a>), corresponding to ∼100 mL of vegetative yeast culture at OD<sub>600</sub> = 0.6 or 50 mL of meiotic culture at OD<sub>600</sub> = 1.9.</div>
+<h3 id="sec3.2">LTM treatment and cell harvesting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="2">
+<li>Label and prepare a 50 mL tube for sample collection by piercing 3–4 holes in its cap with a 20G needle.</li>
+<li>Fill styrofoam box with LN<sub>2</sub> and lodge a 50 mL tube rack inside.</li>
+<li>Set up the filtration apparatus by connecting the filter flask to a vacuum pump and placing the filter piece into the flask top piece. Put a 0.45 μm nitrocellulose membrane in the center of the filter piece, place the collection beaker over the membrane and attach it to the filter piece with a clasp.</li>
+<li>Immerse the labeled 50 mL tube without its cap in LN<sub>2</sub>.</li>
+<li>Cool a large flat metal spatula in LN<sub>2</sub> with handles sticking out.</li>
+<li>Treat cells with a final concentration of 3 μM of LTM (or with the concentration optimized for your organism/conditions; see <a href="#before-you-begin">Before you begin</a>) by directly adding LTM to the media and let cells incubate for 20 min at 30°C (or for as long as determined to be necessary for your organism/conditions; see <a href="#before-you-begin">Before you begin</a>).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The timing this step is crucial for allowing elongating ribosomes to run off completely.</div>
+<ol start="8">
+<li>Use long tweezers to remove the 50 mL tube from LN<sub>2</sub> and put it into rack immersed in LN<sub>2</sub>, keeping tube half filled with LN<sub>2</sub>.</li>
+<li>Filter culture through the membrane. Once all media has been filtered, immediately remove the clasp and the collection beaker.</li>
+<li>Use the cooled flat spatula to horizontally scrape off cells from the exposed membrane and quickly transfer cells to the LN<sub>2</sub>-filled 50 mL tube to snap-freeze cells. Make sure not to tear the membrane.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Acting quickly at this step is very important to capture ribosomes in their physiological state. Ideally, you want all cells scraped off in one swipe. If necessary, plunge the whole spatula into the 50 mL tube.</div>
+<ol start="11">
+<li>Cap tube and store vertically at −80°C indefinitely. Let LN<sub>2</sub> evaporate off completely.</li>
+<li>Prepare a separate 50 mL tube per sample by piercing 3–4 holes in its cap with a 20G needle and immerse it in LN<sub>2</sub>.</li>
+<li>Prepare fresh polysome lysis buffer (see <a href="#materials-and-equipment">Materials and equipment</a>). Keep on ice.</li>
+<li>Use long tweezers to remove the 50 mL tube from LN<sub>2</sub> and put it into rack immersed in LN<sub>2</sub>, keeping tube half filled with LN<sub>2</sub>.</li>
+<li>Slowly add 3 mL of cold polysome lysis buffer by letting if drip into the LN<sub>2</sub>.</li>
+<li>Cap tube and store vertically at −80°C indefinitely. Let LN<sub>2</sub> evaporate off completely.</li>
+</ol>
+<p>The following steps are similar to our standard ribosome profiling protocol, which is discussed in detail in (<a href="#bib6">Powers and Brar, 2020</a>).</p>
+<h3 id="sec3.3">Yeast cell lysis by mixer milling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<div class="note">
+<span class="note-title">Note:</span> Do not allow sample to thaw while grinding. Everything that touches the sample including spatulas, grinding jars, and balls needs to be pre-cooled in LN<sub>2</sub>. Closed grinding jars should not be removed from LN<sub>2</sub> for more than 5 min at a time. Open grinding jars should not be removed from LN<sub>2</sub> for more than 3 min at a time.</div>
+<ol start="17">
+<li>Put the 50 mL tubes with the frozen cell pellet and the frozen buffer pieces in a tube rack lodged in a styrofoam box filled with LN<sub>2</sub>.</li>
+<li>Loosen pellet by lightly hitting the tube with a tong and add the frozen buffer pieces to the tube containing the frozen cell pellet.</li>
+<li>Put both halves of the grinding jar and grinding balls into LN<sub>2</sub> in a styrofoam box using tongs. Wait until boiling stops.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is recommended to put on multiple layers of protective gloves when handling grinding jars, such as a pair of latex/nitrile gloves under a pair of cryogloves and another pair of larger latex/nitrile gloves on top.</div>
+<ol start="20">
+<li>Remove both halves of the jar from LN<sub>2</sub> and place them on a paper towel, removing all LN<sub>2</sub>.</li>
+<li>Transfer grinding ball to the large half of the jar.</li>
+<li>Pour sample (frozen pellet + frozen buffer pieces) into the large half of the jar and screw top on tightly. Rechill in LN<sub>2</sub> until boiling stops.</li>
+<li>Remove jars from LN<sub>2</sub> using tongs and loosen one quarter of a turn and then re-tighten. This is to ensure they do not lock shut.</li>
+<li>Grind sample for 3 min at 15 Hz in a mixer mill.</li>
+<li>Return to LN<sub>2</sub>. Wait until boiling stops.</li>
+<li>Repeat steps 23–25 two more times (three grinding rounds total).</li>
+<li>During last round of grinding, pre-cool spatulas (two per sample).</li>
+<li>With jars still in LN<sub>2</sub>, remove cap from the 50 mL tube on LN<sub>2</sub>.</li>
+<li>Remove jar from LN<sub>2</sub> using tongs and put on a layer of Kimwipes.</li>
+<li>Tap top of jar with tongs to knock ground up sample to the bottom.</li>
+<li>Unscrew jar vertically, making sure that the grinding ball stays in the bottom half of the jar.</li>
+<li>Use spatula to scrape cell powder from the top half of the jar into the open 50 mL tube on LN<sub>2</sub>.</li>
+<li>Transfer grinding ball from the bottom half to the empty top half of the jar and use second cold spatula to scrape powder from the bottom half of the jar into the open 50 mL tube on LN<sub>2</sub>.</li>
+<li>Store samples upright at −80°C∗.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If you are grinding additional samples you will need to very thoroughly disassemble and clean all parts of the jars and balls in between with MilliQ water, methanol all surfaces, and dry completely before re-use.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> We have found that samples remain of high quality for as long as 2–3 years but have not tested beyond this.</div>
+<h3 id="sec3.4">Preparation of cell extract for footprinting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<ol start="35">
+<li>Thaw cell powder in a 30°C water bath in constantly swirling water. Place on ice.</li>
+<li>Pellet cells for 5 min at 3,000 × <i>g</i> at 4°C.</li>
+<li>Transfer supernatant to a 1.5 mL microcentrifuge tube on ice.</li>
+<li>Centrifuge for 10 min at 20,000 × <i>g</i> at 4°C.</li>
+<li>Transfer supernatant to a 1.5 mL low-adhesion microcentrifuge tube (USA scientific). Vortex briefly.</li>
+<li>Aliquot extracts in 100 Abs<sub>260</sub> units into 2 mL cryotubes on ice. Aliquots should not exceed 200 μL.</li>
+<li>Make a 1:100 dilution of the extract in 10 mM Tris-HCl pH 7 in a separate tube in an adequate volume for a 260 nm absorbance measurement by your method of choice. For example, 1 μL of extract diluted in 100 μL of 10 mM Tris-HCl pH 7 provides more than enough material to measure with a NanoDrop (Thermo-Fisher). Undiluted aliquots can be flash-frozen in LN<sub>2</sub> and stored at −80°C indefinitely.</li>
+<li>Measure the absorbance of the diluted extract at 260 nm using a spectrophotometer.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We used extracts with Abs<sub>260</sub> values in the range of 12–20 for undiluted extracts (2.4–4 Abs<sub>260</sub> units in a total aliquot of 200 μL) for our original TIS-profiling study (<a href="#bib2">Eisenberg et al., 2020</a>).</div>
+<h3 id="sec3.5">Footprint isolation by sucrose gradient</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7 h</div>
+<ol start="43">
+<li>Cool SW41 rotor and rotor buckets at 4°C.</li>
+<li>Prepare polysome gradient buffer and 10% sucrose (w/v) and 50% sucrose (w/v) solutions in separate 50 mL tubes.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Prepare buffer and solutions for two gradients per sample (one for RNase I-digestion and footprint isolation and one for an uncut control to check the quality of the extract).</div>
+<ol start="45">
+<li>Let sucrose solutions shake horizontally for 15–30 min at 22°C or until sucrose is completely dissolved.</li>
+<li>Use two undiluted aliquots of extract per sample: digest one aliquot with 10 U RNase I per Abs<sub>260</sub> unit and treat the second aliquot with an equal volume of 20 U/μL SUPERase·In, in place of RNase I (uncut sample).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If using frozen aliquots, thaw extracts on ice first.</div>
+<ol start="47">
+<li>Incubate sample with gentle shaking or rotating at 22°C for 1 h. Place on ice.</li>
+<li>While the sucrose solutions are dissolving, label two 12 mL ultracentrifuge tubes per extract (for RNase-digested and uncut sample) along the outside near the rim with the sample name and the rotor position and clean with compressed air to remove any debris.</li>
+</ol>
+<p>The following steps (49–56) describe the procedure for forming a single sucrose gradient. Two gradients are required per extract (for RNase-digested and uncut sample).</p>
+<div class="note">
+<span class="note-title">Note:</span> The directions apply to the BIOCOMP Gradient Master and Bio-Rad Econo UV Monitor. They may differ for other gradient collection set-ups.</div>
+<ol start="49">
+<li>Place tube in the marker block and mark a line at the upper edge of the block around the tube.</li>
+<li>Fill tube with 10% sucrose solution up to the line (approximately 6 mL) using a serological pipet.</li>
+<li>Attach large metal needle/cannula to the end of a 10 mL syringe. Pull up ∼6.3 mL of 50% sucrose solution.</li>
+<li>Place the tip of the needle at the bottom of the ultracentrifuge tube and slowly inject 50% sucrose below the 10% sucrose layer by slowly moving the needle upwards so that it stays slightly below the interface of the two solutions.</li>
+<li>Once the interface reaches the mark on the tube carefully pull needle out of the tube along the side.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not disturb the interface</div>
+<ol start="54">
+<li>Cap tubes with rubber caps. Push edge of the tube with hole in last to release any air bubbles.</li>
+<li>Make 10%–50% gradients for SW41 Ti rotor buckets for tubes with short caps (81.5° tilt, rotating at 16 rpm, for 2 min) by using the built-in 7%–47% gradient program on the BIOCOMP gradient station.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Be careful not to disturb the gradients during the remaining steps of the protocol.</div>
+<ol start="56">
+<li>Carefully remove tubes from the gradient station and remove caps raising the side with the hole first. Remove any sucrose from the outside of the tube.</li>
+<li>Place tubes in SW41 Ti rotor buckets and loosely cap buckets.</li>
+<li>Re-cool buckets and gradients for 15 min at 4°C.</li>
+<li>Load the RNase I-digested and uncut samples on top of separate gradients.</li>
+<li>Balance the opposing tubes including lids to within 10 mg of each other. Add 10% sucrose for this purpose, if necessary. Screw lids on buckets.</li>
+<li>Ultracentrifuge gradients for 3 h at 35,000 rpm (209,000 × <i>g</i>) at 4°C.</li>
+<li>Put a collection tip onto the piston of the gradient station and place output tubing into a waste container. Set the voltage rate on the UV lamp between −2.0 and + 2.0 for maximum detection range.</li>
+<li>Remove the "uncut" gradient from the bucket using tweezers, place into the cylindrical gradient holder and lock in place.</li>
+<li>Put the holder onto platform on the gradient station and lock in place with the window facing you.</li>
+<li>In the "fractionate" mode, lower the piston until it contacts the top of the gradient. Mark this position by selecting "Rset." Choose "Singl" and set the parameters for collecting fractions to 0.2 mm/s ("Speed"), between 70 and 80 mm ("DIst"), and 1 fraction ("Numb").</li>
+<li>Press "Start" and begin recording on the UV monitor.</li>
+<li>Follow profile on the computer screen. Several peaks will be visible. First, free mRNA and other cellular material will appear as a large spike, followed by two smaller peaks representing the small (40S) and the large (60S) ribosome subunit. Sometimes, small scanning ribosome species appear as a peak between the 40S and the 60S peak. Next, monosomes (80S) appear as a large peak followed by several smaller periodic peaks representing polysomes (<a href="#fig1">Figure 1</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Polysomes will not fully collapse in uncut samples as even the lowest effective concentrations of LTM, which enriches the inhibition of post-initiation ribosomes, also inhibits some elongating ribosomes. You should see polysome peaks that will be smaller relative to traditional ribosome profiling samples collected by cycloheximide pre-treatment or flash freezing without drug pre-treatment.</div>
+<ol start="68">
+<li>Once the run is fully recorded, rinse tubing with MilliQ and flush remaining water through with air before running next sample.</li>
+<li>Repeat steps 64–68 with your RNase I-digested sample. There will be a 40S and a 60S peak, likely less distinct than in the uncut sample, followed by a very large monosome peak (<a href="#fig1">Figure 1</a>).</li>
+<li>Collect fractions from the monosome peak of the RNase I-digested sample into 2 mL collection tubes labeled with respective fraction numbers. Be careful not to collect from the 60S peak that might slightly overlap with the monosome peak.</li>
+<li>Flash-freeze collected fractions and store at −80°C.</li>
+<li>Clean gradient station.</li>
+</ol>
+<h3 id="sec3.6">RNA extraction from monosome (80S) fraction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="73">
+<li>Thaw monosome fractions on ice (or fractions can be extracted immediately after collection, if kept on ice in the interim).</li>
+<li>Preheat 2 × 750 μL of acid-phenol:chloroform, pH 4.5, per sample in separate low-adhesion 1.5 mL tubes at 65°C in a chemical hood.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Tubes containing acid-phenol:chloroform might pop open when heated. It is advisable to use sturdy low-adhesion 1.5 mL tubes (such as from Ambion) or RNase-free screw-cap tubes for all heating steps and you may wish to secure/tape lids down by additional means if they do not stay shut.</div>
+<ol start="75">
+<li>Transfer 1.4 mL of each monosome fraction into two separate 1.5 mL tubes (700 μL each) on ice and add 40 μL of 20% SDS. Vortex briefly.</li>
+<li>Heat samples at 65°C until SDS dissolves (∼3 min).</li>
+<li>Add sample/SDS mixture to the tubes containing 750 μL of pre-heated acid phenol.</li>
+<li>Incubate for 5 min with rigorous shaking at 65°C.</li>
+<li>Put samples at −80°C for a few min until mostly frozen.</li>
+<li>Let samples thaw at 22°C and centrifuge for 5 min at 20,000 × <i>g</i> at 22°C.</li>
+<li>Transfer the upper aqueous phase to a new tube containing 700 μL of 22°C acid-phenol:chloroform, pH 4.5. Mix and incubate at 22°C with rigorous shaking for 5 min.</li>
+<li>Centrifuge tubes for 2 min at 20,000 × <i>g</i> at 22°C.</li>
+<li>Recover the aqueous layer and add to a tube containing 600 μL of chloroform. Vortex for 30 s.</li>
+<li>Centrifuge tubes for 2 min at 20,000 × <i>g</i> at 22°C.</li>
+<li>Transfer the aqueous phase to a new tube containing 40 μL of 3 M NaOAc pH 5.5 and vortex briefly. Add 1 volume of isopropanol and 2.5 of μL of GlycoBlue, invert tubes a few times and vortex well.</li>
+<li>Incubate samples at −20°C for at least 30 min to precipitate RNA.</li>
+<li>Centrifuge tubes for 30 min at 20,000 × <i>g</i> at 4°C to pellet RNA.</li>
+<li>Remove supernatant, pulse spin to collect any remaining liquid and completely remove supernatant. Wash pellet in 750 μL of ice-cold 80% EtOH.</li>
+<li>Remove EtOH, pulse spin, completely remove residual EtOH.</li>
+<li>Air-dry pellet for 30 min or until any residual EtOH has evaporated off at 22°C.</li>
+<li>Resuspend RNA pellet in 5 μL of 10 mM Tris-HCl pH 7 by pipetting up and down for ∼1 min.</li>
+<li>Pool samples from duplicate tubes.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The remaining protocol steps describe the library preparation of ribosome footprint fragments for sequencing. Although the steps below are the ones that we recommend, any library preparation method that is suitable for short RNA fragments should work well.</div>
+<h3 id="sec3.7">Footprint size selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="93">
+<li>Add 10 μL of Novex TBE-Urea Sample Buffer (2×) to RNA samples. Mix well.</li>
+<li>Prepare ladder by mixing 1 μL ladder with 9 μL of DEPC water and 10 μL of 2× Urea sample buffer.</li>
+<li>Prepare 28-mer and 31-mer control oligos by mixing 1 μL of 10 μM of each oligo with 9 μL of DEPC water and 10 μL of Novex TBE-Urea Sample Buffer (2×) per lane.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Prepare enough of each oligo that every RNA sample is flanked by a 28-mer and a 31-mer control oligo. Do not run actual samples in neighboring lanes.</div>
+<ol start="96">
+<li>Pre-run a 15% TBE-Urea gel for 15 min at 200 V in 1× TBE.</li>
+<li>Denature RNA samples, ladder, and oligos at 80°C for 2 min, put on ice.</li>
+<li>Clean wells with TBE buffer and load 20 μL of each sample (including ladder and oligos). Make sure that every RNA sample is flanked by a 28- and a 31-mer control oligo lane.</li>
+<li>Run gel for 65 min at 200 V.</li>
+<li>While the gel is running, prepare a 0.5 mL tube for each sample by piercing three holes in the bottom with a 20G needle and place it in a 1.5 mL low-adhesion tube.</li>
+<li>Stain gel with SYBR Gold (6 μL in 60 mL 1× TBE) while shaking for 5 min at 22°C.</li>
+<li>Place gel onto Saran wrap and image.</li>
+<li>Excise footprints by cutting just below the 28-mer oligo band and just above the 31-mer oligo band (<a href="#fig2">Figure 2</a>). Be careful to avoid cutting into the neighboring lanes, as oligo contamination can occur that will dramatically decrease your mappable reads. Also cut out one of the 28-mer oligo bands to use as a control for subsequent steps.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/345-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Footprint size selection</div>
+<p>15% TBE-urea gel loaded with RNA extracted from the 80S fraction (S) containing the isolated ribosome footprints next to the 28-mer and the 31-mer control oligos. Cut just below the 28-mer oligo band and at the top of the 31-mer oligo band to extract footprints (red box).</p>
+</figcaption>
+</figure>
+</li>
+<li>Transfer the gel pieces into the 0.5 mL tube.</li>
+</ol>
+<h3 id="sec3.8">Gel extraction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="105">
+<li>Spin the nested tube for 3 min at 20,000 × <i>g</i> to force the gel through the holes.</li>
+<li>Empty small unbroken pieces from the 0.5 mL tube into the 1.5 mL tube (if there are still large gel pieces in the 0.5 mL tube, repeat the spin).</li>
+<li>Add 700 μL of DEPC water and incubate at 70°C for 10 min with vigorous shaking.</li>
+<li>Pour the gel slurry into a centrifuge tube filter column (alternatively, use a cut p1000 tip to transfer the gel slurry).</li>
+<li>Spin for 3 min at 20,000 × <i>g</i> and transfer the eluate to a new 1.5 mL low- adhesion tube.</li>
+<li>Add 2 μL of GlycoBlue, 78 μL of 3 M NaOAc pH 5.5 for RNA (post-size- selection), <b>or</b> 78 μL of 3 M NaCl for DNA (post-RT and post-PCR steps), for precipitation.</li>
+<li>Add 780 μL of isopropanol. Mix by inversion, vortex and precipitate for at least 30 min at −20°C.</li>
+<li>Centrifuge at 20,000 × <i>g</i> for 30 min at 4°C.</li>
+<li>Completely remove supernatant with pipet tip and wash RNA pellet in 1 mL of ice-cold 80% EtOH by inverting the tube a few times.</li>
+<li>Spin for 1 min at 20,000 × <i>g</i> at 4°C and remove supernatant with a pipet tip.</li>
+<li>Pulse spin, completely remove supernatant with a small pipet tip and let pellet air-dry for ∼10 min or until EtOH is completely evaporated off.</li>
+<li>Resuspend in 10 mM Tris-HCl pH 8 for DNA <b>or</b> pH 7 for RNA in a volume appropriate for downstream steps.</li>
+</ol>
+<h3 id="sec3.9">Dephosphorylation of 3′ ends</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="117">
+<li>Resuspend gel extracted RNA in 14 μL of 10 mM Tris-HCl pH 7.</li>
+<li>Add 2 μL of fully resuspended (heat if necessary) 10× T4 PNK buffer, 2 μL of T4 PNK (10 U/μL) and 2 μL of SUPERase·In.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Make sure to always use a PNK buffer that does not contain ATP as otherwise the PNK will not dephosphorylate RNA fragments.</div>
+<ol start="119">
+<li>Mix well by pipetting up and down and incubate for 1 h at 37°C, with shaking at 600 rpm.</li>
+<li>Incubate at 75°C for 10 min to heat inactivate the enzyme.</li>
+<li>Add 450 μL of DEPC water, 56 μL of 3 M NaOAc pH 5.5 and 2 μL of GlycoBlue.</li>
+<li>Add 600 μL of isopropanol and mix well.</li>
+<li>Precipitate RNA at −20°C for at least 30 min.</li>
+<li>Spin at 4°C for 30 min at 20,000 × <i>g</i> and completely remove supernatant with a pipet tip.</li>
+<li>Wash RNA pellet with 750 μL of ice-cold 80% EtOH.</li>
+<li>Pulse spin, completely remove EtOH with a pipet tip, and air-dry pellet.</li>
+<li>Resuspend in 5.5 μL of 10 mM Tris-HCl pH 7.</li>
+</ol>
+<h3 id="sec3.10">Poly(A)-tailing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<div class="note">
+<span class="note-title">Note:</span> Linker ligation can be performed instead of poly(A)-tailing [see (<a href="#bib6">Powers and Brar, 2020</a>) for details]. We have found that both work well and applied poly(A)-tailing in our original TIS profiling paper (<a href="#bib2">Eisenberg et al., 2020</a>). mRNA fragments with 3′ adenosine residues will show slightly shifted peaks when poly(A)-tailed, resulting in less crisp start site peaks in some cases. Linker ligation is likely to improve peak resolution in these cases.</div>
+<div class="note">
+<span class="note-title">Note:</span> We found that the efficacy of the poly(A)-tailing reaction varies with the enzyme lot used and advise to test each new tube of enzyme individually on a small scale prior to performing TIS profiling.</div>
+<ol start="128">
+<li>Add 12 μL of DEPC water to RNA sample. Mix by pipetting up and down a few times.</li>
+<li>In a separate 1.5 mL low-adhesion tube, mix 0.5 μL of 20 μM 28-mer control oligo with 22 μL of DEPC water.</li>
+<li>Denature RNA sample at 75°C for 2 min. Put on ice.</li>
+<li>Add 5 μL of 10× PolyA pol buffer, 5 μL of 10 mM ATP, 1.25 μL of SUPERase·In and 13.75 μL of DEPC water. Mix well.</li>
+<li>Add 2 μL of DEPC water and 0.5 μL of <i>E.coli</i> PolyA polymerase (5 U/μL). Mix well.</li>
+<li>Incubate at 37°C for 10 min.</li>
+<li>Quench reaction with 160 μL of 5 mM EDTA.</li>
+<li>Add 290 μL of DEPC water, 56 μL of 3 M NaOAc pH 5.5 and 2 μL of GlycoBlue. Mix well.</li>
+<li>Add 600 μL of isopropanol and mix well.</li>
+<li>Precipitate RNA at −20°C for at least 30 min.</li>
+<li>Spin at 4°C at 20,000 × <i>g</i> for 30 min.</li>
+<li>Completely remove supernatant with a pipet tip.</li>
+<li>Wash pellet with 750 μL of 80% ice-cold EtOH.</li>
+<li>Pulse spin, completely remove EtOH with a pipet tip, and air-dry pellet.</li>
+<li>Resuspend pellet in 10 μL of DEPC water.</li>
+</ol>
+<h3 id="sec3.11">rRNA subtraction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="143">
+<li>Prepare Dynabeads B&amp;W buffer 1× + 0.01% Tween, Dynabeads B&amp;W buffer 2× + 0.01% Tween, Dynabead Solution A, and Dynabead Solution B.</li>
+<li>Add 5 μL of asDNA1b (undiluted, 20 pm/μL) per sample (including poly(A)-tailed 28-mer control oligo).</li>
+<li>Add 6 μL of a 1:10 dilution (2 pm/μL) of antisense oligo asDNA2b.</li>
+<li>Add 5 μL of a 1:10 dilution (2 pm/μL) of antisense oligo asDNA3b.</li>
+<li>Add 3 μL of 20× SSC.</li>
+<li>Incubate for 2 min at 70°C. Put on ice.</li>
+<li>Add 1 μL of SUPERase·In.</li>
+<li>Incubate at 37°C for 15 min with shaking at 400 rpm.</li>
+<li>Put on ice for 5 min.</li>
+<li>Prepare MyOne Streptavidin C1 Dynabeads as follows:
+<ol type="a">
+<li>Vortex Dynabeads and transfer 150 μL of beads per sample to a new tube.</li>
+<li>Wash 3× in 150 μL of Dynabeads B&amp;W buffer 1× + 0.01% Tween.</li>
+<li>Wash 2× in 150 μL of Dynabead Solution A.</li>
+<li>Wash 2× in 150 μL of Dynabead Solution B.</li>
+<li>Resuspend in 30 μL of Dynabeads B&amp;W buffer 2× + 0.01% Tween.</li>
+</ol>
+</li>
+<li>Add sample to Dynabeads.</li>
+<li>Incubate at 22°C for 15 min with 400 rpm shaking.</li>
+<li>Place tube on magnetic stand and transfer supernatant to a new 1.5 mL low-adhesion tube.</li>
+<li>Add 468 μL of DEPC water, 70 μL of 3 M NaOAc pH 5.5 and 2 μL of GlycoBlue. Mix.</li>
+<li>Add 600 μL of isopropanol and mix well.</li>
+<li>Incubate at −20°C for 30 min.</li>
+<li>Spin for 30 min at 20,000 × <i>g</i> at 4°C.</li>
+<li>Remove supernatant with a pipet tip.</li>
+<li>Wash pellet with 750 μL ice-cold 80% EtOH.</li>
+<li>Pulse spin, completely remove EtOH with a pipet tip, and air-dry pellet.</li>
+<li>Resuspend pellet in 10 μL of 10 mM Tris-HCl pH 7.</li>
+</ol>
+<h3 id="sec3.12">Reverse transcription</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<div class="note">
+<span class="note-title">Note:</span> It is advisable to perform the reverse transcription (RT) reaction on only ∼75% of the rRNA-depleted RNA sample and save the rest for troubleshooting if needed.</div>
+<ol start="164">
+<li>Add 3.28 μL of 5× FS buffer, 0.81 μL of dNTPs (10 mM each) and 0.5 μL of 20 μM RT primer per sample (including poly(A)-tailed 28-mer control oligo).</li>
+<li>Denature at 80°C for 2 min. Put on ice.</li>
+<li>Add 0.5 μL of SUPERase·In and 0.82 μL of 0.1 M DTT. Mix well.</li>
+<li>Add 0.82 μL of Superscript III and mix well.</li>
+<li>Incubate at 48°C for 30 min with shaking at 600 rpm.</li>
+<li>Add 1.8 μL of 1 M NaOH and mix well. You may have to pulse spin sample down at this step.</li>
+<li>Incubate at 98°C for 20 min with shaking at 600 rpm.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Use a thermomixer with a Thermotop for this step as the samples will otherwise dry up. Keep tube caps tightly closed.</div>
+<ol start="171">
+<li>Add 1.8 μL of 1 M HCl and mix well. You may have to pulse spin sample down at this step.</li>
+<li>Put on ice and add 20 μL of Novex TBE-Urea sample buffer (2×).</li>
+<li>Pre-run a 10% TBE-Urea gel at 200 V for 15 min.</li>
+<li>Denature samples at 95°C for 3 min and put on ice.</li>
+<li>Load samples on gel (each sample will be split into 2 lanes). Do not run samples in neighboring lanes; use either the 28-mer control RT reaction or an empty lane between samples.</li>
+<li>Run at 200 V for 65 min.</li>
+<li>While the gel is running, prepare a 0.5 mL tube for each sample by piercing three holes in the bottom with a 20G needle and place it in a 1.5 mL low-adhesion tube.</li>
+</ol>
+<h3 id="sec3.13">cDNA selection from gel</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2.5 h</div>
+<ol start="178">
+<li>Stain gel with SYBR gold and use a single-use scalpel to cut each band corresponding to the RT product. These will run slightly higher than the 28-mer control RT reaction (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/345-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. RT gel</div>
+<p>10% TBE-urea gel loaded with the poly(A)-tailed and rRNA-subtracted sample (S) after reverse transcription (RT) and the 28-mer control oligo. Extract RT product that runs slightly higher than the 28-mer oligo. Avoid cutting the primer band (∗).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> RT products might not be visible on the gel due to low abundance. If that is the case, blind cut at the correct product size.</div>
+<ol start="179">
+<li>Transfer gel slices to the 0.5 mL tube.</li>
+<li>Wash gel pieces with 200 μL of DEPC water by carefully pipetting the water onto the gel slice and letting it run down the gel slice to the bottom of the 0.5 mL tube twice. Remove <i>all</i> water carefully with a pipet, making sure not to disrupt or break the gel slice.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This step is crucial to remove any contamination from the very abundant RT primer that will otherwise dominate the PCR product in LTM samples.</div>
+<ol start="181">
+<li>Proceed to gel extract the cDNA (see <a href="#sec3.8">Gel extraction</a>).</li>
+<li>Resuspend pellets following gel extraction in 15 μL of 10 mM Tris-HCl pH 8.</li>
+</ol>
+<h3 id="sec3.14">Circularization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<ol start="183">
+<li>Add 2 μL of 10× CircLigase 10× Reaction Buffer, 1 μL of 1 mM ATP and 1 μL of 50 mM MnCl<sub>2</sub> per sample. Mix well.</li>
+<li>Add 1 μL of CircLigase ssDNA Ligase. Mix well.</li>
+<li>Incubate at 60°C for 60 min.</li>
+<li>Heat inactivate enzyme at 80°C for 10 min. Put on ice or store at −20°C.</li>
+</ol>
+<h3 id="sec3.15">PCR amplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4.5 h</div>
+<ol start="187">
+<li>Flick circularized sample to resuspend fully, pulse spin down, and transfer 1 μL to a PCR tube.</li>
+<li>Add 3.34 μL of 5× HF buffer, 0.34 μL of dNTPs (10 mM each), 0.8 μL of 10 μM index primer, 0.8 μL of 10 μM PCR forward primer, 10.4 μL of DEPC water and 0.16 μL of Phusion polymerase.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Use different index primers for samples that will be multiplexed on the same sequencing lane.</div>
+<ol start="189">
+<li>Estimate optimal cycle numbers: if RT product can clearly be seen on the RT gel, perform 6 cycles. If the RT product can barely be seen, perform 12 cycles. If the RT product cannot be seen, perform 14 cycles.</li>
+<li>Perform PCR as described below:</li>
+</ol>
+<table id="undtbl11">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">6–14</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="191">
+<li>Pre-run an 8% TBE gel at 180 V for 15 min.</li>
+<li>Add 3.5 μL of 6× DNA loading dye and load 20 μL of total sample on gel.</li>
+<li>Run gel at 180 V for 55 min.</li>
+<li>While the gel is running, prepare a 0.5 mL tube for each sample by piercing three holes in the bottom with a 20G needle and place it in a 1.5 mL low-adhesion tube.</li>
+<li>Stain gel with SYBR gold.</li>
+<li>Excise PCR product band and gel extract DNA (see <a href="#sec3.8">Gel extraction</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The PCR product should appear as a prominent single band just above the primer band (<a href="#fig4">Figure 4</a>A). Redo PCR with a higher number of cycles if product appears underamplified (faint). The presence of higher molecular weight bands likely results from overamplification (<a href="#fig4">Figure 4</a>B). Redo PCR with a lower number of cycles in case of overamplification.</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/345-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. PCR gel</div>
+<p>(A) 8% TBE gel loaded with PCR amplified samples (S1, S2). PCR products will appear as single prominent bands (red box) above primer bands (∗). Avoid cutting the empty vector band that may be visible in some samples.</p>
+<p>(B) Example of an overamplified sample (S3). Try to lower the number of PCR cycles if high molecular bands are present.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In some samples you will see an empty vector band that runs just below the actual product band (<a href="#fig4">Figure 4</a>A). Avoid excising and extracting material from this band.</div>
+<ol start="197">
+<li>Resuspend pellet in 10 μL of 10 mM Tris-HCl pH 7. This is your final sample.</li>
+<li>Analyze DNA on a TapeStation or BioAnalyzer prior to sequencing.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>TIS profiling allows the capturing of ribosomes that have just completed translation initiation and the isolation of RNA fragments protected by these ribosomes as footprints. Our successful TIS profiling experiments yield between 0.2 and 1 ng/μL of DNA product after reverse transcription and PCR amplification of RNA fragments. We advise checking both fragment size distribution and material quantity on a TapeStation or BioAnalyzer prior to sequencing.</p>
+<p>TIS-profiling footprint reads in yeast are typically ∼2 nt longer than in traditional ribosome profiling and are thus centered at ∼30–31 nt, rather than 28–29 nt. A smaller distribution may suggest RNase I overdigestion while a larger distribution may suggest underdigestion. In either case, the data may still be informative, but footprint mapping to P-sites might need to be shifted to position peaks directly at true start codons. Mapping is working well if peaks are observed directly at AUG start codons for annotated ORFs. Additionally, a metagene analysis should show a large peak at known start codon positions (<a href="#bib2">Eisenberg et al., 2020</a>; <a href="#bib4">Ingolia et al., 2012</a>), as an efficient LTM-dependent inhibition of post-initiating ribosomes will result in their accumulation at start codons. In our original study (<a href="#bib2">Eisenberg et al., 2020</a>) we sequenced 40–60 million total reads per sample to yield 11–25 million mapped reads. This corresponded to a mapping rate of ∼30%, with most reads lost to rRNA and sizing oligos. This read depth was able to provide clear peaks at TISs for the vast majority of annotated ORFs, including at non-canonical start codons, as determined by genome browser viewing. As outlined in our original publication (<a href="#bib2">Eisenberg et al., 2020</a>) we recommend using the ORF-RATER algorithm (<a href="#bib3">Fields et al., 2015</a>) to systematically annotate TISs. We were able to detect ∼70% of annotated TISs including low abundance ones (<a href="#bib2">Eisenberg et al., 2020</a>) and could successfully identify non-canonical TISs with the read counts mentioned above.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>A major limitation of any ribosome profiling technique is the requirement for relatively large sample quantities (<a href="#bib1">Brar and Weissman, 2015</a>), relative to mRNA-seq approaches. This is a result of the additional ribosome isolation step (<a href="#bib4">Ingolia et al., 2012</a>) and the small number of mRNA regions that can be captured as footprints on an mRNA at any given time. This issue of small RNA quantities per cell is exacerbated in the TIS-profiling protocol, which by definition aims to remove the majority of ribosomes from mRNAs prior to collection. We estimate that ribosome footprint quantities are 5- to 10-fold lower using this approach than by standard ribosome profiling. It is possible, in principle, to scale up the number of cells harvested, but the high cost of LTM makes this impractical for most laboratories. Because the low ribosome footprint sample quantities yielded by the protocol described here can make sensitive library preparation steps more challenging, below we outline troubleshooting tips, focused on our library preparation protocol (<a href="#bib6">Powers and Brar, 2020</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Polysome peaks in uncut samples are unexpectedly high (comparable to standard ribosome profiling using cycloheximide pre-treatment).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>This may be difficult to assess, as polysome peaks do not fully collapse even with concentrations of LTM that are successful for TIS profiling, but it suggests that a lower concentration of LTM may be needed to avoid inhibition of elongating ribosomes. As discussed above (see <a href="#before-you-begin">Before you begin</a>), it is best to choose your working LTM concentration based on growth assays, selecting the lowest concentration that inhibits cell growth. It is advisable to do extensive testing by cell growth analysis prior to performing your TIS-profiling experiment.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>No polysome peaks are observed in uncut samples and only a monosome/80S peak is present.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Either LTM treatment did not work (see <a href="#before-you-begin">Before you begin</a> for optimization of LTM concentrations) or RNA degradation has occurred in the sample. To prevent RNA degradation, use all RNase-free reagents and tubes, thoroughly clean mixer mill jars, and avoid performing experiments in areas where large amounts of RNase are being used (such as on benches used for minipreps).</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Polysome peaks are observed in RNase-digested samples.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>If polysomes are still seen after digestion, use a higher concentration of RNase I for RNA digestion.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The monosome/80S peak is very broad compared to uncut controls, smears into lower sizes and might obscure the 40/60S peaks.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Try lowering the RNase concentration as a broad monosome peak suggests overdigestion.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>No product band above the oligo band can be observed on gel after reverse transcription.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>This could, in principle, be a result of failure at any of the preceding steps, including size selection, gel extraction, dephosphorylation, linker ligation, or reverse transcription. But it is also not unusual for real bands to be very faint and hard to see on the gel.</p>
+<p>A useful control that help with diagnostics are the phosphorylated 31-mer and the unphosphorylated 28-mer control oligo that should both be loaded onto the size selection gel (with gaps between them and your sample lanes) to assist in size selection of real samples. For troubleshooting, the 31-mer control oligo can be extracted on top of the 28-mer control oligo (see <a href="#sec3.7">Footprint size selection</a>) alongside real samples. If you see product from both of these oligo controls on your RT gel, you should cut broadly in the blank spaces where bands should exist for your real samples based on comparison to these oligo products. High quality product can often be seen at the last PCR step even if a “blank” RT band is cut.</p>
+<p>Following gel extraction after RNA size selection, you can introduce an additional 31-mer control oligo sample. If you see RT product from this oligo and neither of the gel extracted oligos it is likely that your gel extraction step following size selection did not work. This could be because:</p>
+<ol>
+<li>The RNA was not extracted from the gel slice. Remember to check that the slice is fragmented into very small pieces following its spin through the needle hole. Vortex slurry vigorously following heating.</li>
+<li>The RNA was degraded. Replace all reagents with fresh RNase-free reagents. Use only nuclease-free tubes and pipet tips. Do not incubate samples at high heat for more than the indicated time.</li>
+<li>The pellet was lost following precipitation. Use of GlycoBlue greatly aids in retention of pellets at all precipitation steps, but in some cases the blue signal is not a compact pellet and is instead spread out over the side of the tube and difficult to collect. If you see this, before removing precipitation mixture, gently pipet tube mixture up and down once or twice using a p1000 pipet, aiming at the distributed pellet on the tube side. The goal is to gently dislodge all distributed pellet. Then spin the tube(s) at 20,000 × <i>g</i> for 1 min. The pellet should now be compact and at the tube bottom. Remove precipitation mix and wash pellet carefully.</li>
+</ol>
+<p>If you see RT product from the unphosphorylated 28- but not the phosphorylated 31-mer control oligos, it is likely that the dephosphorylation step failed. Ensure that the PNK buffer is fully resuspended before use, vortex and heat it to 37°C if necessary. Check PNK buffer composition and never use PNK buffer that contains ATP.</p>
+<p>If you do not see an RT product for either oligo, failure occurred at either the polyA-tailing (or linker ligation) or the reverse transcription step. You may want to test polyA-tailing (or linker ligation) efficiency using the 28-mer oligo and run product on a 10% TBE-Urea gel to visualize results. Check compatibility of linker sequence (if using ligation) and RT oligo sequence.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>Bands corresponding to the product (above empty vector band) are absent on the final gel after PCR amplification.</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>This suggests that either the post-RT gel extraction, circularization, or PCR steps failed. Always take through the control oligo product band from the RT gel to be able to backtrack at which step the protocol failed. The post-RT gel extraction is typically not sensitive and if you follow the <a href="#step-by-step-method-details">Step-by-step method details</a>, should not be problematic.</p>
+<ol type="a">
+<li>If you can see a product on the post-PCR gel for the amplified oligo but not your samples, you may need to increase the PCR cycle number for your samples. It is useful to test a very high cycle number (e.g., 14) for each first, and if this works, walk down the cycle number until you see a product that is in the linear range. If no product is seen at 14 cycles, try testing a different multiplexing oligo, especially if the one you used had not been validated previously.</li>
+<li>If no product is seen for the oligo PCR, you should redo the circularization reaction for the oligo sample and test whether this fixes the issue. If it does, repeat for all samples. If there is still no product seen for the oligo PCR after redoing the circularization, double check PCR primer sequences and test fresh PCR reagents. Testing a slightly longer elongation time may be helpful, or a range of annealing temperatures.</li>
+<li>If only the empty vector PCR product is visible in sample lanes, run the gel for longer to attempt to resolve product band from empty vector band. Do not cut too low at the post-RT gel step to avoid primer contamination that can be carried through to create empty vectors following circularization and always ensure that the gel slice is washed following product selection from post-RT gel.</li>
+</ol>
+<h3 id="sec6.13">Problem 7</h3>
+<p>Number of mapped reads are low, resulting in data that are too sparse to robustly analyze.</p>
+<h3 id="sec6.14">Potential solution</h3>
+<p>Input material could be too low. Like traditional ribosome profiling, TIS profiling becomes more challenging the lower the material input. At very low ribosome footprint levels, genome-mapping sequencing reads will represent a minority of sequencing data, with contaminating “empty vector” and sizing oligo reads making up the majority, which will make data noisy and difficult to interpret. We have had success using extracts with Abs<sub>260</sub> values in the range of 12 to 20 (2.4–4 Abs<sub>260</sub> units per 200 μL of extract). This corresponds to approximately 100 mL of vegetative yeast culture at OD<sub>600</sub> = 0.6 or 50 mL of meiotic culture at OD<sub>600</sub> = 1.9. If extract after cell lysis is less concentrated than expected, you may wish to optimize lysis conditions using non-LTM-treated cell pellets. We have had success with anywhere between 3 and 6 cycles of mixer milling at 15 Hz. Effectively lysed cells should result in the recovery of ∼75% of lysis buffer volume added with small compact pellets after centrifugation. If improved mixer milling conditions cannot be found, use a lower volume of lysis buffer for the next attempt.</p>
+<h3 id="sec6.15">Problem 8</h3>
+<p>Peaks are only mildly enriched at start codons and metagene data look like standard ribosome profiling.</p>
+<h3 id="sec6.16">Potential solution</h3>
+<p>Try to lower the LTM concentration as a higher than optimal concentration will lead to effective inhibition of both post-initiation and elongating ribosomes, resulting in data that look like traditional ribosome profiling data, with only mildly enriched ribosome footprints at start codons.</p>
+<h3 id="sec6.17">Problem 9</h3>
+<p>Footprint reads are longer or shorter than the expected 30–31 nt.</p>
+<h3 id="sec6.18">Potential solution</h3>
+<p>This may not affect your ability to collect high quality data if the effect is small, but if you do not see crisp bands at start codons, you may want to adjust the RNase I concentration as smaller distributions may suggest RNase I overdigestion while larger distributions may suggest underdigestion. As mentioned in <a href="#expected-outcomes">Expected outcomes</a>, data may still be informative, but P-site mapping might need to be adjusted to position peaks at true start sites.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Brar, G.A. and Weissman, J.S. (2015). Ribosome profiling reveals the what, when, where and how of protein synthesis. Nat. Rev. Mol. Cell Biol. <i>16</i>, 651-664.</p>
+<p id="bib2">Eisenberg, A.R., Higdon, A.L., Hollerer, I., Fields, A.P., Jungreis, I., Diamond, P.D., Kellis, M., Jovanovic, M., and Brar, G.A. (2020). Translation initiation site profiling reveals widespread synthesis of non-AUG-initiated protein isoforms in yeast. Cell Syst. <i>11</i>, 145-160.e5.</p>
+<p id="bib3">Fields, A.P., Rodriguez, E.H., Jovanovic, M., Stern-Ginossar, N., Haas, B.J., Mertins, P., Raychowdhury, R., Hacohen, N., Carr, S.A., Ingolia, N.T., et al. (2015). A regression-based analysis of ribosome-profiling data reveals a conserved complexity to mammalian translation. Mol. Cell <i>60</i>, 816-827.</p>
+<p id="bib4">Ingolia, N.T., Brar, G.A., Rouskin, S., McGeachy, A.M., and Weissman, J.S. (2012). The ribosome profiling strategy for monitoring translation in vivo by deep sequencing of ribosome-protected mRNA fragments. Nat. Protoc. <i>7</i>, 1534-1550.</p>
+<p id="bib5">Lee, S., Liu, B.T., Lee, S., Huang, S.X., Shen, B., and Qian, S.B. (2012). Global mapping of translation initiation sites in mammalian cells at single-nucleotide resolution. Proc. Natl. Acad. Sci. U S A <i>109</i>, E2424-E2432.</p>
+<p id="bib6">Powers, E.N., and Brar, G.A. (2020). Performing ribosome profiling to assess translation in vegetative and meiotic yeast cells. In Ribosome Profiling Methods in Molecular Biology, V.M. Labunskyy, ed. (Springer).</p>
+<p id="bib7">Schneider-Poetsch, T., Ju, J.H., Eyler, D.E., Dang, Y.J., Bhat, S., Merrick, W.C., Green, R., Shen, B., and Liu, J.O. (2010). Inhibition of eukaryotic translation elongation by cycloheximide and lactimidomycin. Nat. Chem. Biol. <i>6</i>, 209-217.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Gloria Brar (<a href="mailto:gabrar@berkeley.edu">gabrar@berkeley.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The raw and analyzed sequence data from our original TIS profiling paper (<a href="#bib2">Eisenberg et al., 2020</a>) can be found on NCBI GEO (GSE150375).</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by a Schrödinger postdoctoral fellowship to I.H., an NSF predoctoral fellowship to E.N.P., and <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (DP2-GM-119138 and 1R35GM134886) funding to G.A.B.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, I.H. and G.A.B.; methodology, G.A.B.; writing – original draft, I.H.; writing – review &amp; editing, I.H., E.N.P., and G.A.B.; funding acquisition, I.H. and G.A.B.; supervision, G.A.B.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

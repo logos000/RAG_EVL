@@ -1,0 +1,1344 @@
+<article>
+<section>
+<h1 id="header">Genome-scale chemogenomic CRISPR screens in human cells using the TKOv3 library</h1>
+<p><time datetime="2021-02-05">Published: February 5, 2021</time></p>
+<p>Michele Olivieri<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and Daniel Durocher<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Lunenfeld-Tanenbaum Research Institute, Mount Sinai Hospital, 600 University Avenue, Toronto, ON M5G 1X5, Canada</p>
+<p id="aff2"><sup>2</sup>Department of Molecular Genetics, University of Toronto, 1 King’s College Circle, Toronto, ON M5S 1A8, Canada</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:durocher@lunenfeld.ca">durocher@lunenfeld.ca</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100321">10.1016/j.xpro.2021.100321</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>CRISPR-based genetic screens revolutionized our ability to genetically probe cell biology. We present a protocol to conduct genome-scale chemogenomic dropout CRISPR screens in the human RPE1-hTERT p53<sup>−/−</sup> cell line. We use the TKOv3 library, which contains 70,948 sgRNAs targeting 18,053 genes. Here, we describe how to set up the screen, the reagents required, and how to sequence and analyze the results. This protocol can be customized for other libraries, cell lines, and sequencing instruments.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib6">Olivieri et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+
+
+</div>
+<div class="graphical-abstract">
+
+
+</div>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol to perform genome-scale dropout CRISPR screens in RPE1-hTERT cells</li>
+<li>Estimation of the correct transduction efficiency and genotoxic agent concentration</li>
+<li>Processing and sequencing using Illumina platform CRISPR screen samples</li>
+<li>Bioinformatic analysis and processing of sequencing results</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/461-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib6">Olivieri et al. (2020</a>).</p>
+<p>Before starting to evaluate the optimal conditions for screening it is necessary to ensure you have consistent culture conditions. To minimize possible biases and false positive hits cause by differential treatment, all plates for the screen (untreated and treated with genotoxic agents) must be stored in the same incubator. We suggest that you assess whether all the plates can fit in the same incubator. Moreover, it is important to ensure that all reagents are consistent (same source and, preferably, same lot numbers) throughout the screen. Purchase all your reagents and plasticware before commencing the screen.</p>
+<h3 id="sec1.1">Cell line characterization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<p>In this protocol, we will describe how to undertake chemogenomic CRISPR screens in the RPE1-hTERT p53<sup>−/−</sup> Flag-Cas9 cell line used in <a href="#bib6">Olivieri et al. (2020</a>) (from here on referred to as the RPE1-hTERT) cell line. The protocol is adapted from protocols described first in (<a href="#bib1">Blakely et al., 2011</a>) and (<a href="#bib3">Hart et al., 2015</a>). RPE1-hTERT is a non-transformed diploid cell line that is rapidly emerging as a model cell line for DNA repair studies. This cell line also has a mutation in p53 so that cells can better tolerate the loss of DNA repair-coding genes (for further considerations see <a href="#bib6">Olivieri et al., 2020</a>). You can adapt this screening protocol for other cell lines or conditions by optimizing the parameters below, including MOI determination and estimating LD20 concentration.</p>
+<ol>
+<li>Determine the optimal number of cells to seed, so that a 15 cm tissue culture plate is 90%–95% confluent in 3 days. For the RPE1-hTERT cell line, we seed 3 × 10<sup>6</sup> cells in 20 mL of DMEM complete (FBS 10%, P/S 1%, see <a href="#key-resources-table">Key resource table</a>) to obtain 95% confluency after 3 days in a 15 cm dish, growing at 37°C/5% CO<sub>2</sub> in a tissue culture incubator.</li>
+<li>Determine the puromycin sensitivity of your cell lines by seeding cells into a 6-well plate with increasing concentrations of puromycin. For RPE1-hTERT cells, which are mildly puromycin resistant to start with due to the hTERT transgene, we use 20 μg/mL.
+<ol type="a">
+<li>Seed 1.8 × 10<sup>5</sup> cells in a 6-well plate with 2 mL of DMEM complete.</li>
+<li>48 h later, add puromycin (see “<a href="#key-resources-table">Key resource table</a>”).</li>
+<li>24 h after adding puromycin, trypsinize, resuspend and replate all cells in DMEM complete with puromycin (see “CRITICAL note”).</li>
+<li>Allow cells to grow for another 24 h and then count them using a Vi-CELL analyzer.</li>
+<li>Select the minimum puromycin concentration to kill 100% of your cells.</li>
+</ol>
+</li>
+<li>Determine the polybrene sensitivity of your cell line by seeding cells into a 6-well plate with increasing concentrations of polybrene. Allow cells to grow for 2 days and then count them. Select the maximum polybrene concentration that does not impair growth of your cell line. For RPE1-hTERT, the polybrene concentration used is 8 μg/mL. If your cells are sensitive to polybrene, protamine sulfate can be used as an alternative to increase lentiviral transduction efficiency.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To assess puromycin sensitivity of RPE1-hTERT cells, cells are trypsinized and replated 24 h after adding the puromycin to improve the efficacy of puromycin selection.</div>
+<div class="note">
+<span class="note-title">Note:</span> While <a href="#bib6">Olivieri et al. (2020)</a> used a cell line expressing Flag-Cas9 for all its screens, the use of the TKOv3, or other all-in-one library expressing both Cas9 and sgRNA, will enable screening in cell lines that do not stably express Cas9. The drawback of using all-in-one libraries (compared to libraries expressing only the sgRNA) is that the lentiviral insert size is large enough to impact lentiviral titers.</div>
+<h3 id="sec1.2">Transduction efficiency determination</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<p>In this protocol we use an “all-in-one” TKOv3 CRISPR library, meaning that it expresses Cas9 in addition to the sgRNA and therefore there is no need to construct a cell line that stably expresses Cas9. It is of critical importance to determine the amount of the pooled sgRNA library to add per 15 cm plate in order to achieve a transduction efficiency of 30%. The 30% value is chosen because it corresponds roughly to a multiplicity of infection (MOI) of 0.3. This number maximizes the number of cells with a single integration while reducing to the lowest number of cells needed at transduction. We routinely contract a viral vector core facility to obtain a high-titer TKOv3 library prepared in single-use 1 mL aliquots that are stored at −80°C. However, you can prepare your own lentiviral library using established protocols on Addgene (compatible with 2<sup>nd</sup>/3<sup>rd</sup> generation viral vectors). Note that since TKOv3 is an all-in-one vector, the large lentiviral genome size will make obtaining high titers challenging. To avoid multiple freeze-thaw cycle, we usually thaw a single 1 mL virus aliquot for the transduction efficiency determination and the screen infections. We noticed that estimating the transduction efficiency in smaller formats (i.e., 6-well plates) cannot reliably be scaled to the larger screening format, so the estimation is carried out in the same culture conditions that are used for the screen (including tissue culture plates, media, supplements, cell seeding density, and the same library lentiviral preparations). For further consideration of the use of puromycin in RPE1-hTERT cells see NOTE below.</p>
+<ol start="4">
+<li>Day 1. Infection.
+<ol type="a">
+<li>Thaw one aliquot of the TKOv3 sgRNA library (or multiple aliquots depending on titer).</li>
+<li>Harvest ∼30 × 10<sup>6</sup> RPE1-hTERT cell previously seeded.</li>
+<li>Test various amounts of lentivirus per plate. In addition, two plates will serve as <b>controls</b>: 1) a <u>no-lentivirus control</u>, 2) <u>a no-puromycin control</u> (for the latter control, use the median amount of virus tested). For each plate, prepare the mix of cells, lentivirus, and polybrene in a 50 mL tube. For our typical screens, we arrive at these numbers:
+<ol type="i">
+<li>5–200 μL lentiviral library aliquot</li>
+<li>3 × 10<sup>6</sup> RPE1-hTERT cells</li>
+<li>10 μL polybrene (16 mg/mL stock; final concentration of 8 μg/mL in 20 mL, 1:2,000)</li>
+<li>Total volume: 20 mL in DMEM complete.</li>
+</ol>
+</li>
+<li>Mix thoroughly by inverting the 50 mL tubes 5–6 times</li>
+<li>Plate the 20 mL-cell suspension in a 15 cm tissue culture plate.</li>
+</ol>
+</li>
+<li>Day 2. Change media.
+<ol type="a">
+<li>24 h after the infection, remove lentivirus-containing media from each plate.</li>
+<li>Add 20 mL of fresh DMEM complete media per plate.</li>
+</ol>
+</li>
+<li>Day 3. Puromycin selection.
+<ol type="a">
+<li>Remove the media from each plate.</li>
+<li>Change the media with 20 mL of DMEM complete containing 20 μg/mL of puromycin. Remember not to add puromycin to the no-puromycin control plate (i.e., plate in which the median volume of lentivirus was added). This plate serves as a control to calculate the transduction efficiency (see below). However, be sure to add puromycin to the no-lentivirus control plate. The no-lentivirus control plate ensures that 100% of uninfected cells die after the addition of puromycin.</li>
+</ol>
+</li>
+<li>Day 4. Resuspend the cells in media with puromycin.
+<ol type="a">
+<li>24 h after puromycin addition, aspirate the media and wash the cells with 10 mL of warm PBS.</li>
+<li>Add 3 mL of trypsin and incubate the plates for 5 min at 37°C.</li>
+<li>Resuspend cells with 17 mL of complete DMEM containing 23.5 μg/mL of puromycin; the final concentration will be 20 μg/mL in a total volume of 20 mL.</li>
+<li>Once cells are thoroughly resuspended, rock the plate gently to ensure cells are evenly distributed and replace them in the 37°C incubator.</li>
+</ol>
+</li>
+<li>Day 5. Count cells to evaluate transduction efficiency.
+<ol type="a">
+<li>Assess the no-lentivirus control plate. By inspecting it under the microscope you should see that all cells are dead.</li>
+<li>Aspirate media from the remaining plates and gently wash each plate with 10 mL of warm PBS.</li>
+<li>Add 3 mL of trypsin and incubate the plates for 5 min at 37°C.</li>
+<li>Resuspend in 10 mL of DMEM complete. Break up the cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate. Total volume should be ∼13 mL per plate.</li>
+<li>Collect cells from each plate into 50 mL conical tubes and count the number of viable cells in each using a Vi-CELL analyzer (see NOTE below).</li>
+<li>Determine the fraction of surviving cells per plate compared to the no-puromycin plate and graph the results. The lentivirus concentration that results in ∼30% survival is equivalent to a MOI of ∼0.3. This will be the amount of lentivirus that you will add per plate for the screen.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The no-puromycin control plate should reach near-confluency at day 4 if 3 × 10<sup>6</sup> RPE1-hTERT cells were seeded at day 1. Although RPE1-hTERT can continue to grow in a 15 cm plate when seeded at this initial density, their growth slows between day 4 and 5. In a typical experiment, we count ∼16 × 10<sup>6</sup> cells per plate at day 4, while at day 5 we usually have ∼23 × 10<sup>6</sup> cells per plate. This means that a transduction efficiency of ∼0.3 will result in ∼7 × 10<sup>6</sup> cells per plate at day 4. For this reason, a cell count between 7 × 10<sup>6</sup> and 10 × 10<sup>6</sup> cells per plate represent our target transduction efficiency. Values below 0.2 are problematic since they may compromise sgRNA coverage (see “<a href="#sec3.1.1">Important notes before starting the screen</a>” below).</div>
+<div class="note">
+<span class="note-title">Note:</span> Trypsinizing and resuspending the cells in puromycin at day 4 helps increase the selection of true puromycin resistant RPE1-hTERT cells. If this step is omitted, around 10% of the cells remain viable at day 5 in the no-lentivirus control plate, which can confound MOI calculations. Please note that the hTERT transgene provides basal puromycin resistance.</div>
+<div class="note">
+<span class="note-title">Note:</span> Vi-CELL is an automated system that counts cells using and average of 50 frames taken from a hemocytometer cell counter. In case Vi-CELL is not available, any hemocytometer-based instrument can be used.</div>
+<div class="note">
+<span class="note-title">Note:</span> RPE1-hTERT have been immortalized by integrating a cassette expressing hTERT and a puromycin-resistance gene. For this reason, RPE1-hTERT are resistant to puromycin and higher doses (∼20 μg/mL) must be used to select cells transduced with TKOv3 library. When adapting this protocol to a different cell line, it is recommended to test a range of concentrations between 0.1 and 25 μg/mL of puromycin. Alternatively, to avoid selecting for cells transduced with more than one guide RNA when using high concentration of puromycin it is possible to remove the puromycin N-acetyl-transferase (<i>PAC</i>) gene using CRISPR/Cas9-based gene editing. We have successfully done this in our laboratory (data not shown).</div>
+<h3 id="sec1.3">Estimating LD20 concentrations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 weeks</div>
+<p>In the <a href="#bib6">Olivieri et al. (2020)</a> paper, we optimized our screens to identify genes involved in the normal cellular resistance to genotoxic agents (i.e., leads to sensitization upon Cas9-mediated mutations). We aimed to screen the agents at an LD20 dose i.e., a dose resulting in a 20% reduction in the number of cells at the next timepoint. Below we describe how we calculate the effective LD20 dose for our screens but first a few points to keep in mind:</p>
+<ol start="9">
+<li>Genotoxic agents can have cumulative effects on cell viability, so a dose that kills 20% of the cells after 3 days, can result in a &gt;20% lethality if added at every timepoint in the screen (12 days, from T6 to T18). For this reason, we aim to have a dose that will result in 20% lethality at T18 and thus we essentially performed a mock screen to calculate the LD20 dose.</li>
+<li>To avoid decreasing sgRNA coverage due to the loss of 20% of the cells at each timepoint, at T6 plate containing 20% more cells (28.5 × 10<sup>6</sup> × 1.2 = ∼34 × 10<sup>6</sup> cells) was prepared for each condition. See “sgRNA coverage estimation” below.</li>
+<li>It is important to consider the mechanism of action of the genotoxic agent. For some drugs it may be preferable to use multiple acute doses that are kept on cells for short amounts of time, while for others it may take more than 3 days to properly evaluate the lethality. These considerations must be taken into account before determining the concentration of drug to use in your screen.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> As an example on how to choose the correct dose, the titration of two genotoxic agents is reported in <a href="#fig4">Figure 4</a>. In the first example, five concentrations of etoposide were tested in a mock screen with up to 4 timepoints from day 3 to day 12 (<a href="#fig4">Figure 4</a>A). The compound was added each time cells were seeded (day 0, 3, 6, and 9). Each concentration killed a similar percentage of cells at each timepoint, with the 100 nM concentration consistently killing ∼20% of the cells. For this reason, 100 nM was used as the concentration to use in the screen. In the case or IR, the dose-response looked significantly different from the etoposide testing. In the case of IR, cells were irradiated every day after seeding (day 1, 4, 7 and 8) in order to have adherent RPE1-hTERT cells evenly distributed on the 15 cm plate. As shown in <a href="#fig4">Figure 4</a>B, at day 3, none of the 5 IR doses showed a significant difference from the untreated control. However, the response changed dramatically toward the last timepoint, with the highest dose (5 Gy) killing more than 60% of the cells. This cumulative effect was taken into account to avoid loss of coverage. For this reason, 3 Gy was chosen as the dose to use in the genotoxic screen, since 20% of the cells were killed at the last timepoint.</div>
+<ol start="12">
+<li>To determine the concentration of genotoxic agent to use, perform a short mock assay evaluating cell lethality between T6 and T18 (12 days).
+<ol type="a">
+<li>Prepare 10 different 15 cm plates, seeding 3 × 10<sup>6</sup> RPE1-hTERT cells in 20 mL of DMEM complete in each plate.</li>
+<li>In 9 of the plates, dispense a range of drug concentrations, using 1:3 dilutions.</li>
+<li>Leave one plate as untreated control cells.</li>
+<li>Distribute the cells evenly by gently rocking the plates with your hands 3–4 times in a cross-like patter (ensure this by inspecting plates under the microscope). This step is important since an incorrect distribution of the cells will impact growth of the cells.</li>
+<li>Place all the plates in the incubators (37°C, 5%. CO<sub>2</sub>).</li>
+<li>After 3 days, count the cells.</li>
+<li>If in any treated plate the cell numbers are &lt;80% of the untreated control cells, discard the plate and drug concentration from further study.</li>
+<li>From the surviving cells from the untreated plate and from each remaining drug treatment plate, prepare now plates containing 3 × 10<sup>6</sup> RPE1-hTERT cells in 20 mL of DMEM complete in each plate and add the specific drug concentration.</li>
+<li>Place all the plates in the incubators (37°C, 5%. CO<sub>2</sub>).</li>
+<li>Repeat step from step f to i every 3 days for 3 other timepoints (equivalent to T12, T15, and T18 in the screen). Count the cells at each timepoint and compare them to the untreated control plate.</li>
+<li>If no drug concentration assayed show a consistent 20% decrease in cell number every 3 days, narrow the range of drug concentrations and repeat until the correct dose has been found.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>LentiCRISPRv2</td>
+<td>(<a href="#bib7">Sanjana et al., 2014</a>)</td>
+<td>Addgene Cat# 52961</td>
+</tr>
+<tr>
+<td>TKOv3 library</td>
+<td>(<a href="#bib4">Hart et al., 2017</a>)</td>
+<td>Addgene Cat#90294</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Puromycin</td>
+<td>InvivoGen</td>
+<td>Cat# ant-pr</td>
+</tr>
+<tr>
+<td>Blasticidin</td>
+<td>InvivoGen</td>
+<td>Cat# ant-bl</td>
+</tr>
+<tr>
+<td>Penicillin and streptomycin (P/S)</td>
+<td>GIBCO</td>
+<td>Cat# 15140122</td>
+</tr>
+<tr>
+<td>Fetal bovine serum (FBS)</td>
+<td>Wisent Bioproducts</td>
+<td>Cat# 080-150</td>
+</tr>
+<tr>
+<td>Phosphate buffered saline (PBS)</td>
+<td>GIBCO</td>
+<td>Cat# 10010023</td>
+</tr>
+<tr>
+<td>Dulbecco’s modified Eagle’s medium (DMEM)</td>
+<td>GIBCO</td>
+<td>Cat# C11965500BT</td>
+</tr>
+<tr>
+<td>Trypsin-EDTA (trypsin)</td>
+<td>Wisent Bioproducts</td>
+<td>Cat# 325-043-EL</td>
+</tr>
+<tr>
+<td>Hexadimethrine bromide (polybrene)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# H9268</td>
+</tr>
+<tr>
+<td>UltraPure DNase/RNase-free distilled water (ultra-pure ddH<sub>2</sub>O)</td>
+<td>Invitrogen</td>
+<td>Cat# 10977015</td>
+</tr>
+<tr>
+<td>Protamine sulfate</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# P2162</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>QIAamp Blood Maxi Kit</td>
+<td>QIAGEN</td>
+<td>Cat# 51194</td>
+</tr>
+<tr>
+<td>QIAGEN Ribonuclease A (RNase A)</td>
+<td>QIAGEN</td>
+<td>Cat# 19101</td>
+</tr>
+<tr>
+<td>QIAquick PCR Purification kit</td>
+<td>QIAGEN</td>
+<td>Cat# 28104</td>
+</tr>
+<tr>
+<td>QIAquick Gel Extraction kit</td>
+<td>QIAGEN</td>
+<td>Cat# 28704</td>
+</tr>
+<tr>
+<td>NEB Next Ultra II Q5 Mastermix</td>
+<td>New England Biolabs</td>
+<td>Cat# M5044L</td>
+</tr>
+<tr>
+<td>NextSeq 500/550 High Output Kit v2.5</td>
+<td>Illumina</td>
+<td>Cat# 20024906</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>RPE1-hTERT</td>
+<td>ATCC</td>
+<td>CRL-4000</td>
+</tr>
+<tr>
+<td>Human: RPE1-hTERT Cas9 <i>TP53</i><sup>−/−</sup>
+</td>
+<td>(<a href="#bib11">Zimmermann et al., 2018</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>PCR#1 library primer forward V3_2_F: CTGCGTGCGCCAATTCTG</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PCR#1 library primer reverse V3_1_R2: AGAACCGGTCCTGTGTTCTG</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PCR#2 library primer forward (i5 Forward primers; <a href="#tbl1">Table 1</a>)</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PCR#2 library primer reverse (i7 Reverse primers; <a href="#tbl1">Table 1</a>)</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>MAGeCK</td>
+<td>(<a href="#bib5">Li et al., 2014</a>)</td>
+<td><a href="https://sourceforge.net/p/mageck/wiki/Home/">https://sourceforge.net/p/mageck/wiki/Home/</a></td>
+</tr>
+<tr>
+<td>BAGEL</td>
+<td>(<a href="#bib4">Hart et al., 2017</a>)</td>
+<td><a href="https://github.com/hart-lab/bagel/blob/master/BAGEL.py">https://github.com/hart-lab/bagel/blob/master/BAGEL.py</a></td>
+</tr>
+<tr>
+<td>DrugZ</td>
+<td>(<a href="#bib2">Colic et al., 2019</a>)</td>
+<td><a href="https://github.com/hart-lab/drugz">https://github.com/hart-lab/drugz</a></td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Supplementary Mendeley Database</td>
+<td>This paper. <a href="https://doi.org/10.17632/cx67bdkfrg.1">https://doi.org/10.17632/cx67bdkfrg.1</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Vi-CELL XR cell viability analyzer</td>
+<td>Beckman Coulter</td>
+<td>Cat# 731050</td>
+</tr>
+<tr>
+<td>Millex syringe filter</td>
+<td>Millipore</td>
+<td>Cat# SLCR033NS</td>
+</tr>
+<tr>
+<td>Illumina NextSeq 500</td>
+<td>Illumina</td>
+<td>Cat# SY-415-1001</td>
+</tr>
+<tr>
+<td>Qubit dsDNA BR Assay Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat# Q32850</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl1">
+<caption>Table 1. Sequences of forward and reverse primers, containing Illumina adaptors and indexes, used to perform PCR-2</caption>
+<thead>
+<tr>
+<th colspan="2">Name</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">i5 Forward primers</td>
+</tr>
+<tr>
+<td colspan="2">D501_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>TATAGCCT</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="2">D502_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>ATAGAGGC</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<u>A</u><i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="2">D503_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>CCTATCCT</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<u>CG</u><i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="2">D504_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>GGCTCTGA</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<u>GCA</u><i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="2">D505_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>AGGCGAAG</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<u>AACA</u><i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="2">D506_F</td>
+<td><code>AATGATACGGCGACCACCGAGATCTACAC<b>TAATCTTA</b>ACACTCTTTCCCTACACGACGCTCTTCCGATCT<u>ACACA</u><i>TTGTGGAAAGGACGAAACACCG</i></code></td>
+</tr>
+<tr>
+<td colspan="3">i7 Reverse primers</td>
+</tr>
+<tr>
+<td>D701_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>CGAGTAAT</b>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+<tr>
+<td>D702_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>TCTCCGGA</b>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+<tr>
+<td>D704_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>GGAATCTC</b>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+<tr>
+<td>D705_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>TTCTGAAT</b>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+<tr>
+<td>D706_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>ACGAATT</b>CGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+<tr>
+<td>D707_R</td>
+<td colspan="2"><code>CAAGCAGAAGACGGCATACGAGAT<b>AGCTTCAG</b>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT<i>ACTTGCTATTTCTAGCTCTAAAAC</i></code></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Bold, i5 or i7 index; underlined, staggering nucleotides; italic, annealing sequence.</p>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>Reagents to prepare:</p>
+<ul>
+<li>
+<b>Polybrene.</b> The stock solution is prepared by resuspending polybrene powder to a final concentration of 16 mg/mL in ultra-pure ddH<sub>2</sub>O. The solution is then filtered (0.45 μm filter) and aliquoted in a biosafety cabinet in 1 mL aliquots. Aliquots are stored at −20°C for up to 1 year.</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Genome-scale synthetic lethality screen</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼4 weeks</div>
+<h4 id="sec3.1.1">Important notes before starting the screen</h4>
+<p>In order to be consistent with previous CRISPR screen protocols, screen timepoints are indicated with a capital “T” letter. Timepoint zero (T0) is usually indicated as the day in which the MOI is measured and a sample for sequencing is collected to use as a reference baseline for sgRNA distribution in the initial cell population. Timepoints before T0 are indicated with a minus sign e.g., T-4, T-3, etc.</p>
+<ol>
+<li>
+<b>sgRNA coverage estimation.</b> This is an important step as it is necessary to calculate the requirements for cells and reagents (media and plates). sgRNA representation (or coverage) is the number of cells independently infected by an sgRNA-expressing lentivirus. We aim to do our coverage at 400× but other groups have reported successful screens at lower representation (150–300×). To estimate how many cells are needed for reaching <i>N</i>X coverage can be calculated as follow:<br> <i>NX coverage number of cells = n of sgRNA in the TKOv3 ∗ N coverage</i>
+</li>
+</ol>
+<p>This means that, in order to have all 71,090 sgRNAs in the TKOv3 library present within 400 cells post-infection (on average), <b>at least 28.4 × 10</b><sup>6</sup> <b>cells need to be infected at T0 and this amount of cells must be minimally maintained throughout the screen i.e., be seeded and collected at each time point</b>. For this reason, if the infection efficiency estimated is 30%, it is important to infect at least (28.4 × 10<sup>6</sup>) / 0.3 at T0. From a statistical point of view, it has been demonstrated that conducting two technical replicates (here called “A” and “B”) is sufficient for robust CRISPR screens (<a href="#bib4">Hart et al., 2017</a>). To help with the planning of the screen, please refer to <a href="#fig1">Figure 1</a>: process flow diagram for a chemogenetic CRISPR/Cas9 dropout screen.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/461-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. General workflow of a dropout genotoxic CRISPR screen using the TKOv3 library</div>
+</figcaption>
+</figure>
+<ol start="2">
+<li>
+<b>Estimate number of cells to infect.</b> According to the coverage, it is important to infect at least 28.4 × 10<sup>6</sup> at T-4. When using a MOI of ∼0.3, that results in needing to infect at least 28 × 10<sup>6</sup> / 0.3 = ∼93 × 10<sup>6</sup> cells. This means that, if 3 × 10<sup>6</sup> cells are seeded per plate at T-4, at least 31 × 15 cm plates are required. However, to avoid having to repeat the infection due to an unexpectedly low MOI, estimate the number of cells to be infected at T-4 using a MOI of 0.2. For this reason, for a screen ∼150 × 10<sup>6</sup> cells are infected, for a total of 50 × 15 cm plates.</li>
+<li>
+<b>Estimation of the number of plates and cells required for each timepoint.</b> Knowing exactly how many conditions and replica are required for each step, how many treatments to start at T6 and how many reagents to have it is vital to avoid ending up with an unmanageable number of plates. For this reason, it is very helpful to design your own screen layout (using <a href="#fig1">Figure 1</a> as template) in order to know not only the reagents required but how to expand and prepare the place from timepoint to timepoint.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to minimize the risk of contamination during the screen. An accidental contamination during any timepoint will compromise the entire screen. Sterilize incubator shelves before commencing the screen. Thoroughly clean every surface (biosafety cabinet, incubator, door handles, reagent bottles) with of 70% ethanol before commencing the screen. Always use fresh media and a newly thawed bottle of P/S at the beginning of the screen. To avoid contamination while mixing large volumes of cells, use sterile T175 flasks standing on end as containers to collect and mix the cells.</div>
+<div class="note">
+<span class="note-title">Note:</span> All the calculations reported here are for the exact number of cells, plates, and volumes required for the screen. However, to compensate for potential pipetting errors, one can calculate the cells and reagents needed for an extra plate, which should ensure enough reagents and cells.</div>
+<ol start="4">
+<li>Day T-7: Plate cells for the screen.
+<ol type="a">
+<li>Plate 3 × 10<sup>6</sup> RPE1-hTERT cells in 15 × 15 cm plates in 20 mL of DMEM complete.</li>
+</ol>
+</li>
+<li>Day T-4: Infection with TKOv3 library
+<ol type="a">
+<li>Remove media and wash plates with 10 mL of PBS.</li>
+<li>Add 3 mL of trypsin to the plates and gently rock the plates to get complete coverage of the cell layer.</li>
+<li>Incubate for 5 min at 37°C.</li>
+<li>Resuspend the plate with 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Harvest all plates for a total of at least 150 × 10<sup>6</sup> RPE1-hTERTcells into a T175 flask.</li>
+<li>Count the number of viable cells per mL of media.</li>
+<li>Prepare a control plate (no-lentivirus control) by seeding 3 × 10<sup>6</sup> in a 15 cm plate with 20 mL of complete DMEM and 8 μg/mL of polybrene. Gently rock the plate to evenly distribute the cells and place in the 37°C incubator.</li>
+<li>Generate the cell-virus mix for the infection using two T175 flasks standing on end. Add media and cells first, then add polybrene, and mix thoroughly. Last, add the lentiviral library and mix thoroughly again inverting the flask 10–15 times. This is the mix for seeding 50 × 15 cm plates (+1 extra plate that will be the no-puromycin control, see T-2 timepoint. This is the total master mix to be split into 2 flasks):
+<ol type="i">
+<li>153 × 10<sup>6</sup> RPE1-hTERTcells</li>
+<li>510 μL of polybrene (16 mg/mL stock solution; 8 μg/mL final concentration, 1:2,000)</li>
+<li>TKOv3 sgRNA library virus according to MOI calculation</li>
+<li>Bring to a total of 1,020 mL with DMEM complete.</li>
+</ol>
+</li>
+<li>Pipette up and down with a 50 mL pipet alternating inverting the T175 flask several time to ensure correct mixing. Mix the cell-virus solution well, transferring it from the 2 flasks to homogeneously distribute cells and reagents.</li>
+<li>Plate 20 mL of the cell-virus mix in each 15 cm plate. Label one plate as the no-puromycin control.</li>
+<li>Gently rock the plates to evenly distribute the cells (ensure it by inspecting some random plates under the microscope) and incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+<li>Day T-3: Change media
+<ol type="a">
+<li>Prepare 1,040 mL of fresh DMEM complete.</li>
+<li>Visually inspect several plates under the phase-contrast microscope. Confluency and viability of infected cells should be equivalent to that observed during the MOI determination.</li>
+<li>24 h after seeding the infected cells, aspirate the medium from each plate (including the no-lentivirus and no-puromycin control plates).</li>
+<li>Gently add 20 mL of fresh DMEM complete to each plate.</li>
+<li>Incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+<li>Day T-2: Puromycin selection
+<ol type="a">
+<li>Prepare 1,020 mL of fresh DMEM complete.</li>
+<li>Add 2.04 mL of puromycin (stock solution 10 mg/mL; final concentration 20 μg/mL). Note: the amount of puromycin used for selection must be determined prior to the screen.</li>
+<li>Aspirate the media from the screen plates.</li>
+<li>Add 20 mL of DMEM with puromycin.</li>
+<li>In the no-puromycin control plate, simply change the media with 20 mL of DMEM complete without puromycin.</li>
+</ol>
+</li>
+<li>Day T-1: Resuspend cells in media with puromycin.
+<ol type="a">
+<li>Aspirate media and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin per plate to detach the cells.</li>
+<li>Incubate 5 min in the 37°C incubator.</li>
+<li>Resuspend cells with 17 mL of complete DMEM containing 23.5 μg/mL of puromycin; the final concentration will be 20 μg/mL in a total volume of 20 mL. Using a 10 mL pipet, break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Reseed cells in the same plates by gently rocking the plates to evenly distribute the cells.</li>
+<li>Incubate plates in the 37°C incubator.</li>
+</ol>
+</li>
+<li>Day T0: Collect and count cells
+<ol type="a">
+<li>Assess selection with the no-lentivirus control plate by inspecting it under the microscope. You should see that almost all cells are dead.</li>
+<li>Aspirate media from screen plate and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin per plate to detach the cells.</li>
+<li>Incubate 5 min in the 37°C incubator.</li>
+<li>Resuspend in 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate. Total volume of 13 mL per plate.</li>
+<li>Collect all the cells into two sterile T175 flasks.</li>
+<li>Harvest the no-puromycin control plates in the same manner as the screen plates.</li>
+<li>Calculate the MOI for the screen by dividing the viable cells per mL in the large pool of puromycin selected cells by the number of cells per mL in the no-puromycin control plate (once the MOI is calculated, discard the cells from the no-puromycin control plates). Proceed with the screen if the MOI obtained is between 0.3 and 0.5. If the MOI is between 0.2 and 0.3, we usually seed 30% more cell for the next time point to ensure adequate coverage.</li>
+<li>Prepare sequencing cell pellets (each pellet should contain at least 28.4 × 10<sup>6</sup> cells to achieve the desired coverage of the library):
+<ol type="i">
+<li>Prepare 3–4 × 50 mL conical tubes with at least 28.4 × 10<sup>6</sup> cells each.</li>
+<li>Centrifuge tubes at 500 × <i>g</i> for 5 min using a centrifuge with swinging buckets.</li>
+<li>Aspirate the media, being careful not to disturb the cell pellet.</li>
+<li>Wash the pellet with 10 mL of warm PBS.</li>
+<li>Transfer the resuspended cells in 15 mL tubes.</li>
+<li>Spin the cells down at 500 × <i>g</i> for 5 min using a centrifuge with swinging buckets.</li>
+<li>Aspirate the PBS, being careful not to disturb the cell pellet.</li>
+<li>Close the tubes tightly and snap freeze them in liquid nitrogen for 2 min.</li>
+<li>Store the pellets at −80°C until you are ready to perform genomic DNA extraction.</li>
+</ol>
+</li>
+<li>Plate the remaining cells into 2 technical replicates (here referred as “A” and “B”). For each replicate, library coverage of 400× also needs to be maintained:
+<ol type="i">
+<li>ReplicateA: plate 15 × 15 cm plates, 3 × 10<sup>6</sup> cells per plate.</li>
+<li>ReplicateB: plate 15 × 15 cm plates, 3 × 10<sup>6</sup> cells per plate.</li>
+</ol>
+</li>
+<li>Plate the cells by gently rocking the plates to evenly distribute the cells.</li>
+<li>Incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is extremely important to collect a cell pellet at T0 in order to evaluate the overall quality of the screen. One T0 sample must be sequenced in order to assess sgRNA distribution in the initial infected population and to calculate the area under the curve (AUC) of the precision-recall curves for the screen quality control. For this reason, collect more than one pellet (at least 2, suggested are 3–4 pellets) in order to have possible back up samples.</div>
+<div class="note">
+<span class="note-title">Note:</span> We noted that the RPE1-hTERT cells usually experience a slowdown in proliferation after T0, with a return to normal growth by T6-T9. Plating 1.5 X coverage of cells (∼45 × 10<sup>6</sup> cells in 15 cm plates per replicate) is a good precaution to avoid losing the 400× coverage.</div>
+<ol start="10">
+<li>Day T3: resuspend and reseed the cells
+<ol type="a">
+<li>Aspirate media and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin per plate and gently rock the plates to get complete coverage of the cell layer.</li>
+<li>Incubate for 5 min at 37°C.</li>
+<li>Resuspend the plate with 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Harvest all plates into two T175 flask, i.e., one for each replicate.</li>
+<li>Count the cells and replate 15 plates per replicate with 3 × 10<sup>6</sup> cells per plate.</li>
+<li>Plate the cells by gently rocking the plates to evenly distribute the cells.</li>
+<li>Incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> T3 is important to expand cells in order to have enough for all the treatments to be applied starting from T6. Seeding 15 plates per replicate will lead to ∼150 × 10<sup>6</sup> cells at T6. With this number of cells, it is possible to split them into 3 treatments along with one untreated condition (∼36 × 10<sup>6</sup> cells per treatment at genotoxic concentration of LD<sub>20</sub>, see “<a href="#sec1.3">Estimating LD20 concentrations</a>” in the “<a href="#before-you-begin">Before you begin</a>” section). If you plan to screen more conditions, you need to seed more plates at T3, accordingly.</div>
+<ol start="11">
+<li>Day T6: Split replicates into treated versus untreated conditions
+<ol type="a">
+<li>Aspirate media and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin to the plates and gently rock the plates to get complete coverage of the cell layer.</li>
+<li>Incubate for 5 min at 37°C.</li>
+<li>Resuspend the plate with 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Harvest all plates into two T75 flasks, one per replicate.</li>
+<li>Count cells.</li>
+<li>Split cells into different conditions. For each condition prepare a T75 flask (including one for the non-treated control; for example 3 drug conditions plus a non-treated control for two replicates would require 8 × T75 flasks).
+<ol type="i">
+<li>Mix 36 × 10<sup>6</sup> cells in 240 mL of DMEM complete in each flask.</li>
+<li>Add drug to each flask and mix thoroughly by inverting the flask.</li>
+<li>Seed 20 mL in each of the 12 plates for both replicates for each condition.</li>
+</ol>
+</li>
+<li>Plate the cells by gently rocking the plates to evenly distribute the cells.</li>
+<li>Incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> At each timepoint it is possible to collect a cell pellet that will be processed for sequencing. However, for our dropout genotoxic CRISPR screen we routinely only collect and process the T0 and T18 samples.</div>
+<ol start="12">
+<li>
+<b>Day T9 to day T15.</b> Conduct the following procedure every 3 days until T15 (or the timepoint prior to screen completion).
+<ol type="a">
+<li>Aspirate media and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin per plate and gently rock the plates to get complete coverage of the cell layer.</li>
+<li>Incubate for 5 min at 37°C.</li>
+<li>Resuspend cells with 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Harvest all plates into separate T75 flasks, one per replicate and per treatment.</li>
+<li>Count cells.</li>
+<li>Plate 12 plates (3 × 10<sup>6</sup> cells each) per replicate per each condition by gently rocking the plates to evenly distribute the cells.</li>
+<li>Incubate the plates in the 37°C incubator.</li>
+</ol>
+</li>
+<li>Day T18. Collect final samples.
+<ol type="a">
+<li>Aspirate media and wash with 10 mL warm PBS per plate.</li>
+<li>Add 3 mL of trypsin to the plates and gently rock the plates to get complete coverage of the cell layer.</li>
+<li>Incubate for 5 min at 37°C.</li>
+<li>Resuspend cells with 10 mL of DMEM complete. Break up all cell clumps by pipetting the cells up and down 2–3 times at fast speed against the bottom of the plate.</li>
+<li>Harvest all plates into separate T75 flasks, one for each replicate and treatment.</li>
+<li>Count cells.</li>
+<li>Prepare sequencing cell pellets (each pellet should contain at least 28.4 × 10<sup>6</sup> cells to achieve the desired coverage of the library):
+<ol type="i">
+<li>Prepare 3–4 × 50 mL conical tubes with at least 28.436 × 10<sup>6</sup> cells per replicate and condition.</li>
+<li>Centrifuge tubes at 500 × <i>g</i> for 5 min using a centrifuge with swinging buckets.</li>
+<li>Aspirate media, being careful not to disturb the cell pellet.</li>
+<li>Resuspend the pellet with 10 mL of warm PBS.</li>
+<li>Transfer the resuspended cells in 15 mL tubes (1 tube per replicate and condition).</li>
+<li>Spin the cells down at 500 × <i>g</i> for 5 min using a centrifuge with swinging buckets.</li>
+<li>Aspirate the PBS, being careful not to disturb the cell pellet.</li>
+<li>Close the tubes tightly and snap freeze them in liquid nitrogen for at least 2 min.</li>
+<li>Store pellets at −80°C until you are ready to perform genomic DNA extraction.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If you wish to have back up cell pellets for sequencing, it is possible to increase the number of plates seeded at T15 as a means to collect more cells at T18.</div>
+<h3 id="sec3.2">Genomic DNA extraction and precipitation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>In this step, the cell pellets stored at −80°C are processed to extract the genomic DNA. The resulting DNA is used to perform the PCR reactions needed to amplify the sgRNA cassette integrated into the genome and for incorporating the Illumina indexes.</p>
+<p>Genomic DNA extraction is performed using the QIAamp DNA Blood Maxi Kit and the QIAGEN Ribonuclease A (RNase A), according to the following protocol, adapted from the kit manual.</p>
+<ol start="14">
+<li>Before starting the DNA extraction and genomic precipitation:
+<ol type="a">
+<li>Prepare a 70°C water bath.</li>
+<li>Pre-warm buffer AE to 65°C.</li>
+<li>Ensure that the area and equipment are thoroughly cleaned with 70% ethanol and 10% bleach solutions before commencing to process the samples.</li>
+<li>Make sure that only DNase/RNase-free serological pipettes, filtered tips, and tubes are used for the entire process of genomic extraction and PCR reactions.</li>
+<li>To avoid cross contamination, all buffers in the QIAamp Blood Maxi kit should be aliquoted into sterile 50 mL conical tubes as a means to avoid repeated opening and closing of bottles.</li>
+<li>Use only ultra-pure ddH<sub>2</sub>O and PBS in every step of the protocol.</li>
+<li>Use only swinging bucket centrifuges, and ensure they are properly cleaned before using them. Seal cap rotors are preferred to avoid generating contaminating aerosols.</li>
+<li>Chill 50 mL of anhydrous ethanol (96%–100%) at −20°C. Do not use denatured alcohol, which contains other substances such as methanol or methylethylketone.</li>
+<li>Chill 50 mL of ethanol 70% at −20°C.</li>
+</ol>
+</li>
+<li>Genomic DNA extraction using QIAamp Blood Maxi kit
+<ol type="a">
+<li>Thaw a single cell pellet for each condition at 20°C–25°C room temperature (RT) for 10 min.</li>
+<li>Thoroughly resuspend cell pellet in 1 mL PBS by gentle pipetting up and down &gt;10 times.</li>
+<li>Transfer the cell suspension to a sterile 50 mL conical tubes. Add 3.5 mL of PBS to each tube, bringing the final volume to 4.5 mL.</li>
+<li>Add 100 μL of RNase A (stock solution 100 mg/mL) to resuspended cells.</li>
+<li>Mix briefly by swirling. Incubate at RT for 5 min.</li>
+<li>Add 500 μL QIAGEN protease solution to cell suspension and vortex thoroughly to mix.</li>
+<li>Add 6 mL Buffer AL, and mix thoroughly by inverting the tube 15 times, followed by additional vigorous shaking for at least 1 min.</li>
+<li>Incubate in a 70°C water bath for 15 min.</li>
+<li>Add 5 mL anhydrous ethanol (96%–100%) to the sample and mix by inverting the tube ten times and vigorous shaking for 2 min.</li>
+<li>Carefully transfer the entire solution onto a QIAamp Maxi column placed in a 50 mL centrifuge tube (provided), taking care not to moisten the rim. Close the cap and centrifuge at 1,850 × <i>g</i> for 3 min at RT using swinging bucket rotors.</li>
+<li>Remove the QIAamp Maxi column, remove the filtrate by aspiration, and place the QIAamp Maxi column back into the 50 mL centrifuge tube.</li>
+<li>Carefully, without moistening the rim, add 5 mL Buffer AW1 to the QIAamp Maxi column. Close the cap and centrifuge at 4,500 × <i>g</i> for 1 min.</li>
+<li>Carefully, without moistening the rim, add 5 mL Buffer AW2 to the QIAamp Maxi column. Close the cap and centrifuge at 4,500 × <i>g</i> for 15 min.</li>
+<li>If there are residual buffer droplets on the inside edge of the column, leave the columns in a 37°C clean incubator for no more than 15 min to ensure they are properly dry.</li>
+<li>Place the QIAamp Maxi column in a clean 50 mL centrifuge tube (provided) and discard the collection tube containing the filtrate.</li>
+<li>Dispense 800 μL of Buffer AE directly onto the membrane of the QIAamp Maxi column and close the cap. Incubate at RT for 5 min, then centrifuge at 4,500 × <i>g</i> for 3 min.</li>
+<li>Reload the eluate containing the DNA onto the membrane of the QIAamp Maxi column. Add an additional 400 μL Buffer AE to the column and close the cap. Incubate at RT for additional 5 min, then centrifuge at 4,500 × <i>g</i> for 5 min.</li>
+<li>Collect flow through and transfer to a 2 mL microcentrifuge tubes. Quantify genomic DNA using Qubit dsDNA BR Assay Kit (see NOTE below).</li>
+<li>Store samples at −20°C or proceed directly to genomic DNA precipitation.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We highly recommend using fluorimetric assays to quantitate genomic DNA in order to avoid contamination from carry-over RNA. The Qubit is only one of many options for fluorimetric quantitation.</div>
+<ol start="16">
+<li>Genomic DNA precipitation
+<ol type="a">
+<li>Set all centrifuge to 4°C you will be use later before starting the genomic precipitation.</li>
+<li>Transfer 600 μL genomic DNA into each of the two mL microfuge tubes (total of 2 tubes per condition).</li>
+<li>Add 24 μL of 5 M NaCl (final concentration of 0.2 M) and mix by inverting tubes 4–5 times.</li>
+<li>Add 1,200 μL of prechilled −20°C anhydrous ethanol. Do NOT use sodium acetate as residual acetate interferes with Illumina PCR.</li>
+<li>Invert tube at least 10 times to ensure samples are thoroughly mixed.</li>
+<li>Centrifuge at 15,000 × <i>g</i> for 15 min at 4°C.</li>
+<li>Aspirate supernatant, being careful to avoid aspirating the DNA pellet.</li>
+<li>Add 500 μL −20°C 70% ethanol. Invert tube five times to mix the sample.</li>
+<li>Centrifuge at 15,000 × <i>g</i> for 15 min at 4°C.</li>
+<li>Aspirate supernatant. Pulse-spin down any remaining liquid and aspirate it, being careful to avoid the gDNA pellet.</li>
+<li>Air dry pellet 5–10 min and resuspend with 200 μL of 10 mM Tris-HCl pH 8.0. Pipette up and down 10–20 times to resuspend the pellet.</li>
+<li>Heat samples at 50°C for 1 h. Briefly vortex the samples every 20 min, followed by pipetting up and down 10 times.</li>
+<li>Check concentration of sample on using Qubit dsDNA BR Assay Kit and adjust to 300 ng/μL.</li>
+<li>Store the samples at −20°C or proceed with the PCR reactions.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Two-step PCR amplification of the integrated sgRNA for Illumina NGS</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>The PCR reactions are required to enrich sgRNA cassette integrated in the genomic DNA and to generate the sgRNA amplicons with Illumina NextSeq primers and i5/i7 indices (see <a href="#tbl1">Table 1</a>).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> before commencing PCRs, it is important to always include a control without genomic DNA to ensure the absence of contaminating template (for both PCR reactions). This is critical since lentiCRISPRv2 (and derivatives) are routinely used in labs and can be a source of contamination.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Handling PCR reactions for multiple genomic DNA templates in a 96 well plate can potentially result in cross contamination. To avoid this, set up and aliquot the reactions for one template at a time, thoroughly cleaning the working surface before moving to the next template’s reaction.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to avoid the exponential phase of the PCR reaction. For this reason, use a low number of cycles (&lt;20). Even if a band is barely visible, you can usually process to PCR-2 and should observe a clear band after the second PCR reaction.</div>
+<ol start="17">
+<li>
+<b>PCR-1 (outer primers):</b> The role of PCR-1 is to amplify the integrated sgRNA cassette while maintaining the required coverage of the library. The PCR1 reaction is performed using 3 μg of DNA per reaction. For each sample are then prepared 35 reactions.
+<ol type="a">
+<li>Use the following primers:
+<ol type="i">
+<li>primer forward V3_2_F: 5′-CTGCGTGCGCCAATTCTG-3′</li>
+<li>primer reverse V3_1_R2: 5′-AGAACCGGTCCTGTGTTCTG-3′</li>
+</ol>
+</li>
+<li>To set up the PCR-1 reaction master mix:
+<ol type="i">
+<li>Prepare a 10 μM mix for both outer primers:
+<table id="undtbl1">
+<thead></thead>
+<tbody>
+<tr>
+<td>100 μL forward outer primer V3_2_F (100 μM)</td>
+</tr>
+<tr>
+<td>100 μL reverse outer primer V3_1_R2 (100 μM)</td>
+</tr>
+<tr>
+<td>800 μL ultra-pure ddH<sub>2</sub>O</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Setup PCR #1 as follows in 96-well PCR plates:
+<table id="undtbl2">
+<thead></thead>
+<tbody>
+<tr>
+<td>2× NEBNext Ultra II Q5 Master Mix</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>10 μM Outer PCR primer mix (10 μM each)</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>Genomic DNA sample (300 ng/μL)</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Ultra-pure ddH<sub>2</sub>O</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Mix all the reagents in a 15 mL tube and keep the reaction on ice.</li>
+<li>Aliquot 50 μL in each well of a 96-well plate.</li>
+<li>Carefully cover each PCR plate with adhesive plastic plate seals and centrifuge plates at 500 × <i>g</i> for 1 min to bring all liquid to the bottom of the plate.</li>
+<li>Run PCR in a 96-well compatible thermocycler using the following profile:
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>95°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>95°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Go to step 2 (×19)</td>
+<td> </td>
+</tr>
+<tr>
+<td>6</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>4°C</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Once PCR-1 is complete, pool all individual 50 μL reactions for each sample in a 15 mL tube and vortex to mix well.</li>
+<li>Aliquot the reaction in 1.5 mL tubes. You can now store the reaction at −20°C.</li>
+<li>Run 10 μL of PCR-1 product on a 2% agarose gel to assess the quality of the PCR-1 products. You should see a band at 842 bp. See <a href="#fig2">Figure 2</a>A for an example of PCR-1 reaction products using three T0 pellets and ten T18 samples.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/461-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Agarose gel electrophoresis for library preparation</div>
+<p>(A) Agarose 2% gel of PCR-1. Lane 1 is 1 kb plus ladder (Life Technologies). Lanes 2–4 are 10 μL each of the pooled 35 PCR reactions using 0.5 μg per reaction of three T0 pellets. Lanes 5–14 are 10 μL each of the pooled 35 PCR reaction using 2 μg per reaction of 10 different T18 samples. Lane 15 is the control PCR using no template. The correct band is indicated at 842 bp.</p>
+<p>(B) Agarose 2% gel of PCR-2. Lane 1 is 1 kb plus ladder (Life Technologies). As an example, 10 μL of 4 pooled PCR reaction for each primer combination are used to confirm the presence of the correct band between 202 and 207 bp.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The extraction of genomic DNA can lead to different yield for T0 and T18 samples, see the <a href="#troubleshooting">Troubleshooting</a> section to resolve this issue before commencing PCR-1.</div>
+<div class="note">
+<span class="note-title">Note:</span> One of the possible problems performing PCR1 is the presence of a smear and/or the reduction of intensity of the specific band at 842 bp when running the reaction on agarose gel. This could be due to the presence of undigested RNA. If RNA is present in the PCR reaction, this may reduce the yield of each reaction. To avoid this problem, it is possible to undertake the RNase digestion step for 10 min instead of 5 min. In case the PCR-1 conditions need to be altered to improve the yield of this step, it is important to avoid increasing the number of PCR cycles, to avoid introducing bias toward particular guide RNA-coding sequences. It is recommended first to reduce the annealing temperature or extending the extension time before increasing the number of cycles.</div>
+<ol start="18">
+<li>
+<b>PCR-2 (Illumina adaptors)</b>: PCR-2 is important to add Illumina adaptors for sequencing and the i5 and i7 indexes used for multiplexing.
+<div class="critical">
+<span class="critical-title">Critical:</span> before commencing PCR-2, Use only appropriate Illumina adaptors and i5 and i7 index primer combinations for each individual sample to allow pooling of sequencing libraries and multiplexed sequencing.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The primers used in this protocol are suitable for using with Illumina NextSeq 550 Series (see <a href="#tbl1">Table 1</a>). To obtain good quality amplicons for sequencing, order HPLC-purified primers.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> See <a href="#tbl2">Table 2</a> for an example of a possible combination of indexes for sequencing.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> For each sample, prepare four reactions. This will allow you to recover enough material after the double purification of the PCR-2 products from the agarose gel.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Dilute the original stocks of the primers to 10 μM being careful not to contaminate the original stock.</div>
+To set up the PCR-2 reaction master mix:
+<table id="tbl2">
+<caption>Table 2. Example of indexes and reads per sample for a NextSeq 500 run</caption>
+<thead>
+<tr>
+<th>Sample ID</th>
+<th>Description</th>
+<th>F (i5) primer</th>
+<th>i5 index</th>
+<th>R (i7) primer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>T0</td>
+<td>D501_F</td>
+<td>TATAGCCT</td>
+<td>D701_R</td>
+</tr>
+<tr>
+<td>2</td>
+<td>not treated T18 - A</td>
+<td>D501_F</td>
+<td>TATAGCCT</td>
+<td>D702_R</td>
+</tr>
+<tr>
+<td>3</td>
+<td>not treated T18 - B</td>
+<td>D502_F</td>
+<td>ATAGAGGC</td>
+<td>D705_R</td>
+</tr>
+<tr>
+<td>4</td>
+<td>drug A T18 - A</td>
+<td>D502_F</td>
+<td>ATAGAGGC</td>
+<td>D701_R</td>
+</tr>
+<tr>
+<td>5</td>
+<td>drug A T18 - B</td>
+<td>D503_F</td>
+<td>CCTATCCT</td>
+<td>D701_R</td>
+</tr>
+<tr>
+<td>6</td>
+<td>drug B T18 - A</td>
+<td>D503_F</td>
+<td>CCTATCCT</td>
+<td>D706_R</td>
+</tr>
+<tr>
+<td>7</td>
+<td>drug B T18 - B</td>
+<td>D504_F</td>
+<td>GGCTCTGA</td>
+<td>D705_R</td>
+</tr>
+<tr>
+<td>8</td>
+<td>drug C T18 - A</td>
+<td>D504_F</td>
+<td>GGCTCTGA</td>
+<td>D702_R</td>
+</tr>
+<tr>
+<td>9</td>
+<td>drug C T18 - B</td>
+<td>D501_F</td>
+<td>TATAGCCT</td>
+<td>D705_R</td>
+</tr>
+<tr>
+<td>10</td>
+<td>drug D T18 - A</td>
+<td>D502_F</td>
+<td>ATAGAGGC</td>
+<td>D706_R</td>
+</tr>
+<tr>
+<td>11</td>
+<td>drug D T18 - B</td>
+<td>D505_F</td>
+<td>AGGCGAAG</td>
+<td>D705_R</td>
+</tr>
+<tr>
+<td>12</td>
+<td>drug E T18 - A</td>
+<td>D503_F</td>
+<td>CCTATCCT</td>
+<td>D702_R</td>
+</tr>
+<tr>
+<td>13</td>
+<td>drug E T18 - B</td>
+<td>D505_F</td>
+<td>AGGCGAAG</td>
+<td>D706_R</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">See <a href="#tbl1">Table 1</a> for primer sequences.</p>
+<ol type="a">
+<li>Prepare PCR-2 as follows in 1.5 mL tubes and aliquot it in standard PCR tubes (50 μL per tube):
+<table id="undtbl4">
+<thead>
+<tr>
+<th> </th>
+<th> </th>
+<th>X4 reactions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× NEBNext Ultra II Q5 Master Mix</td>
+<td>25 μL</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>Forward i5 primer (10 μM)</td>
+<td>5 μL</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>Reverse i7 primer (10 μM)</td>
+<td>5 μL</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>Pooled PCR-1</td>
+<td>2.5 μL</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Ultra-pure ddH<sub>2</sub>O</td>
+<td>12.5 μL</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>50 μL</td>
+<td>200 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Run PCR-2 using the following cycling conditions:
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>95°C</td>
+<td>3 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>95°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Go to step 2 (×11)</td>
+<td> </td>
+</tr>
+<tr>
+<td>6</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>4°C</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Pool the four reactions for each sample and purify them using a QIAquick PCR purification kit (QIAGEN). Follow the kit instructions.</li>
+<li>Elute PCR product using 30 μL EB. Run the eluted material again through the column to elute as much PCR product as possible. This step is important to concentrate the PCR product in order to load the entire sample on 1–2 wells in the agarose gel.</li>
+<li>Run the entire 30 μL purified PCR product on a 2% agarose gel. The specific desired band is at 202–207 bp (see <a href="#fig2">Figure 2</a>B). If additional non-specific bands are visible in the gel, the bands must be resolved well enough to be able to excise the correct band. Run the gel longer if necessary.</li>
+<li>Excise only the specific band.</li>
+<li>Purify the PCR product from the gel slice using the QIAquick Gel Extraction kit (QIAGEN). Elute PCR product using 30 μL EB. Follow the kit instructions. Run the eluted material again through the column to elute as much PCR product as possible.</li>
+<li>Conduct another PCR purification using a QIAquick PCR purification kit (QIAGEN) and buffer PB to further purify the PCR-2 product. Follow the kit instructions. Run the eluted material again through the column to elute as much PCR product as possible.</li>
+<li>Quantify the DNA using Qubit dsDNA BR Assay Kit.</li>
+<li>Samples are now ready for sequencing using the Illumina NextSeq 500.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Sequencing</h3>
+<p>Sequencing is performed with an Illumina NextSeq 500 using single reads. Before submitting the samples there are a few things to consider:</p>
+<ol start="19">
+<li>Using the high-throughput kit, one flow cell can sequence up to 400 million reads. To ensure correct coverage, each sample should be sequenced with at least 28.436 × 10<sup>6</sup> reads. Due to possible fluctuations of number of reads during the loading of the flow cell, usually 30 × 10<sup>6</sup> reads are assigned for each sample (see <a href="#tbl2">Table 2</a> for an example of read distributions). For this reason, one single flow cell can sequence up to 13 samples.</li>
+<li>To ensure good quality of sequencing, it is possible to test the quality of the PCR-2 primers by performing a qPCR using the lentiviral maxiprep as template. Alternatively, you can test them directly using the material from PCR-1, since only 10 μL of the PCR-1 product will be used for PCR-2. However, we prefer to test each sample by performing a qPCR with the index primers before loading them in the flow cell. This step is important to evaluate the correct concentration of each sample and to assess whether the samples will perform adequately during sequencing.</li>
+<li>Sequencing is performed by performing 22 dark cycles followed by 25 reads. Dark cycles are used to reduce errors during the sequencing caused by low variability in the identical sequence (U6 promoter) before the actual 20 bp sgRNA.</li>
+<li>To reduce the probability of errors due to low variability, 6 staggered forward primers are used with 0, 1, 2, 3, 4, and 5 staggered nucleotides. To compensate for the staggering, the read length is increased from 20 to 25 bp. See <a href="#fig3">Figure 3</a> for further details. This also allows you to reduce the amount of PhiX DNA to 1%.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/461-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Schematic of staggered PCR-2 primers and dark cycles used to sequence the sample with Illumina NextSeq 500</div>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/461-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Drug-response assays with the indicated compounds in RPE1 cells using confluency as a readout</div>
+<p>(A) Example using continuous treatment with etoposide. (B) Example of an acute treatment with ionizing radiation (IR). Data presented as means ± SD; n = 3.</p>
+</figcaption>
+</figure>
+</li>
+<li>The Illumina recipe for the NextSeq Kit 2.5 used for sequencing can be found in the supplementary Mendeley Database (<a href="https://doi.org/10.17632/cx67bdkfrg.1">https://doi.org/10.17632/cx67bdkfrg.1</a>).</li>
+</ol>
+<ol start="24">
+<li>Trimming
+<ol type="a">
+<li>After the sequencing, in order to remove the staggered nucleotides from the FASTQ files obtained from the sequencing, execute the script in the Mendeley database (<a href="https://doi.org/10.17632/cx67bdkfrg.1">https://doi.org/10.17632/cx67bdkfrg.1</a>) called Trimming_script.pl. To launch the script, use the following bash command on the terminal (example for D501_F primer forward):
+<ul>
+<li><code>perl trRead.pl rawFastq/Sample_1_RZ_273_b3 trimmed/S1 0 5</code></li>
+<li>Used the following values for each primer:
+<table>
+<thead>
+<tr>
+<th>Forward primer name</th>
+<th>1<sup>st</sup> value</th>
+<th>2<sup>nd</sup> value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D501_F</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>D502_F</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>D503_F</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>D504_F</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>D505_F</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>D506_F</td>
+<td>5</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>For an example of untrimmed and trimmed sequencing file, see <a href="#tbl3">Table 3</a>.
+<table id="tbl3">
+<caption>Table 3. Example of trimmed versus untrimmed FASTQ files</caption>
+<thead>
+<tr>
+<th>Untrimmed</th>
+<th>Length</th>
+<th>Trimmed</th>
+<th>Length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">@NS500310:252:HFGWFBGXB: <br>1:11101:10026:1043 <br>1:N:0:GAATTCGT+NGGCTATA</td>
+<td colspan="2">@NS500310:252:HFGWFBGXB:1: <br>11101:10026:1043 1:N:0:GAATTCGT+ <br>NGGCTATA</td>
+</tr>
+<tr>
+<td>GATGCNGCCAGTTTCATTGGGTTAT</td>
+<td>25</td>
+<td>GATGCNGCCAGTTTCATTGG</td>
+<td>20</td>
+</tr>
+<tr>
+<td>+</td>
+<td> </td>
+<td>+</td>
+<td> </td>
+</tr>
+<tr>
+<td>AAAAA#AEEEEEEEEEEEEEEEEAE</td>
+<td> </td>
+<td>AAAAA#AEEEEEEEEEEEEE</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">@NS500310:252:HFGWFBGXB:1: <br>11101:8491:1044 1:N:0:GAATTCGT+ <br>NGGCTATA</td>
+<td colspan="2">@NS500310:252:HFGWFBGXB: <br>1:11101:8491:1044 1:N:0:GAAT <br>TCGT+NGGCTATA</td>
+</tr>
+<tr>
+<td>GGTAGNGGAGATCAACAGGTGTTAT</td>
+<td>25</td>
+<td>GGTAGNGGAGATCAACAGGT</td>
+<td>20</td>
+</tr>
+<tr>
+<td>+</td>
+<td> </td>
+<td>+</td>
+<td> </td>
+</tr>
+<tr>
+<td>AAAAA#EEEEEEEEEEEEEEEEEA/</td>
+<td> </td>
+<td>AAAAA#EEEEEEEEEEEEEE</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">@NS500310:252:HFGWFBGXB:1: <br>11101:21814:1044 1:N:0:GAATTCGT+ <br>NGGCTATA</td>
+<td colspan="2">@NS500310:252:HFGWFBGXB: <br>1:11101:21814:1044 1:N:0:GAA <br>TTCGT+NGGCTATA</td>
+</tr>
+<tr>
+<td>AAGAANACGATCACTTACGGGTTNN</td>
+<td>25</td>
+<td>AAGAANACGATCACTTACGG</td>
+<td>20</td>
+</tr>
+<tr>
+<td>+</td>
+<td> </td>
+<td>+</td>
+<td> </td>
+</tr>
+<tr>
+<td>AAA/A#EEEEEEEEEEEEEEEEE##</td>
+<td> </td>
+<td>AAA/A#EEEEEEEEEEEEEE</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">@NS500310:252:HFGWFBGXB:1: <br>11101:16189:1047 1:N:0:GAATTCGT+ <br>NGGCTATA</td>
+<td colspan="2">@NS500310:252:HFGWFBGXB: <br>1:11101:16189:1047 1:N:0:GAA <br>TTCGT+NGGCTATA</td>
+</tr>
+<tr>
+<td>GCTGGNGCCAGGACACGCTCTGTNN</td>
+<td>25</td>
+<td>GCTGGNGCCAGGACACGCTC</td>
+<td>20</td>
+</tr>
+<tr>
+<td>+</td>
+<td> </td>
+<td>+</td>
+<td> </td>
+</tr>
+<tr>
+<td>AAAAA#EAEEEEEEAEEEEEEEE##</td>
+<td> </td>
+<td>AAAAA#EAEEEEEEAEEEEE</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">@NS500310:252:HFGWFBGXB:1: <br>11101:15989:1047 1:N:0:GAATTCGT+ <br>NGGCTATA</td>
+<td colspan="2">@NS500310:252:HFGWFBGXB: <br>1:11101:15989:1047 1:N:0:GAA <br>TTCGT+NGGCTATA</td>
+</tr>
+<tr>
+<td>AGTGGNGGCGGATGTAGCCCGTTNN</td>
+<td>25</td>
+<td>AGTGGNGGCGGATGTAGCCC</td>
+<td>20</td>
+</tr>
+<tr>
+<td>+</td>
+<td> </td>
+<td>+</td>
+<td> </td>
+</tr>
+<tr>
+<td>AAAAA#EEEEEEEEEEEEEEEEE##</td>
+<td> </td>
+<td>AAAAA#EEEEEEEEEEEEEE</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>Once all the FASTQ files are correctly trimmed according to the number of staggered oligos in the forward primer, fastq.gz files containing the same sample must be merged into a single file. For example:
+<ul>
+<li><code>CRISPR_RPE_T18A_etoposide_L001_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>CRISPR_RPE_T18A_etoposide_L002_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>CRISPR_RPE_T18A_etoposide_L003_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>CRISPR_RPE_T18A_etoposide_L004_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li>These files must be merged into a single file called “CRISPR_RPE_T18A_etoposide_all_R1_001.fastq.gz.3.fastq.gz.” To do that, execute the following bash command:</li>
+<li><code>cat CRISPR_RPE_T18A_etoposide_L00∗_R1_001.fastq.gz.3.fastq.gz &gt; CRISPR_RPE_T18A_etoposide_all_R1_001.fastq.gz.3.fastq.gz</code></li>
+</ul>
+</li>
+<li>Generate the read-count file using the MaGeCK function “count” (<a href="https://sourceforge.net/p/mageck/wiki/usage/#count">https://sourceforge.net/p/mageck/wiki/usage/#count</a>).
+<ul>
+<li><code>mageck count -l /Users/tkoV3.csv --fastq</code></li>
+<li><code>/Users/CRISPR_RPE_T18A_etoposide_all_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>/Users/CRISPR_RPE_T18B_etoposide_all_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>/Users/CRISPR_RPE_T18A_notreated_all_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>/Users/CRISPR_RPE_T18B_notreated_all_R1_001.fastq.gz.3.fastq.gz</code></li>
+<li><code>/Users/CRISPR_RPE_T0_all_R1_001.fastq.gz.3.fastq.gz --sample-label Etoposide_T18A, Etoposide_T18B, NotTreated_T18A, NotTreated_T18B, T0 -n CRISPR_genotoxic_RPE --unmapped-to-file</code></li>
+<li>
+<b>-l</b>: library used. The “tkov3.csv” file used here can be found on the supplementary Mendeley Database (<a href="https://doi.org/10.17632/cx67bdkfrg.1">https://doi.org/10.17632/cx67bdkfrg.1</a>)</li>
+<li>
+<b>--fastq</b>: FASTQ files separated by a space</li>
+<li>
+<b>--sample-label</b>: The column labels of the read-count matrix</li>
+<li>
+<b>-n</b>: The prefix of the output files</li>
+<li>
+<b>--unmapped-to-file:</b> The sequences of the reads that were not mapped</li>
+<li>To perform a quality control of the count function, add:</li>
+<li>
+<b>--test-run</b>: This will run through the first million reads per sample to see if there are any errors before you commit to running the entire file.</li>
+</ul>
+</li>
+<li>Once the analysis is over (could take up to few hours), there should be 7 output files present in the destination folder:
+<ul>
+<li>CRISPR_genotoxic_RPE_countsummary.R</li>
+<li>CRISPR_genotoxic_RPE_countsummary.Rnw</li>
+<li>CRISPR_genotoxic_RPE.count_normalized.txt</li>
+<li>CRISPR_genotoxic_RPE.count.txt</li>
+<li>CRISPR_genotoxic_RPE.countsummary.txt</li>
+<li>CRISPR_genotoxic_RPE.log</li>
+<li>CRISPR_genotoxic_RPE.unmapped.txt</li>
+</ul>
+</li>
+<li style="list-style-type: none;">The “.count.txt” will have the read-counts that can be used in downstream analysis (drugZ, BAGEL). The “.log” file can be useful to determine if the analysis was performed correctly.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>As an example of expected outcomes, see the original article <a href="#bib6">Olivieri et al. (2020)</a>. In the supplementary database on Mendeley it is possible to see the raw count.txt file as well as examples on how to analyze the screen results with downstream algorithm like drugZ.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol can easily be adapted to different cell lines, CRISPR libraries, and sequencing instruments. However, changing the conditions can have a big impact on the number of reagents required and may cause the screen to be unfeasible. It is vital then to be able to understand before commencing the protocol if all reagents and materials can be obtained, ordered, and processed in the laboratory.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>One of the potential problems encountered is a potential low yield during the genomic extraction, resulting in significant differences between samples.</p>
+<h3 id="sec6.1">Problem</h3>
+<p>Usually, for T18 samples you should expect yields between 60 to 100 μg of genomic DNA. For these samples, PCR reaction are performed using 2 μg of genomic DNA. T0 samples usually yield less genomic DNA, around 20–30 μg of DNA per sample.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>In order to obtain enough material to perform 35 PCR-1 reaction with 3 μg of demonic DNA each, multiple T0 samples must be processed. Alternatively, during the collection of the T0 samples, it is possible to snap freeze 50–60 million cells.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Blakely, K., Ketela, T., and Moffat, J. (2011). Pooled lentiviral shRNA screening for functional genomics in mammalian cells. Methods Mol. Biol. <i>781</i>, 161-182. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref1">View at publisher</a></p>
+<p id="bib2">Colic, M., Wang, G., Zimmermann, M., Mascall, K., McLaughlin, M., Bertolet, L., Lenoir, W.F., Moffat, J., Angers, S., Durocher, D., et al. (2019). Identifying chemogenetic interactions from CRISPR knockout screens with drugZ. bioRxiv <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref2">View at publisher</a></p>
+<p id="bib3">Hart, T., Chandrashekhar, M., Aregger, M., Steinhart, Z., Brown, K.R., MacLeod, G., Mis, M., Zimmermann, M., Fradet-Turcotte, A., Sun, S., et al. (2015). High-resolution CRISPR screens reveal fitness genes and genotype-specific cancer liabilities. Cell <i>163</i>, 1515-1526. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref3">View at publisher</a></p>
+<p id="bib4">Hart, T., Tong, A.H.Y., Chan, K., Van Leeuwen, J., Seetharaman, A., Aregger, M., Chandrashekhar, M., Hustedt, N., Seth, S., Noonan, A., et al. (2017). Evaluation and design of genome-wide CRISPR/SpCas9 knockout screens. G3 (Bethesda) <i>7</i>, 2719-2727. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref4">View at publisher</a></p>
+<p id="bib5">Li, W., Xu, H., Xiao, T., Cong, L., Love, M.I., Zhang, F., Irizarry, R.A., Liu, J.S., Brown, M., and Liu, X.S. (2014). MAGeCK enables robust identification of essential genes from genome-scale CRISPR/Cas9 knockout screens. Genome Biol. <i>15</i>, 554. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref5">View at publisher</a></p>
+<p id="bib6">Olivieri, M., Cho, T., Alvarez-Quilon, A., Li, K., Schellenberg, M.J., Zimmermann, M., Hustedt, N., Rossi, S.E., Adam, S., Melo, H., et al. (2020). A genetic map of the response to DNA damage in human cells. Cell <i>182</i>, 481-496.e421. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref6">View at publisher</a></p>
+<p id="bib7">Sanjana, N.E., Shalem, O., and Zhang, F. (2014). Improved vectors and genome-wide libraries for CRISPR screening. Nat. Methods <i>11</i>, 783-784. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref7">View at publisher</a></p>
+<p id="bib11">Zimmermann, M., Murina, O., Reijns, M.A.M., Agathanggelou, A., Challis, R., Tarnauskaite, Z., Muir, M., Fluteau, A., Aregger, M., McEwan, A., et al. (2018). CRISPR screens identify genomic ribonucleotides as a source of PARP-trapping lesions. Nature <i>559</i>, 285-289. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00028-9/sref11">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Daniel Durocher (<a href="mailto:durocher@lunenfeld.ca">durocher@lunenfeld.ca</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents. All reagents listed here can be found in the main article <a href="#bib6">Olivieri et al. (2020)</a>.</p>
+<h4>Data and Code Availability</h4>
+<p>All the code used to process the samples after sequencing and analyzed the screen results is annotated in this protocol. For examples of the output files generated with this protocol, please see <a href="#bib6">Olivieri et al. (2020</a>). Supplementary code for sample processing (trimming script) and file settings for Illumina NextSeq sequencing are available on the Mendeley database (<a href="https://doi.org/10.17632/cx67bdkfrg.1">https://doi.org/10.17632/cx67bdkfrg.1</a>).</p>
+<h3>Acknowledgments</h3>
+<p>We thank the members of the Durocher lab for contributing to the development of this protocol. M.O. is supported by Mary H. Beatty Scholarship. D.D. is a Canada Research Chair (Tier I) and the work in the D.D. lab on CRISPR screens is supported from grants from the <a href="https://doi.org/10.13039/501100000024">CIHR</a> (FDN143343) and the <a href="https://doi.org/10.13039/501100000147">Canadian Cancer Society</a> (705644), with additional support from the <a href="https://doi.org/10.13039/501100004089">Krembil Foundation</a>. Our work on CRISPR screening could not have been possible without the generosity of Jason Moffat, Stéphane Angers, and Traver Hart in teaching us how to do these screens and by sharing critical reagents. We are also indebted to Kin Chan who heads Illumina sequencing at the LTRI Network Biology Collaboration Centre (NBCC; <a href="https://nbcc.lunenfeld.ca/">https://nbcc.lunenfeld.ca/</a>). The NBCC is a facility supported by <a href="https://doi.org/10.13039/501100000196">Canada Foundation for Innovation</a> funding, by the <a href="https://doi.org/10.13039/100013873">Government of Ontario</a>, and by <a href="https://doi.org/10.13039/100008762">Genome Canada</a> and <a href="https://doi.org/10.13039/100013061">Ontario Genomics</a> (OGI-139).</p>
+<h3>Author Contributions</h3>
+<p>M.O. collated and wrote most of this protocol with additional contributions from D.D.</p>
+<h3>Declaration of Interests</h3>
+<p>D.D. is a founder of Repare Therapeutics and Chair of its Scientific Advisory Board.</p>
+</section>
+</article>

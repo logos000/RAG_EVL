@@ -1,0 +1,242 @@
+<article>
+<section>
+<h1 id="header">Protocol for simulating macrophage signal transduction and phenotype polarization using a large-scale mechanistic computational model</h1>
+<p><time datetime="2021-08-13">Published: August 13, 2021</time></p>
+<p>Chen Zhao<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> and Aleksander Popel<sup><a href="#aff2">2</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Pharmacy, Nanjing Medical University, Nanjing, Jiangsu 210000, China</p>
+<p id="aff2"><sup>2</sup>Department of Biomedical Engineering, Johns Hopkins University School of Medicine, Baltimore, MD 21205, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:zcshinchon4677@outlook.com">zcshinchon4677@outlook.com</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100739">10.1016/j.xpro.2021.100739</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The ability to measure and analyze the complex dynamic multi-marker features of macrophages is critical for the understanding of their diverse phenotypes and functions in health and disease. To that end, we have recently developed a multi-pathway computational model that for the first time enables a systems-level characterization of macrophage signaling and activation from quantitative, temporal, dose-dependent, and single-cell aspects. This protocol includes instructions to utilize this model to computationally explore different biological scenarios with high resolution and efficiency.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib5">Zhao et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A computational platform of multi-pathway mechanistic macrophage polarization</li>
+<li>Model resolution from quantitative, time/dose-dependent, and single-cell aspects</li>
+<li>Model-based evaluation of therapeutic macrophage repolarization in pathophysiology</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/919-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The computational model presented here, as a simulation tool, is a significant step toward the future formulation and development of a comprehensive network-centric “virtual macrophage” <i>in silico</i> platform. This computational model takes inputs which are quantitative changes in the initial conditions of certain modeled species (e.g., ligands); then the model is simulated for a user-specified duration (using minutes as the smallest time unit) to produce time-dependent, numerical outputs (in terms of the quantitative levels of all modeled species). Compared to other published models with similar focus, our model has achieved a much higher level of model performance accuracy given the extensive amount of calibration and validation implemented (<a href="#bib5">Zhao et al., 2021</a>, <a href="#bib2">Liu et al., 2021</a>, <a href="#bib6">Zhao et al., 2019</a>, <a href="#bib4">Rex et al., 2016</a>, <a href="#bib3">Maiti et al., 2015</a>). This model is formulated based on ordinary differential equations (ODEs) and is implemented in MATLAB (MathWorks, Natick, MA); thus, syntax checks and changes may be required to run the model SBML code in another programming language, e.g., Python.</p>
+<p>In this protocol, we describe examples that used our model to simulate macrophage pathway signal transduction, generate dynamic polarization maps, perform <i>in silico</i> intervention experiments, and create a model-based population of “virtual single cells”. These examples are demonstrated using scripts in MATLAB (a 2016 release or later version is recommended); the Simbiology toolbox in MATLAB is required.</p>
+<h3 id="sec1.1">Initial setup and basic framework of the computational model</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> about 30 mins</div>
+<ol>
+<li>Download the model file package (.zip file) from <a href="https://github.com/czhaoqsp/mac_sig_model">https://github.com/czhaoqsp/mac_sig_model</a>; extract the files from the package.
+<ol type="a">
+<li>Open MATLAB software.</li>
+<li>In MATLAB, click “Browse for folder” in the “Current Folder” window and open the folder containing the model files.</li>
+</ol>
+</li>
+<li>To load the model and see its basics, type “m = sbmlimport('7pathmodel_clean_v2.xml');” in the command window and then press the Enter key. Make sure the model name is entered correctly (<a href="#sec5.1">Troubleshooting 1</a>).
+<ol type="a">
+<li>To see the overall model features, type “m” in the command window and then press Enter.</li>
+<li>To see the description of all model parameters, type “m.Parameters” in the command window and press Enter. To see the description of a specific parameter (e.g., parameter #1), type “m.Parameters(1)” and then press Enter.</li>
+<li>To see the description of all modeled species, type “m.Species” in the command window and press Enter. To see the description of a specific species (e.g., species #1), type “m.Species(1)” and then press Enter.</li>
+<li>To see the description of all model reactions, type “m.Reactions” in the command window and press Enter. To see the description of a specific reaction (e.g., reaction #1), type “m.Reactions(1)” and then press Enter.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Executable model code and scripts</td>
+<td>(<a href="#bib5">Zhao et al., 2021</a>)</td>
+<td><a href="https://github.com/czhaoqsp/mac_sig_model">https://github.com/czhaoqsp/mac_sig_model</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Excel files listing all model reactions, species, and parameters</td>
+<td>(<a href="#bib5">Zhao et al., 2021</a>)</td>
+<td><a href="https://doi.org/10.1016/j.isci.2021.102112">https://doi.org/10.1016/j.isci.2021.102112</a></td>
+</tr>
+<tr>
+<td>Excel files listing all quantitative data used in model calibration and validation (compare to model simulations)</td>
+<td>(<a href="#bib5">Zhao et al., 2021</a>)</td>
+<td><a href="https://doi.org/10.1016/j.isci.2021.102112">https://doi.org/10.1016/j.isci.2021.102112</a></td>
+</tr>
+<tr>
+<td>MATLAB (and Simbiology toolbox)</td>
+<td><a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a></td>
+<td><a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Simulating the effect of ligand stimulations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> about 15 mins</div>
+<p>In this section, we will show how to use the model to simulate the downstream signal transduction of driving pathway stimulations.</p>
+<ol>
+<li>In the “Current Folder” window in MATLAB, double click to open the file named “simulatemodel_samplescript.m”.
+<ol type="a">
+<li>Run the first section named “model setup and simulation” in the script. This will load the model.</li>
+<li>Run the second section named “simulation scenarios” in the script. This part contains two examples: hypoxia and IL-4 stimulation. The sample code will produce (e.g., plot) time-course profiles of cellular HIF1α (hypoxia inducible factor 1 alpha) in response to hypoxia, and ARG1 (arginase 1) in response to IL-4 stimulation.
+<ol type="i">
+<li>For the simulation of hypoxia, the initial condition of oxygen (O2), as the only input, was changed. This was reflected as numerical changes in the “InitialAmount” field of species #78.</li>
+<li>For the simulation of IL-4 addition, the initial condition of IL-4, as the only input, was changed. This was reflected as numerical changes in the “InitialAmount” field of species #28.</li>
+<li>To perform model simulations, a simulation timespan also needs to be set. This is achieved by the command “set(cs, 'StopTime', 1500)” where 1500 is the simulation timespan 1500 min. When specifying the simulation timespan, the configuration handler should be already obtained by the command “cs = getconfigset(m, 'active')”.</li>
+<li>To set the ODE solver for the model, use command “cs.SolverType='ode15s'”. MATLAB provides many different ODE solvers; ode15s is the recommended solver for our model (<a href="#sec5.3">Troubleshooting 2</a>).</li>
+<li>To perform model simulations, the command is “[t,out] = sbiosimulate(m)”. Here, “t” is the vector containing all time points, “out” is the matrix containing all model outputs (of all modeled species).</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>To change the initial condition of specific modeled species, make sure to first identify the number of that particular species: use the “m.Species” command, and also refer to supplemental Tables S1 and S2 in (<a href="#bib5">Zhao et al., 2021</a>) for more details regarding species naming. Then change the ‘InitialAmount’ field of that particular species to the desired value (see above examples of oxygen and IL-4).</li>
+<li>To obtain the specific model output of interest, make sure to first identify the number of that particular species before getting its value. For example, ARG1 (arginase 1) is #53 in all species, so the command “a1=out(:,53);” was used here to obtain the time-course values of ARG1.</li>
+<li>To simulate the effect of multiple stimulations in different combinations and orders, follow the above instructions to change the species initial conditions accordingly.</li>
+<li>When plotting the results, especially when plotting the time-course profiles of multiple species in one figure, data normalization is recommended for better visualization (e.g., species values are normalized to their respective maxima).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Users should note that the default simulation output variable is a two-dimensional matrix, and each column in the matrix, instead of the row, is the time-course value of a species.</div>
+<h3 id="sec2.2">Generation of dynamic macrophage polarization maps</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> <b>about 1 h</b>
+</div>
+<p>In this section, we will show how to use the computational model to create a macrophage polarization map that shows diverse stimulation-induced phenotypes. Here we evaluated 28 different stimulation conditions (that are combinatorially derived from the 7 driving pathways described by the model).</p>
+<ol start="6">
+<li>In the “Current Folder” window in MATLAB, double click to open the file named “analysis_Fig5_polarizationmap.m”.
+<ol type="a">
+<li>Run the first section of the script. Here, a total number of 3x28 stimulation conditions are simulated (3 time points; 7 single stimulus plus 21 pairwise combinations). This will generate the source data for the polarization map (in lines 3456-3458, variables sum4vitro, sum24vitro and sum48vitro contain relative fold changes of a panel of macrophage markers evaluated at 4, 24 and 48 h, respectively). With these data, the polarization maps can then be created and visualized in MATLAB using the function <i>heatmap</i> (<a href="#sec5.5">Troubleshooting 3</a>).</li>
+<li>Run the second section of the script (starting at line 3463). This will plot time-course trends (evaluated at 4, 24 and 48 h) of the relative M1/M2 scores of 7 single stimulus and 21 pairwise stimulus conditions. The results are shown in log scale for better comparison. Details of the M1/M2 score are discussed in (<a href="#bib5">Zhao et al., 2021</a>).</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.3">Simulating intervention experiments <i>in silico</i>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> <b>about 15 mins</b>
+</div>
+<p>In this section, we will show how to use the computational model to simulate the effect of certain targeted interventions on macrophage phenotypes. Examples here used hypoxia (2 percent oxygen) as the control condition.</p>
+<ol start="7">
+<li>In the “Current Folder” window in MATLAB, double click to open the file named “analysis_Fig6_targetedintervention.m”.</li>
+<li>Run the first section of the script. This will load the model.</li>
+<li>Run the third section of the script (starting at line 94). In this example, we compared the macrophage phenotype upon SOCS1 inhibition (by accelerated degradation) in hypoxia to the phenotype in the control condition. This targeted intervention (inhibiting SOCS1 by promoting its degradation) was achieved by increasing the protein degradation rate of SOCS1 by 10 fold in the model (using the command “m.Parameters(125).Value=0.004∗10;”).</li>
+<li>Usually, different kinds of targeted interventions (e.g., protein overexpression and inhibition, inhibition of a protein-protein interaction process) can be accordingly simulated as changes in the species initial conditions or parameter values.</li>
+</ol>
+<h3 id="sec2.4">Creation and analysis of model-based virtual single cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> <b>about 1 h</b>
+</div>
+<p>In this section, we will show how to use the computational model to create and analyze a population of virtual single cells (macrophages).</p>
+<ol start="11">
+<li>In the “Current Folder” window in MATLAB, double click to open the file named “analysis_Fig7_virtualmacs.m”.</li>
+<li>Run the first section of the script. This will load the model.</li>
+<li>Run the second section of the script. This will create a sample model-based population of 100 virtual single cells.
+<ol type="a">
+<li>Here, we selected a set of 42 parameters that control the production and degradation of 10 modeled species (5 are important intracellular regulators, 5 are cytokines) and reassigned new values to them. This procedure was done 100 times to generate 100 new cells (in terms of 100 new parameterization of the set of 42 parameters). More technical details can be found in Transparent Methods in (<a href="#bib5">Zhao et al., 2021</a>).</li>
+</ol>
+</li>
+<li>Run the third section of the script (starting at line 163). This will plot the time-dependent M1-M2 phenotypes of the 100 newly generated virtual macrophages in hypoxia, as 100 trajectories (in terms of their relative M1 scores, M2 scores, and M1/M2 scores) (<a href="#sec5.9">Troubleshooting 5</a>).
+<ol type="a">
+<li>The phenotype behaviors of the original reference model were also plotted (in black bolded line).</li>
+</ol>
+</li>
+<li>Run the fourth section of the script (starting at line 253). This will plot the time-dependent M1-M2 phenotypes of the 100 virtual macrophages in response to hypoxia plus interventions targeting STAT3 or STAT6, as 100 trajectories (in terms of their relative M1/M2 scores).
+<ol type="a">
+<li>Interventions targeting STAT3 or STAT6 were simulated here as decrease in their dephosphorylation rates (by changing the corresponding parameter values).</li>
+<li>The phenotype behaviors of the original reference model were also plotted here to enable comparison (in black bolded line).</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>In <a href="#fig1">Figure 1</a>, we illustrate the expected outcomes of the simulation examples provided in this protocol. For simulation of macrophage signal transduction and marker expression, <a href="#fig1">Figures 1</a>A and 1B show the simulated intracellular expression of HIF1α in response to hypoxia, and expression of ARG1 in response to IL-4 ligand stimulation. For generation of macrophage phenotype maps, <a href="#fig1">Figure 1</a>C shows the simulated diverse response of a multi-marker panel under an array of stimulation conditions. For simulation of targeted intervention, <a href="#fig1">Figures 1</a>D and 1E show the relative macrophage phenotype scores (M1, M2, and M1/M2) in hypoxia versus hypoxia plus SOCS1 inhibition. For analysis of virtual single cells, <a href="#fig1">Figures 1</a>F–1H show the phenotype trajectories of 100 virtual macrophages (in terms of their relative M1, M2, and M1/M2 scores) in hypoxia; <a href="#fig1">Figure 1</a>I show the phenotype trajectories of the same 100 virtual macrophages (in terms of their relative M1/M2 scores) in response to hypoxia plus a simulated intervention that increases STAT6 activation. For a more complete description of model results, please refer to the content in (<a href="#bib5">Zhao et al., 2021</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/919-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Expected outcomes of simulation examples discussed in this protocol</div>
+<p>(A and B) Steps 1–5: simulated time-course expression profiles of HIF1α (upon hypoxia) and ARG1 (upon IL-4 stimulation). Simulation results are normalized to the respective maximum values.</p>
+<p>(C) Step 6: an example of a simulated macrophage phenotype map. Here, the values for the relative fold changes of all markers are taken at 4 h and then log2 transformed. More details of this map can be found in the MATLAB script provided.</p>
+<p>(D and E) Steps 7–10: simulated phenotype profiles (in terms of M1, M2, and M1/M2 scores) of macrophages in hypoxia versus hypoxia plus SOCS1 inhibition.</p>
+<p>(F–H) Steps 11–14: simulated phenotype profiles (in terms of relative M1, M2, and M1/M2 scores) of 100 model-based “virtual macrophages” in hypoxia (Hyp).</p>
+<p>(I) Step 15: simulated phenotype profiles (in terms of the relative M1/M2 scores) of 100 model-based “virtual macrophages” in response to hypoxia and an <i>in silico</i> intervention targeting STAT6. (D–I) Results are normalized to their respective t=0 values and then log10 transformed.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>We anticipate our computational model to be further expanded and improved in future to more mechanistically and accurately deliver the idea of building a comprehensive, simulatable virtual macrophage. Here we describe several limitations associated with our model and its applications. First, the current model version, as detailed here and in (<a href="#bib5">Zhao et al., 2021</a>), includes only 7 driving pathways, thus simulations of pathway signal transduction and phenotype polarization maps are restricted to combinations of these 7 pathways. Second, at the <i>in vitro</i> level, the model did not explicitly consider the potential influence of different cell plating densities on the experimental outcomes (<a href="#bib1">Lee and Hu, 2013</a>). Third, when generating dynamic macrophage polarization maps, the current protocol explored only three discrete time points; still, the model can be used to simulate macrophage phenotypes at any particular time point. Fourth, in this protocol, the method we used to calculate M1/M2 score (which considers the relative fold changes of 11 canonical M1 and M2 markers) is only one of the many ways that researchers can use to define macrophage phenotypes, and it should be adapted (e.g., consider different marker combinations) for different simulation scenarios and study purposes. More discussion regarding limitations can be found in (<a href="#bib5">Zhao et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Model file not found or cannot be loaded (Initial Setup).</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Make sure the folder that directly contains the model SBML (.xml) file is currently opened in MATLAB “Current Folder” window. Also make sure that the name of the xml file is exactly the same as it appears in the <i>sbmlimport</i> command.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Model simulation settings cannot be specified (step 1).</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Make sure that the handler for the model configuration has been obtained using the <i>getconfigset</i> command before specifying other simulation settings such as simulation timespan and solver type.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Heatmap cannot be created (step 6).</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>To create heatmaps in MATLAB, the function to use is slightly different in different MATLAB versions in terms of capitalization (e.g., <i>HeatMap</i> for R2014a, <i>heatmap</i> for R2018a). Please check the help files in the exact MATLAB version used.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>The simulation result does not look reasonable (all steps).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>Although this problem may be caused by many different reasons, we would like to point to one mistake that could be quite likely committed during coding. When assigning new initial conditions to species and new values to parameters, the changes are permanent to the current model variable/instance loaded. Thus, when a new condition is to be simulated, the user needs to make sure that the previously modified initial conditions and parameter values have been restored to their original values. An alternative way is to load a new model instance with the same name to overwrite the previous model instance.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>The for loop terminated prematurely due to simulation errors (steps 14 and 15).</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>Given that the resampled parameter sets used here have a random component, it is possible (although very rarely) that some simulations can run into integration errors in MATLAB. To detect this and prevent the for loop from terminating prematurely (especially when simulating a large number of individual cells), users can add the <i>try/catch</i> statements here (see <a href="https://www.mathworks.com/help/matlab/ref/try.html">https://www.mathworks.com/help/matlab/ref/try.html</a> for more details about <i>try/catch</i>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Lee, C.M. and Hu, J. (2013). Cell density during differentiation can alter the phenotype of bone marrow-derived macrophages. Cell Biosci <i>3</i>, 30. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref1">View at publisher</a></p>
+<p id="bib2">Liu, X., Zhang, J., Zeigler, A.C., Nelson, A.R., Lindsey, M.L., and Saucerman, J.J. (2021). Network analysis reveals a distinct axis of macrophage activation in response to conflicting inflammatory cues. J Immunol <i>206</i>, 883-891. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref2">View at publisher</a></p>
+<p id="bib3">Maiti, S., Dai, W., Alaniz, R.C., Hahn, J., and Jayaraman, A. (2015). Mathematical modeling of pro-and anti-inflammatory signaling in macrophages. Processes <i>3</i>, 1-18. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref3">View at publisher</a></p>
+<p id="bib4">Rex, J., Albrecht, U., Ehlting, C., Thomas, M., Zanger, U.M., Sawodny, O., Haussinger, D., Ederer, M., Feuer, R., and Bode, J.G. (2016). Model-based characterization of inflammatory gene expression patterns of activated macrophages. PLoS Comput Biol <i>12</i>, e1005018. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref4">View at publisher</a></p>
+<p id="bib5">Zhao, C., Medeiros, T.X., Sove, R.J., Annex, B.H., and Popel, A.S. (2021). A data-driven computational model enables integrative and mechanistic characterization of dynamic macrophage polarization. iScience <i>24</i>, 102112. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref5">View at publisher</a></p>
+<p id="bib6">Zhao, C., Mirando, A.C., Sove, R.J., Medeiros, T.X., Annex, B.H., and Popel, A.S. (2019). A mechanistic integrative computational model of macrophage polarization: Implications in human pathophysiology. PLoS Comput Biol <i>15</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00446-9/sref6">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and instructions should be directed to and will be fulfilled by the lead contact, Dr. Chen Zhao (<a href="mailto:zcshinchon4677@outlook.com">zcshinchon4677@outlook.com</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>Details of all model reactions, equations, parameters, initial conditions, the complete model coded in SBML format (.xml file) and executable MATLAB scripts (.m files) that can run the model to generate sample simulations are provided in <a href="https://doi.org/10.1016/j.isci.2021.102112">https://doi.org/10.1016/j.isci.2021.102112</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grants R01HL101200 (A.P.) and R01CA138264 (A.P.) and <a href="https://doi.org/10.13039/100000968">American Heart Association</a> Grant #19PRE34380815 (C.Z.). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of this protocol.</p>
+<h3>Author contributions</h3>
+<p>C.Z. and A.P. conceptualized the study and this protocol. C.Z. designed and implemented the computational model and the details of this protocol. C.Z. wrote the first draft of this protocol, and C.Z. and A.P. reviewed and edited the protocol.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

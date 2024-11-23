@@ -1,0 +1,903 @@
+<article>
+<section>
+<h1 id="header">A computational approach for identification of core modules from a co-expression network and GWAS data</h1>
+<p><time datetime="2021-08-27">Published: August 27, 2021</time></p>
+<p>Olivia L. Sabik,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Cheryl L. Ackert-Bicknell,<sup><a href="#aff3">3</a></sup> and Charles R. Farber<sup><a href="#aff1">1</a>,<a href="#aff4">4</a>,<a href="#fn1">5</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Center for Public Health Genomics, School of Medicine, University of Virginia, Charlottesville, VA 22908 USA</p>
+<p id="aff2"><sup>2</sup>Department of Biochemistry and Molecular Genetics, School of Medicine, University of Virginia, Charlottesville, VA 22908 USA</p>
+<p id="aff3"><sup>3</sup>Department of Orthopedics, Anschutz Medical Campus, University of Colorado, Aurora, CO, USA</p>
+<p id="aff4"><sup>4</sup>Department of Public Health Sciences, University of Virginia, Charlottesville, VA 22908, USA</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:crf2s@virginia.edu">crf2s@virginia.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100768">10.1016/j.xpro.2021.100768</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol describes the application of the “omnigenic” model of the genetic architecture of complex traits to identify novel “core” genes influencing a disease-associated phenotype. Core genes are hypothesized to directly regulate disease and may serve as therapeutic targets. This protocol leverages GWAS data, a co-expression network, and publicly available data, including the GTEx database and the International Mouse Phenotyping Consortium Database, to identify modules enriched for genes with “core-like” characteristics.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref30">Sabik et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A protocol to identify core modules by integrating gene expression data and GWAS data</li>
+<li>Core modules serve as the basis for identifying genes influencing complex traits</li>
+<li>Disease gene identification by module integration with publicly available databases</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/955-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Download the vignette demonstrating the protocol</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.25 h</div>
+<ol>
+<li>An R markdown notebook and html markdown document walking through the steps described in this protocol are available on github at <a href="https://github.com/Farber-Lab/STAR_protocols_core_modules">https://github.com/Farber-Lab/STAR_protocols_core_modules</a>.</li>
+<li>From this github repository, either download the file star_protocols_vignette.html and open it in your browser to view the code and output, or clone the repository, open star_protocols_vignette.Rmd in RStudio to run the code locally. If you clone the repo and run the code locally, set your working directory accordingly and all of the paths will resolve.</li>
+</ol>
+<h3 id="sec1.2">Identify a GWAS study with available summary statistics related to your trait of interest</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.5–1 h</div>
+<ol start="3">
+<li>Search the GWAS catalog for a study with summary statistics related to your trait of interest or use the results of an internally run GWAS study</li>
+</ol>
+<p>This protocols requires GWAS summary statistics as an input. Users can either bring their own GWAS study, or search the GWAS catalog. GWAS catalog contains 1376 published studies with available summary statistics across hundreds of phenotypes (<a href="#bib6">Buniello et al., 2019</a>). You can search the catalog in order to identify a study with sufficient data to support the downstream analyses in this protocol, namely that the summary statistics are available. It is possible to execute portions of this protocol without full summary statistics; however, you will not be able to use colocalization methods to relate the GWAS results to expression quantitative trait loci data (eQTL). While there is no strict threshold for the size of the GWAS study to use in this analysis, it will be difficult to identify enriched co-expression modules from a small set of genes. GWAS studies should identify on the order of 10s–100s of significant loci.</p>
+<h3 id="sec1.3">Acquire RNA-seq data in the relevant tissue or cell type for your trait of interest</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day to 8 weeks (depending on availability of data)</div>
+<ol start="4">
+<li>Identify either an existing RNA-seq data or a co-expression network from a relevant cell type or tissue for your trait of interest.</li>
+</ol>
+<p>The basis of this protocol is a co-expression network representing the functional co-expression of genes within the tissue or cell-type relevant to your trait of interest. There may be a publicly available source of RNA-seq data or a previously published co-expression network that is suitable for your applications. Search the literature or the Gene Expression Omnibus (<a href="#bib2">Barrett et al., 2012</a>; <a href="#bib11">Edgar et al., 2002</a>) to identify sources of data that can support the study. However, it is important that the expression data used in this protocol is from a tissue or cell type that is relevant to your trait of interest, otherwise the GWAS signals will not align with the functional organization of the genes in the network.</p>
+<div class="note">
+<span class="note-title">Note:</span> It is important that the co-expression network is the result of an expression study that had a large enough sample size. WGCNA, a popular package for constructing co-expression networks recommends at least 15, but ideally, 20 or more samples (<a href="#bib20">Langfelder and Horvath, 2008</a>).</div>
+<ol start="5">
+<li>If no publicly available data exists, identify a source of relevant cells and tissue from which you can extract RNA and perform RNA-seq. This data could come from human or mouse primary cells or a relevant cell line, however, the cell type or tissue must be relevant to the trait of interest. For an example, see our study of genes influencing bone mineral density using murine osteoblasts (<a href="#bib30">Sabik et al., 2020</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The protocol for processing and extracting RNA will be specific to your cell type or tissue, and this part of the process will not be covered in this protocol.</div>
+<h3 id="sec1.4">Pre-processing RNA-seq data for co-expression network construction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="6">
+<li>The main section of this protocol assumes you have an expression matrix that is pre-processed and ready for input to WGCNA (<a href="#bib20">Langfelder and Horvath, 2008</a>). Information about processing RNA-seq data can be found in the <u>FAQ section</u> of the WGCNA package. Briefly, starting from raw count data, it is recommended that genes with low expression across the majority of samples are filtered out, e.g., all features with fewer than 10 counts in 90% of the samples, and a variance-stabilizing transformation (DESeq2 package) is performed (<a href="#bib22">Love et al., 2014</a>). Normalized counts (RPKM/FPKM) can also be log transformed (log2(x+1)) and used to construct the network. The result of this process is a matrix of expression values (rows) by samples (columns).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;library(DESeq2)</code></p>
+<p><code>&gt;DESeq2::varianceStabilizingTransformation(object = exp_mat)</code></p>
+<p><code>or</code></p>
+<p><code>&gt;log2(exp_mat + 1)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> An optional step is to remove batch effects from the expression data using PEER (<a href="#bib32">Stegle et al., 2012</a>). PEER can be used to remove both known and latent batch effects from data. The developers of PEER have produced detailed tutorials, available on their <u>Github wiki page</u>.</div>
+<ol start="7">
+<li>Finally, a quantile normalization is performed to reduce experimental noise from the expression matrix (<a href="#bib4">Bolstad, 2020</a>).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;library(preprocessCore)</code></p>
+<p><code>&gt;norm_exp_mat = preprocessCore::normalize.quantiles(as.matrix(exp_mat))</code></p>
+<p><code>&gt;colnames(norm_exp_mat) = colnames(exp_mat)</code></p>
+<p><code>&gt;rownames(norm_exp_mat) = rownames(exp_mat)</code></p>
+<p><code>&gt;norm_exp_mat = as.data.fram(norm_exp__mat)</code></p>
+</div>
+<h3 id="sec1.5">Curating lists of known disease and phenotype-associated genes</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–5 days</div>
+<ol start="8">
+<li>One characteristic of core genes is that they are associated with monogenic diseases related to your trait of interest (<a href="#bib5">Boyle et al., 2017</a>). For example, given an interest in bone mineral density GWAS, one would curate a list of genes that cause monogenic bone diseases (<a href="#bib30">Sabik et al., 2020</a>).
+<ol type="a">
+<li>Thus, this step includes identifying a specific set of monogenic or Mendelian diseases that are related to your trait of interest</li>
+<li>Then, continue with a literature search to curate a list of genes experimentally shown to cause these diseases
+<ol type="i">
+<li>For this purpose, you may want to consult the Online Mendelian Inheritance in Man (OMIM) database (<a href="#bib24">McKusick, 2007</a>) or eDGAR (<a href="#bib1">Babbi et al., 2017</a>)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Another characteristic of core genes is that they are strongly associated with abnormal phenotypes in knockout models (<a href="#bib5">Boyle et al., 2017</a>), and so another resource that can be used to identify core modules is a curated list of genes which produce a phenotype related to your trait of interest when knocked out.
+<ol type="a">
+<li>There are databases of gene perturbations that result in a variety of phenotypes, including the Mouse Genome Informatics database (MGI) and the International Mouse Phenotyping Consortium (IMPC) (<a href="#bib3">Bolser, 2004</a>; <a href="#bib17">Koscielny et al., 2014</a>).
+<ol type="i">
+<li>The IMPC database systematically knocks out genes and conducts a whole panel of phenotyping relating to various organ systems, development, neurology and behavior, aging and mortality, metabolism, reproduction, etc.</li>
+<li>The MGI database is a systematic repository for observed phenotypes in experimental systems. Using their mammalian phenotype browser, search for phenotypes related to your trait of interest and create a list of relevant phenotypes and their associated genes.</li>
+<li>These are just two examples of data repositories that contain associations between traits or diseases and genes. Be sure to do some research to see if your specific phenotype has a more targeted repository. For example, the Bonebase Database has deep bone phenotyping for many of the knockout mice produced in the knockout mouse project (KOMP) (<a href="#bib27">Rowe et al., 2018</a>).</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Save all of the genes from this section comma separated value (csv) files for use during the protocol.</li>
+<li>While there is no strict threshold for how large these lists of genes should be, the enrichment analysis will not identify any significantly enriched modules in Step 4, module enrichment.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Collaborative cross RNA sequencing</td>
+<td><a href="#bib30">Sabik et al., 2020</a></td>
+<td>GEO: GSE134081</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R</td>
+<td>(<a href="#bib26">R Core Team, 2020</a>)</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>RStudio</td>
+<td>(<a href="#bib28">R Studio Team, 2020</a>)</td>
+<td><a href="https://rstudio.com/">https://rstudio.com/</a></td>
+</tr>
+<tr>
+<td>Python</td>
+<td>(<a href="#bib33">Van Rossum and Others, 2007</a>)</td>
+<td><a href="https://www.python.org/">https://www.python.org/</a></td>
+</tr>
+<tr>
+<td>Tidyverse</td>
+<td>(<a href="#bib35">Wickham et al., 2019</a>)</td>
+<td><a href="https://www.tidyverse.org/">https://www.tidyverse.org/</a></td>
+</tr>
+<tr>
+<td>Knitr</td>
+<td>(<a href="#bib36">Xie, 2014</a>)</td>
+<td><a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a></td>
+</tr>
+<tr>
+<td>BiocManager</td>
+<td>(<a href="#bib25">Morgan, 2018</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/BiocManager/index.html">https://cran.r-project.org/web/packages/BiocManager/index.html</a></td>
+</tr>
+<tr>
+<td>biomaRt</td>
+<td>(<a href="#bib10">Durinck et al., 2009</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html">https://bioconductor.org/packages/release/bioc/html/biomaRt.html</a></td>
+</tr>
+<tr>
+<td>Devtools</td>
+<td>(<a href="#bib34">Wickham and Chang, 2016</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/devtools/index.html">https://cran.r-project.org/web/packages/devtools/index.html</a></td>
+</tr>
+<tr>
+<td>GTExIdConverter</td>
+<td>NA</td>
+<td><a href="https://github.com/oliviasabik/GTExIdConverter">https://github.com/oliviasabik/GTExIdConverter</a></td>
+</tr>
+<tr>
+<td>DESeq2</td>
+<td>(<a href="#bib22">Love et al., 2014</a>)</td>
+<td><a href="http://bioconductor.org/packages/release/bioc/html/DESeq2.html">http://bioconductor.org/packages/release/bioc/html/DESeq2.html</a></td>
+</tr>
+<tr>
+<td>PEER</td>
+<td>(<a href="#bib32">Stegle et al., 2012</a>)</td>
+<td><a href="https://github.com/PMBio/peer/wiki">https://github.com/PMBio/peer/wiki</a></td>
+</tr>
+<tr>
+<td>WGCNA</td>
+<td>(<a href="#bib20">Langfelder and Horvath, 2008</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/WGCNA/index.html">https://cran.r-project.org/web/packages/WGCNA/index.html</a></td>
+</tr>
+<tr>
+<td>ToppFun</td>
+<td>(<a href="#bib8">Chen et al., 2009</a>)</td>
+<td><a href="https://toppgene.cchmc.org/">https://toppgene.cchmc.org/</a></td>
+</tr>
+<tr>
+<td>LDlinkR</td>
+<td>(<a href="#bib23">Machiela and Chanock, 2015</a>)</td>
+<td><a href="https://ldlink.nci.nih.gov/?tab=home">https://ldlink.nci.nih.gov/?tab=home</a></td>
+</tr>
+<tr>
+<td>GenomicRanges</td>
+<td>(<a href="#bib21">Lawrence et al., 2013</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html">https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html</a></td>
+</tr>
+<tr>
+<td>LDSC</td>
+<td>(<a href="#bib12">Finucane et al., 2015</a>)</td>
+<td><a href="https://github.com/bulik/ldsc">https://github.com/bulik/ldsc</a></td>
+</tr>
+<tr>
+<td>Coloc</td>
+<td>(<a href="#bib13">Giambartolomei et al., 2014</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/coloc/index.html">https://cran.r-project.org/web/packages/coloc/index.html</a></td>
+</tr>
+<tr>
+<td>RACER</td>
+<td>(<a href="#bib29">Sabik and Farber, 2018</a>)</td>
+<td><a href="https://github.com/oliviasabik/RACER">https://github.com/oliviasabik/RACER</a></td>
+</tr>
+<tr>
+<td>PhenStat</td>
+<td>(<a href="#bib18">Kurbatova et al., 2015</a>)</td>
+<td><a href="https://www.bioconductor.org/packages/release/bioc/html/PhenStat.html">https://www.bioconductor.org/packages/release/bioc/html/PhenStat.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>Data (expression matrix, pre-processed and ready for WGCNA--see <a href="#before-you-begin">before you begin</a>). The data listed in the <a href="#key-resources-table">key resources tables</a> can be used as exemplar expression data.</p>
+<p>R software and required packages. This protocol describes a computational approach that is based on numerous packages available in R. While newer versions of some of these packages exist, this protocol was developed with R v3.4.2, RStudio v1.1.383, and the indicated package versions below:</p>
+<ul>
+<li>tidyverse (v1.2.1)</li>
+<li>knitr (v1.24)</li>
+<li>BiocManager (v1.30.10)</li>
+<li>DESeq2 (v1.18.1)</li>
+<li>WGCNA (v1.68)</li>
+<li>biomaRt (v2.34.2)</li>
+<li>LDLinkR (v1.0.2)</li>
+<li>Genomic Ranges (v1.30.3)</li>
+<li>coloc (v3.2-1)</li>
+<li>RACER (v1.0.0)</li>
+<li>PhenStat (v2.14.0)</li>
+<li>devtools (2.0.2)</li>
+<li>GTExIdConverter (0.0.0.9000)</li>
+</ul>
+<p>Optionally, the python (v2.7.15) packages LDSC (v1.0.0) and PEER (v1.3)</p>
+<p>Local--Memory: 8GB required, 16GB recommended; Processors: 1 required, 4 recommended</p>
+<p>Remote--Memory: 200 GB or more; Processors: 1 required</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<div class="note">
+<span class="note-title">Note:</span> Further discussion of the research questions underlying this protocol can be found in our two prior publications that leveraged this approach (<a href="#bib7">Calabrese et al., 2016</a>, <a href="#bib30">Sabik et al., 2020</a>). For example, in these publications, we explore the specificity of the module enrichments against other GWAS studies and more deeply characterize the topology of the genes in the annotated gene lists within the co-expression modules.</div>
+<h3 id="sec3.1">Step 1: Creating GWAS gene list</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>In order to identify co-expression modules enriched for GWAS genes, we first identify all genes overlapping a GWAS locus, defined as the set of SNPs in high linkage disequilibrium with the lead SNP.</p>
+<ol>
+<li>Using the previously identified GWAS study, read in the list of lead SNPs that are significantly associated with the study trait. In many cases, this will be the output of fine-mapping (<a href="#bib31">Schaid, et. al. 2018</a>) or a file containing just the lead SNPs for each independent association. For downstream analysis, generate a table with these lead SNPs and their genome coordinates.</li>
+<li>In order to programmatically access the LDLink data using the LDLinkR package in R, users must register on the LDLink website in order to receive an LDLink token. The token will be emailed to you.</li>
+<li>Using this table and the LDLinkR package, each lead variant is queried in the 1000 Genomes database and the variants in linkage disequilibrium, or proxy SNPs, for each lead SNP are downloaded (<a href="#bib9">1000 Genomes Project Consortium et al., 2012</a>; <a href="#bib23">Machiela and Chanock, 2015</a>). In using this resource, you need to be aware of the population used in the GWAS study you are analyzing. In many cases, the European (“EUR”) population is representative of the population used in the study, however, this is not always the case. Compare the available populations from 1000 Genomes against the GWAS study publication to find the appropriate option for the analysis. Using the LDproxy_batch function, all GWAS SNPs can be queried at once, and the proxy SNPs will all be written to a file on disk using the append = TRUE option.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;LDproxy_batch(</code></p>
+<p><code>  snp = bmd_snps$SNP,</code></p>
+<p><code>  pop = “EUR”,</code></p>
+<p><code>  r2d = “r2”,</code></p>
+<p><code>  token = [insert_personal_token],</code></p>
+<p><code>  append = true)</code></p>
+</div>
+<ol start="4">
+<li>Next, this set of proxy SNPs is filtered to include only those with linkage disequilibirum R<sup>2</sup> &gt;= 0.7 with the lead variant. These are the regions of the genome that will determine which genes are implicated by the GWAS in cis.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;ld_regions = proxies %&gt;%</code></p>
+<p><code>  filter(r2 &gt;= 0.7) %&gt;%</code></p>
+<p><code>  separate(col = coord, sep = “:”,</code></p>
+<p><code>    into = c(“chr”, “coord”)) %&gt;%</code></p>
+<p><code>  group_by(query_snp %&gt;%</code></p>
+<p><code>  summarize(chr = max(chr),</code></p>
+<p><code>    min = as.numeric(min(coord),</code></p>
+<p><code>    max = as.numeric(max(coord)))</code></p>
+</div>
+<ol start="5">
+<li>Then, using the Genomic Ranges tool, identify all genes from the GRCh37/hg19 Ensembl gene set overlapping a GWAS bin (<a href="#bib21">Lawrence et al., 2013</a>). Depending on the build of the genome used in the GWAS in the study, the correct gene annotation reference will need to be used. Download the reference file from the UCSC table browser (<a href="#bib15">Haeussler et al., 2019</a>).
+<ol type="a">
+<li>Create a GenomicRanges representation of both the GWAS regions and the reference gene set.
+<div class="textbox">
+<p><code>&gt;gr_genes = Granges(genes)</code></p>
+<p><code>&gt;gr_gwas = Granges(ld07_gwas_regions)</code></p>
+</div>
+</li>
+<li>Next, identify the overlapping genes for each region using the findOverlaps function
+<div class="textbox">
+<p><code>&gt;overlaps = GenomicRanges::findOverlaps(gr_genes, gr_gwas)</code></p>
+<p><code>&gt;overlaps_info = cbind(ld07_gwas_regions[overlaps@to,</code></p>
+<p><code>  genes[overlaps@from,]$name)</code></p>
+<p><code>&gt;overlaps_info = overlaps_info[,c(1,4,5)]</code></p>
+<p><code>&gt;overlaps_info$type = “overlaps”</code></p>
+<p><code>&gt;overlaps_info = overlaps_info[!duplicated(overlaps_info,]</code></p>
+<p><code>&gt;colnames(overlaps_info) = c(“chromosome”, “gwas_snps”,</code></p>
+<p><code>  “gene_name”, “type”)</code></p>
+</div>
+</li>
+<li>If no gene intersected a given region, include the nearest upstream and downstream genes from the region. These are identified using the “precede” and “follow” functions from GenomicRanges. The results are converted into data frames and filtered to include only nearest upstream and downstream genes associated with variants that do not overlap a gene.
+<div class="textbox">
+<p><code>&gt;nearest_precede = GenomicRanges::precede(gr_gwas,gr_genes)</code></p>
+<p><code>&gt;precede_info = cbind(ld07_gwas_regions,</code></p>
+<p><code>  genes[nearest_precede,])</code></p>
+<p><code>&gt;precede_info = precede_info[,c(1,4,9)]</code></p>
+<p><code>&gt;precede_info$type = “precede”</code></p>
+<p><code>&gt;precede_info = precede_info[!duplicated(precede_info),]</code></p>
+<p><code>&gt;colnames(precede_info) = c(“chromosome”, “gwas_snp”,</code></p>
+<p><code>  “gene_name, “type”)</code></p>
+<p><code>&gt;precede_info = precede_info[which(precede_info$morris_snp %in% overlaps_info$gwas_snp),]</code></p>
+<p><code>&gt;nearest_follow = GenomicRanges::follow(gr_gwas,gr_genes)</code></p>
+<p><code>&gt;follow_info = cbind(ld07_gwas_regions,</code></p>
+<p><code>  genes[nearest_follow,])</code></p>
+<p><code>&gt;follow_info = follow_info[,c(1,4,9)]</code></p>
+<p><code>&gt;follow_info$type = “follow”</code></p>
+<p><code>&gt;follow_info = follow_info[!duplicated(follow_info),]</code></p>
+<p><code>&gt;colnames(follow_info) = c(“chromosome”, “gwas_snp”,</code></p>
+<p><code>  “gene_name, “type”)</code></p>
+<p><code>&gt;follow_info = follow_info[which(follow_info$morris_snp %in% overlaps_info$gwas_snp),]</code></p>
+</div>
+</li>
+<li>Combining these three results, create a table where each row represents a gene overlapping a region implicated by a GWAS-associated variant, the lead variant in that region, the chromosome, and whether the gene overlaps the region or is an upstream/downstream gene.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;gwas_region_genes = rbind(overlaps_info,</code></p>
+<p><code>  precede_info, follow_info)</code></p>
+</div>
+<ol start="6">
+<li>Finally, the list of human genes is converted to mouse homologs using the MGI mouse to human homology map (<a href="#bib3">Bolser, 2004</a>) (<a href="http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt">http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt</a>).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;gwas_gene_hom = homology %&gt;%</code></p>
+<p><code>  filter(Symbol %in% gwas_region_genes$gene_name)</code></p>
+<p><code>&gt;gwas_mouse_hom = homology %&gt;%</code></p>
+<p><code>  filter(‘HomoloGene ID’ %in% gwas_gene_hom$’HomoloGene ID′) %&gt;%</code></p>
+<p><code>filter(‘NCBI Taxon ID’ == 10090)</code></p>
+</div>
+<h3 id="sec3.2">Step 2: Construct co-expression network</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min to 1 h</div>
+<p>This step uses the WGCNA package to create a co-expression network (<a href="#fig1">Figure 1</a>) by grouping genes that co-vary across samples into modules (<a href="#bib20">Langfelder and Horvath, 2008</a>). This co-expression network serves as a basis for the enrichment analysis in the next set of steps. This section closely follows the WGCNA tutorials created by the authors of WGCNA, found here: <a href="https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/">https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/955-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Example co-expression network from murine osteoblasts and GO annotations for individual modules</div>
+<p>As expected, some modules have generic functions, for example immune response and RNA processing, and others represent more specific functions, like osteoblast differentiation or Wnt signaling. Adapted from Figure 1 in (<a href="#bib30">Sabik et al., 2020</a>).</p>
+</figcaption>
+</figure>
+<ol start="7">
+<li>Check the relationship among your samples using clustering to identify outliers.
+<div class="textbox">
+<p><code>&gt;sampleTree = hclust(dis(norm_exp_mat), method = “average”)</code></p>
+</div>
+<ol type="a">
+<li>Clustering and plotting the resulting tree will allow visualization of the relationships among your samples.</li>
+<li>As a result, you may want to remove samples that are dramatically different from the mean by cutting the tree using cutHeight; more details can be found in the WGCNA data processing tutorial.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Next, the soft-thresholding power is empirically determined using the pickSoftThreshold function. Because it is assumed that the co-expression network will have a scale-free topology, the scale-free topology fit index is calculated across a range of powers, and the minimum power required to reach the point of diminishing returns is selected as the soft thresholding power. This power is applied to the adjacency matrix prior to the calculation of the Topological Overlap Matrix.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;powers = c(c(1:10), seq(from = 12, to = 20, by = 2))</code></p>
+<p><code>&gt;sft = pickSoftThreshold(norm_exp_mat,</code></p>
+<p><code>  powerVector = powers,</code></p>
+<p><code>verbose = 5, networkType = “signed”)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> This step may take a few minutes to run.</div>
+<ol start="9">
+<li>After determining the optimal soft-thresholding power, we can now calculate co-expression modules from the gene expression dataset. There are many parameters that can be tweaked in this function that can alter the resulting network. In this example, values close to the defaults, however the default values may not be optimal for your dataset. In this example, we used a minModuleSize of 20 genes and a mergeCutHeight of 0.15, in order to avoid having a large number of small modules. Additionally, a signed network was constructed, as Peter Langfelder recommends for biological network (<a href="#bib19">Langfelder, 2018</a>). For more information about the parameters of the network calculation step, consult the WGCNA help files in the R environment.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;net = blockwiseModules(norm_exp_mat, power = 8,</code></p>
+<p><code>  TOMType = “signed”, minModuleSize = 20,</code></p>
+<p><code>  networkType = “signed”, reassignThreshold = 0,</code></p>
+<p><code>  mergeCutHeight = 0.15, numericLabels = TRUE,</code></p>
+<p><code>  pamRespectsDendro = FALSE, saveTOMs = TRUE,</code></p>
+<p><code>  saveTOMFileBase = “,/network/norm_exp_mat_TOM”,</code></p>
+<p><code>  verbose = 3)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> This step may take a while, from 15–20 min to run.</div>
+<ol start="10">
+<li>While the network is constructed, the topological overlap matrices (TOMs) are saved, however, we also suggest saving the soft-thresholding results, the tree cutting results, the module labels, colors, and eigengenes so they can be easily reloaded later without re-running any of the above code.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;moduleLabels = net$colors</code></p>
+<p><code>&gt;moduleColors = labels2colors(net$colors)</code></p>
+<p><code>&gt;MEs = net$MEs</code></p>
+<p><code>&gt;geneTree = net$dendrogram[[1]];</code></p>
+<p><code>&gt;save(sft, MEs, moduleLabels, moduleColors, geneTree,</code></p>
+<p><code>  File = “./network/network.RData</code></p>
+</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> This is a good stopping point, as you can always come back and reload the network.RData file to come right back to where you are right now. To reload the network, use this code:</div>
+<div class="textbox">
+<p><code>&gt;load(“./data/network/network/RData”)</code></p>
+</div>
+<ol start="11">
+<li>Finally, network results are all labeled with the identifiers from the expression matrix, however, it would also be useful to have them labeled with alternative identifiers that map to other applications we intend to use, including gene ontology analysis software and enrichment analysis with our curated gene lists. A common identifier for both of these applications in our case is gene symbol, however, this code can be modified for other organisms and ontologies.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;ensembl = useMart(“ensembl”)</code></p>
+<p><code>&gt;mm19 = useDataset(mart = ensembl, dataset = “mmusculus_gene_ensembl”)</code></p>
+<p><code>&gt;m = getBM(attributes = c(“ensemble_transcript_id”,</code></p>
+<p><code>“external_gene_name”, “description”, “chromosome_name”,</code></p>
+<p><code>“start_position”, “end_position”),</code></p>
+<p>  <code>filters = c(“ensembl_transcript_id”),</code></p>
+<p>  <code>values = colnames(norm_exp_mat),</code></p>
+<p>  <code>mart = mm19)</code></p>
+<p><code>&gt;gene_MEs = t(rbind(colnames(norm_exp_mat), moduleColors, moduleLabels))</code></p>
+<p><code>&gt;colnames(gene_MEs)[1:3] = c(“ensemble_transcript_id”,</code></p>
+<p><code>“mod_color”, “mod_number”)</code></p>
+<p><code>&gt;annotated_mods = merge(gene_MEs, m, by =</code></p>
+<p><code>“ensembl_transcript_id”)</code></p>
+</div>
+<h3 id="sec3.3">Step 3: Gene ontology analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>Next, perform gene ontology analysis for each module in the network to identify the functional categories represented by each module (<a href="#fig1">Figure 1</a>). There are numerous tools for conducting gene ontology analysis; however, our tool of preference for this project was ToppFun within the ToppGene suite (<a href="#bib8">Chen et al., 2009</a>). This web interface tool searches for enrichment across an extensive set of functional categories, including gene ontology and pathways, but also human and mouse phenotypes, publications and published co-expression data sets, gene families, microRNAs, drugs, and diseases. The background geneset used in ToppFun is the full set of genes present in the gene ontology categories that are being analyzed for enrichment.</p>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> From this point on, each step break can be considered a good stopping point, just be sure to save your script.</div>
+<ol start="12">
+<li>In order to port our modules into the web interface and for ease of browsing, write each module out into a .csv file. For example, this code chunk writes out the genes in module 1 to a file that can be uploaded to the web interface.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;annotated_mods %&gt;%</code></p>
+<p>  <code>filter(mod_number == 1) %&gt;%</code></p>
+<p>  <code>write_csv(., “./data/network/mod_1.csv”)</code></p>
+</div>
+<ol start="13">
+<li>Using the column of identifiers from this table, copy and paste into the ToppFun input box and begin the analysis. For each module of genes, ToppFun will report back a summary of all the enriched gene sets. Click the button at the top of the results page reading “Download All”, and save the results for browsing in R. ToppFun reports back the significance of each enrichment with an assortment of multiple testing correction methods, the number of hits for that category from your query ("Hit Count in Query List"), and the total number of genes in the category ("Hit Count in Genome"). ToppFun returns three different adjusted p-values: the Bonferroni, Benjamini &amp; Hochberg, and Benjamini &amp; Yekutieli adjusted values. We recommend using a threshold of Bonferroni corrected p-values less than 0.05 to identify significant enrichments. This is the most conservative approach, but given the large number of gene ontology categories, we have deemed the conservative approach appropriate.</li>
+</ol>
+<h3 id="sec3.4">Step 4: Module enrichment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<ol start="14">
+<li>Now that a list of genes implicated by GWAS has been produced, we can identify which co-expression modules are enriched for GWAS genes and for the genes previously identified as causal of related monogenic diseases and phenotypes in mice.
+<ol type="a">
+<li>First, we define the set of modules in our co-expression network for analysis.
+<div class="textbox">
+<p><code>&gt;colors = unique(moduleColors)</code></p>
+</div>
+</li>
+<li>Then, a loop is initiated that begins by defining an object containing annotated information for the genes in each module. Next, a fisher’s exact test is applied to measure the statistical significance of the representation of genes implicated by the GWAS study. In this section a = overlap of module and gene list, b = the size of the gene list minus the overlap, c = the size of the module minus the overlap, and d = the number of genes with quantified expression levels in the RNA-seq experiment.
+<div class="textbox">
+<p><code>&gt;d = as.data.frame(get(paste0(“mod)”,color,“_trx_info”))</code></p>
+<p><code>&gt;x = unique(d$external_gene_name) %in% gwas_mouse_genes</code></p>
+<p><code>&gt;x = sum(x=TRUE)</code></p>
+<p><code>&gt;print(dim(d))</code></p>
+<p><code>&gt;print(x)</code></p>
+<p><code>&gt;a = x</code></p>
+<p><code>&gt;b = (417 – a)</code></p>
+<p><code>&gt;c = (dim(d)[1] – a)</code></p>
+<p><code>&gt;e = (29255 – c – b – a)</code></p>
+<p><code>&gt;assign(paste0(“ft_mod_”, color),</code></p>
+<p><code>  fisher.test(matrix(c(a,b,c,e), 2, 2, byrow = TRUE),</code></p>
+<p><code>    alternative = “greater”))</code></p>
+</div>
+</li>
+<li>Finally, a table is produced that condenses results for each test, reporting the p-value and the odds ratio, for each module. A p-value adjustment is applied using the Benjamini &amp; Hochberg (FDR) method and the results are returned, sorted by adjusted p-value. We recommend a threshold of FDR &lt; 0.05 to identify enriched modules.
+<div class="textbox">
+<p><code>&gt;gwas_enrichment_results =</code></p>
+<p><code>  as.data.frame(matrix(nrow = 59, ncol = 3))</code></p>
+<p><code>&gt;colnames(gwas_enrichment_results) =</code></p>
+<p><code>  c(“module_color”, “p_value”, “odds_ratio”)</code></p>
+<p><code>&gt;for (i in 1:length(colors)){</code></p>
+<p><code>  color = colors[i]</code></p>
+<p><code>  ft = get(paste0(“ft_mod_”, color))</code></p>
+<p><code>  gwas_enrichment_results[i,1] = color</code></p>
+<p><code>  gwas_enrichment_results[i,2] = ft$p.value</code></p>
+<p><code>  gwas_enrichment_results[i,3] = ft$estimate</code></p>
+<p><code>  }</code></p>
+<p><code>&gt;gwas_enrichment_results$p.adj = p.adjust(gwas)enrichment_results$p_value, method = “fdr”, n = length(gwas_enrichment_results$p_value))</code></p>
+<p><code>&gt;gwas_enrichment_results %&gt;% arrange(p.adj)</code></p>
+</div>
+</li>
+<li>This process can be repeated for each module from the co-expression network and the results can be compared using a scatter plot of the results (<a href="#fig2">Figures 2</a>A, 2C, and 2D), where the enrichment and significance are plotted and each point represents a module. In this case, one module is among the most highly/significantly enriched across all gene sets, which is characteristic of a “core” module. The module that scores highest across all gene sets is a good candidate for a “core” module.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/955-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Identifying co-expression modules enriched for genes with “core”-like properties</div>
+<p>Module enrichment for (A) GWAS genes, (B) GWAS heritability, (C) genes associated with related phenotypes, and (D) genes associated with related monogenic diseases. Adapted from Figure 2 in (<a href="#bib30">Sabik et al., 2020</a>).</p>
+</figcaption>
+</figure>
+</li>
+<li>In this step of the analysis, the user will need to set their specific</li>
+<li>In order to better understand the biological functions that the enrich modules represent, refer back to the results of the gene ontology analysis conducted in section 3. Filter the results of the module you identified in this section to see which gene ontology terms are enriched in your module of interest.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.5">Step 5: LD score regression</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>Another lens through which we can understand the relationship between the modules in the co-expression network and the GWAS results is through partitioned heritability analysis using LD score regression. This workflow is used to identify modules that are composed of genes related to variants that are enriched for trait heritability in the GWAS study. LD score regression is conducted using the ldsc package, which takes GWAS summary statistics, baseline linkage disequilibrium measurements, and gene sets in which to identify enrichment (<a href="#bib12">Finucane et al., 2015</a>). The partitioned heritability of the SNPs in the regions surrounding the genes in each module is calculated to identify the modules that are most highly enriched for heritability for the trait of interest.</p>
+<div class="note">
+<span class="note-title">Note:</span> While this package is not wrapped for R, it is accessible in python using the command line, so the code chunks from this section cannot be run in R! The <u>ldsc package wiki</u> on github has a detailed tutorial for the following steps, including links for downloading required files.</div>
+<ol start="15">
+<li>The first step of LD score regression is to format the GWAS summary statistics for using in the ldsc algorithm, the merge alleles file is provided with the ldsc package</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;./munge_sumstats.py \</code></p>
+<p><code>--out BMD \</code></p>
+<p><code>--merge-alleles w_hm3.snplist \</code></p>
+<p><code>--a1-inc \</code></p>
+<p><code>--sumstats bmd_gwas_sumstats.txt</code></p>
+</div>
+<ol start="16">
+<li>Next, a set of SNPs associated with each module are identified via the genes in each module. This function requires a gene set for each module (as Ensembl gene IDs), a file indicating the coordinates of each Ensembl gene ID (ENSG_coord.txt, provided in the ldsc documentation), the plink file for each chromosome (1000G_plinkfiles/1000G.mac5eur., provided in the ldsc documentation), and a path for the annotation output, indicating the module and the chromosome number. This will need to be run for each chromosome across all modules.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;python ../../src/ldsc/make_annot.py –gene-set-file</code></p>
+<p><code>violet_module_human_gene_ids.Geneset – gene-coord-file</code></p>
+<p><code>ENSG_coord.txt –windowsize 100000 – bimfile</code></p>
+<p><code>  ./100G_plinkfiles/1000G.mac5eur.1.bim –annot-file</code></p>
+<p><code>  ./violet_annot/violet_module.1.annot.gz</code></p>
+</div>
+<ol start="17">
+<li>Finally, using all of these annotations, run ldsc using the (1) processed summary statistics, (2) the base annotation paths for the modules' annotations, (3) the SNP weights and (4) frequencies for the European 1000 Genomes data that are provided with the ldsc package. The overlap annotations flag was used because transcripts were used to generate the co-expression network, so the gene sets are non-disjoint. Finally, a base name for the output is provided. This command will output a log file, recording the command used to generate the output and a results file. The results file contains a table reporting the proportion of SNPs associated with the gene set, the proportion and standard error of heritability in those SNPs, the enrichment and standard error of the enrichment, and a p-value indicating the statistical significance of the enrichment (<a href="#tbl1">Table 1</a>). This table can be filtered to identify the modules that are significantly enriched for trait heritability, and ordered by enrichment to identify the most enriched modules.
+<table id="tbl1">
+<caption>Table 1. Example output for LD score regression</caption>
+<thead>
+<tr>
+<th>Module</th>
+<th>prop_snps</th>
+<th>prop_h2</th>
+<th>prop_h2_se</th>
+<th>Enrichment</th>
+<th>enrich_se</th>
+<th>enrich_p</th>
+<th>p.adj</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>purple</td>
+<td>0.47</td>
+<td>0.26</td>
+<td>0.04</td>
+<td>5.56</td>
+<td>0.90</td>
+<td>3.1 <b>×</b> 10<sup>−6</sup>
+</td>
+<td>8.8 <b>×</b> 10<sup>−5</sup>
+</td>
+</tr>
+<tr>
+<td>Tan</td>
+<td>0.41</td>
+<td>0.15</td>
+<td>0.02</td>
+<td>3.78</td>
+<td>0.59</td>
+<td>3.6 <b>×</b> 10<sup>−6</sup>
+</td>
+<td>8.8 <b>×</b> 10<sup>−5</sup>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;python ldsc.py</code></p>
+<p><code>--h2 BMD.sumstats.gz\</code></p>
+<p><code>--ref-ld-chr antiquewhite4_module., bisque4_module., black_module., blue_modules., ...etc.\</code></p>
+<p><code>--w-ld-chr ./weights_hm3_no_hls/weights.</code></p>
+<p><code>--overlap-annot\</code></p>
+<p><code>--frqfile-chr 1000G.mac5eur.\</code></p>
+<p><code>--out BMD_all_modules_compare</code></p>
+</div>
+<h3 id="sec3.6">Step 6: Gene-level analysis prioritization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>Once key modules enriched for genes exhibiting core-like properties are identified in sections four and five, the next step is to use these modules as a platform for identifying key genes influencing the phenotype of interest. In sections seven and eight, it may not be feasible to analyze every gene in an enriched module. The topological properties of the nodes within the module can be used to prioritize genes for colocalization and phenstat analysis. In this section, the WGCNA package is used to calculate the module membership score for each gene within a module of interest.</p>
+<ol start="18">
+<li>Quantitatively, the module membership score is the correlation between the module’s eigengene, which describes the collective expression profile of the group of genes, and each individual gene’s expression pattern. Module membership is highly correlated with intramodular connectivity, and thus, intramodular hub genes tend to have high module membership.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;MMvalue = as.data.frame(cor(norm_exp_by_strain,</code></p>
+<p><code>  MEs, use = “p”))</code></p>
+<p><code>&gt;MMPvalue = as.data.frame(corPvaluStudent(</code></p>
+<p><code>as.matrix(geneModuleMembership), nSamples))</code></p>
+</div>
+<ol start="19">
+<li>Once module membership is calculated for all transcripts, we can annotate all the genes in our modules of interest with their module membership scores, sort the list to identify those genes with the highest module membership scores, and carry those into steps seven and eight.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;module_color = “purple”</code></p>
+<p><code>&gt;cols = c(paste0(“MM.”, module_color), paste0(“MM.p”, module_color), “MMValue”, “MMPvalue”, “Transcript.ID”)</code></p>
+<p><code>&gt;mod_MMtable = dplyr::select(MMvalue, one_of(cols)) %&gt;%</code></p>
+<p><code>  merge(., dplyr::select(MMPvalue, one_of(cols))</code></p>
+<p><code>&gt;mod_mm_df = merge(mod_MMtable,</code></p>
+<p><code>  get(paste0(“mod)”, module_color, “_trx_info”)),</code></p>
+<p><code>  by.x = “Transcript.ID”, by.y = “ensembl_transcript_id”)</code></p>
+<p><code>&gt;mod_mm_df %&gt;% arrange(desc(MM.purple))</code></p>
+</div>
+<h3 id="sec3.7">Step 7: Colocalization analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h 30 min</div>
+<p>Colocalization analysis is conducted to provide support for hypotheses linking individual genes from core modules with the GWAS phenotype. Colocalization analysis is conducted to evaluate whether two loci share a causal variant. In this instance, the coloc package is implemented to identify relationships between trait-associated GWAS loci and cis expression quantitative trait loci (eQTLs) from Gene-Tissue Expression project (GTEx), however, any relevant eQTL dataset could be used in this step (<a href="#bib13">Giambartolomei et al., 2014</a>, <a href="#bib14">GTEx Consortium et al., 2017</a>). The coloc package evaluates five different hypotheses regarding the relationship between the two associations and returns the probability of each as a value between zero and one: the H0 hypothesis, that neither association is significant, the H1/H2 hypotheses, that only one of the associations is significant, the H3 hypothesis, that both associations are significant but do not share a causal variant, and the H4 hypothesis, that the two associations are significant and share a causal variant. We are interested in identifying the pairs of eQTL and GWAS associations that have a high value of H4 (<a href="#tbl2">Table 2</a>).</p>
+<table id="tbl2">
+<caption>Table 2. Example output for colocalization analysis using the coloc package</caption>
+<thead>
+<tr>
+<th>Tissue</th>
+<th>Gene</th>
+<th>Nsnps</th>
+<th>PP.H0.abf</th>
+<th>PP.H1.abf</th>
+<th>PP.H2.abf</th>
+<th>PP.H3.abf</th>
+<th>PP.H4.abf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adipose_Subcutaneous</td>
+<td>ENSG00000139044</td>
+<td>858</td>
+<td>2 <b>×</b>10<sup>−12</sup>
+</td>
+<td>3 <b>×</b>10<sup>−6</sup>
+</td>
+<td>8 <b>×</b>10<sup>−7</sup>
+</td>
+<td>.999</td>
+<td>3 <b>×</b>10<sup>−6</sup>
+</td>
+</tr>
+<tr>
+<td>Adipose_Visceral_Omentum</td>
+<td>ENSG00000139044</td>
+<td>858</td>
+<td>5 <b>×</b>10<sup>−14</sup>
+</td>
+<td>3 <b>×</b>10<sup>−6</sup>
+</td>
+<td>2 <b>×</b>10<sup>−8</sup>
+</td>
+<td>.999</td>
+<td>6<b>×</b>10<sup>−8</sup>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> If no single module is identified as a potential core module in steps 4 and 5, the results may need to be aggregated to create a ranking, see <a href="#troubleshooting">troubleshooting</a><b>, Problem 1</b>.</div>
+<ol start="20">
+<li>First, for the colocalization analysis, eQTL information from the GTEx consortium will need to be downloaded and filtered (<a href="#bib14">GTEx Consortium et al., 2017</a>). The data are available for download at <a href="https://gtexportal.org/home/datasets">https://gtexportal.org/home/datasets</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The tarball required for this analysis is 188 Gb in size. It would not be advisable to operate on this data on a laptop, though it may be possible. It is recommended that this file is downloaded directly to a remote server using the command line.</div>
+<div class="textbox">
+<p><code>&gt;wget</code></p>
+<p><a href="https://storage.googleapis.com/gtex_analysis_x7/single_tissue_eqtl_data/GTEx_Analysis_v7_eQTL_all_associations.tar.gz">https://storage.googleapis.com/gtex_analysis_x7/single_tissue_eqtl_data/GTEx_Analysis_v7_eQTL_all_associations.tar.gz</a></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> It is possible to use eQTL from any source, however, the below code is designed to work with GTEx data and may need to be modified to work with other eQTL sources.</div>
+<ol start="21">
+<li>Once the full eQTL data are acquired, the associations for each gene will need to be extracted from each tissue file. This can be accomplished using awk on the command line. These files can all be saved to a subdirectory of the downloaded github repo directory and read in as a part of the loop.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;awk -F “\t” ‘$1 ∼ /ENSG###\ {print}’ .txt | awk -F “\t”</code></p>
+<p><code>  ‘{ if (($3 &gt;= lower_coord_limit) &amp;&amp;</code></p>
+<p><code>  ($3 &lt;= upper_coord_limit)) { print } }’ &gt;</code></p>
+<p><code>  tissue_gene_eqtl_output_file.txt</code></p>
+<p><code>&gt;gene_files = list.files(“./data/eqtl_data/b4galnt3_snps/”)</code></p>
+</div>
+<ol start="22">
+<li>Furthermore, there are a few additional pieces of information required for input to coloc that have not been used in previous steps of this analysis. The sample size for each underlying GWAS or eQTL study, and the minor allele frequency (MAF) of the variants in each study are required. For the GTEx v7 eQTL studies, a key is provided with the sample sizes for each of these studies. The sample size for the GWAS study should be included in the summary statistics or associated manuscript. Additionally, the MAFs are included as part of the GTEx eQTL association table, and the frequencies of the alleles in the GWAS study are typically reported, however, the MAF is not always the reported frequency, so you may need to convert these frequencies if any are above 0.5. If MAFs are not reported, they can be sourced from the 1000 Genomes project using the LDLink tools.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;gwas_coloc$MAF = ifelse(gwas_coloc$A1FREQ &gt; 0.5,</code></p>
+<p><code>  (1 – gwas_colos$A1FREQ), (gwas_coloc$A1FREQ))</code></p>
+<p><code>&gt;tis = read_tsv(“./data/eqtl_data/tissue_key.txt”)</code></p>
+</div>
+<ol start="23">
+<li>With all of this data read in, a loop can now be run that reads in and formats eQTL and GWAS data and runs coloc for each file in the eQTL data folder. The results of the five hypothesis test for each eQTL/GWAS association pait are saved in a dataframe.
+<ol type="a">
+<li>First, an empty dataframe is initiated
+<div class="textbox">
+<p><code>&gt;gene_coloc_results = data.frame(matrix(NA, nrow = length(tis$Tissue), ncol = 8))</code></p>
+</div>
+</li>
+<li>Next, we initiate a loop that iterates over each eQTL file, reads it in, and formats it with appropriate variant IDs.
+<div class="textbox">
+<p><code>&gt;for (i in 1:length(gene_files)){</code></p>
+<p><code>  print(i)</code></p>
+<p><code>  x = gene_files[i]</code></p>
+<p><code>  y = nchar(gene_files[i]) -23</code></p>
+<p><code>  tissue = str_sub(x, 1, y)</code></p>
+<p><code>  z = read_tsv(paste0(“./data/eqtl_data/b4galnt3_snps/”,</code></p>
+<p><code>    x). col_names = FALSE)</code></p>
+<p><code>cols = c(“X2”, “X3”, “X4”, “X5”, “X6”)</code></p>
+<p><code>z$variant_id = docall(paste, c(z[cols], sep = “_”))</code></p>
+<p><code>z = z[,c(1,14,7,8,9,10,11,12,13)]</code></p>
+<p><code>colanmes(z) = c(“gene_id”, “variant_id”,</code></p>
+<p><code>  “tss_distance”, “ma_samples”, “ma_count”, “maf”,</code></p>
+<p><code>  “pval_nominal”, “slope”, “slope_se”)</code></p>
+<p><code>gene_snp_ids = GTExIdConvert(z$variant_id)</code></p>
+<p><code>z = merge(z, gene_snp_ids, by = “variant_id”)</code></p>
+<p><code>tissue_n = as.numeric(tis[which(tis$Tissue ==</code></p>
+<p><code>    tissue),2])</code></p>
+<p><code>...</code></p>
+</div>
+</li>
+<li>Finally, the coloc objects for the GWAS and the eQTL are formatted, coloc is run, and the results are written out into a dataframe.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>...</code></p>
+<p><code>gene.coloc = list(pvalues=as.numeric(z$pval_nominal),</code></p>
+<p><code>  N=as.numeric(tissue_n), type=‘quant’,</code></p>
+<p><code>  snp=as.character(z$rs_id),</code></p>
+<p><code>  MAF=as.numeric(z$maf))</code></p>
+<p><code>gwas.coloc = list(pvalues=as.numeric(gwas_coloc$P),</code></p>
+<p><code>  N=142487 type=‘quant’,</code></p>
+<p><code>  snp=as.character(gwas_coloc$SNP),</code></p>
+<p><code>  MAF=as.numeric(gwas_coloc$MAF))</code></p>
+<p><code>coloc_x = coloc.abf(gene.coloc, gwas.coloc)</code></p>
+<p><code>gene_coloc_results[i,] =</code></p>
+<p><code>  c(tissue,z$gene_id[1],</code></p>
+<p><code>  coloc_x$summary[1],</code></p>
+<p><code>  coloc_x$summary[2],</code></p>
+<p><code>  coloc_x$summary[3],</code></p>
+<p><code>  coloc_x$summary[4],</code></p>
+<p><code>  coloc_x$summary[5],</code></p>
+<p><code>  coloc_x$summary[6])</code></p>
+<p><code>}</code></p>
+</div>
+<p>The resulting table will report the tissue (“tissue”), the gene ID (“gene”), number of SNPs included in the coloc analysis (“nsnps”), and the posterior probability of the four hypotheses assessed by coloc (“PP.H0.abf” = no significant association, “PP.H1.abf” = only the eQTL association was significant, “PP.H2.abf” = only the GWAS association was significant, “PP.H3.abf” = the associations are both significant and likely have independent genetic drivers, “PP.H4.abf” = the associations are both significant and likely share a common genetic driver).</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> These results can also be visualized with the RACER package (<a href="#bib29">Sabik and Farber, 2018</a>)(<a href="#fig3">Figures 3</a>A–3D). A detailed vignette for using the RACER package can be found here: <a href="https://oliviasabik.github.io/RACERweb/articles/IntroToRACER.html">https://oliviasabik.github.io/RACERweb/articles/IntroToRACER.html</a>.</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/955-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Identifying core genes from a core module</div>
+<p>(A–D) represent the results of positive colocalization analyses, where there was a sufficiently high PP H4 to indicate that the BMD GWAS signal and the GTEx eQTL for the given gene shared a common genetic driver.</p>
+<p>(E–H) represent significant differences in a phenotype (bone mineral density) in knockout mice from the IMPC database, as analyzed by PhenStat.</p>
+<p>Adapted from Figure 5 in (<a href="#bib30">Sabik et al., 2020</a>).</p>
+</figcaption>
+</figure>
+<h3 id="sec3.8">Step 8: PhenStat analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 hrs</div>
+<p>While the colocalization analysis provides evidence supporting a relationship between network identified genes and a trait of interest, a causal relationship can only be demonstrated through controlled perturbation of a target and direct measurement of the phenotype of interest. The hypotheses generated by the above steps can lead to a novel set of experiments, however, databases of experimental perturbations and measured phenotypes can be mined for evidence supporting a causal relationship between a gene and a phenotype of interest. For example, the International Mouse Phenotyping Consortium has a database of phenotypes measured in 7022 strains of knockout mice as of release 12.0 (<a href="#bib17">Koscielny et al., 2014</a>).</p>
+<ol start="24">
+<li>Identify genes from your core module, perhaps those with eQTL that colocalize with the GWAS of interest that are represented in the IMPC database.
+<ol type="a">
+<li>From their home page (<a href="https://www.mousephenotype.org/">https://www.mousephenotype.org/</a>), search by gene name for potential causal genes.</li>
+<li>Navigate to a gene of interest to see what phenotypes are available, for example the page for the gene B4galnt3. (<a href="https://www.mousephenotype.org/data/genes/MGI:3041155">https://www.mousephenotype.org/data/genes/MGI:3041155</a>).</li>
+<li>IMPC reports which genotype/phenotype relationships are significant above a multiple testing threshold for all genes; however, they make all data available for testing a single hypothesis.</li>
+<li>The data may be downloaded by clicking on a relevant phenotype icon (https://www.mousephenotype.org/data/charts?accession=MGI:3041155&amp;allele_accession_id=MGI:4434237&amp;pipeline_stable_id=ESLIM_001&amp;procedure_stable_id=ESLIM_005_001&amp;parameter_stable_id=ESLIM_005_001_004&amp;zygosity=homozygote&amp;phenotyping_center=ICS), scrolling to the “Access the results programmatically” section and clicking to download the “PhenStat-ready raw experiment data”.</li>
+<li>This data can be loaded in R and the analysis can be run using the PhenStat package (<a href="#bib18">Kurbatova et al., 2015</a>). First, the data are read in:
+<div class="textbox">
+<p><code>&gt;url = ‘htps://www.mousephenotype.org/data/exportraw? phenotyping_center=JAX&amp;parameter_stable_id=IMPC_DXA_004_001&amp;allele_accession_id=MGI:</code>5804021<code>&amp;strain=MGI:</code>3056279<code>&amp;pipeline_stable_id=JAX_001&amp;&amp;zygosity=homozygote&amp;’</code></p>
+<p><code>&gt;dataset1 = data.table::fread(url)</code></p>
+<p><code>&gt;dataset1 = as.data.frame(dataset1)</code></p>
+<p><code>&gt;dataset1 = dataset1[,c(15,16,21,26,28)]</code></p>
+</div>
+</li>
+<li>Next, a PhenList object is created for Phenstat
+<div class="textbox">
+<p><code>&gt;test = PhenList(dataset1,</code></p>
+<p><code>  testGenotype=”JR29804”,</code></p>
+<p><code>  dataset.colname.batch = “Assay.Date”,</code></p>
+<p><code>  dataset.value.male = “male”,</code></p>
+<p><code>  dataset.value.female = “female”,</code></p>
+<p><code>  dataset.clean = TRUE,</code></p>
+<p><code>  outputMessages = TRUE)</code></p>
+</div>
+</li>
+<li>Next, use the testDataset function to test for differences in a dependent variable, here "Value". The program will choose whether to keep specific model effects, and report if it corrects for batch, weight, and sex, or an interaction term. Additionally, it does not detect a difference in variance between the genotype groups.
+<div class="textbox">
+<p><code>&gt;results_MM_bmd = testDataset(test, depVariable = “Value”)</code></p>
+</div>
+</li>
+<li>Use the summaryOutput function to view the results of the statistical test for comparing the knockout phenotype against the control.
+<div class="textbox">
+<p><code>&gt;summaryOutput(results_MM_bmd)</code></p>
+</div>
+</li>
+<li>Finally, create a boxplot of the differences in the value between genotypes for both sexes using the boxplotSexGenotype function, or the boxplotSexGenotypeBatchAdjusted if the effect of batch was significant.
+<div class="textbox">
+<p><code>&gt;boxplotSexGenotype(test,</code></p>
+<p><code>  depVariable = “Value”,</code></p>
+<p><code>  graphingName = ‘Bone Mineral Density”,</code></p>
+<p><code>  outputMessages = T)</code></p>
+<p><code>&gt;PhenStat::boxplotSexGenotypeCatchAdjusted(test,</code></p>
+<p><code>  depVariable = “Value”)</code></p>
+</div>
+</li>
+<li>The adjusted variables can also be extracted, using the getColumnWeightBatchAdjusted function, and plotted using a different package, for example, ggplot2 (<a href="#fig3">Figures 3</a>E–3H).</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The expectation of this analytical pipeline is that the results of the module enrichment analyses will identify one, or a small set of modules that will harbor significant enrichment for genes that exhibit core-like properties. As an example, in the original implementation of this pipeline to study bone mineral density, one group of co-expressed genes, the purple module, was the most highly enriched for genes associated with a number of core-like properties. The purple module was the most highly enriched (1) for genes associated with genes that, when knocked out in mice, exhibited an effect on bone mineral density, (2) for genes related to osteoblast-related monogenic diseases, including osteogenesis imperfecta, hyperostosis, and osteosclerosis, and (3) for genes implicated by GWAS and GWAS heritability (<a href="#fig2">Figure 2</a>). However, the expectation that there will be a clear subset of modules enriched across all core-like properties that may not hold, see <a href="#troubleshooting">troubleshooting</a> Problem 1.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol relies heavily on publicly available data, which can be both a benefit and an obstacle. It may be the case that there is useful data in each of the resources listed here, however, it is likely that only a subset of applicable data is available for the phenotype in question. In this case, specific, bespoke experiments may need to be performed to demonstrate the hypotheses in question. Additionally, this protocol requires knowledge of the R language and running tools on the command line, including python packages and awk. While the vignette on Github was created to help novice users by providing example data and examples of each step of this protocol, newer users may still need to learn some of the skills underlying the protocol to execute it fully.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>In the <a href="#before-you-begin">before you begin</a> section, in “Curating lists of known disease and phenotype genes” , you may find that the gene lists you identify for your trait of interest from the databases mentioned are not sufficiently large to identify any enriched modules</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>While we list a couple of options for sources of disease and phenotype associated genes, the genes relevant to your analysis may not be as heavily represented and curated gene lists may need to be manually curated from the literature.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>In steps three and four, gene ontology analysis and enrichment analysis, it may be the case that too many of the modules from the co-expression network are too small to be significantly enriched for GO terms, GWAS genes, or genes associated with monogenic diseases.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This can be addressed by increasing the minModuleSize parameter in the network construction command in step two. This will result in a small number of larger modules, which may elide some nuances between smaller modules, but will allow for more successful enrichment analyses.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>In steps three through five, gene ontology, enrichment analysis, and LD score regression, you may find that no single module is remarkable across the GWAS, phenotype, and monogenic disease-related gene enrichment analyses and partitioned heritability analysis.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>If this is the case, optimizing over the module ranks for each enrichment will lead to a prioritized list of modules, which can be carried into the steps seven and eight, colocalization and Phenstat analysis.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>In step seven, colocalization analysis, there are a limited number of tissues in GTEx. It is possible that none of the tissues present in GTEx are relevant to the GWAS phenotype at the center of the analysis.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>In the protocol, the solution implemented is to analyze all available tissues, which can still surface pan-tissue effects. Another option is to use an eQTL dataset more fit for purpose. Recently, the eQTL Catalog has been made available by the EMBL-EBI (<a href="#bib16">Kerimov et al., 2020</a>).</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>It is assumed that there is a viable surrogate phenotype in the IMPC for step eight, however there is a limited number of phenotypes available from the IMPC and there may not be one that is fit for purpose.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>If there is not a suitable surrogate phenotype in the IMPC database, additional experiments may be required to demonstrate a causal relationship between the gene and phenotype of interest.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Babbi, G., Martelli, P.L., Profiti, G., Bovo, S., Savojardo, C., and Casadio, R. (2017). eDGAR: a database of Disease-Gene Associations with annotated Relationships among genes. BMC Genomics <i>18</i>, 554. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref1">View at publisher</a></p>
+<p id="bib2">Barrett, T., Wilhite, S.E., Ledoux, P., Evangelista, C., Kim, I.F., Tomashevsky, M., Marshall, K.A., Phillippy, K.H., Sherman, P.M., Holko, M., et al. (2012). NCBI GEO: archive for functional genomics data sets—update. Nucleic Acids Res. <i>41</i>, D991-D995. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref2">View at publisher</a></p>
+<p id="bib3">Bolser, D. (2004). Mouse genome informatics (MGI, Mouse Genome Database, MGD). In Dictionary of Bioinformatics and Computational Biology, J.M. Hancock and M.J. Zvelebil, eds. (John Wiley &amp; Sons, Inc.). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref3">View at publisher</a></p>
+<p id="bib4">Bolstad, B. (2020). preprocessCore: a collection of pre-processing functions. Bioconductor. <a class="external-link" href="https://doi.org/10.18129/B9.BIOC.PREPROCESSCORE">https://doi.org/10.18129/B9.BIOC.PREPROCESSCORE</a></p>
+<p id="bib5">Boyle, E.A., Li, Y.I., and Pritchard, J.K. (2017). An expanded view of complex traits: from polygenic to omnigenic. Cell <i>169</i>, 1177-1186. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref5">View at publisher</a></p>
+<p id="bib6">Buniello, A., MacArthur, J.A.L., Cerezo, M., Harris, L.W., Hayhurst, J., Malangone, C., McMahon, A., Morales, J., Mountjoy, E., Sollis, E., et al. (2019). The NHGRI-EBI GWAS catalog of published genome-wide association studies, targeted arrays and summary statistics. Nucleic Acids Res. <i>47</i>, D1005-D1012. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref6">View at publisher</a></p>
+<p id="bib7">Calabrese, G.M., Mesner, L.D., Stains, J.P., Tommasini, S.M., Horowitz, M.C., Rosen, C.J., and Farber, C.R. (2016). Integrating GWAS and co-expression network data identified bone mineral density gene SPTBN1 and MARK3 and an osteoblast functional module. Cell Syst. <i>4</i>, P46–59.E4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref7">View at publisher</a></p>
+<p id="bib9">1000 Genomes Project Consortium, Abecasis, G.R., Auton, A., Brooks, L.D., DePristo, M.A., Durbin, R.M., Handsaker, R.E., Kang, H.M., Marth, G.T., and McVean, G.A. (1000). An integrated map of genetic variation from 1,092 human genomes. Nature. <a class="external-link" href="https://doi.org/10.1038/nature11632">https://doi.org/10.1038/nature11632</a></p>
+<p id="bib8">Chen, J., Bardes, E.E., Aronow, B.J., and Jegga, A.G. (2009). ToppGene suite for gene list enrichment analysis and candidate gene prioritization. Nucleic Acids Res. <i>37</i>, W305–11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref8">View at publisher</a></p>
+<p id="bib10">Durinck, S., Spellman, P.T., Birney, E., and Huber, W. (2009). Mapping identifiers for the integration of genomic datasets with the R/Bioconductor package biomaRt. Nat. Protoc. <i>4</i>, 1184-1191. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref10">View at publisher</a></p>
+<p id="bib11">Edgar, R., Domrachev, M., and Lash, A.E. (2002). Gene Expression Omnibus: NCBI gene expression and hybridization array data repository. Nucleic Acids Res. <i>30</i>, 207-210. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref11">View at publisher</a></p>
+<p id="bib12">Finucane, H.K., Bulik-Sullivan, B., Gusev, A., Trynka, G., Reshef, Y., Loh, P., Anttila, V., Xu, H., Zang, C., Farh, K., et al. (2015). Partitioning heritability by functional annotation using genome-wide association summary statistics. Nat. Genet. <i>47</i>, 1228-1235. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref12">View at publisher</a></p>
+<p id="bib13">Giambartolomei, C., Vukcevic, D., Schadt, E.E., Franke, L., Hingorani, A.D., Wallace, C., and Plagnol, V. (2014). Bayesian test for colocalisation between pairs of genetic association studies using summary statistics. PLoS Genet. <i>10</i>, e1004383. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref13">View at publisher</a></p>
+<p id="bib14">GTEx Consortium, Laboratory, Data Analysis &amp;Coordinating Center (LDACC)—Analysis Working Group, Statistical Methods groups—Analysis Working Group, Enhancing GTEx (eGTEx) groups, NIH Common Fund, NIH/NCI, NIH/NHGRI, NIH/NIMH, NIH/NIDA, Biospecimen Collection Source Site—NDRI, et al. (2017). Genetic effects on gene expression across human tissues. Nature <i>550</i>, 204-213. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref14">View at publisher</a></p>
+<p id="bib15">Haeussler, M., Zweig, A.S., Tyner, C., Speir, M.L., Rosenbloom, K.R., Raney, B.J., Lee, C.M., Hinrichs, A.S., Navarro Gonzalez, J., Gibson, D., et al. (2019). The UCSC genome browser database: 2019 update. Nucleic Acids Res. <i>47</i>, D853-D858. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref15">View at publisher</a></p>
+<p id="bib16">Kerimov, N., Hayhurst, J.D., Manning, J.R., Walter, P., Kolberg, L., Peikova, K., Samoviča, M., Burdett, T., Jupp, S., Parkinson, H., et al. (2020). eQTL catalogue: a compendium of uniformly processed human gene expression and splicing QTLs. bioRxiv. <a class="external-link" href="https://doi.org/10.1101/2020.01.29.924266">https://doi.org/10.1101/2020.01.29.924266</a></p>
+<p id="bib17">Koscielny, G., Yaikhom, G., Iyer, V., Meehan, T.F., Morgan, H., Atienza-Herrero, J., Blake, A., Chen, C., Easty, R., Di Fenze, A., et al. (2014). The international mouse phenotyping consortium web portal, a unified point of access for knockout mice and related phenotyping data. Nucleic Acids Res. <i>42</i>, D802-D809. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref17">View at publisher</a></p>
+<p id="bib18">Kurbatova, N., Mason, J.C., Morgan, H., Meehan, T.F., and Karp, N.A. (2015). PhenStat: a tool kit for standardized analysis of high throughput phenotypic data. PLoS One <i>10</i>, e0131274. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref18">View at publisher</a></p>
+<p id="bib19">Langfelder, P. (2018). Signed or unsigned: which network type is preferable?. <a class="external-link" href="https://peterlangfelder.com/2018/11/25/signed-or-unsigned-which-network-type-is-preferable/">https://peterlangfelder.com/2018/11/25/signed-or-unsigned-which-network-type-is-preferable/</a></p>
+<p id="bib20">Langfelder, P. and Horvath, S. (2008). WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics <i>9</i>, 559. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref20">View at publisher</a></p>
+<p id="bib21">Lawrence, M., Huber, W., Pagès, H., Aboyoun, P., Carlson, M., Gentleman, R., Morgan, M.T., and Caret, V.J. (2013). Software for computing and annotating genomic ranges. PLoS Comput. Biol. <i>9</i>, e1003118. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref21">View at publisher</a></p>
+<p id="bib22">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. <i>15</i>, 550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref22">View at publisher</a></p>
+<p id="bib23">Machiela, M.J. and Chanock, S.J. (2015). LDlink: a web-based application for exploring population-specific haplotype structure and linking correlated alleles of possible functional variants. Bioinformatics <i>31</i>, 3555-3557. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref23">View at publisher</a></p>
+<p id="bib24">McKusick, V.A. (2007). Mendelian Inheritance in Man and its online version, OMIM. Am. J. Human Genet. <i>80</i>, 588-604. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref24">View at publisher</a></p>
+<p id="bib25">Morgan M (2018) BiocManager: Access the Bioconductor Project Package Repository. R Package Version 3: 10–18129.</p>
+<p id="bib26">R Core Team (2020). R: a language and environment for statistical Computing. <a class="external-link" href="https://www.R-project.org/">https://www.R-project.org/</a></p>
+<p id="bib28">R Studio Team (2020). RStudio: integrated development for R. <a class="external-link" href="http://www.rstudio.com/">http://www.rstudio.com/</a></p>
+<p id="bib30">Sabik, O.L., Calabrese, G.M., Taleghani, E., Ackert-Bicknell, C.L., and Farber, C.R. (2020). Identification of a core module for bone mineral density through the integration of a co-expression network and GWAS data. Cell Rep. <i>32</i>, 108145. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref30">View at publisher</a></p>
+<p id="bib29">Sabik, O.L. and Farber, C.R. (2018). RACER: A data visualization strategy for exploring multiple genetic associations. bioRxiv. <a class="external-link" href="https://doi.org/10.1101/495366">https://doi.org/10.1101/495366</a></p>
+<p id="bib27">Rowe, D.W., Adams, D.J., Hong, S.-H., Zhang, C., Shin, D.-G., Rydzik, C.R., Chen, L., Wu, Z., Garland, G., Godfrey, D.A., et al. (2018). Screening gene knockout mice for variation in bone mass: analysis by μCT and histomorphometry. Curr. Osteoporos. Rep. <i>16</i>, 77-94. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref27">View at publisher</a></p>
+<p id="bib31">Schaid, D.J., Chen, W., and Larson, N.B. (2018). From genome-wide associations to candidate causal variants by statistical fine-mapping. Nat. Genet. <i>19</i>, 491-504. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref31">View at publisher</a></p>
+<p id="bib32">Stegle, O., Parts, L., Piipari, M., Winn, J., and Durbin, R. (2012). Using probabilistic estimation of expression residuals (PEER) to obtain increased power and interpretability of gene expression analyses. Nat. Protoc. <i>7</i>, 500-507. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref32">View at publisher</a></p>
+<p id="bib33">Van Rossum, G. and Others. (2007). Python programming language. In USENIX annual technical conference, 2007, pp. 36. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref33">View at publisher</a></p>
+<p id="bib34">Wickham H and Chang W (2016) Devtools: Tools to Make Developing R Packages Easier. R Package Version 1(0): 9000.</p>
+<p id="bib35">Wickham, H., Averick, M., Bryan, J., Chang, W., D’Agostino McGowan, L., François, R., Grolemund, G., Hayes, A., Henry, L., Hester, J., et al. (2019). Welcome to the Tidyverse. J. Open Source Softw. <i>4</i>, 1686. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref35">View at publisher</a></p>
+<p id="bib36">Xie, Y. (2014). knitr: a comprehensive tool for reproducible research in R. Implement. Reprod. Res. <i>1</i>, 20. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00474-3/sref36">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Charles Farber (<a href="mailto:crf2s@virginia.edu">crf2s@virginia.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The accession number for the RNA sequencing data used as an example in this paper is GEO: GSE134081. The code is available on github at: <a href="https://github.com/Farber-Lab/STAR_protocols_core_modules">https://github.com/Farber-Lab/STAR_protocols_core_modules</a>.</p>
+<h3>Acknowledgments</h3>
+<p>Research reported in this publication was supported by the National Institute of Arthritis and Musculoskeletal and Skin Diseases of the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (NIH) under award number R01AR064790 to C.L.A.-B. and C.R.F. O.L.S. was supported by a Wagner fellowship from the <a href="https://doi.org/10.13039/100005973">University of Virginia</a>. The Genotype-Tissue Expression (GTEx) Project was supported by the Common Fund of the Office of the Director of the <a href="https://doi.org/10.13039/100000002">NIH</a> and by the National Cancer Institute (<a href="https://doi.org/10.13039/100000054">NCI</a>), National Human Genome Research Institute (<a href="https://doi.org/10.13039/100000051">NHGRI</a>), National Heart, Lung, and Blood Institute (<a href="https://doi.org/10.13039/100000050">NHLBI</a>), National Institute on Drug Abuse (<a href="https://doi.org/10.13039/100000026">NIDA</a>), National Institute of Mental Health (<a href="https://doi.org/10.13039/100000025">NIMH</a>), and National Institute of Neurological Disorders and Stroke (<a href="https://doi.org/10.13039/100000065">NINDS</a>). The data used for the analyses described in this manuscript (version 7) were obtained from the GTEx Portal on January 11, 2018. The International Mouse Phenotyping Consortium is partially funded by the <a href="https://doi.org/10.13039/100000002">NIH</a> Knockout Mouse Programme (KOMP) project, and the IMPC informatics and the data portal are supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grant U54 HG006370.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, O.L.S. and C.R.F.; methodology, O.L.S; writing—original draft, O.L.S.; writing—review and editing, O.L.S., C.L.A.- B., and C.R.F.; visualization, O.L.S.; supervision, C.R.F; funding acquisition, C.L.A.-B. and C.R.F.</p>
+<h3>Declaration of interests</h3>
+<p>O.L.S. is an employee and shareholder of Valo Health.</p>
+</section>
+</article>

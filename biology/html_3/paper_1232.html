@@ -1,0 +1,763 @@
+<article>
+<section>
+<h1 id="header">Purification of astrocyte subtype based on a double reporter mice approach for downstream transcription profiling</h1>
+<p><time datetime="2021-12-10">Published: December 17, 2021</time></p>
+<p>Marion Aguirrebengoa<sup><a href="#aff2">2</a></sup> and David Ohayon<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Molecular, Cellular and Developmental Biology Department (MCD) UMR 5077 CNRS, Centre de Biologie Intégrative (CBI), Université Paul Sabatier, 118 Route de Narbonne, 31062 Toulouse, France</p>
+<p id="aff2"><sup>2</sup>BigA Core Facility, Centre de Biologie Intégrative, Université de Toulouse, 118 Route de Narbonne, 31062 Toulouse, France</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:david-robert.ohayon@univ-tlse3.fr">david-robert.ohayon@univ-tlse3.fr</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.101009">10.1016/j.xpro.2021.101009</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Characterizing the molecular signature of a cell subtype leads to a better understanding of cell diversity, as this molecular data can identify new cellular markers and offer insights about cell function. Here, we describe an efficient protocol to separate a subtype of astrocytes, the Olig2-AS, from other glial cells by using a double reporter mouse approach and to determine the transcriptome profile of the Olig2-AS from the postnatal spinal cord using RNA-sequencing analysis.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102806">Ohayon et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Combined enzymatic and physical dissociation of mouse postnatal spinal cord</li>
+<li>Efficient protocol to isolate a subtype of astrocytes (Olig2-AS) from other glial cells</li>
+<li>Two-step comparative analysis of RNA-seq databases to characterize glial subtypes</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Overview of the project</h3>
+<p>This protocol was developed to purify a subpopulation of astrocytes (Olig2-AS) in the mouse postnatal spinal cord to distinguish those cells from non-Olig2-AS, oligodendrocytes (OL) and oligodendrocyte progenitor cells (OPC). Then, we use RNA-Seq to generate transcriptome databases in order to identify the molecular signature of the Olig2-AS. This study includes an experimental procedure detailing dissection, dissociation of double reporter spinal cord and purification by FACS sorting; and a bioinformatic analysis pipeline of RNA-Seq data composed of data processing and differential gene expression analysis (<a href="#fig1">Figures 1</a>A and 1B).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Bioinformatical overview of the project</div>
+<p>(A) Flowchart of bioinformatic data processing, all steps have been run on the <b><i>Genotoul Galaxy cluster</i></b>.</p>
+<p>(B) Flowchart describing the differential analysis on this RNA-Seq study, all steps have been run on <b><i>R (v3.6)</i></b>.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.2">Prepare double transgenic mouse P7 pups</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 weeks (3 weeks of mouse gestation and 1 week after birth)</div>
+<p>To fluorescently label the Olig2-AS subpopulation of astrocytes, we crossed two transgenic mouse lines: <i>Aldh1L1</i>-eGFP and <i>Olig2</i>-tdTomato. As a result, Olig2-AS express both the eGFP and tdTomato, nonOlig2-AS express only the eGFP and OPC/OL express only the tdTomato.</p>
+<p>For this protocol, all procedures were performed in agreement with the European Community guiding principles on the care and use of animals (Scientific Procedures) Act, 1987 and approved by the national Animal Care and Ethics Committee (APAFIS#20396) following Directive 2010/63/EU.</p>
+<div class="note">
+<span class="note-title">Note:</span> Ensure that all procedures involving mice are approved by your institutional Animal Care and Ethics Committee.</div>
+<div class="note">
+<span class="note-title">Note:</span> Always prepare negative samples (non-transgenic animals) and single-reporter control samples expressing each fluorescent reporter separately. These are necessary to establish gating parameters on the fluorescence-activated cell sorter (FACS machine) and adjust compensation if necessary.</div>
+<h3 id="sec1.3">Prepare and pre-warm papain solution</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>To purify glial cells (astrocytes and oligodendrocytes) in the spinal cord, we combine an enzymatic digestion using the Papain dissociation system of Worthington Biochemicals and mechanical dissociation.</p>
+<ol>
+<li>Add 5 mL of EBSS to a papain vial provided in the Worthington papain dissociation system.</li>
+<li>Place the vial in 37°C water-bath for 10 min.</li>
+<li>Transfer the solution in a 15 mL falcon tube.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The solution should be used promptly but can be kept at room temperature (17°C–25°C) during the dissection.</div>
+<h3 id="sec1.4">Prepare DNase solution</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 min</div>
+<ol start="4">
+<li>Add 500 μL of EBSS to a DNase vial provided in the Worthington papain dissociation system.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The solution should be used promptly but can be kept at room temperature (17°C–25°C) during the dissection.</div>
+<h3 id="sec1.5">Prepare albumin ovomucoid inhibitor solution</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 min</div>
+<ol start="5">
+<li>Add 32 mL of EBSS to the albumin ovomucoid inhibitor vial provided in the Worthington papain dissociation system. This solution can be stored at 4°C up to 4 months for later use.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Phosphate-buffer saline (PBS)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#D1408</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>ThermoFisher Scientific</td>
+<td>Gibco Cat#A31604-01</td>
+</tr>
+<tr>
+<td>Glycogen</td>
+<td>ThermoFisher Scientific</td>
+<td>Cat#R0551</td>
+</tr>
+<tr>
+<td>Trizol</td>
+<td>Thermofisher Scientific</td>
+<td>Cat#15596026</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Papain dissociation system</td>
+<td>Worthington Biochemical</td>
+<td>Cat#LK003150</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw and analyzed data</td>
+<td>This paper and <a href="#bib12">Ohayon et al., 2021</a>
+</td>
+<td>GEO: GSE158517<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE158517">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE158517</a>
+</td>
+</tr>
+<tr>
+<td>Example code for this protocol</td>
+<td>This paper</td>
+<td><a href="https://github.com/MarionAguirrebengoa/CombinedRNAseqAnalysis_AstrocyteSubtypeProject">https://github.com/MarionAguirrebengoa/CombinedRNAseqAnalysis_AstrocyteSubtypeProject</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse: Tg(Aldh1l1-eGFP/Rpl10a) JD130Htz</td>
+<td>GENSAT, kindly provided by Dr. N. Rouach, Paris, FRANCE</td>
+<td>RRID: IMSR_JAX:030247</td>
+</tr>
+<tr>
+<td>Mouse: Olig2-tdtomato</td>
+<td>GENSAT, Tg(Olig2-tdTomato)TH39Gsat</td>
+<td>MGI: 5311714<a href="http://www.informatics.jax.org/allele/MGI:5311714#imsr">http://www.informatics.jax.org/allele/MGI:5311714#imsr</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Primer for genotypingGFP-Fw</td>
+<td>This paper</td>
+<td>5′-CGCACCATCTTCTTCAAGGACGAC-3′</td>
+</tr>
+<tr>
+<td>Primer for genotypingGFP-Rev</td>
+<td>This paper</td>
+<td>5′-AACTCCAGCAGGACCATGTGATCG-3′</td>
+</tr>
+<tr>
+<td>Primer for genotyping Tomato-Fw</td>
+<td>This paper</td>
+<td>5′-CTGTTCCTGTACGGCATGG-3′</td>
+</tr>
+<tr>
+<td>Primer for genotyping Tomato-Rev</td>
+<td>This paper</td>
+<td>5′-GGCATTAAAGCAGCGTATCC-3′</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>STAR aligner</td>
+<td><a href="#bib6">Dobin et al., 2012</a></td>
+<td><a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a></td>
+</tr>
+<tr>
+<td>FastQC</td>
+<td><a href="#bib2">Andrews, 2010</a></td>
+<td>RRID:SCR_014583<a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a>
+</td>
+</tr>
+<tr>
+<td>MultiQC</td>
+<td><a href="#bib8">Ewels et al., 2016</a></td>
+<td>RRID:SCR_014982<a href="https://multiqc.info/">https://multiqc.info/</a>
+</td>
+</tr>
+<tr>
+<td>HTSeq count</td>
+<td><a href="#bib1">Anders et al., 2015</a></td>
+<td><a href="https://htseq.readthedocs.io/en/master/">https://htseq.readthedocs.io/en/master/</a></td>
+</tr>
+<tr>
+<td>DeSeq2</td>
+<td>R-Bioconductor(<a href="#bib10">Love et al., 2014</a>)</td>
+<td>RRID:SCR_015687<a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">https://bioconductor.org/packages/release/bioc/html/DESeq2.html</a>
+</td>
+</tr>
+<tr>
+<td>Bioconductor (3.10)</td>
+<td>R-Bioconductor</td>
+<td><a href="http://www.biocondutor.org/">www.biocondutor.org/</a></td>
+</tr>
+<tr>
+<td>ggplot2</td>
+<td>CRAN(<a href="#bib15">Wickham, 2016</a>)</td>
+<td>RRID:SCR_014601<a href="https://ggplot2.tidyverse.org/">https://ggplot2.tidyverse.org/</a>
+</td>
+</tr>
+<tr>
+<td>GOplot</td>
+<td>CRAN(<a href="#bib17">Walter et al., 2015</a>)</td>
+<td><a href="https://wencke.github.io/">https://wencke.github.io/</a></td>
+</tr>
+<tr>
+<td>Cufflinks (v2.2.1)</td>
+<td><a href="#bib13">Trapnell et al., 2010</a></td>
+<td>RRID:SCR_014597<a href="http://cole-trapnell-lab.github.io/cufflinks">http://cole-trapnell-lab.github.io/cufflinks</a>
+</td>
+</tr>
+<tr>
+<td>biomaRt</td>
+<td>R-Bioconductor(<a href="#bib7">Durinck et al., 2005</a>)</td>
+<td>RRID:SCR_019214<a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html">https://bioconductor.org/packages/release/bioc/html/biomaRt.html</a>
+</td>
+</tr>
+<tr>
+<td>Ensembl Mus Musculus GRCm38.91 (mm10)</td>
+<td>Ensembl</td>
+<td><a href="http://www.ensembl.org/Mus_musculus/Info/Index">http://www.ensembl.org/Mus_musculus/Info/Index</a></td>
+</tr>
+<tr>
+<td>SAMtools</td>
+<td><a href="#bib9">Li et al., 2009</a></td>
+<td>RRID:SCR_002105<a href="https://www.htslib.org/">https://www.htslib.org/</a>
+</td>
+</tr>
+<tr>
+<td>Heatmap.2 from gplots2 package</td>
+<td>R-Bioconductor</td>
+<td><a href="https://rdocumentation.org/packages/gplots/versions/3.1.1">https://rdocumentation.org/packages/gplots/versions/3.1.1</a></td>
+</tr>
+<tr>
+<td>Affinity Designer</td>
+<td>Serif</td>
+<td>RRID:SCR_016952<a href="https://affinity.serif.com/">https://affinity.serif.com/</a>
+</td>
+</tr>
+<tr>
+<td>Prism8</td>
+<td>Graphpad Software</td>
+<td>RRID:SCR_002798<a href="https://www.graphpad.com/">https://www.graphpad.com/</a>
+</td>
+</tr>
+<tr>
+<td>R (3.6.0)</td>
+<td>The R foundation</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Tissue-chopper</td>
+<td>Mc Ilwain</td>
+<td>RRID:SCR_015798</td>
+</tr>
+<tr>
+<td>Nikon AZ100 microscope</td>
+<td>Nikon</td>
+<td>RRID:SCR_018603</td>
+</tr>
+<tr>
+<td>Nikon SMZ800 microscope</td>
+<td>Nikon</td>
+<td>RRID:SCR_020333</td>
+</tr>
+<tr>
+<td>Water bath WB7</td>
+<td>Memmert</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>40μm cell strainer</td>
+<td>Falcon</td>
+<td>Cat#352340</td>
+</tr>
+<tr>
+<td>5mL round bottom polypropylene tubes</td>
+<td>Falcon</td>
+<td>Cat#352063</td>
+</tr>
+<tr>
+<td>Tissue culture dish (35 mm)</td>
+<td>Falcon</td>
+<td>Cat#353001</td>
+</tr>
+<tr>
+<td>FACS Aria Fusion BSL1</td>
+<td>BD Biosciences</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>BGISEQ-500 RNA-seq platform</td>
+<td>BGI</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Dissection of the P7 spinal cord</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h depending on expertise and the number of pups to be dissected (∼15 min/pup)</div>
+<ol>
+<li>Isolate the animal’s head by decapitation using scissors at the base of the skull.</li>
+<li>After drenching the fur with 70 % ethanol, a small incision is made in the dorsal skin to remove the pelt from the head to the hind limbs.</li>
+<li>Insert small scissors through the abdominal wall muscles and cut laterally to the spinal column in both directions.</li>
+<li>Then with the scissors cut the ribs on both sides of the spinal column before removing the viscera connected on its anterior side.</li>
+<li>The spinal column is then removed by making a transverse cut at the level of the femurs.</li>
+<li>Once clear of soft tissues, cut the column at the level of the last rib which is a landmark of the last thoracic segment. Keep the cervical and thoracic spinal column for further isolation and remove the lumbar part.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Until step 6, the dissection is performed at room temperature. Once the spinal cord is removed from the body, all the following dissection steps are performed on ice.</div>
+<ol start="7">
+<li>Place the cervico-thoracic column in a petri dish containing cold PBS, and under a dissecting microscope (Nikon SMZ800) start cutting the column from one end and peel off the vertebrae with a forceps little by little, revealing the spinal cord.</li>
+<li>Remove dorsal root ganglion and meninges from the spinal cord explants.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is very important to carefully remove the meninges which can be identified as a translucent sheet of tissue covering the spinal cord. If the meninges are not fully removed it can interfere with the following dissociation and result in a poor number of cells purified.</div>
+<ol start="9">
+<li>Check the fluorescence on the spinal cord explants to confirm genotyping using a Nikon AZ100 multizoom microscope</li>
+</ol>
+<h3 id="sec3.2">Dissociate dissected P7 spinal cord tissue</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<p>These steps describe the enzymatic treatment and physical homogenization procedures to dissociate dissected tissue pieces into single-cell solution ready for FACS isolation of targeted cells.</p>
+<ol start="10">
+<li>Slice the spinal cord into 100 μm sections using a tissue-chopper (Mc Ilwain).</li>
+<li>Place each diced spinal cord in a 35 mm tissue culture dish.</li>
+<li>Add 250 μL of the DNase solution in the falcon tube containing the papain solution.</li>
+<li>Add 1 mL of the papain/DNase solution per petri dish containing one chopped spinal cord.</li>
+<li>Incubate for 60 min at 37°C in a 95%O<sub>2</sub>:5%CO<sub>2</sub> incubator.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Monitor dissociation and adjust the timing accordingly. Prolonged enzymatic digestion can affect cell viability.</div>
+<div class="note">
+<span class="note-title">Note:</span> In our context, the perinatal spinal cord, we adapted the method used to purify astrocytes from adult spinal cord in order to establish their transcriptome (<a href="#bib4">Cahoy et al., 2008</a>; <a href="#bib16">Zamanian et al., 2012</a>; <a href="#bib11">Molofsky et al., 2014</a>; <a href="#bib5">Chaboub et al., 2016</a>). This method has been used, in particular, by B. Barres and collaborators to compare transcriptomes of wild-type astrocytes versus reactive astrocytes induced by LPS or MCAO (<a href="#bib16">Zamanian et al., 2012</a>). To minimize the effect of stress, we focused on reducing the incubation time with the dissociation enzyme (60 min instead of 90 min) and the time period between dissection and cell sorting (less than 3 h).</div>
+<ol start="15">
+<li>Gently triturate the mixture by pipetting up and down 10–15 times using a 5 mL pipette</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The dissociation needs to be quick yet gentle to separate the cells rather than rip them apart. Also avoid creating bubbles during the pipetting as it could result in poor cell health.</div>
+<ol start="16">
+<li>Centrifuge the dissociated cells at 300 <i>g</i> for 5 min at room temperature.</li>
+<li>During this spin, mix 2.7 mL of EBSS with 300 μL of ovomucoid solution in a 15 mL falcon tube and 150 μL of DNase solution (low-ovo inhibitor solution).</li>
+<li>Discard supernatant and resuspend each cell pellet in 500 μL diluted DNase/ovomucoid solution (low-ovo inhibitor solution) prepared in step 17.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be at the centrifuge, as soon as it stops and handle 15 mL conical falcon tubes very carefully to avoid disturbing the fragile pellet. Remove the supernatant slowly using a P-1000 pipette (do not pour off) ensuring no pellet is aspirated.</div>
+<ol start="19">
+<li>Add 1 mL of ovomucoid in a 15 mL falcon tube and layer the cell suspension on top.</li>
+<li>Centrifuge the dissociated cells at 70 <i>g</i> for 6 min at room temperature.</li>
+<li>Discard supernatant and resuspend the cell pellet in 300 μL of PBS + 10% FBS and filtered through a 40 μm cell strainer to remove any remaining clumps of tissue.</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBS</td>
+<td>1×</td>
+<td>270 μL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>30 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="22">
+<li>Transfer in a 5 mL polypropylene round-bottom tube or other adapted to your cell sorter and keep on ice. Proceed to sorting as fast as possible.</li>
+</ol>
+<h3 id="sec3.3">Collect target cells by FACS</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> Approximately 1 h</div>
+<p>Dissociated tissue is now ready for FACS, target cells are collected and processed for RNA-Seq.</p>
+<ol start="23">
+<li>Proceed to the FACS facility.</li>
+<li>Run control samples to establish gating parameters: GFP-reporter mouse, tdTomato-reporter mouse and wild-type mice. (<a href="#fig2">Figure 2</a>)
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Gating strategies for isolation of eGFP+/tdT-, tdT+/eGFP-, and eGFP+/tdT+ cell populations</div>
+<p>(A–C) Debris and doublets were removed as described in steps 25a and 25b.</p>
+<p>(D–F) Representative FACS plots showing the last step of the gating strategy. Gates for eGFP+ (E) and tdT+ (F) cells were defined from cell populations purified from <i>wild-type</i> mouse (D), <i>aldh1l1</i>-eGFP (E) and <i>olig2</i>-tdTomato single transgenic mouse (F).</p>
+<p>(G) Representative FACS plot of the purification of tdT+/eGFP-, eGFP+/tdT- and tdT+/eGFP+ cell populations from P7 <i>aldh1l1</i>-eGFP/<i>olig2</i>-tdTomato double transgenic mice.</p>
+</figcaption>
+</figure>
+</li>
+<li>Run double transgenic samples and set up gates. (<a href="#fig2">Figure 2</a>)
+<ol type="a">
+<li>Remove dead cells and debris according to the plot of forward scatter area (FSC-A) and side-scatter area (SSC-A) (<a href="#fig2">Figure 2</a>A).</li>
+<li>Exclude doublets by two successive gating approaches, first forward scatter height (FSC-H) vs forward scatter width (FSC-W) and then side scatter height (SSC-H) vs side scatter width (SSC-W) (<a href="#fig2">Figures 2</a>B and 2C).</li>
+<li>Then gate for fluorescence, to identify the three awaited cells population using a PE-A vs GFP-A: high eGFP fluorescence for the nonOlig2-AS; high tdTomato fluorescence for the OPC/OL and high eGFP and tdTomato fluorescence for the Olig2-AS (<a href="#fig2">Figures 2</a>D–2G).</li>
+</ol>
+</li>
+<li>Prepare a set of three 1.5 mL collection tubes per spinal cord sample to collect the eGFP+/tdT-; eGFP-/tdT+ and the eGFP+/tdT+ cell populations.</li>
+<li>Sort the populations of interest into the prepared 1.5 mL tubes</li>
+<li>Centrifuge at 2000<i>g</i> for 5 min</li>
+<li>Discard the supernatant</li>
+<li>Process the samples for RNA extraction using standard Trizol reagent with glycogen added as carrier according to manufacturer instructions (<a href="https://www.thermofisher.com/document-connect/document-connect.html?url=https%3A%2F%2Fassets.thermofisher.com%2FTFS-Assets%2FLSG%2Fmanuals%2Ftrizol_reagent.pdf&amp;title=VXNlciBHdWlkZTogVFJJem9sIFJlYWdlbnQ=">https://www.thermofisher.com/document-connect/document-connect.html?url=https%3A%2F%2Fassets.thermofisher.com%2FTFS-Assets%2FLSG%2Fmanuals%2Ftrizol_reagent.pdf&amp;title=VXNlciBHdWlkZTogVFJJem9sIFJlYWdlbnQ=</a>).</li>
+<li>Elution of RNA into 35 μL RNase-free water.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The eluted RNA samples can be stored at −80°C for up to 3 months.</div>
+<ol start="32">
+<li>Library preparation and RNA-Sequencing were performed by Beijing Genomics Institute (BGI, Hong Kong, China) using a BGISEQ-500 RNA-seq platform (paired-end sequencing, 100 bp reads, 30M reads/sample).</li>
+</ol>
+<h3 id="sec3.4">Raw data processing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼<b>12 h on Genotoul Galaxy cluster 48 broadwell nodes (each 64 threads, 256 GB of memory)</b>
+</div>
+<ol start="33">
+<li>Quality control of the raw data from sequencing
+<ol type="a">
+<li>Use FastQC (v0.11.5) to check the quality of each raw fastq file from each sample: two files per sample, one for read1 and one for read2 of the RNA fragment sequenced paired-end (<a href="#bib2">Andrews, 2010</a>).
+<div class="note">
+<span class="note-title">Note:</span> This tool provides some quality control checks on raw sequences coming from the sequencing platform in FASTQ format and gives an overview of the data quality with graphs and indicators in a HTML report. The report contains basic statistics, sequence quality summary, sequence content summary, information about read lengths and estimation of duplication levels. It also lists potential overrepresented sequences and verifies the presence of reads’ adapters based on a list of known adapters.</div>
+</li>
+<li>Use MultiQC (v1.7) to aggregate all FastQC reports and generate one single HTML report summarizing the output from all the FastQC reports (<a href="#fig3">Figures 3</a>A and 3B) (<a href="#bib8">Ewels et al., 2016</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. MultiQC report</div>
+<p>(A) Sequence counts for each sample, showing number of unique and duplicate reads.</p>
+<p>(B) Distribution of reads’ sequence quality Phred score for each sample</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="34">
+<li>Alignment of the raw data from sequencing on the reference genome</li>
+</ol>
+<p>Use STAR aligner (v2.1) to align paired-end files from raw sequencing on the reference mouse genome from Ensembl database: FASTA and GTF file.</p>
+<div class="note">
+<span class="note-title">Note:</span> Based on sequential maximum mappable seed search in uncompressed suffix arrays, STAR is reliable, accurate, aligner designed for RNA-Seq dataset. The output is a single aligned file per sample in sequence alignment map (SAM) format (<a href="#bib6">Dobin et al., 2013</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> For example, we perform alignment on the following version of the mouse reference genome: Ensembl Mus Musculus GRCm38.91 (mm10).</div>
+<ol start="35">
+<li>Conversion, sorting, and indexing alignment output<br> Use Samtools (v1.9) to process alignment output files in SAM format (<a href="#bib9">Li et al., 2009</a>).
+<ol type="a">
+<li>Convert each SAM file in a compressed Binary Alignment Map (BAM) file.</li>
+<li>Sort each BAM file following genomic coordinates order.</li>
+<li>Generate an index, in BAI format, for each BAM file.</li>
+</ol>
+</li>
+</ol>
+<ol start="36">
+<li>Quantification of reads’ pairs on the chosen features
+<ol type="a">
+<li>Use HT-seq count (v1.0) to count the raw number of reads’ pairs aligned on each annotated feature from Ensembl gtf (<a href="#bib1">Anders et al., 2015</a>).
+<div class="note">
+<span class="note-title">Note:</span> The output is a table containing, for each gene, the raw number of reads’ pairs overlapping with its exon. The overlap resolution parameter is set to «union» to assign any ambiguous pair.</div>
+</li>
+<li>At the same time, use Cufflinks (v2.2.1) compute for each gene the number of fragments per kilobase million reads (FPKM) (<a href="#bib13">Trapnell et al., 2010</a>).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This metric normalizes raw pair counts, taking account of sequencing depth and gene length. Each number of reads’ pairs is multiplied by 10<sup>9</sup> and divided by the total number of pairs in the sample (library size) and the length of the gene, in kilobases.</div>
+<ol start="37">
+<li>Data processing control (<a href="#tbl1">Tables 1</a> and <a href="#tbl2">2</a>)
+<table id="tbl1">
+<caption>Table 1. Read alignment and quantification for transcriptomic set #3</caption>
+<thead>
+<tr>
+<th rowspan="3"> </th>
+<th colspan="3">Transcriptomic set #3</th>
+</tr>
+<tr>
+<th>eGFP</th>
+<th>tdTomato</th>
+<th>eGFP/tdTomato</th>
+</tr>
+<tr>
+<th>GSM4802116</th>
+<th>GSM4802117</th>
+<th>GSM4802118</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw nb of pairs</td>
+<td>48,040,482</td>
+<td>52,740,687</td>
+<td>49,509,590</td>
+</tr>
+<tr>
+<td>Aligned nb of pairs</td>
+<td>46,081,202</td>
+<td>50,818,803</td>
+<td>47,343,603</td>
+</tr>
+<tr>
+<td>Counted nb of pairs</td>
+<td>27,898,597</td>
+<td>34,662,279</td>
+<td>30,299,452</td>
+</tr>
+<tr>
+<td>% Aligned</td>
+<td>95.92%</td>
+<td>96.36%</td>
+<td>95.63%</td>
+</tr>
+<tr>
+<td>% Counted</td>
+<td>60.54%</td>
+<td>68.21%</td>
+<td>64.00%</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl2">
+<caption>Table 2. Read alignment and quantification for the four experimental sets</caption>
+<thead>
+<tr>
+<th rowspan="2"> </th>
+<th colspan="3">Mean of 4 experimental sets</th>
+</tr>
+<tr>
+<th>eGFP</th>
+<th>tdTomato</th>
+<th>eGFP/tdTomato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw nb of pairs</td>
+<td>44,561,085</td>
+<td>50,988,365</td>
+<td>54,894,246</td>
+</tr>
+<tr>
+<td>Aligned nb of pairs</td>
+<td>42,506,561</td>
+<td>48,819,524</td>
+<td>52,252,220</td>
+</tr>
+<tr>
+<td>Counted nb of pairs</td>
+<td>21,068,477</td>
+<td>30,569,845</td>
+<td>27,762,839</td>
+</tr>
+<tr>
+<td>% Aligned</td>
+<td>95.42%</td>
+<td>95.78%</td>
+<td>95.20%</td>
+</tr>
+<tr>
+<td>% Counted</td>
+<td>49.42%</td>
+<td>62.38%</td>
+<td>53.40%</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>Compute percentage of read pairs aligned and quantified for each sample. Usually, the number of reads aligned should be &gt; 60% and the number of reads falling on feature should be &gt; 50%</p>
+<h3 id="sec3.5">Control the specificity of each sample</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼6 h on Genotoul Galaxy cluster 48 broadwell nodes (each 64 threads, 256 GB of memory)</div>
+<ol start="38">
+<li>Alignment of raw reads on specific sequences</li>
+</ol>
+<p>To validate the selection of cells, use STAR aligned to map raw sample files on the sequences of eGFP and td-Tomato.</p>
+<ol start="39">
+<li>Quantification of these reads</li>
+</ol>
+<p>Use Samtools idxstat to quantify the number of reads of each file on the 2 specific sequences.</p>
+<ol start="40">
+<li>Visualization of the output</li>
+</ol>
+<p>Visualize these quantifications normalized by total sequencing depth into a bar plot (<a href="#fig4">Figure 4</a>A).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Control and cleaning of the raw data</div>
+<p>(A) Comparison of eGFP and tdTomato gene expression levels (by RPKM values) for the three cell populations.</p>
+<p>(B) Principal component analysis (PCA) on raw data.</p>
+<p>(C) Hierarchical Clustering dendrogram Euclidean distance and ward criteria on raw data.</p>
+<p>(D) Pairwise scatter plot between replicates.</p>
+<p>(E) Bar plot illustrating the raw and cleaned data from non-expressed genes for all samples.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.6">Prerequisite before differential analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼1.5 h on personal computer with R (v3.6)</div>
+<ol start="41">
+<li>Import raw datasets in the workspace</li>
+</ol>
+<p>Import the raw pairs count table for each sample. Check that each table is completely loaded then merge all tables in one common data frame with all the samples.</p>
+<div class="note">
+<span class="note-title">Note:</span> The number of genes and the genes’ order should be the same for all the samples. Remove rows corresponding to ambiguous or not assigned pairs.</div>
+<ol start="42">
+<li>Explore the complete raw dataset
+<ol type="a">
+<li>Check the quality of the count table: proportion of null counts per sample, most expressed genes in each sample, statistical indicator for the distribution of reads’ pairs counts for each sample and correlation between each replicate (<a href="#fig4">Figure 4</a>D).</li>
+<li>Apply Principal Component Analysis and Hierarchical Clustering (Euclidean distance – Ward criterion) on the raw data to explore the entire data frame. Use ggplot2 R-package (v3.3.5) to draw graphs of PCA results (<a href="#fig4">Figures 4</a>B and 4C) (<a href="#bib15">Wickham, 2016</a>).</li>
+</ol>
+</li>
+<li>Clean data from non-expressed genes. Before running differential analysis, remove from the raw count table any gene having an averaged raw read count per sample lower than 1 (<a href="#fig4">Figure 4</a>E).</li>
+</ol>
+<h3 id="sec3.7">Differential analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼1.5 h on personal computer with R (v3.6)</div>
+<ol start="44">
+<li>Perform normalization and parameters estimation with DESeq2</li>
+</ol>
+<p>Use DESeq2 (v1.22.2) to perform Relative Log Expression (RLE) normalization on the raw counts and estimate dispersion parameter modeling the Negative-Binomial distribution of the data (<a href="#fig5">Figures 5</a>A and 5B) (<a href="#bib10">Love et al., 2014</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Differential analysis</div>
+<p>(A and B) Boxplots on cleaned raw counts before (A) and after (B) normalization.</p>
+<p>(C) Hierarchical Clustering dendrogram Euclidean distance and ward criteria on the normalized data.</p>
+<p>(D) Principal component analysis (PCA) on normalized samples.</p>
+<p>(E–G) MA plots of differentially expressed genes representing the log2FC and log (basemean) from the differential analysis DA1 (E), DA2 (F) and DA3 (G). Red dots represent transcripts with a significant padj &lt; 0.05 and a log2FC &gt; 0 or a log2FC &lt; 0.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> RLE is based on the computation of a scaling factor applied on each raw count. This factor is the median over all the genes of the ratio of raw gene count per gene divided by the geometric mean of the gene across all samples. This normalization method corrects both sequencing depth and mRNA composition bias that are usual in RNA-Seq. RNA-Seq count data are then modeled by a negative binomial distribution with fitted mean and a gene-specific dispersion parameter.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> This normalization method is based on the hypothesis that the majority of genes are not regulated between the 2 populations. In case of drastic variability between this normalization method might not be applicable. Moreover, this normalization method corrects both sequencing depth and mRNA composition bias but not gene length associated bias. Indeed, genes will not be compared within the same sample. To compare genes within sample FPKM normalization (described in 34.b) would be more appropriate.</div>
+<ol start="45">
+<li>Apply Wald tests
+<ol type="a">
+<li>Use DESeq2 to apply inferential testing between pairs of cell populations in order to get the results of three different differential analysis (DA): between Olig2-AS and nonOlig2-AS cells (DA1), between Olig2-AS and OPC/OL (DA2) and between nonOlig2-AS and OPC/OL (DA3).</li>
+<li>For each DA a Wald test is applied to each gene, the p value is then corrected for multiple testing with Benjamini–Hochberg method and we obtain an output with log2 fold change (log2FC) values as well as p value and adjusted p value for each gene (<a href="#bib3">Benjamini and Hochberg, 1995</a>)</li>
+</ol>
+</li>
+<li>Find associated gene symbol with each ID</li>
+</ol>
+<p>Use the R-package Biomart (v2.48.2) to convert Mouse ENSEMBL IDs to mouse official gene names (<a href="#bib7">Durinck et al., 2005</a>).</p>
+<h3 id="sec3.8">Visualization of the results</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼<b>3 h on personal computer with R (v3.6)</b>
+</div>
+<ol start="47">
+<li>Global visualization of the normalized samples
+<ol type="a">
+<li>To get an overview of the samples after normalization, apply Principal Component Analysis and Hierarchical Clustering (Euclidean distance – Ward criterion) on the normalized data set (<a href="#fig5">Figures 5</a>C and 5D).</li>
+<li>Control correlation between sample computing Pearson correlation and use the ggplot::heatmaps.2 R-package (v3.1.1) to plot the correlation results in a heatmap plot. (<a href="#bib14">Warnes et al., 2015</a>)</li>
+</ol>
+</li>
+</ol>
+<ol start="48">
+<li>Global visualization of the DESeq2 outputs<br> In order to visualize the result of each DA, generate plots from DESeq2 output:
+<ol type="a">
+<li>MA plot (log (basemean) against log2FC for each gene)</li>
+<li>Volcano plot (log2FC against log10 (adjusted p value)) (<a href="#fig5">Figures 5</a>E–5G).</li>
+<li>For the top 20% most variable mRNA, based on the |log2FC|, compute euclidean distances between the cell types and plot results using the ggplot::heatmaps.2 R-package function (<a href="#fig5">Figure 5</a>C).</li>
+</ol>
+</li>
+</ol>
+<ol start="49">
+<li>Visualization of list of markers</li>
+</ol>
+<p>Use log2FC and adjusted p values of the different DA to select subset of genes. Then for each gene of interest compute the mean per condition, and center and scale each gene using the z-score. With the computation of z-score we are able to visualize genes of different levels of expression in the same color scale in a heatmap (<a href="#fig6">Figures 6</a>A and 6B). The two heatmaps have been made using the Prism 8 software (GraphPad).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1232-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Visualization of list of genes</div>
+<p>(A and B) Heatmaps depicting the abundance of mRNA corresponding to the top 50 genes enriched in OPC/OL(A) and the 649 genes enriched in the nonOlig2-AS. The gene names highlighted in red are genes known to be involved in OL/OPC function. All heatmaps are presented as z-score and genes are ordered by the log2FC (DA3) for (A) and the log2FC (DA1) for (B).</p>
+</figcaption>
+</figure>
+<p class="math-ml"><math> <mrow> <msub> <mrow> <mtext>z</mtext> <mo>-</mo> <mtext>score</mtext> </mrow> <mrow> <mo>(</mo> <mtext>gene condition</mtext> <mo>)</mo> </mrow> </msub> <mo>=</mo> <mfrac> <mrow> <msub> <mtext>Normalized read counts</mtext> <mrow> <mo>(</mo> <mtext>gene condition</mtext> <mo>)</mo> </mrow> </msub> <mo>−</mo> <msub> <mtext>Row mean normalized read counts</mtext> <mrow> <mo>(</mo> <mtext>gene</mtext> <mo>)</mo> </mrow> </msub> </mrow> <msub> <mtext>Row standard deviation</mtext> <mrow> <mo>(</mo> <mtext>gene</mtext> <mo>)</mo> </mrow> </msub> </mfrac> </mrow> </math></p>
+<ol start="50">
+<li>Validation of the selected candidate genes by either qPCR and/or in situ hybridization (ISH).</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The differential gene expression analysis will lead to a list of differentially expressed mRNAs at postnatal day 7 in each purified cell type (<a href="#fig6">Figures 6</a>A and 6B). The differentially expressed mRNAs in the specific glial cell types are critical for downstream applications. Either for functional annotation using a GO analysis or for the validation of the candidate genes, use qPCR or ISH (<a href="#bib12">Ohayon et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Drawbacks can be observed during the tissue dissociation protocol, especially in terms of cell viability throughout the procedure. In this protocol, several options were taken to improve viability of the dissociated cells like the duration of the enzymatic treatment or the timeline to perform the whole experiment. However, it is advisable to perform a test run to determine the number of cells obtained from your tissue of interest before planning the downstream experiment. In terms of bioinformatic analysis, the quality of raw data has a strong influence on the analysis. Overviews using principal component analysis (PCA) can be performed at different steps of the analysis. If the data are of good quality, transcriptomes are likely to be grouped according to the cell type.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Low cell viability (step 13).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>This indicates cells have been stressed throughout the protocol. Make sure to work swiftly, pipette gently, and more importantly to not over-treat the sample with the papain solution.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Cells clogging of the FACS machine (step 24).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This can happen if the extent of tissue dissociation is not carefully assessed, always be careful about any remaining meningeal tissue during the dissection. Also, do not forget to correctly filter the cell suspension through a 40 μm cell strainer to remove any remaining clumps of tissue before sorting.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>No detection during FACS sorting (step 24).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Ensure samples are fluorescently labeled prior to running the FACS, the step 9 after dissection to check fluorescence right after dissection is really important for that matter. Also, cell pellets could have been lost during the dissociation procedure. The supernatants should be removed slowly and always inspect the pellet during the process.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Statistical analysis and figures generation (<a href="#sec3.4">Raw data processing</a>).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>While bioinformatics steps can be done with Galaxy user-friendly interface, the next steps: quality controls of the read count, differential analysis, intersection between differential analysis and figures must be done in R which is both a programming language and free GNU package software designed for statistical computing. R provides precompiled executables that need to be run using the command line. These steps could be a major challenge for a non-bioinformatic user. To overcome this issue free graphical user interfaces such as RStudio, are available to provide an integrated development environment helping the user to address this challenge.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The large number of hypothesis tests applied during differential analysis and the impact of the cleaning of the raw count matrix on that issue (<a href="#sec3.7">Differential analysis</a>).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>The DESeq2 differential analysis protocol applies simultaneous testing of many hypotheses. Indeed, in its process, DESeq2 will apply as many inference tests as there are features (genes in our case) in the input count matrix. Automatically, the more inferences are made, the more likely erroneous inferences become. To overcome these issues, statisticians developed methods to correct raw p values in order to obtain a more reasonable risk on the entire set of tests. DESeq2 applies the Benjamini–Hochberg method but the correction of p values is strongly related with the number of tests applied, making the cleaning of the raw count step very important. Indeed, the more features are removed, the more the number of tests applied decrease, the less stringent the correction method needs to be. Genes not expressed do not need to be tested as they will not be differentially expressed, on the other hand we do not want to remove any potential differential even lowly expressed. We chose to remove genes with raw count mean lower than 1 read pair over all samples to get rid of non-expressed genes. There exist both more and less stringent methods to remove lowly expressed genes; however, these methods might have consequences on the computation of corrected p values by DESeq2.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Anders, S., Pyl, P.T., and Huber, W. (2015). HTSeq-A Python framework to work with high-throughput sequencing data. Bioinformatics <i>31</i>, 166-169. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btu638">https://doi.org/10.1093/bioinformatics/btu638</a></p>
+<p id="bib2">Andrews, S. (2010). FastQC. Babraham Bioinform. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00715-2/sref2">View at publisher</a></p>
+<p id="bib3">Benjamini, Y. and Hochberg, H.Y. (1995). Benjamini and Y FDR.pdf. J. R. Stat. Soc. Ser. B (Methodol.) <i>57</i>, 289-300. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00715-2/sref3">View at publisher</a></p>
+<p id="bib4">Cahoy, J.D., Emery, B., Kaushal, A., Foo, L.C., Zamanian, J.L., Christopherson, K.S., Xing, Y., Lubischer, J.L., Krieg, P.A., Krupenko, S.A., et al. (2008). A transcriptome database for astrocytes, neurons, and oligodendrocytes: a new resource for understanding brain development and function. J. Neurosci. <i>28</i>, 264-278. <a class="external-link" href="https://doi.org/10.1523/JNEUROSCI.4178-07.2008">https://doi.org/10.1523/JNEUROSCI.4178-07.2008</a></p>
+<p id="bib5">Chaboub, L.S., Manalo, J.M., Lee, H.K., Glasgow, S.M., Chen, F., Kawasaki, Y., Akiyama, T., Kuo, C.T., Creighton, C.J., Mohila, C.A., and Deneen, B. (2016). Temporal profiling of astrocyte precursors reveals parallel roles for Asef during development and after injury. J. Neurosci. <i>36</i>, 11904-11917. <a class="external-link" href="https://doi.org/10.1523/JNEUROSCI.1658-16.2016">https://doi.org/10.1523/JNEUROSCI.1658-16.2016</a></p>
+<p id="bib6">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bts635">https://doi.org/10.1093/bioinformatics/bts635</a></p>
+<p id="bib7">Durinck, S., Moreau, Y., Kasprzyk, A., Davis, S., De Moor, B., Brazma, A., and Huber, W. (2005). BioMart and Bioconductor: a powerful link between biological databases and microarray data analysis. Bioinformatics <i>21</i>, 3439-3440. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bti525">https://doi.org/10.1093/bioinformatics/bti525</a></p>
+<p id="bib8">Ewels, P., Magnusson, M., Lundin, S., and Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics <i>32</i>, 3047-3048. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btw354">https://doi.org/10.1093/bioinformatics/btw354</a></p>
+<p id="bib9">Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., and Durbin, R. (2009). The sequence alignment/map format and SAMtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btp352">https://doi.org/10.1093/bioinformatics/btp352</a></p>
+<p id="bib10">Love, M.I., Anders, S., and Huber, W. (2014). Differential analysis of count data - the DESeq2 package. Genome Biol. <i>15</i>, 10-1186. <a class="external-link" href="https://doi.org/10.1186/s13059-014-0550-8">https://doi.org/10.1186/s13059-014-0550-8</a></p>
+<p id="bib11">Molofsky, A.V., Kelley, K.W., Tsai, H.H., Redmond, S.A., Chang, S.M., Madireddy, L., Chan, J.R., Baranzini, S.E., Ullian, E.M., and Rowitch, D.H. (2014). Astrocyte-encoded positional cues maintain sensorimotor circuit integrity. Nature <i>509</i>, 189-194. <a class="external-link" href="https://doi.org/10.1038/nature13161">https://doi.org/10.1038/nature13161</a></p>
+<p id="bib12">Ohayon, D., Aguirrebengoa, M., Escalas, N., Jungas, T., and Soula, C. (2021). Transcriptome profiling of the Olig2-expressing astrocyte subtype reveals their unique molecular signature. IScience <i>24</i>, 102806. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102806">https://doi.org/10.1016/j.isci.2021.102806</a></p>
+<p id="bib13">Trapnell, C., Williams, B.A., Pertea, G., Mortazavi, A., Kwan, G., Van Baren, M.J., Salzberg, S.L., Wold, B.J., and Pachter, L. (2010). Transcript assembly and quantification by RNA-Seq reveals unannotated transcripts and isoform switching during cell differentiation. Nat. Biotechnol. <i>28</i>, 511-515. <a class="external-link" href="https://doi.org/10.1038/nbt.1621">https://doi.org/10.1038/nbt.1621</a></p>
+<p id="bib17">Walter, W., Sánchez-Cabo, F., and Ricote, M. (2015). GOplot: An R package for visually combining expression data with functional analysis. Bioinformatics. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btv300">https://doi.org/10.1093/bioinformatics/btv300</a></p>
+<p id="bib14">Warnes, G.R., Bolker, B., Gorjanc, G., Grothendieck, G., Korosec, A., Lumley, T., MacQueen, D., Magnusson, A., Rogers, J., and Others, A. (2015). gdata: various R programming tools for data manipulation. R Package Version <i>2</i>, 35. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00715-2/sref14">View at publisher</a></p>
+<p id="bib15">Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis, Second Edition (Springer). <a class="external-link" href="https://doi.org/10.1007/978-0-387-98141-3">https://doi.org/10.1007/978-0-387-98141-3</a></p>
+<p id="bib16">Zamanian, J.L., Xu, L., Foo, L.C., Nouri, N., Zhou, L., Giffard, R.G., and Barres, B.A. (2012). Genomic analysis of reactive astrogliosis. J. Neurosci. <i>32</i>, 6391-6410. <a class="external-link" href="https://doi.org/10.1523/JNEUROSCI.6221-11.2012">https://doi.org/10.1523/JNEUROSCI.6221-11.2012</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed and will be fulfilled by the lead contact, David Ohayon (<a href="mailto:david-robert.ohayon@univ-tlse3.fr">david-robert.ohayon@univ-tlse3.fr</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique materials.</p>
+<h4>Data and code availability</h4>
+<p>RNA-seq data and processed files used during this study are available (<a href="#bib12">Ohayon et al., 2021</a>) and deposited on Gene Expression Omnibus (GEO: GSE158517).</p>
+<p>An example code for this protocol is on: <a href="https://github.com/MarionAguirrebengoa/CombinedRNAseqAnalysis_AstrocyteSubtypeProject">https://github.com/MarionAguirrebengoa/CombinedRNAseqAnalysis_AstrocyteSubtypeProject</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We especially thank N. Rouach and P. Durbec for sharing of Aldh1L1-GFP and Olig2-tdTomato mice, respectively, and E. Nasser and P. Viana for the technical support at the IPBS-FACS platform. We thank the ABC facility and ANEXPLO for housing mice. The author are also grateful to individuals who contributed the original publication (<a href="#bib12">Ohayon et al., 2021</a>) and more broadly to all members of the Cathy Soula lab for helpful discussions and help. The graphical abstract was generated using <a href="https://biorender.com">https://biorender.com</a>. This work was supported by CNRS and University of Toulouse and grants from the French National Research Agency (ANR-15-CE16-0014-02) and the Foundations ARC (PJA20161204698) and ARSEP.</p>
+<h3>Author contributions</h3>
+<p>D.O. organized the protocol design and provided part of the funding support for the research described in this protocol. D.O. and M.A. performed experiments and data analysis and wrote, re- viewed, and edited the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

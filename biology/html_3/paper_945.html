@@ -1,0 +1,562 @@
+<article>
+<section>
+<h1 id="header">Annotating cell types in human single-cell RNA-seq data with CellO</h1>
+<p><time datetime="2021-08-20">Published: August 20, 2021</time></p>
+<p>Matthew N. Bernstein<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> and Colin N. Dewey<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Morgridge Institute for Research, Madison, WI 53715, USA</p>
+<p id="aff2"><sup>2</sup>Department of Biostatistics and Medical Informatics, University of Wisconsin – Madison, Madison, WI 53792, USA</p>
+<p id="aff3"><sup>3</sup>Department of Computer Sciences, University of Wisconsin – Madison, Madison, WI 53706, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:colin.dewey@wisc.edu">colin.dewey@wisc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100705">10.1016/j.xpro.2021.100705</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Cell type annotation is important in the analysis of single-cell RNA-seq data. CellO is a machine-learning-based tool for annotating cells using the Cell Ontology, a rich hierarchy of known cell types. We provide a protocol for using the CellO Python package to annotate human cells. We demonstrate how to use CellO in conjunction with Scanpy, a Python library for performing single-cell analysis, annotate a lung tissue data set, interpret its hierarchically structured cell type annotations, and create publication-ready figures.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref2">Bernstein et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>CellO is a Python package for annotating cell types in single-cell RNA-seq data</li>
+<li>CellO classifies cells against the hierarchically structured Cell Ontology</li>
+<li>CellO can be integrated into single-cell analysis pipelines implemented with Scanpy</li>
+<li>We present a tutorial that classifies cells in an existing lung tumor data set</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Cell type annotation is an important task in the analysis of single-cell RNA-seq data. CellO (<a href="#bib2">Bernstein et al., 2021</a>) is a machine learning-based tool for annotating cells using the Cell Ontology (<a href="#bib1">Bard et al., 2005</a>). The Cell Ontology is a knowledgebase of known cell types structured as a directed acyclic graph (DAG) in which nodes in the graph represent cell types and edges represent “is a” relationships between cell types. By annotating cells using cell types from the Cell Ontology, CellO’s outputs are hierarchical. That is, if a cell is labeled as a given cell type, it is also labeled as all ancestors of that cell type according to the DAG. Framing the cell type annotation task as that of hierarchical classification has the advantage that if the algorithm is unsure about annotating a cell as a specific cell type (e.g., CD4+ T cell), it can label the cell using a more general term (e.g., T cell). Thus, CellO is capable of providing informative cell type labels for cells that may be difficult to annotate. Lastly, CellO is trained on a collection of purified bulk RNA-seq datasets from diverse cell types and thus, CellO can classify both bulk and single-cell RNA-seq data. When classifying single-cell RNA-seq data, CellO classifies cell clusters.</p>
+<p>The protocol below describes the steps required for annotating cell types in a lung tissue sample produced by <a href="#bib5">Laughney et al. (2020)</a> via the 10× Genomics Chromium platform, a platform for performing droplet-based single-cell RNA-seq. Specifically, we will annotate cells in sample GSM3516673 in the Gene Expression Omnibus (GEO; <a href="#bib4">Edgar et al., 2002</a>). CellO accepts as input a variety of file types that may store the input gene expression matrix including comma-separated value (CSV), tab-separated value (TSV), HDF5, as well as the collection of files that are produced by the 10× Genomics Chromium data processing pipeline. The data set that we will use in this protocol (from Laughney et al.) will be downloaded as a CSV file.</p>
+<p>CellO can be executed in two ways: either using a set of command line functions in a terminal window or within Python. CellO’s command line functions are intended for users who may not have extensive experience working with Python. Instructions for using CellO’s command line tools can be found in the README.md file in CellO’s GitHub repository (<a href="https://github.com/deweylab/CellO">https://github.com/deweylab/CellO</a>).</p>
+<p>In this protocol, we will describe how to run CellO within Python using CellO’s Python API (<a href="#fig1">Figure 1</a>). This protocol’s target audience are users who are familiar with Python and wish to integrate CellO into their Python-based single-cell analysis pipelines. CellO’s API follows the conventions employed by the Scanpy Python package (<a href="#bib10">Wolf et al., 2018</a>) for performing general single-cell analyses and thus, CellO can easily be integrated into an existing RNA-seq analysis pipeline implemented with Scanpy. All steps in this tutorial are implemented within a Jupyter notebook. This notebook is available in CellO’s GitHub repository and can also be executed in a web browser via Google Colab. A link to the Colab notebook can be found in the GitHub repository’s README.md file (<a href="https://github.com/deweylab/CellO/blob/master/README.md">https://github.com/deweylab/CellO/blob/master/README.md</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Schematic overview</div>
+<p>A schematic overview of the steps required to run this protocol.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.1">Prepare your gene expression matrix</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 min</div>
+<ol>
+<li>Prepare your gene expression matrix as a comma-separated value (CSV) file.
+<ol type="a">
+<li>In this tutorial, we will use sample GSM3516673 from GEO, which is a lung tissue sample produced by <a href="#bib5">Laughney et al. (2020)</a>. This file can be downloaded from the command line with the following command:
+<ul>
+<li><code>curl -O</code></li>
+<li><code>ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3516nnn/GSM35166 73/suppl/GSM3516673_MSK_LX682_NORMAL_dense.csv.gz</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The input CSV file must have the cells ids stored in the first column and the gene ids stored in the first row.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> CellO requires that the genes are represented as either gene symbols or Entrez gene IDs. When possible, we suggest using Entrez gene IDs in order to minimize ambiguity. When provided with gene symbols, CellO will attempt to map these symbols to Entrez gene IDs and will ignore genes for which the Entrez ID is unknown.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Lung tissue single-cell RNA-seq data set</td>
+<td><a href="#bib5">Laughney et al. (2020)</a></td>
+<td>GEO: GSM3516673</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>CellO v2.0.2</td>
+<td><a href="#bib2">Bernstein et al., 2021</a></td>
+<td><a href="https://github.com/deweylab/CellO">https://github.com/deweylab/CellO</a></td>
+</tr>
+<tr>
+<td>Jupyter Notebook implementing this protocol for CellO v2.0.2</td>
+<td>This study</td>
+<td><a href="https://github.com/deweylab/CellO/blob/master/tutorial/cello_tutorial.ipynb">https://github.com/deweylab/CellO/blob/master/tutorial/cello_tutorial.ipynb</a></td>
+</tr>
+<tr>
+<td>Scanpy</td>
+<td><a href="#bib10">Wolf et al., 2018</a></td>
+<td><a href="https://scanpy.readthedocs.io">https://scanpy.readthedocs.io</a></td>
+</tr>
+<tr>
+<td>leiden-alg</td>
+<td><a href="#bib9">Traag et al., 2019</a></td>
+<td><a href="https://github.com/vtraag/leidenalg">https://github.com/vtraag/leidenalg</a></td>
+</tr>
+<tr>
+<td>Anaconda</td>
+<td>Anaconda Inc.</td>
+<td><a href="https://anaconda.org">https://anaconda.org</a></td>
+</tr>
+<tr>
+<td>PyGraphviz</td>
+<td> </td>
+<td><a href="https://pygraphviz.github.io/documentation/stable/index.html">https://pygraphviz.github.io/documentation/stable/index.html#</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Install the CellO package and its dependencies using Anaconda</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol>
+<li>Install CellO and its dependencies
+<ol type="a">
+<li>Create an isolated virtual environment using Anaconda. To do so, run the following commands in your terminal window, hitting enter after each line:
+<ul>
+<li><code>conda activate</code></li>
+<li><code>conda create -y -n cello_env python=3.7 graphviz</code></li>
+<li><code>conda activate cello_env</code></li>
+</ul>
+</li>
+<li>At the command line within the terminal window, run the following commands:
+<ul>
+<li><code>pip install pygraphviz leidenalg scanpy cello-classify</code></li>
+</ul>
+</li>
+<li>If you wish to implement this protocol using the provided Jupyter notebook, then you will need to install Jupyter as well. To do so, run the following command:
+<ul>
+<li><code>pip install jupyter</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Verify that CellO is installed correctly
+<ol type="a">
+<li>At the command line within the terminal window, run the command:
+<ul>
+<li>
+<code>python</code><br> This will start the Python shell. Once running, run the following command:</li>
+<li>
+<code>import cello</code><br> Once finished, you can exit the Python shell by typing Ctrl+D.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Optional: Download and launch the Jupyter notebook that implements this protocol
+<ol type="a">
+<li>Download the CellO tutorial Jupyter notebook from GitHub. To do so, at the command line, enter the following command:
+<ul>
+<li>
+<code>curl -O</code><br> <a href="https://raw.githubusercontent.com/deweylab/CellO/master/tutorial/cello_tutorial.ipynb">https://raw.githubusercontent.com/deweylab/CellO/master/tutorial/cello_tutorial.ipynb</a>
+</li>
+</ul>
+</li>
+<li>Launch the Jupyter notebook. To do so, run the following command:
+<ul>
+<li><code>jupyter notebook cello_tutorial.ipynb</code></li>
+</ul>
+</li>
+<li>After entering this command, the Jupyter notebook will open automatically in your computer’s default web browser.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.2">Load the expression matrix into Python and preprocess the data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<ol start="4">
+<li>Import necessary Python packages
+<ol type="a">
+<li>Run the following commands in the Python shell to import the Python packages that we will need for this protocol:
+<ul>
+<li><code>import cello</code></li>
+<li><code>import os</code></li>
+<li><code>import pandas as pd</code></li>
+<li><code>import scanpy as sc</code></li>
+<li><code>from anndata import AnnData</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Load the single-cell expression matrix using Pandas and Scanpy
+<ol type="a">
+<li>We will load the expression matrix into a Pandas dataframe. From this dataframe, we will instantiate an AnnData object. AnnData objects represent annotated single-cell expression matrices and are used by the Scanpy library. To perform these steps, run the following Python commands:
+<ul>
+<li><code>df = pd.read_csv(</code></li>
+<li>  <code>"GSM3516673_MSK_LX682_NORMAL_dense.csv.gz",</code>
+</li>
+<li>  <code>index_col=0</code><br> <code>)</code>
+</li>
+<li>
+<code>adata = AnnData(df)</code>
+<div class="note">
+<span class="note-title">Note:</span> AnnData objects use the rows of the data matrix to store the observations (i.e., cells) and the columns to store the features (i.e., genes). Thus, in this protocol, the expression matrix is a cell-by-gene matrix rather than a gene-by-cell matrix.</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Normalize and cluster the data
+<ol type="a">
+<li>Variant 1: Normalize and cluster the data explicitly using Scanpy.
+<ol type="i">
+<li>Normalize expression data into units of log transcripts per million (TPM). This can be accomplished with the following calls to Scanpy:<br> <code>sc.pp.normalize_total(adata, target_sum=1e6)</code><br> <code>sc.pp.log1p(adata)</code>
+</li>
+<li>Annotate the 10,000 most highly expressed genes for performing clustering. Note, that CellO will operate on <i>all</i> of the genes. These most highly expressed genes will be used only for clustering and visualization.<br> <code>sc.pp.highly_variable_genes(adata, n_top_genes=10000)</code>
+</li>
+<li>Perform principal component analysis (PCA). To cluster the data in Scanpy, we first compute the first 50 principal components of each sample using PCA. This can be performed with Scanpy using the following command:<br> <code>sc.pp.pca(</code><br> <code>adata,</code><br> <code>n_comps=50,</code><br> <code>use_highly_variable=True</code><br> <code>)</code>
+</li>
+<li>Compute nearest-neighbors graph. Before we run Leiden, we must compute the nearest neighbors graph on the cells. We do so by finding the nearest 15 cells to each cell using the Euclidean distance between the first 50 principal components. This can be performed with Scanpy using the following command:<br> <code>sc.pp.neighbors(adata, n_neighbors=15)</code>
+</li>
+<li>Cluster the cells with Leiden. This can be performed with Scanpy using the following command:<br> <code>sc.tl.leiden(adata, resolution=2.0)</code>
+</li>
+</ol>
+</li>
+<li>Variant 2: Using CellO’s wrapper function. CellO provides a wrapper function for normalizing and clustering a UMI counts matrix provided as an AnnData object by wrapping the steps in Variant 1 above:<br> <code>cello.normalize_and_cluster(</code><br> <code>  adata,</code><br> <code>  n_pca_components=50,</code><br> <code>  n_neighbors=15,</code><br> <code>  n_top_genes=10000,</code><br> <code>  cluster_res=2.0</code> <code>)</code>
+<div class="critical">
+<span class="critical-title">Critical:</span> CellO requires that the input expression matrix is normalized using estimated transcripts per million (TPM) and then transformed via log(TPM+1). For UMI count data, TPM are equivalent to counts per million (CPM). CellO’s normalize_and_cluster wrapper function performs this normalization for UMI data specifically. For non-UMI count data, the steps required to derive log(TPM+1) will depend on the units of expression. For a discussion on TPM and its relationships to other units of expression, such as reads per kilobase per million mapped reads (RPKM), see <a href="#bib6">Li et al. (2010)</a>.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> CellO must operate on dense expression profiles resembling those produced by bulk RNA-seq assays. To run CellO on single-cell data, we cluster the single cells and aggregate the sparse expression profiles of the cells within each cluster to form a dense expression profile. Furthermore, because CellO operates on cell clusters, it is important that the cells are not under-clustered. The Leiden algorithm’s resolution parameter controls the granularity of clusters. To increase cluster granularity, the resolution parameter should be increased. In this protocol, we use a resolution of 2.0, which is higher than the default value provided by Scanpy. We set this parameter higher in order to avoid under-clustering. On new data, we encourage the user to examine the quality of the clusters via dimension-reduction scatterplots, such as UMAP plots (see Step 11), in order to detect under clustering.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Optional: Use pre-computed, custom clusters
+<ol type="a">
+<li>If one has loaded, or computed, a Python list storing each cell’s cluster assignment, where the i<sup>th</sup> element of the list is the cluster id corresponding to the i<sup>th</sup> cell’s cluster, then one can store these clusters within the AnnData object, adata, in order to be annotated by CellO. For example, if this Python list is called ‘clusts’, then one can run the Python statement:<br> <code>adata.obs['clusters'] = clusts</code>
+</li>
+</ol>
+This statement will create a new column in the adata.obs dataframe called “clusters” with the content of the clusts list.
+<div class="critical">
+<span class="critical-title">Critical:</span> The list, clusts, must store cluster ids for cells that are ordered in the same order as the rows of adata.obs.</div>
+</li>
+</ol>
+<h3 id="sec2.3">Classify cells with CellO</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min</div>
+<ol start="8">
+<li>Specify CellO’s resource location
+<ol type="a">
+<li>We specify the location of CellO’s resources database. CellO requires a database storing pre-trained models as well as training data for training new models. These data are stored in a directory named “resources”. If this directory is not present in the target location, CellO will download it automatically and store it at the target location. We specify this location as follows:
+<ul>
+<li><code>cello_resource_loc = os.getcwd()</code></li>
+</ul>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> CellO’s resources database requires approximately 5GB of disk space.</div>
+</li>
+</ol>
+<ol start="9">
+<li>Run CellO
+<ol type="a">
+<li>Variant 1: Training a new model. CellO will examine the input gene expression matrix and determine whether the genes match those expected by one of CellO’s pre-trained models. If the genes expected by the pre-trained models are not a subset of the genes in the provided expression matrix, CellO will train a new model using CellO’s built-in training set. This model can be saved and re-used for classifying future datasets that assay the expression of these same genes.
+<ol type="i">
+<li>Specify the file prefix for CellO’s newly trained model. The file storing the model will be named &lt;prefix&gt;.model.dill:
+<ul>
+<li><code>model_prefix = 'GSM3516673_MSK_LX682_NORMAL′</code></li>
+</ul>
+</li>
+<li>Run CellO using the following command:
+<ul>
+<li><code>cello.scanpy_cello(</code></li>
+<li>  <code>adata,</code>
+</li>
+<li>  <code>clust_key='leiden',</code>
+</li>
+<li>  <code>rsrc_loc=cello_resource_loc,</code>
+</li>
+<li>  <code>out_prefix=model_prefix,</code>
+</li>
+<li>  <code>log_dir=os.getcwd()</code>
+</li>
+<li>
+<code>)</code><br> If not found, CellO will download the resources and place them in cello_resource_loc. Also, if using custom clustering, the clust_key parameter should be set to the name of the column in adata.obs that stores each cell’s cluster.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> CellO is packaged with pre-trained models that were trained using CellO’s built-in training set. Each pre-trained model was trained using a different subset of genes. CellO will check whether the input expression matrix is comprised of expression data for the same set of genes as those on which a pre-trained model was trained. If no matching model can be found, then a new model will need to be trained using the built-in training set on the subset of genes shared by the training set and the given gene expression matrix. In Step 9.a above, we train a new model according to the genes in the current gene expression matrix. During training, CellO will output a message detailing how many genes it was able to match with the training set. In the data analyzed in this protocol, the message should read: Of 18804 genes in the input file, 15754 were found in the training set of 58243 genes. To view the specific genes that the program was unable to match, CellO outputs a file called “genes_absent_from_training_set.tsv” that stores the names of the unmatched genes.</div>
+</li>
+</ol>
+</li>
+<li>Variant 2: Using an existing model. In Step 9.a, we describe how to run CellO using a newly trained model that is trained on the gene set provided in the expression matrix. If a model has already been trained using an appropriate gene set, we can run CellO using the existing model stored in &lt;prefix&gt;.model.dill as follows:
+<ul>
+<li><code>cello.scanpy_cello(</code></li>
+<li>  <code>adata,</code>
+</li>
+<li>  <code>clust_key='leiden',</code>
+</li>
+<li>  <code>rsrc_loc=cello_resource_loc,</code>
+</li>
+<li>  <code>model_file=f'{model_prefix}.model.dill'</code>
+</li>
+<li><code>)</code></li>
+</ul>
+</li>
+</ol>
+If using custom clustering, the clust_key parameter should be set to the name of the column in adata.obs that stores each cell’s cluster.
+<div class="note">
+<span class="note-title">Note:</span> Step 9 may produce a warning with text similar to the following: “UserWarning: Trying to unpickle estimator LogisticRegression from version 0.22.2.post1 when using version 0.24.1. This might lead to breaking code or invalid results. Use at your own risk.” This warning is issued by scikit-learn, the Python library used to train CellO’s models. As of scikit-learn version 0.24.1, this warning can be safely ignored.</div>
+</li>
+</ol>
+<h3 id="sec2.4">Visualize cell type annotations overlaid on UMAP plot</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 min</div>
+<ol start="10">
+<li>Run UMAP
+<ol type="a">
+<li>Variant 1: We will run UMAP (<a href="#bib8">McInnes et al., 2018</a>) using Scanpy with the following command:
+<ul>
+<li><code>sc.tl.umap(adata)</code></li>
+</ul>
+</li>
+<li>Variant 2: If one has pre-computed UMAP coordinates stored in a matrix (e.g., a multi-dimensional numpy array), then one can easily load these coordinates into the adata AnnData object. For example, if the UMAP coordinates are stored in an Nx2 dimensional matrix named ‘umap_mtx’, where N is the number of cells in the adata object, then one can load them into the AnnData object as follows:
+<ul>
+<li>
+<code>adata.obsm['X_umap'] = umap_mtx</code>
+<div class="critical">
+<span class="critical-title">Critical:</span> In Step 10.b., the rows of the matrix, umap_mtx, must correspond to the rows of adata.obs.</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Create UMAP plot with cells colored by cluster
+<ol type="a">
+<li>Variant 1: Use the clusters computed via the Leiden algorithm:
+<ul>
+<li>
+<code>sc.pl.umap(adata, color='leiden', title='Clusters')</code><br> This will produce the scatterplot shown in <a href="#fig2">Figure 2</a>A.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Output UMAP plots</div>
+<p>UMAP plots with cells annotated by (A) cluster, (B) most-specific cell type as annotated by CellO, (C) the probability that each cell is a T cell, and (D) the binary decisions made by CellO regarding whether each cell is either a T cell or not.</p>
+</figcaption>
+</figure>
+</li>
+</ul>
+</li>
+<li>Variant 2: If one followed the optional Step 7 and is using custom, pre-computed clusters rather than those produced by Leiden, then one must set the ‘color’ parameter to be the name of the column in the adata.obs dataframe that stores each cell’s cluster assignment. For example, in Step 7, the column name storing the custom clustering is “clusters” and thus, the command to create the UMAP plot would be:
+<ul>
+<li><code>sc.pl.umap(</code></li>
+<li>    <code>adata,</code>
+</li>
+<li>    <code>color='clusters',</code>
+</li>
+<li>    <code>title='Clusters'</code>
+</li>
+<li><code>)</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Create UMAP plot with cells colored by most-specific predicted cell type
+<ol type="a">
+<li>Within the dataframe, adata.obs, CellO has populated a new column, named "Most specific cell type", that stores the deepest cell type within the Cell Ontology that each cell is annotated with. We will color each cell in the UMAP plot using this column as follows:
+<ul>
+<li>
+<code>sc.pl.umap(adata, color='Most specific cell type')</code><br> This will produce the scatterplot shown in <a href="#fig2">Figure 2</a>B.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Create UMAP plot with cells colored according their probability of being T cells
+<ol type="a">
+<li>The probability that each cell is of each cell type are stored in columns within adata.obs that follow the pattern “&lt;cell type&gt; (probability)”. For example, the probability that each cell is a T cell is stored in the column “T cell (probability)”. To color each cell according to the probability that each is a T cell, run the command:
+<ul>
+<li>
+<code>sc.pl.umap(adata, color='T cell (probability)', vmin=0.0, vmax=1.0)</code><br> This will produce the scatterplot shown in <a href="#fig2">Figure 2</a>C.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="14">
+<li>Create UMAP plot with cells colored according whether they are classified as being T cells.
+<ol type="a">
+<li>The binary classification that each cell is of each cell type is stored in columns within adata.obs that follow the pattern “&lt;cell type&gt; (binary)”. To color each cell according to whether each cell is predicted to be a T cell, run the command:
+<ul>
+<li>
+<code>sc.pl.umap(adata, color='T cell (binary)')</code><br> This will produce the scatterplot shown in <a href="#fig2">Figure 2</a>D.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.5">Visualize cell type probabilities overlaid on Cell Ontology graph</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 min</div>
+<ol start="15">
+<li>Visualize cell type probabilities assigned to a specific cluster overlaid on the Cell Ontology graph.
+<ol type="a">
+<li>CellO’s outputs are hierarchical. That is, CellO assigns each cell a probability for each cell type within a subgraph of the Cell Ontology. For a given cluster, one can visualize these probabilities overlaid on the ontology graph. In the command below, we will plot the probabilities assigned to Cluster 21 (<a href="#fig2">Figure 2</a>A). We will restrict our plot to include only cell types for which CellO assigned a probability greater than 0.5:
+<ul>
+<li><code>cello.cello_probs(</code></li>
+<li>    <code>adata,</code>
+</li>
+<li>    <code>'21′,</code>
+</li>
+<li>    <code>cello_resource_loc,</code>
+</li>
+<li>    <code>0.5,</code>
+</li>
+<li>    <code>clust_key='leiden'</code>
+</li>
+<li><code>)</code></li>
+</ul>
+The result of this function call is depicted in <a href="#fig3">Figure 3</a>.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Output ontology graph plot</div>
+<p>The probability that cells in Cluster 21 from <a href="#fig1">Figure 1</a> are of each cell type for all cell types whose probability assignments are greater than 0.5.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.6">Save CellO’s output to a file</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 min</div>
+<ol start="16">
+<li>Save CellO’s output to a tab-separated value (TSV) file:
+<ul>
+<li><code>cello.write_to_tsv(</code></li>
+<li>    <code>adata,</code>
+</li>
+<li>    <code>'GSM3516673_MSK_LX682_NORMAL.CellO_output.tsv'</code>
+</li>
+<li><code>)</code></li>
+</ul>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>This protocol annotates each cell in sample GSM3516673 from Laughney et al. These annotations are written to the output file, GSM3516673_MSK_LX682_NORMAL.CellO_output.tsv. The probability that each cell (i.e., each row of this table) is annotated by each cell type is stored in columns whose names follow the pattern “&lt;cell_type&gt; (probability).” For example, the probability that each cell is a T cell is stored in the columns “T cell (probability)”. The binary yes-no decisions for each cell type are stored in columns whose name follows the pattern “&lt;cell_type&gt; (binary)”. For example, the binary decisions regarding whether each cell is or isn’t a T cell are stored in the column “T cell (binary)”. Lastly, the most-specific cell types assigned to each cell (i.e., the deepest cell types in the ontology graph assigned to each cell) are stored in the column named “Most specific cell type” (<a href="#fig4">Figure 4</a>). We also note that for diagnostic purposes, the 3,049 genes in the data set analyzed in this study that were not utilized by CellO because they could not be matched to CellO’s training set are stored in an output file called “genes_absent_from_training_set.tsv”.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Example output TSV file</div>
+<p>An example of some of the relevant columns in the output TSV file storing CellO’s results. The probability that each cell is annotated by each cell type is stored in columns whose names follow the pattern “&lt;cell_type&gt; (probability).” The binary yes-no decisions for each cell type are stored in columns whose names follow the pattern “&lt;cell_type&gt; (binary)”. Lastly, the most-specific cell types assigned to each cell are stored in the column named “Most specific cell type”.</p>
+</figcaption>
+</figure>
+<p>This protocol demonstrates how to visualize these annotations through a variety of means. We demonstrate how to produce a UMAP plot coloring each cell by its cluster (<a href="#fig2">Figure 2</a>A), by each cell’s most-specific predicted cell type (<a href="#fig2">Figure 2</a>B), by the probability that each cell is a T cell (<a href="#fig2">Figure 2</a>C), and by CellO’s binary decisions regarding whether each cell is a T cell (<a href="#fig2">Figure 2</a>D). Lastly, for a given cell cluster, this protocol demonstrates how one can visualize the probabilities that the given cluster is each cell type. We demonstrate how to create a figure portraying these probabilities for Cluster 21 overlaid on the ontology graph (<a href="#fig3">Figure 3</a>).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>First, because CellO classifies clusters of cells, the results are sensitive to the clustering. If clustering is too coarse, then cells of multiple cell types may be erroneously combined into a larger cluster. If this occurs, then CellO may classify the cluster as one of the constituent cell types. CellO was found to work well when clustering was fine-grained (<a href="#bib2">Bernstein et al., 2021</a>) and thus, we suggest erring on the side of over-clustering rather than under-clustering. To cluster the cells with finer granularity, one can increase the resolution parameter in the Leiden algorithm (see Step 6).</p>
+<p>We also note that the number of highly variable genes selected can affect the clustering as well. Selecting too many highly variable genes tends to decrease the separation between very different cell types (e.g., myeloid vs. lymphoid cells). Alternatively, selecting too few highly variable genes may exclude genes that are important for distinguishing granular cell types. Selecting the appropriate number of highly variable genes prior to clustering is an open problem and depends on the complexity of the dataset (i.e., the diversity of the cell types present in the data; <a href="#bib7">Luecken and Theis, 2019</a>). We suggest erring on the side of selecting a higher number of genes, such as we demonstrate in this protocol by selecting 10,000 genes (see Step 6).</p>
+<p>Second, <a href="#bib2">Bernstein et al. (2021)</a> found that CellO’s probabilities may not be well calibrated for cell types that are low in the ontology (i.e., very granular cell types). That is, CellO’s probabilities do not match the empirical probability that the cells are of a given cell type. However, it was found that CellO accurately ranks cells according to these probabilities. Thus, a cell with a higher probability of being a specific cell type than another cell is more likely to be that specific cell type; however, the actual probabilities may not be fully trustworthy for granular cell types.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>In Step 1, when running the command,</p>
+<ul>
+<li><code>conda activate</code></li>
+</ul>
+<p>you receive the error:</p>
+<ul>
+<li><code>bash: conda: command not found...</code></li>
+</ul>
+<h3 id="sec5.2">Potential solution</h3>
+<p>This error may occur because conda is not installed on your system. To install conda, please visit the webpage, <a href="https://www.anaconda.com">https://www.anaconda.com</a>, to download and install Anaconda or Miniconda. conda is a package and environment manager that enables one to create isolated virtual environments for managing package dependencies.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>In Step 9.a, you receive the error message,</p>
+<p><code>ValueError: Unable to determine gene collection. Please make sure the input dataset specifies either HUGO gene symbols or Entrez gene ID's.</code></p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>This error may occur if the gene identifiers in the provided gene expression dataset are not compatible with CellO (e.g., gene ids from NCBI’s RefSeq database). If this is the case, then the gene identifiers must be replaced with corresponding identifiers that are compatible with CellO. CellO accepts either HUGO gene symbols or Entrez gene ids. In order to reduce ambiguity, we suggest using Entrez gene ids. We recommend Ensembl BioMart (<a href="http://useast.ensembl.org/biomart">http://useast.ensembl.org/biomart</a>) as a potential tool for mapping your current, incompatible gene identifiers to Entrez gene ids or HUGO gene symbols.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>In Step 9.a or 9.b, you receive the error,</p>
+<p><code>ValueError: n_components=3000 must be between 1 and min(n_samples, n_features)=1954 with svd_solver='randomized'</code></p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>This error may occur if there are too few genes in the gene expression matrix. CellO requires an input matrix containing expression data for at least 3,000 genes. We suggest not filtering genes prior to running this protocol.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>In Step 11, you observe that cells that visually appear to belong to distinct clusters were assigned to the same cluster (<a href="#fig5">Figure 5</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/945-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Example of under-clustering</div>
+<p>UMAP plot with cells annotated by their cluster as computed by Leiden with a resolution parameter of 0.05. This is an example of under-clustering in which clear sub-clusters tend to be grouped together into a larger cluster. In this scenario, the resolution parameter should be increased.</p>
+</figcaption>
+</figure>
+<h3 id="sec5.8">Potential solution</h3>
+<p>The cells have been under-clustered and therefore the clusters should be recomputed in order to create a more granular clustering. This can be accomplished by increasing the resolution parameter for the Leiden algorithm (Step 6). We note that CellO aggregates the expression profile for each cluster prior to classification, and therefore, under-clustering may result in aggregate expression profiles computed from distinct cell types. Therefore, we suggest erring on the side of over-clustering rather than under-clustering.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>In Step 9, CellO annotates cells with cell types that are not found in the tissue of origin. For example, CellO may label endothelial cells as umbilical vein endothelial cells. This is most likely due to biases in CellO’s training set. For example, most of the endothelial cell samples in the training set originate from the umbilical vein. We note that CellO is unable to automatically detect these errors as it requires external knowledge regarding the tissue of origin for the sample. Therefore, we encourage users to carefully check CellO’s output for annotated cell types that are not found in the sample’s tissue of origin.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>One can re-run CellO and blacklist the erroneous cell types or tissue types. For example, if CellO labels endothelial cells as umbilical vein endothelial cells, one can re-run CellO and tell CellO to blacklist any cell types that are uniquely located in the umbilical vein. To do so, one can pass a set of tissue-type terms from the Uberon Ontology to use for blacklisting. In the case of umbilical vein endothelial cells, one would pass “UBERON:0002066”, the term for umbilical vein in the Uberon Ontology. For example, the command from Step 9 would be modified as follows:</p>
+<ul>
+<li><code>cello.scanpy_cello(</code></li>
+<li>  <code>adata</code>
+</li>
+<li>  <code>'leiden'</code>
+</li>
+<li>  <code>cello_resource_loc</code>
+</li>
+<li>  <code>model_file=f'{model_prefix}.model.dill'</code>
+</li>
+<li>  <code>remove_anatomical_subterms=['UBERON:0002066']</code>
+</li>
+<li><code>)</code></li>
+</ul>
+<p>To find tissue types or cell types within the Uberon Ontology or Cell Ontology, one can query the Ontology Lookup Service (<a href="https://www.ebi.ac.uk/ols/index">https://www.ebi.ac.uk/ols/index</a>; <a href="#bib3">Côté et al. 2006</a>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bard, J., Rhee, S.Y., and Ashburner, M. (2005). An ontology for cell types. Genome Biol. <i>6</i>, R21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref1">View at publisher</a></p>
+<p id="bib2">Bernstein, M.N., Ma, Z., Gleicher, M., and Dewey, C.N. (2021). CellO: comprehensive and hierarchical cell type classification of human cells with the Cell Ontology. iScience <i>24</i>, 101913. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref2">View at publisher</a></p>
+<p id="bib3">Côté, R.G., Jones, P., Apweiler, R., and Hermjakob, H. (2006). The Ontology Lookup Service, a lightweight cross-platform tool for controlled vocabulary queries. BMC Bioinformatics <i>7</i>, 97. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref3">View at publisher</a></p>
+<p id="bib4">Edgar, R., Domrachev, M., and Lash, A.E. (2002). Gene Expression Omnibus: NCBI gene expression and hybridization array data repository. Nucleic Acids Res. <i>30</i>, 207-210. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref4">View at publisher</a></p>
+<p id="bib5">Laughney, A.M., Hu, J., Campbell, N.R., Bakhoum, S.F., Setty, M., Lavallée, V.-P., Xie, Y., Masilionis, I., Carr, A.J., Kottapalli, S., et al. (2020). Regenerative lineages and immune-mediated pruning in lung cancer metastasis. Nat. Med. <i>26</i>, 259-269. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref5">View at publisher</a></p>
+<p id="bib6">Li, B., Ruotti, V., Stewart, R.M., Thomson, J.A., and Dewey, C.N. (2010). RNA-Seq gene expression estimation with read mapping uncertainty. Bioinformatics <i>26</i>, 493-500. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref6">View at publisher</a></p>
+<p id="bib7">Luecken, M.D. and Theis, F.J. (2019). Current best practices in single-cell RNA-seq analysis: a tutorial. Mol. Syst. Biol. <i>15</i>, e8746. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref7">View at publisher</a></p>
+<p id="bib9">Traag, V.A., Waltman, L., and van Eck, N.J. (2019). From louvain to leiden: guaranteeing well-connected communities. Sci. Rep. <i>9</i>, 5233. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref9">View at publisher</a></p>
+<p id="bib10">Wolf, F.A., Angerer, P., and Theis, F.J. (2018). SCANPY: large-scale single-cell gene expression data analysis. Genome Biol. <i>19</i>, 15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref10">View at publisher</a></p>
+<p id="bib8">McInnes, L., Healy, J., and Melville, J. (2018). Uniform Manifold Approximation and Projection for Dimension Reduction. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00412-3/sref8">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Colin N. Dewey (<a href="mailto:colin.dewey@wisc.edu">colin.dewey@wisc.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>A Jupyter notebook implementing the steps in this protocol can be found at <a href="https://github.com/deweylab/CellO/blob/master/tutorial/cello_tutorial.ipynb">https://github.com/deweylab/CellO/blob/master/tutorial/cello_tutorial.ipynb</a>.</p>
+<h3>Acknowledgments</h3>
+<p>M.N.B. acknowledges the support of a postdoctoral fellowship provided by the Morgridge Institute for Research.</p>
+<h3>Author contributions</h3>
+<p>M.N.B. implemented CellO and the code required to run this protocol. M.N.B. and C.N.D. wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

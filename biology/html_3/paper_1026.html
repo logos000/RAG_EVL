@@ -1,0 +1,1298 @@
+<article>
+<section>
+<h1 id="header">Using EuGeneCiD and EuGeneCiM computational tools for synthetic biology</h1>
+<p><time datetime="2021-09-17">Published: September 17, 2021</time></p>
+<p>Wheaton L. Schroeder,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> Anna S. Baber,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a></sup> and Rajib Saha<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Chemical and Biomolecular Engineering, University of Nebraska – Lincoln, Lincoln, NE 68588, USA</p>
+<p id="aff2"><sup>2</sup>Center for Root and Rhizobiome Innovation, University of Nebraska – Lincoln, Lincoln, NE 68588, USA</p>
+<p id="aff3"><sup>3</sup>Department of Biomedical Engineering, University of Rochester, Rochester, NY 14627, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:wheaton@huskers.unl.edu">wheaton@huskers.unl.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:rsaha2@unl.edu">rsaha2@unl.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100820">10.1016/j.xpro.2021.100820</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Synthetic biology often relies on the design of genetic circuits, utilizing “bioparts” (modular DNA pieces) to accomplish desired responses to external stimuli. While such designs are usually intuited, detailed here is a computational approach to synthetic biology design and modeling using optimization-based tools named <u>Eu</u>karyotic <u>Gene</u>tic <u>Ci</u>rcuit <u>D</u>esign and <u>M</u>odeling. These allow for designing and subsequent screening of genetic circuits to increase the chances of <i>in vivo</i> success and contribute to the development of an application development pipeline.</p>
+<p>For complete details on the use and execution of this protocol, please refer to Schroeder, Baber, and Saha (2021).</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol for Eukaryotic Circuit Design (EuGeneCiD) and Modeling (EuGeneCiM) tools</li>
+<li>Details modification of these tools for new applications and parallelization</li>
+<li>Details reading, formatting, and curation of results for easier understanding</li>
+<li>Instructions for combined and separate workflows for EuGeneCiD and EuGeneCiM</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<div class="timing">
+<span class="timing-title">Timing:</span> Minutes to Hours</div>
+<p>This section includes several steps which are necessary prerequisites to those included in the <a href="#step-by-step-method-details">step-by-step method details</a> as contained in this protocol. This initial section does not focus on sequential steps, rather on system requirements necessary to perform subsequent steps and is therefore numbered separately from the other sections. This includes needed programming languages, packages which expand upon the capabilities of said languages, suggested text editors, and FTPs (File Transfer Protocols, necessary if utilizing a computing cluster). Also detailed here is the location of a repository which contains code and files used throughout this work, some of which will need to be downloaded for successful completion of this protocol. Note that parts of this first “<a href="#before-you-begin">before you begin</a>” section parallel that of <a href="#bib9">Schroeder and Saha (2020a</a>, <a href="#bib10">2020b)</a> (also published in STAR Protocols) because the setup is somewhat similar.</p>
+<ol>
+<li>If needed, install the latest version of programming languages used throughout this protocol, namely Perl and the General Algebraic Modeling System (GAMS).
+<ol type="a">
+<li>The Perl programming language can be downloaded from <a href="http://www.perl.org">www.perl.org</a>. Perl is generally pre-installed on the Mac Operating System (OS) and Linux/UNIX OSs; however, it is encouraged that users to ensure that the latest version of Perl is installed. This will ensure compatibility with modules downloaded from the Comprehensive Perl Archive Network (CPAN) which are used throughout this protocol. For Windows operating system users, the Strawberry Perl download, which can be found at <a href="http://strawberryperl.com/">http://strawberryperl.com/</a>, is recommended as this is what was and is used by the authors. Note that Windows OS users may need to uninstall Strawberry Perl and reinstall the updated version in order to update it. All Perl language downloads are free of charge.
+<ol type="i">
+<li>Necessary modules from CPAN can be easily downloaded using command line or terminal arguments once the Perl programming language is installed. To make installations of CPAN modules easier, first download the CPAN minus app using the command “<code>cpan App::cpanminus</code>”. This results in easier module installation compared to the “cpan” command, as well as simpler and more easily understood command-line output during installation.</li>
+<li>Once Perl and the CPAN minus app are installed, modules can then be installed using the command “<code>cpanm Model::Name</code>”. For this protocol, three modules from CPAN need be downloaded: Spreadsheet::Read, Algorithm::Combinatorics, and Excel::Writer::XLSX. When each is installed, a few lines of output should be written to the command line. Successful installation will see the second to last line of output read “Successfully installed Name-Module-X.XX”, where “Name-Module” indicates the module name and the X’s denote the version of the installed module. If the module was not successfully installed, check and resolve any error messages.</li>
+</ol>
+</li>
+<li>The General Algebraic Modeling System (GAMS) programming language and platform used by the authors for optimization applications, namely for the EuGeneCiD and EuGeneCiM tools. GAMS is <u>not</u> free of charge, as the base module and CPLEX solver (used here) must both be purchased from <a href="http://www.gams.com">www.gams.com</a>.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Other programming languages, including free languages like the Constraint-Based Reconstruction and Analysis (COBRA) package for python (COBRApy), are available for Mixed-Integer Linear Programming (MILP) applications. The authors have chosen to use the GAMS programming for MILP applications compared to these other possible languages for two overarching reason: solution speed and tractability. GAMS is a language more optimized for Mixed Integer Linear Programs (MILPs), and solves MILP problems faster than COBRApy. As discussed in <a href="#bib9">Schroeder and Saha (2020a</a>, <a href="#bib10">2020b)</a>, COBRApy lacks the computational speed or power to perform one of our previously developed tools, the OptFill tool (<a href="#bib9">Schroeder and Saha, 2020a</a>, <a href="#bib10">2020b</a>), in a reasonable period of time for anything other than a small test problem. As the EuGeneCiD and EuGeneCiM algorithms take considerably more time to solve than OptFill when both are implemented in GAMS, it was decided that implementing these tools in COBRApy or MatLab was not an economic use of time. Should COBRApy become significantly quicker in solving MILP problems, it may be worth re-investigation the implementation of EuGeneCiD and EuGeneCiM in COBRApy in the future.</div>
+<ol start="2">
+<li>An advanced text editor such as Notepad++, which has capabilities beyond those of standard text editing software (e.g., notepad for Windows or TextEdit for Mac OS) is highly recommended. The authors, who use Windows as their Operating System (OS), use Notepad++ which can be downloaded from <a href="http://notepad-plus-plus.org">notepad-plus-plus.org</a>. Those who use Mac OS in the authors’ research group use BBEdit, available from <a href="https://www.barebones.com/products/bbedit/">https://www.barebones.com/products/bbedit/</a> or Sublime Text, available from <a href="https://www.sublimetext.com/">https://www.sublimetext.com/</a>, for their programming and text editing.</li>
+<li>In this protocol, the authors make use of a High Performance Computing (HPC) resource (the Holland Computing Center, HCC) to perform parts of this protocol. The HPC resources are used only for running all code in the GAMS programming language (steps 17 and 23) to greatly reduce run time.
+<ol type="a">
+<li>Users of this protocol are encouraged to have HPC resources or gain access to such resources as this will increase speed for the slowest steps of this protocol (steps 17 and 23). Such resources may include a supercomputing cluster at their own institutions or supercomputing clusters available for research use. Follow that institution’s or supercomputing cluster’s recommendations on creating an account, accessing the cluster, cluster file systems, and any other pertinent recommendations.</li>
+<li>For managing files on the supercomputing cluster, the authors have used two approaches (using Windows OS). The first is the notepad plus plus File Transfer Protocol (nppFTP) plugin as the authors use the Windows OS. This is most useful for the transfer of one file at a time. For larger FTP needs, the authors have made use of the Globus research data management system (found at <a href="https://www.globus.org/">https://www.globus.org/</a>), which can be used by anyone with a web browser and is compatible with all OSs. In addition, Mac OS users in the authors’ laboratory use Cyberduck (available at <a href="https://cyberduck.io/">https://cyberduck.io/</a>) for their FTP needs.</li>
+<li>For connecting to the supercomputing cluster and command line protocols, the authors use PuTTY (compatible with Windows and Unix) which can be found at <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">https://www.chiark.greenend.org.uk/∼sgtatham/putty/</a>.</li>
+</ol>
+</li>
+<li>Codes related to and needed for this protocol, as well as to Schroeder, Baber, and Saha (2021) (<a href="#bib14">Schroeder et al., 2021</a>), can be found in the GitHub repository associated with these works (found at <a href="https://github.com/ssbio/EuGeneCiDM">https://github.com/ssbio/EuGeneCiDM</a> or <a href="https://doi.org/10.5281/zenodo.4762590">https://doi.org/10.5281/zenodo.4762590</a>). Individual steps that require users to download a file will specify the file name and location.</li>
+<li>For some of these protocol steps, an internet connection is required (generally this allows for communication with the supercomputing clusters or other HPC resources as well as for downloading resources from the associated GitHub).</li>
+</ol>
+<h3 id="sec1.1">Conceptualizing synthetic biology applications and formatting concepts as workflow inputs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> minutes to days</div>
+<p>Prior to using the Eukaryotic Genetic Circuit Design (EuGeneCiD) and Modeling (EuGeneCiM) tools, users must first conceptualize the desired synthetic biology application. There are a few restrictions as to what types of conceptualizations may be designed and modeled by EuGeneCiD and EuGeneCiM which are detailed in this section. Examples of applicable conceptualizations, shown in Schroeder, Baber, and Saha (2021), include building logic gate-based applications. After conceptualization, this section also details how to format these conceptualizations as inputs for EuGeneCiD and EuGeneCiM. An overview of all steps, major sections, necessity, numbering, and timing is shown in <a href="#fig1">Figures 1</a> and <a href="#fig2">2</a>, including the “<a href="#before-you-begin">before you begin</a>” steps.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Overview of protocol, part 1</div>
+<p>This figure provides a short descriptor of each steps of the protocol prior to step 17 of the <a href="#step-by-step-method-details">step-by-step method details</a>. This figure shows each section of steps as a different fill color and indicates if the step is required by the outline color of each step. Further, timing of each protocol section is detailed.</p>
+</figcaption>
+</figure>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Overview of protocol, part 2</div>
+<p>This figure provides a short descriptor of each steps of the protocol after step 17 of the <a href="#step-by-step-method-details">step-by-step method details</a>. This figure shows each section of steps as a different fill color and indicates if the step is required by the outline color of each step. Further, timing of each protocol section is detailed.</p>
+</figcaption>
+</figure>
+<ol start="6">
+<li>
+<b>Conceptualize a synthetic biology application.</b> Before using the integrated EuGeneCiD/EuGeneCiM workflow, the user must conceptualize a synthetic biology application. Specifically, this application should be for a system to express a particular phenotype (characterized by the expression or non-expression of one or more enzymes) in response to presence or absence of two signals. For cases with other than two signals, please see the section “Adjusting EuGeneCiD and EuGeneCiM for other than two signals”. Below are some considerations for conceptualization.
+<ol type="a">
+<li>EuGeneCiD is not a dynamic tool; therefore, any conceptualization relying on dynamic behavior (such as a repressilator) cannot be designed by this tool.</li>
+<li>As these tools are for genetic circuits, it should be possible to characterize inputs and outputs as binary. This could be achieved through defining inputs and outputs by their presence, expression, or by achieving a threshold distinguishing two states.</li>
+<li>As this is a tool for eukaryotes, the chassis for implementing this concept should be a eukaryote.</li>
+</ol>
+</li>
+<li>
+<b>Define the concept in a logic table.</b> Once a concept has been created for a synthetic biology application, it must be defined using a logic table. A logic table states, in binary terms, the input (column(s) on the Left-Hand Side, LHS) and output (column(s) on the Right-Hand Side, RHS) signals of the desired circuits. A ‘0’ indicates absence whereas a ‘1’ indicates presence for signal, whereas a ‘0’ indicates inactivity and a ‘1’ indicates activity for output protein signals. The logic table should include all possible ligand combinations for the conceptualized circuit. An example logic table is shown in <a href="#fig3">Figure 3</a>A. These examples show input signals of the presence of Cadmium (Cd) and Copper (Cu), a logic of Cd NIMPLY Cu, and an output signal of GFP expression.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Example unified input sheets</div>
+<p>This figure recreates various sheets in the unified input file, an Excel Workbook which is used in the workflow to describe the database and conceptualization in a single place. Shown here are all of the required sheets of that workbook, along with example entries from Schroeder, Baber, and Saha (2021). All non-empty columns are shown in these examples, though not all cells will necessarily be filled (such as repressor or inducer cells if that part has no such effectors). Next to each example table is the name given to the sheet. The names of sheets should be reproduced exactly as shown, otherwise portions of this protocol may not work.</p>
+<p>(A) An example of a logic table conceptualization, of a Cd NIMPLY Cu logic circuit with a green fluorescent protein (GFP) output as a reporter of circuit state. This example shows that identifiers, defined in other sheets, are used as headings in the logic table.</p>
+<p>(B) This shows what a typical “Ligands” sheet will look like, listing all ligands with both a name and a globally unique identifier.</p>
+<p>(C) This shows all that is required in an “Other” sheet, namely the label “max time” and a whole number value representing the largest relative time point to model using EuGeneCiM (where the smallest time point modeled is always 0).</p>
+<p>(D) Shows non-empty cells of a typical “Promoters” sheet along with two example promoters. The order and type of information reported in each column should be preserved.</p>
+<p>(E). Shows non-empty cells of a typical “Transcripts” sheet with two example transcripts. In using this protocol, the order and type of information reported in each column should be preserved.</p>
+<p>(F) Shows non-empty cells of a typical “Enzymes&amp;Proteins” sheet with two example enzymes/proteins. In using this protocol, the order and type of information reported in each column should be preserved.</p>
+<p>(G) Shows non-empty cells of a typical “Terminators” sheet with three example terminators. In using this protocol, the order and type of information reported in each column should be preserved.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<ol start="8">
+<li>
+<b>Create a combined conceptualization and database Excel file.</b> Given that the combined EuGeneCiD/EuGeneCiM workflow code requires 26 unique input files, it was decided to define the conceptualization and the database bioparts library in a unified Microsoft Excel file (hereafter, referred to as the “unified input”), example sheets of which are shown in <a href="#fig3">Figures 3</a>A –3G.
+<ol type="a">
+<li>
+<b>Naming the input file.</b> This should be named “unifed_input_descriptor.xlsx”, where “descriptor” stands in for a short descriptor which applies to the user’s synthetic biology application conceptualization and/or database. For example, for the unified input for the Cadmium (Cd) NIMPLY Copper (Cu) circuit conceptualization in Schroeder, Baber, and Saha (2021), “descriptor” is replaced by “Cd_nimply_Cu”, indicating that this was for a unified input containing bioparts, the logic gate conceptualization, and the input signals. This unified input could then be automatically converted to the required input files.</li>
+<li>
+<b>Creating some of the requisite sheets for the input file.</b> In this step, three of the sheets of this unified input related to defining the conceptualization will be created (examples of which are shown in <a href="#fig3">Figures 3</a>A–3C). Example unified input files can be found in the databases folder of theGitHub associated with this work (at github.com/ssbio/EuGeneCiDM/inputs/) named “unified_input_descriptor.xlsx”, where “descriptor” stands for a descriptor applied to a synthetic biology conceptualization from Schroeder, Baber, and Saha (2021) (such as “Cd_nimply_Cu”).
+<div class="critical">
+<span class="critical-title">Critical:</span> Some type of descriptor, however brief, should be applied to the naming of the unified input file, otherwise downstream steps may throw an error.</div>
+<div class="note">
+<span class="note-title">Note:</span> Throughout this protocol, descriptors in file names designated by the users of this protocol will be represented by the string “descriptor”, while those in files downloaded from the GitHub associated with Schroeder, Baber, and Saha (2021) will generally be from the Cd NIMPLY Cu circuit conceptualization and will often contain the string “Cd_nimply_Cu” in the file names. This will then be replaced by the user’s “descriptor”.</div>
+<ol type="i">
+<li>
+<b>The logic table sheet.</b> Create a sheet named “LogicTable”. This sheet is the human-readable version of the binary logic table which represents the conceptualization. The first row is the header, which begins by listing the ligands to which the circuit must respond (one per cell), followed by a list of one or more enzymes whose activity is the desired output signal of the conceptualized circuit. An example “LogicTable” is shown in <a href="#fig3">Figure 3</a>A.
+<div class="critical">
+<span class="critical-title">Critical:</span> Since programs which read and convert the unified input file are case-sensitive, sheet names should be reproduced exactly as shown.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> All ligands in the logic table must match a ligand identifier in the “Ligands” sheet (created in step 8.b.i); otherwise an error will be returned when attempting to solve EuGeneCiD.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> All enzymes in the logic table must match an enzyme identifier in the “Enzymes&amp;Proteins” sheet (created in “<a href="#sec1.2">selecting, quantifying, and creating the bioparts library</a>” section, step 12); otherwise, an error will be returned when attempting to solve EuGeneCiD.</div>
+<div class="note">
+<span class="note-title">Note:</span> The order in which the sheets are arranged in the Excel workbook does not matter. Further, any additional sheets will not affect downstream steps if users wish to include additional documentation.</div>
+</li>
+<li>
+<b>The ligand sheet.</b> Create a sheet named “Ligands”. This sheet will have two columns, “Ligand name” and “Ligand identifier”. In the first column, provide a human-readable name for each ligand which will serve as a signal to the genetic circuit by its presence or absence (one row per ligand). In the second column, provide a unique short name or shorthand for the ligands which downstream programs in this workflow will use to identify these ligands. An example “Ligands” sheet is shown in <a href="#fig3">Figure 3</a>B.
+<div class="note">
+<span class="note-title">Note:</span> Any number of ligands may be listed here and in any order. This sheet defines the set of ligands, of which the ligands to which the conceptualized circuit responds is a subset.</div>
+<div class="note">
+<span class="note-title">Note:</span> The ligand sheet header text is not read by any downstream program, so header text can be customized to whatever the user feels most appropriate. The data which should be included in that column, however, should remain constant (e.g., do not rearrange column order). This applies to all sheets of the unified input except the logic table.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ligand identifiers should be unique strings, without spaces or special characters (in other words, consisting of letters and numbers only). This rule applies to all identifiers. Should the string not be unique, this will cause errors later in the workflow. The same applies to all “identifiers” of all bioparts.</div>
+</li>
+<li>
+<b>The other sheet.</b> This sheet should be named “Other”. At present, there is only two cells which need be written. Cell A1 should contain the text “max time”, and cell B1 should contain a whole number (i.e., 0, 1, 2, 3, etc.) which is the last time point for EuGeneCiM to model (EuGeneCiM will start a time 0). An example “other” sheet is shown in <a href="#fig3">Figure 3</a>C.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> As the EuGeneCiD and EuGeneCiM tools use relative values for all bioparts characteristics (promoter strength, enzyme concentration threshold for activity, translational efficiency, biopart half-life, etc.), these time points are relative (as will be enzyme concentration and transcript abundance results from using these tools). It is recommended that the max time point investigated be at least a value of 10 (as potentially problematic dynamic circuit behavior often manifests before this point for simpler circuits like BUFFER, AND, XOR, NOR, etc. as studied in Schroeder, Baber, and Saha (2021)). Should more complex logic circuits be desired, this maximum time point should be increased. As EuGeneCiM is not particularly computationally expensive (in comparison to EuGeneCiD), this time point can generally be increased without major increases to workflow time.</div>
+<h3 id="sec1.2">Selecting, quantifying, and creating the bioparts library</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> days to weeks</div>
+<p>Literature and database searches must be undertaken to identify useful bioparts (promoters, genes, transcripts, and enzymes) to comprise the input bioparts library. This library both contains all the parts which might be used in creating a genetic circuit as well as quantifies the qualities of these parts. A well-designed biopart library is important to having a viable solution space in the EuGeneCiD problem, and thus identifying potential design solutions.</p>
+<ol start="9">
+<li>
+<b>Using naturally occurring signaling mechanisms (when possible).</b> Signaling pathways often are comprised of several enzymes, proteins, and/or metabolic reactions necessary to pass the signal from the cell’s external environment to the nucleus, for which it may be impractical or difficult to transform into a chassis organism. Therefore, using bioparts which are affected by these pathways may be more viable or simple to implement, while simplifying these signaling pathways to activation or repression by that which triggers the signaling cascade.
+<ol type="a">
+<li>
+<b>Examples of using naturally occurring mechanisms.</b> In Schroeder, Baber, and Saha (2021), several promoters are listed as cadmium activated, though this activation is indirect and is rather achieved by kinases acting upon transcription factors, or the indirect metabolic actions of cadmium ions inside the cell which create reactive oxygen species (<a href="#bib1">Chmielowska-Bąk et al., 2014</a>).</li>
+<li>
+<b>Considerations of the simplification.</b> This simplification is not a problem for EuGeneCiD and EuGeneCiM since design and modeling parameters associated with bioparts are relative, rather than absolute characterizations which would be complicated by the multiple steps and mechanisms between cadmium ions and the affected promoters.</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>
+<b>Identifying and parameterizing promoters.</b> Promoters are, in some instances, the most difficult of bioparts to identify and characterize, since they are generally closely associated with their related transcript and are often not treated as independent, highlighted by the fact that many identifier systems lack individual identifiers for promoters.
+<ol type="a">
+<li>
+<b>Promotor identifiers and recommended parameter ranges.</b> Discussed in the following sub steps is the identification and recommended parameter ranges for promotor characterization.
+<ol type="i">
+<li>
+<b>Promotor names.</b> In Schroeder, Baber, and Saha (2021), most promoters have names such as “CdI3-associated promoter” and use the identifier of the promoter’s associated gene as one method of identifying the biopart of interest. Generally, the strength of a promoter will be determined by transcript abundance or gene expression. Two example entries for characterized promoters are shown in <a href="#fig3">Figure 3</a>D. The name assigned can be anything, as the name is not used to construct input file but exists solely as a human-readable identifier.</li>
+<li>
+<b>Promotor identifier.</b> The identifier should be a unique string which the workflow will use to uniquely identify the promotor in question. In the case of the “CdI3-associated promotor”, the identifier given is “P_CdI3.</li>
+<li>
+<b>Promotor normal state parameter range.</b> The normal state is a binary parameter which notes whether a promoter is normally on (value 1) or off (value 0) in what will be defined as the “no signals” state for a genetic circuit conceptualization.</li>
+<li>
+<b>Promotor strength suggested parameter range.</b> The promoter strength can be any non-negative value, though it is suggested to parameterize it using an integer between 1 (very weak) and 5 (very strong).</li>
+<li>
+<b>Promotor leakiness suggested parameter range.</b> Leakiness can also take any non-negative value, though it is suggested to parameterized it on a scale of 0 (no transcript production when promoter is off) to 3 (very leaky).
+<div class="note">
+<span class="note-title">Note:</span> Note that the ranges for strength and leakiness (steps 10.a.iv and 10.a.v) are recommended, not hard-coded, since what are important here are relative values and changing these values will influence downstream characterizations. For instance, if the scale of integer characterizations for a promoter are increased (say, to be on a scale from 2 to 10), then the concentration threshold for protein expression would have to be similarly increased (from 5 to 10 or higher, for instance).</div>
+</li>
+</ol>
+</li>
+<li>
+<b>Formatting effectors of the promotor.</b> Inducers and repressors are reported in the same format of “XX(Y)”.
+<ol type="i">
+<li>
+<b>Effector identifier.</b> In the format of “XX(Y)”, XX denotes the identifier associated with a ligand or enzyme which effects the activity of the promoter. The identifier given must exactly match that of a ligands or enzyme.</li>
+<li>
+<b>Effector strength.</b> In the format of “XX(Y)”, and Y denotes the strength of that interaction. The interaction strength is used to denote the primacy of various effectors, and the baseline (weakest) effector strength is generally quantified as having a strength of 1. Should data exist to suggest that a particular effector has a stronger effect than the weakest effector, its strength is assigned the next integer value larger than that of the weakest effector. This provides a relative ranking of effectors under consideration.
+<div class="note">
+<span class="note-title">Note:</span> An example is Gene 4, shown in <a href="#fig4">Figure 4</a>A,is activated by exposure to Zn (with effector strength of 1 is assigned), yet when exposed to Zn and Cd is inactive, suggesting that Cd is an inhibitor and a stronger effector than Zn (with effector strength of 2 is assigned).</div>
+</li>
+</ol>
+</li>
+<li>
+<b>Documentation.</b> The remaining columns exist for the documentation of the part, including its description, literature source, source organism, identifier of the associated genes, and other pertinent notes to its parameterization and/or inclusion.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Example promoter characterizations from literature data</div>
+<p>As the characterization of promoter bioparts is not a precise quantification, shown here are three example data source (one fictional, two real) and an example resulting “Promoters” sheet.</p>
+<p>(A) Shows an example Northern blot or RT-PCR analysis that may be used for promoter characterization.</p>
+<p>(B) Shows an example of relative expression data that may be used to quantify promoters for use with EuGeneCiD and EuGeneCiM.</p>
+<p>(C) Gives a second example of the same type of data as B.</p>
+<p>(D) Shows the resulting promoter characterizations for EuGeneCiD and EuGeneCiM by showing the first several columns of a “Promoters” sheet that might result from this data.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Example parameterizations are shown in <a href="#fig3">Figure 3</a>D as well as in <a href="#fig4">Figure 4</a> which shows the parameterization of promoters from various data sources.</div>
+</li>
+<li>
+<b>Various possible datasets and their use for the parameterization of promotors.</b> The following steps list some sources of characterization information that users might commonly encounter and how to characterize this information for EuGeneCiD and EuGeneCiM. This list is not intended to be exhaustive, but rather illustrative of possible sources of promoter information which needs to be characterized in this tool, and some methods of how to perform that characterization.
+<ol type="i">
+<li>
+<b>Northern blot, RT-PCR, or other semi-quantitative datasets.</b> Semi-quantitative data can be used with the EuGeneCiD and EuGeneCiM to define relative promoter characteristics though the lens of relative RNA abundance (<a href="#bib8">Reue, 1998</a>).
+<div class="note">
+<span class="note-title">Note:</span> Examples of how the authors have quantified faux Northern blot or RT-PCR data are shown in <a href="#fig4">Figure 4</a>A, with each example gene highlighting important parameterization examples, with the resulting parameterizations shown in <a href="#fig4">Figure 4</a>D. Fictitious genes are used here to highlight more possible parameterization scenarios. Note that with this type of data, unless time-course data is available, it is assumed that all terminators are the same strength; therefore, the differences in expression are controlled by the promoters.</div>
+<ul>
+<li>
+<b>Characterizing constitutive gene expression.</b> Constitutively expressed genes should be assigned a leakiness of zero and a strength corresponding to their relative expression strength.
+<div class="note">
+<span class="note-title">Note:</span> In <a href="#fig4">Figure 4</a> gene 1 is given as an example constitutive gene identified in Northern blot, RT-PCR, or other semi-quantitative manner. For this gene, a leakiness of 0 is assigned as the promoter is never off. For the strength of expression (as shown by relative band intensity compared to other bands) the blot or analysis is used then to determine the strength of the gene’s expression due to the promoter.</div>
+</li>
+<li>
+<b>Characterizing leaky gene expression.</b> Very leaky genes will generally be assigned a high leakiness value in the defined range of values (see step 10.a.iv) and a low strength (see step 10.a.v).
+<div class="note">
+<span class="note-title">Note:</span> In <a href="#fig4">Figure 4</a>, gene 2 is included as an example of a leaky gene. Gene 2 show a very leaky expression (leakiness assigned as 3) which is activated by exposure to Zn, yet has only a slight increase in expression as a result of activation. This gene then is characterized as normally off with a low strength (assigned as 2, since expression when active is based on the sum of leakiness and strength).</div>
+</li>
+<li>
+<b>Characterizing non-leaky gene expression.</b> Genes which are non-leaky are assigned a low leakiness value in the defined range (see step 10.a.iv) and a strength corresponding to its relative strength compared to other genes (see step 10.a.v).
+<div class="note">
+<span class="note-title">Note:</span> Gene 3 is included in <a href="#fig4">Figure 4</a> as a gene with low leakiness (assigned to a value of 1) which is strongly activated by exposure to Cd. It is therefore assigned a strength of 5 and a leakiness of 1. Since there is only one effector, this effector is assigned a strength of 1 as the baseline.</div>
+</li>
+<li>
+<b>Characterizing gene expression with multiple effectors.</b> Semi-quantitative data can show genes with multiple effectors. Effector strength should be assigned as detailed in step 10.b.ii.
+<div class="note">
+<span class="note-title">Note:</span> Gene 4 is included in <a href="#fig4">Figure 4</a> as an example of a moderately leaky (assigned a leakiness of 2) normally “off” gene with multiple effectors. Gene 4 is activated by Cd yet is not “on” when exposed to both Zn and Cd. This suggests that both Zn and Cd are effectors, and that Zn is a stronger effector than Cd since it can repress gene expression when Cd (an activator) is present. Therefore, the strength of the interaction with Cd is assigned a value of 1 (as the weakest effector), whereas the interaction strength with Zn is assigned a value of 2 (as a stronger effector). Gene 5 is a normally “on” gene showing moderate leakiness. It also shows a slight repression of expression with respect to Zn, and a strong repression with respect to Cd. Since this tool uses binary, rather than continuous, indicators of activity, in this example, the authors have decided that the repression shown by exposure to Zn is not significant enough to parameterize this gene as being repressed by Zn. Therefore, this promoter is only parameterized as being repressed by Cd. In Schroeder, Baber, and Saha (2021), the work of <a href="#bib11">Suzuki et al. (2001)</a> which included Northern blot and RT-PCR data was used to quantify some Zinc-, Copper-, and Cadmium- responsive promoters.</div>
+<div class="note">
+<span class="note-title">Note:</span> Ideally, when working with several semi-quantitative datasets across different sources, the sources will share a housekeeping gene as a common benchmark for quantifying relative expression. If such a benchmark exists, use this as a standard against which to quantify promoter strength and leakiness of each other promoter against. Note that as a housekeeping gene is generally constitutive, the promoter associated with such a gene would be classified with a leakiness of 0 (since it is never off) and all expression of such a constitutive promoter is assigned to promoter strength (relative to the other bands, and as in contrast to dividing expression strength between leakiness and strength parameters).</div>
+<div class="note">
+<span class="note-title">Note:</span> Should the ratio of expression in “on” compared to “off” states be high (e.g., 10 or more), check against a housekeeping gene to confirm if the relative expression is truly extraordinary (as evaluated by comparison to a housekeeping gene), and that a high promoter strength (e.g., greater than 5) is warranted. Should the relative expression compared to a housekeeping gene not be extraordinary (or a comparison not be found) it is recommended to ensure characterizations fall within ranges presented here. One approach which might be taken to achieve characterizations within the usual ranges presented here is to decreased promoter leakiness. For instance, if the leakiness is characterized as 0.25 and the strength as 4.75, then the ratio of expression when on to when off is 5:0.25, or a 20-fold increase in expression without using an unusual strength or leakiness characterization value.</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<b>RNA-seq, qRT-PCR, and other quantitative techniques.</b> Data from quantitative techniques for transcript expression, such as RNA-seq and qRT-PCR may also be used for quantifying promoters for EuGeneCiD and EuGeneCiM.
+<ol type="i">
+<li>
+<b>Significance of differential expressions.</b> Using such data, for instance RNA-seq, it must first be determined if expression differences are statistically significant between two or more conditions. Should the difference between two conditions be statistically insignificant, then that condition does not affect the promoter. Should the difference between the two conditions be statistically significant, the condition with the lower expression should be used as the basis for calculation (the leakiness of the promoter in the “off” state). The ratio between this basis and the highest expression should be the sum of the leakiness and strength of the promoter, as described in step 10.a.
+<div class="note">
+<span class="note-title">Note:</span> Methods of statistical analysis for quantitative methods will not be discussed here, as it should be performed by the authors of the study from which the quantitative data is taken. If the users of this protocol are performing the quantitative techniques or the original study did not perform a statistical analysis, the authors would refer users to the work of <a href="#bib5">Fang et al. (2012)</a> (for RNA-seq data), <a href="#bib6">Guénin et al., 2009</a> (for qRT-PCR), or other relevant works on best statistical practices.</div>
+</li>
+</ol>
+</li>
+<li>
+<b>Expression ratios.</b> Some sources (literature or database) will not report raw expression data, but rather fold change (or log fold change) data comparing two states as ratios of expression. The following substeps will describe the general procedure for how th characterize such data.
+<ol type="i">
+<li>.<b>Identify a basis of calculation.</b> Identify the condition with the lowest expression and assign it a relative expression value of 1.</li>
+<li>.<b>Determine relative expression between conditions.</b> Then, use the ratios provided to convert to the relative expression value for other experimental conditions, and use these relative values to characterize the promoters.
+<div class="note">
+<span class="note-title">Note:</span> Two examples of data used by Schroeder, Baber, and Saha (2021) from <a href="#bib3">Van De Mortel et al., 2006</a> and <a href="#bib4">Van De Mortel et al., 2008</a> are shown in <a href="#fig4">Figures 4</a>B and 4C, with the resulting parameterizations shown in <a href="#fig4">Figure 4</a>D. These examples are included to help readers better understand parameterization of this type of data. Four transcript expression ratios are given by Van De Mortel et al. relating Zinc deficient (Zn0), Zinc sufficient (Zn2), Zinc excess (Zn25), and Zinc sufficient with Cadmium (Cd15) conditions.</div>
+</li>
+</ol>
+<b>Example 1:</b> Since EuGeneCiD and EuGeneCiM are relative tools, the ratios can be rounded to values which make downstream calculations easier, as shown in <a href="#fig4">Figure 4</a>B. Generally, this will be either rounding to whole numbers or to simple fractions as is the case for these. From these ratios, Zn0 can be identified as the condition with the lowest gene expression and will be assigned to a relative expression value of 1. From this, relative expressions in conditions Zn2 and Zn25 can be calculated as 4 and 50, respectively. Using the Zn sufficient condition (Zn2) compared to the Zn deficient conditions (Zn0) as a baseline, the promoter associated with FRO2 (ferric-chelate reductase 2), P_FRO2, is first defined as normally off, since expression is relatively very low in the Zn0 condition). P_FRO2 is then defined as induced by Zn, since expression is greatly increased when Zn is present. The strength of this interaction is given the default value of 1. Next, P_FRO2 is assigned a leakiness of 1, as a value of 1 is our default leakiness value based on assigning the lowest expression (Zn0) as having a relative expression of 0. Finally, P_FRO2 is assigned a strength of 3, because the effective strength of a promoter when it is “on” is the value of the leakiness (1) plus the assigned strength (3) for the effective strength of the promoter when on (4 total when “on”, compared to 1 when “off”). This corresponds to the relative expression value of 4 seen for the Zn2 condition. However, considering the high relative strength of the promoter at higher Zinc concentrations, the strength estimate was later revised up to 4 so that total expression when the promoter is “on” is now 5.<br> <b>Example 2:</b> Unlike the previous example, this one contains statistically non-significant effects (namely the Zn2/Zn25 ratio in <a href="#fig4">Figure 4</a>C), which should be rounded to 1 before doing other rounding. As before, this will be either rounding to whole numbers, as is the case for Zn0/Zn2 ratio, or to simple fractions as is the case of Zn2/Cd15. Since the Cd15 condition has both Zinc and Cadmium present, it will be ignored when determining base relative expression, but will be revisited when determining effectors and effector interaction strengths since the effects of each cannot be separated immediately. Amongst the Zinc conditions, using logic, Zn2 and Zn25 are identified as having the lowest relative expression. For this example then, we let Zn2 expression be 1. From this, using the above ratios, we can calculate that relative expression under the Zn0 condition is 4, and under the Zn25 condition is 1. Therefore, we can call the promoter associated with RSU1 (ribosomal protein L13 homolog), P_RSU1, to be normally on, as it is “on” in the absence of the signal ions. As with P_FRO2, we assign a leakiness of 1, as an expression level of 1 is the basis of our calculations (with Zzn2 condition having the minimum expression). Next, from our results we see a four times greater expression in Zn0 compared to Zn2 conditions, therefore we assign a strength of 3 (for a total of four times less expression when Zn is present) and a repressor of Zinc given the default interaction strength of 1. Returning to the Zn2/Cd15 ratio, this shows that Cadmium presence, while also in the presence of Zinc, results in a recovery of expression. This is shown in the relative condition expression levels, where Zn0 relative expression is 4, Zn2 relative expression is 1, and Cd15 (a condition including Zn and Cd presence) relative expression is 5. Therefore, Cd is an activator of the P_RSU1 promoter which is more powerful than the inhibition caused by Zn; therefore, this interaction is assigned a strength of 2.</li>
+<li>
+<b>Descriptions in article text.</b> Occasionally, the main text of an article, particularly one focusing on a single important promoter related to the expression of an important gene, may detail characteristics of the promoter in question. Users of this protocol will have to use best judgment in characterizations as each reference would likely be idiosyncratic.</li>
+<li>
+<b>Previous characterizations.</b> Characterizations of promoters from other optimization-based circuit design tools of similar structures can be used. Examples at the time of publication include Schroeder, Baber, and Saha (2021), <a href="#bib2">Dasika and Maranas (2008)</a>, and <a href="#bib13">Zomorrodi and Maranas (2014)</a>.</li>
+<li>
+<b>Other sources.</b> Other sources of information exist from which useful characterizations can be drawn, such as data provided by vendors, in-house data on promoter activity, and expert knowledge of a given system.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>
+<b>Include identified promoters in the unified input.</b> Identified promoters should be included in the unified input file in a new sheet with the name “Promoters”, the headings of which are shown in <a href="#fig3">Figure 3</a>D, along with two example entries from Schroeder, Baber, and Saha (2021). Further example entries are shown in <a href="#fig4">Figure 4</a>D related to the characterization of illustrative promoter data discussed in notes to step 10.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> As with other sheets, all identifiers must be globally unique strings and the header text may be adjusted to suit user preferences.</div>
+<ol start="12">
+<li>
+<b>Identify, quantify, and include transcripts and enzymes/proteins.</b> Transcripts and enzymes/proteins are inextricable linked through the central dogma of biology, and thus will be addressed in this unified step, though we will begin with transcripts.
+<ol type="a">
+<li>
+<b>Transcripts.</b> The parameterization required for transcripts is shown in <a href="#fig3">Figure 3</a>E. The “Transcripts” sheet should be created in the unified input, populated with this data, as shown in <a href="#fig3">Figure 3</a>E.
+<ol type="i">
+<li>
+<b>Transcript name.</b> The “name” given should be a human-readable name, and can be any string, as it is not used by the subsequent programs, but rather is a matter of documentation.</li>
+<li>
+<b>Transcript identifier.</b> The provided identifier should be a unique string and will be used by subsequent programs to identify the biopart.</li>
+<li>
+<b>Suggested translational efficiency range.</b> The translational efficiency parameter allows for accounting of various factors which can influence gene expression such as codon optimization (<a href="#bib7">Kudla et al., 2009</a>)(<a href="#bib12">Ward et al., 2011</a>), speed of transcription, or, presumably, codon deoptimization. Translational efficiency is suggested to be a parameter on a scale of 1–3 which indicates how efficiently mRNA sequences are expressed as proteins.</li>
+<li>
+<b>Defining translational efficiency.</b> In Schroeder, Baber, and Saha (2021), since no such techniques were applied, transcriptional efficiency of all transcripts is set at 2 (used here as the default for a non-optimized efficiency).
+<ul>
+<li>
+<b>Alternative splicing.</b> If a transcript does encode multiple isoforms, it may be more accurate to decrease transcriptional efficiency to model that some transcript produces each enzyme, but not both (due to post-transcriptional modifications).</li>
+</ul>
+</li>
+<li>
+<b>Mapping transcript to enzyme.</b> Write the identifier of the enzyme which is encoded by the transcript. If there are multiple enzymes, list them separated by semi-colons (so that the convert script recognizes them).</li>
+<li>
+<b>Documentation.</b> The remaining columns of “description”, “gene identifier”, “source organism”, and “source” are for annotation of the database, including describing decisions made during parameterization, giving an identifier which can be used to uniquely identify the transcript, identifying its source, and citing where the data is from.</li>
+</ol>
+</li>
+<li>
+<b>Enzymes/Proteins.</b> The selected enzymes will follow directly from the selected transcripts. All enzymes which are indicated as encoded in the “Transcripts” sheet must be parameterized here.
+<ol type="i">
+<li>
+<b>Enzyme name and identifier.</b> As with other sheets, the name is a human-readable name, and the identifier is used by programs throughout the workflow.</li>
+<li>
+<b>Enzyme parameter recommended ranges.</b> Detailed in the following substeps are suggested parameter ranges for characteristics associated with enzymes in the EuGeneCiD and EuGeneCiM tools.
+<ul>
+<li>
+<b>Enzyme normal state.</b> As with the “Promoters” sheet, a normal state of 1 indicates a protein or enzyme that is “on” by default, and 0 indicates a default “off” state.</li>
+<li>
+<b>Enzyme relative expression threshold suggested range.</b> Expression threshold denotes a relative value (on a scale of 1–10) of enzyme/protein concentration that is necessary for a cell to express the phenotype associated with that enzyme. The default value is 5 which can be adjusted based on the characteristics of the protein/enzyme in question.</li>
+<li>
+<b>Enzyme half-life parameter suggested range.</b> Half-life values assigned are generally between 0 and 3, depending on how quickly (relatively) the given enzyme or protein degrades. The default value used is 2.</li>
+</ul>
+</li>
+<li>
+<b>Defining enzyme effectors.</b> Finally, activators and repressors are noted. These entries are to be formatted the same as in the “Promoters” sheet (see step 10b), with the identifier, followed by relative interaction strength in parentheses, and multiple entries separated by semi-colons.</li>
+<li>
+<b>Documentation.</b> The final four columns, “description”, “gene identifier”, “source organism”, and “source” exist for the purposes of documentation. An example of an enzyme sheet is shown in <a href="#fig3">Figure 3</a>F. This sheet should be named “Enzymes&amp;Proteins”</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<b>Identify, quantify, and include terminators.</b> An example terminator sheet is shown in <a href="#fig3">Figure 3</a>F. As with other sheets, the name is meant to be a human-readable name which is used for documentation and the identifier is a unique string identifier. The only parameterization associated with terminators is half-life, generally on a scale of 1 (shortest) to 3 (longest). Finally, the “description”, “source organism”, and “source” columns are for adding documentation about the terminators used.</li>
+<li>
+<b>Review formatting.</b> By this step, the unified input file should be complete. Please review formatting of the unified input file. Particularly the identifiers used (each should be globally unique) and the order in which the columns are placed (should be the same as in <a href="#fig3">Figure 3</a>), as a common error in the workflow results from repeat identifier and wrong types of data in cells (see <a href="#sec6.1">troubleshooting 1</a> and <a href="#sec6.3">2</a>).</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td><a href="http://www.github.com">www.github.com</a></td>
+<td>RRID:SCR_002630</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Perl Programming Language (version 5.26 for Unix)</td>
+<td>Perl<a href="http://www.perl.org">www.perl.org</a>
+</td>
+<td>RRID:SCR_018313</td>
+</tr>
+<tr>
+<td>Strawberry Perl version 5.24.0.1 (for Windows)</td>
+<td>Strawberry Perl<a href="http://Strawberryperl.com">Strawberryperl.com</a>
+</td>
+<td>RRID:SCR_018313</td>
+</tr>
+<tr>
+<td>The world-wide-web library for Perl, module 6.39</td>
+<td>LWP Meta CPAN<a href="https://metacpan.org/pod/LWP">https://metacpan.org/pod/LWP</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Comprehensive Perl Archive Network (CPAN)</td>
+<td><a href="https://metacpan.org/">https://metacpan.org/</a></td>
+<td>RRID:SCR_007253</td>
+</tr>
+<tr>
+<td>Generalized Algebraic Modeling System (GAMS) version 24.7.4</td>
+<td>GAMS Products and Downloads<a href="http://www.gams.com/products/buy-gams/">www.gams.com/products/buy-gams/</a>
+</td>
+<td>RRID:SCR_018312</td>
+</tr>
+<tr>
+<td>CPLEX solver version 12.6</td>
+<td>GAMS Products and Downloads<a href="http://www.gams.com/products/buy-gams/">www.gams.com/products/buy-gams/</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Holland Computing Center: Crane Computing Cluster (64 GB RAM, Intel Xenon E5-2670 2.60 GHz processor, 2 CPUs per node)</td>
+<td>Holland Computing Center<a href="https://hcc.unl.edu/">https://hcc.unl.edu/</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ASUSTeK Zyphyrus G model laptop computer with Microsoft Windows 10.</td>
+<td>Any reasonably up-to-date computer, and alternative OSs, will work for this protocol.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Dell OptiPlex 790 desktop computer with Microsoft Windows 10 Enterprise</td>
+<td>Any reasonably up-to-date computer, and alternative OSs, will work for this protocol.</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>Throughout this work, two different computers were used interchangeably, both of which are included in the <a href="#key-resources-table">key resources table</a>. Uses of these computers include directly running program codes and for Secure Shell (SSH) access to the Crane computing cluster at the Holland Computing Center (HCC) of the University of Nebraska – Lincoln. A description of the Crane cluster is provided in the <a href="#key-resources-table">key resources table</a>. The Crane computing cluster is used primarily for running GAMS codes in a timely manner, as these codes are used to solve large linear algebra problems with matrix dimensions in the order of hundreds or thousands of elements in multiple dimensions. Such problems are either very straining on a personal computer or even impossible in a reasonable amount of time. Therefore, it is highly suggested that followers of this protocol have access to some advanced computing resource.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> For running all codes that do not use the Generalized Algebraic Modeling System (GAMS) programming language, any reasonably up-to-date computer may be used whether desktop or laptop with any operating system - Windows, Mac OS, or Unix/Linux. The “<a href="#before-you-begin">before you begin</a>” section details some software tools which may be used, and indeed are used by other members of the research laboratory to which the authors belong.</div>
+<p>For running GAMS software, access to supercomputing resources is preferable for considerations of time. High research institutions (R1 and R2 institutions by the Carnegie Classification of Institutions of Higher Education) often have either supercomputing facilities of their own or collaborations with other institutions which give them access to supercomputing facilities. For those without such resources, the United State of America, specifically the National Aeronautics and Space Administration (NASA) and the Department of Energy (DOE) have supercomputing facilities which may be used by researchers. The former has several CPUs as part of their High-End Computing Capability (HECC) resource. Use of these resources can be requested by researchers by submitting a request. DOE supercomputing resources are through the supercomputing facilities at the Oak Ridge National Laboratory (ORNL), allows for researchers to apply to use their available supercomputing resources such as Summit, Rhea, and HPSS. ORNL supercomputing resources are used by systems biology researcher nationwide, including by the U.S. Department of Energy Systems Biology Knowledgebase (KBase available at kbase.us).</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Generating and preparing the necessary input files and file system structure</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> minutes</div>
+<p>The EuGeneCiD and EuGeneCiM codes have required input files which need to be arranged in the correct manner in the file system from which these codes are to be run. This section details how to create the necessary input files, the requisite file system structure, and other necessary pieces to use the EuGeneCiD and EuGeneCiM tools. This step is separated from running the EuGeneCiDM code to highlight that the preparation to run can be done quickly, whereas the actual running of the code might be slow.</p>
+<ol>
+<li>
+<b>Retrieve the input conversion code.</b> 27 versions of a Perl script are provided in the associated GitHub repository (located at github.com/ssbio/EuGeneCiDM/inputs) which will convert the unified input file into all the requisite input files for the unified EuGeneCiD/EuGeneCiM workflow. Download a copy of one of the Perl scripts (any one will do). Steps from this point will assume that the selected script is named “convert_input_Cd_nimply_Cu.pl” (though any of the other convert files would work equally well).</li>
+<li>
+<b>Place file in the required relationship.</b> The unified input file and the convert script should be placed in the same directory location.</li>
+<li>
+<b>Update the unified input reference in the convert script.</b> The convert script reads a specific unified input file which is distinguished by the synthetic biology concept or database. This reference must be updated to point to your desired unified input. On line 19 of the convert script, replace the text in quotes with whatever “descriptor” was applied to the naming of the unified input in step 3.
+<ol type="a">
+<li>
+<b>Update script name.</b> Update the name of the convert script from “convert_inputs_Cd_nimply_Cu.pl” to “convert_inputs_descriptor.pl” to avoid confusion.</li>
+<li>
+<b>Update comments.</b> If versioning of the code is important to the reader, lines 3 and 4 should be updated to indicate who last edited the convert script and on what date, respectively.</li>
+</ol>
+</li>
+<li>
+<b>Run the code to convert the Excel version of the input.</b> The convert code may then be run in one of two ways.
+<ol type="a">
+<li>
+<b>Run as an executable file.</b> The convert script may be run as an executable (for instance, double-clicking on the file in Windows) which will quickly run the code. The disadvantage to this approach is that the executable window will not remain open, so errors will be hard to identify and debug.</li>
+<li>
+<b>Run through the command line.</b> In the command prompt (Windows) or terminal (Mac OS or Linux) navigate to the file system that contains both the unified input and convert script, and use the command “perl convert_input_descriptor.pl” to run the script and retain the command line output.</li>
+<li>
+<b>Run result.</b> In either method, this should run very quickly, and create a directory named “descriptor_inputs” which should contain all 26 input files necessary for the combined EuGeneCiD/EuGeneCiM workflow, as well as a file named “log.txt” which describes certain statistics of the database and logic table of the unified input file. This log file can be useful for debugging later, see the <a href="#sec6.5">troubleshooting 3</a>. <a href="#fig5">Figure 5</a> shows all 27 filenames and types which result from applying the convert script to the unified input.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Protocol file system prior to step 17</div>
+<p>This figure shows the file system structure necessary to run the GAMS code in step 17. This figure begins by showing the 27 text files that result from applying the convert script to the unified input. Note that all of these files are required, save log.txt which gives run information related to the convert script which is not use by subsequent steps. In the bottom left is three files which may need to be downloaded from GitHub, including the combined EuGeneCiD and EuGeneCiM workflow, the EuGeneCiM stand-alone code (optional), and the submit file (for batch runs). All of these files are to be placed inside the “descriptor” folder, which itself is contained inside the parent folder. Also contained in the parent folder are the required solver options file and the optimal parallel submit script (used in the parallelization section). Shown in bold are names given to the files or folder throughout the protocol, and shown in narrow font are file names as might appear in the user’s file system.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When running the convert script, multiple warnings will appear on the command line such as “Smartmatch is experimental at &lt;pathway&gt; line &lt;number&gt;”. This is normal and is to be expected. The experimental nature of Smartmatch has not, as of yet, caused any issues in code written by the authors which use this tool.</div>
+<ol start="5">
+<li>
+<b>Download additional necessary files from GitHub.</b> Three files need be downloaded from GitHub to perform the combined EuGeneCiD and EuGeneCiM workflow. These files have multiple copies in the GitHub repository, but the files associated with the Cadmium NIMPLY Copper (descriptor of “Cd_nimply_Cu”) conceptualization from Schroeder, Baber, and Saha (2021) will be used here (although any of the other 26 conceptualization will work equally as well). In this example, these files can be found in the “Cd_nimply_Cu” folder.
+<ol type="a">
+<li>
+<b>CPLEX option file.</b> The first file needed is named “cplex.opt” which specifies the options to use for the CPLEX solver.</li>
+<li>
+<b>GAMS code file.</b> The next file need is the EuGeneCiD and EuGeneCiM combined workflow script file, named “EuGeneCiDM_Cd_nimply_Cu.gms”.</li>
+<li>
+<b>Batch run file.</b> Required next is the file which allows us to submit the combined workflow in a batch run, named “sub.slurm”. This file may not be strictly necessary depending on the procedure used by the HPC resource available to the user, please consult the documentation of that resource’s documentations for details. These files are shown in the bottom half of <a href="#fig5">Figure 5</a>.</li>
+</ol>
+</li>
+<li>
+<b>Creating the requisite file system structure.</b> The input files generated in step 4 and those downloaded in step 5 should next be moved into the file system where EuGeneCiD and EuGeneCiM will be performed. <a href="#fig5">Figure 5</a> provides a visualization of the required file system which will be described here.
+<ol type="a">
+<li>
+<b>Child and parent directories.</b> All these files (29 in total, 30 if including the log file) should be placed in a single sub-folder where the user has editing permissions for its parent folder (output will be placed in the parent folder, as shown in <a href="#fig6">Figure 6</a>, and this file system structure facilitates parallelization, see “Parallelizing the EuGeneCiD and EugeneCiM Workflow”). Name the child folder “descriptor” (that is whatever descriptor you used in step 3).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Protocol file system after step 17</div>
+<p>This figure shows the same file system as in <a href="#fig4">Figure 4</a>, but after step 17 (where the combined EuGeneCiD and EuGeneCiM code is run), highlighting where workflow results might be found. While the descriptor folder remains unchanged, now created will be several output files from the workflow which will appear in the parent director. This includes the simple report, detailed report, designs file, logic table output, circuit states, job out file, job error file, and listing file. As with <a href="#fig3">Figure 3</a>, shown in bold are names given to the files or folder throughout the protocol, and shown in narrow font are file names as might appear in the user’s file system.</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>File transfer protocols.</b> It is highly recommended that, if using a High Performance Computing (HPC) resource, an FTP or data management system other than nppFTP is used, as nppFTP transfers files singly. Various tools, mentioned in “<a href="#before-you-begin">before you begin</a>”, are available for this task, including Cyberduck and the Globus research data management system.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In future steps, for convenience, the folder in which the files generated in step 12 and downloaded in step 13 are contained will be referred to as the “descriptor folder”, whereas the folder in which it is contained will be referred to as the “parent folder”.</div>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the HPC resource used, there may be limits as to from which file system a batch job may be run. Consult the documentation of the resource which you are using and place the parent directory appropriately.</div>
+<ol start="7">
+<li>
+<b>Modify the files from GitHub.</b> The files downloaded in step 5 will have to be modified for the user’s application and conceptualization.
+<ol type="a">
+<li>
+<b>Modify the GAMS code.</b> Several edits to the GAMS code should or can be made to both point to the correct input files and customize restrictions placed on the runs.
+<ol type="i">
+<li>
+<b>Update file name.</b> Begin by renaming the “EuGeneCiDM_Cd_nimply_Cu.gms” file to “EuGeneCiDM_descriptor.gms”.</li>
+<li>
+<b>Update internal reference to other files.</b> In the file renamed in step 7.a.i, edit the reference to the descriptor folder and the input files. This is most easily accomplished by performing a find-and-replace operation for the strings “Cd_nimply_Cu” and replacing all instances with “descriptor” (check, there should be 57 replacements made).</li>
+<li>
+<b>Update internal documentation.</b> If versioning and author tracking is important, please updates lines 22 (code authors) and 24 (date).</li>
+<li>
+<b>Define the number of solutions sought.</b> To adjust the maximum number of solutions sought, adjust the value of the parameter “max_solns” defined on line 184 of the file “EuGeneCiDM_descriptor.gms”. The value is currently set to 1000, but as noted in Schroeder, Baber, and Saha (2021), for most applications this value will likely not need to be greater than 100 as the globally optimal solution (that is the solution with the strongest response, irrespective of the circuit size) generally is found within the first 100 solution.</li>
+<li>
+<b>Define the maximum number of repeated parts usages in a single solution.</b> Parameters are defined on lines 199 to 201 of the file “EuGeneCiDM_descriptor.gms” which restrict the maximum number of times are part can be used in a given circuit. These lines restrict the maximum number of times a particular promoter, transcript, or terminator respectively, can appear in any solution. At present, these are set at the default values of 3, 3, and 100, respectively, though the user may define these to whatever meets their design criteria. Note that if the number of allowed repeats is greater than the number of allowed triads in the solution, then there is effectively no limit (as in the case with the default terminator repetition limit, for example).</li>
+<li>
+<b>Define the minimum and maximum allowed design sizes.</b> Lines 204 and 205 of “EuGeneCiDM_descriptor.gms” define the minimum and maximum allowed design sizes, respectively. The default values are 1 and 10, respectively. Depending on the complexity of the database and/or conceptualization, these may be adjusted to save time or increase the allowed solution space.</li>
+</ol>
+</li>
+<li>
+<b>Modify the SLURM batch file.</b> The reference in the SLURM batch file (“sub.slurm”) must be updated to point to the correct file. Line 9 should be rewritten to read “gams descriptor/EuGeneCiDM_descriptor.gms”. This file also defines various settings of the batch run including memory limit (line 4, given in MBs), and time limit (line 5, given in hours:minutes:seconds). Please adjust these lines accordingly for the HPC resource used, expected memory requirements, and for expected runtime. For the latter, example runtimes are provided in <a href="#fig7">Figure 7</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Mmc1.extension">S1</a>, though depending on the resources used, bioparts database, and sought logic, runtime may vary considerably.
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Holistic solution statistics for EuGeneCiD applied to 30 conceptualizations</div>
+<p>This three by ten grid reports on the general characteristics of the set of EuGeneCiD results for each of the 30 unique circuit conceptualizations. From the top to bottom of each grid, four items describing the results set are shown. First, is the number of solutions in that set. Second, is the percentage of results which are optimal (if this value is above 20%, green bar) or the percentage of results that are suboptimal (red, if the value of this is above 80%). Third is a number line, which indicates the solution set minimum and maximum sizes (in the number of triads in the design) and the mode size (the number is shaded blue). This number line is extended from zero to ten as ten is the maximum allowed circuit size (though no solution was created of this size). Finally, another number line shows the minimum and maximum solution times (in seconds) on a logarithmic scale. A large black line on the solution time range indicates the mean solution time.</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Modify the solver options file.</b> The solver options file (“cplex.opt”) can be adjusted to result in differences in solution accuracy, speed, and feasibility. See GAMS documentation for CPLEX options to learn more about what each specified option does (<a href="https://www.gams.com/35/docs/S_CPLEX.html">https://www.gams.com/35/docs/S_CPLEX.html</a>). Due to potential numerical issues, there is a required relationship between the values of one CPLEX option and arbitrary values used in the EuGeneCiD and EuGeneCiM formulations (e.g., our very small and very large values). See <a href="#sec6.7">troubleshooting 4</a> for details.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It should be noted that, due to the use of an arbitrary small number to force some infeasibilities, feasibility threshold options, such as “epint” or “eprhs” should not be increased to that number or greater, as this will result in nonsense solutions and render the EuGeneCiD and EuGeneCiM tools useless. The feasibility thresholds, such as “epint” and “eprhs” are options which allow the solver to use an infeasible solution so long as that infeasibility falls within certain bounds. For “epint”, binary and integer variables are allowed to vary from true binary or integer values by some small amount, whereas “eprhs” allows a constraint equation to be infeasible by some small amount. See <a href="#sec6.7">troubleshooting 4</a> for details.</div>
+<h3 id="sec3.2">(If Required) Adjusting EuGeneCiD and EuGeneCiM for other than two input signals</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> minutes to hours</div>
+<p>The EuGeneCiD and EuGeneCiM codes made available are for two input signals and any number of output signals. Obviously, circuits may be conceptualized which use other than two signals. These conceptualizations can be designed for and modeled by EuGeneCiD and EuGeneCiM so long as the mathematics and GAMS code is carefully updated. Detailed in this section are the steps to generalize the mathematics and code of EuGeneCiD and EuGeneCiM to accommodate fewer or more input signals for a desired conceptualization.</p>
+<ol start="8">
+<li>
+<b>Change the number of ligand set copies.</b> There should be one set of all ligands and one set of desired ligands (the signals to which the circuit will respond) for each element of the desired ligands set. The latter set is defined in the logic table, see <a href="#before-you-begin">before you begin</a> step 2. In the example code, the sets of all ligands are labeled “L1” and “L2”, where the sets of desired ligands are labeled “Ld” and “Ld1”. Duplicate (or remove) lines 79 through 82 to achieve the requisite number of set copies with unique handles.</li>
+</ol>
+<ol start="9">
+<li>
+<b>Update references to ligand sets in parameter, variable, and equation argument.</b> For many parameters, variables, and equations, the two-ligands input is hardcoded, and will need to be changed. The following sub steps describe changes to the “EuGeneCiDM_descriptor.gms” code which need be made to change the number of signal inputs for which EuGeneCiD and EuGeneCiM design or model, respectively.
+<div class="critical">
+<span class="critical-title">Critical:</span> Order of arguments is important. When updating references in parameters, variables, or equations, the order of arguments must stay constant. One easy way to ensure this is to use find and replace tools inherent in the user’s text editor of choice.</div>
+<ol type="a">
+<li>
+<b>Parameters to update.</b> Below is a list of parameters (in GAMS, this is the object type which does not change value when solving an optimization problem) whose arguments must be updated to the appropriate number of signals. They are written below as they appear in “EuGeneCiDM_descriptor.gms”. The two-input variation of the arguments is given on the LHS below, followed an example of how these arguments might appear in a three-input system, followed by the number of instances which should be replaced.
+<div class="note">
+<span class="note-title">Note:</span> Sets with labels beginning with “Ld” (and similar such as Ld1) are the desired ligands set, which itself is a subset of the sets of all ligands (L1, L2, and similar).</div>
+<div class="note">
+<span class="note-title">Note:</span> Due to the number of references within the code, and that this procedure will alter line numbers in later steps, an exhaustive list of line numbers to change will not be included. Instead, the number of instances of this particular parameter in “EuGeneCiDM_descriptor.gms” will be listed alongside as square brackets. Also note that the number of instances may change with further versioning of the EuGeneCiD/EuGeneCiM algorithm and combined workflow, but this should help users determine if the find-and-replace tools are operating on approximately the correct number of instances. The specified changes are shown in <a href="#tbl1">Table 1</a> below find-and-replace instances.</div>
+</li>
+<li>
+<b>Variables to update.</b> Below is a list of variables (in GAMS, this is the object type which changes value when solving and optimization problem) whose arguments must be updated to the appropriate number of signals. They are written below as they appear in “EuGeneCiDM_descriptor.gms”. This section is formatted the same as step 11a.
+<div class="note">
+<span class="note-title">Note:</span> When variables are instructed to be written in input files, generally they must be reported using an attribute label. For instance, when the value of “<code>alpha(P,L1,L2)</code>” in a particular solution is to be reported, it is written as “<code>alpha.l(P,L1,L2)</code>”. Thus, for the required changes are shown in <a href="#tbl2">Table 2</a> below, along with the number of direct find-and-replace instances (unattributed instances), the number of instances where an attributed variable reference must also be updated is also given (attributed instances).</div>
+</li>
+<li>
+<b>Equations to update.</b> Below is a list of equations (the GAMS object type which enforces optimization constraints) whose arguments must be updated to the appropriate number of signals. They are written below as they appear in “EuGeneCiDM_descriptor.gms”, followed by how they might be modified in a three-input case and the number of replacement instances. This section is formatted the same as step 9a. <a href="#tbl3">Table 3</a> below shows the find-and-replace type changes needed, and the number of instances which need be replaced.
+<table id="tbl1">
+<caption>Table 1. Find-and-Replace type changes to make to EuGeneCiDM_descriptor.gms” for step 9a</caption>
+<thead>
+<tr>
+<th>Find text</th>
+<th>Replace with</th>
+<th>Instances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lambda(Ld,Ld1,Ed)</code></td>
+<td><code>Lambda(Ld,Ld1,Ld2,Ed)</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>ECTrans(E,L1,L2)</code></td>
+<td><code>ECTrans(E,L1,L2,L3)</code></td>
+<td>13</td>
+</tr>
+<tr>
+<td><code>RNATrans(J,T,L1,L2)</code></td>
+<td><code>RNATrans(J,T,L1,L2,L3)</code></td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl2">
+<caption>Table 2. Find-and-Replace type changes to make to EuGeneCiDM_descriptor.gms” for step 9b</caption>
+<thead>
+<tr>
+<th>Find text</th>
+<th>Replace with</th>
+<th>Unattributed instances</th>
+<th>Attributed instances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha(P,L1,L2)</code></td>
+<td><code>alpha(P,L1,L2,L3)</code></td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>alpha_plus(P,L1,L2)</code></td>
+<td><code>alpha_plus(P,L1,L2,L3)</code></td>
+<td>7</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>gamma(E,L1,L2)</code></td>
+<td><code>gamma(E,L1,L2,L3)</code></td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>gamma_plus(E,L1,L2)</code></td>
+<td><code>gamma_plus(E,L1,L2,L3)</code></td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>C(E,L1,L2)</code></td>
+<td><code>C(E,L1,L2,L3)</code></td>
+<td>11</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>phi(J,T,L1,L2)</code></td>
+<td><code>phi(J,T,L1,L2,L3)</code></td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>xi(P,J,T,L1,L2)</code></td>
+<td><code>xi(P,J,T,L1,L2,L3)</code></td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>omega(E,L1,L2)</code></td>
+<td><code>omega(E,L1,L2,L3)</code></td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>kappa(E,L1,L2)</code></td>
+<td><code>kappa(E,L1,L2,L3)</code></td>
+<td>7</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl3">
+<caption>Table 3. Find-and-Replace type changes to make to EuGeneCiDM_descriptor.gms” for step 9c</caption>
+<thead>
+<tr>
+<th>Find Text</th>
+<th>Replace with</th>
+<th>Instances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>act_threshold_0(E,Ld,Ld1)</code></td>
+<td><code>act_threshold_0(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>act_threshold_1(E,Ld,Ld1)</code></td>
+<td><code>act_threshold_1(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_sum(E,Ld,Ld1)</code></td>
+<td><code>prot_sum(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>trans_sum(J,T,Ld,Ld1)</code></td>
+<td><code>trans_sum(J,T,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>findalpha(P,Ld,Ld1)</code></td>
+<td><code>findalpha(P,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>findalpha_sign_0(P,Ld,Ld1)</code></td>
+<td><code>findalpha_sign_0(P,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>findalpha_sign_1(P,Ld,Ld1)</code></td>
+<td><code>findalpha_sign_1(P,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>transcribed0(P,J,T,Ld,Ld1)</code></td>
+<td><code>transcribed0(P,J,T,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>transcribed1(P,J,T,Ld,Ld1)</code></td>
+<td><code>transcribed1(P,J,T,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>transcribed2(P,J,T,Ld,Ld1)</code></td>
+<td><code>transcribed2(P,J,T,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>produced0(E,Ld,Ld1)</code></td>
+<td><code>produced0(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>produced1(E,Ld,Ld1)</code></td>
+<td><code>produced1(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>findgamma(E,Ld,Ld1)</code></td>
+<td><code>findgamma(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>findgamma_sign0(E,Ld,Ld1)</code></td>
+<td><code>findgamma_sign0(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_could_act0(E,Ld,Ld1)</code></td>
+<td><code>prot_could_act0(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_could_act1(E,Ld,Ld1)</code></td>
+<td><code>prot_could_act1(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_could_act2(E,Ld,Ld1)</code></td>
+<td><code>prot_could_act2(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_is_act0(E,Ld,Ld1)</code></td>
+<td><code>prot_is_act0(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_is_act1(E,Ld,Ld1)</code></td>
+<td><code>prot_is_act1(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_is_act2(E,Ld,Ld1)</code></td>
+<td><code>prot_is_act2(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>sat_lambda(Ld,Ld1,Ed)</code></td>
+<td><code>sat_lambda(Ld,Ld1,Ed,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>explicit_1(E,Ld,Ld1)</code></td>
+<td><code>explicit_1(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>explicit_2(E,Ld,Ld1)</code></td>
+<td><code>explicit_2(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>explicit_3(E,Ld,Ld1)</code></td>
+<td><code>explicit_3(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>explicit_4(E,Ld,Ld1)</code></td>
+<td><code>explicit_4(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>explicit_5(E,Ld,Ld1)</code></td>
+<td><code>explicit_5(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prot_conc_M(E,Ld,Ld1)</code></td>
+<td><code>prot_conc_M(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>trans_level_M(J,T,Ld,Ld1)</code></td>
+<td><code>trans_level_M(J,T,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>produced0_M(E,Ld,Ld1)</code></td>
+<td><code>produced0_M(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>Produced1_M(E,Ld,Ld1)</code></td>
+<td><code>Produced1_M(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>act_threshold_0_M(E,Ld,Ld1)</code></td>
+<td><code>act_threshold_0_M(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>act_threshold_1_M(E,Ld,Ld1)</code></td>
+<td><code>act_threshold_1_M(E,Ld,Ld1,Ld2)</code></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>
+<b>Update nested loops over desired ligand elements.</b> Throughout the “EuGeneCiDM_descriptor.gms” code are several instances where looping occurs over each element of the desired ligands set at each argument position for the desired ligands. When changing the number of ligands then, the number of these nested loops must be appropriately adjusted. The easiest method by which to find these nested loops is to search for the string “<code>LOOP(Ld1</code>” (this will find the innermost nested loop). The number of nested loops should be made equal to the number of elements in the desired ligand sets (e.g., if it is desired to have a three-input responsive circuit, then there should be three controlling loops over the desired ligands set). An example is given below on what the conversion would look like for the nested loops converting from the two-input signal GAMS code to the one-input and three-input versions.</li>
+</ol>
+<p>Code format in the two-input signal GAMS code (original):</p>
+<div class="textbox">
+<p><code>&gt;LOOP(Ld,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    LOOP(Ld1,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;            /∗code∗/</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    );</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;);</code></p>
+</div>
+<p>Code format in the one-input signal GAMS code (modified):</p>
+<div class="textbox">
+<p><code>&gt;LOOP(Ld,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    /∗code∗/</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;);</code></p>
+</div>
+<p>Code format in the three-input signal GAMS code (modified):</p>
+<div class="textbox">
+<p><code>&gt;LOOP(Ld,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    LOOP(Ld1,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;            LOOP(Ld2,</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;                    /∗code∗/</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;            );</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    );</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;);</code></p>
+</div>
+<ol start="11">
+<li>
+<b>Update mathematics related to ligand interactions.</b> Some equations in EuGeneCiD and EuGeneCiM are written in a way unique to the number of input ligands, and therefore need to be adjusted to apply EuGeneCiD and EuGeneCiM to circuits with other than two inputs. This is done by increasing or decreasing the number of terms which account for the individual effects of ligands upon the activity of a promotor or enzyme in question and which prevent “double counting” of those effects. The number of such terms is dependent upon the number of elements in the desired ligands sets. In an effort to help the reader understand this statement, an example is provided in the note below.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Below is an example of one such equation which needs to be updated: “<code>findalpha</code>”.</div>
+<p>Equation:</p>
+<div class="textbox">
+<p><code>&gt;findalpha(P,Ld,Ld1)</code></p>
+</div>
+<p>GAMS Statement:</p>
+<div class="textbox">
+<p><code>&gt;alpha(P,Ld,Ld1) =e= Z(P) + sum(E, (W(E,Ld,Ld1) ∗ I(P,E) ∗ H(P,E))) + I(P,Ld) ∗ H(P,Ld) + I(P,Ld1) ∗ H(P,Ld1) - (I(P,Ld1) ∗ H(P,Ld1) ∗ sigma(Ld,Ld1))</code></p>
+</div>
+<p>Mathematical Statement:</p>
+<p id="fd1_1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <mtable> <mtr> <mtd> <msub> <mi>α</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mtd> <mtd> <mrow> <mo>=</mo> <msub> <mi>Z</mi> <mi>p</mi> </msub> <mo>+</mo> <munder> <mo>∑</mo> <mrow> <mi>e</mi> <mo>∈</mo> <mi>E</mi> </mrow> </munder> <mrow> <mo>[</mo> <mrow> <msub> <mi>W</mi> <mrow> <mi>e</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>I</mi> <mrow> <mi>p</mi> <mi>e</mi> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <mi>e</mi> </mrow> </msub> </mrow> <mo>]</mo> </mrow> <mo>+</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> </mrow> </mtd> </mtr> <mtr> <mtd></mtd> <mtd> <mrow> <mspace></mspace> <mo>+</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>σ</mi> <mrow> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </mtd> </mtr> </mtable> <mspace></mspace> <mo>∀</mo> <mi>p</mi> <mo>∈</mo> <mi>P</mi> <mo>;</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msup> <mi>L</mi> <mi>D</mi> </msup> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Note that the last three terms are specific to the indices or arguments of <math> <mrow> <mi>α</mi> </mrow> </math> (both in number and identity thereof) and that necessarily the numbers of these terms will change with the number of ligands. The first two of these three terms add the contribution of each individual ligand upon the activity of the promoter under the given ligand conditions. The final term ensures that the effects of ligands are not “double counted” if the current element of <math> <mrow> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </math> is the same as that of <math> <mrow> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </math>. The addition of the effect of each ligand to the RHS of <a href="#fd1">Equation (1)</a> and the subtraction of each unique combination of ligands should persist for a EuGeneCiD or EuGeneCiM formulation which is generalized to any number of input ligand signals. For instance, if the circuit was to respond to three input signals, then the equation “findalpha” should be updated to appear as follows:</p>
+<p>Equation:</p>
+<div class="textbox">
+<p><code>&gt;findalpha(P,Ld,Ld1,Ld2)</code></p>
+</div>
+<p>GAMS Statement:</p>
+<div class="textbox">
+<p><code>&gt; alpha(P,Ld,Ld1) =e= Z(P) + sum(E, (W(E,Ld,Ld1) ∗ I(P,E) ∗ H(P,E))) + I(P,Ld) ∗ H(P,Ld) + I(P,Ld1) ∗ H(P,Ld1) + I(P,Ld2) ∗ H(P,Ld2) - (I(P,Ld1) ∗ H(P,Ld1) ∗ sigma(Ld,Ld1)) - (I(P,Ld1) ∗ H(P,Ld1) ∗ sigma(Ld1,Ld2)) - (I(P,Ld) ∗ H(P,Ld) ∗ sigma(Ld,Ld2))</code></p>
+</div>
+<p>Mathematical Statement:</p>
+<p id="fd2_1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2)</mtext></mtd> <mtd> <mrow> <mtable> <mtr> <mtd> <msub> <mi>α</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>2</mn> </mrow> </msub> </mrow> </msub> </mtd> <mtd> <mrow> <mo>=</mo> <msub> <mi>Z</mi> <mi>p</mi> </msub> <mo>+</mo> <munder> <mo>∑</mo> <mrow> <mi>e</mi> <mo>∈</mo> <mi>E</mi> </mrow> </munder> <mrow> <mo>[</mo> <mrow> <msub> <mi>W</mi> <mrow> <mi>e</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>I</mi> <mrow> <mi>p</mi> <mi>e</mi> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <mi>e</mi> </mrow> </msub> </mrow> <mo>]</mo> </mrow> <mo>+</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> </mrow> </mtd> </mtr> <mtr> <mtd></mtd> <mtd> <mrow> <mspace></mspace> <mo>+</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>+</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>2</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>2</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>σ</mi> <mrow> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </mtd> </mtr> <mtr> <mtd></mtd> <mtd> <mrow> <mspace></mspace> <mo>−</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <msub> <mi>σ</mi> <mrow> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>2</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>I</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>H</mi> <mrow> <mi>p</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </msub> <msub> <mi>σ</mi> <mrow> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>2</mn> </mrow> </msub> </mrow> </msub> </mrow> </mtd> </mtr> </mtable> <mspace></mspace> <mo>∀</mo> <mi>p</mi> <mo>∈</mo> <mi>P</mi> <mo>;</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msup> <mi>L</mi> <mi>D</mi> </msup> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>This same mathematical update should be applied to each of the following equations:</p>
+<div class="textbox">
+<p><code>&gt;findalpha(P,Ld,Ld1,Ld2)</code></p>
+<p><code>&gt;findgamma(E,Ld,Ld1,Ld2)</code></p>
+</div>
+<h3 id="sec3.3">(Optional) Parallelizing the EuGeneCiD and EuGeneCiM workflow</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> Minutes to Hours</div>
+<p>The EugeneCiD and EuGeneCiM workflow can be easily parallelized for designing and modeling multiple circuit conceptualizations, particularly if the same bioparts database is to be used. In fact, this is the reason for a handful of oddities in the file structure and instructions, such as those specified in step 6. Detailed in this section are the additional steps which must be taken to run parallel instances of combined EuGeneCiD and EuGeneCiM workflow simultaneously. This procedure was used in Schroeder, Baber, and Saha (2021) to run batches for all 30 circuit conceptualizations in parallel.</p>
+<ol start="12">
+<li>
+<b>Build a new unified input file and file system.</b> Depending on how different the circuit conceptualizations are, there are two different approaches to the first few steps of parallelizing the EuGeneCiD and EuGeneCiM workflow. If the same bioparts library or the same conceptualization is to be used between the two conceptualizations, then great savings in time and effort are possible. Given that “descriptor” has been used up to this point to describe the user’s first conceptualization, “descriptor_1”, “descriptor_2”, etc. will be used for further conceptualizations in an effort to avoid confusion.
+<ol type="a">
+<li>
+<b>Different library and conceptualization.</b> If both the database of bioparts and the conceptualization are different, the protocol must be largely repeated up to this point.
+<ol type="i">
+<li>
+<b>Create the new unified input.</b> If the application is to use different bioparts, then <a href="#before-you-begin">before you begin</a> steps 1–9 of should be repeated for the new conceptualization and bioparts library.</li>
+<li>
+<b>Create the necessary files and file system.</b> Similarly, steps 1–11 should be repeated (as necessary for the optional sections) to create all necessary files and filesystem using “descriptor_1” in place of “descriptor”.
+<div class="note">
+<span class="note-title">Note:</span> If both the bioparts library and conceptualization are different, little in the way of time savings will be noticed for the parallelization procedure.</div>
+</li>
+</ol>
+</li>
+<li>
+<b>Different conceptualization, same library.</b> If this is the case, follow this modified procedure which assumes all previous steps have been completed:
+<ol type="i">
+<li>
+<b>Make the new unified input.</b> The unified input for the first conceptualization (“descriptor”) can be copied and renamed to “unified_input_descriptor_1.xlsx”. Update the “Ligands”, “LogicTable”, and “other” file with the new conceptualization.</li>
+<li>
+<b>Make the new convert code.</b> Copy the convert script (“convert_input_descriptor.pl”) to the file “convert_input_descriptor_1.pl”. Following step 3, edit the file references in the code.</li>
+<li>
+<b>Run the new convert code.</b> Run the convert script for “descriptor_1” as described in step 4.</li>
+<li>
+<b>Copy the “descriptor folder”.</b> Copy the “descriptor” folder inside the parent folder, and rename the result to “descriptor_1”.</li>
+<li>
+<b>Remove unnecessary files.</b> Remove all files except the EuGeneCiD/M code, the EuGeneCiD stand-alone code (if present), and the submit file.</li>
+<li>
+<b>Place the new input files.</b> Copy and paste the files generated in step 12.b.iii. into “descriptor_1”.</li>
+<li>
+<b>Update file pointers.</b> Following the procedure outlined in step 7, update the file names and references in the EuGeneCiD/M code.
+<div class="note">
+<span class="note-title">Note:</span> If “descriptor” and “descriptor_1” have the same number of input signals for the circuit to respond to, then steps 8–11 do not need to be repeated.</div>
+</li>
+</ol>
+</li>
+<li>
+<b>Different library, same conceptualization.</b> This instance can follow the same procedure as step 12.b., save for step 12.b.i., which would involve editing the “Promoters”, “Transcripts”, “Enzymes&amp;Protiens”, and “Terminators” sheets of the unified input instead of those related to the conceptualization.</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>
+<b>Repeat step 12 for each parallel instance desired.</b> Repeat step 12 for each parallel instance of the EuGeneCiD and EuGeneCiM combined workflow which the user desires to create for “descriptor_2” through “descriptor_n” (using whichever descriptor text is appropriate).</li>
+<li>
+<b>Get the parallel submit script file.</b> By this step, the requisite files and file systems should be in place for running parallel instances of the combined EuGeneCiD and EuGeneCiM workflow. From the GitHub (at <a href="http://github.com/ssbio/EuGeneCiDM">http://github.com/ssbio/EuGeneCiDM</a>) copy the file “submit_all.pl” into the parent folder (see <a href="#fig5">Figure 5</a>).</li>
+<li>
+<b>Update the parallel submit script file.</b> The parallel submit script should be updated to point to each submit file of each parallel EuGeneCiD/EuGeneCiM instance. Begin by deleting all lines from line 8 to the end of the file. Then, write the appropriate lines to submit batch runs for all parallel runs. This can be done by creating two lines for each descriptor (“descriptor_1” is used as an example below):</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;printf ”descriptor_1: ”;</code></p>
+<p><code>&gt;system(“sbatch descriptor_1/sub.slurm”);</code></p>
+</div>
+<p>The first line will print “descriptor_1” to the terminal so that when the system produces a response to the command to submit a batch for that conceptualization, that output is labeled. The second line submits the actual batch run using the SLURM job management system, as used by the authors.</p>
+<div class="note">
+<span class="note-title">Note:</span> The parallel submit script may need to be structured or written differently depending on the job management system used by the user’s choice of HPC resource(s).</div>
+<h3 id="sec3.4">Running the EuGeneCiD and EuGeneCiM combined workflow</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> minutes to days</div>
+<p>This section specifies how to run the combined EuGeneCiD/EuGeneCiM workflow using a SLURM batch management system as the authors have used for Schroeder, Baber, and Saha (2021).</p>
+<ol start="16">
+<li>
+<b>Running from the correct file position.</b> On the command line interface, navigate to the parent folder which contains the subfolder. The batch files will be run from this location, as it helps in parallelization if you wish to design for multiple conceptualizations simultaneously (see “Parallelizing the EuGeneCiD andEuGeneCiM Workflow”).</li>
+<li>
+<b>Submit the batch run.</b> The submission procedure for the batch runs of the combined workflow are different for single runs and parallelized runs, as will be discussed in the following sub steps.
+<ol type="a">
+<li>
+<b>Single run.</b> Submit the batch run with the command “sbatch descriptor/sub.slurm” (if not parallelizing runs).</li>
+<li>
+<b>Parallelized runs.</b> If parallelizing runs, submit all batch runs with the command “perl submit_all.pl” (copied in step 14 and edited in step 15).</li>
+<li>
+<b>Allow time for the runs to complete.</b> Provided that the batch run (and parallel submit script, if needed) has been set up correctly, results will be available in as little as a few minutes, or as long as several days (the upper limit of the time allowed for the job is defined in step 7b). The speed of solution will depend on several factors including solver options (step 7c), parameterization of the solution space (step 7a), bioparts library (“<a href="#before-you-begin">before you begin</a>” section), and power of the HPC resource used. <a href="#fig7">Figures 7</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Mmc1.extension">S1</a> shows statistics on solution number, speed, size, and optimality for the application of the EuGeneCiD and EuGeneCiM workflow to 30 unique conceptualizations.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Generally, there will be some method, often command line, which will allow for checking on the status of the run. For this, the authors used the “squeue” command.</div>
+<h3 id="sec3.5">(Optional) Running only EuGeneCiM for a pre-defined circuit design</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> seconds to minutes</div>
+<p>Sometimes, a particularly interesting solution will be put forth by EuGeneCiD which the user may wish to model out to a greater number of time points in order to better study its long-term behavior, or perhaps it is desired to model a dynamic circuit which EuGeneCiD could not have designed in the first place. For instance, the section “Adjusting EuGeneCiD and EuGeneCiM for Other than Two Inputs” and this one are combined in Schroeder, Baber, and Saha (2021) to model a repressilator circuit using only EuGeneCiM (which responds to the single ligand “none” which is a placeholder having no interactions with any biopart). Detailed here are the steps to run EuGeneCiM independently to model the behavior of a pre-defined circuit.</p>
+<ol start="18">
+<li>
+<b>Download, place, and rename the stand-alone EuGeneCiM code.</b> Stand-alone EuGeneCiM code can be downloaded from the GitHub repository associated with this work at <a href="https://github.com/ssbio/EuGeneCiDM/Cd_nimply_Cu/">https://github.com/ssbio/EuGeneCiDM/Cd_nimply_Cu/</a>.
+<ol type="a">
+<li>
+<b>Download the file.</b> The filename will be “EuGeneCiM_only_Cd_nimply_Cu.gms” (note that as with other steps, other copies of this code exist in the repository, the “Cd_nimply_Cu” case is chosen for consistency and convenience).</li>
+<li>
+<b>Place the file.</b> This file should be placed in the same directory as the “EuGeneCiDM_descriptor.gms”.</li>
+<li>
+<b>Rename the file.</b> The file should be renamed to “EuGeneCiM_only_descriptor.gms” (where “descriptor” is the users description used elsewhere in this protocol).</li>
+</ol>
+</li>
+<li>
+<b>Modifying the GAMS code for the user’s input files and file system.</b> File references should be updated in this code in the same manner as detailed in step 7a. The only substantive difference is that, in step 7.a.i., instead of 57 replacements, 54 replacements should be made instead.</li>
+<li>
+<b>Provide the GAMS code with the pre-defined circuit.</b> Since EugeneCiM is a modeling tool, the circuit design must be provided to it in the form of design triads. This involves defining the parameter “<code>M_design(P,J,T)</code>” as 1 for each triad of a promoter, transcript, terminator. An example is provided for a three triad design between lines 240 and 255 of the file which should now be named “EuGeneCiM_only_descriptor.gms”. Another example can be found in the file “EuGeneCiM_rep.gms” at <a href="https://github.com/ssbio/EuGeneCiDM/Cd_nimply_Cu/">https://github.com/ssbio/EuGeneCiDM/Cd_nimply_Cu/</a>. Following these examples, define the circuit design to be modeled.</li>
+<li>
+<b>Set the number of time points to model.</b> If using this part of the protocol, it is often desired to model the given circuit for a longer period of time than done in a previous run of the combined EuGeneCiD and EuGeneCiM workflow. Edit the file “time_set_descriptor.txt” in the subfolder “descriptor” (which should be in the same folder as “EuGeneCiM_only_descriptor.gms”) to reflect the time points desired to be modeled.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The file “time_set_descriptor.txt” will accept any globally unique string as its set elements; however, for automatic plotting of results, these strings should be evenly spaced numbers beginning at time point zero (otherwise the plotting will not work well). Generally, this will be whole numbers (e.g., 0, 1, 2, etc.). Therefore, for instance, for modeling 100 time points, from 0 to 99 in intervals of 1, 100 unique elements must be defined like ‘0’, ‘1’, etc. up to ‘99’.</div>
+<ol start="22">
+<li>
+<b>Run from the correct file position.</b> On the command line interface, navigate to the parent folder which contains the subfolder. The batch files will be run from this location, as it keeps the workflow consistent with the combined EuGeneCiD/EuGeneCiM workflow.</li>
+<li>
+<b>Run the stand-alone EuGeneCiM.</b> As a stand-alone tool, EuGeneCiM is very quick to run, and therefore submitting a batch run is unlikely to be necessary; therefore, simply run EuGeneCiM with the command “gams descriptor/EuGeneCiM_only_descriptor.gms”. EuGeneCiM only takes a few seconds to run for as many as 500 time points (note that it will be quick for larger sets of time points as well, this is simply the largest set so far attempted to be modeled by the authors).</li>
+</ol>
+<h3 id="sec3.6">Reading results and processing results into more human-readable formats</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> seconds to minutes</div>
+<p>The output files which are produced by the combined EuGeneCiD and EuGeneCiM workflow are designed to some extent to be human-readable with the limited text-formatting abilities of GAMS. The first steps of this section (steps 24–26) will detail how to interpret some raw output files. Other files, particularly for hundreds of solutions, become too unwieldy for humans to read or process the amount of data. These files generally either exist for the purposes of troubleshooting or for processing by certain Perl scripts into more human-friendly formats. The latter steps of this section (steps 27 and 28) will focus on the use of Perl scripts which help summarize or convert certain results to make them more human-readable or user friendly.</p>
+<ol start="24">
+<li>
+<b>Read the circuit design file.</b> The circuit design file is one of several outputs used to report the results of the EuGeneCiD and EuGeneCiM workflow which is focused on reporting the results of EuGeneCiD, and will be named “circuit_designs_file_descriptor.txt”. Two portions of an example circuit design file (results are for a Cadmium NIMPLY Copper circuit) are shown in <a href="#fig8">Figure 8</a>A.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Examples from the circuit design and simple report output files</div>
+<p>Shown in this figure are pieces of two example output files (the circuit design and simple report files) of the EuGeneCiD and EuGeneCiM combined output (black text). Feature of note or interest are pointed to by blue open brackets or lines and comments are made about these features in blue text.</p>
+<p>(A) Shows both a successful and unsuccessful solution output to the circuit designs file for a Cadmium NIMPLY Copper circuit conceptualization.</p>
+<p>(B) Shows a portion of the simple report for the zeroth solution to the Cadmium NIMPLY Copper circuit conceptualization.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>
+<b>When no solution is found for a given circuit size.</b> The first portion (the first four lines) show what is written if no further solutions can be found at the given time point. Reported here is the failure (line 1), model status (line 2), solver status (line 3), and time it took for the solver to decide that there was no further solutions (line 4). Model and solver status code meaning can be found in GAMS documentation, though the authors have found the succinct summary at <a href="http://www.gamsworld.org/performance/status_codes.htm">www.gamsworld.org/performance/status_codes.htm</a> a useful reference.</li>
+<li>
+<b>When a solution is found for the given circuit size.</b> The remaining lines of output shown in <a href="#fig8">Figure 8</a>A are the output to this file when a solution is found. Several solution metrics are reported here including objective value, circuit size, model status, solver status, and time to find the solution. Below this block of text is a table representing the designed circuit, with each row being one triad of the design (promoter, transcript, and terminator grouping).</li>
+</ol>
+</li>
+<li>
+<b>Read the simple report.</b> The simple report is another of several outputs used to report the results of the combined EuGeneCiD and EuGeneCiM workflow which is focused on reporting the results of EuGeneCiD, and will be named “a_simple_EUGENECID_report_descriptor.txt”. A portion of a simple report for a single solution is shown in <a href="#fig8">Figure 8</a>B.
+<ol type="a">
+<li>
+<b>Circuit design report.</b> Each simple report begins with a header indicating the solution number, followed by the triads of the circuit design (with each row representing one triad).</li>
+<li>
+<b>Ligand responsiveness report.</b> The design report is followed by a “respondents to ligands” table, which specifies which bioparts respond to the desired ligands (ligands will be reported using their identifiers from the unified input).</li>
+<li>
+<b>Enzyme responsiveness report.</b> Similarly, a table of which enzymes are affected by which other enzymes (as determined through the attribution equations) is made.</li>
+<li>
+<b>Ligand condition reports.</b> Following the three previously described reports, each possible combination of desired ligands is listed with three tables reporting on the EuGeneCiD results.
+<ol type="i">
+<li>
+<b>Transcript production table.</b> The first table reports transcript production and breaks down production into those that are deliberate and those caused by expression leakiness, in addition to reporting the amount predicted to be degraded.</li>
+<li>
+<b>Protein production table.</b> The next table lists the total protein production. A report is only made of a protein here if the protein concentration is non-zero.</li>
+<li>
+<b>Protein expression table.</b> The final table lists all proteins which are expressed and the value of the expression binary variable (<math> <mrow> <msub> <mi>W</mi> <mrow> <mi>E</mi> <msub> <mi>L</mi> <mi>d</mi> </msub> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </math>). If a protein fails to be expressed (by being inhibited or not meeting the concentration threshold), it will not be reported in this table.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<b>Read the logic tables output.</b> The logic table file is another of several outputs used to report the results of the EuGeneCiD and EuGeneCiM workflow which is focused on reporting the results of EuGeneCiD, and will be named “circuit_designs_file_descriptor.txt”. <a href="#fig9">Figure 9</a> shows an example of the logic table output file for one solution and the first time point when modeling that solution using EuGeneCiM.
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Example from the logic table output file</div>
+<p>Shown in this figure is a portion of the logic tables output file of the EuGeneCiD and EuGeneCiM combined output (black text). Feature of note or interest are pointed to by blue open brackets or lines and comments are made about these features in blue text.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Other output files are generally quite large and useful primarily for debugging purposes, and therefore will not be discussed here. Please see the <a href="#troubleshooting">troubleshooting</a> section.</div>
+<ol start="27">
+<li>
+<b>Use the statistics script to get holistic results.</b> As already noted, many of the files are unwieldy too large, or not optimized for human readability. This issue is addressed by two Perl scripts that can help users understand general and specific trends in the solutions. The first is the statistics script, which reports on the general statistics of the set of solutions produced by EuGeneCiD. The following sub steps address how to use this script.
+<ol type="a">
+<li>
+<b>Download the statistics script from GitHub.</b> The statistics script is named “get_results_statistics.pl”, and can be found in GitHub at <a href="http://github.com/ssbio/EuGeneCiDM/EuGeneCiDM_results_final">http://github.com/ssbio/EuGeneCiDM/EuGeneCiDM_results_final</a>.</li>
+<li>
+<b>Correctly place the code.</b> The statistics script should be placed in the parent directory.</li>
+<li>
+<b>Update the descriptor reference.</b> On line 12 of the script, replace the string inside the quotation marks with the user’s “descriptor”.
+<div class="critical">
+<span class="critical-title">Critical:</span> If the descriptor does not match that used to name the output files of the combined EuGeneCiD and EuGeneCiM workflow, then the script will throw an error when the user attempts to run it.</div>
+</li>
+<li>
+<b>Run the statistics script.</b> From the parent directory, run the statistics script using the command “perl get_results_statistics.pl” as shown in <a href="#fig10">Figure 10</a>A.
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Results of two perl scripts created to analyze the results of the combined EuGeneCiD and EuGeneCiM workflow</div>
+<p>(A) Example command line output of Perl scripts to aid in analysis of results (green text). Features of particular interest are pointed to by white lines or brackets with white descriptive text.</p>
+<p>(B) Shown here is a portion of the logic tables output file of the EuGeneCiD and EuGeneCiM combined output (black text). Feature of note or interest are pointed to by blue open brackets or lines and comments are made about these features in blue text.</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Read the results of the statistics script.</b> <a href="#fig10">Figure 10</a>A shows an example result of running the statistics script for the Cadmium NIMPLY Copper circuit. This reports important metrics about the set of solutions produced by EuGeneCiD including the number of solutions; minimum, maximum, and mean solution times; minimum, maximum, and mode solution sizes (in number of triads); minimum and maximum objective values with the corresponding solution number; a tally of model statuses returned; a tally of solver statuses returned; and whether a fatal error has occurred.
+<ol type="i">
+<li>
+<b>Fatal error.</b> On very rare occasions, a fatal error will occur when attempting to solve the first time point of EuGeneCiM, which will be reported here if one has occurred. These fatal errors are very rare and inconsistent in occurrence, resulting in no clear reason as to why these occur. As they only occur when implementing EuGeneCiM, it is possible to re-create the lost data using the solution design and steps 18–23 for a particular solution.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>
+<b>Use the plot a solution script to get specific results in Excel format.</b> As the opposite of the statistics script, the plot a solution script reports on the EuGeneCiM results of a single indicated solution. This report takes the form of a Microsoft Excel file with four sheets reporting on transcript production (“Trans_Prod” sheet), transcript level (“Trans_Level” sheet), enzyme production (“Enz_Prod” sheet), and enzyme level (“Enz_Level” sheet). The following sub steps address how to use this script.
+<ol type="a">
+<li>
+<b>Download the statistics script from GitHub.</b> The statistics script is named “plot_a_solution.pl”, and can be found in GitHub at <a href="http://github.com/ssbio/EuGeneCiDM/EuGeneCiDM_results_final">http://github.com/ssbio/EuGeneCiDM/EuGeneCiDM_results_final</a>.</li>
+<li>
+<b>Correctly place the code.</b> The plot a solution script should be placed in the parent directory.</li>
+<li>
+<b>Update the descriptor reference.</b> On line 16 of the script, replace the string inside the quotation marks with the user’s “descriptor” (assigning the string as the value of the “$gate” variable). On line 17 of the script, the numerical value assigned to the variable “$soln_num” should be replaced with the solution number that the user wishes to examine more closely. Note that this value should be less than or equal to the total number of solutions as determined in step 27.</li>
+<li>
+<b>Run the statistics script.</b> From the parent directory, run the statistics script using the command “perl plot_a_solution.pl”.</li>
+<li>
+<b>Read the results of the statistics script.</b> <a href="#fig10">Figure 10</a>B shows an example result of running the statistics script for the Cadmium NIMPLY Copper circuit. This results in an excel workbook with four distinct sheets and 16 scatterplots showing different aspects of the modeled behavior of the chosen solution.
+<ol type="i">
+<li>
+<b>Enzyme level results.</b> Shown in <a href="#fig10">Figure 10</a>B is an example “Enz_Level” sheet for the zeroth solution of the Cadmium NIMPLY Copper circuit conceptualization. This sheet contains tables for enzyme level at all time points across each of the four unique condition combinations. These values are then plotted in a scatter plot (one set of data per enzyme). Shown here are plots of tetR (red squares) and GFP (blue diamonds). Note that normally the generated graphs are overlapping, and they have been rearranged in this figure to be easier to see and read. Each sheet is similarly formatted, simply reporting different datasets.</li>
+<li>
+<b>Enzyme production results.</b> Similar in layout to the “Enz_Level” sheet, the “Enz_Prod” sheet reports on the rate of enzyme production at each time point under each ligand condition, both in table and scatterplot forms.</li>
+<li>
+<b>Transcript level results.</b> Similar in layout to the “Enz_Level” sheet, the “Trans_Level” sheet reports on the rate of enzyme production at each time point under each ligand condition, both in table and scatterplot forms.</li>
+<li>
+<b>Transcript production results.</b> Similar in layout to the “Enz_Level” sheet, the “Trans_Prod” sheet reports on the rate of transcript production at each time point under each ligand condition, both in table and scatterplot forms.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This code can be applied to the output of running only the EuGeneCiM code as well. The variable “$gate” in step 28.c. should be assigned the value “descriptor_CiM_only”, and the variable “$soln_num” should be set to 0 in this case.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Presented in <a href="#fig6">Figures 6</a>, <a href="#fig8">8</a>, <a href="#fig9">9</a>, and <a href="#fig10">10</a> are partial examples of expected outcomes, showing the resulting files, their contents, and outputs from the Perl scripts to make the outcomes easier to understand. In most applications of this protocol, there will be dozens if not hundreds of outcomes. Here, an “outcome” is defined as having two parts: 1) a genetic circuit design using pieces from the bioparts library, and 2) a model of how that circuit will behave with respect to time. Designs of particular interest can potentially be identified through steps 24–27 and further analyzed in step 28 for desired dynamic behavior. From the set of solutions (however large the user has limited it to be in step 7), the user can analyze and select (a) desired design(s) with which to proceed for implementation and testing <i>in vivo</i>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The EuGeneCiD and EuGeneCiM systems are essentially applied to a small single cell, as there is no explicit inclusion of transport mechanisms, diffusion, or cell differentiation. Cell differentiation, and the resulting differential expression of genes must be considered when defining the bioparts database. This may be problematic when attempting to model behavior in a multi-cellular organism) and has limited ability to account for individual variations between cells. In contrast to other techniques, EuGeneCiD and EuGeneCiM produce relative concentration predictions, rather than exact levels. Additionally, as already discussed, while <i>in vivo</i> repressilators have sinusoidal behavior, EuGeneCiM-modeled repressilators do not due to their underlying binary mathematics, though their shape is similar as already discussed. Further, some current tools (with a more biophysical focus) include considerations of copy number and phenotypic ranges, which are not accounted for in the EuGeneCiD and EuGeneCiM tools. Finally, as shown in Schroeder, Baber, and Saha (2021), many returned solutions are non-optimal, particularly for circuit logic which are more difficult to construct such as HALF ADDER, XOR, and others.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1: Error occurs when running a code or script</h3>
+<p>Since this workflow is entirely <i>in silico</i> and relies on codes downloaded from GitHub, some of which require manual editing, there may be occasional issues of syntax, versioning, or typographical errors. This problem would most likely be noticed when attempting steps 4, 17, 23, 27, and 28.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>All provided code will be in either Perl or GAMS programming languages, and as such, there will be two different approaches for common debugging. For Perl scripts, errors will be output to the command line, and, generally, error codes are descriptive enough (including line numbers) for the error to be easily tracked down and corrected. In the case of Perl scripts, the most likely error will be misspellings of the “descriptor”, leading to references for files which do not exist. GAMS code is somewhat more difficult to debug. Should a single mistake be made, generally a few dozen errors will occur, and the command line output will not be sufficiently descriptive. The most effective procedure, from the point of view of the authors, is to open the listing file (see <a href="#fig6">Figure 6</a>) and search for a dollar sign ($) followed by a number. If the selected text editor allows regular expressions (regex) searching of the document (such as Notepad++), it is most effective to search using the regular expression “\$\d”. This will take the user to the first error, with the dollar sign occurring under the first character which caused the error. This error is likely the (or one of) the root error(s) which, when corrected, will significantly reduce the total number of errors. To determine what the particular error is, search for the string which matched the regular expression (for example, error code “$56” This method is particularly effective for compilation errors which could be caused by typographical errors which occur when users edit code downloaded from GitHub such as in steps 7 and 19 wherein GAMS code is modified. Unfortunately, this procedure sometimes cannot be used effectively to trace error which occur a program has been running for a very long time (for instance, several days), because the listing file becomes so large that some text editors will not be able to open it. In such cases, errors may go unresolved (such as the fatal error issue for EuGeneCiM checked for in step 27) and may have to be worked around in some manner.</p>
+<h3 id="sec6.3">Problem 2: Errors such as “element redefined” occur in GAMS</h3>
+<p>One of the more likely GAMS errors, in the authors’ opinion, will be to find an error from troubleshooting <a href="#sec6.1">problem 1</a> which refers to redefining an element. These errors are likely to be found when addressing <a href="#sec6.1">troubleshooting 1</a>, or in steps 4, 17, 23, 27, and 28.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This particular error will occur when a symbol has a non-unique global identifier. The solution to this problem is to ensure that each element of the bioparts library has a globally unique identifier. An identifier is valid and globally unique if:</p>
+<ol>
+<li>It is a single string (e.g., no spaces).</li>
+<li>It contains no special characters (e.g., !, #, @, etc.).</li>
+<li>No other biopart (promoter, transcript, terminator, or enzyme) or ligand shares the same identifier.</li>
+</ol>
+<p>Generally, a way to increase the chances that an identifier is globally unique is to put some type-specific reference in the identifier such as a “p” for promoter, “gene” for transcript, or a “t” for a terminator as done in Schroeder, Baber, and Saha (2021).</p>
+<h3 id="sec6.5">Problem 3: Code and similar items are out of date</h3>
+<p>Inspecting the log file from running convert_input_descriptor.pl. This problem is associated with step 4.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>This file should, briefly, discuss what was found by the convert script and will provide basic information about the database size, logic table, and time points to be modeled. The first few rows of the output should read as follows (where XX stands in for some number):</p>
+<div class="textbox">
+<p><code>Number of promoters: XX</code></p>
+<p><code>Number of transcripts: XX</code></p>
+<p><code>Number of terminators: XX</code></p>
+<p><code>Number of enzymes: XX</code></p>
+<p><code>Number of ligands: XX</code></p>
+</div>
+<p>Should the number of elements in any of the above set appear different than expected, it may indicate that the formatting of that particular sheet is incorrect, and that <a href="#fig3">Figure 3</a> and the “<a href="#before-you-begin">before you begin</a>” section of this protocol should be consulted to ensure formatting is correct. The next section will relate to how the convert code unpacks the logic table into something readable by GAMS. Each row will be reported on from the logic table. So, a logic table of the form shown in <a href="#fig3">Figure 3</a> will produce the following output in the log file. In short, the ligands indicated as “present” in the given condition by the binary variables in the logic table will be listed, followed by what (if any) enzyme response to that condition is coded as desired. If an enzyme response is desired, the log file will then have written to it the condition strings which define the logic table in GAMS. The condition strings iterate through combinations of ‘none’ and the desired ligand(s), not all of which will be written to the “logic_table.txt” input file.</p>
+<div class="textbox">
+<p><code>Row #1: present ligands: Cu Cd</code></p>
+<p><code>Desired to have no enzyme response</code></p>
+<p><code>Row #2: present ligands: Cu Cd</code></p>
+<p><code>Desired to have no enzyme response</code></p>
+<p><code>Row #3: present ligands: Cd</code></p>
+<p><code>Enzyme Response: GFP</code></p>
+<p><code>Condition string: ‘Cd’.’Cd’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Condition string: ‘Cd’.’none’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Condition string: ‘Cd’.’Cd’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Condition string: ‘Cd’.’none’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Condition string: ‘none’.’Cd’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Condition string: ‘none’.’Cd’.’GFP’ 1</code></p>
+<p><code>Found ‘Cd’</code></p>
+<p><code>Row #4: present ligands: none</code></p>
+<p><code>Desired to have no enzyme response</code></p>
+</div>
+<p>If this section reports an enzyme response to a condition which is not desired, then the input logic table may be incorrectly formatted. Finally, the log file reports the read maximum time.</p>
+<div class="textbox">
+<p><code>max time: 10</code></p>
+</div>
+<p>Note if the reported time is not as expected, the “other” sheet (as shown in <a href="#fig3">Figure 3</a>C) may need to be corrected.</p>
+<h3 id="sec6.7">Problem 4: A solution occurs which should be infeasible</h3>
+<p>One problem which might occur is that when, in double-checking some of the EuGeneCiD solutions, a solution is discovered which should, given the formulation of this tool given in Schroeder, Baber, and Saha (2021) be infeasible. This problem is most likely to occur if the solver settings have been adjusted (for example, if the user decides to adjust the solver settings in the solver options file), or lines of the GAMS code have been edited other than those explicitly references in steps 7 and 19.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Generally, this will result from a mismatch between solver settings (particularly those with “ep” in the name such as “epint” or “eprhs”) and the value of the parameter “epsilon” in the combined EuGeneCiD and EuGeneCiM workflow code. The epsilon parameter generally exists to cause slight infeasibilities in constraint equations under certain variable state conditions. This is generally caused by combinations of binary variables diverging too much and too much infeasibility being allowed between the two sides of a constraint equation. If the value of binary variables is allowed too much divergence from exactly 0 or 1 and the allowed infeasibility between sides of a constraint is too large, then the effects of epsilon can be negated, causing numerical issues. Generally, constraints related to the allowed value divergence from strict binary values (such as “epint”) and those which allow infeasibility between constraint sides (such as “eprhs”) should be anything less than or equal to three orders of magnitude smaller than epsilon.</p>
+<p>One specific reason for this issue might result from the determination of whether enzyme concentration reaches a set level. These are the two constraints which make this determination, which are also sensitive to the interrelation between the arbitrarily large number (<math> <mrow> <mi>V</mi> </mrow> </math>), arbitrary small number (<math> <mrow> <mi>ε</mi> </mrow> </math>), and the solver settings (particularly, “eprhs” = <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>). These equations are listed below.</p>
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mo>≤</mo> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mspace></mspace> <mo>∀</mo> <mi>e</mi> <mo>∈</mo> <mi>E</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd2" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <mrow> <mo>(</mo> <mrow> <mi>V</mi> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> <mspace></mspace> <mo>∀</mo> <mi>e</mi> <mo>∈</mo> <mi>E</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Where <math> <mrow> <mi>E</mi> </mrow> </math> is the set of enzymes and proteins; <math> <mrow> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </math> is the set of ligands to which the system responds as defined by the logic table; <math> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </math> is the concentration of enzyme <math> <mrow> <mi>e</mi> </mrow> </math> under ligand signal conditions <math> <mrow> <msub> <mi>l</mi> <mi>d</mi> </msub> </mrow> </math> and <math> <mrow> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </math>; <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> is the binary variable which stores if the enzyme concentration is sufficient for the phenotype to be expressed (1 if sufficient, 0 otherwise); and <math> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> </mrow> </math> is the concentration for enzyme <math> <mrow> <mi>e</mi> </mrow> </math> which defines sufficiency for concentration. The above equations can be solved for <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> as follows.</p>
+<p id="fd3" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 3)</mtext></mtd> <mtd> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mo>≤</mo> <mfrac> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mspace></mspace> <mo>∀</mo> <mi>e</mi> <mo>∈</mo> <mi>E</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd4" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 4)</mtext></mtd> <mtd> <mrow> <mfrac> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> <mrow> <mi>V</mi> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mo>≤</mo> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mspace></mspace> <mo>∀</mo> <mi>e</mi> <mo>∈</mo> <mi>E</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>The success of these constraints to produce a robust solution for <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> depend somewhat on the values of <math> <mrow> <mi>V</mi> </mrow> </math>, <math> <mrow> <mi>ε</mi> </mrow> </math>, <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>, <math> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> </mrow> </math>, and <math> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </math> as can be demonstrated through the following example where <math> <mrow> <mi>V</mi> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mn>4</mn> </mrow> </math>, <math> <mrow> <mi>ε</mi> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>4</mn> </mrow> </math>, <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> </math>, <math> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>=</mo> <mn>5</mn> </mrow> </math>, and <math> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>=</mo> <mn>5.0007</mn> </mrow> </math>. Substituting these values into <a href="#fd3">Equations (3)</a> and <a href="#fd4">(4)</a> gives the following.</p>
+<p id="fd5" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 5)</mtext></mtd> <mtd> <mrow> <mfrac> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> <mrow> <mi>V</mi> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mo>≈</mo> <mn>8</mn> <mi>E</mi> <mo>−</mo> <mn>8</mn> <mo>≤</mo> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mo>≤</mo> <mfrac> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mo>=</mo> <mn>1.0012</mn> <mspace></mspace> <mo>∀</mo> <mi>e</mi> <mo>∈</mo> <mi>E</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Rigorously, since <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> is a binary variable, it should take the value of <math> <mrow> <mn>1</mn> </mrow> </math>; however, since numerical optimization solvers allow for some infeasibility in solutions, <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> is allowed to be either <math> <mrow> <mn>0</mn> </mrow> </math> or <math> <mrow> <mn>1</mn> </mrow> </math>. This is because <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> <mo>=</mo> <mn>0</mn> </mrow> </math> causes an infeasibility of approximately <math> <mrow> <mn>8</mn> <mi>E</mi> <mo>−</mo> <mn>8</mn> </mrow> </math>, which is less than the solver setting, <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> </math>, and is therefore allowed. For convenience, this will be called a Threshold Ambiguity Error (TEA). A TEA allows an enzyme in a specific concentration range to be either “on” or “off” at the discretion of the solver. The equations related to this numerical error can be explored to identify a range for the concentration variable <math> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> </mrow> </math> in which these errors can occur.</p>
+<p>For <a href="#fd3">Equation (3)</a> to allow both values of <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math>, the following must be true (for some <math> <mrow> <mi>e</mi> <mo>∈</mo> <mspace></mspace> <mi>E</mi> </mrow> </math> and <math> <mrow> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> <mo>∈</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> </mrow> </math>):</p>
+<p id="fd6" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 6)</mtext></mtd> <mtd> <mrow> <mfrac> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mo>≥</mo> <mn>1</mn> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Therefore, these problematic solutions can occur if:</p>
+<p id="fd7" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 7)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≥</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>The second necessary condition, <a href="#fd4">Equation (4)</a>, must also allow for both values of <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math>. This occurs by the lower bound being less than <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>, so that the infeasibility between that number and 0 is less than <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>. For this to occur then, the following must be true:</p>
+<p id="fd8" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 8)</mtext></mtd> <mtd> <mrow> <mfrac> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> <mrow> <mi>V</mi> <mo>−</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> </mrow> </mfrac> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Solving for the concentration range at which the above can be true:</p>
+<p id="fd9" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 9)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mrow> <mo>(</mo> <mrow> <mi>V</mi> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd10" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 10)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mrow> <mo>(</mo> <mrow> <mi>V</mi> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd11" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 11)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd12" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 12)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd13" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 13)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> <mo>+</mo> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>−</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd14" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 14)</mtext></mtd> <mtd> <mrow> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> <mo>−</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Therefore, the range of concentrations at which a single concentration could return both sufficient and deficient concentration state variables (<math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math>) is:</p>
+<p id="fd15" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 15)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> <mo>≤</mo> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> <mo>−</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Returning to the example TEA above , <a href="#fd15">Equation (15)</a> appears as:</p>
+<p id="fd16" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 16)</mtext></mtd> <mtd> <mrow> <mn>5.0001</mn> <mo>≤</mo> <mn>5.0007</mn> <mo>≤</mo> <mn>5.009895</mn> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Therefore, the particular combination of arbitrary values, solver settings, and calculated concentration resulted in a TEA. To force the range in <a href="#fd15">Equation (15)</a> to be non-existent and effectively prevent TEAs, the following must be true:</p>
+<p id="fd17" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 17)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mi>ε</mi> <mo>≥</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> <mo>−</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>This can be solved to find an inequality governing the ideal relationship between <math> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>,</mo> <mspace></mspace> <mi>ε</mi> </mrow> </math>, <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>, and <math> <mrow> <mi>V</mi> </mrow> </math> yields the following:</p>
+<p id="fd18" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 18)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mn>2</mn> <mi>ε</mi> <mo>≥</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd19" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 19)</mtext></mtd> <mtd> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mn>2</mn> <mi>ε</mi> <mo>≥</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>V</mi> <mo>+</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd20" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 20)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mfrac> <mrow> <mn>2</mn> <mi>ε</mi> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mo>≥</mo> <mi>V</mi> <mo>+</mo> <mi>ε</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd21" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 21)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mfrac> <mrow> <mn>2</mn> <mi>ε</mi> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mo>−</mo> <mi>ε</mi> <mo>≥</mo> <mi>V</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd22" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 22)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mfrac> <mrow> <mn>2</mn> <mi>ε</mi> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mo>−</mo> <mfrac> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mo>≥</mo> <mi>V</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd23" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 23)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mfrac> <mrow> <mn>2</mn> <mi>ε</mi> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mi>ε</mi> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mo>≥</mo> <mi>V</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd24" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 24)</mtext></mtd> <mtd> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>+</mo> <mfrac> <mrow> <mo>(</mo> <mn>2</mn> <mo>−</mo> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mo>)</mo> </mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mfrac> <mi>ε</mi> <mo>≥</mo> <mi>V</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>The value of <math> <mrow> <msubsup> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>l</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>l</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> <mo>+</mo> </msubsup> </mrow> </math> can be ambiguous when the above relationship does not hold. An example is provided in <a href="#fd25">Equation (25)</a>, with the example values used in <a href="#fd5">Equation (5)</a> are substituted into <a href="#fd24">Equation (24)</a>.</p>
+<p id="fd25" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 25)</mtext></mtd> <mtd> <mrow> <mn>5</mn> <mo>+</mo> <mfrac> <mrow> <mo>(</mo> <mrow> <mn>2</mn> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> <mo>)</mo> </mrow> </mfrac> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>4</mn> </mrow> <mo>)</mo> </mrow> <mo>=</mo> <mn>204.9999</mn> <mo>≥</mo> <mn>1</mn> <mi>E</mi> <mn>4</mn> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p><a href="#fd24">Equation (24)</a> has a few notable points for setting arbitrary values and defining solver settings:</p>
+<ol>
+<li>The influence of the threshold value is largely irrelevant at the magnitude used throughout this protocol.</li>
+<li>The arbitrarily large number <math> <mrow> <mi>V</mi> </mrow> </math> should be less than or equal to twice the ratio of <math> <mrow> <mi>ε</mi> </mrow> </math> to <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math>. For instance, in <a href="#fd24">Equation (24)</a>, the ratio between <math> <mrow> <mi>ε</mi> </mrow> </math> and <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math> is <math> <mrow> <mn>1</mn> <mi>E</mi> <mn>2</mn> </mrow> </math>; therefore, to not have this numerical issue, <math> <mrow> <mi>V</mi> </mrow> </math> should be less than <math> <mrow> <mn>2</mn> <mi>E</mi> <mn>2</mn> </mrow> </math>. Consider this example where the relationships are correct (<math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> </math>, <math> <mrow> <mi>ε</mi> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>3</mn> </mrow> </math>, <math> <mrow> <msub> <mi>θ</mi> <mi>e</mi> </msub> <mo>=</mo> <mn>5</mn> </mrow> </math>, <math> <mrow> <mi>V</mi> <mo>=</mo> <mn>1</mn> <mi>E</mi> <mn>3</mn> </mrow> </math>):</li>
+</ol>
+<p id="fd26" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 26)</mtext></mtd> <mtd> <mrow> <mn>5</mn> <mo>+</mo> <mfrac> <mrow> <mo>(</mo> <mrow> <mn>2</mn> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>6</mn> </mrow> <mo>)</mo> </mrow> </mfrac> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mi>E</mi> <mo>−</mo> <mn>3</mn> </mrow> <mo>)</mo> </mrow> <mo>=</mo> <mn>2004.9999</mn> <mo>≥</mo> <mn>1</mn> <mi>E</mi> <mn>3</mn> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Substituting these values back into <a href="#fd15">Equation (15)</a>, we then see that <a href="#fd15">Equation (15)</a> then results in a non-viable range at which this error can occur:</p>
+<p id="fd27" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 27)</mtext></mtd> <mtd> <mrow> <mn>5.001</mn> <mo>≤</mo> <msub> <mi>C</mi> <mrow> <mi>e</mi> <mo>,</mo> <msub> <mi>L</mi> <mi>d</mi> </msub> <mo>,</mo> <msub> <mi>L</mi> <mrow> <mi>d</mi> <mn>1</mn> </mrow> </msub> </mrow> </msub> <mo>≤</mo> <mn>4.995000001</mn> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Should solutions which are infeasible occur, it is therefore recommended to check the provided values of <math> <mrow> <mi>ε</mi> </mrow> </math>, <math> <mrow> <mi>V</mi> </mrow> </math>, and <math> <mrow> <msub> <mi>ε</mi> <mrow> <mi>r</mi> <mi>h</mi> <mi>s</mi> </mrow> </msub> </mrow> </math> defined in the code and “cplex.opt” file to ensure that the relation shown in <a href="#fd24">Equation (24)</a> holds.</p>
+<h3 id="sec6.9">Problem 5: Code and similar items are out of date</h3>
+<p>This work is out-of-date and the time necessary to update it is not considered worthwhile or the workflow has been significantly changed.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>The EuGeneCiD and EuGeneCiM tools are created as the basis for the future development of a synthetic biology application development pipeline. Therefore this tool will be supported for some time, and the workflow of the tool may evolve. See the associated GitHub page (github.com/ssbio/EuGeneCiDM) for updates, including updated documentation. Given that this workflow utilizes programming languages which are constantly evolving, it is not inconceivable that codes in this workflow may eventually become out-of-date. The authors do not intend this to be a monolithic procedure that can be forever duplicated. Rather, in future, it is hoped that this protocol outlines a procedure which may be a useful guideline in automating the design and modeling of synthetic biology circuits. It is particularly hoped that this procedure will see an increase in the use of the EuGeneCiD and EuGeneCiM tools for these tasks, or could be a guide for wholescale automation for the development of a synthetic biology circuit applications pipeline.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Chmielowska-Bąk, J., Gzyl, J., Rucinska-Sobkowiak, R., Arasimowicz-Jelonek, M., and Deckert, J. (2014). The new insights into cadmium sensing. Front. Plant Sci. <i>5</i>, 1-13. <a class="external-link" href="https://doi.org/10.3389/fpls.2014.00245">https://doi.org/10.3389/fpls.2014.00245</a></p>
+<p id="bib2">Dasika, M.S. and Maranas, C.D. (2008). OptCircuit: an optimization based method for computational design of genetic circuits. BMC Syst. Biol. <i>2</i>, 1-19. <a class="external-link" href="https://doi.org/10.1186/1752-0509-2-24">https://doi.org/10.1186/1752-0509-2-24</a></p>
+<p id="bib5">Fang, Z., Martin, J., and Wang, Z. (2012). Statistical methods for identifying differentially expressed genes in RNA-Seq experiments. Cell Biosci. <i>2</i>, 1-8. <a class="external-link" href="https://doi.org/10.1186/2045-3701-2-26">https://doi.org/10.1186/2045-3701-2-26</a></p>
+<p id="bib6">Guénin, Stephanie, Mauriat, Melanie, Pelloux, Jerome, Van Wuytswinkel, Olivier, Bellini, Catherine, and Gutierrez, Laurent. (2009). Normalization of qRT-PCR data: the necessity of adopting a systematic, experimental conditions-specific, validation of references. J. Exp. Bot. <i>60</i>, 487-493. <a class="external-link" href="https://doi.org/10.1093/jxb/ern305">https://doi.org/10.1093/jxb/ern305</a></p>
+<p id="bib7">Kudla, G., Murray, A.W., Tollervey, D., and Plotkin, J.B. (2009). Coding-sequence determinants of gene expression in Escherichia coli. Science. 255-259. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00526-8/sref7">View at publisher</a></p>
+<p id="bib8">Reue, K. (1998). ‘Issues and opinions in nutrition mRNA quantitation Techniques: considerations for experimental’. J. Nutr. 2038-2044. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00526-8/sref8">View at publisher</a></p>
+<p id="bib14">Schroeder, W.L., Baber, W.S., and Saha, R. (2021). Optimization-based Eukaryotic Genetic Circuit Design (EuGeneCiD) and modeling (EuGeneCiM)tools: Computational approach to synthetic biology. iScience. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.103000">https://doi.org/10.1016/j.isci.2021.103000</a></p>
+<p id="bib9">Schroeder, W.L. and Saha, R. (2020a). OptFill: a tool for infeasible cycle-free gapfilling of stoichiometric metabolic models. iScience <i>23</i>, 100783. <a class="external-link" href="https://doi.org/10.1016/j.isci.2019.100783">https://doi.org/10.1016/j.isci.2019.100783</a></p>
+<p id="bib10">Schroeder, W.L. and Saha, R. (2020b). Protocol for genome-scale reconstruction and melanogenesis analysis of exophiala dermatitidis protocol for genome-scale reconstruction and melanogenesis analysis of exophiala dermatitidis. STAR Protoc. <i>1</i>. <a class="external-link" href="https://doi.org/10.1016/j.xpro.2020.100105">https://doi.org/10.1016/j.xpro.2020.100105</a></p>
+<p id="bib11">Suzuki, N., Koizumi, N., and Sano, H. (2001). Screening of cadmium-responsive genes in Arabidopsis thaliana. Plant Cell Environ. <i>24</i>, 1177-1188. <a class="external-link" href="https://doi.org/10.1046/j.1365-3040.2001.00773.x">https://doi.org/10.1046/j.1365-3040.2001.00773.x</a></p>
+<p id="bib4">Van De Mortel, J.E., Schat, H., Moerland, P.D., Van Thermaat, E.V.L., Van Der Ent, S., Blankestijn, H., Ghandilyan, A., Tsiatsiani, S., and Aarts, M.G.M. (2008). Expression differences for genes involved in lignin, glutathione and sulphate metabolism in response to cadmium in Arabidopsis thaliana and the related Zn/Cd-hyperaccumulator Thlaspi caerulescens. Plant Cell Environ. <i>31</i>, 301-324. <a class="external-link" href="https://doi.org/10.1111/j.1365-3040.2007.01764.x">https://doi.org/10.1111/j.1365-3040.2007.01764.x</a></p>
+<p id="bib3">Van De Mortel, Judith E., Villanueva, Laia Almar, Schat, Henk, Kwekkeboom, Jeroen, Coughlan, Sean, Moerland, Perry D., van Themaat, Emiel Ver Loren, Koornneef, Maarten, and Aarts, Mark G.M. (2006). Large expression differences in genes for iron and zinc homeostasis, stress response, and lignin biosynthesis distinguish roots of Arabidopsis thaliana and the related metal hyperaccumulator Thlaspi caerulescens. Plant Physiol. <i>142</i>, 1127-1147. <a class="external-link" href="https://doi.org/10.1104/pp.106.082073">https://doi.org/10.1104/pp.106.082073</a></p>
+<p id="bib12">Ward, N.J., Buckley, S.M.K., Waddington, S.N., VandenDriessche, T., Chuah, M.K.L., Nathwani, A.C., McIntosh, J., Tuddenham, E.G.D., Kinnon, C., Thrasher, A.J., and McVey, J.H. (2011). Codon optimization of human factor VIII cDNAs leads to high-level expression. Blood <i>117</i>, 798-807. <a class="external-link" href="https://doi.org/10.1182/blood-2010-05-282707">https://doi.org/10.1182/blood-2010-05-282707</a></p>
+<p id="bib13">Zomorrodi, A.R. and Maranas, C.D. (2014). Coarse-grained optimization-driven design and piecewise linear modeling of synthetic genetic circuits. Eur. J. Oper. Res. <i>237</i>, 665-676. <a class="external-link" href="https://doi.org/10.1016/j.ejor.2014.01.054">https://doi.org/10.1016/j.ejor.2014.01.054</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Rajib Saha (<a href="mailto:rsaha2@unl.edu">rsaha2@unl.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The published article does not include all data sets and code generated or analyzed during this study. All data sets and code generated during this study are available at GitHub in the ssbio/EuGeneCiDM repository [<a href="https://doi.org/10.5281/zenodo.4762590">https://doi.org/10.5281/zenodo.4762590</a>] or at the following URL github.com/ssbio/EuGeneCiDM. In addition, the data and code can be found in Mendeley Data at <a href="https://data.mendeley.com/datasets/n5zsmxgd4h/1">https://data.mendeley.com/datasets/n5zsmxgd4h/1</a><b>.</b></p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1026-Mmc1.extension">Document S1. Figure S1</a></p>
+<h3>Acknowledgments</h3>
+<p>This work has been completed utilizing the Holland Computing Center of the University of Nebraska, which receives support from the Nebraska Research Initiative. The authors gratefully acknowledge funding from the <a href="https://doi.org/10.13039/100000001">NSF</a> EPSCoR Center for Root and Rhizobiome Innovation Grant 25-1215-0139-025 at the University of Nebraska – Lincoln. The authors would also like to acknowledge the contribution of participants of the Young Nebraska Scientists Program (YNSP) who participated in this research including (listing in alphabetical order by family name): Bree Brunsman, Evan Fulton, Ali Keshk, Kareem Keshk, and Molly Nora.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, W.L.S. and R.S.; data curation, investigation, formal analysis, and software, W.L.S. and A.S.B.; funding acquisition, R.S.; methodology, W.L.S.; project administration, resources, and supervision, R.S.; validation and visualization, W.L.S.; writing – original draft, W.L.S. and R.S.; writing – reviewing &amp; editing – W.L.S., A.S.B., and R.S.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

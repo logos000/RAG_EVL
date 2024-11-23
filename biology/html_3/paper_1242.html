@@ -1,0 +1,398 @@
+<article>
+<section>
+<h1 id="header">From microbial community structure to metabolic inference using paprica</h1>
+<p><time datetime="2021-12-17">Published: December 17, 2021</time></p>
+<p>Natalia G. Erazo,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup> Avishek Dutta,<sup><a href="#aff1">1</a></sup> and Jeff S. Bowman<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a></sup></p>
+<p id="aff1"><sup>1</sup>Scripps Institution of Oceanography, UC San Diego, La Jolla, CA, USA</p>
+<p id="aff2"><sup>2</sup>Center for Marine Biodiversity and Conservation, UC San Diego, La Jolla, CA, USA</p>
+<p id="aff3"><sup>3</sup>Center for Microbiome Innovation, UC San Diego, La Jolla, CA, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:nerazo@ucsd.edu">nerazo@ucsd.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.101005">10.1016/j.xpro.2021.101005</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Microbial taxonomic marker gene studies using 16S rRNA gene amplicon sequencing provide an understanding of microbial community structure and diversity; however, it can be difficult to infer the functionality of microbes in the ecosystem from these data. Here, we show how to predict metabolism from phylogeny using the paprica pipeline. This approach allows resolution at the strain and species level for select regions on the prokaryotic phylogenetic tree and provides an estimate of gene and metabolic pathway abundance.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102204">Erazo and Bowman (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Paprica determines microbial community structure and infers metabolic structure</li>
+<li>Paprica uses a phylogenetic placement approach</li>
+<li>Paprica generates an estimate of genome sizes, gene content, and metabolic pathways</li>
+<li>This pipeline helps to understand the function of bacteria in complex ecosystems</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1242-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Data collection</h3>
+<p>This protocol describes how to use the paprica pipeline to determine microbial community structure and predict metabolic pathways by phylogenetic placement approach (<a href="#bib2">Bowman and Ducklow, 2015</a>). This method differs from traditional OTU-based methods, such as UCLUST (<a href="#bib14">Rideout et al., 2014</a>), MOTHUR (<a href="#bib15">Schloss et al., 2009</a>), and USEARCH-UPARSE (<a href="#bib6">Edgar, 2010</a>), in that it relies on the placement of reads on a phylogenetic tree created from the 16S + 23S rRNA gene reads from all completed bacterial and archaeal genomes in the NCBI RefSeq database (<a href="#bib9">Haft et al., 2018</a>). Because the metabolic potential of each phylogenetic edge on the reference tree is known, paprica generates a reasonable estimate of genome sizes, gene content, and metabolic pathways for the genome of origin of each read. In <a href="#bib2">Bowman and Ducklow (2015)</a>, paprica was used to infer microbial metabolism and results were comparable to other common metabolic inference pipelines such as PICRUSt (<a href="#bib12">Langille et al., 2013</a>). Paprica has been used to understand the temporal dynamics of bacterial and archaeal community structure in coastal ecosystems (<a href="#bib18">Wilson et al., 2021</a>), the microbial diversity of hypersaline lakes (<a href="#bib11">Klempay et al., 2021</a>), and the microbial dynamics in up-flow bioreactors (<a href="#bib5">Dutta et al., 2020</a>). Paprica offers a framework to bridge the gap between taxonomy and marker gene studies, which are economical but indirectly linked to community function, and potential metabolism, which is costly and can be labor intensive to analyze but is directly linked to function (<a href="#bib2">Bowman and Ducklow, 2015</a>).</p>
+<p>The input to the paprica pipeline is 16S rRNA amplicon sequence reads. It is important that the sequences go through standard quality control and denoising procedures, as described below, and that the final format input to the pipeline is a fasta file. Reads are tallied across multiple samples at the level of unique reads (i.e., amplicon sequence variants or ASVs) providing maximum possible resolution of metabolic and community structure.</p>
+<p>Key terminology in paprica:</p>
+<p><b>Edge:</b> An edge is a point of placement on a reference tree (e.g., branch of the reference tree).</p>
+<p><b>Unique read</b>: a read from a dataset that has been denoised using DADA2.</p>
+<p><b>Closest completed genome (CCG) (edge type I):</b> The most closely taxonomically related completed genome to a query read. This term applies to reads that place a terminal edge (branch tip) on the reference tree.</p>
+<p><b>Closest estimated genome (CEG) (edge type II):</b> The set of genes that are estimated to be found in all members of a clade originating at a branch point in the reference tree. This term applies to reads that place an internal edge on the reference tree.</p>
+<p><b>Reference tree:</b> The tree of representative 16S rRNA gene sequences from all completed bacterial genomes in NCBI RefSeq database. Here the topology of the tree defines what pathways are predicted for internal branch points.</p>
+<h3 id="sec1.2">DNA extraction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> DNA extraction: 24–96 samples/day</div>
+<ol>
+<li>We extracted DNA from our environmental samples using the DNAeasy PowerWater DNA extraction kit (Qiagen).</li>
+<li>Extracted DNA was quantified using the Qubit HS DNA quantification kit (Invitrogen) and then quality checked by gel electrophoresis and PCR amplification of the 16S rRNA gene using primers 515F and 806R (<a href="#bib16">Walters et al., 2016</a>) for bacteria and archaea.</li>
+<li>High quality extracted DNA was submitted to the Argonne National Laboratory sequencing center for amplification and library preparation with the same primer set, followed by 2 × 151 paired-end sequenced on the Illumina MiSeq platform.</li>
+</ol>
+<h3 id="sec1.3">Sequence analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<ol start="4">
+<li>Illumina MiSeq reads were demultiplexed using the “iu-demultiplex” command in Illumina utils (<a href="#bib8">Eren et al., 2013</a>).</li>
+<li>Demultiplexed reads were quality controlled and denoised using the “FilterandTrim” and “dada” commands within the R package DADA2 (<a href="#bib3">Callahan et al., 2016</a>), and assembled with the “mergePairs” command. The final merged reads had mean quality scores &gt;30.</li>
+<li>The following script can be used to QC sequences: “dada2.r” and it can be found here: <a href="https://github.com/bowmanjeffs/shared_scripts/blob/master/dada2.r">https://github.com/bowmanjeffs/shared_scripts/blob/master/dada2.r</a>
+</li>
+<li>To export the data into fasta file format you can use “deunique_dada2.py” script and it can be found here: <a href="https://github.com/bowmanjeffs/shared_scripts/blob/master/deunique_dada2.py">https://github.com/bowmanjeffs/shared_scripts/blob/master/deunique_dada2.py</a>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is very important to QC sequences before running paprica. Here we used the DADA2 pipeline following standard filtering parameters. We recommend checking whether the default parameters work for your sequences. You can find more information and tutorials on the DADA2 pipeline here: <a href="https://benjjneb.github.io/dada2/index.html">https://benjjneb.github.io/dada2/index.html</a>
+</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>DADA2</td>
+<td><a href="#bib3">Callahan et al. (2016)</a></td>
+<td><a href="https://github.com/benjjneb/dada2">https://github.com/benjjneb/dada2</a></td>
+</tr>
+<tr>
+<td>Paprica</td>
+<td><a href="#bib2">Bowman and Ducklow (2015)</a></td>
+<td><a href="https://github.com/bowmanjeffs/paprica">https://github.com/bowmanjeffs/paprica</a></td>
+</tr>
+<tr>
+<td>EPA-ng</td>
+<td><a href="#bib1">Barbera et al. (2019)</a></td>
+<td><a href="https://github.com/Pbdas/epa-ng">https://github.com/Pbdas/epa-ng</a></td>
+</tr>
+<tr>
+<td>Infernal</td>
+<td><a href="#bib13">Nawrocki and Eddy (2013)</a></td>
+<td><a href="https://github.com/EddyRivasLab/infernal">https://github.com/EddyRivasLab/infernal</a></td>
+</tr>
+<tr>
+<td>Gappa</td>
+<td><a href="#bib4">Czech et al. (2020)</a></td>
+<td><a href="https://github.com/lczech/gappa">https://github.com/lczech/gappa</a></td>
+</tr>
+<tr>
+<td>Seqmagick</td>
+<td>Matsen Group</td>
+<td><a href="https://fhcrc.github.io/seqmagick/">https://fhcrc.github.io/seqmagick/</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<ul>
+<li>Data (fasta file 16s rRNA sequences – see <a href="#sec1.1">data collection</a> in <a href="#before-you-begin">before you begin</a>)</li>
+<li>paprica installation and required dependencies:</li>
+</ul>
+<p>Python (v.3.6 or higher)</p>
+<p>Python modules: pandas, Biopython, numpy, termcolor</p>
+<p>Infernal</p>
+<p>Gappa</p>
+<p>Seqmagick</p>
+<p>EPA-ng</p>
+<p>For installation of the required dependencies, follow these instructions for a Linux operating system:</p>
+<p><a href="https://github.com/bowmanjeffs/paprica/blob/master/linux_install.sh">https://github.com/bowmanjeffs/paprica/blob/master/linux_install.sh</a></p>
+<p>or for a Mac OSX system:</p>
+<p><a href="https://www.polarmicrobes.org/installing-paprica-on-mac-osx/">https://www.polarmicrobes.org/installing-paprica-on-mac-osx/</a></p>
+<p>You can also get paprica with the required dependencies using Docker:</p>
+<p><a href="https://hub.docker.com/r/jsbowman/paprica">https://hub.docker.com/r/jsbowman/paprica</a> (see below for installation).</p>
+<div class="note">
+<span class="note-title">Note:</span> paprica requires a bash equipped, Linux-like operating environment with at least 8 Gb RAM.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Step 1: Installing paprica</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<p>Users familiar with Docker containers can use the paprica Docker image at <a href="https://hub.docker.com/repository/docker/jsbowman/paprica">https://hub.docker.com/repository/docker/jsbowman/paprica</a> instead of installing the dependencies:</p>
+<div class="textbox">
+<p><code>&gt; docker pull jsbowman/paprica:latest</code></p>
+<p><code>&gt; docker run -it jsbowman/paprica</code></p>
+<p><code>&gt; cd /paprica</code></p>
+</div>
+<p>If you do not use Docker and install the required dependencies, different issues could arise (<a href="#sec6.1">Troubleshooting 1</a> and <a href="#sec6.3">2</a>).</p>
+<p>The full installation of paprica includes downloading the paprica repository from GitHub. An example of how to run paprica using real data is available at: <a href="https://www.polarmicrobes.org/analysis-with-paprica/">https://www.polarmicrobes.org/analysis-with-paprica/</a></p>
+<ol>
+<li>Install paprica and activate scripts by running the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; git clone</code><a href="https://github.com/bowmanjeffs/paprica.git">https://github.com/bowmanjeffs/paprica.git</a></p>
+<p><code>&gt; cd paprica</code></p>
+<p><code>&gt; chmod a+x ∗py</code></p>
+<p><code>&gt; chmod a+x ∗sh</code></p>
+</div>
+<ol start="2">
+<li>You can test paprica by:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;./paprica-run.sh test bacteria</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> If you want to create an environmental variable to run paprica in docker, you can learn more about it here: <a href="https://docs.docker.com/compose/environment-variables/">https://docs.docker.com/compose/environment-variables/</a>. It is not required to create an environmental variable to run paprica, if the paprica dependencies are up to date.</div>
+<h3 id="sec3.2">Step 2: Preparing input for paprica</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 min</div>
+<ol start="3">
+<li>Once the data is QC’d and in a fasta file format, we need to construct a loop to run paprica on multiple fasta files. Because many of the programs executed by paprica are intrinsically parallelized we do not recommend executing multiple iterations of paprica in parallel. Doing so will result in only a small increase in efficiency. To execute our loop, we need to create a text file with a list of the samples to run. This file contains the name of samples without the file extension (.fasta). If you execute the “deunique_dada2.py” script, all of your fasta files will end with .exp.fasta. You can create the file of sample names by running this bash loop in the same directory as your samples:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; for f in ∗.exp.fasta; do printf '%s\n' "${f%.fasta}" &gt;&gt; samples.txt;</code></p>
+<p><code>done</code></p>
+</div>
+<h3 id="sec3.3">Step 3: Run paprica for bacteria</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼ 5 h for 120 samples for Bacteria and Archaea (CPU cores: 18)</div>
+<p>The first time you run paprica on a 16S rRNA gene library it will determine which reads belong to the domains Bacteria and Archaea. There are separate reference trees and databases for these domains so they should be handled separately, but because these reads are derived from the same library they can be recombined in post-processing. For a multi-sample analysis, you will need to execute two scripts:</p>
+<p>“paprica-run.sh”: This is the core analysis in paprica that will place reads on a 16S + 23S rRNA gene tree compromised of all completed genomes in Refseq. It will map the enzymes, pathways, and genome parameters at each point of placement to the query reads, and it will use the points of placement to provide a consensus taxonomy for each query read. To do this paprica-run.sh will internally execute three scripts:</p>
+<p>“paprica-pick_domain.py”: It identifies the domain of your input reads (archaea, bacteria).</p>
+<p>“paprica-place_it.py”: It does a phylogenetic placement of query reads.</p>
+<p>“paprica-tally_pathways.py”: It finds pathways and other information associated with each point of placement.</p>
+<div class="note">
+<span class="note-title">Note:</span> If you want to run paprica with default settings you don’t need to do any changes here (see <a href="#limitations">limitations</a> for further information). If you encounter issues, see <a href="#sec6.5">Troubleshooting 3</a> and <a href="#sec6.7">4</a>.</div>
+<p>“paprica-combine_results.py”: This will create abundance tables for edges, unique reads, enzymes, and pathways, and a table of predicted genome parameters.</p>
+<ol start="4">
+<li>Copy the “paprica-run.sh” script into the current directory where we have the sample files. You can run this code to run the analysis for Bacteria (<a href="#sec6.9">Troubleshooting 5</a>):</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; cp ∼/paprica/paprica-run.sh paprica-run.sh</code></p>
+<p><code>&gt; while read f; do ./paprica-run.sh $f bacteria; done &lt; samples.txt</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> At this point we have individual analysis files for all the samples. We want to combine these results into abundance tables for edges, unique reads, enzymes, and pathways. Here we use another core script of paprica to generate these tables.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> This is a good pausing point. Depending on the CPU cores of your computer, this analysis should run for ∼2.5 h.</div>
+<ol start="5">
+<li>The “paprica-combine_results.py” script can now be used to combine your files into tables of abundance by running this:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; paprica-combine_results.py -domain bacteria -o 2021_mangrove_study</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The prefix that you’d like to give to the output files is set by the -o flag in the command above.</div>
+<ol start="6">
+<li>After running the script, this will produce abundance tables for community structure and predicted metabolic pathways, enzymes, and genome parameters.</li>
+</ol>
+<h3 id="sec3.4">Step 4: Run paprica for Archaea</h3>
+<ol start="7">
+<li>To run paprica for Archaea we’ll modify the code in step 4 to specify this domain:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; while read f; do ./paprica-run.sh $f archaea; done &lt; samples.txt</code></p>
+</div>
+<ol start="8">
+<li>After running paprica we’ll combine the files as before using the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; paprica-combine_results.py -domain archaea -o 2021_mangrove_study</code></p>
+</div>
+<ol start="9">
+<li>Same as in step 6 this will produce an abundance of matrix tables for community structure, pathways, enzymes, and genome parameters for Archaea.</li>
+</ol>
+<p>The “paprica-combine_results.py” script will generate the following files:</p>
+<p><b>[bacteria or archaea].edge_tally.csv</b>: This is an abundance table, giving the 16S rRNA gene copy number-corrected abundances for each edge in each sample. Columns are edges and rows are samples. <b>[bacteria or archaea].unique_tally.csv</b>: This is an abundance and copy number-normalized abundance table of unique sequences or ASVs (amplicon sequence variants).</p>
+<p><b>[bacteria or archaea].taxon_map.csv</b>: This is the taxonomic file that maps edge numbers to the name of the lowest consensus taxonomy (CEGs) or strain name (CCGs), and using this file in combination with many_tests.bacteria.seq_edge_map.csv will give you the taxonomy of the ASVs.</p>
+<p><b>[bacteria or archaea].seq_edge_map.csv</b>: This file maps ASVs to edge_number and gives the proportion that is placed to that edge number (in case the ASV is placed to multiple edges and you need to correct for this).</p>
+<p><b>[bacteria or archaea].edge_data.csv:</b> This file contains the mean genome parameters for each sample.</p>
+<p>The above files will be useful for analysis of the community structure of the samples. Paprica also generates files of pathways and enzymes that can be helpful in trying to understand metabolism:</p>
+<p><b>bacteria.ec_tally.csv:</b> This file contains enzyme abundance for each sample.</p>
+<p><b>bacteria.path_tally.csv:</b> This file contains metabolic pathway abundance for each sample.</p>
+<h3 id="sec3.5">Step 5: Identify and extract key enzymes for the nitrogen cycle</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼ 5 min</div>
+<ol start="10">
+<li>Clone the downstream_paprica repository: <a href="https://github.com/avishekdutta14/downstream_paprica">https://github.com/avishekdutta14/downstream_paprica</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; git clone</code><a href="https://github.com/avishekdutta14/downstream_paprica.git">https://github.com/avishekdutta14/downstream_paprica.git</a></p>
+<p><code>&gt; cd downstream_paprica</code></p>
+<p><code>&gt; chmod a+x ∗py</code></p>
+</div>
+<ol start="11">
+<li>We’ll use the script “enzyme_view_v2.py”, this script helps to name E.C. (Enzyme Commission) numbers and extracts the genes related to the sulfur and nitrogen cycles. The input for this script is the file generated in the “paprica-combine_results.py” script (bacteria.ec_tally.csv) and enzyme_final.csv (present in the repository). Run the following:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; python3 enzyme_view_v2.py</code></p>
+</div>
+<p>Files generated running “python3 enzyme_view_v2.py”:</p>
+<p><b>enzyme_view.csv:</b> This file is the enzyme abundance for each sample with E.C. numbers for enzyme names.</p>
+<p><b>nitrogen_cycle.csv:</b> This file is the enzyme abundance associated with the nitrogen cycle.</p>
+<p><b>sulfur_cycle.csv:</b> This file is the enzyme abundance associated with the sulfur cycle.</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Paprica will produce several output files that can be helpful in downstream analysis. Running “paprica-run.sh” will generate intermediate analysis files for Bacteria and Archaea. For information on the intermediate analysis files visit: <a href="https://github.com/bowmanjeffs/paprica/wiki/3.-Output">https://github.com/bowmanjeffs/paprica/wiki/3.-Output</a>. The most useful files are the ones generated using the “paprica-combine_results.py” script. In <a href="#bib7">Erazo and Bowman (2021)</a>, we used “bacteria[and archaea].unique_tally. csv” to understand microbial community structure and “bacteria.edge.data.csv” to determine key genome signatures such as genome size and number of 16S copies. We used “bacteria.path_tally.csv” to determine what pathways were significantly associated with levels of disturbance of shrimp aquaculture effluent (<a href="#fig1">Figure 1</a>). We additionally examined differences in enzymes associated to the nitrogen cycle by using the output form “enzyme_view_v2.py” and the “nitrogen_cycle.csv file”, and identified key differences associated to nitrogen fixation and denitrification in mangrove-estuarine with low and high levels of disturbance (<a href="#fig1">Figure 1</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1242-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Metabolic pathways</div>
+<p>(A) Contribution of top taxa from CCA ordination analysis and cos2 values.</p>
+<p>(B) Nitrogenase EC 1.18.6.1, Nitrate reductase EC 1.7.99.4 and Nitrite reductase NADH EC 1.7.1.4 normalized (Hellinger transformation) abundance. Kruskal–Wallis test and p values with Dunn post-test, ∗∗∗denotes p value &lt; 0.001. This figure was published in Sensitivity of the mangrove-estuarine microbial community to aquaculture effluent. Iscience 24.3 (2021):102204.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The paprica pipeline connects 16S rRNA gene sequences to likely metabolic functions and genomic characteristics. This (and similar) approaches are best thought of as models for genomic composition based on community structure (<a href="#bib12">Langille et al., 2013</a>). As such they are akin to the data reanalysis products common in other fields (e.g., meteorology and oceanography). It is important to note that like all reanalysis products paprica has limitations and there are a few aspects that need to be considered.</p>
+<p>The paprica pipeline uses 16S rRNA data to predict metabolic pathways. This means that any eukaryotic or viral contributions will not be predicted; therefore, paprica is only able to help predict the portion of the metabolic potential contributed by the genomes targeted by the primers used. As with all amplicon-based approaches, biased primers can result in inaccurate predictions.</p>
+<p>Paprica’s metabolic inference is based on RefSeq (<a href="#bib9">Haft et al., 2018</a>) and pathway prediction with pathway-tools (<a href="#bib10">Karp et al., 2021</a>). Gaps or inaccuracies in pathway annotation or assignment of gene function can propagate to the prediction. Paprica uses a cutoff = 0.50 for metabolic assignment by default. This means that paprica will assign an enzyme or pathway to a CEG if it appears in 50 % or more CCGs in that clade. Depending on the objective of the study, the cutoff can be changed in “paprica-run.sh” by modifying the <b>-cutoff</b> flag for the “paprica-tally_pathways.py” command (mentioned in <a href="#sec3.3">step 3: run paprica for bacteria</a>).</p>
+<p>It is important to consider that the edge numbers assigned to the reference tree by EPA-ng during each new build of the database are not comparable across database versions. This means that the edge number representing a genome in one version will be different in the next. This is important if your analysis extends across multiple versions of the paprica database (i.e., you reanalyze some data months later after the release of a new database). You can keep track of which database was used for an analysis by referring to the database_created_at line in the ∗.[bacteria or archaea].sample_data.txt file produced by paprica.</p>
+<p>For paprica to do phylogenetic placement, it depends on a good reference phylogenetic tree and a high-quality alignment. To maximize the quality of the reference trees paprica relies on a concatenated 16S and 23S rRNA gene alignment and subtrees for each phylum. Inevitably there are reference strains that are not well described by the phylogenetic model. It is recommended that (as with any classification scheme) you validate the identity of key taxa in your analysis. We’ve noticed that this is particularly important for endosymbionts and other bacteria with highly modified and streamlined genomes. A useful tool to validate taxa for paprica output is ROPE that relies on RDP classification (<a href="#bib17">Wang et al., 2007</a>).</p>
+<p>You can find information on installation and code here: <a href="https://github.com/avishekdutta14/ROPE">https://github.com/avishekdutta14/ROPE</a></p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>There’re few core bioinformatics programs that need to be installed for paprica to work (unless you’re using the Docker image). Issues could arise during these installations. If you are a Linux user, the installation of the dependencies should be straightforward (tutorial): <a href="https://github.com/bowmanjeffs/paprica/blob/master/linux_install.sh">https://github.com/bowmanjeffs/paprica/blob/master/linux_install.sh</a></p>
+<p>For a Mac OSX user the installation might need additional steps, you can look at this tutorial:</p>
+<p>https://<a href="http://www.polarmicrobes.org/installing-paprica-on-mac-osx/">www.polarmicrobes.org/installing-paprica-on-mac-osx/</a></p>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Installing dependencies such as gappa and EPA-ng will require installation of additional packages. It’s important to review the documentation of each dependency by following the links provided in the <a href="#key-resources-table">key resources table</a> of the GitHub repositories and make sure you satisfy all the requirements <b>(step 1).</b></p>
+<p>Installing gappa:</p>
+<div class="textbox">
+<p><code>&gt; git clone –-recursive</code><a href="https://github.com/lczech/gappa.git">https://github.com/lczech/gappa.git</a></p>
+<p><code>&gt; cd gappa</code></p>
+<p><code>&gt; make</code></p>
+</div>
+<h3 id="sec6.2">Potential solution</h3>
+<p>If you get an error associated with the command <i>make</i> is likely due to a missing library or missing requirements, make sure you install and follow instructions of missing libraries. Make sure you satisfy the following requirements:</p>
+<p>Make and CMake 2.8.7 or higher</p>
+<p>Up-to-date C++11 compiler, e.g., clang++ 3.6 or GCC 4.9 or higher.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>If you encounter issues when running paprica, it is important to check that EPA-ng was properly installed <b>(step 1).</b> Here we describe how to build it from source, but you can also install it using Homebrew or Conda (see here: <a href="https://github.com/Pbdas/epa-ng#installation">https://github.com/Pbdas/epa-ng#installation</a>):</p>
+<div class="textbox">
+<p><code>&gt; sudo apt-get install autotools-dev libtool flex bison cmake automake autoconf</code></p>
+<p><code>&gt; git clone</code><a href="https://github.com/Pbdas/epa-ng.git">https://github.com/Pbdas/epa-ng.git</a></p>
+<p><code>&gt; cd epa-ng</code></p>
+<p><code>&gt; make</code></p>
+</div>
+<h3 id="sec6.4">Potential solution</h3>
+<p>If the installation fails, it’s probably due to a missing library. Check for the error message to determine what library you need to install. If you get an error associated with missing <i>zlib</i>, you will need to have <i>zlib1g-dev</i> installed, as well as zlib1g.</p>
+<div class="textbox">
+<p><code>&gt; sudo apt-get install zlib1g-dev</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> It’s important to have an up-to-date C++11 compiler as mentioned in <a href="#sec6.1">Problem 1</a>.</div>
+<h3 id="sec6.5">Problem 3</h3>
+<p>If paprica fails to create files needed for the analysis, it’s possible that one of the dependencies was not properly installed. For example, you run paprica and get an error associated to a missing file <b>(step 3)</b>:</p>
+<p><i>File not found error: [Err no2] No such file or directory: “/User/../paprica/test.bacteria/test.bacteria.phylum_resps.list.csv”</i></p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Make sure that the correct versions of dependencies are installed, and you are using Python 3. The code below shows how to install the Python modules and test them:</p>
+<div class="textbox">
+<p><code>&gt; pip3 install numpy</code></p>
+<p><code>&gt; pip3 install biopython</code></p>
+<p><code>&gt; pip3 install joblib</code></p>
+<p><code>&gt; pip3 install pandas</code></p>
+<p><code>&gt; pip3 install seqmagick</code></p>
+<p><code>&gt; pip3 install termcolor</code></p>
+</div>
+<p>Open Python:</p>
+<div class="textbox">
+<p><code>&gt; python3</code></p>
+</div>
+<p>Test the dependencies you installed:</p>
+<div class="textbox">
+<p><code>&gt; import numpy</code></p>
+<p><code>&gt; import Bio</code></p>
+<p><code>&gt; import joblib</code></p>
+<p><code>&gt; import pandas</code></p>
+<p><code>&gt; import termcolor</code></p>
+</div>
+<p>Seqmagick is not a module, so to test it run:</p>
+<div class="textbox">
+<p><code>&gt; seqmagick</code></p>
+</div>
+<h3 id="sec6.7">Problem 4</h3>
+<p>If all the dependencies were properly installed and you still face issues running paprica, it is important to make sure that the dependencies are in your PATH <b>(step 3)</b>.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Open your .bash_profile or .bashrc:</p>
+<div class="textbox">
+<p><code>&gt; nano .bashrc</code></p>
+</div>
+<p>Navigate to the end of the file and copy this code (make sure you modify your-user-name to its actual one):</p>
+<div class="textbox">
+<p><code>&gt; export PATH=/Users/your-user-name/infernal/binaries:${PATH}</code></p>
+<p><code>&gt; export PATH=/Users/your-user-name/infernal/easel:${PATH}</code></p>
+<p><code>&gt; export PATH=/Users/your-user-name/epa-ng/bin:${PATH}</code></p>
+<p><code>&gt; export PATH=/Users/your-user-name/paprica:${PATH}</code></p>
+<p><code>&gt; export PATH=/Users/your-user-name/gappa/bin:${PATH}</code></p>
+</div>
+<h3 id="sec6.9">Problem 5</h3>
+<p>It’s important that when running paprica, you create a text file with all the sample names and remove the extension “.fasta”. If you follow step 2, the code should create the file with sample names without “.fasta”. If you run paprica and get an error associated to “no such file” <b>(step 3).</b> Check the text file to confirm that the extensions were removed:</p>
+<div class="textbox">
+<p><code>&gt; nano samples.txt</code></p>
+</div>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Make sure your sample names have unique identifiers, and rerun code mentioned in step 4 to create a text file with all sample names.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Barbera, P., Kozlov, A.M., Czech, L., Morel, B., Darriba, D., Flouri, T., and Stamatakis, A. (2019). EPA-ng: massively parallel evolutionary placement of genetic sequences. Syst. Biol. <i>68</i>, 365-369, Edited by D. Posada. <a class="external-link" href="https://doi.org/10.1093/sysbio/syy054">https://doi.org/10.1093/sysbio/syy054</a></p>
+<p id="bib2">Bowman, J.S. and Ducklow, H.W. (2015). Microbial communities can be described by metabolic structure: a general framework and application to a seasonally variable, depth-stratified microbial community from the coastal west Antarctic Peninsula. PLoS One <i>10</i>, e0135868, Edited by C. Moissl-Eichinger. <a class="external-link" href="https://doi.org/10.1371/journal.pone.0135868">https://doi.org/10.1371/journal.pone.0135868</a></p>
+<p id="bib3">Callahan, B.J., McMurdie, P.J., Rosen, M.J., Han, A.W., Johnson, A.J.A., and Holmes, S.P. (2016). DADA2: high-resolution sample inference from Illumina amplicon data. Nat. Methods <i>13</i>, 581-583. <a class="external-link" href="https://doi.org/10.1038/nmeth.3869">https://doi.org/10.1038/nmeth.3869</a></p>
+<p id="bib4">Czech, L., Barbera, P., and Stamatakis, A. (2020). Genesis and Gappa: processing, analyzing and visualizing phylogenetic (placement) data. Bioinformatics <i>36</i>, 3263-3265, Edited By R. Schwartz. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btaa070">https://doi.org/10.1093/bioinformatics/btaa070</a></p>
+<p id="bib5">Dutta, A., Smith, B., Goldman, T., Walker, L., Streets, M., Eden, B., Dirmeier, R., and Bowman, J.S. (2020). Understanding microbial community dynamics in up-flow bioreactors to improve mitigation strategies for oil souring. Front. Microbiol. <i>0</i>, 3046. <a class="external-link" href="https://doi.org/10.3389/FMICB.2020.585943">https://doi.org/10.3389/FMICB.2020.585943</a></p>
+<p id="bib6">Edgar, R.C. (2010). Search and clustering orders of magnitude faster than BLAST. Bioinformatics <i>26</i>, 2460-2461. <a class="external-link" href="https://doi.org/10.1093/BIOINFORMATICS/BTQ461">https://doi.org/10.1093/BIOINFORMATICS/BTQ461</a></p>
+<p id="bib7">Erazo, N.G. and Bowman, J.S. (2021). Sensitivity of the mangrove-estuarine microbial community to aquaculture effluent. iScience <i>24</i>, 102204. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102204">https://doi.org/10.1016/j.isci.2021.102204</a></p>
+<p id="bib8">Eren, A.M., Vineis, J.H., Morrison, H.G., and Sogin, M.L. (2013). A filtering method to generate high quality short reads using Illumina paired-end technology. PLoS One <i>8</i>, e66643. <a class="external-link" href="https://doi.org/10.1371/journal.pone.0066643">https://doi.org/10.1371/journal.pone.0066643</a></p>
+<p id="bib9">Haft, D.H., DiCuccio, M., Badretdin, A., Brover, V., Chetvernin, V., O’Neill, K., Li, W., Chitsaz, F., Derbyshire, M.K., Gonzales, N.R., et al. (2018). RefSeq: an update on prokaryotic genome annotation and curation. Nucleic Acids Res. <i>46</i>, D851-D860. <a class="external-link" href="https://doi.org/10.1093/nar/gkx1068">https://doi.org/10.1093/nar/gkx1068</a></p>
+<p id="bib10">Karp, P.D., Midford, P.E., Billington, R., Kothari, A., Krummenacker, M., Latendresse, M., Ong, W.K., Subhraveti, P., Caspi, R., Fulcher, C., et al. (2021). Pathway Tools version 23.0 update: software for pathway/genome informatics and systems biology. Brief. Bioinform. <i>22</i> (<i>1</i>), 109-126. <a class="external-link" href="https://doi.org/10.1093/bib/bbz104">https://doi.org/10.1093/bib/bbz104</a></p>
+<p id="bib11">Klempay, B., Arandia-Gorostidi, N., Dekas, A.E., Bartlett, D.H., Carr, C.E., Doran, P.T., Dutta, A., Erazo, N., Fisher, L.A., Glass, J.B., et al. (2021). Microbial diversity and activity in Southern California salterns and bitterns: analogues for remnant ocean worlds. Environ. Microbiol. <i>23</i>, 3825-3839. <a class="external-link" href="https://doi.org/10.1111/1462-2920.15440">https://doi.org/10.1111/1462-2920.15440</a></p>
+<p id="bib12">Langille, M.G., Zaneveld, J., Caporaso, J.G., McDonald, D., Knights, D., Reyes, J.A., Clemente, J.C., Burkepile, D.E., Thurber, R.L.V., Knight, R., et al. (2013). Predictive functional profiling of microbial communities using 16S rRNA marker gene sequences. Nat. Biotechnol. <i>31</i>, 814-821. <a class="external-link" href="https://doi.org/10.1038/nbt.2676">https://doi.org/10.1038/nbt.2676</a></p>
+<p id="bib13">Nawrocki, E.P. and Eddy, S.R. (2013). Infernal 1.1: 100-fold faster RNA homology searches. Bioinformatics <i>29</i>, 2933-2935. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btt509">https://doi.org/10.1093/bioinformatics/btt509</a></p>
+<p id="bib14">Rideout, J.R., He, Y., Navas-Molina, J.A., Walters, W.A., Ursell, L.K., Gibbons, S.M., Chase, J., McDonald, D., Gonzalez, A., Robbins-Pianka, A., et al. (2014). Subsampled open-reference clustering creates consistent, comprehensive OTU definitions and scales to billions of sequences. PeerJ <i>2</i>, e545. <a class="external-link" href="https://doi.org/10.7717/PEERJ.545">https://doi.org/10.7717/PEERJ.545</a></p>
+<p id="bib15">Schloss, P.D., Westcott, S.L., Ryabin, T., Hall, J.R., Hartmann, M., Hollister, E.B., Lesniewski, R.A., Oakley, B.B., Parks, D.H., Robinson, C.J., et al. (2009). Introducing mothur: open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl. Environ. Microbiol. <i>75</i>, 7537-7541. <a class="external-link" href="https://doi.org/10.1128/AEM.01541-09">https://doi.org/10.1128/AEM.01541-09</a></p>
+<p id="bib16">Walters, W., Hyde, E.R., Berg-Lyons, D., Ackermann, G., Humphrey, G., Parada, A., Gilbert, J.A., Jansson, J.K., Caporaso, J.G., Fuhrman, J.A., et al. (2016). Improved bacterial 16S rRNA gene (V4 and V4-5) and fungal internal transcribed spacer marker gene primers for microbial community surveys. mSystems <i>1</i>, e0009-e0015. <a class="external-link" href="https://doi.org/10.1128/mSystems.00009-15">https://doi.org/10.1128/mSystems.00009-15</a></p>
+<p id="bib17">Wang, Q., Garrity, G.M., Tiedje, J.M., and Cole, J.R. (2007). Naïve Bayesian classifier for rapid assignment of rRNA sequences into the new bacterial taxonomy. Appl. Environ. Microbiol. <i>73</i>, 5261-5267. <a class="external-link" href="https://doi.org/10.1128/AEM.00062-07">https://doi.org/10.1128/AEM.00062-07</a></p>
+<p id="bib18">Wilson, J.M., Chamberlain, E.J., Erazo, N., Carter, M.L., and Bowman, J.S. (2021). Recurrent microbial community types driven by nearshore and seasonal processes in coastal Southern California. Environ. Microbiol. <i>23</i>, 3225-3239. <a class="external-link" href="https://doi.org/10.1111/1462-2920.15548">https://doi.org/10.1111/1462-2920.15548</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Natalia Erazo (<a href="mailto:nerazo@ucsd.edu">nerazo@ucsd.edu</a>) or Jeff Bowman (<a href="mailto:jsbowman@ucsd.edu">jsbowman@ucsd.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The data that support the findings of this study and sequences were submitted to the NCBI sequence read archive (SRA) under BioProject ID: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA633714">PRJNA633714</a>. Paprica output is available on the author’s GitHub repository: <a href="https://github.com/galud27/Microbial-community-in-mangrove-forest">https://github.com/galud27/Microbial-community-in-mangrove-forest</a>. The primary paprica repository is <a href="https://github.com/bowmanjeffs/paprica">https://github.com/bowmanjeffs/paprica</a>. Downstream paprica analysis code is available here: <a href="https://github.com/avishekdutta14/downstream_paprica">https://github.com/avishekdutta14/downstream_paprica</a>.</p>
+<h3>Acknowledgments</h3>
+<p>N.G.E. was supported by <a href="https://doi.org/10.13039/100005230">Organization of American States</a> and <a href="https://doi.org/10.13039/501100004299">SENESCYT</a> fellowships. J.S.B. was supported by a grant from the <a href="https://doi.org/10.13039/100000893">Simons Foundation</a> Early Career Investigator in Marine Microbiology program. We would like to thank the platform (<a href="https://mindthegraph.com">mindthegraph.com</a>) used here to create the graphical abstract.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization &amp; Development of Bioinformatic tool, J.S.B.; Methodology, N.G.E., A.D, and J.S.B; Writing – Original Draft, N.G.E.; Writing – Review &amp; Editing, N.G.E, A.D, J.S.B.; Funding Acquisition and Supervision, J.S.B.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

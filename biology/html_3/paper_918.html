@@ -1,0 +1,536 @@
+<article>
+<section>
+<h1 id="header">Profiling single-cell chromatin accessibility in plants</h1>
+<p><time datetime="2021-08-13">Published: August 13, 2021</time></p>
+<p>Alexandre P. Marand,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Xuan Zhang,<sup><a href="#aff1">1</a></sup> Julie Nelson,<sup><a href="#aff2">2</a></sup> Pedro Augusto Braga dos Reis,<sup><a href="#aff1">1</a>,<a href="#aff3">3</a></sup> and Robert J. Schmitz<sup><a href="#aff1">1</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Genetics, University of Georgia, Athens, GA 30602, USA</p>
+<p id="aff2"><sup>2</sup>Center for Tropical and Emerging Disease, University of Georgia, Athens, GA 30602, USA</p>
+<p id="aff3"><sup>3</sup>Departamento de Bioquímica e Biologia Molecular, Universidade Federal de Viçosa, Viçosa, MG, Brazil</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:schmitz@uga.edu">schmitz@uga.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100737">10.1016/j.xpro.2021.100737</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Coupling assay for transposase-accessible chromatin sequencing (ATAC-seq) with microfluidic separation and cellular barcoding has emerged as a powerful approach to investigate chromatin accessibility of individual cells. Here, we define a protocol for constructing single-cell ATAC-seq libraries from maize seedling nuclei and the preliminary computational steps for assessing data quality. This protocol can be readily adapted to other plant species or tissues with minor changes to reveal chromatin accessibility variation among individual cells.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib7">Marand et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol to construct scATAC-seq libraries from plant samples</li>
+<li>Computational pipeline to analyze scATAC-seq data</li>
+<li>Example code to identify distinct cell states in <i>Zea mays</i>
+</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Experimental design</h3>
+<ol>
+<li>In the following protocol, we describe the development of a single-cell ATAC-seq (scATAC-seq) library using freshly harvested <i>Zea mays</i> (maize) seedlings as an example. The steps described below can be applied to any plant species or tissue that is capable of producing intact nuclei suspensions (<a href="#bib6">Lu et al., 2019</a>; <a href="#bib11">Ricci et al., 2019</a>). In addition to 7-day old seedlings, this protocol has been successfully employed in axillary buds, pistillate inflorescence, staminate inflorescence, crown roots and embryonic roots of <i>Zea mays,</i> as well as the primary root of <i>Arabidopsis thaliana.</i> We detail nuclei isolation using fluorescence-activated nuclei sorting (FANS) but note that traditional wash and centrifugation steps may be taken for laboratories without access to cytometrical instruments with an increased likelihood of organeller contamination (<a href="#bib5">Lu et al., 2017</a>; <a href="#bib15">Zhong et al., 2021</a>).</li>
+<li>For experiments aiming to compare samples, such as different genotypes, case/control treatments, <i>et cetera</i>, it is imperative to construct all scATAC-seq libraries simultaneously to avoid batch effects (<a href="#bib4">Lafzi et al., 2018</a>). Currently, commercial microfluidic chips (10× Genomics) allow for up to eight samples to be processed in parallel. It is also important to consider that at least one biological replicate per sample is highly recommended for all experimental designs. For experimental designs with more than four samples, biological replicates should be constructed in a separate session to remediate technical effects. We stress that biological replicates are critical for establishing reproducibility of the tested conditions.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Tris base</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. 77861</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. E9884</td>
+</tr>
+<tr>
+<td>Spermine</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. 85590</td>
+</tr>
+<tr>
+<td>KCl</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. P9333</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. S7653</td>
+</tr>
+<tr>
+<td>2-Mercaptoethanol</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. M6250</td>
+</tr>
+<tr>
+<td>Triton X-100</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. X100</td>
+</tr>
+<tr>
+<td>4′,6-Diamidino-2-phenylindole</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. D8417</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. A9418</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Chromium Next GEM Single Cell ATAC Library and Gel Bead Kit v1.1</td>
+<td>10× Genomics</td>
+<td>Cat No. 1000176</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw and processed data: scATAC-seq from multiple organs of <i>Zea mays</i>
+</td>
+<td><a href="#bib7">Marand et al., 2021</a></td>
+<td>GEO: GSE155178</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Maize: B73</td>
+<td>Maize COOP</td>
+<td>PI: 550473</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Cellranger-atac v1.2</td>
+<td>Cell Ranger ATAC (10× Genomics)</td>
+<td><a href="https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac">https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac</a></td>
+</tr>
+<tr>
+<td>MACS2</td>
+<td><a href="#bib14">Zhang et al., 2008</a></td>
+<td><a href="https://github.com/macs3-project/MACS">https://github.com/macs3-project/MACS</a></td>
+</tr>
+<tr>
+<td>Socrates</td>
+<td><a href="#bib7">Marand et al. 2021</a></td>
+<td><a href="https://github.com/plantformatics/Socrates">https://github.com/plantformatics/Socrates</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Single-edge razor blade</td>
+<td>Fisher Scientific</td>
+<td>Cat No. 12-640</td>
+</tr>
+<tr>
+<td>Petri dishes</td>
+<td>Fisher Scientific</td>
+<td>Cat No. FB0875713</td>
+</tr>
+<tr>
+<td>Hemacytometer</td>
+<td>Sigma-Aldrich</td>
+<td>Cat No. Z359629</td>
+</tr>
+<tr>
+<td>40 μm Mini Cell Strainer</td>
+<td>pluriSelect</td>
+<td>Cat No. 43-10040-40</td>
+</tr>
+<tr>
+<td>Beckman Coulter MoFlo Astrios EQ flow cytometer</td>
+<td>Beckman Coulter</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Sterile preservative free flow cytometry solution</td>
+<td>BioSure</td>
+<td>Cat No. 1027</td>
+</tr>
+<tr>
+<td>Leica TR600 Epifluorescence Microscope</td>
+<td>Leica</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>For quality analysis of single-cell data, researchers should have R version 4.0 or greater installed on a personal computer, server, or High Performance Computing (HPC) system.</p>
+<table id="undtbl1">
+<caption>Lysis buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris pH 7.5 (1 M)</td>
+<td>15 mM</td>
+<td>750 μL</td>
+</tr>
+<tr>
+<td>EDTA (0.5 M)</td>
+<td>2 mM</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>Spermine (1 M)</td>
+<td>0.5 mM</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>KCl (3 M)</td>
+<td>80 mM</td>
+<td>1670 μL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>20 mM</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>2-ME (14.3 M)</td>
+<td>15 mM</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>TritonX-100 (15%)</td>
+<td>0.15%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>0</td>
+<td>n/a</td>
+<td>46.685 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<caption>Collection buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris pH 7.5 (1 M)</td>
+<td>15 mM</td>
+<td>750 μL</td>
+</tr>
+<tr>
+<td>Spermine (1 M)</td>
+<td>0.5 mM</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>KCl (3 M)</td>
+<td>80 mM</td>
+<td>1670 μL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>20 mM</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>2-ME (14.3 M)</td>
+<td>15 mM</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>0</td>
+<td>n/a</td>
+<td>47.335 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p>Lysis and Collection buffers can be stored at 4°C for several months without Spermine and 2-ME, which should be added the day of the experiment. Spermine stock should be stored at −20°C while all the remaining stocks can be stored at 2°C. For optimal results, prepare the Lysis and Collection Buffers fresh the same day as nuclei isolation experiments.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> 2-ME is a potential toxin and Spermine is a skin corrosive/irritant. Both should be handled under a fume hood for safety.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> TritonX-100 can be substituted for other non-ionic detergents such as NP-40 (final concentration: 0.5%) or Tween-20 (0.5%).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Sorting intact plant nuclei</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [0.5–1 h]</div>
+<p>Profiling chromatin accessibility requires isolating nuclei from heterogenous tissues (<a href="#bib9">Minnoye et al., 2021</a>). Tn5 can tagment organellar genomes with high efficiency due to a lack of nucleosomes on chloroplast and mitochondrial DNA (<a href="#bib5">Lu et al., 2017</a>). The following steps are designed to remove cellular and organellar debris and enrich for single nuclei. The gating strategy illustrated here has been optimized for maize nuclei, users may need to adjust the gating strategy specific to their organism. Growth and sampling conditions for published scATAC-seq data from maize and <i>Arabidopsis thaliana</i> tissues can be found in the STAR Methods section in Marand et. al.</p>
+<ol>
+<li>Approximately 3–4 B73 maize V1 seedlings (7–10 day old) were placed on a petri dish on ice and saturated with 500 mL of chilled Lysis buffer (<a href="#fig1">Figures 1</a>A and 1B).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Sample preparation</div>
+<p>(A) Seven-day old B73 maize leaf roll on pitri dish.</p>
+<p>(B) Samples are saturated with 500 μL nuclear lysis buffer.</p>
+<p>(C) Homogenized leaf tissue following two minutes of chopping in nuclear lysis buffer.</p>
+<p>(D) Filtered lysate containing DAPI, nuclei, chloroplast, and mitochondrial contamination prior to flow sorting.</p>
+</figcaption>
+</figure>
+</li>
+<li>Using a sterilized single-edge razor blade, seedlings were chopped for 2 min to break the cell wall and release nuclei into solution (<a href="#fig1">Figure 1</a>C).</li>
+<li>The aqueous nuclei slurry was then filtered through a 40 μm cell strainer (<a href="#fig1">Figure 1</a>D).</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Two layers of sterilized miracloth can be used in place of a 40 μm cell strainer.</div>
+<ol start="4">
+<li>1 μL of DAPI (1 mg/mL) was added for every 200 μL of lysis buffer recovered (e.g., 2 μL DAPI for 400 μL of lysis buffer post filtering).</li>
+<li>Sorting was performed on a Moflo Astrios EQ running sterile preservative free flow cytometry solution.
+<ol type="a">
+<li>The instrument was set up with a 70 μm tip, sheath pressure at 60 psi and sample pressure at 60.1 psi.</li>
+<li>Nuclei were run between 200 and 1000 events/second depending on their concentration.</li>
+<li>Nuclei were first gated on log scaled forward scatter (FSC) versus log scaled side scatter (SSC) to eliminate debris (<a href="#fig2">Figure 2</a>A).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Flow sorting gating strategy</div>
+<p>(A) Forward scatter versus side scatter to eliminate debris.</p>
+<p>(B) DAPI width versus DAPI area to remove nuclear aggregates.</p>
+<p>(C) Green fluorescence versus DAPI area to exclude green fluorescing material.</p>
+<p>(D) Distribution of events by DAPI area to collect nuclei at various stages of the cell cycle and ploidy.</p>
+</figcaption>
+</figure>
+</li>
+<li>All subsequent data were collected in linear mode.</li>
+<li>DAPI width versus DAPI area gating was used to eliminate doublets (<a href="#fig2">Figure 2</a>B).</li>
+<li>The next gate was on a graph depicting green fluorescence vs. DAPI Area to eliminate any green fluorescing material (<a href="#fig2">Figure 2</a>C).</li>
+<li>The final gate was on DAPI area selecting the first strong peak and all subsequent peaks depending on the downstream experiment (<a href="#fig2">Figure 2</a>D).</li>
+<li>Sorting was performed in Purity 1 drop mode and triggered on DAPI fluorescence.</li>
+</ol>
+</li>
+<li>A total of 120,000 nuclei were collected across four 1.5 mL microcentrifuge catch tubes (30,000 nuclei in 200 μL of collection buffer, per tube) and immediately placed on ice.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Refrain from chopping for longer than 2 min to reduce rupturing the nuclear envelope. Keep nuclei on ice whenever possible.</div>
+<h3 id="sec3.2">Quantification and evaluation of nuclei quality</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [30 min]</div>
+<p>This step describes the evaluation of nuclei quality and concentration prior to generating scATAC-seq libraries.</p>
+<ol start="7">
+<li>Four tubes containing nuclear suspensions (∼230 μL in each tube) were centrifuged at 500 RCF for 5 min at 4°C in swinging bucket centrifuge.</li>
+<li>The supernatant was discarded, leaving approximately 10 μL in the bottom of each tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be careful not to disrupt the nuclei pellet at the bottom of the tube when collecting supernatant. The pellet may or may not be visible after centrifugation.</div>
+<ol start="9">
+<li>Nuclei pellets were resuspended in the remaining 10 μL of collection buffer by pipetting (10-times) and pooled in a single 1.5 mL centrifuge tube (total volume ∼ 40 μL).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The nuclei resuspension should be done by gently pipetting with no visible debris or clumps in the tubes.</div>
+<ol start="10">
+<li>Nuclei concentration and quality were evaluated on a hemacytometer under a fluorescent microscope (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Evaluating DAPI-stained nuclei quality under a fluorescent microscope</div>
+<p>(A) 20× magnification of DAPI-stained nuclei via epifluorescence (top) and bright field (bottom) microscopy. The scale bar indicates 20 μm.</p>
+<p>(B) Intact nuclei at 40× magnification via epifluorescence (top) and bright field (bottom) microscopy.</p>
+<p>(C) Nuclei with intermediate ruptured nuclear envelopes at 40× magnification via epifluorescence (top) and bright field (bottom) microscopy.</p>
+<p>(D) Lysed nuclei at 40× magnification via epifluorescence (top) and bright field (bottom) microscopy.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>The total number of nuclei can be determined by multiplying the concentration by the sample volume.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Samples with excessive nuclear aggregates (clumping, <a href="#troubleshooting">Troubleshooting 1</a>) or low frequency of intact nuclei (<a href="#troubleshooting">Troubleshooting 2</a>) should not be used for scATAC-seq library preparation.</div>
+<ol start="11">
+<li>Input nuclei for the 10× Genomics scATAC-seq solution are required to be suspended in diluted nuclei buffer. To achieve this, nuclei were once again pelleted in a swinging bucket centrifuge at 500 RCF for 5 min at 4°C.</li>
+<li>The supernatant was discarded with a P200 filter pipette tip, leaving approximately 10 μL of collection buffer.</li>
+<li>The final 10 μL of collection buffer was discarded using a P10 filter pipette tip.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be careful not to disrupt the nuclei pellet at the bottom of the tube. The pellet may or may not be visible after centrifugation.</div>
+<ol start="14">
+<li>Nuclei were resuspended in 10 μL of diluted nuclei buffer (10× Genomics) by 10-times pipetting with wide-bore P20 filtered tips.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The nuclei resuspension should be performed by gently pipetting with no visible debris or clumps in the tubes.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> An additional check of nuclei concentrations and quality can be performed using 1–2 uL of DAPI-stained nuclei with a hemacytometer under a fluorescent microscope. A loss of ∼50% of total nuclei is common during centrifugation.</div>
+<ol start="15">
+<li>The concentration of nuclei was then adjusted to 3,200 nuclei per μL using diluted nuclei buffer (10× Genomics).</li>
+</ol>
+<h3 id="sec3.3">Single-cell ATAC-seq library preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [1–2 days]</div>
+<ol start="16">
+<li>scATAC-seq libraries were then prepared following instructions from the manufacturer (10× Genomics) using 5 μL of nuclei in diluted nuclei buffer (∼16,000 nuclei). See the manual at <a href="https://assets.ctfassets.net/an68im79xiti/2NEwsG0Yu3RuxvtQiWXZo3/1e939394fa43a4f0bd88d79383833b16/CG000209_Chromium_NextGEM_SingleCell_ATAC_ReagentKits_v1.1_UserGuide_RevE.pdf">https://assets.ctfassets.net/an68im79xiti/2NEwsG0Yu3RuxvtQiWXZo3/1e939394fa43a4f0bd88d79383833b16/CG000209_Chromium_NextGEM_SingleCell_ATAC_ReagentKits_v1.1_UserGuide_RevE.pdf</a>
+</li>
+</ol>
+<h3 id="sec3.4">Notes for preparing single-cell ATAC-seq libraries</h3>
+<ol start="17">
+<li>Maintaining nuclei integrity is one of the main factors for successfully preparing scATAC-seq libraries.
+<ol type="a">
+<li>To avoid any nuclei damage, incubate the samples at 4°C (thermocycler) or on ice after the isothermal incubation period. It is important to have the Master Mix prepared as soon as the tagmentation is performed (usually 2 min before the reaction finishes).</li>
+<li>Keep in mind that if the sample number is less than eight it is necessary to load the unused chip wells with 50% glycerol. An easy solution is to load unused wells while the tagmentation reaction is being performed (5–10 min before the reaction finishes).</li>
+<li>For optimum loading, wait at least 30 s before adding glycerol in each sequential row.</li>
+</ol>
+</li>
+<li>Optimal droplet formation on the Chromium microfluidics chip H requires a predictable flow rate to generate gel beads in emulsion (GEMs).
+<ol type="a">
+<li>Any condition that impairs GEM formation, such as bubbles in the sample/master mix or gel beads well, should be avoided.</li>
+<li>Slowly adding reagents and samples to the bottom of each well helps prevent bubble formation.</li>
+</ol>
+</li>
+<li>During double-sided size selection, the volumetric ratio of SPRIselect to the sample library specified in the manual (74 μL SPRIselect to 130 μL of library) ensures proper selection of amplified fragments by removing primer dimers and excessively large fragments. Collecting more sample volume than the recommended 130 μL in the manual may negatively affect library quality and recovery.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The quality of the scATAC-seq library preparation can be evaluated by assessing the library concentration via Qubit or qPCR and the distribution of fragment lengths using a fragment analyzer (<a href="#fig4">Figure 4</a>A) (<a href="#bib1">Buenrostro et al., 2013, 2015</a>; ). In general, good quality scATAC-seq libraries will have concentrations greater than 5 ng/μL and exhibit a high proportion of nucleosome-free fragments (∼220bp) and periodic enrichment of fragments corresponding to mono-nucleosomes (∼330bp) and di-nucleosomes (∼500bp). Libraries lacking nucleosome-protected fragments or with low library concentration yields may indicate lysis of the nuclear envelope prior to tagmentation or a low recovery of nuclei (<a href="#fig4">Figure 4</a>B) (<a href="#troubleshooting">Troubleshooting 3</a>).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Fragment distributions of scATAC-seq libraries</div>
+<p>(A) High quality scATAC-seq library. LM; Lower marker (1 bp). UM; Upper marker (6,000 bp).</p>
+<p>(B) Poor quality scATAC-seq library. RFU; relative fluorescence units.</p>
+</figcaption>
+</figure>
+<p>Following library sequencing and computational quality control/data processing, a successful scATAC-seq experiment will generally result in 40–60% of input nuclei passing quality control thresholds (example: 15,000 input nuclei yielding 6,000–9,000 high-quality nuclei). Several quality metrics, such as the number of unique Tn5 insertions per nucleus, percentage of reads mapping near transcription start sites (TSSs), and the Fraction of Reads in Peaks (FRiPs) should be assessed – keeping in mind that the distribution of these metrics are highly dependent on the species and organ or tissue-type. As a loose rule, nuclei should have at least 1,000 unique Tn5 insertions, fraction of reads near (1 or 2-kb depending on genome size and or number of genes) TSSs greater than 0.2, and FRiPs greater than 0.1. To establish reproducibility, biological replicates should be constructed and processed independently, and joined following identification of barcodes representing nuclei. Reproducible chromatin accessibility signals can be determined by assessing nuclei similarity according to the biological replicate of origin on the UMAP embedding. Louvain clusters containing approximately equal proportions of two or more biological replicates are generally regarded as reproducible. Additional details and an example of quality control and analytical steps can be found below.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>The follow steps outline initial processing and quality control for <i>Zea mays</i> seedling scATAC-seq data generated by Marand et al. (<a href="#fig5">Figure 5</a>). For tutorials and example code for evaluating data quality and clustering with <i>Socrates</i> (<a href="#bib7">Marand et al. 2021</a>), see the following link: <a href="https://github.com/plantformatics/Socrates/">https://github.com/plantformatics/Socrates/</a></p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/918-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Quality control and initial scATAC-seq data processing</div>
+<p>(A) Identification of high-quality barcodes using spline-fitting and signal enrichment at TSSs and ACRs. FRiPs; Fraction reads in peaks.</p>
+<p>(B) Sparse matrix filtering to remove low frequency features (1-kb bins) and nuclei with few accessible features.</p>
+<p>(C) Visualization of nuclei similarity colored by graph-based clusters (Louvain) of genome-wide chromatin accessibility profiles.</p>
+</figcaption>
+</figure>
+<ol>
+<li>FASTQ files were generated using cellranger-atac mkfastq (v3.0) with default parameters.</li>
+<li>FASTQ files were then trimmed and aligned to maize B73 AGP v4 reference genome using cellranger-atac count (v1.2) to obtain an unfiltered BAM file containing all sequenced reads with corrected barcodes appended to the “CB” tag.</li>
+<li>Uniquely and properly paired mapped reads were extracted using samtools with the “-q 10 -f 3” parameters and by removing reads with more than one alignment in the “XA” tag added by BWA mem (a part of the cellranger-atac count pipeline).</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Researchers may wish to adjust the “-q” parameter depending on the species. We opt to use mapping quality of 10 as a threshold to avoid removing reads derived from regions associated with the whole-genome duplication event that occurred ∼5–12 Mya in maize (<a href="#bib12">Schnable et al., 2011</a>).</div>
+<ol start="4">
+<li>PCR and optical duplicates were removed using picardtools MarkDuplicates with the following parameters “REMOVE_DUPLICATES=true BARCODE_TAG=CB”.</li>
+<li>The filtered BAM file was converted to BED (<a href="#bib10">Quinlan and Hall, 2010</a>) format representing base-resolution Tn5 integration sites by adjusting the 5′ coordinates of forward and reverse aligned reads by +4/−5, respectively (Column 1 = chromosome, Column 2 = start position, Column 3 = end position, Column 4 = barcode, Column 5 = strand).</li>
+<li>Unique Tn5 insertions were retained for each barcode using the UNIX tool uniq.</li>
+<li>Barcodes passing quality thresholds (unique Tn5 insertions per nucleus, percent Tn5 insertions within 2-kb of TSSs, and FRIPs) were identified using the R package, <i>Socrates</i> v0.0.0.9 (example code can be found here: <a href="https://github.com/plantformatics/plant_scATAC_STAR_Protocol">https://github.com/plantformatics/plant_scATAC_STAR_Protocol</a>) (<a href="#bib7">Marand et al., 2021</a>) and are hereafter referred to as nuclei (<a href="#troubleshooting">Troubleshooting 4</a>).
+<ol type="a">
+<li>
+<i>Socrates</i> uses MACS2 (<a href="#bib14">Zhang et al., 2008</a>) to identify Accessible Chromatin Regions (ACRs) that depends on species-specific information. Researchers should take care to ensure that the parameters selected are appropriate for their species of interest.</li>
+<li>The effective genome size, which represents the proportion of mappable sequence, is generally 60–80% of the total genome size. For maize, the effective genome size was set to 1.6e9.</li>
+<li>Spline-fitting identified nuclei as barcodes with more than 2,348 unique Tn5 insertions (<a href="#fig5">Figure 5</a>A).</li>
+<li>Nuclei with greater than 20% of Tn5 insertions within 2-kb of TSSs and 30% of Tn5 insertions with ACRs were retained as intact nuclei for further analysis (<a href="#fig5">Figure 5</a>A).</li>
+<li>A sparse binary matrix composed of ACRs (rows) by nuclei (columns) was generated by <i>Socrates</i> using the “convertSparseData” function for further processing.</li>
+</ol>
+</li>
+<li>Following data quality evaluation and processing, nuclei with similar genome-wide chromatin accessibility profiles were clustered into groups by first filtering low-frequency features and nuclei with less than 1,000 accessible features (<a href="#fig5">Figure 5</a>B).</li>
+<li>Finally, Louvain clusters of nuclei representing putative cell types were identified as using the succession of “regModel”, “reduceDims”, and “callClusters” functions a part of <i>Socrates</i> (<a href="#fig5">Figure 5</a>C) (<a href="#troubleshooting">Troubleshooting 5</a>).</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol has not yet been assessed from samples with low nuclei counts (less than 60,000 starting nuclei). Researchers working with small tissues (such as embryos) may need to pool multiple samples or optimize the nuclei extraction procedure to yield sufficient nuclei counts for scATAC-seq library construction. In addition, some samples and species may require adjusting the concentration and/or the type of detergent used, particularly if nuclei appear over-lysed with very few intact nuclei.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Few intact nuclei (Step 10).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>An abundance of lysed nuclei can occur at several steps of the protocol. Depending on the species (and the composition of the nuclear membrane), increasing or decreasing the detergent concentration can result in fewer lysed nuclei. Adjusting the sorting speed and sheath pressure can also be helpful to reduce the occurrence of unwanted nuclear lysis.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Excessive nuclear aggregation (Step 10).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Nuclear aggregation after sorting can occur when the collection buffer values are low, or nuclei suspensions are highly concentrated. Increasing the collection volume and adding between 1%–5% Bovine Serum Albumin can aid to lower aggregation in nuclei suspensions. Researchers should aim to produce nuclei suspensions at a concentration below 4,000 nuclei per μL for species with nuclei similar in size to maize (&lt;10 μm).</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Lack of nucleosome-protected fragments (Expected Outcomes).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>The loss of periodic fragment sizes corresponding to nucleosome-free and nucleosome-protected fragments can arise from multiple scenarios. The most common explanation is a lack of intact nuclei prior to tagmentation; lysed nuclei will result in chromatin accessibility profiles that resemble gDNA when sequenced. If nuclei preparations are largely intact, another possibility is excessive PCR cycles (over-amplification of small fragments) or insufficient extension times during library amplification.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Few nuclei passing quality control thresholds (Quantification and Statistical Analysis).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>The selection of quality control thresholds is highly dependent on the species, quality of the reference genome and the tissue/organ used in the experiment. As such, the percent TSS and FRiP score thresholds presented above should be taken as guidelines. In the case where few nuclei pass a minimum Tn5 insertion threshold, the knee plot, such as in <a href="#fig5">Figure 5</a>A, should be heavily scrutinized. A reasonable threshold can be set based on the distribution, rather than a predetermined heuristic cut-off. For example, in <a href="#fig5">Figure 5</a>A, a possible cut-off for Tn5 insertions per nucleus can be set to the top of the “knee”, at approximately 630 Tn5 insertions per nucleus (log10[2.8]). It is advisable to ensure a cut-off that results in the same or fewer nuclei than were loaded onto the device. For low percent TSS and FRiP scores, researchers may again set thresholds based on the observed distributions, such as removing nuclei below 1 standard deviation. Ultimately, the quality of nuclei can be established by visualizing accessibility of known marker genes. Nuclei with low read depth, percent TSS and FRiP scores may still exhibit highly discriminative chromatin accessibility profiles representing distinct cell identities. Thus, cell-type-specific marker genes should always be evaluated follow data processing regardless of the observed data quality metrics.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Lack of cluster separation following dimensionality reduction (Quantification and Statistical Analysis).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>The absence of underlying structure has several possible explanations. The first is an absence of heterogeneity in the studied cell population. This possibility can be ruled out by visualizing chromatin accessibility profiles of known marker genes of expected cell types to determine if heterogeneity among nuclei is observed on the embedding. Such a possibility can be confirmed by performing clustering to force substructure followed by differential chromatin accessibility analysis. An absence of marked chromatin differences is evidence for a lack of heterogeneity among nuclei within the sample. A second possibility is an overabundance of doublets due to overloading the microfluidics chip. While it may be tempting to load more nuclei than the manufacturer’s recommendation, an abundance of barcodes containing multiple nuclei adds substantial noise to the data set. In particular, barcodes containing multiple nuclei with different chromatin and cell states typically fall within an intervening space between distinct cell-type clusters on the manifold. If researchers have loaded more than the recommended ∼16,000 nuclei, extra care should be taken to remove as many predicted doublets as possible using pre-existing computational solutions, such as DoubletFinder, Scrublet, or ArchR (<a href="#bib3">Granja et al., 2021</a>; <a href="#bib8">McGinnis et al., 2019</a>; <a href="#bib13">Wolock et al., 2019</a>). A third possibility is an unsuccessful isolation of intact nuclei. Heavily degraded and broken nuclei lose chromatin structure demarcating cell identity. Analysis of scATAC-seq as a pseudobulk ATAC-seq data set (by aggregating reads from all nuclei) is highly informative for evaluating the data quality from a traditional viewpoint. An absence of clear regions of enrichment at TSSs and coverage plots resembling whole-genome shotgun sequencing are indications that the majority of nuclei were broken prior to loading the chip or the tagmentation step has failed.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Buenrostro, J.D., Giresi, P.G., Zaba, L.C., Chang, H.Y., and Greenleaf, W.J. (2013). Transposition of native chromatin for fast and sensitive epigenomic profiling of open chromatin, DNA-binding proteins and nucleosome position. Nat. Methods <i>10</i>, 1213-1218. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref1">View at publisher</a></p>
+<p id="bib2">Buenrostro, J.D., Wu, B., Chang, H.Y., and Greenleaf, W.J. (2015). ATAC-seq: A method for assaying chromatin accessibility genome-wide. Curr. Protoc. Mol. Biol. <i>109</i>, 21 29 21-21 29 29. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref2">View at publisher</a></p>
+<p id="bib3">Granja, J.M., Corces, M.R., Pierce, S.E., Bagdatli, S.T., Choudhry, H., Chang, H.Y., and Greenleaf, W.J. (2021). ArchR is a scalable software package for integrative single-cell chromatin accessibility analysis. Nat. Genet. <i>53</i>, 403-411. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref3">View at publisher</a></p>
+<p id="bib4">Lafzi, A., Moutinho, C., Picelli, S., and Heyn, H. (2018). Tutorial: guidelines for the experimental design of single-cell RNA sequencing studies. Nat. Protoc. <i>13</i>, 2742-2757. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref4">View at publisher</a></p>
+<p id="bib5">Lu, Z., Hofmeister, B.T., Vollmers, C., DuBois, R.M., and Schmitz, R.J. (2017). Combining ATAC-seq with nuclei sorting for discovery of cis-regulatory regions in plant genomes. Nucleic Acids Res. <i>45</i>, e41. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref5">View at publisher</a></p>
+<p id="bib6">Lu, Z., Marand, A.P., Ricci, W.A., Ethridge, C.L., Zhang, X., and Schmitz, R.J. (2019). The prevalence, evolution and chromatin signatures of plant regulatory elements. Nat. Plants <i>5</i>, 1250-1259. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref6">View at publisher</a></p>
+<p id="bib7">Marand, A.P., Chen, Z., Gallavotti, A., and Schmitz, R.J. (2021). A cis-regulatory atlas in maize at single-cell resolution. Cell. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref7">View at publisher</a></p>
+<p id="bib8">McGinnis, C.S., Murrow, L.M., and Gartner, Z.J. (2019). DoubletFinder: Doublet detection in single-cell RNA sequencing data using artificial nearest neighbors. Cell Syst. <i>8</i>, 329-337.e4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref8">View at publisher</a></p>
+<p id="bib9">Minnoye, L., Marinov, G.K., Krausgruber, T., Pan, L., Marand, A.P., Secchia, S., Greenleaf, W.J., Furlong, E.E.M., Zhao, K., Schmitz, R.J., et al. (2021). Chromatin accessibility profiling methods. Nat. Rev. Methods Primers <i>1</i>, 10. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref9">View at publisher</a></p>
+<p id="bib10">Quinlan, A.R. and Hall, I.M. (2010). BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics <i>26</i>, 841-842. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref10">View at publisher</a></p>
+<p id="bib11">Ricci, W.A., Lu, Z., Ji, L., Marand, A.P., Ethridge, C.L., Murphy, N.G., Noshay, J.M., Galli, M., Mejía-Guerra, M.K., Colomé-Tatché, M., et al. (2019). Widespread long-range cis-regulatory elements in the maize genome. Nat. Plants <i>5</i>, 1237-1249. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref11">View at publisher</a></p>
+<p id="bib12">Schnable, J.C., Springer, N.M., and Freeling, M. (2011). Differentiation of the maize subgenomes by genome dominance and both ancient and ongoing gene loss. Proc. Natl. Acad. Sci. U S A <i>108</i>, 4069-4074. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref12">View at publisher</a></p>
+<p id="bib13">Wolock, S.L., Lopez, R., and Klein, A.M. (2019). Scrublet: Computational identification of cell doublets in single-cell transcriptomic data. Cell Syst. <i>8</i>, 281-291.e9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref13">View at publisher</a></p>
+<p id="bib14">Zhang, Y., Liu, T., Meyer, C.A., Eeckhoute, J., Johnson, D.S., Bernstein, B.E., Nusbaum, C., Myers, R.M., Brown, M., Li, W., et al. (2008). Model-based analysis of ChIP-Seq (MACS). Genome Biol. <i>9</i>, R137. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref14">View at publisher</a></p>
+<p id="bib15">Zhong, Z., Feng, S., Duttke, S.H., Potok, M.E., Zhang, Y., Gallego-Bartolome, J., Liu, W., and Jacobsen, S.E. (2021). DNA methylation-linked chromatin accessibility affects genomic architecture in Arabidopsis. Proc. Natl. Acad. Sci. U S A <i>118</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00444-5/sref15">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Robert J. Schmitz (<a href="mailto:schmitz@uga.edu">schmitz@uga.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique materials.</p>
+<h4>Data and code availability</h4>
+<p>Data can be found online at <a href="https://www.sciencedirect.com/science/article/abs/pii/S0092867421004931">https://www.sciencedirect.com/science/article/abs/pii/S0092867421004931</a></p>
+<p>Code example can be found at <a href="https://github.com/plantformatics/plant_scATAC_STAR_Protocol">https://github.com/plantformatics/plant_scATAC_STAR_Protocol</a></p>
+<p>Tutorials and documentation for <i>Socrates</i> can be found at <a href="https://github.com/plantformatics/Socrates/">https://github.com/plantformatics/Socrates/</a></p>
+<h3>Acknowledgments</h3>
+<p>We would like to thank the Center for Tropical and Emerging Global Diseases Shared Resource Laboratory for providing access to flow cytometry instruments. This study was funded with support from the <a href="https://doi.org/10.13039/100000001">NSF</a> (IOS-1856627, IOS-1802848, and IOS-2026561) and the UGA Office of Research to R.J.S. and an NSF postdoctoral fellowship in biology (DBI-1905869) to A.P.M.</p>
+<h3>Author contributions</h3>
+<p>A.P.M. and R.J.S. designed the study. A.P.M., X.Z., and P.A.B.d.R. devised the nuclei isolation and scATAC-seq protocols. J.N. designed the FANS gating strategy and operated the flow cytometer. All authors wrote and approved the final text.</p>
+<h3>Declaration of interests</h3>
+<p>R.J.S. is a co-founder of Request Genomics, LLC, a company that provides plant epigenomics services. The remaining authors declare no competing interests.</p>
+</section>
+</article>

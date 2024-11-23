@@ -1,0 +1,704 @@
+<article>
+<section>
+<h1 id="header">Manipulating cellular microRNAs and analyzing high-dimensional gene expression data using machine learning workflows</h1>
+<p><time datetime="2021-10-29">Published: October 29, 2021</time></p>
+<p>Vijit Saini,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">5</a></sup> Mugdha V. Joglekar,<sup><a href="#aff1">1</a>,<a href="#fn1">5</a></sup> Wilson K.M. Wong,<sup><a href="#aff1">1</a>,<a href="#fn1">5</a></sup> Guozhi Jiang,<sup><a href="#aff3">3</a></sup> Najah T. Nassif,<sup><a href="#aff2">2</a></sup> Ann M. Simpson,<sup><a href="#aff2">2</a></sup> Ronald C.W. Ma,<sup><a href="#aff3">3</a></sup> Louise T. Dalgaard,<sup><a href="#aff4">4</a></sup> and Anandwardhan A. Hardikar<sup><a href="#aff1">1</a>,<a href="#aff4">4</a>,<a href="#fn2">6</a>,<a href="#fn3">7</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Diabetes and Islet Biology Group, School of Medicine, Western Sydney University, Narellan Road &amp; Gilchrist Drive, Campbelltown, NSW 2560, Australia</p>
+<p id="aff2"><sup>2</sup>School of Life Sciences and the Centre for Health Technologies, University of Technology Sydney, 15 Broadway, Ultimo, NSW 2007, Australia</p>
+<p id="aff3"><sup>3</sup>Department of Medicine and Therapeutics, and Hong Kong Institute of Diabetes and Obesity, and Li Ka Shing Institute of Health Sciences, The Chinese University of Hong Kong, Prince of Wales Hospital, Hong Kong, Special Administrative Region, China</p>
+<p id="aff4"><sup>4</sup>Department of Science and Environment, Roskilde University, Universitetsvej 1, 4000 Roskilde, Denmark</p>
+<p id="fn1"><sup>5</sup>These authors contributed equally</p>
+<p id="fn2"><sup>6</sup>Technical contact</p>
+<p id="fn3"><sup>7</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:a.hardikar@westernsydney.edu.au">a.hardikar@westernsydney.edu.au</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100910">10.1016/j.xpro.2021.100910</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>MicroRNAs (miRNAs) are elements of the gene regulatory network and manipulating their abundance is essential toward elucidating their role in patho-physiological conditions. We present a detailed workflow that identifies important miRNAs using a machine learning algorithm. We then provide optimized techniques to validate the identified miRNAs through over-expression/loss-of-function studies. Overall, these protocols apply to any field in biology where high-dimensional data are produced.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref23">Wong et al. (2021a)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>LASSO and bootstrapping identify important miRNAs associated with gene of interest</li>
+<li>Generating puromycin resistant, doxycycline inducible, miRNA overexpressing cells</li>
+<li>Transient miRNA knockdown using LNA inhibitors in human primary cells</li>
+<li>Optimized reagent concentrations and cell densities for miRNA manipulation</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>We describe below steps for using R scripts to identify important miRNAs associated with a specific gene or phenotype of interest. Cell culture-related procedures are written for human islet-derived cells (transient knockdown studies and stable miRNA-overexpression) or for the PANC1 human pancreatic duct cell line (stable miRNA-overexpression). Human islets are obtained following approval from human ethics committee.</p>
+<h3 id="sec1.1">Preparation for miRNA data analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> &lt;1 h</div>
+<ol>
+<li>Download R (version 3.6.2) and Rstudio software (version 1.3.1093) that are freely available. The following links <a href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf</a> and <a href="https://education.rstudio.com/learn/beginner/">https://education.rstudio.com/learn/beginner/</a> are guides for beginners in R.</li>
+<li>Open Rstudio software.</li>
+<li>Install R packages using install.packages(‘(insert package name of interest here)’) command. Following packages are required: gdata (ver. 2.18.0), hash (ver. 2.2.6.1), glmnet (ver. 4.1), corrplot (ver. 0.84), penalized (ver. 0.9.51) and readxl (ver. 1.3.1)/or alternatively XLconnect (ver. 1.0.3 which will require ActivePerl software) on Rstudio.</li>
+<li>Format excel document (i.e., data for analysis) with the samples in rows; sample (biological) group name, sample name, dependent variable (dv) and miRNAs (independent variables) in columns (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Representative image of data arrangement prior to analysis</div>
+<p>An example of how your dataset should be arranged; with the samples in rows and variables in columns. The (Biological) Group Name, Sample Name and dependent variable (dv) are in columns A, B and C respectively. This is followed by the independent variables (miRNAs) (v4…v(n)) starting from column D. Cycle threshold (Ct)-values for each miRNA (v4-v(n)) are presented in this example.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure the excel document dataset does not contain symbols/non-numeric features (such as (-)).</div>
+<div class="note">
+<span class="note-title">Note:</span> MiRNA data can be presented and analyzed as normalized cycle threshold (Ct)-values or abundance (fold over detectable). In case of a larger range of data, we recommend to log transform the data using log<sub>2</sub>(abundance).</div>
+<ol start="5">
+<li>Code the miRNA names starting at column D. Label code as the variable (v)4 to v(n) (in this case n=757, for an OpenArray™ discovery panel) in your Excel document. Methodologies related to obtaining such miRNA expression data are presented elsewhere (<a href="#bib21">Wong et al., 2015</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Make a separate excel sheet containing details of each code representing the miRNA. Please retain the column headings as shown in <a href="#fig1">Figure 1</a>. For the ease of analysis and to avoid any errors, we recommend to code the miRNA names as (v)4 to v(n). Please remember that R commands are case sensitive. This R script created will detect the independent variables starting with v through the following command:</div>
+<p>indep_var &lt;- paste("v", 4:(n), sep="").</p>
+<p>Column A is optional and is used to keep the record of which group is considered as 0 and 1 in the analysis.</p>
+<ol start="6">
+<li>Make sure for logistic regression the dv are binary, thus group A will be 0 while group B will be 1.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Sort “dv” column for all the samples from smallest to largest, therefore group A (“0”) is before group B (“1”).</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Experimental models: Cell lines</td>
+</tr>
+<tr>
+<td>Human islet cells</td>
+<td>Derived from human islets obtained from islet isolation centres</td>
+<td>(<a href="#bib3">Gershengorn et al., 2004</a>; <a href="#bib9">Joglekar and Hardikar, 2012</a>; <a href="#bib12">Joglekar et al., 2016</a>)</td>
+</tr>
+<tr>
+<td>PANC1 cells</td>
+<td>Sigma-Aldrich</td>
+<td>87092802</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides and recombinant proteins</td>
+</tr>
+<tr>
+<td>Potassium chloride (KCl)</td>
+<td>VWR</td>
+<td>26760.295</td>
+</tr>
+<tr>
+<td>Potassium dihydrogen phosphate (KH<sub>2</sub>PO<sub>4</sub>)</td>
+<td>VWR</td>
+<td>26925.295</td>
+</tr>
+<tr>
+<td>Sodium bicarbonate (NaHCO<sub>3</sub>)</td>
+<td>Sigma-Aldrich</td>
+<td>56014</td>
+</tr>
+<tr>
+<td>Sodium chloride (NaCl)</td>
+<td>Sigma-Aldrich</td>
+<td>59888</td>
+</tr>
+<tr>
+<td>Disodium hydrogen phosphate (Na<sub>2</sub>HPO<sub>4</sub>)</td>
+<td>VWR</td>
+<td>28026.292</td>
+</tr>
+<tr>
+<td>D-(+)-Glucose</td>
+<td>Sigma-Aldrich</td>
+<td>G7021</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>VWR</td>
+<td>VWRC20301.290</td>
+</tr>
+<tr>
+<td>Trypsin (1:250), powder</td>
+<td>Thermo Fisher Scientific</td>
+<td>27250018</td>
+</tr>
+<tr>
+<td>Medium (CMRL-1066)</td>
+<td>Thermo Fisher Scientific</td>
+<td>11530037</td>
+</tr>
+<tr>
+<td>Medium (DMEM, high glucose)</td>
+<td>Thermo Fisher Scientific</td>
+<td>11965092</td>
+</tr>
+<tr>
+<td>Fetal bovine serum, certified, United States</td>
+<td>Thermo Fisher Scientific</td>
+<td>16000044</td>
+</tr>
+<tr>
+<td>GlutaMAX Supplement</td>
+<td>Thermo Fisher Scientific</td>
+<td>35050061</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin (5,000 U/mL)</td>
+<td>Thermo Fisher Scientific</td>
+<td>15070063</td>
+</tr>
+<tr>
+<td>hEGF recombinant, expressed in E. coli, lyophilized powder, suitable for cell culture</td>
+<td>Sigma-Aldrich</td>
+<td>E9644</td>
+</tr>
+<tr>
+<td>Polybrene (Hexadimethrine bromide)</td>
+<td>Sigma-Aldrich</td>
+<td>H9268</td>
+</tr>
+<tr>
+<td>Doxycycline</td>
+<td>Sigma-Aldrich</td>
+<td>D9891</td>
+</tr>
+<tr>
+<td>Puromycin Dihydrochloride</td>
+<td>Thermo Fisher Scientific</td>
+<td>A1113803</td>
+</tr>
+<tr>
+<td>SMARTvector inducible third-generation lentiviral vectors (Non-Target Control)</td>
+<td>Dharmacon</td>
+<td>VSC6570</td>
+</tr>
+<tr>
+<td>SMARTvector inducible third-generation lentiviral vectors (microRNA)</td>
+<td>Dharmacon</td>
+<td>VSH6906</td>
+</tr>
+<tr>
+<td>TRIzol reagent</td>
+<td>Thermo Fisher Scientific</td>
+<td>15596026</td>
+</tr>
+<tr>
+<td>miRCURY LNA microRNA Power Inhibitor</td>
+<td>QIAGEN</td>
+<td>339131</td>
+</tr>
+<tr>
+<td>Cumate-inducible promoters (alternate to doxycycline-inducible SMARTvector™)</td>
+<td>System Bioscience</td>
+<td><a href="https://systembio.com/shop/pcdh-cuo-mcs-ires-gfp-ef1%ce%b1-cymr-t2a-puro-all-in-one-inducible-ires-lentivector/#product_info_how_it_works">https://systembio.com/shop/pcdh-cuo-mcs-ires-gfp-ef1%ce%b1-cymr-t2a-puro-all-in-one-inducible-ires-lentivector/#product_info_how_it_works</a></td>
+</tr>
+<tr>
+<td>BLOCK-iT™ Inducible H1 RNAi Entry Vector Kit (Do-It-Yourself shRNA-inducible vector as an alternate to doxycycline-inducible SMARTvector™)</td>
+<td>Thermo Fisher Scientific</td>
+<td><a href="https://www.thermofisher.com/au/en/home/references/protocols/rnai-epigenetics-and-gene-regulation/sirna-protocol/inducible-shrna-expression-vectors.html">https://www.thermofisher.com/au/en/home/references/protocols/rnai-epigenetics-and-gene-regulation/sirna-protocol/inducible-shrna-expression-vectors.html</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R software (The R project)</td>
+<td><a href="https://cran.r-project.org">https://cran.r-project.org</a></td>
+<td>ver. 3.6.2</td>
+</tr>
+<tr>
+<td>Rstudio software</td>
+<td><a href="https://www.rstudio.com/">https://www.rstudio.com/</a></td>
+<td>Ver 1.3.1093 (used here. Most recent version of Rstudio should also work with R ver 3.6.2).</td>
+</tr>
+<tr>
+<td>R script (codes)</td>
+<td><a href="https://github.com/Isletbiology/Penalized-regression">https://github.com/Isletbiology/Penalized-regression</a></td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>24-well tissue culture plates (Falcon)</td>
+<td>Falcon</td>
+<td>353047</td>
+</tr>
+<tr>
+<td>12-well tissue culture plates (Falcon)</td>
+<td>Falcon</td>
+<td>353043</td>
+</tr>
+<tr>
+<td>6-well tissue culture plates (Falcon)</td>
+<td>Falcon</td>
+<td>353046</td>
+</tr>
+<tr>
+<td>6-well suspension plates (Greiner)</td>
+<td>Greiner</td>
+<td>M9062</td>
+</tr>
+<tr>
+<td>T25 tissue culture flasks (Falcon)</td>
+<td>Falcon</td>
+<td>352097</td>
+</tr>
+<tr>
+<td>T75 tissue culture flasks (Falcon)</td>
+<td>Falcon</td>
+<td>353136</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>
+<u>Trypsin:</u> Once prepared, trypsin should be filtered using 0.2 μm filtration system and then aliquoted as 10–12 mL aliquots into 15 mL conical tubes and stored at −20°C (for long term storage).</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM)</th>
+<th>Amount (for 500 mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Potassium chloride (KCl)</td>
+<td>5.365</td>
+<td>0.2 g</td>
+</tr>
+<tr>
+<td>Monopotassium phosphate (KH<sub>2</sub>PO<sub>4</sub>)</td>
+<td>0.441</td>
+<td>0.03 g</td>
+</tr>
+<tr>
+<td>Sodium bicarbonate (NaHCO<sub>3</sub>)</td>
+<td>4.285</td>
+<td>0.18 g</td>
+</tr>
+<tr>
+<td>Sodium chloride (NaCl)</td>
+<td>136.893</td>
+<td>4.0 g</td>
+</tr>
+<tr>
+<td>Disodium phosphate (Na<sub>2</sub>HPO<sub>4</sub>)</td>
+<td>0.704</td>
+<td>0.05 g</td>
+</tr>
+<tr>
+<td>D-glucose</td>
+<td>5.551</td>
+<td>0.5 g</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>1.300</td>
+<td>0.19 g</td>
+</tr>
+<tr>
+<td>Trypsin (1:250)</td>
+<td>n/a</td>
+<td>1.25 g</td>
+</tr>
+<tr>
+<td>Autoclave water</td>
+<td>n/a</td>
+<td>500 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<caption>
+<u>Medium for PANC1 or hIPCs culture:</u> Once prepared, cell culture media are stored at 4°C (up to three months).</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Medium<sup><a href="#dtbl3fna">a</a></sup>
+</td>
+<td>1<b>×</b>
+</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td>Fetal bovine serum</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>GlutaMAX™</td>
+<td>1%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin (stock 5,000 U/mL)</td>
+<td>1%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>hEGF (stock 0.1 mg/mL)<sup><a href="#dtbl3fnb">b</a></sup>
+</td>
+<td>10 ng/mL</td>
+<td>50 μL</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl3fna" class="table-footnote"><sup>a</sup>High glucose DMEM medium is for PANC1 cells and CMRL (1066) medium is for islet cells.</p>
+<p id="dtbl3fnb" class="table-footnote"><sup>b</sup>hEGF is only included in CMRL medium (i.e., for islet cells).</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">MiRNA data analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> The time to run miRNA data analysis using Least Absolute Shrinkage and Selection Operator (LASSO) penalized regression and bootstrapping depends on the installed memory (RAM) of the computer, dataset size and the number of bootstraps. On a 16.0 GB RAM computer, to run a dataset of ∼90 samples and ∼750 independent variables with 1000 bootstraps requires approximately 15–30 mins.</div>
+<p>This process of data analysis yields a set of miRNAs that are important in separating the two groups of samples (group A (0) or group B (1)). The miRNAs with higher bootstrap frequencies (ranked higher in importance) are then used for functional analysis using manipulation approaches described later.</p>
+<ol>
+<li>Ensure that your dataset looks like the example shown in <a href="#fig1">Figure 1</a>.</li>
+<li>Open or paste our R script used for penalized regression and bootstrap analysis in Rstudio. It can be found through <a href="https://github.com/Isletbiology/Penalized-regression">https://github.com/Isletbiology/Penalized-regression</a>.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure to keep the set.seed() the same and in the “dv” column all the samples in group A (“0”) are before group B (“1”) to produce a consistent output each time you run the script.</div>
+<ol start="3">
+<li>Set up directory in setwd() function as indicated in the R script. Directory is the location of where your data (excel document) is located.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> for the directory location entered in R, convert the “\” to “/” at every instance.</div>
+<ol start="4">
+<li>Read data (excel document) using read_excel() function (from readxl package).</li>
+<li>Set the number of independent variables (i.e., miRNAs) as mentioned in the R script to analyze in the following function:</li>
+</ol>
+<p>indep_var &lt;- paste(“v”, 4:757, sep=””).</p>
+<div class="note">
+<span class="note-title">Note:</span> In this example, the independent variables are coded v4 to v757. However, these can be set to any start and end numbers as per your experimental variable numbers and the way data is entered in the excel file. In such case ensure that correct number is reflected in the script.</div>
+<ol start="6">
+<li>Provide the number of bootstraps (iterations) as indicated in the R script in the following function:</li>
+</ol>
+<p>boot_num &lt;- 1000.</p>
+<div class="note">
+<span class="note-title">Note:</span> In our case bootstrap set at 1000 times was sufficient. It can be increased up to 10,000 bootstraps and would require longer computational times for generating results. Bootstrapping through the glmnet R package, involves randomization by eliminating ∼37% samples and replacing them with the same number of samples selected randomly at each bootstrap from the remaining samples in the set. This approach is a renowned sampling method (<a href="#bib2">Efron and Tibshirani, 1997</a>).</div>
+<ol start="7">
+<li>Create an output directory (i.e., the location of where the results will be exported into) and file name (for the results) as presented in the R script in the following function:</li>
+</ol>
+<p>output &lt;- "../results/name_".</p>
+<div class="note">
+<span class="note-title">Note:</span> In this case the “results” folder located in the output directory is the location for your results. The file name(s) will start with “name_” for the results that will be exported.</div>
+<ol start="8">
+<li>Run the script.</li>
+<li>Check the directory folder where the results would be exported to (after the run has completed). The script will produce three results document file:
+<ol type="a">
+<li>A PDF document (name__Lasso_PENALIZED_full_data.pdf), containing the penalized regression graph presenting the coefficient and lambda1 of the selected independent variables.</li>
+<li>A CSV document (name_select_var_using_entire_data.csv), containing the independent variables and their coefficient selected through penalized regression analysis.</li>
+<li>A CSV document (name_Lasso_IF_Lambda (min)_boot_n=1000.csv), containing the bootstrap results.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If the results are not produced, check for errors presented in the run. The errors will be in red text on the Rstudio messages window. Often the results are not produced due to the excel document being in the incorrect format or the function in the script is incorrect (see <a href="#sec6.1">Troubleshooting 1</a>, <a href="#sec6.3">2</a>, <a href="#sec6.5">3</a>, and <a href="#sec6.7">4</a>).</div>
+<ol start="10">
+<li>Open and observe the pdf and csv document containing the penalized regression graph and independent variable coefficients.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The L-1 penalized regression approach (<a href="#bib4">Goeman, 2010</a>) is generated using the “penalized” R package. The penalized regression graph presents on the x-axis the lambda (a tuning parameter determined/chosen by cross-validation) and on the y-axis the coefficients for the selected variables (miRNAs). In penalized regression analysis a penalty is applied to each independent variable (miRNA) as presented by the lambda (x-axis) and this value is increased until the coefficient (y-axis) obtained is 0. An optimum lambda is selected as a cutoff for identifying the most important/relevant variables. The variables (miRNAs) with coefficients not equal to 0 (right y-axis) at this optimum lambda are considered to be important contributors to the prediction model. Thus, the lambda represents a threshold for identifying the most important variables, the coefficients on y-axis present the weights of the variables selected and together, they inform the user of the contribution of each variable (relative weights) to the prediction model. The coefficients of the intercept and variables shown in csv document can be used to determine if a particular sample is in group A(0) or B(1), using the simple regression formula (<a href="#bib16">Montgomery et al., 2021</a>).</div>
+<ol start="11">
+<li>Open and interpret the csv document containing bootstrap results (an example is shown in <a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Representative image of the output result</div>
+<p>Figure presents the frequency table produced by our penalized logistic regression with bootstrapping. The frequency table can be used to identify the most important discriminatory miRNAs. For example, v490 appears with &gt;96% frequency, suggesting it is one of the most important miRNAs in discriminating dv “0” and dv “1”.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The document with the bootstrap results will contain the (independent) variable(s), sign, count, frequency and opposite_effect in columns A to E respectively. The “variable” column contains the coded variables representing a unique miRNA. The “sign” column identifies which group (A or B) the corresponding miRNA (variable) is higher in Ct- value. For example, miRNA with a sign of “−1” indicates that it has higher Ct-value in group A (i.e. 0). While if the miRNA has a sign of “1”, it has higher Ct-value in group B (i.e. 1). The “opposite_effect” column is used to check if the independent variable (miRNA) appears to be positive (“1” in sign column) in some iterations and negative (“−1” in sign column) in some other bootstrap iterations. When the opposite effect is “TRUE” that means that miRNA is higher (Ct-value) in group “0” for some iterations, while it is lower (Ct-value) in group “0” for other iterations. It will thus appear in the bootstrap table twice, one with a positive sign and another time with a negative sign. If the opposite effect is “FALSE” then that means the miRNA is always higher or lower in all iterations. The “count” column presents the number of times (in this case out of 1000 times(iterations)) the variable is selected to in the model. The “frequency” column reflects the count in percentage. MiRNAs with higher frequencies are of greater importance in our analysis.</div>
+<ol start="12">
+<li>Use output results (<a href="#fig2">Figure 2</a>) to prioritize the miRNAs based on counts (or % frequency) for over-expression/loss-of-function studies as described below.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This R script used for penalized regression with bootstrap analysis is not suitable for a dataset with &lt;10 samples.</div>
+<div class="note">
+<span class="note-title">Note:</span> In instances where unprejudiced workflows for the selection of multiple variables is desired, alternate machine learning approaches, such as Ensemble workflows using Random Forest or similar analytical tools can be used as described elsewhere (<a href="#bib24">Wong et al., 2021b</a>).</div>
+<h3 id="sec3.2">Derivation and propagation of human islet cells for transient miRNA knockdown</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> prior to transfection</div>
+<ol start="13">
+<li>Set water bath at 37°C.</li>
+<li>Clean the biosafety cabinet with 80% v/v ethanol and allow 15 min UV sterilization.</li>
+<li>Prepare medium (CMRL-1066) supplemented with 1% GlutaMAX™, 10% fetal bovine serum, 1<b>×</b> of penicillin-streptomycin, and 10 ng/mL epithelial growth factor. Refer to table as described in <a href="#materials-and-equipment">materials and equipment</a> section for human islet cells and islet-derived progenitor cells (hIPCs).</li>
+<li>Add around 3500–5000 islet equivalents (IEQs) per T75 flask in CMRL serum-containing medium (as prepared in step #15). Detailed characterization of these islets to proliferating populations of hIPCs via epithelial-to-mesenchymal transition (EMT) (<a href="#bib8">Joglekar and Hardikar, 2010</a>) is described (<a href="#bib3">Gershengorn et al., 2004</a>; <a href="#bib11">Joglekar et al., 2009b</a>, <a href="#bib12">2016</a>; <a href="#bib9">Joglekar and Hardikar, 2012</a>).</li>
+<li>We observe that islets attach to the culture flasks in 1–3days (d), after which the islets flatten out with cells migrating out and then proliferating to form epithelial patches within 7-10d. We feed these islet-derived cells with fresh medium once they attach and then after every 3-4d.</li>
+<li>In this study, we have used islet-derived cells at d8-10 for knockdown experiments. These cells continue to express insulin mRNA, protein and secrete insulin in response to glucose for up to 2 weeks (<a href="#bib12">Joglekar et al., 2016</a>).</li>
+</ol>
+<h3 id="sec3.3">Knockdown of miRNA expression</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 week</div>
+<p>MiRNA manipulation can be performed either by increasing or reducing their abundance, followed by testing their effect on potential targets. In this step, we detail the protocol for using Locked Nucleic Acids (LNA) power inhibitors to reduce miRNA expression in human islet cells. LNA power inhibitors are preferred since they are taken up by the cells without the need for any transfection agents. This significantly reduces adverse effects (including cell death) on primary cells such as islet cells. Transient transfection was performed to understand short term effect of selected miRNA(s).</p>
+<ol start="19">
+<li>Set water bath at 37°C.</li>
+<li>Clean the biosafety cabinet with 80% v/v ethanol and allow 15 min UV sterilization.</li>
+<li>Reconstitute the miRNA LNAs from Qiagen (Qiagen, Hilden, Germany) at a concentration of 50 μM using sterile nuclease-free (NF) water. Aliquot into sterile tubes, each with 5 μL volume to avoid repeated freeze-thaw. Freeze and store the stock at −20°C.</li>
+<li>Prepare trypsin using the reagents as described in <a href="#materials-and-equipment">materials and equipment</a> section.</li>
+<li>Warm culture media for islet cells (prepared in step #15) and trypsin at 37°C water bath.</li>
+<li>Ensure human islet cells at d8-10 (in culture) from the time of isolation are available at approximately 90%–95% confluency.</li>
+<li>Remove medium and add 5 mL trypsin and incubate for 3 min at 37°C in a 5% CO<sub>2</sub> incubator.</li>
+<li>Ensure the cells are detached by observing them under the microscope. Add 2 mL serum-containing medium to stop further action of trypsin. Collect the cells and transfer them into a 15 mL tube and centrifuge at 500 <b>×</b> <i>g</i> for 3 min. Remove the supernatant.</li>
+<li>Resuspend the cells in 4 mL of serum-containing medium.</li>
+<li>Count the cells and add 4<b>×</b>10<sup>4</sup> – 5<b>×</b>10<sup>4</sup> per well of a tissue-culture treated 24-well plate. Each well should have a final volume of 500 μL.</li>
+<li>Allow the cells to attach for 16–24 h.</li>
+<li>Add miRNA LNA power inhibitor to each well to obtain a final concentration of 500 nM/well. See <a href="#sec6.9">Troubleshooting 5</a>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To inhibit more than one miRNA at the same time, we recommend lowering the concentration of each LNA power inhibitor to keep the combined concentration to 500 nM. For example, in the case of inhibiting five miRNAs together, add 100 nM of each of the miRNA-specific inhibitor to the same well to obtain a total concentration of 500 nM.</div>
+<ol start="31">
+<li>Leave the cells with miRNA LNA power inhibitor for 3-6d.</li>
+<li>Harvest cells for downstream analyses at d3 or d6 post-transfection. Cells can be harvested either as a cell pellet in a Eppendorf (1.7 mL) tube, following steps #25-26 or collected directly in 500 μL/well of TRIzol<sup>TM</sup> reagent (ThermoFisher scientific, United States).
+<div class="critical">
+<span class="critical-title">Critical:</span> TRIzol<sup>TM</sup> reagent is harmful if inhaled, swallowed, or if it is in contact with the skin, and can cause severe skin burns and eye damage. Safety measures include wearing PPE and rinsing/washing affected area with water. It is recommended that this is handled in a fume cabinet and safely disposed as it is harmful to aquatic life.</div>
+</li>
+</ol>
+<h3 id="sec3.4">Preparation for miRNA stable overexpression</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> prior to transduction</div>
+<p>MiRNA overexpression can be achieved via transfecting mature miRNAs with the help of transfection agents (<a href="#bib14">Lahmy et al., 2014</a>; <a href="#bib15">Lopez-Beas et al., 2018</a>; <a href="#bib18">Poudyal et al., 2018</a>). To understand sustained overexpression of a single or combination of miRNAs, we selected an inducible system where miRNA overexpression is regulated by the presence of doxycycline. Other methods based on Cumate-vectors are reported (<a href="#bib17">Mullick et al., 2006</a>; <a href="#bib19">Poulain et al., 2017</a>). Doxycycline-inducible vectors were preferred since they were readily available. However, Cumate vectors are preferred in scenarios where pre-miRNA overexpression is desired. One has to be mindful of post-processing regulations as some miRNAs are present as pre-miRNAs (<a href="#bib10">Joglekar et al., 2009a</a>).</p>
+<ol start="33">
+<li>Set water bath at 37°C.</li>
+<li>Clean the biosafety cabinet with 80% (v/v) ethanol and allow 15 min UV sterilization.</li>
+<li>Prepare medium (high glucose DMEM) supplemented with 1% GlutaMAX™, 10% fetal bovine serum, 1<b>×</b> of penicillin and streptomycin cocktail. Refer to table as described in <a href="#materials-and-equipment">materials and equipment</a> section for PANC1 cells.</li>
+<li>Warm culture media for PANC1 cells (prepared in step #35) at 37°C.</li>
+<li>Thaw one vial of third-generation doxycycline-inducible and puromycin-resistant SMARTvector™ shRNA (short hairpin RNA) lentiviral vectors (containing mature miRNA sequences and co-expressing either GFP or RFP) on ice with titers of approximately 1<b>×</b>10<sup>8</sup> TU/mL.
+<div class="critical">
+<span class="critical-title">Critical:</span> Always work with lentiviral particles in a biosafety cabinet within PC2 facility while wearing recommended PPE. Ensure the protocol is approved by the institutional biosafety committee.</div>
+</li>
+<li>Calculate the volume of the vector for a multiplicity of infection (MOI) of 0.2 for 1.25 X 10<sup>5</sup> number of cells. The following formula can be used</li>
+</ol>
+<p>V= (MOI <b>×</b> N)/T, where V=required volume of viral vectors in mL; MOI=multiplicity of infection; N=number of cells and T=titer of the viral vectors per mL.</p>
+<ol start="39">
+<li>PANC1 cells (<a href="#bib6">Hardikar et al., 2003</a>), obtained from Sigma Aldrich (or similar/ATCC) are recommended to be used at lower passages (up to 10 passages).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Alternatively, we have also applied methods described below on human islet-derived progenitor cells (hIPCs). For further details on hIPCs, please refer to our publications (<a href="#bib3">Gershengorn et al., 2004</a>; <a href="#bib11">Joglekar et al., 2009b</a>, <a href="#bib12">2016</a>; <a href="#bib9">Joglekar and Hardikar, 2012</a>).</div>
+<ol start="40">
+<li>Ensure PANC1 cells or hIPCs are available at desired density for use.</li>
+</ol>
+<h3 id="sec3.5">Generating miRNA overexpressing PANC1 cell lines</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 weeks</div>
+<ol start="41">
+<li>Puromycin dose optimization (week 1, d1-7)
+<ol type="a">
+<li>Grow PANC1 or hIPCs in the respective serum-containing medium in a T75 flask until they are approximately 90%–95% confluent.</li>
+<li>Remove medium and add 5 mL trypsin and incubate for 3 min at 37°C in 5% CO<sub>2</sub> incubator.</li>
+<li>Ensure the cells are detached by observing them under the microscope. Add 2 mL serum-containing medium to stop further action of trypsin. Collect the cells and transfer into a 15 mL tube and centrifuge at 500 <b>×</b> <i>g</i> for 3 min.</li>
+<li>Remove the supernatant and resuspend the cells in 4 mL of serum-containing medium.</li>
+<li>Count the cells and add 4<b>×</b>10<sup>4</sup> – 5<b>×</b>10<sup>4</sup> per well of a tissue-culture treated 24-well plate. Each well should have final 500 μL volume.</li>
+<li>Allow the cells to attach for 16–24 h. Ensure that the wells are just 50%–60% confluent. See <a href="#sec6.11">Troubleshooting 6</a>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to have just enough cells (50%–60%) at the time of puromycin addition. Higher cell density may lead to inappropriate puromycin dose calculation. A wrong dosage of puromycin in later stages of this experiment would kill untransduced as well as transduced cells thereby reducing the transduction efficiency.</div>
+</li>
+<li>Add different doses of puromycin per well, ranging from 0-10 μg/mL (<a href="#fig3">Figure 3</a>). Change the medium in the wells with the same dose of puromycin after d3.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Optimization for puromycin concentration</div>
+<p>Untransduced hIPCs with increasing puromycin concentrations (0–10 μg/mL) in the serum-containing medium. Cells were observed every day and imaged on d7. Images of cells with concentrations of &gt;1 μg/mL are not shown since all cells were killed off. Scale bar 100μm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Puromycin has acute oral toxicity and is harmful if swallowed. Safety measures include washing hands thoroughly and rinsing the mouth with water if consumed.</div>
+</li>
+<li>Visually inspect all wells at the end of d7 to determine the lowest concentration of puromycin that kills all the non-modified/untransduced cells (100%). In our experience, 8 μg/mL of puromycin was sufficient to kill all PANC1 cells or 2 μg/mL in hIPCs.</li>
+</ol>
+</li>
+</ol>
+<ol start="42">
+<li>Transduction of lentiviral vectors carrying miRNAs (week 2, d1-5)
+<ol type="a">
+<li>Culture and trypsinize PANC1 or hIPCs as described above for step 41 (a-d).</li>
+<li>Count the cells and add 1.25<b>×</b>10<sup>5</sup> per well of a tissue-culture treated 12-well plate. Each well should have final 1 mL volume.</li>
+<li>Allow the cells to attach for 16–24 h. Ensure that the wells are just 60%–70% confluent. <a href="#sec6.11">Troubleshooting 6</a>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to know the cells you are working with, to understand their doubling time as well as cell size. These factors decide the number of cells to be added per well. Ideally, the cell density at this point should be 60%–70%, which allows these cells to grow and reach confluency in d3 post-transduction. The number of cells is also crucial to calculate the MOI. Each cell type has a different growth rate as well as the number/cm<sup>2</sup> of a particular tissue culture surface area may differ.</div>
+</li>
+<li>Add third-generation doxycycline-inducible and puromycin-resistant SMARTvector™ shRNA lentiviral particles (containing mature miRNA sequences and co-expressing either GFP or RFP) at a MOI of 0.2 along with 8 μg/mL polybrene to fresh culture medium. Replace the media in the wells with this freshly prepared medium pre-mixed with lentivirus and polybrene.
+<div class="note">
+<span class="note-title">Note:</span> We did not observe higher cell death after transduction in a medium containing antibiotics in comparison to performing transduction in an antibiotic-free medium.</div>
+</li>
+<li>Incubate the cells with viral vectors for 24 h and then change the culture medium with fresh serum-containing medium.</li>
+<li>After d3 post-transduction, trypsinize the cells and transfer them to 6-well plate. This ensures the desired lower density of cells before puromycin addition, as detailed in step #41.</li>
+</ol>
+</li>
+</ol>
+<ol start="43">
+<li>Puromycin selection of transduced cells (week 3, d1-7)
+<ol type="a">
+<li>Add optimal concentration of puromycin as determined in step #41, for 7 days to kill off any untransduced cells.
+<div class="note">
+<span class="note-title">Note:</span> After the d7, only transduced cells will survive since they harbor the puromycin-resistance gene. Afterwards, do not use puromycin for culturing/growing transduced cells.</div>
+</li>
+<li>Continue culturing the puromycin-selected miRNA-vector transduced PANC1 cells in serum-containing DMEM medium for at least another week and transfer to larger culture flasks when they become confluent.</li>
+</ol>
+</li>
+</ol>
+<ol start="44">
+<li>Optimization of doxycycline concentration (week 4, d1-4)
+<ol type="a">
+<li>Grow transduced cells in the respective serum-containing medium until they are approximately 90%–95% confluent.</li>
+<li>Trypsinize the cells and add to tissue-culture treated 24-well plate at 60%–70% confluency.</li>
+<li>Add doxycycline at concentrations of 0, 50, 200, 500 or 1000 ng/mL for 3 days to determine the optimal presence of fluorescent protein (GFP or RFP, inserted along with the miRNAs in the lentiviral vector backbone (<a href="https://horizondiscovery.com/-/media/Files/Horizon/resources/Technical-manuals/smartvector-inducible-lentiviral-shRNA-manual.pdf">https://horizondiscovery.com/-/media/Files/Horizon/resources/Technical-manuals/smartvector-inducible-lentiviral-shRNA-manual.pdf</a>) via fluorescent microscopy (<a href="#fig4">Figure 4</a>).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Transduced human islet-derived progenitor cells</div>
+<p>hIPCs transduced with doxycycline-inducible lentiviral vectors expressing green fluorescence protein (TurboGFP) in serum-containing medium with either no doxycycline (A and C) or 200 ng/mL doxycycline (B and D). Scale bar 200μm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Doxycycline is harmful if inhaled, swallowed, or if it is in contact with skin. Safety measures include wearing personal protective equipment (PPE) and rinsing/washing affected area with water.</div>
+</li>
+<li>We observe a dose of 1000 ng/mL doxycycline to induce fluorescence (an indirect measure of miRNA overexpression) in all PANC1 cells with the highest intensity and lowest cell death (or 200 ng/mL doxycycline in hIPCs).
+<div class="note">
+<span class="note-title">Note:</span> MiRNA expression can be determined using real-time PCR (<a href="#bib21">Wong et al., 2015</a>) and compared between untransduced and transduced cells (<a href="#bib5">Hardikar et al., 2014</a>). To maintain miRNA expression in these cells, doxycycline should be added at every medium change. Considering the half-life of exogenously added doxycycline, we recommend media change every 3-days.</div>
+</li>
+<li>This puromycin-selected miRNA-vector transduced PANC1 or hIPCs can be continued to grow in serum-containing medium or can be cryofrozen based on experimental need.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>A typical datasheet containing miRNA profiles for various samples is shown as an example in <a href="#fig1">Figure 1</a>. Using our script and the above step-by-step protocol, we obtain a frequency table that can be used to identify the most important discriminatory miRNAs with highest frequencies (<a href="#fig2">Figure 2</a>). In our recent work (<a href="#bib13">Joglekar et al., 2021</a>; <a href="#bib22">Wong et al., 2019</a>, <a href="#bib23">2021a</a>), we have selected either some of the top ranked non-coding RNAs based on their bootstrap frequencies, for validation or for overexpression/knockdown studies. Using our miRNA overexpression strategies with lentiviral vectors, we observe GFP-expressing cells (<a href="#fig4">Figure 4</a>) as a surrogate marker for miRNA overexpression. Final confirmation on miRNA overexpression or knockdown is obtained using real-time quantitative PCR methods.</p>
+<p>A strength of the protocol is that it presents a one-stop solution to identify the most important variables using machine-learning algorithms that facilitate an unprejudiced selection of key variables from multi-dimensional data. The transfection and transduction methodologies presented here detail specific steps that are gained through a first-hand experience of commercially available methods, enabling users to adopt this workflow without the need for extensive optimization. Although commercial protocols are generalized for multiple cell types and need optimization for cell density, concentrations of polybrene, puromycin, doxycycline and the MOIs, our study presents an optimized workflow for human pancreatic duct and islet cell research.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>We have used the miRNA analysis method on several datasets to identify important miRNAs. This script is not suitable for less than 5 samples per group or total samples &lt;10, which could be a limitation where sample number/availability is a constraint. When dealing with low sample numbers for high dimension data, it is recommended to use univariate approaches as described elsewhere(<a href="#bib1">Barraclough et al., 2020</a>; <a href="#bib20">Shihana et al., 2021</a>).</p>
+<p>Our method is most successful in the case of single miRNA overexpression. We have performed overexpression of up to eight different miRNAs using co-transduction with eight different lentiviral vectors at a higher MOI of 5. It is likely that with the co-transduction approach, every cell may not receive an equal ratio of multiple miRNA sequences. This may not be the best approach where all miRNA overexpression is desired in every transduced cell. A polycistronic vector that contains all desired miRNA sequences in a single open reading frame under a single promoter (<a href="#bib7">Jin et al., 2019</a>) may be used to achieve equimolar ratios of miRNA overexpression in every transduced cell.</p>
+<p>Doxycycline inducible promoters are susceptible to be “leaky”, which means that the miRNA expression may occur even in absence of exogenously added doxycycline. This usually happens due to trace amounts of doxycycline present in media reagents such as fetal bovine serum. One option is to purchase doxycycline-free reagents to mitigate the risk of unwanted gene expression. Another option is to use non-doxycycline inducible promoters, such as the cumate-inducible promoters (<a href="https://systembio.com/shop/pcdh-cuo-mcs-ires-gfp-ef1%ce%b1-cymr-t2a-puro-all-in-one-inducible-ires-lentivector/#product_info_how_it_works">https://systembio.com/shop/pcdh-cuo-mcs-ires-gfp-ef1%ce%b1-cymr-t2a-puro-all-in-one-inducible-ires-lentivector/#product_info_how_it_works</a>) or the BLOCK-iT™ Inducible H1 RNAi Entry Vector Kit (<a href="https://www.thermofisher.com/au/en/home/references/protocols/rnai-epigenetics-and-gene-regulation/sirna-protocol/inducible-shrna-expression-vectors.html">https://www.thermofisher.com/au/en/home/references/protocols/rnai-epigenetics-and-gene-regulation/sirna-protocol/inducible-shrna-expression-vectors.html</a> , ThermoFisher, MA, USA). Cumate may be less cytotoxic than doxycycline; however, these vectors were not available as pre-made viral stocks.</p>
+<p>Human islet-derived progenitor cells (hIPCs) generated from different donor islet tissues may have a different response to vector overexpression or knockdown based on purity, viability, and cell composition. Being primary cells, these cells have limited proliferation capability in vitro compared to any other established cell lines. We also observe slightly different doubling rates and cell size for different biological preparations of hIPCs, which may need adjustment while adding cells to culture well for a desired 50%–60% density. However, these limitations can be observed with many other human tissue-derived primary cells.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> section; step 9)</p>
+<p>Since bootstrapping is a statistical technique that involves random resampling for each iteration (performed here in this example for 1000 iterations), a slight (miniscule) variation in the bootstrapping results may be observed in different analysis runs (as per <a href="#fig5">Figure 5</a> showing two results) on the same dataset analyzed using the same R script.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Images of two output results produced on the same dataset without the same number in set.seed()</div>
+</figcaption>
+</figure>
+<h3 id="sec6.2">Potential solution</h3>
+<p>The R function set.seed() at the start of the script is used to secure the same result each time when you run the script for analyzing the same dataset. Select the same number (any number) to place in the brackets for the set.seed() function at every time the script is used on the same dataset in order to obtain the same results.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> setion; step 9)</p>
+<p>An error will occur when the incorrect directory or file name is set (as per <a href="#fig6">Figure 6</a>).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Error message if the directory/file name is incorrect</div>
+</figcaption>
+</figure>
+<h3 id="sec6.4">Potential solution</h3>
+<p>To set the correct directory and file name, copy the directory (of where the data file is located) and paste it into the blank space in:</p>
+<p>setwd("___")</p>
+<p>of script. Then copy the file name (of the data file) and paste file name into blank space in:</p>
+<p>ori_dat &lt;- read_excel(“____”)</p>
+<p>of the script. Convert the “\” to “/” in the script.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> section; step 9)</p>
+<p>Errors will occur when the incorrect directory location for the (output) export data is set (as per <a href="#fig7">Figure 7</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Error message if the output directory location is incorrect</div>
+</figcaption>
+</figure>
+<h3 id="sec6.6">Potential solution</h3>
+<p>To set the correct directory for the output location, copy the folder location (of where the output document files will be exported to) and paste this directory blank space in:</p>
+<p>output &lt;- "../_____”</p>
+<p>of the script. Convert the “\” to “/” in the script.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> section; step 9</p>
+<p>An error will occur when the non-numeric value(s) is detected in your dataset used for analysis (as per <a href="#fig8">Figure 8</a>).</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1126-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Error message if dataset contains non-numeric values</div>
+</figcaption>
+</figure>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Open the data file and check the dataset to make sure all values are numeric.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> section; step 30)</p>
+<p>Cell death observed after adding 500 nM LNA power inhibitors.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>As per the manual of LNA power inhibitors, cell death is not expected (between the recommended range 100 nM–5 μM). However, if cell death (more than that in normal cultures/untransfected controls) is observed, one can lower the concentration to 100 nM. In our hands, 500 nM was optimal.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>(<a href="#step-by-step-method-details">Step-by-step methods</a> section; step 42)</p>
+<p>Wells are more confluent than desired density after seeding the above-mentioned number of cells.</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>The cell number mentioned for these steps is based on our experience in using PANC1 cells/hIPCs to achieve 50%–60% confluency in different plates (24-well or 12-well). One must determine the optimal cell number to reach desired density based on the cells of interest. Different cell types may need a different number to reach confluency based on their shape and size. If the cell density is found more than desired, we recommend to tryspinize and reset the experiment.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Barraclough, J.Y., Joglekar, M.V., Januszewski, A.S., Martinez, G., Celermajer, D.S., Keech, A.C., Hardikar, A.A., and Patel, S. (2020). A MicroRNA signature in acute coronary syndrome patients and modulation by colchicine. J. Cardiovasc. Pharmacol. Ther. <i>25</i>, 444-455. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref1">View at publisher</a></p>
+<p id="bib2">Efron, B. and Tibshirani, R. (1997). Improvements on cross-validation: the .632+ bootstrap method. J. Am. Stat. Assoc. <i>92</i>, 548-560. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref2">View at publisher</a></p>
+<p id="bib3">Gershengorn, M.C., Hardikar, A.A., Wei, C., Geras-Raaka, E., Marcus-Samuels, B., and Raaka, B.M. (2004). Epithelial-to-mesenchymal transition generates proliferative human islet precursor cells. Science <i>306</i>, 2261-2264. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref3">View at publisher</a></p>
+<p id="bib4">Goeman, J.J. (2010). L1 penalized estimation in the Cox proportional hazards model. Biom J. <i>52</i>, 70-84. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref4">View at publisher</a></p>
+<p id="bib5">Hardikar, A.A., Farr, R.J., and Joglekar, M.V. (2014). Circulating microRNAs: understanding the limits for quantitative measurement by real-time PCR. J. Am. Heart Assoc. <i>3</i>, e000792. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref5">View at publisher</a></p>
+<p id="bib6">Hardikar, A.A., Marcus-Samuels, B., Geras-Raaka, E., Raaka, B.M., and Gershengorn, M.C. (2003). Human pancreatic precursor cells secrete FGF2 to stimulate clustering into hormone-expressing islet-like cell aggregates. Proc. Natl. Acad. Sci. U S A <i>100</i>, 7117-7122. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref6">View at publisher</a></p>
+<p id="bib7">Jin, W., Mulas, F., Gaertner, B., Sui, Y., Wang, J., Matta, I., Zeng, C., Vinckier, N., Wang, A., Nguyen-Ngoc, K.V., et al. (2019). A network of microRNAs acts to promote cell cycle exit and differentiation of human pancreatic endocrine cells. iScience <i>21</i>, 681-694. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref7">View at publisher</a></p>
+<p id="bib8">Joglekar, M.V. and Hardikar, A.A. (2010). Epithelial-to-mesenchymal transition in pancreatic islet beta cells. Cell Cycle <i>9</i>, 4077-4079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref8">View at publisher</a></p>
+<p id="bib9">Joglekar, M.V. and Hardikar, A.A. (2012). Isolation, expansion, and characterization of human islet-derived progenitor cells. Methods Mol. Biol. <i>879</i>, 351-366. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref9">View at publisher</a></p>
+<p id="bib10">Joglekar, M.V., Joglekar, V.M., and Hardikar, A.A. (2009a). Expression of islet-specific microRNAs during human pancreatic development. Gene Expr. Patterns <i>9</i>, 109-113. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref10">View at publisher</a></p>
+<p id="bib11">Joglekar, M.V., Patil, D., Joglekar, V.M., Rao, G.V., Reddy, D.N., Mitnala, S., Shouche, Y., and Hardikar, A.A. (2009b). The miR-30 family microRNAs confer epithelial phenotype to human pancreatic cells. Islets <i>1</i>, 137-147. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref11">View at publisher</a></p>
+<p id="bib12">Joglekar, M.V., Trivedi, P.M., Kay, T.W., Hawthorne, W.J., O'connell, P.J., Jenkins, A.J., Hardikar, A.A., and Thomas, H.E. (2016). Human islet cells are killed by BID-independent mechanisms in response to FAS ligand. Apoptosis <i>21</i>, 379-389. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref12">View at publisher</a></p>
+<p id="bib13">Joglekar, M.V., Wong, W.K.M., Ema, F.K., Georgiou, H.M., Shub, A., Hardikar, A.A., and Lappas, M. (2021). Postpartum circulating microRNA enhances prediction of future type 2 diabetes in women with previous gestational diabetes. Diabetologia <i>64</i>, 1516-1526. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref13">View at publisher</a></p>
+<p id="bib14">Lahmy, R., Soleimani, M., Sanati, M.H., Behmanesh, M., Kouhkan, F., and Mobarra, N. (2014). MiRNA-375 promotes beta pancreatic differentiation in human induced pluripotent stem (hiPS) cells. Mol. Biol. Rep. <i>41</i>, 2055-2066. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref14">View at publisher</a></p>
+<p id="bib15">Lopez-Beas, J., Capilla-Gonzalez, V., Aguilera, Y., Mellado, N., Lachaud, C.C., Martin, F., Smani, T., Soria, B., and Hmadcha, A. (2018). miR-7 modulates hESC differentiation into insulin-producing beta-like cells and contributes to cell maturation. Mol. Ther. Nucleic Acids <i>12</i>, 463-477. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref15">View at publisher</a></p>
+<p id="bib16">Montgomery, D.C., Peck, E.A., and Vining, G.G. (2021). Introduction to Linear Regression Analysis (John Wiley and Sons, Inc). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref16">View at publisher</a></p>
+<p id="bib17">Mullick, A., Xu, Y., Warren, R., Koutroumanis, M., Guilbault, C., Broussau, S., Malenfant, F., Bourget, L., Lamoureux, L., Lo, R., et al. (2006). The cumate gene-switch: a system for regulated expression in mammalian cells. BMC Biotechnol. <i>6</i>, 43. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref17">View at publisher</a></p>
+<p id="bib18">Poudyal, D., Herman, A., Adelsberger, J.W., Yang, J., Hu, X., Chen, Q., Bosche, M., Sherman, B.T., and Imamichi, T. (2018). A novel microRNA, hsa-miR-6852 differentially regulated by Interleukin-27 induces necrosis in cervical cancer cells by downregulating the FoxM1 expression. Sci. Rep. <i>8</i>, 900. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref18">View at publisher</a></p>
+<p id="bib19">Poulain, A., Perret, S., Malenfant, F., Mullick, A., Massie, B., and Durocher, Y. (2017). Rapid protein production from stable CHO cell pools using plasmid vector and the cumate gene-switch. J. Biotechnol. <i>255</i>, 16s-27. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref19">View at publisher</a></p>
+<p id="bib20">Shihana, F., Wong, W.K.M., Joglekar, M.V., Mohamed, F., Gawarammana, I.B., Isbister, G.K., Hardikar, A.A., Seth, D., and Buckley, N.A. (2021). Urinary microRNAs as non-invasive biomarkers for toxic acute kidney injury in humans. Sci. Rep. <i>11</i>, 9165. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref20">View at publisher</a></p>
+<p id="bib21">Wong, W., Farr, R., Joglekar, M., Januszewski, A., and Hardikar, A. (2015). Probe-based real-time PCR approaches for quantitative measurement of microRNAs. J. Vis. Exp. <i>98</i>, 52586. <a class="external-link" href="https://doi.org/10.3791/52586">https://doi.org/10.3791/52586</a></p>
+<p id="bib22">Wong, W.K., Jiang, G., Sorensen, A.E., Chew, Y.V., Lee-Maynard, C., Liuwantara, D., Williams, L., O'connell, P.J., Dalgaard, L.T., Ma, R.C., et al. (2019). The long noncoding RNA MALAT1 predicts human pancreatic islet isolation quality. JCI Insight <i>5</i>, e129299. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref22">View at publisher</a></p>
+<p id="bib23">Wong, W.K.M., Joglekar, M.V., Saini, V., Jiang, G., Dong, C.X., Chaitarvornkit, A., Maciag, G.J., Gerace, D., Farr, R.J., Satoor, S.N., et al. (2021a). Machine learning workflows identify a microRNA signature of insulin transcription in human tissues. iScience <i>24</i>, 102379. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00616-X/sref23">View at publisher</a></p>
+<p id="bib24">Wong, W. K. M., Thorat, V., Joglekar, M. V., Dong, C. X., Lee, H., Bhave, A., Engin, F., Pant, A., Dalgaard, L. T., Bapat, S. &amp; Hardikar, A. A. 2021b. Machine learning algorithms in big data analyses identify determinants of insulin gene transcription. <a class="external-link" href="https://doi.org/10.1101/2021.03.27.437353">https://doi.org/10.1101/2021.03.27.437353</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Anandwardhan A. Hardikar, PhD (<a href="mailto:A.Hardikar@westernsydney.edu.au">A.Hardikar@westernsydney.edu.au</a>).</p>
+<h4>Materials availability</h4>
+<p>MiRNA overexpressing PANC1 cells can be obtained with a reasonable request to the lead contact.</p>
+<h4>Data and code availability</h4>
+<p>Our script used for penalized regression and bootstrap analyses carried herein is available through <a href="https://github.com/Isletbiology/Penalized-regression">https://github.com/Isletbiology/Penalized-regression</a></p>
+<h3>Acknowledgments</h3>
+<p>This study was supported by the <a href="https://doi.org/10.13039/100007615">Australian Research Council</a> Future Fellowship (FT110100254), the <a href="https://doi.org/10.13039/501100001067">Juvenile Diabetes Research Foundation</a> (JDRF) Australia T1D Clinical Research Network (JDRF/4-CDA2016-228-MB), a special initiative of the <a href="https://doi.org/10.13039/100007615">Australian Research Council</a> and the <a href="https://doi.org/10.13039/100013045">University of Sydney</a> CDIP grant to A.A.H. Collaborative exchange between A.A.H. and L.T.D. are supported through visiting professorships from the Danish Diabetes Academy, funded by the <a href="https://doi.org/10.13039/501100011747">Novo Nordisk Foundation</a>, grant number NNF17SA0031406 (2016-18 and 2019-22). W.K.M.W. acknowledges previous support from the Australian Postgraduate Award, <a href="https://doi.org/10.13039/100013045">University of Sydney</a>, JDRF Australia PhD top-up award and current support through the <a href="https://doi.org/10.13039/100007028">Leona M. and Harry B. Helmsley Charitable Trust</a> (Grant 2018PG-T1D009 to A.A.H.) in collaboration with the JDRF Australian Type 1 Diabetes Clinical Research Network (Grant 3-SRA-2019-694-M-B). M.V.J. is supported through a transition award from <a href="https://doi.org/10.13039/100000901">JDRF</a>, USA (1-FAC-2021-1063-A-N). R.C.W.M. acknowledges support from the <a href="https://doi.org/10.13039/501100002920">RGC</a> Theme-based Research Scheme (T12-402/13N) and Research Impact Fund (R4012-18), the Focused Innovation Scheme, and Faculty Postdoctoral Scheme of the <a href="https://doi.org/10.13039/501100004853">Chinese University of Hong Kong</a>. We acknowledge the infrastructure support from the School of Medicine, Western Sydney University; Ingham Institute; University of Technology Sydney; and the Rebecca L. Cooper Medical Research Foundation.</p>
+<h3>Author contributions</h3>
+<p>V.S., M.V.J., and W.K.W.M. optimized protocols, performed experiments, and wrote the first draft of the manuscript; G.J. wrote the PLR and bootstrapping script; N.T.N., A.M.S., R.C.W.M., L.T.D., and A.A.H. supervised the work, troubleshooting, and provided resources; A.A.H. conceptualized and finalized the draft; all authors reviewed, commented, contributed to revision, and agreed on the final version for submission.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

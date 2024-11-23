@@ -1,0 +1,1969 @@
+<article>
+<section>
+<h1 id="header">Manipulation of TAD reorganization by chemical-dependent genome linking</h1>
+<p><time datetime="2021-09-10">Published: September 10, 2021</time></p>
+<p>Jia Wang,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">6</a>,<a href="#fn2">7</a>,<a href="#cor1">*</a></sup> Qian Ma,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">6</a>,<a href="#fn2">7</a>,<a href="#cor2">**</a></sup> Peihang Fang,<sup><a href="#aff3">3</a></sup> Qi Tian,<sup><a href="#aff3">3</a></sup> Haopeng Yu,<sup><a href="#aff4">4</a>,<a href="#aff5">5</a></sup> Junyi Sun,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a></sup> and Junjun Ding<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn3">8</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>RNA Biomedical Institute, Sun Yat-Sen Memorial Hospital, Zhongshan School of Medicine, Sun Yat-Sen University, Guangzhou 510080, China</p>
+<p id="aff2"><sup>2</sup>Center for Stem Cell Biology and Tissue Engineering, Key Laboratory for Stem Cells and Tissue Engineering, Ministry of Education, Sun Yat-Sen University, Guangzhou 510080, China</p>
+<p id="aff3"><sup>3</sup>Department of Cell Biology, Zhongshan School of Medicine, Sun Yat-Sen University, Guangzhou 510080, China</p>
+<p id="aff4"><sup>4</sup>West China Biomedical Big Data Center, West China Hospital/West China School of Medicine, Sichuan University, Chengdu 610041, China</p>
+<p id="aff5"><sup>5</sup>Med-X Center for Informatics, Sichuan University, Chengdu 610041, China</p>
+<p id="fn1"><sup>6</sup>These authors contributed equally</p>
+<p id="fn2"><sup>7</sup>Technical contact</p>
+<p id="fn3"><sup>8</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:15931071629@163.com">15931071629@163.com</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:maqian57@163.com">maqian57@163.com</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:dingjunj@mail.sysu.edu.cn">dingjunj@mail.sysu.edu.cn</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100799">10.1016/j.xpro.2021.100799</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Reorganization of topologically associated domain (TAD) is considered to be a novel mechanism for cell fate transitions. Here, we present a protocol to manipulate TAD via abscisic acid (ABA)-dependent genome linking. We use this protocol to merge two adjacent TADs and evaluate the influence on cell fate transitions. The advantages are that the manipulation does not change the genome and is reversible by withdrawing ABA. The major challenge is how to select linking loci for efficient TAD reorganization.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="“external-link”" href="https://doi.org/10.1016/j.stem.2021.04.023">Wang et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Artificial linking is established at dCas9-targeting loci by small molecule chemical</li>
+<li>Chemical-dependent genome linking induces TAD merging by Hi-C</li>
+<li>Quality control after each key step can improve Hi-C outcome</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/983-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the specific strategy and workflow for inducing TAD merging by a dCas9-based chemical-dependent artificial genome linking. This manipulation can also contribute to cell fate transitions.</p>
+<h3 id="sec1.1">Loci selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol>
+<li>Analyze the HiC data during somatic cell reprogramming and summarize all reorganized TAD sites with HiC-Pro.</li>
+<li>Select TADs with the following characteristics.
+<ol type="a">
+<li>Two TADs merge into one large TAD from mouse embryonic fibroblast (MEF) to induced pluripotent stem cell (iPSC) transitions.</li>
+<li>The TADs contain key pluripotency genes which may be activated upon TAD merging.</li>
+<li>The TADs contain key cis-regulatory elements such as enhancers or super-enhancers (SEs).</li>
+</ol>
+</li>
+<li>Select potential dCas targeting loci within the selected TADs. The loci should be close to the center of TAD to enhance TAD merging efficiency.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To enhance the TAD merging rate, the loci selected for artificial linking should be close to the center of each TAD. Moreover, the loci should be the overlapping genome regions between the OCT4 loop anchors identified by OCT4 HiChIP and OCT4 peaks identified by OCT4 ChIP-seq in PSC (<a href="#fig1">Figure 1</a>A). The loci are about 500–1000 bp length. We design sgRNA within the loci for dCas9 targeting.</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/983-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Selection of genome loci and sgRNA design for artificial linking</div>
+<p>(A) To enhance the TAD merging rate, the loci selected for artificial linking should be close to the center of each TAD. Moreover, the loci should be the overlapping genome regions between the OCT4 loop anchors identified by OCT4 HiChIP and OCT4 peaks identified by OCT4 ChIP-seq in PSC. The loci are about 500–1000 bp length. We design sgRNA within the loci for dCas9 targeting.</p>
+<p>(B) The website for sgRNA design.</p>
+<p>(C and D) The BmsBI restriction site sequence is added into the end of sgRNA and its complementary sequence.</p>
+<p>(E) Artificial linking in MEF can reorganize TAD structure in a chemical-dependent manner.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.2">sgRNA design</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="4">
+<li>Design sgRNAs of SadCas9 and SpdCas9.
+<ol type="a">
+<li>The potential dCas9 targeting loci obtained in step 3 were input into the website (<a href="https://portals.broadinstitute.org/gpp/public/analysis-tools/sgrna-design">https://portals.broadinstitute.org/gpp/public/analysis-tools/sgrna-design</a>) for sgRNA designing. Select SaurCas9(NNGRR) or SpyoCas9(NGG) in the <i>CRISPR Enzyme</i> button for S.aureus (SadCas9) or S.pyogenes (SpdCas9) sgRNA design, respectively (<a href="#fig1">Figure 1</a>B).</li>
+<li>Select 3–5 sgRNAs with high score of on-target efficiency for each interested locus.
+<div class="note">
+<span class="note-title">Note:</span> the website will automatically score the on-target efficiency of the candidate sgRNAs, and usually we select the top 3–5 highly scored sgRNAs.</div>
+</li>
+<li>The BmsBI restriction sites were selected for inserting the sgRNA into SadCas9-ABI or SpdCas9-PYL1 plasmids. Therefore, add the sequences of restriction site at the end of sgRNA sequence and their complementary sequence for future manipulation (<a href="#fig1">Figures 1</a>C and 1D).</li>
+<li>For the strategy to induce TAD merging by the artificial linking, we will target two genome loci belonging to two neighboring TADs by SadCas9-ABI and SpdCas9-PYL1 respectively. The artificial linking is established by adding abscisic acid (ABA) which can co-bind with ABI and PYL1. The linking may shorten the distance of the two TADs and even induce their merging (<a href="#fig1">Figure 1</a>E).</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>sgRNA Synthesis.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>CTCF (dilution 1:1000)</td>
+<td>Santa Cruz</td>
+<td>Cat# sc-398149</td>
+</tr>
+<tr>
+<td>CTCF (dilution 1:1000)</td>
+<td>Millipore</td>
+<td>Cat# 07–729; RRID: AB_441965</td>
+</tr>
+<tr>
+<td>Normal Mouse IgG (dilution 1:2000)</td>
+<td>Millipore</td>
+<td>Cat# 12–371; RRID: AB_145840</td>
+</tr>
+<tr>
+<td>Normal Rabbit IgG (dilution 1:2000)</td>
+<td>Millipore</td>
+<td>Cat# 12–370; RRID: AB_145841</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>DMEM Medium</td>
+<td>HyClone</td>
+<td>Cat# SH30022.01</td>
+</tr>
+<tr>
+<td>DMEM/F12 1:1 Medium</td>
+<td>Gibco</td>
+<td>Cat# C11330500BT</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum</td>
+<td>VISTECH</td>
+<td>Cat# SE100-B</td>
+</tr>
+<tr>
+<td>Trypsin/EDTA</td>
+<td>Coring</td>
+<td>Cat# 25–051</td>
+</tr>
+<tr>
+<td>KnockOut<sup>TM</sup> Serum Replacement</td>
+<td>Gibco</td>
+<td>Cat# 10828028</td>
+</tr>
+<tr>
+<td>PD0325901</td>
+<td>Selleck</td>
+<td>Cat# S1036</td>
+</tr>
+<tr>
+<td>CHIR99021</td>
+<td>Selleck</td>
+<td>Cat# S1263</td>
+</tr>
+<tr>
+<td>N2 Supplement</td>
+<td>Thermo Fisher</td>
+<td>Cat# 17502-048</td>
+</tr>
+<tr>
+<td>Puromycin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 540222</td>
+</tr>
+<tr>
+<td>B27 Supplement</td>
+<td>Gibco</td>
+<td>Cat# 17504044</td>
+</tr>
+<tr>
+<td>β504044ptoethanol</td>
+<td>Sigma</td>
+<td>Cat# M6250</td>
+</tr>
+<tr>
+<td>NEAA</td>
+<td>Thermo Fisher</td>
+<td>Cat# 11140050</td>
+</tr>
+<tr>
+<td>GlutaMax</td>
+<td>Thermo Fisher</td>
+<td>Cat# 35050061</td>
+</tr>
+<tr>
+<td>MboI</td>
+<td>New England Biolabs</td>
+<td>Cat# R0147</td>
+</tr>
+<tr>
+<td>Biotin-14-dATP</td>
+<td>Thermo Fisher</td>
+<td>Cat# 19524016</td>
+</tr>
+<tr>
+<td>dCTP</td>
+<td>Invitrogen</td>
+<td>Cat# 18253013</td>
+</tr>
+<tr>
+<td>dGTP</td>
+<td>Invitrogen</td>
+<td>Cat# 18254011</td>
+</tr>
+<tr>
+<td>dTTP</td>
+<td>Invitrogen</td>
+<td>Cat# 18255018</td>
+</tr>
+<tr>
+<td>DNA Polymerase I, Large (Klenow) Fragment</td>
+<td>New England Biolabs</td>
+<td>Cat# M0210</td>
+</tr>
+<tr>
+<td>T4 DNA Ligase</td>
+<td>New England Biolabs</td>
+<td>Cat# M0202</td>
+</tr>
+<tr>
+<td>Proteinase K</td>
+<td>New England Biolabs</td>
+<td>Cat# P8102</td>
+</tr>
+<tr>
+<td>UltraPure<sup>TM</sup> 10% SDS</td>
+<td>Thermo Fisher</td>
+<td>Cat# 15553-035</td>
+</tr>
+<tr>
+<td>Triton X-100</td>
+<td>Sigma</td>
+<td>Cat# 93443</td>
+</tr>
+<tr>
+<td>T4 PNK</td>
+<td>New England Biolabs</td>
+<td>Cat# M0201</td>
+</tr>
+<tr>
+<td>T4 DNA Polymerase I</td>
+<td>New England Biolabs</td>
+<td>Cat# M0203</td>
+</tr>
+<tr>
+<td>Klenow (3′-5′exo-)</td>
+<td>New England Biolabs</td>
+<td>Cat# M0212</td>
+</tr>
+<tr>
+<td>Quick Ligase</td>
+<td>New England Biolabs</td>
+<td>Cat# M2200</td>
+</tr>
+<tr>
+<td>User Enzyme</td>
+<td>New England Biolabs</td>
+<td>Cat# E7338A</td>
+</tr>
+<tr>
+<td>Proteinase Inhibitor</td>
+<td>Roche</td>
+<td>Cat# 1169749800</td>
+</tr>
+<tr>
+<td>RNaseA</td>
+<td>Thermo Fisher</td>
+<td>Cat# EN0531</td>
+</tr>
+<tr>
+<td>Lenti-X Concentrator</td>
+<td>Clontech</td>
+<td>Cat# 631231</td>
+</tr>
+<tr>
+<td>HEPES-KOH</td>
+<td>Sigma</td>
+<td>Cat# 7365-45-9</td>
+</tr>
+<tr>
+<td>LiCl solution</td>
+<td>Sigma</td>
+<td>Cat# 7447-41-8</td>
+</tr>
+<tr>
+<td>UltraPure<sup>TM</sup> 0.5 M EDTA</td>
+<td>Thermo Fisher</td>
+<td>Cat# 15575-038</td>
+</tr>
+<tr>
+<td>EGTA</td>
+<td>Sigma</td>
+<td>Cat# 67-42-5</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Sigma</td>
+<td>Cat# 56-81-5</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>Sangon Biotech</td>
+<td>Cat# 9016-45-9</td>
+</tr>
+<tr>
+<td>Tween-20</td>
+<td>Amresco</td>
+<td>Cat# 0777-1L</td>
+</tr>
+<tr>
+<td>50<b>×</b> TAE buffer</td>
+<td>Sangon Biotech</td>
+<td>Cat# B548101-0500</td>
+</tr>
+<tr>
+<td>DMSO</td>
+<td>Sigma</td>
+<td>Cat# D2650-100ML</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>Sigma</td>
+<td>Cat# 19996-50ML</td>
+</tr>
+<tr>
+<td>Na-Deoxycholate</td>
+<td>Sigma</td>
+<td>Cat# 302-95-4</td>
+</tr>
+<tr>
+<td>N-Lauroylsarcosin</td>
+<td>Sigma</td>
+<td>Cat# 97-78-9</td>
+</tr>
+<tr>
+<td>Agarose</td>
+<td>TSINGKE</td>
+<td>Cat# TSJ001</td>
+</tr>
+<tr>
+<td>LB Broth Agar</td>
+<td>Sangon Biotech</td>
+<td>Cat# A507003-0250</td>
+</tr>
+<tr>
+<td>1 M Tris-HCl buffer</td>
+<td>Solarbio</td>
+<td>Cat# T1140</td>
+</tr>
+<tr>
+<td>5 M NaCl solution</td>
+<td>Sigma</td>
+<td>Cat# S5150</td>
+</tr>
+<tr>
+<td>Abscisic acid</td>
+<td>Sigma</td>
+<td>Cat# A1049</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>RNAzol</td>
+<td>MRC</td>
+<td>Cat# RN190-500</td>
+</tr>
+<tr>
+<td>EndoFree Plasmid Midi Kit</td>
+<td>Cwbio</td>
+<td>Cat# CW2105S</td>
+</tr>
+<tr>
+<td>FuGENE</td>
+<td>Promega</td>
+<td>Cat# E2311</td>
+</tr>
+<tr>
+<td>TruePrep DNA Library Prep Kit V2 for Illumina</td>
+<td>Vazyme</td>
+<td>Cat# TD501</td>
+</tr>
+<tr>
+<td>TruePrep Index Kit V2 for Illumina</td>
+<td>Vazyme</td>
+<td>Cat# TD202</td>
+</tr>
+<tr>
+<td>CLOuD9</td>
+<td>System Biosciences</td>
+<td>Cat# CASCL9-100A</td>
+</tr>
+<tr>
+<td>E.Z.N.A. Gel Extraction Kit</td>
+<td>Omega</td>
+<td>Cat# D2500-02</td>
+</tr>
+<tr>
+<td>TIANquick Midi Purification Kit</td>
+<td>TIANGEN</td>
+<td>Cat# DP204-03</td>
+</tr>
+<tr>
+<td>TIANamp Genomic DNA Kit</td>
+<td>TIANGEN</td>
+<td>Cat# DP304-02</td>
+</tr>
+<tr>
+<td>SYBR qPCR Master Mix</td>
+<td>Vazyme</td>
+<td>Cat# Q711-00</td>
+</tr>
+<tr>
+<td>Leukocyte Alkaline Phosphatase Kit</td>
+<td>Sigma</td>
+<td>Cat# 86R</td>
+</tr>
+<tr>
+<td>Alkaline Phosphatase Stain Kit</td>
+<td>Yeasen</td>
+<td>Cat# 40749ES60</td>
+</tr>
+<tr>
+<td>Phenol:chloroform pH 6.7/8.0</td>
+<td>Amresco</td>
+<td>Cat# 0883-400ML</td>
+</tr>
+<tr>
+<td>AMPure XP Beads</td>
+<td>Beckman Coulter</td>
+<td>Cat# A63881</td>
+</tr>
+<tr>
+<td>Dynabeads MyOne Streptavidin T1 Beads</td>
+<td>Life Technologies</td>
+<td>Cat# 65602</td>
+</tr>
+<tr>
+<td>Protein G Agarose Beads</td>
+<td>Thermo Scientific</td>
+<td>Cat# 10004D</td>
+</tr>
+<tr>
+<td>NEBNext Multiplex Oligos for Illumina</td>
+<td>New England Biolabs</td>
+<td>Cat# E7335</td>
+</tr>
+<tr>
+<td>Qubit<sup>TM</sup> 1<b>×</b> dsDNA HS Assay Kit</td>
+<td>Invitrogen</td>
+<td>Cat# Q33230</td>
+</tr>
+<tr>
+<td>Primesoript RT Master Mix</td>
+<td>Takara</td>
+<td>Cat# RR036A</td>
+</tr>
+<tr>
+<td colspan="3">Cell lines</td>
+</tr>
+<tr>
+<td>Mouse embryonic stem cell line V6.5</td>
+<td>Laboratory of R. Jaenisch</td>
+<td>RRID: CVCL_C865</td>
+</tr>
+<tr>
+<td>Mouse OG2 MEFs</td>
+<td>Laboratory of Jiekai Chen</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Mouse OD14 MEFs</td>
+<td>Laboratory of Jiekai Chen</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Human 293T cells</td>
+<td>ATCC</td>
+<td>Cat# CRL-3216; RRID: CVCL_0063</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>mm10</td>
+<td>ENSEMBL release 90</td>
+<td><a href="https://asia.ensembl.org/Mus_musculus/">https://asia.ensembl.org/Mus_musculus/</a></td>
+</tr>
+<tr>
+<td>Trim Galore 0.4.4_dev</td>
+<td><a href="https://www.bioinformatics.babraham.ac.uk/projects/trim_galore">https://www.bioinformatics.babraham.ac.uk/projects/trim_galore</a></td>
+<td><a href="https://github.com/FelixKrueger/TrimGalore">https://github.com/FelixKrueger/TrimGalore</a></td>
+</tr>
+<tr>
+<td>bowtie2 v2.3.0</td>
+<td>(<a href="#bib3">Langmead and Salzberg, 2012</a>)</td>
+<td><a href="https://github.com/BenLangmead/bowtie2">https://github.com/BenLangmead/bowtie2</a></td>
+</tr>
+<tr>
+<td>samtools v1.3.1</td>
+<td>(<a href="#bib5">Li et al., 2009</a>)</td>
+<td><a href="https://github.com/samtools/samtools">https://github.com/samtools/samtools</a></td>
+</tr>
+<tr>
+<td>Bedtools v2.26.0</td>
+<td>(<a href="#bib8">Quinlan and Hall, 2010</a>)</td>
+<td><a href="https://github.com/arq5x/bedtools">https://github.com/arq5x/bedtools</a></td>
+</tr>
+<tr>
+<td>macs2 v2.1.2</td>
+<td>(<a href="#bib14">Zhang et al., 2008</a>)</td>
+<td><a href="https://github.com/taoliu/MACS">https://github.com/taoliu/MACS</a></td>
+</tr>
+<tr>
+<td>HTSeq-count v0.11.2</td>
+<td>(<a href="#bib1">Anders et al., 2015</a>)</td>
+<td><a href="https://github.com/simon-anders/htseq">https://github.com/simon-anders/htseq</a></td>
+</tr>
+<tr>
+<td>edgeR v3.26.5</td>
+<td>(<a href="#bib9">Robinson et al., 2010</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">https://bioconductor.org/packages/release/bioc/html/edgeR.html</a></td>
+</tr>
+<tr>
+<td>HiC-Pro v2.10.0</td>
+<td>(<a href="#bib10">Servant et al., 2015</a>)</td>
+<td><a href="https://github.com/nservant/HiC-Pro">https://github.com/nservant/HiC-Pro</a></td>
+</tr>
+<tr>
+<td>HiCRep v1.8.0</td>
+<td>(<a href="#bib13">Yang et al., 2017</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/hicrep.html">https://bioconductor.org/packages/release/bioc/html/hicrep.html</a></td>
+</tr>
+<tr>
+<td>TopDom v0.0.2</td>
+<td>(<a href="#bib11">Shin et al., 2016</a>)</td>
+<td><a href="https://github.com/HenrikBengtsson/TopDom">https://github.com/HenrikBengtsson/TopDom</a></td>
+</tr>
+<tr>
+<td>diffHic v1.16.0</td>
+<td>(<a href="#bib6">Lun and Smyth, 2015</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/diffHic.html">https://bioconductor.org/packages/release/bioc/html/diffHic.html</a></td>
+</tr>
+<tr>
+<td>Hichipper v0.7.5</td>
+<td>(<a href="#bib4">Lareau and Aryee, 2018</a>)</td>
+<td><a href="https://github.com/aryeelab/hichipper">https://github.com/aryeelab/hichipper</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Covaris sonicator E220</td>
+<td>Covaris</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Qubit<sup>TM</sup> 4 Fluorometer</td>
+<td>Invitrogen</td>
+<td>Cat# Q33226</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Vector construction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This step describes how to create plasmid and insert the sgRNA into the plasmid.</p>
+<ol>
+<li>BsmBI enzyme was used to digest SadCas9-ABI or SpdCas9-PYL1 plasmids (CLOuD9, System Biosciences, Cat# CASCL9-100A) at 37°C for 12 h. On the next day, the mixture was incubated at 65°C for 20 min to inactivate the enzyme. Run the mixture on 1.5% agarose DNA gel, cut the correct fragments and purify the DNA by Omega DNA purification Kit. The size of SpdCas9-PYL1 and SadCas9-ABI vectors are 14049 bp and 12984 bp respectively (<a href="#bib7">Morgan et al., 2017</a>).</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dcas9-ABI/PYL vector</td>
+<td>5ug</td>
+</tr>
+<tr>
+<td>BsmBI (10000 units/mL)</td>
+<td>3ul</td>
+</tr>
+<tr>
+<td>10<b>×</b> Buffer Tango (thermo)</td>
+<td>5ul</td>
+</tr>
+<tr>
+<td>DTT (20 mM)</td>
+<td>1ul</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>Add to 50ul</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Annealing and phosphorylation of sgRNA oligoes</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oligo 1 (100uM)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>Oligo 2 (100uM)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>10<b>×</b> Ligation Buffer (NEB)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>T4 PNK (10000 units/mL)</td>
+<td>0.5 ul</td>
+</tr>
+<tr>
+<td>H2O</td>
+<td>6.5 ul</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> </td>
+<td>37°C</td>
+<td>30 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>5 °C/min decrease to 25°C</td>
+<td>14 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>12°C</td>
+<td>Forever</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Ligation at 20°C for 10 min, and at 37°C for 10 min</li>
+</ol>
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digested vectors</td>
+<td>50 ng</td>
+</tr>
+<tr>
+<td>Annealed Oligoes</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>2<b>×</b> Quick ligase buffer (NEB)</td>
+<td>5 ul</td>
+</tr>
+<tr>
+<td>Quick ligase (NEB M2200)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>H2O</td>
+<td>Add to 11 ul</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.2">Virus packaging</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>Packaging virus for infection and artificial linking.</p>
+<ol start="4">
+<li>Package virus using VSV-G and psPAX2 system
+<ol type="a">
+<li>18–24 h before transfection seed 12.5<b>×</b> 10<sup>6</sup> 293T cells in a 10 cm plate by using DMEM/ 10% FBS/without P/S, and ensures cells reach near 80%–90% confluence when transfection.</li>
+<li>Add 16.7ug of SadCas9-ABI-sgRNA or SpdCas9-PYL1-sgRNA plasmids respectively with 11.17ug psPAX2, 7.4ug VSV-G and 450uL water to an Eppendorf tube, then mix.
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Plasmid</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VSV-G</td>
+<td>7.4 ug</td>
+</tr>
+<tr>
+<td>psPAX2</td>
+<td>11.17 ug</td>
+</tr>
+<tr>
+<td>SadCas9-ABI-sgRNA1.1</td>
+<td>16.7 ug</td>
+</tr>
+<tr>
+<td>or SpdCas9-PYL1-sgRNA1.2</td>
+<td>16.7 ug</td>
+</tr>
+<tr>
+<td>or SadCas9-ABI-sgRNA2.1</td>
+<td>16.7 ug</td>
+</tr>
+<tr>
+<td>or SpdCas9-PYL1-sgRNA2.2</td>
+<td>16.7 ug</td>
+</tr>
+<tr>
+<td>H2O</td>
+<td>450 uL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 62.5uL 2 M CaCl<sub>2</sub> to water-DNA mixture.</li>
+<li>Add 500uL 2<b>×</b> BES in a 15 mL conical tube.</li>
+<li>Using a Pasteur pipet and a pipet aid, release bubbles into the 2× BES-buffered saline, followed by adding the DNA mixture dropwise to the 2× BES buffered saline.</li>
+<li>Incubate at 20°C for 15 min. Solution will be slightly cloudy after 15 min.</li>
+<li>In the meantime, aspirate media off the 293T cells seeded the day before and add 10 mL fresh media (without P/S) with 25nM chloroquine.</li>
+<li>Add virus droplets to 293T cells, distributing evenly.</li>
+<li>Incubate plate at 37°C for 12 h.</li>
+<li>18–24 h post incubation, change media and check for reporter gene expression (if applicable).</li>
+<li>Collect supernatant at 48–72 h post transfection. Virus is good for about 2 weeks at 4°C, Store concentrated virus at −80°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The virus was concentrated by Lenti-X Concentrator (Clontech, Cat# 631231) which provides a fast and simple method for concentrating lentiviral stocks. Concentration is achieved by mixing a lentiviral supernatant with this concentration reagent, followed by a short incubation step and centrifugation in a standard centrifuge. The process is easily scaled up to accommodate larger supernatant volumes.</div>
+<h3 id="sec2.3">Virus infection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 days</div>
+<p>This step describes how to infect cells with the virus.</p>
+<ol start="5">
+<li>Thaw MEFs from liquid nitrogen storage and plant into 24-well plate. For each well, there are 500,000 cells with 0.5 mL medium.</li>
+<li>Infect MEFs with lentivirus containing SpdCas9-PLY1-purocymin and SadCas9-ABI-hygromycin.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> As the proportion of the virus and medium is up to 1:3, the volume of the virus is about 166ul. Add polybrene (Stock concentration: 8mg/mL; final concentration: 10ug/mL) to the system to enhance infection efficacy.</div>
+<ol start="7">
+<li>Starting from the next day, the infected MEFs were selected by 2ug/mL puromycin and 300ug/mL hygromycin in DMEM medium for 5 days.</li>
+<li>After selection, the second passage MEFs were used in the next step.</li>
+</ol>
+<h3 id="sec2.4">Chemical-dependent artificial linking</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This step describes how to induce the linking by chemical.</p>
+<ol start="9">
+<li>The infected MEFs containing the chemical inducible SadCas9-ABI and SpdCas9-PYL1 system were treated with 3 μM abscisic acid (ABA) for 48 h before harvest. Equal amount of DMSO (3 μM) was added into the MEF medium without ABA as control.</li>
+</ol>
+<h3 id="sec2.5">Chromosome conformation capture (3C)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>3C is performed to 1) identify the PSC-specific loops which are not existent in MEF, and 2) validate whether artificial linking is successfully established.</p>
+<ol start="10">
+<li>Crosslink
+<ol type="a">
+<li>10<sup>7</sup> cells were harvested and digested by trypsin.</li>
+<li>The cells were washed by PBS for three times, and resuspended in 50 mL crosslink solution containing 43 mL PBS and 1.3 mL formaldehyde (stock solution 37.5%; final concentration: 1%), rotated at 20°C for 15 min.</li>
+<li>4 mL of 2 M glycine was added to the solution and rotated 5 min at 20°C to stop crosslink.</li>
+<li>Centrifuge at 2500<b>×</b><i>g</i> to remove the supernatant, and the pellet was washed with PBS for three times.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Cell lysis and enzyme digestion
+<ol type="a">
+<li>Resuspended 10<sup>7</sup> cells with 250 μL Hi-C lysis buffer containing proteinase inhibitor Cocktail, incubate on ice for 15 min, centrifuge on 2500<b>×</b><i>g</i> at 4°C for 5 min to pellet nucleus.
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Hi-C lysis buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl (pH=8.0)</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>Igepal CA630</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>49.3 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Hi-C lysis buffer can be stored at 4°C for three months.</div>
+</li>
+<li>Resuspended the nucleus pellet with 50 μL of 0.5% SDS, incubated at 62°C for 8 min.</li>
+<li>145 μL ddH<sub>2</sub>O and 25 μL 10% Triton X-100 were added to neutralize SDS, incubated at 37°C for 15 min.</li>
+<li>25μL 10×NEBuffer2 and 20 μL 100 U MboI enzyme were added to digest DNA, incubated at 37°C for 12 h.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>DNA end filling, ligation and reverse crosslink
+<ol type="a">
+<li>Inactivate MboI by incubating at 62°C for 20 min, then cooled the mixture to 20°C.</li>
+<li>Using dNTP to end fill the DNA fragments. Incubating the mixture at 37°C for 1 h.
+<table id="undtbl7">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reaction from the previous step</td>
+<td>250 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>40.5μL</td>
+</tr>
+<tr>
+<td>10 mM dNTP</td>
+<td>1.5 μL</td>
+</tr>
+<tr>
+<td>5 U/μL DNA Polymerase I, Large (Klenow) Fragment</td>
+<td>8 μL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>300 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Then ligate the product by adding 900 μL ligation solution by incubating at 20°C for 4 h.
+<table id="undtbl8">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reaction from the previous step</td>
+<td>300 μL</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td>663 μL</td>
+</tr>
+<tr>
+<td>10<b>×</b> NEB T4 DNA ligase buffer</td>
+<td>120 μL</td>
+</tr>
+<tr>
+<td>10% Triton X-100</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>10 mg/mL BSA</td>
+<td>12 μL</td>
+</tr>
+<tr>
+<td>400 U/ μL T4 DNA Ligase</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>1200 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>50 μL of 20 mg/mL proteinase K and 120 μL of 10% SDS were added into the mixture and incubated at 55°C for 30 min to reverse crosslink.</li>
+<li>130μL of 5 M NaCl was added into the mixture and incubated at 68°C for 12 h.</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>DNA purification
+<ol type="a">
+<li>Cooled the mixture to 20°C, equally separated the mixture into two 2 mL fresh tube (750 μL each). 1.6×volume absolute EtOH and 0.1×volume sodium acetate (3 M, pH 5.2) were added into each tube, mixed, and incubated at −80°C for 4 h.</li>
+<li>Centrifuge on 20000<b>×</b><i>g</i> at 4°C for 15 min, and remove supernatant.</li>
+<li>Wash the DNA pellet twice with 800 μL of 75% EtOH, dry the pellet and dissolved by H<sub>2</sub>O. Concentration of the DNA solution by nanodrop.</li>
+</ol>
+</li>
+</ol>
+<ol start="14">
+<li>Check the PSC-specific DNA bands (PSC-specific looping) which are not existent in MEF by PCR
+<ol type="a">
+<li>Collect supernatant, and using the following system for PCR amplification.
+<table id="undtbl9">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DreamTaq Green PCR Master Mix 2<b>×</b>
+</td>
+<td>25 ul</td>
+</tr>
+<tr>
+<td>Forward primer (10uM)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>Reverse primer (10uM)</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>DNA template (1 ng/ul)</td>
+<td>6 ul</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>17 ul</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 ul</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>PCR condition
+<table id="undtbl10">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> </td>
+<td>95°C</td>
+<td>1min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>95°C</td>
+<td>30s</td>
+<td rowspan="3">35</td>
+</tr>
+<tr>
+<td> </td>
+<td>60°C</td>
+<td>30s</td>
+</tr>
+<tr>
+<td> </td>
+<td>72°C</td>
+<td>1min</td>
+</tr>
+<tr>
+<td> </td>
+<td>72°C</td>
+<td>5min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>12°C</td>
+<td>Forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>PSC-specific loops in the two TADs selected for merging were identified (<a href="#fig2">Figure 2</a>A). The candidate loop anchors for SadCas9-ABI (green bars) or SpdCas9-PYL1 (blue bars) were selected according to H3K27ac and OCT4 peaks (<a href="#fig2">Figure 2</a>B). We compared the DNA bands between MEF and PSC, and identified three PSC-specific loops in this region based on the difference of band strength (<a href="#fig2">Figure 2</a>C, yellow arrows).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/983-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Identification of PSC-specific Loops by 3C</div>
+<p>(A) The potential looping anchors by SadCas9-ABI (green bars) and SpdCas9-PYL1 (blue bars) are provide.</p>
+<p>(B) The looping anchors for designing 3C primers are provided.</p>
+<p>(C) DNA agarose gel showed the different bands between MEF and PSC. The yellow arrows stand for PSC-specific loops.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> the assay would be paused at step 13a and the sample should be stored at −80°C no more than one week.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> to ensure the ligation efficiency at Step 12c, the ligation time can be prolonged.</div>
+<h3 id="sec2.6">ChIP-qPCR</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<p>CTCF ChIP-qPCR is performed to evaluate CTCF binding change in response to artificial linking.</p>
+<ol start="15">
+<li>Crosslink
+<ol type="a">
+<li>5<b>×</b> 10<sup>7</sup> MEFs treated with or without ABA were harvested. 1% formaldehyde in PBS was used to crosslink the cells for 10 min, followed by quenching with 4 mL glycine (stock solution 2 M; final concentration: 125 mM) on ice.</li>
+<li>Cells were collected and flash frozen in liquid nitrogen, then stored at −80°C for use.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>Cell lysis
+<ol type="a">
+<li>Frozen crosslinked cells were thawed on ice and then resuspended in lysis buffer I (final concentration: 50mMHEPES-KOH, pH 7.5, 140mMNaCl, 1 mMEDTA, 10% glycerol, 0.5% NP-40, 0.25% Triton X-100, protease inhibitors).
+<table id="undtbl11">
+<thead>
+<tr>
+<th>Lysis buffer I</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M HEPES-KOH</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>1.4 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>250 μL</td>
+</tr>
+<tr>
+<td>Triton X-100</td>
+<td>125 μL</td>
+</tr>
+<tr>
+<td>1000<b>×</b> protease inhibitors</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>40.575 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Lysis buffer I can be stored at 4°C for six months.</div>
+</li>
+<li>After rotated for 10 min at 4°C, the cells were collected, and resuspended in lysis buffer II (final concentration: 10 mM Tris-HCl, pH 8.0, 200 mM NaCl, 1 mM EDTA, 0.5 mM EGTA, protease inhibitors).
+<table id="undtbl12">
+<thead>
+<tr>
+<th>Lysis buffer II</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>EGTA (380 g/mol)</td>
+<td>9.51 mg</td>
+</tr>
+<tr>
+<td>1000<b>×</b> protease inhibitors</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>47.35 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Lysis buffer II can be stored at 4°C for six months.</div>
+</li>
+<li>After rotated for 10 min at 4°C, the cells were collected, and resuspended in lysis buffer III (final concentration: 10 mM Tris-HCl, pH 8.0, 100 mM NaCl, 1 mM EDTA, 0.5 mM EGTA, 0.1% Na-Deoxycholate, 0.5% N-lauroylsarcosine, protease inhibitors).
+<table id="undtbl13">
+<thead>
+<tr>
+<th>Lysis buffer III</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>EGTA (380 g/mol)</td>
+<td>9.51 mg</td>
+</tr>
+<tr>
+<td>Na-Deoxycholate (414 g/mol)</td>
+<td>50 mg</td>
+</tr>
+<tr>
+<td>N-lauroylsarcosine (293 g/mol)</td>
+<td>250 mg</td>
+</tr>
+<tr>
+<td>1000<b>×</b> protease inhibitors</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>48.4 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Lysis buffer III can be stored at 4°C for six months.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>Sonication
+<ol type="a">
+<li>Transfer cells to tube for sonication. Sonication condition: work 1 s pause 0.5 s total 30 s cycle 11.</li>
+<li>Sonicated lysates were transferred into 1.5 mL tube and centrifuged at 16000<b>×</b><i>g</i> for 10 min at 4°C. The supernatant was collected for immunoprecipitation.</li>
+<li>Save 50ul as input DNA and store at −20°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>Antibody precipitation
+<ol type="a">
+<li>Add 100ul of beads to 1.5 mL tube; add 1 mL block solution, 4°C. Collect Dynal beads using Dynal MPC, remove supernatant. Add 1.5 mL block solution and gently resuspend beads. Collect beads using Dynal MPC, remove supernatant. Wash again by 1.5 mL block solution.</li>
+<li>Resuspend beads in 250ul block solution and add 10ug antibody. Incubate at 4°C for 12 h on a rotator. Wash beads three times in 1 mL block solution, resuspend beads in 100ul block solution.</li>
+<li>The sonicated DNA was incubated with magnetic beads bound with antibody to enrich for DNA fragments at 4°C for 12 h.</li>
+<li>Beads were washed with wash buffer (final concentration: 50 mM HEPES-KOH pH 7.5, 500 mM LiCl, 1 mM EDTA pH 8.0, 0.7% Na-Deoxycholate, 1% NP-40) and TE buffer (final concentration: 10 mM Tris-HCl pH 8.0, 1 mM EDTA, 50 mM NaCl) in order.
+<table id="undtbl14">
+<thead>
+<tr>
+<th>Wash buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M HEPES-KOH</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>8 M LiCl</td>
+<td>3.125 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>Na-Deoxycholate (414 g/mol)</td>
+<td>350 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>43.775 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Wash buffer can be stored at 20°C for six months.</div>
+<table id="undtbl15">
+<thead>
+<tr>
+<th>TE buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>49.4 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> TE buffer can be stored at 20°C for six months.</div>
+</li>
+<li>Beads were removed by incubation at 65°C for 30 min in elution buffer (final concentration: 50mMTris-HCl pH 8.0, 10mMEDTA,1%SDS).
+<table id="undtbl16">
+<thead>
+<tr>
+<th>Elution buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>10% SDS</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>41.5 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Elution buffer can be stored at 20°C for six months.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="19">
+<li>Reverse crosslink
+<ol type="a">
+<li>Cross-links were reversed at 65°C for 12 h.</li>
+</ol>
+</li>
+<li>DNA purification
+<ol type="a">
+<li>To purify eluted DNA, 200 mL TE was added and then RNA was degraded by incubation after addition of 8ul 10 mg/mL RNase A at 37°C for 2 h.</li>
+<li>Protein was degraded by addition of 4ul 20 mg/mL proteinase K and incubation at 55°C for 2 h.</li>
+<li>Phenol: chloroform: isoamyl alcohol extraction was performed followed by an ethanol precipitation.</li>
+<li>The DNA was then resuspended in 50 mL TE and used for qPCR.</li>
+</ol>
+</li>
+<li>qPCR
+<ol type="a">
+<li>qPCR was performed using SYBR qPCR Master mix. All qPCR experiments were triplicated.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.7">In situ HiC</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<p>In situ HiC is performed to validate whether TADs are reorganized in response to artificial linking.</p>
+<ol start="22">
+<li>Crosslink
+<ol type="a">
+<li>The MEFs treated with or without ABA were harvest and digested by trypsin.</li>
+<li>The MEFs were washed by PBS for three times, and resuspended in 50 mL crosslink solution containing 43 mL PBS and 1.3 mL formaldehyde (stock solution 37.5%; final concentration: 1%), rotated at 20°C for 15 min.</li>
+<li>4 mL of 2 M glycine was added to the solution and rotated 5 min at 20°C to stop crosslink. Centrifuge at 2500<b>×</b><i>g</i> to remove the supernatant, and the pellet was washed with PBS for three times.</li>
+</ol>
+</li>
+<li>Cell lysis and enzyme digestion
+<ol type="a">
+<li>Resuspended 10<sup>7</sup> cells with 250 μL Hi-C lysis buffer containing proteinase inhibitory Cocktail, incubate on ice for 15 min and centrifuge at 2500<b>×</b><i>g</i> to collect nucleus pellet. Resuspended the nucleus pellet with 50 μL of 0.5% SDS, incubated at 62°C for 8 min. 145 μL ddH2O and 25 μL 10% Triton X-100 were added to neutralize SDS, incubated at 37°C for 15 min. 25μL 10×NEBuffer2 and 20 μL 100 U MboI enzyme were added to digest DNA, incubated at 37°C for 12 h (see step 11).</li>
+</ol>
+</li>
+</ol>
+<ol start="24">
+<li>DNA end filling, ligation and reverse crosslink
+<ol type="a">
+<li>Inactivate MboI by incubating at 62°C for 20 min, then cooled the mixture to 20°C.</li>
+<li>Using dNTP to end fill the DNA fragments, in which dATP was biotin labeled. Incubating the mixture at 37°C for 1 h.
+<table id="undtbl17">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.4 mM Biotin-14-dATP</td>
+<td>37.5μL</td>
+</tr>
+<tr>
+<td>10 mM dCTP</td>
+<td>1.5 μL</td>
+</tr>
+<tr>
+<td>10 mM dGTP</td>
+<td>1.5 μL</td>
+</tr>
+<tr>
+<td>10 mM dTTP</td>
+<td>1.5 μL</td>
+</tr>
+<tr>
+<td>5 U/μL DNA Polymerase I, Large (Klenow) Fragment (NEB M0210)</td>
+<td>10μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Then ligate the product by adding 948 μL ligation solution and incubating at 20°C for 4 h.
+<table id="undtbl18">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ddH2O</td>
+<td>660 μL</td>
+</tr>
+<tr>
+<td>10<b>×</b> NEB T4 DNA ligase buffer</td>
+<td>150 μL</td>
+</tr>
+<tr>
+<td>10% Triton X-100</td>
+<td>125 μL</td>
+</tr>
+<tr>
+<td>50 mg/mL BSA</td>
+<td>3 μL</td>
+</tr>
+<tr>
+<td>400 U/ μL T4 DNA Ligase</td>
+<td>10 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>50 μL of 20 mg/mL proteinase K and 120 μL of 10% SDS were added into the mixture and incubated at 55°C for 30 min to reverse crosslink.</li>
+<li>130μL of 5 M NaCl was added into the mixture and incubated at 68°C for 12 h.</li>
+</ol>
+</li>
+</ol>
+<ol start="25">
+<li>Sonication and fragment collection
+<ol type="a">
+<li>Cooled the mixture to 20°C, equally separated the mixture into two 2 mL fresh tube (0.75 mL each). 1.6 × volume absolute alcohol and 0.1 × volume sodium acetate (3 M, pH 5.2) were added into each tube, incubated at −80°C for 4 h.</li>
+<li>Centrifuge on 20000<b>×</b><i>g</i> at 4°C for 15 min, and remove supernatant. Wash the DNA pellet twice with 800 μL of 75% alcohol, dry the pellet and dissolved by 130 μL of H<sub>2</sub>O.</li>
+<li>Transfer the solution to Covaris millitube, sonicate to make the DNA fragment enriching at 300–500 bp (<a href="#fig3">Figure 3</a>A).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/983-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The length of DNA fragments from sonication to selection by AMPure beads</div>
+<p>(A) DNA was sheared by sonication. Sonication condition should be optimized to ensure that DNA fragments are enriched around 300–500 bp. S1 and S2 stand for sample 1 and 2.</p>
+<p>(B) First, 0.7<b>×</b> volume (as compared to DNA solution) of AMPure beads were added to separate DNA fragments more than 500 bp length. The larger DNA fragments (&gt;500 bp) were maintained on the beads while the smaller fragments (&lt;500 bp) were in the supernatant.</p>
+<p>(C) Second, another 0.15<b>×</b> volume of AMPure beads were added to the supernatant of last step to separate DNA fragments less than 300 bp length. The larger DNA fragments (300–500 bp) were maintained on the beads (left panel) while the smaller fragments (&lt;300 bp) were in the supernatant (right panel). The beads were collected and the DNA fragments were dilute by H<sub>2</sub>O for next step use.</p>
+</figcaption>
+</figure>
+<table id="undtbl19">
+<thead>
+<tr>
+<th>Equipment</th>
+<th>Covaris LE220 (Covaris, Woburn, MA)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Volume of Library</td>
+<td>130μL in a Covaris microTUBE</td>
+</tr>
+<tr>
+<td>Fill Level</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Duty Cycle</td>
+<td>15</td>
+</tr>
+<tr>
+<td>PIP</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Cycles/Burst</td>
+<td>200</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>200 s</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Transfer the DNA solution from Covaris millitube to a fresh tube; add 70ul H2O to 200 μL total volume. Add 140 μL (0.7<b>×</b> volume) AMPure XP beads, incubate at 20°C for 5 min.</li>
+<li>Magnetically separate AMPure XP beads from solution, and transfer the supernatant to a fresh tube. The size of the fragments in the supernatant is less than 500 bp (<a href="#fig3">Figure 3</a>B).</li>
+<li>Add another 30 μL (0.15<b>×</b> volume; to a final 0.85<b>×</b> volume) AMPure XP beads to the solution, incubate at 20°C for 5 min. Magnetically separate AMPure XP beads from solution and remove the supernatant. The size of the fragments on AMPure XP beads is between 300–500 bp while the residues in the supernatant is less than 300 bp (<a href="#fig3">Figure 3</a>C).</li>
+<li>Wash the beads twice with 700 μL of 75% alcohol, air dry the beads absolutely. 100 μL of H<sub>2</sub>O was added to dissolve DNA, incubated at 37°C for 15 min, and concentrated by nanodrop.</li>
+</ol>
+</li>
+</ol>
+<ol start="26">
+<li>Biotin pull down
+<ol type="a">
+<li>For each sample, prepare 75 μL of 10 mg/mL Dynabeads MyOne Streptavidin T1 beads, wash the beads with 200 μL of 1<b>×</b> tween washing buffer (TWB). The beads were resuspended in 100 μL of 2<b>×</b> binding buffer (BB), 100 μL DNA sample was added and incubated at 20°C for 45 min.
+<table id="undtbl20">
+<thead>
+<tr>
+<th>Tween washing buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>250 μL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>39.675 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> TWB buffer can be stored at 20°C for six months.</div>
+<table id="undtbl21">
+<thead>
+<tr>
+<th>2× Binding buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>0.5 M EDTA</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>5 M NaCl</td>
+<td>20 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>29.4 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> 2<b>×</b> Binding buffer can be stored at 20°C for six months.</div>
+</li>
+<li>Magnetically separate T1 beads, and washed with 500 μL of 1<b>×</b> TWB at 55°C for 2 min, remove the supernatant. Repeat washing.</li>
+</ol>
+</li>
+</ol>
+<ol start="27">
+<li>End filling and remove dangling ends
+<ol type="a">
+<li>Wash the beads with 100 μL of 1<b>×</b> T4 buffer, and transfer to a fresh tube. 100 μL of the following solution was added to the beads, and incubated at 20°C for 30 min to fill the end and remove dangling ends.
+<table id="undtbl22">
+<thead>
+<tr>
+<th>88 μL</th>
+<th>1× NEB T4 DNA ligase buffer with 10 mM ATP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 μL</td>
+<td>25 mM dNTP mix</td>
+</tr>
+<tr>
+<td>5 μL</td>
+<td>10 U/μL NEB T4 PNK</td>
+</tr>
+<tr>
+<td>4 μL</td>
+<td>3 U/μL NEB T4 DNA polymerase I</td>
+</tr>
+<tr>
+<td>1 μL</td>
+<td>NEB DNA polymerase I, Large (Klenow) Fragment</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Magnetically separate T1 beads, and washed with 500 μL of 1<b>×</b> TWB at 55°C for 2 min, remove the supernatant. Repeat washing.</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>A-tailing
+<ol type="a">
+<li>Wash the beads with 100 μL of 1<b>×</b> NEB buffer 2, and transfer to a fresh tube. 100 μL of the following solution was added to the beads, and incubated at 37°C for 30 min to A-tailing.
+<table id="undtbl23">
+<thead>
+<tr>
+<th>90 μL</th>
+<th>1× NEB buffer 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5 μL</td>
+<td>10 mM dATP</td>
+</tr>
+<tr>
+<td>5 μL</td>
+<td>5 U/μL NEB Klenow 3’→5′ exo minus</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Magnetically separate T1 beads, and washed with 500 μL of 1<b>×</b> TWB at 55°C for 2 min, remove the supernatant. Repeat washing.</li>
+</ol>
+</li>
+</ol>
+<ol start="29">
+<li>Adapter adding
+<ol type="a">
+<li>Wash the beads with 100 μL of 1<b>×</b> Quick ligation reaction buffer, and transfer to a fresh tube. 50 μL of the following solution was added to the beads, and incubated at 20°C for 15 min to add adapter.
+<table id="undtbl24">
+<thead>
+<tr>
+<th>25 μL</th>
+<th>2× Quick ligation reaction buffer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 μL</td>
+<td>NEB quick ligase</td>
+</tr>
+<tr>
+<td>3 μL</td>
+<td>Illumine indexed adapter</td>
+</tr>
+<tr>
+<td>20μL</td>
+<td>H<sub>2</sub>O</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 2.5 μL of USER enzyme to the solution and incubate at 37°C for 15 min. Magnetically separate T1 beads, and washed with 500 μL of 1<b>×</b> TWB at 55°C for 2 min, remove the supernatant. Repeat washing.</li>
+<li>Add 50 μL of 1<b>×</b> Tris buffer (10 mM) to wash, and transfer to a fresh tube. Add 20 μL of H2O and incubate at 98°C for 10 min to dissolve DNA. Measure concentration by Qubit.
+<table id="undtbl25">
+<thead>
+<tr>
+<th>1× Tris buffer</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl buffer</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>49.5 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> 1<b>×</b> Tris buffer can be stored at 20°C for six months.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="30">
+<li>PCR and fragment selection
+<ol type="a">
+<li>Collect supernatant, and using the following system for PCR amplification. These materials come from the TruePrep DNA Library Prep V2 for illumina Kit.
+<table id="undtbl26">
+<thead>
+<tr>
+<th>Material</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5 <b>×</b> TAB</td>
+<td>10 ul</td>
+</tr>
+<tr>
+<td>PPM</td>
+<td>5 ul</td>
+</tr>
+<tr>
+<td>N5XX</td>
+<td>5 ul</td>
+</tr>
+<tr>
+<td>N7XX</td>
+<td>5 ul</td>
+</tr>
+<tr>
+<td>TAE</td>
+<td>1 ul</td>
+</tr>
+<tr>
+<td>H2O</td>
+<td>24 ul</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>PCR condition
+<table id="undtbl27">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> </td>
+<td>72°C</td>
+<td>3min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>98°C</td>
+<td>30s</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>98°C</td>
+<td>15s</td>
+<td rowspan="3">5–9</td>
+</tr>
+<tr>
+<td> </td>
+<td>60°C</td>
+<td>30s</td>
+</tr>
+<tr>
+<td> </td>
+<td>72°C</td>
+<td>3min</td>
+</tr>
+<tr>
+<td> </td>
+<td>72°C</td>
+<td>5min</td>
+<td>1</td>
+</tr>
+<tr>
+<td> </td>
+<td>12°C</td>
+<td>Forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>After PCR reaction, 32.5 μL (0.65<b>×</b> volume) of AMPure XP beads were added and incubate at 20°C for 5 min to remove fragments longer than 600 bp. The supernatant was transferred to a fresh tube.</li>
+<li>Another 7.5 μL (0.15<b>×</b> volume; to a final 0.8<b>×</b> volume) of AMPure XP beads were added and incubate at 20°C for 5 min to collect fragments between 300–500 bp.</li>
+<li>Wash beads with 700 μL of 75% alcohol twice, air dry absolutely.</li>
+<li>20 μL 1×Tris buffer was added to the beads, incubate at 37°C for 15 min to dissolve DNA. Concentrate DNA by Qubit.</li>
+<li>The DNA sample is ready for sequencing.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> the assay would be paused at step 25a and the sample should be stored at −80°C no more than one week.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> to ensure the ligation efficiency at step 24c, the ligation time can be prolonged. Select exact sonication time and cycle to ensure the fragments enriched at 300–500bp at step 25c (<a href="#fig3">Figure 3</a>A).</div>
+<h3 id="sec2.8">MEF reprogramming</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 12 days</div>
+<p>MEF reprogramming is performed to investigate the influence of TADs reorganization on cell fate transitions.</p>
+<ol start="31">
+<li>Experimental design
+<ol type="a">
+<li>MEFs are recovered into 6 cm plate and expanded.</li>
+<li>The MEFs are sub-cultured and planted into 12-well plates containing 1.5<b>×</b>10<sup>4</sup> cells/well as follows:</li>
+<li>Plate A contains 12 wells (half treated with ABA and half without ABA) which are used to Alkaline Phosphatase (AP) staining and count OCT4-GFP positive clones after reprogramming.</li>
+<li>Plate B contains 14 wells (half treated with ABA and half without ABA) for RNA extraction and RT-qPCR. The time points for cell collection is day0, 2, 4, 6, 8, 10 and 12.</li>
+<li>Plate C contains 4 wells (half treated with ABA and half without ABA) for collection of iPSC clones and further culture.</li>
+</ol>
+</li>
+<li>Reprogramming
+<ol type="a">
+<li>MEFs are cultured in iPSC medium (DMEM supplemented with 10% FBS, 10% Knockout serum replacement, 0.1 mM b-mercaptoethanol, NEAA, 2 mM Glutamax, Nucleoside MIX, leukemia inhibitory factor (LIF)) with or without 3uM ABA. Medium is changed every day for 12 days to get the iPSC clones.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl28">
+<thead>
+<tr>
+<th>iPSC medium</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td>375 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Knockout serum replacement</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Nucleoside MIX</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>Glutamax</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>NEAA</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>b-mercaptoethanol</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>LIF</td>
+<td>9.5 mL</td>
+</tr>
+<tr>
+<td>Total volume</td>
+<td>500 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> iPSC medium can be stored at 4°C for three months.</div>
+<h3 id="sec2.9">RT-qPCR</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>RT-qPCR is performed to check the expression change of related genes in response to TAD reorganization</p>
+<ol start="33">
+<li>RNA extraction and reverse transcription
+<ol type="a">
+<li>Total RNA was extracted from cell pellets using RNAzol reagent (MRC) and cDNA was synthesized using Primesoript RT Master Mix (Takara).</li>
+</ol>
+</li>
+<li>Real time qPCR
+<ol type="a">
+<li>qPCR was performed using SYBR qPCR Master Mix on LightCycler 480 II system.</li>
+</ol>
+</li>
+<li>Data analysis
+<ol type="a">
+<li>The fold change (FC) of experimental group versus control group was calculated. △Ct was calculated as △Ct = Ct (test gene) – Ct (Ref. gene). △△Ct was calculated as △△Ct = △Ct (experimental group) – △Ct (control group). The FC of a test gene in experimental group versus control group was calculated as FC = 2ˆ(-△△Ct). Each gene tested in triplicates in every independent experiment, and all experiments were triplicated.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.10">Colony formation assay (CFA)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>CFA is performed to evaluate reprogramming efficiency in response to manipulation of TAD reorganization.</p>
+<ol start="36">
+<li>After reprogramming, the iPSC colonies are stained with alkaline phosphatase (AP) for 1 h, followed by washing with PBS for three times. The positively stained clones are counted and compared between the experimental and control groups.</li>
+</ol>
+<h3 id="sec2.11">Flow cytometry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>Flow cytometry is performed to evaluate reprogramming efficiency by counting OCT4-positive cells in response to manipulation of TAD reorganization.</p>
+<ol start="37">
+<li>The cells were harvested at 12th day during reprogramming, wash twice with PBS, and the OCT4-GFP positive cell number was also considered for reprogramming efficiency by flow cytometry. All colony formation assays and OCT4-GFP flow cytometry assays were performed for three biological replicates.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The hypothesis is that we can promote cell fate transitions through manipulating of TAD structures. For the strategy to induce TAD reorganization, two genome loci belonging to two neighboring TADs were targeted by SadCas9-ABI and SpdCas9-PYL1 respectively, and a linking would be established by addition of ABA. The linking would provide a driving force to shorten the distance of the two TADs, which results in TAD merging. TAD reorganization in response to the artificial linking is validated by HiC, as evidenced by 1) the HiC heatmap that showed the merging of the two TADs in MEFs with artificial linking compared to the control MEFs, and 2) an increased insulation score. The insulation score was obtained by aggregating the amount of interactions that occur across chromosome bins which were divided by mean interaction amount of the whole chromosome and then logarithmized (<a href="#bib2">Crane et al., 2015</a>). In general, bins with a high insulation effect have a low insulation score whereas bins with low insulation effect have a high insulation score. Therefore, a more positive score (+ABA) means less insulation between the two TADs. The MEFs with the modified TAD structure were reprogrammed by adding the four Yamanaka factors OCT4, SOX2, KLF4 and MYC. The reprogramming efficiency was increased in TAD modified group, as evidenced by increased iPSC colonies and OCT4-GFP positive cell numbers compared to those of the control MEFs. All these data can be seen in the <a href="#fig2">Figure 2</a> of (<a href="#bib12">Wang et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>dCas9-based genome targeting provides a powerful tool to precisely target any genome loci interested. Previous strategy using this tool to intervene 3D chromatin structure is to construct lower-ordered structure such as chromatin loops (<a href="#bib7">Morgan et al., 2017</a>). This paper is the first paper using this powerful tool to reorganize TAD structure (<a href="#bib12">Wang et al., 2021</a>). However, this protocol also has limitations for manipulating TAD structures. For instance, it is only suitable to merge two TADs into one large TAD, which cannot be used to separate one TAD into two small TADs. Moreover, whether any loci within TAD for genome linking can efficiently induce TAD merging is needed to validate. Furthermore, how to regulate other higher-ordered chromatin 3D structure such as A/B compartment is still unknown. The issue that whether the tool is suitable for manipulating A/B compartment switch is valuable to discuss. Together, the potential wide application of this tool for intervening 3D genome is expected and promising.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Enhanced reprogramming efficiency may be caused by the artificial linking rather than TAD reorganization (step 33–37).</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>To exclude the possibility that only artificial linking works, the expressions of other genes involved in the <i>Dppa5a</i> TAD were tested. The hypothesis is that if reprogramming is regulated by TAD reorganization, all the genes in the reorganized TAD will be influenced rather than <i>Dppa5a</i> alone. Instead, if reprogramming is regulated by the artificial linking, only <i>Dppa5a</i> expression will be influenced without affecting other genes. The qPCR results showed that the overall genes in the TADs were activated after the artificial manipulation. However, as a negative control, overexpression of <i>Dppa5a</i> only did not significantly induce the expression of other genes in the same TAD. These results demonstrate that TAD reorganization rather than artificial linking takes effect. All these data can be seen in the Figure S2 of (<a href="#bib12">Wang et al., 2021</a>).</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Which genome region within TAD selected for artificial linking are most potentially effective to induce TAD reorganization (step 3 in <a href="#before-you-begin">before you begin</a>)?</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>New loci locating at different places within TAD should be selected for dCas9-based genome linking, followed by testing the efficiency of TAD merging.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Low efficiency for artificial linking (step 9).</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>Low efficiency for artificial linking may occur for several reasons. We need to (1) increase the viral amount of sgRNA, if the problem is due to a low lentiviral transduction, (2) measure dCas9 expression levels in MEFs, (3) increase the amount of ABA, and (4) if the problem continues, design and test more sgRNAs.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Low pulldown efficacy of biotin-labeled DNA fragments by Dynabeads MyOne Streptavidin T1 beads in Hi-C (step 26).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>To keep a higher pulldown efficacy, the experimenter should make sure high efficacy of MboI digestion and T4 ligation (<a href="#fig4">Figure 4</a>). The technician should perform PCR for quality control in each step. The time of ligation can be prolonged if the ligation efficacy is lower.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/983-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The DNA bands distribution upon MboI digestion followed by T4 ligation</div>
+<p>DNA was digested to less than 500 bp length by MboI, and was ligated to more than 1000 bp length by T4 ligase. Null fragments mean useless small fragments. S1-S5 stands for sample 1–5.</p>
+</figcaption>
+</figure>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Low effective reads of Hi-C data (step 30).</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>Low effective reads maybe mainly result from high unmapped pairs, high rate of dangling ends and high duplicate rate by PCR. To reduce the adverse influence by these factors, the experimenter should make sure the DNA fragments are between 300–500 bp length (<a href="#fig3">Figure 3</a>C), prolong the time and increase the amount of Large (Klenow) Fragment to effectively remove dangling ends, and increase the biotin pulldown efficacy to reduce duplicates.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Anders, S., Pyl, P.T., and Huber, W. (2015). HTSeq--a Python framework to work with high-throughput sequencing data. Bioinformatics <i>31</i>, 166-169. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref1">View at publisher</a></p>
+<p id="bib2">Crane, E., Bian, Q., McCord, R.P., Lajoie, B.R., Wheeler, B.S., Ralston, E.J., Uzawa, S., Dekker, J., and Meyer, B.J. (2015). Condensin-driven remodelling of X chromosome topology during dosage compensation. Nature <i>523</i>, 240-244. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref2">View at publisher</a></p>
+<p id="bib3">Langmead, B. and Salzberg, S.L. (2012). Fast gapped-read alignment with Bowtie 2. Nat. Methods <i>9</i>, 357-359. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref3">View at publisher</a></p>
+<p id="bib4">Lareau, C.A. and Aryee, M.J. (2018). hichipper: a preprocessing pipeline for calling DNA loops from HiChIP data. Nat. Methods <i>15</i>, 155-156. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref4">View at publisher</a></p>
+<p id="bib5">Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R., and Genome Project Data Processing Subgroup. (2009). The sequence alignment/map format and SAMtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref5">View at publisher</a></p>
+<p id="bib6">Lun, A.T. and Smyth, G.K. (2015). diffHic: a Bioconductor package to detect differential genomic interactions in Hi-C data. BMC Bioinformatics <i>16</i>, 258. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref6">View at publisher</a></p>
+<p id="bib7">Morgan, S.L., Mariano, N.C., Bermudez, A., Arruda, N.L., Wu, F., Luo, Y., Shankar, G., Jia, L., Chen, H., Hu, J.F., et al. (2017). Manipulation of nuclear architecture through CRISPR-mediated chromosomal looping. Nat. Commun. <i>8</i>, 15993. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref7">View at publisher</a></p>
+<p id="bib8">Quinlan, A.R. and Hall, I.M. (2010). BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics <i>26</i>, 841-842. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref8">View at publisher</a></p>
+<p id="bib9">Robinson, M.D., McCarthy, D.J., and Smyth, G.K. (2010). edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics <i>26</i>, 139-140. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref9">View at publisher</a></p>
+<p id="bib10">Servant, N., Varoquaux, N., Lajoie, B.R., Viara, E., Chen, C.J., Vert, J.P., Heard, E., Dekker, J., and Barillot, E. (2015). HiC-Pro: an optimized and flexible pipeline for Hi-C data processing. Genome Biol. <i>16</i>, 259. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref10">View at publisher</a></p>
+<p id="bib11">Shin, H., Shi, Y., Dai, C., Tjong, H., Gong, K., Alber, F., and Zhou, X.J. (2016). TopDom: an efficient and deterministic method for identifying topological domains in genomes. Nucleic Acids Res. <i>44</i>, e70. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref11">View at publisher</a></p>
+<p id="bib12">Wang, J., Yu, H., Ma, Q., Zeng, P., Wu, D., Hou, Y., Liu, X., Jia, L., Sun, J., Chen, Y., et al. (2021). Phase separation of OCT4 controls TAD reorganization to promote cell fate transitions. Cell Stem Cell. <a class="external-link" href="https://doi.org/10.1016/j.stem.2021.04.023">https://doi.org/10.1016/j.stem.2021.04.023</a></p>
+<p id="bib13">Yang, T., Zhang, F., Yardimci, G.G., Song, F., Hardison, R.C., Noble, W.S., Yue, F., and Li, Q. (2017). HiCRep: assessing the reproducibility of Hi-C data using a stratum-adjusted correlation coefficient. Genome Res. <i>27</i>, 1939-1949. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref13">View at publisher</a></p>
+<p id="bib14">Zhang, Y., Liu, T., Meyer, C.A., Eeckhoute, J., Johnson, D.S., Bernstein, B.E., Nusbaum, C., Myers, R.M., Brown, M., Li, W., et al. (2008). Model-based analysis of ChIP-Seq (MACS). Genome Biol <i>9</i>, R137. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00505-0/sref14">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Junjun Ding (<a href="mailto:dingjunj@mail.sysu.edu.cn">dingjunj@mail.sysu.edu.cn</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The accession number for HiC data reported in this paper is Sequence Read Archive (SRA): PRJNA650173.</p>
+<h3>Acknowledgments</h3>
+<p>This research was funded by grants from the <a href="https://doi.org/10.13039/501100013290">National Key Research and Development Program</a> (2017YFA0102800), the <a href="https://doi.org/10.13039/100014717">National Natural Science Foundation of China</a> (grant nos. 31970811, 31771639, and 32170798), the Frontier Research Program of Bioland Laboratory (Guangzhou Regenerative Medicine and Health Guangdong Laboratory) (2018GZR110105007), the <a href="https://doi.org/10.13039/100012541">Guangdong Innovative and Entrepreneurial Research Team Program</a> (2016ZT06S029) to J.D., and the <a href="https://doi.org/10.13039/100014717">National Natural Science Foundation of China</a> (grant no. 81703086) to J.W.</p>
+<h3>Author contributions</h3>
+<p>J.D. conceptualized and supervised the project. J.W. developed, wrote, and edited the protocol. Q.M., P.F., Q.T., and J.S. performed the experiments and wrote and edited the protocol. H.Y. performed bioinformatic analysis.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

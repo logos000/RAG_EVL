@@ -1,0 +1,845 @@
+<article>
+<section>
+<h1 id="header">Use of scREAD to explore and analyze single-cell and single-nucleus RNA-seq data for Alzheimer’s disease</h1>
+<p><time datetime="2021-09-03">Published: September 3, 2021</time></p>
+<p>Cankun Wang,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a></sup> Yujia Xiang,<sup><a href="#aff1">1</a></sup> Hongjun Fu,<sup><a href="#aff2">2</a>,<a href="#cor1">*</a></sup> and Qin Ma<sup><a href="#aff1">1</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biomedical Informatics, The Ohio State University, Columbus, OH 43210, USA</p>
+<p id="aff2"><sup>2</sup>Department of Neuroscience, The Ohio State University, Columbus, OH 43210, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:hongjun.fu@osumc.edu">hongjun.fu@osumc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:qin.ma@osumc.edu">qin.ma@osumc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100513">10.1016/j.xpro.2021.100513</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Single-cell RNA-sequencing (scRNA-seq) and single-nucleus RNA-sequencing (snRNA-seq) studies have provided remarkable insights into understanding the molecular pathogenesis of Alzheimer's disease. We recently developed scREAD, a database to provide comprehensive analyses of all the existing AD scRNA-seq and snRNA-seq data from the public domain. Here, we report protocols for using the scREAD web interface and running the backend workflow locally. Our protocols enable custom analyses of AD single-cell and single-nucleus gene expression profiles.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2020.101769">Jiang et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>scREAD protocol for Alzheimer's disease sc/snRNA-seq analysis and interpretation</li>
+<li>Step-by-step tutorial to run the scREAD workflow on users’ local computers</li>
+<li>Comprehensive demonstrations of cell type annotation and other downstream analysis</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Preparing to use the scREAD website</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<ol>
+<li>We recommend using Chrome, Safari, Microsoft Edge, or Firefox web browser to access scREAD (<a href="https://bmbls.bmi.osumc.edu/scread/">https://bmbls.bmi.osumc.edu/scread/</a>). Microsoft Internet Explorer is not supported.</li>
+<li>If you would like to submit data to scREAD, prepare raw scRNA-seq or snRNA-seq gene expression data in text format, in which rows represent genes, and columns represent cells.</li>
+</ol>
+<h3 id="sec1.2">Preparing local environment to run the scREAD workflow</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<ol start="3">
+<li>Install R, version 3.6 or greater. The required R dependencies are listed in the <a href="#key-resources-table">key resources table</a> section below.</li>
+</ol>
+<ol start="4">
+<li>Raw scRNA-seq or snRNA-seq expression data mainly has three formats:
+<ol type="a">
+<li>A single <i>.txt</i>, <i>.tsv</i> or <i>.csv</i> formatted gene expression matrix, in which each row represents a feature (gene), and each column represents a cell.
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Feature</th>
+<th>Cell1</th>
+<th>Cell2</th>
+<th>Cell3</th>
+<th>Cell4</th>
+<th>Cell<sub><i>n</i></sub>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feature 1</td>
+<td>0</td>
+<td>2</td>
+<td>7</td>
+<td>3</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Feature 2</td>
+<td>0</td>
+<td>4</td>
+<td>6</td>
+<td>0</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Feature 3</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>A hierarchical data format (hdf5) feature-barcode matrix, generally named as <i>filtered_feature_bc_matrix.h5</i> in the 10× Genomics CellRanger output folder.</li>
+<li>The Hdf5 format consists of a matrix and metadata. The matrix contains barcodes (barcode sequences), data (Nonzero UMI counts in column-major order), indices (0-based row index), indptr (0-based column index) and shape (a tuple contains matrix dimensions, (# row, # column); and the metadata contain diverse attributes.</li>
+</ol>
+</li>
+</ol>
+<p>The Hdf5 file hierarchy example (<a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/advanced/h5_matrices">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/advanced/h5_matrices</a>) :</p>
+<div class="textbox">
+<p><code>(root)</code></p>
+<p><code>└── matrix [HDF5 group]</code></p>
+<p><code>├── barcodes</code></p>
+<p><code>  ├── data</code></p>
+<p><code>  ├── indices</code></p>
+<p><code>  ├── indptr</code></p>
+<p><code>  ├── shape</code></p>
+<p><code>  └── features [HDF5 group]</code></p>
+<p><code>    ├─ _all_tag_keys</code></p>
+<p><code>    ├─ target_sets [for Targeted Gene Expression]</code></p>
+<p><code>    │  └─ [target set name]</code></p>
+<p><code>    ├─ feature_type</code></p>
+<p><code>    ├─ genome</code></p>
+<p><code>    ├─ id</code></p>
+<p><code>    ├─ name</code></p>
+<p><code>    ├─ pattern [Feature Barcode only]</code></p>
+<p><code>    ├─ read [Feature Barcode only]</code></p>
+<p><code>    └─ sequence [Feature Barcode only]</code></p>
+</div>
+<ol start="4" type="a">
+<li>The three gzip files recording information of barcodes (<i>barcodes.tsv</i>), features (<i>genes.tsv</i>), and gene expressions (<i>matrix.mtx</i>) in the 10× Genomics CellRanger output folder.</li>
+</ol>
+<h4 id="sec1.2.1">Barcodes file (Barcodes.tsv)</h4>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Barcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AAACATACAAAACG-1</td>
+</tr>
+<tr>
+<td>AAACATACAAAAGC-1</td>
+</tr>
+<tr>
+<td>AAACATACAAACAG-1</td>
+</tr>
+<tr>
+<td>AAACATACAAACGA-1</td>
+</tr>
+<tr>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sec1.2.2">Features (genes.tsv)</h4>
+<p>The first column represents the Ensembl gene id, and the second column represents the gene symbol.</p>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Ensembl_id</th>
+<th>Gene_symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENSG00000243485</td>
+<td>MIR1302-10</td>
+</tr>
+<tr>
+<td>ENSG00000237613</td>
+<td>FAM138A</td>
+</tr>
+<tr>
+<td>ENSG00000186092</td>
+<td>OR4F5</td>
+</tr>
+<tr>
+<td>ENSG00000238009</td>
+<td>RP11-34P13.7</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sec1.2.3">Gene expression matrix (matrix.mtx)</h4>
+<ol type="i">
+<li>The first column “gene id index” represents the row number of genes in the <i>genes.tsv.</i>
+</li>
+<li>The second column “cell id index” represents the row number of cell-barcode in the <i>barcodes.tsv.</i>
+</li>
+<li>The third column represents the total Unique Molecular Identifier (UMI) count in each cell and gene combination.</li>
+</ol>
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Gene id index</th>
+<th>Cell id index</th>
+<th>UMI count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>498</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5423</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr>
+<td>6374</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>12976</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec1.3">scREAD maintenance and sustainability plan</h3>
+<p>Currently, scREAD only contains the scRNA-seq and snRNA-seq data sets as of September 22nd, 2020. We will routinely collect more publicly available AD scRNA-seq and snRNA-seq data. You may also contact us through emails and let us know about your dataset of interest to be added in scREAD. We will continue to develop scREAD to support integrative analysis of single-cell multimodal omics data and spatial transcriptomics data. We appreciate any suggestions or feedback from you.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>AD scRNA-seq data (<a href="#bib5">Grubman et al., 2019</a>)</td>
+<td>GEO</td>
+<td>GSE138852</td>
+</tr>
+<tr>
+<td>scREAD database</td>
+<td>(<a href="#bib6">Jiang et al., 2020</a>)</td>
+<td><a href="https://bmbls.bmi.osumc.edu/scread/">https://bmbls.bmi.osumc.edu/scread/</a></td>
+</tr>
+<tr>
+<td>All code for the scREAD protocols</td>
+<td>GitHub</td>
+<td><a href="https://github.com/OSU-BMBL/scread-protocol">https://github.com/OSU-BMBL/scread-protocol</a></td>
+</tr>
+<tr>
+<td>The interactive tutorial for optional step: calculating overlapping DEGs from multiple comparisons to find overlapping genes</td>
+<td>Google Colab</td>
+<td><a href="https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing">https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Chrome</td>
+<td>Google</td>
+<td><a href="https://www.google.com/chrome/">https://www.google.com/chrome/</a></td>
+</tr>
+<tr>
+<td>Safari</td>
+<td>Apple</td>
+<td><a href="https://www.apple.com/safari/">https://www.apple.com/safari/</a></td>
+</tr>
+<tr>
+<td>Microsoft Edge</td>
+<td>Microsoft</td>
+<td><a href="https://www.microsoft.com/en-us/edge">https://www.microsoft.com/en-us/edge</a></td>
+</tr>
+<tr>
+<td>Firefox</td>
+<td>Mozilla</td>
+<td><a href="https://www.mozilla.org/en-US/">https://www.mozilla.org/en-US/</a></td>
+</tr>
+<tr>
+<td>R (&gt;=3.6)</td>
+<td>R Project</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>IRIS3 (v1.2.4)</td>
+<td>(<a href="#bib10">Ma et al., 2020</a>)</td>
+<td><a href="https://bmbl.bmi.osumc.edu/iris3/">https://bmbl.bmi.osumc.edu/iris3/</a></td>
+</tr>
+<tr>
+<td>Seurat (v3.2)</td>
+<td>(<a href="#bib12">Stuart et al., 2019</a>)</td>
+<td><a href="https://satijalab.org/seurat">https://satijalab.org/seurat</a></td>
+</tr>
+<tr>
+<td>Harmony (v0.1)</td>
+<td>(<a href="#bib7">Korsunsky et al., 2019</a>)</td>
+<td><a href="https://github.com/immunogenomics/harmony">https://github.com/immunogenomics/harmony</a></td>
+</tr>
+<tr>
+<td>Polychrome (v1.2.5)</td>
+<td>R CRAN</td>
+<td><a href="https://cran.r-project.org/web/packages/Polychrome">https://cran.r-project.org/web/packages/Polychrome</a></td>
+</tr>
+<tr>
+<td>SCINA (v1.2.0)</td>
+<td>(<a href="#bib14">Zhang et al., 2019</a>)</td>
+<td><a href="https://github.com/jcao89757/SCINA">https://github.com/jcao89757/SCINA</a></td>
+</tr>
+<tr>
+<td>RColorBrewer (v1.1-2)</td>
+<td>R CRAN</td>
+<td><a href="https://cran.r-project.org/web/packages/RColorBrewer">https://cran.r-project.org/web/packages/RColorBrewer</a></td>
+</tr>
+<tr>
+<td>ggplot2 (v3.3.2)</td>
+<td>R CRAN</td>
+<td><a href="https://ggplot2.tidyverse.org/">https://ggplot2.tidyverse.org/</a></td>
+</tr>
+<tr>
+<td>tidyverse (v1.3.0)</td>
+<td>R CRAN</td>
+<td><a href="https://www.tidyverse.org/">https://www.tidyverse.org/</a></td>
+</tr>
+<tr>
+<td>cowplot (v1.0.0)</td>
+<td>(<a href="#bib2">Wilke et al., 2021</a>)</td>
+<td><a href="https://github.com/wilkelab/cowplot/tree/1.1.1">https://github.com/wilkelab/cowplot/tree/1.1.1</a></td>
+</tr>
+<tr>
+<td>RMySQL (v0.10.21)</td>
+<td>R CRAN</td>
+<td><a href="https://cran.r-project.org/web/packages/RMySQL">https://cran.r-project.org/web/packages/RMySQL</a></td>
+</tr>
+<tr>
+<td>future (v1.21.0)</td>
+<td>R CRAN</td>
+<td><a href="https://cran.r-project.org/web/packages/future">https://cran.r-project.org/web/packages/future</a></td>
+</tr>
+<tr>
+<td>MAST (v1.16.0)</td>
+<td>(<a href="#bib3">Finak et al., 2015</a>)</td>
+<td><a href="https://www.bioconductor.org/packages/release/bioc/html/MAST.html">https://www.bioconductor.org/packages/release/bioc/html/MAST.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Checking AD studies summary statistics</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>This section allows one to browse the overall summary statistics, including species, disease condition, brain regions, and gender. The researcher can then make an informed decision of which dataset of interest one should navigate to.</p>
+<p>The current release of the scREAD collected datasets from 15 studies in total. Based on the metadata provided from the original papers, we constructed the original samples into 73 datasets, each of which corresponds to a specific species (human or mouse), gender (male or female), brain region (entorhinal cortex, prefrontal cortex, superior frontal gyrus, cortex, cerebellum, subventricular zone, superior parietal lobe, or hippocampus), disease or control, and age stage (7 months, 15 months, or 20 months for mice, and 50–100+ years old for human).</p>
+<ol>
+<li>Navigate to <a href="https://bmbls.bmi.osumc.edu/scread/">https://bmbls.bmi.osumc.edu/scread/</a>, and the dataset summary should be listed (<a href="#fig1">Figures 1</a>A and 1B).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Overview of the scREAD homepage</div>
+<p>(A) The pie charts represent four factors of distribution: species, control/disease condition, brain region, and gender from the left side to the right side, respectively. Each color in each pie chart represents one element, and the number represents the distribution ratio for each element under each factor for 73 datasets.</p>
+<p>(B) The table shows the general information of all 73 datasets. Users can select filters and the table will be updated accordingly. Clicking a row in the table will pop up the dataset overview panel, and users can navigate to the dataset details page through the link.</p>
+</figcaption>
+</figure>
+</li>
+<li>You can either click on one of the pie charts or select filters from the dataset summary table, including species, sample condition, brain region, and gender. The content of the table will be updated accordingly.</li>
+<li>You can click any row in the table, and a dataset overview panel will pop. You can further navigate to the dataset details page through the link.</li>
+</ol>
+<h3 id="sec2.2">Searching genes of interest from the differential gene expression (DGE) analysis results</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>This section allows one to search a gene of interest from DGE analysis results across multiple comparisons. For detailed gene information, the researcher can check from the link to the dataset ID of interest (<a href="#fig2">Figure 2</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Example DGE analysis searching result of the <i>GAD1</i> gene, a marker gene of inhibitory neurons</div>
+<p>Users can select filters and the table will be updated accordingly.</p>
+</figcaption>
+</figure>
+<ol start="4">
+<li>To search genes of interest from DGE analysis results across multiple datasets, type the gene symbol in the search box, and click on the search button. You can select filters to specify dataset sources or decide which comparison types should be displayed.</li>
+<li>The query results are returned from multiple DGE analyses, including cell-type-specific genes, subcluster specific genes, AD vs control differentially expressed genes (DEGs), or AD vs AD DEGs.
+<ol type="a">
+<li>Cell-type-specific genes were identified by performing DGE analysis between the cell type of interest and the average of the remaining cell types.</li>
+<li>Subcluster-specific genes were identified by performing DGE analysis between the subcluster of interest and the average of the remaining subclusters from the same cell type.</li>
+<li>AD vs control DGE analysis was performed within the same cell type, brain region, and gender. For example, Male-AD-Prefrontal cortex vs Male-Control-Prefrontal cortex.</li>
+<li>AD vs AD DGE analysis was performed within the sample cell type while based on different sample conditions. For example, one AD vs AD comparison can be Male-AD-Prefrontal cortex vs Male-AD-Entorhinal Cortex or Male-AD-Prefrontal cortex vs Female-AD-Prefrontal cortex.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The ‘multiple comparison types’ in the comparison type selection box include disease vs control performed within the same dataset and disease vs disease performed from two different datasets. A positive log foldchange (FC) value indicates the gene expressions are higher in the first group. The log FC is returned in the natural logarithm.</div>
+<h3 id="sec2.3">Checking cell clustering results</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>In this section, we used a dataset from scREAD as an example to show the analysis result (ID: AD00103), <a href="https://bmbls.bmi.osumc.edu/scread/AD00103">https://bmbls.bmi.osumc.edu/scread/AD00103</a>. This dataset consists of 6,629 cells isolated from a human AD female prefrontal cortex sample (<a href="#bib11">Mathys et al., 2019</a>). As we know, not all cells collected from AD patient samples are malignant, and some healthy cells may be included in the cell populations, which were defined as healthy-like cells in Granja et al.’s study (<a href="#bib4">Granja et al., 2019</a>). We applied this concept to all AD datasets in scREAD and defined these healthy-like cells as control-like cells. These control-like cells maintain distinct regulatory mechanisms and gene expression patterns compared to AD cells, and they will disturb the accurate identification of AD cell types. Thus, we removed these control cells from disease datasets and identify AD-associated cells. Here, scREAD filtered out 950 control-like cells and kept 5,679 AD-associated cells for the downstream analysis. See the <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a> section for more details about how scREAD filtered out control-like cells.</p>
+<ol start="6">
+<li>Checking cell clustering results (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Cell clustering and gene expression result from the scREAD homepage</div>
+<p>Cell clustering results including UMAP plot colored by cell types or subclusters (left), and searching gene expression using the same UMAP coordinates (right). The darker the color is in this UMAP, the higher the expression value of the gene.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>By default, all the cell types will be selected and the corresponding Adjusted Rand Index (ARI) will be displayed. The ARI score is used to evaluate the similarity of our predicted cell types compared with the original cell labels in the original paper.
+<div class="note">
+<span class="note-title">Note:</span> The ARI score will not be displayed when the cell labels were not provided from the original paper, and a silhouette score will be displayed instead. Meanwhile, the ARI score will be hidden if users did not select all cell types.</div>
+</li>
+<li>Choose one of these cell types, the following Uniform Manifold Approximation and Projection (UMAP)(<a href="#bib1">Becht et al., 2019</a>) will change to the UMAP of predicted subclusters for this specific cell type.</li>
+<li>A sliding bar is used for controlling the size of each point in the following UMAP. It ranges from 1 to 10, i.e., the bigger the number is, the larger the point size is.</li>
+<li>This function bar contains several quick buttons for graphic operations.</li>
+<li>Hovering the cursor on cell points will display cell type, cell name, and the UMAP coordinates.</li>
+<li>The legend of this UMAP plot will be displayed based on the genes selected in the drop-down bar. The darker the color is in this UMAP, the higher the expression value of the gene.
+<div class="critical">
+<span class="critical-title">Critical:</span> Rendering gene expression scatter plot can be slow due to network speed or a large number of cells data need to process, please be patient while scREAD is fetching data from the backend server.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.4">Checking differential expression (DE) results and performing functional enrichment analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>In this section, we used the same example data from checking cell clustering results to illustrate DGE analysis results and to perform functional gene set enrichment analysis based on DEGs.</p>
+<ol start="7">
+<li>First, apply the necessary filtering criteria from the DGE analysis results panel (<a href="#fig4">Figure 4</a>A).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Differential gene expression (DGE), and functional gene set enrichment based on DEGs</div>
+<p>(A) Differential gene expression analysis panel, the comparison groups include cell-type-specific genes, subcluster specific genes, and DEGs from the cross-dataset comparison.</p>
+<p>(B) KEGG pathway, GO biological process, molecular function, and cellular component analysis using the DEGs from (A), an enriched genes example were displayed on the 5<sup>th</sup> GO cellular component term.</p>
+</figcaption>
+</figure>
+</li>
+<li>DGE analysis groups for browsing cell-type-specific genes, subcluster specific genes, and DE genes from the cross-dataset comparison.
+<ol type="a">
+<li>Choose the cell type of interest in DGE analysis.</li>
+<li>Choose the log fold-change ranges. (default = 0.5; ranges from 0 to 5).</li>
+<li>The adjusted p value ranges. (default = 0.05; ranges from 10ˆ−6 to 1).</li>
+<li>The DE direction can filter by all DE genes, only up-regulated genes, only down-regulated genes (default = ’all’).</li>
+<li>You can search for genes that you are interested in, and then the following table will return the matching result.</li>
+<li>Download the currently listed table.</li>
+<li>GeneCards database (<a href="https://www.genecards.org/">https://www.genecards.org/</a>) is linked to each gene in the table.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Adjusting any parameters above will immediately affect the displayed DEGs table.</div>
+<ol start="9">
+<li>Performing functional gene set enrichment (<a href="#fig4">Figure 4</a>B)
+<ol type="a">
+<li>KEGG pathway, GO biological process, GO molecular function, and GO cellular component analysis using the DEGs from above, an example of enriched genes are displayed on the 4th GO cellular component term. You can also search for a specific item by entering the content that you want to search in the search box.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The functional gene set analysis results are calculated in real-time by sending the DEGs to the Enrichr (<a href="#bib9">Kuleshov et al., 2016</a>) web server (<a href="https://maayanlab.cloud/Enrichr/">https://maayanlab.cloud/Enrichr/</a>). Thus, changing DEG log FC or p value cutoffs can significantly change the results of enrichment analysis. Considering Enrichr does not provide options to submit a custom background and the results could be potentially misleading (<a href="#bib13">Timmons et al., 2015</a>). We also provide a link to another enrichment analysis tool, g: Profiler (<a href="https://biit.cs.ut.ee/gprofiler/">https://biit.cs.ut.ee/gprofiler/</a>), which allows users to submit custom background gene sets.</div>
+<h3 id="sec2.5">Identifying cell-type-specific regulons</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>In this section, we describe the process of identifying cell-type-specific regulons (CTSRs) using IRIS3.</p>
+<ol start="10">
+<li>In the DE section, when you select the “Cell-type-specific genes” item in the “Group” select box, cell-type-specific regulon analysis will be performed. CTSRs results are displayed at the bottom of the screen. Click on the “Cell-type-specific regulons” bar, detailed CTSRs information will be shown.</li>
+<li>The CTSRs are displayed in a reactive table in the DE section, each row shows that for each cell type, a set of genes are regulated by a specific transcription factor (TF). Clicking on the “Regulon overview” panel, a table in the panel summarizes the overall cell number and regulon number in each cell cluster (<a href="#fig5">Figure 5</a>A).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Cell-type-specific regulon (CTSR) analysis results from IRIS3</div>
+<p>(A) Overview table of identified CTSRs.</p>
+<p>(B) An example of CTSR (p value &lt; 0.05), stars indicate differential expressed gene within the cell type, the corresponding matched TF is linked to the HOCOMOCO database.</p>
+<p>(C) UMAP plot colored by regulon activities in each cell.</p>
+</figcaption>
+</figure>
+</li>
+<li>You can navigate into the IRIS3 to see the detailed results of this job by clicking the 'Open cell-type-specific regulon result page in the new tab' button. In the table, the index number will be given to represent CTSRs (<a href="#fig5">Figure 5</a>B).
+<ol type="a">
+<li>Both gene compositions of regulons and their expression values across different cell types can be intuitively displayed in a heatmap. Regulons are ranked in increasing order of the empirical p values of regulon specificity scores (RSS) as described above, and a regulon is named as CTn-Rm with 'n' representing the index of cell type and 'm' represents the regulon rank. Due to the space limitation, only the top ten regulons and their corresponding genes are showcased in the heatmap, and the component genes of each regulon are indicated as green rectangles. The heatmap records the log-transformed expression level of each top-ten-regulon-covered gene across all cells.</li>
+<li>Regulon results are separately showcased in each cell type. Click on the "CT#" button to switch to see results in other cell types. A scatter plot shows the distribution of the RSS of each regulon. CTSRs are ranked top and marked as blue dots with their representative TF names, and insignificant regulons are marked as grey dots. For each regulon, genes and the corresponding TF are presented (<a href="#fig5">Figure 5</a>B) with several actions that link to showing heatmap, functional gene set enrichment analysis, and regulon activities in the UMAP plot (<a href="#fig6">Figure 6</a>C). A more detailed interpretation of each regulon can be found on the IRIS3 website, <a href="https://bmbl.bmi.osumc.edu/iris3/tutorial.php#3example%26q=2">https://bmbl.bmi.osumc.edu/iris3/tutorial.php#3example&amp;q=2</a>.
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Overlapping genes and annotated cell type (ct) from the example dataset</div>
+<p>(A) The up-regulated overlapping genes in Human Entorhinal Cortex Astrocytes (ast).</p>
+<p>(B) The log FC, dataset source, and rankings from the overlapping genes table in (A).</p>
+<p>(C) A UMAP plot of the control dataset example with six cell types was annotated from the scREAD workflow.</p>
+<p>(D) A UMAP plot of the disease dataset example with six cell types was transferred from the example reference control dataset.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The CTSRs results are only available when you selected the cell-type-specific option in the DEG group box.</div>
+<h3 id="sec2.6">Optional step: calculating overlapping DEGs from multiple comparisons</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>In this section, we provide a workflow for calculating overlapping DEGs from multiple comparisons. Suppose we have <math> <mrow> <mi>m</mi> </mrow> </math> AD vs control comparisons from a cell type of interest in a specific brain region. For each comparison, we select top <math> <mrow> <mi>t</mi> </mrow> </math> DEGs based on the ranked log FC. We define an "overlapping gene" as the gene that appears at least <math> <mrow> <mi>n</mi> </mrow> </math> times in <math> <mrow> <mi>m</mi> </mrow> </math> comparisons (<math> <mrow> <mi>n</mi> <mo>≤</mo> <mi>m</mi> </mrow> </math>). <math> <mrow> <mi>t</mi> <mo>,</mo> <mspace></mspace> <mi>n</mi> </mrow> </math>are parameters set by the users.</p>
+<p>Here, we provide two approaches, you can follow the code example below on your local R environment; For users wishing to avoid setup procedures, you can use the following link from Google Colab, which is an interactive computational environment that combines live code, visualizations, and explanatory text, <a href="https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing">https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing</a>.</p>
+<ol start="13">
+<li>If you wish to perform the calculation in your local computer, first, load the R packages, scREAD data, and predefined functions in your R local environment:
+<div class="textbox">
+<p><code>library(tidyverse)</code></p>
+<p><code>library(RVenn)</code></p>
+<p><code>library(rlist)</code></p>
+<p><code>library(knitr)</code></p>
+<p><code>tryCatch({</code></p>
+<p><code>  load(</code></p>
+<p><code>    url(</code></p>
+<p><code>      '</code><a href="https://bmbl.bmi.osumc.edu/downloadFiles/scread/protocol/scread_db.rdata">https://bmbl.bmi.osumc.edu/downloadFiles/scread/protocol/scread_db.rdata</a><code>'</code></p>
+<p><code>    )</code></p>
+<p><code>  )</code></p>
+<p><code>}, error = {</code></p>
+<p><code>  load(</code></p>
+<p><code>    url(</code></p>
+<p><code>      '</code><a href="https://github.com/OSU-BMBL/scread-protocol/raw/master/overlapping_genes/scread_db.rdata">https://github.com/OSU-BMBL/scread-protocol/raw/master/overlapping_genes/scread_db.rdata</a><code>'</code></p>
+<p><code>    )</code></p>
+<p><code>  )</code></p>
+<p><code>})</code></p>
+</div>
+</li>
+</ol>
+<ol start="14">
+<li>To calculate overlapping genes, these parameters are needed
+<ol type="a">
+<li>The number of genes to be selected in each AD vs control DEG results (default = 100)</li>
+<li>Species (default = Human)</li>
+<li>Brain region (e.g., Entorhinal Cortex)</li>
+<li>DE direction (e.g., up)</li>
+<li>Overlap threshold (For example, A gene is an overlapping gene if A should at least appear 3 times in total 4 comparisons, here the threshold is 3)</li>
+</ol>
+</li>
+<li>We can then process some of our metadata:
+<div class="textbox">
+<p><code>REGION_LIST &lt;- sort(unique(dataset$region))</code></p>
+<p><code>CT_LIST &lt;- sort(unique(cell_type_meta$cell_type))</code></p>
+<p><code>CT_SHORT_LIST &lt;- CT_LIST</code></p>
+<p><code>CT_SHORT_LIST[CT_LIST=="Oligodendrocyte precursor cells"] &lt;- "opc"</code></p>
+<p><code>CT_SHORT_LIST &lt;- tolower(substr(CT_SHORT_LIST, 1, 3))</code></p>
+</div>
+</li>
+</ol>
+<ol start="16">
+<li>Below are the necessary settings to calculate the overlapping genes.
+<ol type="a">
+<li>We use the top 100 DE genes in each AD vs control comparison:
+<figure id="fx1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx1.jpg" alt="Fx1.jpg"></figure>
+</li>
+<li>Species should be either 'Human' or 'Mouse':
+<figure id="fx2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx2.jpg" alt="Fx2.jpg"></figure>
+</li>
+<li>Specify our brain region of interest, here we selected the 5th brain region in REGION_LIST variable, i.e., Entorhinal Cortex':
+<figure id="fx3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx3.jpg" alt="Fx3.jpg"></figure>
+</li>
+<li>DE direction should either 'up' or 'down', 'up' means we select DE genes that are expressed higher in the disease dataset (the first group):
+<figure id="fx4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx4.jpg" alt="Fx4.jpg"></figure>
+</li>
+<li>The OVERLAP_THRES should be manually defined based on your interest and the total number of comparisons in scREAD. For example, scREAD have 4 total AD vs control datasets comparisons, we set the threshold to 3, meaning that we want to find overlapping genes that are at least appeared in 3 comparisons:
+<figure id="fx5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx5.jpg" alt="Fx5.jpg"></figure>
+</li>
+<li>Now, we can calculate the overlapping genes based on the parameters above, the results are stored in a list variable:
+<figure id="fx6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx6.jpg" alt="Fx6.jpg"></figure>
+</li>
+<li>Two tables can be generated by accessing the result variable:
+<ol type="i">
+<li>The overlapping genes in the selected brain region (<a href="#fig6">Figure 6</a>A)
+<figure id="fx7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx7.jpg" alt="Fx7.jpg"></figure>
+</li>
+<li>The detailed information, including rankings, log FC, dataset source information from the overlapping genes (<a href="#fig6">Figure 6</a>B)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure id="fx8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/973-Fx8.jpg" alt="Fx8.jpg"></figure>
+<h3 id="sec2.7">Optional section 7: Running the scREAD backend analysis workflow locally</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>In this section, we present how to run the scREAD workflow to process a custom dataset. The workflow can be used in the Unix command-line environment with R installed.</p>
+<ol start="17">
+<li>Download the scREAD workflow and an example dataset from <a href="https://github.com/OSU-BMBL/scread-protocol/tree/master/workflow">https://github.com/OSU-BMBL/scread-protocol/tree/master/workflow</a>, the folder should contain the following files (<b>5 min</b>):
+<ol type="a">
+<li>custom_marker.csv: A manually created marker gene list file used for identified cell types.</li>
+<li>functions.R: Visualization functions used in R.</li>
+<li>build_control_atlas.R: build control cells atlas Seurat object from count matrix file.</li>
+<li>transfer_cell_type.R: filter out control-like cells in disease dataset.</li>
+<li>run_analysis.R: run analysis workflow, and export tables in the scREAD database format.</li>
+<li>example_control.csv. The example control dataset.</li>
+<li>example_disease.csv. The example disease dataset.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>Build the control atlas file from the raw gene expression matrix (<b>5 min</b>).
+<ol type="a">
+<li>Prepare your control gene expression data. In the data frame, the first column should be gene symbols and other columns as cell labels. Put all code and data in a working directory. (e.g., PATH_TO_WD), in this protocol, we will run example_control.csv.</li>
+<li>build_control_atlas.R takes three parameters:
+<ol type="i">
+<li>Working directory path.</li>
+<li>Control data path.</li>
+<li>Output data ID.</li>
+</ol>
+</li>
+<li>Next, run the following command, remember to change PATH_TO_WD to your working directory path:
+<div class="textbox">
+<p><code>cd PATH_TO_WD</code></p>
+<p><code>Rscript build_control_atlas.R PATH_TO_WD example_control.csv control_example</code></p>
+</div>
+</li>
+<li>The expected output for this step contains four files:
+<ol type="i">
+<li>control_example.rds: The Seurat R object storing example control data.</li>
+<li>control_example_expr.txt: Filtered gene expression matrix.</li>
+<li>control_example_cell_label.txt: The first column is the cell name, the second column is the cell type information.</li>
+<li>control_example_umap.png: UMAP plot of example control data colored by cell types (<a href="#fig6">Figure 6</a>C).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="19">
+<li>Transfer cell types based on control atlas, the goal of this step is to annotate cell type using the control atlas as the reference, onto the disease gene expression matrix file (<b>∼5 min</b>).
+<ol type="a">
+<li>Put all code and data in a working directory. (e.g., PATH_TO_WD) after you have generated the control atlas file (control_example.rds).</li>
+<li>transfer_cell_type.R takes four parameters:
+<ol type="i">
+<li>Working directory path.</li>
+<li>Control atlas Seurat object file name.</li>
+<li>Disease gene expression matrix name.</li>
+<li>Output disease data ID.</li>
+</ol>
+</li>
+<li>Next, run the following command
+<div class="textbox">
+<p><code>cd PATH_TO_WD</code></p>
+<p><code>Rscript transfer_cell_type.R PATH_TO_WD control_example.rds example_disease.csv disease_example</code></p>
+</div>
+</li>
+<li>The expected output for this step contains four files:
+<ol type="i">
+<li>disease_example.rds: The Seurat R object storing example disease data.</li>
+<li>disease_example_expr.txt: Filtered gene expression matrix.</li>
+<li>disease_example_cell_label.txt: The first column is the cell name, the second column is the cell type information.</li>
+<li>disease_example_umap.png: UMAP plot for disease data colored by cell types (<a href="#fig6">Figure 6</a>D).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="20">
+<li>Run data analysis, the goal of this step is to identify cell-type-specific genes, DEGs from two example datasets (<b>60 min</b>).
+<ol type="a">
+<li>Put all code and data in a working directory. (e.g., PATH_TO_WD) after you have generated the control atlas file (control_example.rds), and the disease file (disease_example.rds)</li>
+<li>run_analysis.R takes three parameters:
+<ol type="i">
+<li>Working directory path.</li>
+<li>Control Seurat object file name.</li>
+<li>Disease Seurat object file name.</li>
+</ol>
+</li>
+<li>Next, run the following command:
+<div class="textbox">
+<p><code>cd PATH_TO_WD</code></p>
+<p><code>Rscript run_analysis.R PATH_TO_WD control_example disease_example</code></p>
+</div>
+</li>
+<li>The expected output for this step contains three folders:
+<ol type="i">
+<li>/de. Differential gene expression analysis results.
+<ul>
+<li>Cell-type-specific genes.</li>
+<li>Sub-cluster specific genes.</li>
+<li>DEGs between two conditions.</li>
+</ul>
+</li>
+<li>/dimension: UMAP coordinates for two datasets.</li>
+<li>/subcluster_dimension: UMAP coordinates for each sub-clusters in two datasets.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="21">
+<li>Identify CTSRs using IRIS3 (<b>2 h</b>).
+<ol type="a">
+<li>Navigate to <a href="https://bmbl.bmi.osumc.edu/iris3/submit.php">https://bmbl.bmi.osumc.edu/iris3/submit.php</a>, submit two jobs for the two example datasets:
+<ol type="i">
+<li>upload control_example_expr.txt and control_example_cell_label.txt</li>
+<li>upload disease_example_expr.txt and disease_example_cell_label.txt</li>
+</ol>
+</li>
+<li>The expected output for IRIS3 contains these files:
+<ol type="i">
+<li>Lists
+<ul>
+<li>CTSR gene list</li>
+<li>Marker gene list</li>
+<li>Gene module list</li>
+<li>Motif list</li>
+<li>Transcription factor list</li>
+</ul>
+</li>
+<li>Tables
+<ul>
+<li>Predicted cell types</li>
+<li>Bulk ATAC peak enrichment</li>
+<li>TAD association</li>
+</ul>
+</li>
+<li>Figures (only display on the website)
+<ul>
+<li>CTSR active UMAP</li>
+<li>CTSR gene heatmap</li>
+<li>Trajectory</li>
+<li>UMAP</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> You need to open the advanced options tab in the IRIS3 submission page to upload a custom cell label.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<h3 id="sec3.1">Web server results</h3>
+<p>scREAD provides comprehensive analysis results for the selected AD scRNA-seq or snRNA-seq datasets. These summaries and integrated analysis of differentially expressed genes (DEGs) are presented in a graphical and tabular format (<a href="#fig1">Figure 1</a>).</p>
+<p><a href="#fig2">Figure 2</a>A shows the dataset details page that outlines all the necessary information regarding dataset metadata, source, and related data IDs from the same study. <a href="#fig3">Figure 3</a> annotates cell clustering results including UMAP plot colored by cell types (left), and gene expression using the same UMAP coordinates (right). The darker the color is in this UMAP, the higher the expression value of the gene.</p>
+<p><a href="#fig4">Figure 4</a>Ashows DEGs after the user selects the comparison group and the cell type of interest. Users can sort the table by log FC or p values. The DEGs results table can be downloaded as a tab-separated value file for further analysis. The DEGs are filtered based on the threshold set by the user, and the functional gene set enrichment analysis for the KEGG pathways, Gene Ontology terms are calculated using the current DEGs as input (<a href="#fig4">Figure 4</a>B). If the user selects ‘cell-type-specific genes’ in the group select box, the identified CTSRs along with RSS will be displayed at the bottom of the screen. The user can also navigate to the IRIS3 website to browse the regulons for more details.</p>
+<p><a href="#fig5">Figure 5</a> shows the identified CTSR analysis results from IRIS3, including the table of all identified regulons (<a href="#fig5">Figure 5</a>A), and detailed information from CT3-R1 (cell type: 3, regulon 1), the stars indicate differential expressed gene within the cell type, the corresponding matched TF is linked to the HOCOMOCO (<a href="#bib8">Kulakovskiy et al., 2018</a>) database (<a href="#fig5">Figure 5</a>B). The regulon activities are visualized in a UMAP plot (<a href="#fig5">Figure 5</a>C).</p>
+<h3 id="sec3.2">Overlapping DEGs results</h3>
+<p>After calculating overlapping DEGs from the same cell type across datasets using the default settings, two tables for overlapping genes will be generated:</p>
+<ul>
+<li>The overlapping genes in the selected region, using the default settings (<a href="#fig6">Figure 6</a>A), the fourth row in the table below can be interpreted as: 'For all AD vs control datasets comparisons in Human Entorhinal Cortex Astrocytes (ast), the GFAP gene ranked top 100 by log FC values in at least 3 comparisons'.</li>
+<li>The ranking information from the overlapping genes. Using the GFAP gene as an example, we found GFAP is an overlapping gene in Human Entorhinal Cortex Astrocytes. The GFAP ranked top 50 in 3 comparisons of 4 total comparisons, the mean rank of the gene is 13, and the average log-FC of GFAP in each comparison are also listed (<a href="#fig6">Figure 6</a>B).</li>
+</ul>
+<h3 id="sec3.3">Backend workflow results</h3>
+<p>The backend workflow generated is a series of tables containing information on the intermediate results and final analysis results, including cell-type-specific genes, subcluster-specific genes, and DEGs between two datasets. The following descriptions of output files use the example dataset given as the filename, while the names of your files will differ depending on your filename settings.</p>
+<p>The control atlas output should contain four files:</p>
+<ul>
+<li>File 1: control_example.rds: The Seurat R object storing example control data.</li>
+<li>File 2: control_example_expr.txt: Filtered gene expression matrix.</li>
+<li>File 3: control_example_cell_label.txt: The first column is the cell name, the second column is the cell type information.</li>
+<li>File 4: control_example_umap.png: UMAP plot of the example control data. The UMAP plot visualizes scRNA-seq data in two-dimensional spaces. Each dot represents a cell and cells are colored by annotated cell types. Cells within the cell types should co-localize on the UMAP plot (<a href="#fig6">Figure 6</a>C).</li>
+</ul>
+<p>The disease dataset output should contain four files:</p>
+<ul>
+<li>File 1 : disease_example.rds: The Seurat R object storing example disease data.</li>
+<li>File 2: disease_example_expr.txt: Filtered gene expression matrix.</li>
+<li>File 3: disease_example_cell_label.txt: The first column is the cell name, the second column is the cell type information.</li>
+<li>File 4: disease_example_umap.png: UMAP plot of the example disease data. The UMAP plot visualizes scRNA-seq data in two-dimensional spaces. Each dot represents a cell and cells are colored by annotated cell types. Cells within the cell types should co-localize on the UMAP plot (<a href="#fig6">Figure 6</a>D).</li>
+</ul>
+<p>The output tables should be stored in three folders:</p>
+<ul>
+<li>Folder 1: /de. Differential gene expression analysis results.
+<ul>
+<li>Cell-type-specific genes.</li>
+<li>Sub-cluster specific genes.</li>
+<li>DEGs between two conditions.</li>
+</ul>
+</li>
+<li>Folder 2: /dimension: UMAP coordinates for two datasets.</li>
+<li>Folder 3: /subcluster_dimension: UMAP coordinates for each sub-clusters in two datasets.</li>
+</ul>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>To determine whether cells from disease datasets are control-like, the Harmony R package (v1.0) was first used to integrate the disease dataset with its corresponding control atlas. After the integration, cells were clustered using Seurat’s FindClusters function with a resolution of 4. A hypergeometric test was performed for each cluster using the number of cells from disease cells and the number of cells from the control atlas. Clusters were considered to be control-like if the hypergeometric test result was significant (p value &lt; 0.0001, Benjamini-Hochberg adjusted), and the cells from the disease dataset in control-like clusters were removed from the downstream analyses.</p>
+<p>Differential gene expression analysis was performed using MAST (<a href="#bib3">Finak et al., 2015</a>). Seurat’s FindAllMarkers and FindMarkers functions that utilize the MAST package were used to run DGE analysis on normalized gene expression data. Cell-type-specific genes were identified by performing DGE analysis between the cell type of interest and the average of the remaining cell types. Subcluster-specific genes were identified by performing DGE analysis between the subcluster of interest and the average of the remaining subclusters from the same cell type. For each cell type, several DGE analysis was performed within two different datasets, categorized from AD versus control, and AD versus AD in the same species under the same gender, brain region, and age. To regress out technical biases from different datasets, the dataset latent variables were added in all cross-dataset DGE analyses.</p>
+<p>Functional enrichment analysis was performed using the Enrichr web server. The p value was computed using a standard statistical method used by most enrichment analysis tools: Fisher's exact test or the hypergeometric test. This is a binomial proportion test that assumes a binomial distribution and independence for the probability of any gene belonging to any set.</p>
+<p>CTSRs were identified using IRIS3. The RSS for a cell type was calculated according to the entropy of regulon activity score (RAS) of cells within the cell type compared to other cell types. An RSS ranges from 0 to 1, with a higher value representing greater specificity of a regulon in the cell type. An empirical P-value of a regulon's RSS can be estimated by comparing it with the RSSs of randomly selected gene sets (having the same number of genes in this regulon through a bootstrap method) in the same cell type, 10 000 times. Regulon P-values are Bonferroni-adjusted by multiplying the number of regulons in the exact cell type. Regulons with adjusted P-values &lt; 0.05 (by default) are considered CTSRs.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<h3 id="sec5.1">Limitation 1</h3>
+<p>Although scREAD is continuing to collect all publicly available AD scRNA-seq &amp; snRNA-seq data, you may still find your dataset of interest was not included in scREAD. This may be due to the policy that we are not allowed to put some datasets in scREAD.</p>
+<h3 id="sec5.2">Limitation 2</h3>
+<p>scREAD uses a semi-supervised cell type annotation method, thus, only eight major cell types from our marker genes list can be annotated, i.e., astrocytes, endothelial cells, excitatory neurons, inhibitory neurons, microglia, oligodendrocytes, oligodendrocyte precursor cells, and pericytes. For different brain regions, enforcing an annotation to the closest cell type is likely to result in misannotation of such regions, but we are aware that subtypes could be finely resolved and characterize this problem. Therefore, the subcluster function of our scREAD would provide a more comprehensive cell type annotation considering cross-region heterogeneity. Due to no standard or consistent annotations available, we have not annotated the subclusters.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The content on the scREAD webpage cannot be displayed correctly in checking AD studies summary statistics.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Please make sure to use one of the modern browsers, including Chrome, Firefox, Microsoft Edge, or Safari. Internet Explorer is not supported in scREAD.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Uploading incorrect file format to the scREAD online analysis workflow (<a href="https://bmbls.bmi.osumc.edu/scread/submit">https://bmbls.bmi.osumc.edu/scread/submit</a> ).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>scREAD online analysis workflow needs to provide a gene expression matrix in text format, in which each row represents a gene, each column represents a cell.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Difficulty in selecting parameters at DEGs at the DE results in checking differential expression (DE) results and performing functional enrichment analysis.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Adjusting any parameters in the DE section will immediately affect the displayed DEGs table. A less-stringent p value is recommended to be used to select a large preliminary list of genes, then all the genes in the list are ranked by FC, and finally, an FC cutoff is applied to determine the final set of DEGs (<a href="#bib15">Zhao et al., 2018</a>). If you would like to use more stringent criteria for the enrichment analysis result, please increase the log fold-change values or decrease the p values and vice versa.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>File system permission errors occur while installing R packages in section 7.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>In some computers or high-performance computing (HPC) systems, your user account may not have the necessary permission to install new packages, we suggest contacting your administrator to install these dependencies.</p>
+<p>Specifically, if you have trouble compiling Harmony, please refer to this solution: <a href="https://github.com/immunogenomics/harmony/issues/10">https://github.com/immunogenomics/harmony/issues/10</a>.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Using different input file format files while running workflow in section 7.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>The protocol in section 7 provided examples with CSV file extension. Please change the file reading function from read.csv to the following formats accordingly:</p>
+<ul>
+<li>HDF5 file: <a href="https://rdrr.io/cran/Seurat/man/Read10X_h5.html">https://rdrr.io/cran/Seurat/man/Read10X_h5.html</a>
+</li>
+<li>Three gzip files recording information of barcodes (barcodes.tsv), features (genes.tsv), and gene expressions (matrix.mtx): <a href="https://rdrr.io/cran/Seurat/man/Read10X.html">https://rdrr.io/cran/Seurat/man/Read10X.html</a>
+</li>
+</ul>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Becht, E., McInnes, L., Healy, J., Dutertre, C.-A., Kwok, I.W.H., Ng, L.G., Ginhoux, F., and Newell, E.W. (2019). Dimensionality reduction for visualizing single-cell data using UMAP. Nat. Biotechnol. <i>37</i>, 38-44. <a class="external-link" href="https://doi.org/10.1038/nbt.4314">https://doi.org/10.1038/nbt.4314</a></p>
+<p id="bib2">Wilke, C., Fox, S.J., Bates, T., Manalo, K., Lang, B., Barrett, M., Stoiber, M., Philipp, A., Denney, B., Hesselberth, J., et al. (2021). wilkelab/cowplot: 1.1.1. Zenodo. <a class="external-link" href="https://doi.org/10.5281/zenodo.4411966">https://doi.org/10.5281/zenodo.4411966</a></p>
+<p id="bib3">Finak, G., McDavid, A., Yajima, M., Deng, J., Gersuk, V., Shalek, A.K., Slichter, C.K., Miller, H.W., McElrath, M.J., Prlic, M., et al. (2015). MAST: a flexible statistical framework for assessing transcriptional changes and characterizing heterogeneity in single-cell RNA sequencing data. Genome Biol. <i>16</i>, 278. <a class="external-link" href="https://doi.org/10.1186/s13059-015-0844-5">https://doi.org/10.1186/s13059-015-0844-5</a></p>
+<p id="bib4">Granja, J.M., Klemm, S., McGinnis, L.M., Kathiria, A.S., Mezger, A., Corces, M.R., Parks, B., Gars, E., Liedtke, M., Zheng, G.X.Y., et al. (2019). Single-cell multiomic analysis identifies regulatory programs in mixed-phenotype acute leukemia. Nat. Biotechnol. <i>37</i>, 1458-1465. <a class="external-link" href="https://doi.org/10.1038/s41587-019-0332-7">https://doi.org/10.1038/s41587-019-0332-7</a></p>
+<p id="bib5">Grubman, A., Chew, G., Ouyang, J.F., Sun, G., Choo, X.Y., McLean, C., Simmons, R.K., Buckberry, S., Vargas-Landin, D.B., Poppe, D., et al. (2019). A single-cell atlas of entorhinal cortex from individuals with Alzheimer’s disease reveals cell-type-specific gene expression regulation. Nat. Neurosci. <i>22</i>, 2087-2097. <a class="external-link" href="https://doi.org/10.1038/s41593-019-0539-4">https://doi.org/10.1038/s41593-019-0539-4</a></p>
+<p id="bib6">Jiang, J., Wang, C., Qi, R., Fu, H., and Ma, Q. (2020). scREAD: a single-cell RNA-seq database for Alzheimer’s disease. iScience <i>23</i>, 101769. <a class="external-link" href="https://doi.org/10.1016/j.isci.2020.101769">https://doi.org/10.1016/j.isci.2020.101769</a></p>
+<p id="bib7">Korsunsky, I., Millard, N., Fan, J., Slowikowski, K., Zhang, F., Wei, K., Baglaenko, Y., Brenner, M., Loh, P.-R., and Raychaudhuri, S. (2019). Fast, sensitive and accurate integration of single-cell data with Harmony. Nat. Methods <i>16</i>, 1289-1296. <a class="external-link" href="https://doi.org/10.1038/s41592-019-0619-0">https://doi.org/10.1038/s41592-019-0619-0</a></p>
+<p id="bib8">Kulakovskiy, I.V., Vorontsov, I.E., Yevshin, I.S., Sharipov, R.N., Fedorova, A.D., Rumynskiy, E.I., Medvedeva, Y.A., Magana-Mora, A., Bajic, V.B., Papatsenko, D.A., et al. (2018). HOCOMOCO: towards a complete collection of transcription factor binding models for human and mouse via large-scale ChIP-Seq analysis. Nucleic Acids Res. <i>46</i>, D252-D259. <a class="external-link" href="https://doi.org/10.1093/nar/gkx1106">https://doi.org/10.1093/nar/gkx1106</a></p>
+<p id="bib9">Kuleshov, M.V., Jones, M.R., Rouillard, A.D., Fernandez, N.F., Duan, Q., Wang, Z., Koplev, S., Jenkins, S.L., Jagodnik, K.M., Lachmann, A., et al. (2016). Enrichr: a comprehensive gene set enrichment analysis web server 2016 update. Nucleic Acids Res. <i>44</i>, W90-W97. <a class="external-link" href="https://doi.org/10.1093/nar/gkw377">https://doi.org/10.1093/nar/gkw377</a></p>
+<p id="bib10">Ma, A., Wang, C., Chang, Y., Brennan, F.H., McDermaid, A., Liu, B., Zhang, C., Popovich, P.G., and Ma, Q. (2020). IRIS3: integrated cell-type-specific regulon inference server from single-cell RNA-Seq. Nucleic Acids Res. <i>48</i>, W275-W286. <a class="external-link" href="https://doi.org/10.1093/nar/gkaa394">https://doi.org/10.1093/nar/gkaa394</a></p>
+<p id="bib11">Mathys, H., Davila-Velderrain, J., Peng, Z., Gao, F., Mohammadi, S., Young, J.Z., Menon, M., He, L., Abdurrob, F., Jiang, X., et al. (2019). Single-cell transcriptomic analysis of Alzheimer’s disease. Nature <i>570</i>, 332-337. <a class="external-link" href="https://doi.org/10.1038/s41586-019-1195-2">https://doi.org/10.1038/s41586-019-1195-2</a></p>
+<p id="bib12">Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W.M., Hao, Y., Stoeckius, M., Smibert, P., and Satija, R. (2019). Comprehensive integration of single-cell data. Cell <i>177</i>, 1888-1902.e21. <a class="external-link" href="https://doi.org/10.1016/j.cell.2019.05.031">https://doi.org/10.1016/j.cell.2019.05.031</a></p>
+<p id="bib13">Timmons, J.A., Szkop, K.J., and Gallagher, I.J. (2015). Multiple sources of bias confound functional enrichment analysis of global -omics data. Genome Biol. <i>16</i>. <a class="external-link" href="https://doi.org/10.1186/s13059-015-0761-7">https://doi.org/10.1186/s13059-015-0761-7</a></p>
+<p id="bib14">Zhang, Z., Luo, D., Zhong, X., Choi, J.H., Ma, Y., Wang, S., Mahrt, E., Guo, W., Stawiski, E.W., Modrusan, Z., et al. (2019). SCINA: a semi-supervised subtyping algorithm of single cells and bulk samples. Genes <i>10</i>, 531. <a class="external-link" href="https://doi.org/10.3390/genes10070531">https://doi.org/10.3390/genes10070531</a></p>
+<p id="bib15">Zhao, B., Erwin, A., and Xue, B. (2018). How many differentially expressed genes: A perspective from the comparison of genotypic and phenotypic distances. Genomics <i>110</i>, 67-73. <a class="external-link" href="https://doi.org/10.1016/j.ygeno.2017.08.007">https://doi.org/10.1016/j.ygeno.2017.08.007</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Qin Ma (<a href="mailto:qin.ma@osumc.edu">qin.ma@osumc.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any new materials.</p>
+<h4>Data and code availability</h4>
+<p>scREAD is freely available at <a href="https://bmbls.bmi.osumc.edu/scread/">https://bmbls.bmi.osumc.edu/scread/</a>. All code for the scREAD protocols is freely available on GitHub: <a href="https://github.com/OSU-BMBL/scread-protocol">https://github.com/OSU-BMBL/scread-protocol</a>. The interactive tutorial for optional step: calculating overlapping DEGs from multiple comparisons to find overlapping genes is freely available in Google Colab: <a href="https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing">https://colab.research.google.com/drive/1lInXa6jD4yc7RGJc0EWDfy5NNoXT1qye?usp=sharing</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (R01 GM131399-01, Q.M.; K01 AG056673, H.F.; and R56 AG066782-01, H.F.), the <a href="https://doi.org/10.13039/100000005">Department of Defense</a> (W81XWH1910309, H.F.), the <a href="https://doi.org/10.13039/100000957">Alzheimer’s Association</a> (AARF-17-505009, H.F.), and the Neuroscience Research Institute Pilot Award and the Chronic Brain Injury Pilot Award from <a href="https://doi.org/10.13039/100006928">The Ohio State University</a> (H.F.). The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Science Foundation and the National Institutes of Health.</p>
+<h3>Author contributions</h3>
+<p>Q.M. and H.F. designed the manuscript contents and experiments. C.W. contributed to data analysis and the initial draft. C.W. developed and implemented the code in the manuscript and Google Colab. Y.X. tested the database and workflow. All authors revised the final manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

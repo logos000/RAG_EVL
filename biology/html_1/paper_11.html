@@ -1,0 +1,299 @@
+<html>
+
+<head>
+    <title>Quantifying membrane protein oligomerization using two-dimensional fluorescence intensity fluctuation
+        spectrometry</title>
+</head>
+
+<body>
+    <h1>Quantifying membrane protein oligomerization using two-dimensional fluorescence intensity fluctuation
+        spectrometry</h1>Authors: Michael R. Stoneman, Gabriel Biener, Richard J. Ward, John D. Pediani, Dammar Badu,
+    Annie Eis, Ionel Popa, Graeme Milligan, Valerică Raicu<br>Abstract: <p>Current methods for determining membrane
+        protein association in cells are either very time consuming, require complicated procedures, or lack the
+        sensitivity needed to assess the effect of concentration or ligand binding on the observed oligomerization. To
+        overcome these limitations, we provide a detailed protocol for quantifying the relative abundance and stability
+        of oligomers of differing sizes using two-dimensional fluorescence intensity fluctuation (2D-FIF) spectrometry.
+        The approach can be implemented using a standard laser scanning fluorescence microscope along with custom
+        written software for image analysis. This method may be applied to evaluate the extent of oligomerization as a
+        function of receptor concentration and is particularly suited to assess the effects of agonists and antagonists
+        on the oligomeric size of membrane receptors of interest.</p><br>Keywords: Fluorescence microscopy, Fluorescence
+    fluctuation spectroscopy, G protein-coupled receptor, protein-protein interaction, oligomerizatioin, quaternary
+    structure<br>
+    <h2>Introduction</h2>
+    <p>Characterization of the oligomeric state of membrane receptors continues to be a substantial experimental
+        challenge. Methods based on fluorescence fluctuation spectroscopy (FFS) <sup>1</sup>, such as Photon-Counting
+        Histogram (PCH) analysis <sup>2,3</sup> Number and Brightness (N&amp;B) analysis <sup>4-6</sup>, and Spatial
+        Intensity Distribution Analysis (SpIDA)<sup>7-9</sup> are promising approaches for studying protein
+        interactions. In FFS-based approaches, the signal fluctuations caused by fluorescently labeled molecules
+        diffusing in and out of a microscope focal region are analyzed with statistical methods to reveal properties of
+        the molecules. Originally applied to quantify the diffusion of fluorescently labeled molecules in solution, FFS
+        based approaches have been improved in recent decades to study the abundance and interactions of biomolecules in
+        solutions as well as in living cells, and thereby offer a robust means for measuring both oligomer size and
+        dynamics. However, current FFS-based approaches typically only provide average values of the oligomer size and
+        concentration over mixtures of oligomers with different relative abundances and sizes. </p>
+    <p>This protocol describes the steps needed for using two-dimensional fluorescence intensity fluctuation (2D-FIF)
+        spectrometry, a new method that can quantify the relative abundance and concentration dependence of oligomers of
+        differing sizes in the presence or absence of ligands. The 2D-FIF spectrometry method relies on collecting
+        fluorescence images of cells expressing the receptor of choice fused to a fluorescence marker protein. Regions
+        in the fluorescence images where cells are present are divided into smaller subregions, or segments. The
+        intensity fluctuations across the pixels in a given segment are used to calculate an “effective molecular
+        brightness,” <em>ε</em><sub><em>eff</em></sub> , of each segment. The average intensity of the segment is
+        divided by the effective brightness of a single protomer, <em>ε</em><sup><em>proto</em></sup> , to determine the
+        average concentration of receptors in that segment.&nbsp;By scanning a large number of cells, tens of thousands
+        of segments are collected, and an effective brightness and concentration is calculated for each. From a 2D-map
+        assembled from all the effective brightness-concentration pairs, effective brightness distributions can be
+        generated for a number of different protomer concentrations ranges. Each brightness distribution, or
+        spectrogram, is comprised of contributions from different sized oligomers and can be decomposed to find the
+        relative contributions, or abundance, of each of the different oligomer sizes present across the measured
+        sample. To extract this relative abundance information from each spectrogram, an effective brightness
+        distribution must be generated from measurements on cells expressing a monomeric form of the fluorescent marker
+        as well as cells expressing a tandem-dimer of the fluorescent marker. From the measured monomer and dimer
+        brightness distributions, the brightness distribution for any oligomer of size <em>n</em> can be predicted, as
+        the peak value of the size <em>n</em> oligomer distribution will be simply scaled by the size of the oligomer,
+        i.e. <em>nε</em><sup><em>proto</em></sup> . Each composite spectrogram is then “unmixed”, with the unmixing
+        components consisting of the various predicted oligomer brightness distributions. The relative abundance of each
+        oligomer species is then computed as the fraction of the total area underneath the composite spectrogram that it
+        occupies. After unmixing the spectrograms obtained from a number of concentration ranges, the trajectory of
+        these relative abundances is plotted as a function of concentration. Along with evaluating the extent of
+        oligomerization as a function of receptor concentration, the method is also can be applied to assess the effects
+        of ligand-inducing shifts in the oligomeric size of membrane receptors of interest.</p>
+    <p> The 2D-FIF approach can be implemented using standard laser scanning fluorescence microscopes, including
+        confocal, two-photon excitation, and total internal reflection microscopes. A software package, titled the FIF
+        Spectrometry Suite, is available at <a href="https://figshare.com/s/acfd94b21b1105317f56"
+            target="_blank">https://figshare.com/s/acfd94b21b1105317f56</a> and can be used by following the steps
+        listed in the detailed protocol below. The presented workflow describes the application applied to fixed cells,
+        but the method can be used just as easily to probe protein oligomerization <em>in vivo</em>.&nbsp;</p>
+    <h2>Reagents</h2>
+    <p>1.&nbsp;&nbsp;&nbsp;&nbsp;Chinese hamster ovary (CHO) cells growth medium: Hams F-12 Nutrient Mix
+        (Gibco<sup>TM</sup>, 11765054) supplemented with 10% (v/v) fetal bovine serum (Atlanta Biologicals, #S10350),
+        100 U ml<sup>−1</sup> penicillin and 100 mg ml<sup>−1</sup> streptomycin (Gibco<sup>TM</sup>, #15140-122), and
+        100 mg ml<sup>−1</sup> zeocin (Gibco<sup>TM</sup>, # R25001).</p>
+    <p>2.&nbsp;&nbsp;&nbsp;&nbsp;Cell fixation solution: 4% w/v paraformaldehyde (Sigma-Aldrich #158127-5G) in phosphate
+        buffered saline (PBS, Gibco<sup>TM</sup>, #14040-133).</p>
+    <p>3.&nbsp;&nbsp;&nbsp;&nbsp;Sub-diffraction sized fluorescent microspheres for determining the laser beam waist
+        size of microscope. We have used the following two types of microspheres:</p>
+    <p><em>i. </em>100 nm Tetraspeck fluorescent microspheres (Invitrogen, # T14792)</p>
+    <p><em>ii. </em>170-nm PS-Speck Microscope Point Source Kit fluorescent microspheres (Invitrogen, # P7220)</p>
+    <h2>Equipment</h2>
+    <p>1.&nbsp;&nbsp;&nbsp;&nbsp;Humidified incubator with 95% air and 5% CO2 kept at a temperature of 37°C</p>
+    <p>2.&nbsp;&nbsp;&nbsp;&nbsp;Poly-D-Lysine (Sigma-Aldrich, P7280-5mg) coated chambered #1.5 cover glass. We have
+        used chambered coverslips in the following two forms:</p>
+    <p><em>i.</em> Lab-Tek 4-well-chambered cover glasses (Thermo Fisher Scientific, # 155382)&nbsp;</p>
+    <p><em>ii.</em> 35-mm culture dishes containing a 14-mm diameter microwell (MatTek Corp.)</p>
+    <p>3.&nbsp;&nbsp;&nbsp;&nbsp;Inverted laser scanning fluorescence microscope for image acquisition. The imaging can
+        be performed on any inverted fluorescence microscope capable of image sectioning. Therefore either single-photon
+        excitation in combination with a confocal pinhole or two-photon excitation may be used. The single (i) and
+        two-photon (ii) excitation systems we have used are described below.</p>
+    <p><em>i. </em>Zeiss LSM 510 PASCAL EXCITER laser scanning head coupled to a Zeiss Axiovert 200M inverted microscope
+        equipped with a plan apochromat oil immersion objective (63×, NA=1.4¸Carl Zeiss Microscopy). A long-pass beam
+        splitter with center wavelength 490 nm along with a long pass emission filter with a wavelength of 505 nm were
+        chosen to efficiently collect monomeric enhanced green fluorescent protein (mEGFP) emission signal.</p>
+    <p><em>ii. </em>Two-photon optical micro-spectroscope<sup>10,11</sup> comprised of a Zeiss Axio Observer inverted
+        microscope stand equipped with an infinity-corrected, C-Apochromat, water-immersion objective (63×, NA=1.2; Carl
+        Zeiss Microscopy), and an OptiMiS detection head from Aurora Spectral Technologies, LLC. A mode-locked laser
+        (MaiTai<sup>TM</sup>, Spectra Physics) was used for fluorescence excitation at 960 nm. FIF Spectrometry Suite.
+        Image analysis software which has been deposited on the <em>Figshare</em> digital repository and is accessible
+        from: <a href="https://figshare.com/s/acfd94b21b1105317f56"
+            target="_blank">https://figshare.com/s/acfd94b21b1105317f56</a></p>
+    <h2>Procedure</h2>
+    <p>A. Cell Preparation Protocol</p>
+    <p>1. Generate cell lines stably expressing membrane receptors of interest and cells expressing monomeric or dimeric
+        forms of the fluorescent marker protein; see previously described protocol<sup>12,13</sup></p>
+    <p>2. Maintain a healthy cell culture on T-25 flask. If cells are being revived from deep freeze, allow for at least
+        two cell passages. Subculture cells if they are more than 85% confluent on flask. Subculturing of cells should
+        be performed in a sterile environment using standard cell culture procedures</p>
+    <p>3. Lift cells from T-25 flask and plate on poly-d-lysine coated chambered cover glass. Seed between 500-1000∙
+        cells/mm2 of coverslip growth area onto poly-d-lysine coated chambered #1.5 cover glass. The amount of cells
+        seeded will ultimately depend on the doubling time of the cell line being studied. Allow the cells to grow for
+        36-48 hours in humidified incubator in order to spread out on the glass surface.</p>
+    <p>4. Prepare cells for imaging</p>
+    <p><em>i. </em>Aspirate cell growth medium</p>
+    <p><em>ii. </em>Wash cells twice with PBS</p>
+    <p><em>iii. </em>If exposing cells to ligand, add ligand solution to cells for desired time. If no ligand is being
+        used, simply add PBS to cells for same amount time.</p>
+    <p><em>iv. </em>Remove ligand solution or PBS solution and add 1.5 mL of 4% formaldehyde fixing solution. Leave
+        cells in fixing solution for 20 minutes. Leave room lights off for duration of time</p>
+    <p><em>v. </em>Remove fixing solution</p>
+    <p><em>vi. </em>Resuspend cells in PBS; cells now ready for imaging.</p>
+    <p><br></p>
+    <p>B.&nbsp;&nbsp;&nbsp;Image Acquisition Protocol</p>
+    <p>1. Set the pixel dwell time for the measuring system to be at least a factor of five times shorter than the
+        two-dimensional characteristic diffusion time, <em>τ</em><sub><em>D</em></sub>, of the receptor under study. The
+        characteristic diffusion time is the average time a receptor molecule will reside within the measurement volume
+        before diffusing out and is related to the laser beam waist, <em>ω</em>, and the diffusion coefficient,
+        <em>D</em>, through the following relation
+        <em>τ</em><sub><em>D</em></sub><em>=ω</em><sup><em>2</em></sup><em>/4D</em>. The laser beam waist is defined as
+        the distance from the center of the focused beam to where the intensity of the beam drops to
+        <em>e</em><sup><em>-2</em></sup> its maximum value.</p>
+    <p>2. Obtain fluorescence images from several hundred cells for each type of experimental condition.</p>
+    <p><em>i.</em> Search for cell/cells using scanning parameters with a reduced power or much shorter exposure time
+        (preview scan) compared to the settings used for the actual data collection (fluorescence scan) so as not to
+        expose cells to too much laser light.</p>
+    <p><em>ii.</em> Focus on the basolateral membrane of a cell or group of cells using the preview scan.</p>
+    <p><em>iii. </em>Take fluorescence scan of the focused cell/cells.</p>
+    <p><em>iv. </em>Repeat steps <em>i-iii</em> until fluorescence images have been acquired from several hundred cells
+    </p>
+    <p>3. Obtain fluorescence images from cells separately expressing monomeric and tandem dimer forms of the
+        fluorescent marker which has been fused to receptor of interest. Apply the exact same imaging conditions which
+        were used to collect images of cells expressing fluorescently labeled receptor of interest.</p>
+    <p>4. Obtain fluorescence images of sub-diffraction sized fluorescent microspheres for determining the laser beam
+        waist size.</p>
+    <p>5. Obtain measurements from a light source with constant intensity (i.e. no temporal fluctuations). Signal from a
+        constant light source can be obtained from a number of different methods:</p>
+    <p><em>i. </em>Laser spot scanning the surface of a mirror slide in the plane of focus of the microscope. Remove
+        filters used to eliminate laser light from striking the detector from the detection pathway. Acquire scans for a
+        range of laser powers.</p>
+    <p><em>ii. </em>Transmitted light illuminator turned on during acquisition. The same integration time settings can
+        be used as was applied to the fluorescence scans. Acquire scans with a range of transmitted light intensity
+        levels&nbsp;</p>
+    <p><br></p>
+    <p>C.&nbsp;&nbsp;&nbsp;Analysis Protocol</p>
+    <p>1. Determine average background intensity of fluorescence images. All fluorescence images must be corrected for
+        background prior to computing brightness values. Contributions to intensity levels due to background include the
+        electronic offset (i.e. bias level) added to the output signal of the detector as well as dark noise. Determine
+        this contribution by measuring the mean intensity in multiple ~10,000 pixel subregions of the acquisitions where
+        there are no cells/fluorophores present and averaging the results from these multiple subregions.</p>
+    <p>2. Determine slope and intercept for a plot of variance vs intensity for constant light source measurements.</p>
+    <p><em>i.</em> Fluorescence intensity traces must be corrected for fluctuations in intensity arising due to the
+        detector<sup>5,7</sup>.</p>
+    <p><em>ii.</em> Measure both the variance as well as mean intensity from small subregions of the scans taken of the
+        constant light source.</p>
+    <p><em>iii.</em> Construct a scatter plot of the variance vs average intensity from all of the subregions measured.
+        The relationship between the detector variance and intensity is linear and therefore the scatter plot can be fit
+        with a straight line of slope <em>S</em>, and intercept, σ<sup>2</sup>.</p>
+    <p>3.&nbsp;&nbsp;&nbsp;&nbsp;Use FIF Spectrometry Suite to demarcate regions of interest (ROI) on fluorescence
+        images of cells separately expressing monomeric and tandem dimer forms of the fluorescent marker</p>
+    <p><em>i. </em>Load 2D fluorescence images for a given sample</p>
+    <p><em>ii. </em>Select ROIs using a polygon tool. Draw the polygon such that it encompasses the majority of the
+        region inside the cell boundary. Multiple ROIs can be selected for each loaded image.</p>
+    <p><em>iii. </em>Segment each ROI into smaller segments. The segmentation procedure is fully automated, the only
+        user input is the maximum size of each segment. We have used a maximum segment size of 500 pixels.</p>
+    <p>4. Use FIF Spectrometry Suite to calculate the effective brightness for each segment generated in the images of
+        cells expressing monomeric and dimeric fluorescent protein constructs. Make sure to input the values for average
+        background intensity, <em>S</em>, and <em>σ</em><sup><em>2</em></sup><em>.</em> determined in steps C1 and C2
+        above.</p>
+    <p><em>i.</em> Determine the monomeric effective brightness value, <em>ε</em><sup><em>proto</em></sup>, from the
+        distribution of monomer and dimer brightness values calculated in C4</p>
+    <p><em>ii.</em> Simultaneously fit the two spectrograms with Gaussian functions</p>
+    <p><em>iii. </em>Set the Gaussian peak position simulating the monomer distribution to be
+        <em>ε</em><sup><em>proto</em></sup> and the Gaussian peak position simulating the dimer peak position to be
+        2<em>ε</em><sup><em>proto</em></sup> . Use the same standard deviation for both Gaussian functions, but allow it
+        to vary as a fitting parameter. Use the best fit value of <em>ε</em><sup><em>proto</em></sup> as the monomeric
+        effective brightness value.</p>
+    <p>5. Repeat step C3 for images of cells expressing the receptor of interest under appropriate experimental
+        conditions.</p>
+    <p><em>i. </em>Use FIF Spectrometry Suite to extract brightness and concentration from each segment generated in C6
+    </p>
+    <p><em>ii. </em>Calculate the brightness and concentration of each segment using the mean and standard deviation
+        obtained from the corresponding intensity histograms. The entire procedure of fitting starting at intensity
+        histogram calculation and ending in the calculation of effective brightness and concentration of each of the
+        segments is performed after a click of a single button. Be certain to input the values for
+        <em>ε</em><sup><em>proto</em></sup>, average background intensity, <em>S</em>, and σ<sup>2</sup> determined in
+        steps C1, C2, and C5 above.</p>
+    <p><em>iii. </em>Create a two-dimensional surface plot of the frequency of occurrence of each effective
+        brightness-concentration pair for visual analysis of the effective brightness distribution</p>
+    <p><em>iv. </em>Generate brightness spectrograms for various concentration ranges. The brightness spectrogram is a
+        partitioning of the surface plot into one dimensional brightness spectrograms for a chosen concentration range.
+    </p>
+    <p>6. Use FIF Spectrometry Suite to perform meta-analysis of brightness spectrograms for various concentration
+        ranges and obtain oligomer species fraction plots as a function of protomer concentration</p>
+    <p>i. Fit the individual brightness spectrogram for a single concentration range with an array of Gaussian
+        functions, <em>S(ε</em><sub><em>eff</em></sub><em>
+            )=∑A</em><sub><em>n</em></sub><em>exp^[-(ε</em><sub><em>eff</em></sub><em>-nε</em><sup><em>proto</em></sup><em>
+            )</em><sup><em>2</em></sup><em>/(2σ</em><sup><em>2</em></sup><em> )]</em> The mean value of each Gaussian
+        function, <em>nε</em><sup><em>proto</em></sup>, corresponds to the peak brightness value from a particular
+        oligomer size <em>n</em>, and are all linearly related to a multiple of the monomeric molecular brightness,
+        <em>ε</em><sup><em>proto</em></sup></p>
+    <p>ii. Calculate the area underneath each Gaussian (relative to the area underneath the entire histogram).&nbsp;This
+        area reflects the relative abundance of the particular oligomer size corresponding to that Gaussian.&nbsp;</p>
+    <p>iii. Repeat fitting of spectrogram for all concentration ranges and obtain relative abundance values for each
+        oligomer size</p>
+    <h2>Troubleshooting</h2>
+    <p>1. Problem: Simultaneous fitting of spectrogram of monomeric and dimeric constructs is poor due to broad
+        distribution and the peak not well defined.</p>
+    <p>- Allow additional Gaussian functions.</p>
+    <p>- For the monomer distribution, allow <em>n</em>=1,2,3,4 while for the dimer distribution, remove odd size
+        constructs, i.e.<em> n</em>=2, 4, 6. This addresses issues in step C5 in the procedure section.</p>
+    <p>2. Problem: The brightness values obtained from samples expressing monomeric fluorescent markers present
+        concentration dependence. This may be a result of poorly estimated values for slope and intercept describing the
+        linear relationship between detector variance and intensity levels.</p>
+    <p>- Restrict the variance vs. intensity plot to the range of intensities sampled in fluorescence measurements of
+        cells.</p>
+    <p>- Do not include intensities much larger than sampled in cells, as the detector response can be non-linear at
+        high signal levels, and could result in an inaccurate correction in regions with low intensities. This addresses
+        issues in step C5 and step C2 in the procedure section.</p>
+    <p>3. Problem: Poor fit to the brightness spectrogram, or overfitting of brightness spectrogram (i.e., non unique
+        set of parameters minimizing fit).</p>
+    <p>- Perform fitting with a number of different models, each with a different number of Gaussians used to simulate
+        the spectrogram.</p>
+    <p>- Choose the model which best fits the data with the least amount of input parameters needed. This addresses
+        issues in step C8 in the procedure section.</p>
+    <h2>Time Taken</h2>
+    <p>A. Cell preparation</p>
+    <p>- Cells will need to be seeded and cultured on coverslip dishes no less than 36 hours before measurement,
+        starting from an already active cell culture.</p>
+    <p>B. Image Acquisition</p>
+    <p>- Expect to collect fluorescent images on viable cells at a rate of ~2 cells/minute.</p>
+    <p>- It is recommended to collect images on at least 300 different cells, therefore for each type of receptor or
+        ligand treatment, imaging should take on the order of 2.5 hours.</p>
+    <p>- Images must also be collected on cells expressing monomeric and tandem dimer forms of the fluorescent marker
+        which has been fused to the receptor of interest, each taking on the order of 1.5 hours.</p>
+    <p>- Finally, collecting images from a light source with constant intensity will take ~0.5 hours.</p>
+    <p>- The time taken to collect a complete set of data would therefore be (3.5+2.5x) hours where x represents the
+        number of different receptors or ligand treatments being studied.</p>
+    <p>C. Image analysis</p>
+    <p>- Analysis of the cells expressing either monomeric or tandem dimer forms of the fluorescent marker to obtain
+        values for the monomeric brightness takes 4 hours.</p>
+    <p>- Demarcating the boundaries of several hundred cells will take ~2 hours.</p>
+    <p>- Automated image segmentation and brightness and concentration calculation for several hundred cells will take
+        ~30 minutes.</p>
+    <p>- Therefore image analysis takes (4+2.5x) hours, where x represents the number of different receptors or ligand
+        treatments being studied. However, the time needed for interpretation of the final results depends on the
+        experience of the researcher and the complexity of the experiment.</p>
+    <h2>Anticipated Results</h2>
+    <p>Fluorescence images and ROI files used to generate a number of example FIF spectrograms are posted on
+        <em>Figshare</em> digital repository and is accessible from the following link:&nbsp;<a
+            href="https://figshare.com/s/77b90d060901fa8b4cb3"
+            target="_blank">https://figshare.com/s/77b90d060901fa8b4cb3</a><u>. </u></p>
+    <p>For the expected output from each of the data sets, refer to Figures 2 and 3 of the associated publication (cited
+        below).</p>
+    <p>Each dataset on the digital repository is named with its corresponding figure number in the manuscript.</p>
+    <h2>References</h2>
+    <p>1. Qian, H. &amp; Elson, E. L. On the Analysis of High-Order Moments of Fluorescence Fluctuations. Biophys J 57,
+        375-380 (1990).</p>
+    <p>2. Chen, Y., Muller, J. D., So, P. T. &amp; Gratton, E. The photon counting histogram in fluorescence fluctuation
+        spectroscopy. Biophys J 77, 553-567 (1999).</p>
+    <p>3. Herrick-Davis, K., Grinde, E., Cowan, A. &amp; Mazurkiewicz, J. E. Fluorescence Correlation Spectroscopy
+        Analysis of Serotonin, Adrenergic, Muscarinic, and Dopamine Receptor Dimerization: The Oligomer Number Puzzle.
+        Molecular pharmacology 84, 630-642 (2013).</p>
+    <p>4. Digman, M. A., Dalal, R., Horwitz, A. F. &amp; Gratton, E. Mapping the number of molecules and brightness in
+        the laser scanning microscope. Biophys J 94, 2320-2332 (2008).</p>
+    <p>5. Unruh, J. R. &amp; Gratton, E. Analysis of molecular concentration and brightness from fluorescence
+        fluctuation data with an electron multiplied CCD camera. Biophys J 95, 5385-5398 (2008).</p>
+    <p>6. Nagy, P., Claus, J., Jovin, T. M. &amp; Arndt-Jovin, D. J. Distribution of resting and ligand-bound ErbB1 and
+        ErbB2 receptor tyrosine kinases in living cells using number and brightness analysis. P Natl Acad Sci USA 107,
+        16524-16529 (2010).</p>
+    <p>7. Godin, A. G. et al. Revealing protein oligomerization and densities in situ using spatial intensity
+        distribution analysis. P Natl Acad Sci USA 108, 7010-7015 (2011).</p>
+    <p>8. Moller, T. C. et al. Oligomerization of a G protein-coupled receptor in neurons controlled by its structural
+        dynamics. Scientific reports 8, 1-15 (2018).</p>
+    <p>9. Pediani, J. D., Ward, R. J., Marsango, S. &amp; Milligan, G. Spatial Intensity Distribution Analysis: Studies
+        of G Protein-Coupled Receptor Oligomerisation. Trends Pharmacol Sci 39, 175-186 (2018).</p>
+    <p>10. Raicu, V. et al. Determination of supramolecular structure and spatial distribution of protein complexes in
+        living cells. Nat Photonics 3, 107-113 (2009).</p>
+    <p>11. Stoneman, M. R. et al. Quaternary structure of the yeast pheromone receptor Ste2 in living cells.
+        Bba-Biomembranes 1859, 1456-1464 (2017).</p>
+    <p>12. Ward, R. J., Pediani, J. D., Godin, A. G. &amp; Milligan, G. Regulation of oligomeric organization of the
+        serotonin 5-hydroxytryptamine 2C (5-HT2C) receptor observed by spatial intensity distribution analysis. The
+        Journal of biological chemistry 290, 12844-12857 (2015).</p>
+    <p>13. Ward, R. J. et al. Spatial intensity distribution analysis quantifies the extent and regulation of
+        homodimerization of the secretin receptor. Biochem J 474, 1879-1895 (2017).</p>
+    <h2>Acknowledgements</h2>
+    <p>We thank Larry Miller, Mayo Clinic, Arizona, for provision of the Secretin receptor-mEGFP-expressing cells that
+        were used to develop the current cell lines. We also thank Marwan McBride and Alexander Klug for assistance with
+        data analysis. This work was partly funded by the National Science Foundation grant PHY-1626450 (awarded to
+        V.R.), the Medical Research Council (U.K.) grant MR/L023806/1 (to G.M.), and the UWM Research Growth Initiative
+        grants 101X333 (to V.R.) and 101X340 (to I.P.).</p>
+</body>
+
+</html>

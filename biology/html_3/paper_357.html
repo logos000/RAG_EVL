@@ -1,0 +1,994 @@
+<article>
+<section>
+<h1 id="header">Quantification of mRNA ribosomal engagement in human neurons using parallel translating ribosome affinity purification (TRAP) and RNA sequencing</h1>
+<p><time datetime="2021-01-08">Published: January 8, 2021</time></p>
+<p>Deivid Carvalho Rodrigues,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> Marat Mufteev,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and James Ellis<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup></p>
+<p id="aff1"><sup>1</sup>Program in Developmental &amp; Stem Cell Biology, The Hospital for Sick Children, Toronto, ON M5G 0A4, Canada</p>
+<p id="aff2"><sup>2</sup>Department of Molecular Genetics, University of Toronto, Toronto, ON M5S 1A8, Canada</p>
+<p id="fn1"><sup>3</sup>Technical Contact</p>
+<p id="fn2"><sup>4</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:deivid.rodrigues@sickkids.ca">deivid.rodrigues@sickkids.ca</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100229">10.1016/j.xpro.2020.100229</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Translation regulation is a fundamental step in gene regulation with critical roles in neurodevelopment. Here, we describe three protocols to calculate the ribosomal-engagement levels of the transcriptome from <i>in vitro</i>-derived neuronal cells. The protocols described here include enrichment of <i>in vitro</i>-generated pluripotent-derived neurons, immunoaffinity purification of ribosome-bound RNAs, and calculation of the fraction of ribosome-engaged mRNAs. The ribosome-engaged RNA fraction is a measurement of the translation activity, and differences between genotype or growth conditions report change in translational regulation.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib13">Rodrigues et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>mRNA ribosome engagement (RE) is a proxy for translational activity</li>
+<li>Gentle cell sorting method to enrich <i>in vitro</i>-derived neurons for OMICs approaches</li>
+<li>Method for parallel TRAP and RNA-seq to quantify shifts in mRNA RE</li>
+<li>Computational pipeline to quantify changes in RE ratios between conditions</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol for parallel TRAP (translating ribosome affinity purification) and RNA-seq of pluripotent stem cell-derived neuronal cells is divided in three parts: 1) neuronal enrichment; 2) ribosome affinity purification and sequencing; and 3) computational analyses.</p>
+<p>In brief, the neuronal enrichment (first protocol) is used to purify neurons from other contaminant cell types arising from the neuronal differentiation protocol. The enrichment is achieved by negative selection using specific antibodies that recognize surface markers of non-neuronal cells in magnetic-assisted cell sorting (MACS). This is a useful protocol in that it can be used for other OMICs approaches where a purified sample of neuronal cells required.</p>
+<p>In the ribosome affinity purification and sequencing (second protocol), ribosome-associated mRNAs are recovered by the means of immunoprecipitation of GFP-tagged ribosomes and then quantified by next-generation sequencing. The population of ribosome-engaged RNAs is typically referred to as the translatome. The sequencing of input RNAs (transcriptome) done in parallel from a fraction of the same cellular lysate is used as denominator to tabulate the ribosome engagement (RE) ratios, that is achieved following the computational analyses as part of the third and final protocol.</p>
+<p>For complete details on the neuronal differentiation protocol, please refer to the original paper (<a href="#bib13">Rodrigues et al., 2020</a>). For a general description of the neuronal enrichment protocol, please refer to (<a href="#bib4">Djuric et al., 2017</a>) and (<a href="#bib13">Rodrigues et al., 2020</a>).</p>
+<p>To perform the TRAP-seq protocol, enriched neurons are transduced with the lentivirus containing the RPL10a-GFP cassette. The lentiviral plasmid pSicoR-eIFa-GFP-RPL10a can be acquired from Addgene (Cat. number 159890). For lentiviral production and transduction protocols please refer to the original paper (<a href="#bib13">Rodrigues et al., 2020</a>) or (<a href="#bib8">Hotta et al., 2009</a>).</p>
+<h3 id="sec1.1">Preparation of affinity matrix</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>The affinity matrix to purify the GFP-fused ribosomes is composed of biotinylated protein L (for increased antibody binding affinity), GFP antibodies (allowing recovery of ribosomes only in cells expressing the RPL10a-GFP transgene) and magnetic Dynabeads. The procedure takes approximately 3 h and should be performed prior to beginning the immunoaffinity purification protocol. Each purification will require 300 μL of Streptavidin MyOne T1 Dynabeads, 120 μL of biotinylated protein L (1 μg/μL in 1× PBS) and 50 μg of each of GFP antibodies clones 19C8 and 19F7. The protocol below describes how to prepare enough affinity matrix for one affinity purification sample using 1.5 mL Eppendorf tubes and the DynaMag-2 magnetic rack for beads separation (magnetic racks that accommodate 1.5 mL tubes from other companies can also be used). If you have more than one sample, scale up the volume and prepare a single affinity matrix master mix for all samples. Scaled-up affinity matrix solutions can be prepared in 15 mL tubes using the DynaMag-15 magnetic rack for beads separation.</p>
+<p>Upon receipt of the anti-GFP antibodies, record concentrations as they vary by batch. Thaw the antibodies, mix well and make 50 μg aliquots. Store the single-use antibody aliquots at −80°C.</p>
+<ol>
+<li>On the day of use, thaw one of each 50 μg antibody aliquots in ice, centrifuge the tubes at ≥12,000 × <i>g</i> in a microcentrifuge for 10 min at 4°C and transfer the supernatants to a new pre-chilled tube. Bring the volume to 1 mL by adding low-salt buffer and keep in ice.
+<ol type="a">
+<li>The antibody tube should contain 50 μg of each of the 19C8 and 19F7 antibodies in 1 mL of low-salt buffer.</li>
+</ol>
+</li>
+<li>Resuspend the Streptavidin MyOne T1 Dynabeads by pipetting up and down, and transfer 300 μL to a new 1.5 mL tube.</li>
+<li>Collect the beads using a magnetic rack at 20°C–22°C.
+<ol type="a">
+<li>Keep the tube in the magnetic rack until you see a pellet forming on the magnetic side of the tube and the solution is clear. Typically, 30 to 45 s is enough.</li>
+</ol>
+</li>
+<li>Wash the beads by taking the tube off of the magnet and resuspending in 1 mL of 1× PBS once.</li>
+<li>Collect the beads on the magnet rack again and resuspend in 180 μL of 1× PBS.</li>
+<li>Add 120 μL of biotinylated protein L (at 1 μg/μL in 1× PBS), mix well, then add 700 μL of 1× PBS to complete the volume to 1 mL.</li>
+<li>Incubate the mixture for 35 min at 20°C–22°C by using gentle end-over-end mixing (use a tube rotator at approximately 25 rpms).</li>
+<li>Collect the protein L-coated beads on the magnet and wash 5 times with 1× PBS containing 3% (weight/volume) BSA (IgG and protease-free). Use 1 mL of PBS+BSA for all washes.</li>
+<li>Carefully resuspend the washed beads in the antibody low-salt solution (1 mL – prepared in step 1) while avoiding the introduction of bubbles, and incubate for 1 h at 20°C–22°C using gentle end-over-end mixing.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> do not vortex the affinity matrix during or after antibody binding.</div>
+<ol start="10">
+<li>Wash the beads 3× with low-salt buffer using the magnetic rack. Use 1 mL of low-salt buffer for all washes. After the last wash, carefully resuspend the beads in 200 μL of low-salt buffer without introducing bubbles.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Once prepared, the affinity matrix can be stored for 2 days at 4°C. Do not vortex the affinity matrix after antibody binding. If the matrix is difficult to resuspend after the storage, carefully resuspend it by agitation on the tube rotator at 4°C.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Biotin Mouse Anti-Human CD44</td>
+<td>BD Biosciences</td>
+<td>Clone G44-26; Cat# 555477</td>
+</tr>
+<tr>
+<td>Biotin Mouse Anti-Human CD184</td>
+<td>BD Biosciences</td>
+<td>Clone 12G5; Cat# 555973</td>
+</tr>
+<tr>
+<td>Anti-Biotin MicroBeads UltraPure</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-105-637; RRID:AB_2811216</td>
+</tr>
+<tr>
+<td>FcR blocking reagent, human</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-059-901</td>
+</tr>
+<tr>
+<td>anti-GFP monoclonal antibody-19F7</td>
+<td>MSKCC/Rockefeller University</td>
+<td>Cat# Htz-GFP-19F7; <a href="https://ilab.mskcc.org/service_center/show_external/3451">https://ilab.mskcc.org/service_center/show_external/3451</a>RRID:AB_2716736</td>
+</tr>
+<tr>
+<td>anti-GFP monoclonal antibody-19C8</td>
+<td>MSKCC/Rockefeller University</td>
+<td>Cat# Htz-GFP-19C8; <a href="https://ilab.mskcc.org/service_center/show_external/3451">https://ilab.mskcc.org/service_center/show_external/3451</a>RRID:AB_2716737</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Accutase</td>
+<td>Innovative Cell Technologies</td>
+<td>Cat# AT-104</td>
+</tr>
+<tr>
+<td>Bovine serum albumin (BSA)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# A1470</td>
+</tr>
+<tr>
+<td>BSA, IgG, and protease-free</td>
+<td>Jackson ImmunoResearch</td>
+<td>Cat# 001-000-162</td>
+</tr>
+<tr>
+<td>RNasin, recombinant</td>
+<td>Promega</td>
+<td>Cat# N2515</td>
+</tr>
+<tr>
+<td>Superasin 20 U/μL</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM2694</td>
+</tr>
+<tr>
+<td>Halt protease inhibitor cocktail</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 78429</td>
+</tr>
+<tr>
+<td>Cycloheximide</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# C7698</td>
+</tr>
+<tr>
+<td>1,2-Siheptanoyl-sn-glycero-3- phosphocholine (DHPC)</td>
+<td>Avanti Polar Lipids</td>
+<td>Cat# 850306P</td>
+</tr>
+<tr>
+<td>Neurobasal medium</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 21103049</td>
+</tr>
+<tr>
+<td>N2</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 17502048</td>
+</tr>
+<tr>
+<td>B27</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 17504044</td>
+</tr>
+<tr>
+<td>Penicillin-streptomycin</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15140-122</td>
+</tr>
+<tr>
+<td>Recombinant Human/Murine/Rat BDNF</td>
+<td>Peprotech</td>
+<td>Cat# 450-02-1MG</td>
+</tr>
+<tr>
+<td>Recombinant human GDNF</td>
+<td>Peprotech</td>
+<td>Cat# 450-10-1MG</td>
+</tr>
+<tr>
+<td>cAMP</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# D0260</td>
+</tr>
+<tr>
+<td>L-Ascorbic acid</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# A4403-100MG</td>
+</tr>
+<tr>
+<td>Streptavidin MyOne T1 Dynabeads</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 65601</td>
+</tr>
+<tr>
+<td>HEPES KOH (pH 7.3) 1 M</td>
+<td>Sigma-Aldrich</td>
+<td>H0887</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 85124</td>
+</tr>
+<tr>
+<td>DTT</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# R0861</td>
+</tr>
+<tr>
+<td>Laminin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# L2020-1MG</td>
+</tr>
+<tr>
+<td>Biotinylated protein L</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# PI-29997</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Large cell columns</td>
+<td>Milteny Biotec</td>
+<td>Cat# 130-042-202</td>
+</tr>
+<tr>
+<td>OctoMACS separator</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-042-109</td>
+</tr>
+<tr>
+<td>MACS MultiStand</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-042-303</td>
+</tr>
+<tr>
+<td>RNA nanoprep kit</td>
+<td>Agilent</td>
+<td>Cat# 400753</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>TRAP-seq and RNA-seq datasets</td>
+<td>Original paper (<a href="#bib13">Rodrigues et al., 2020</a>)</td>
+<td>Gene Expression Omnibus (<a href="http://www.ncbi.nlm.nih.gov/geo/">http://www.ncbi.nlm.nih.gov/geo/</a>): GSE123753</td>
+</tr>
+<tr>
+<td>All code necessary to perform the computational analysis is available at github</td>
+<td><a href="https://github.com/JellisLab/translatome-neurodevo">https://github.com/JellisLab/translatome-neurodevo</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pSicoR-EF1α-GFP-RPL10a</td>
+<td>Addgene</td>
+<td>Cat# 159890 - pending</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Cutadapt version 1.10</td>
+<td>(<a href="#bib11">Martin, 2011</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>HISAT2 version 2.1.0</td>
+<td>(<a href="#bib9">Kim et al., 2015</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>IGV version 2.3.69</td>
+<td>(<a href="#bib14">Thorvaldsdóttir et al., 2013</a>)</td>
+<td><a href="https://software.broadinstitute.org/software/igv/home">https://software.broadinstitute.org/software/igv/home</a></td>
+</tr>
+<tr>
+<td>STAR version 2.6.0c</td>
+<td>(<a href="#bib5">Dobin et al., 2013</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>QAPA version 1.2.0</td>
+<td>(<a href="#bib6">Ha et al., 2018</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Sailfish version 0.10.0</td>
+<td>(<a href="#bib12">Patro et al., 2014</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>DESeq2</td>
+<td>(<a href="#bib10">Love et al., 2014</a>)</td>
+<td><a href="http://bioconductor.org/packages/3.6/bioc/html/DESeq2.html">http://bioconductor.org/packages/3.6/bioc/html/DESeq2.html</a></td>
+</tr>
+<tr>
+<td>featureCounts from subread version 1.5.3</td>
+<td>(<a href="#bib16">Liao et al., 2014</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Cell scrapers</td>
+<td>Sarstedt</td>
+<td>Cat# 83.1832</td>
+</tr>
+<tr>
+<td>100 μm cell strainers</td>
+<td>BD Biosciences</td>
+<td>Cat# 352360</td>
+</tr>
+<tr>
+<td>Minicentrifuge</td>
+<td>Eppendorf</td>
+<td>Model 5415D</td>
+</tr>
+<tr>
+<td>NanoDrop 2000C spectrophotometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Model ND-2000C</td>
+</tr>
+<tr>
+<td>Refrigerated centrifuge</td>
+<td>Eppendorf</td>
+<td>Model 5430R</td>
+</tr>
+<tr>
+<td>RNase-free 1.5 mL microcentrifuge tube</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM12400</td>
+</tr>
+<tr>
+<td>RNase-free 50 mL conical tubes</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM12501</td>
+</tr>
+<tr>
+<td>RNase-free 1,000 μL filter tips</td>
+<td>Sarstedt</td>
+<td>Cat# 70.762.211</td>
+</tr>
+<tr>
+<td>RNase-free 200 μL filter tips</td>
+<td>VWR</td>
+<td>Cat# 89174-526</td>
+</tr>
+<tr>
+<td>RNase-free 20 μL filter tips</td>
+<td>VWR</td>
+<td>Cat# 89174-524</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>iPSC line #37 (WT)</td>
+<td>(<a href="#bib3">Cheung et al., 2011</a>)</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>Solutions</caption>
+<thead>
+<tr>
+<th>Cell lysis buffer</th>
+<th>Final concentrations</th>
+<th>Amount to 500 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES KOH (pH 7.3)</td>
+<td>20 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>KCl</td>
+<td>150 mM</td>
+<td>37 mL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub>
+</td>
+<td>5 mM</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>1% (vol/vol)</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O (RNase-free)</td>
+<td>n/a</td>
+<td>445.5 mL</td>
+</tr>
+<tr>
+<td>∗Halt protease inhibitor cocktail 100×</td>
+<td>1×</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗DTT 1 M</td>
+<td>0.5 mM</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗Cycloheximide 100 mg/mL</td>
+<td>100 μg/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗rRNasin</td>
+<td>10 μL/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗SuperasIn</td>
+<td>10 μL/mL</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">∗Immediately before use add the Halt protease inhibitor cocktail, DTT, cycloheximide, rRNasin, and SuperasIn to a working aliquot at final concentrations as described above.</p>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for several months.</div>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>High-salt buffer</th>
+<th>Final concentrations</th>
+<th>Amount to 500 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES KOH (pH 7.3) 1 M</td>
+<td>20 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>KCl 2 M</td>
+<td>350 mM</td>
+<td>88 mL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> 1 M</td>
+<td>5 mM</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>1% (vol/vol)</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O (RNase-free)</td>
+<td>n/a</td>
+<td>394.5 mL</td>
+</tr>
+<tr>
+<td>∗DTT 1 M</td>
+<td>0.5 mM</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗Cycloheximide 100 mg/mL</td>
+<td>100 μg/mL</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for up to several months. Immediately before use add DTT and cycloheximide to a working aliquot at final concentrations as described above.</div>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Low-salt buffer</th>
+<th>Final concentrations</th>
+<th>Amount to 500 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES KOH (pH 7.3) 1 M</td>
+<td>20 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>KCl 2 M</td>
+<td>150 mM</td>
+<td>37 mL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> 1 M</td>
+<td>10 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>1% (vol/vol)</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O (RNAse-free)</td>
+<td>n/a</td>
+<td>443 mL</td>
+</tr>
+<tr>
+<td>∗DTT 1 M</td>
+<td>0.5 mM</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗Cycloheximide 100 mg/mL</td>
+<td>100 μg/mL</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This buffer can be stored at 4°C for up to several months. Immediately before use add DTT and cycloheximide to a working aliquot at final concentrations as described above.</div>
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Neuronal media</th>
+<th>Final concentrations</th>
+<th>Amount to 500 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Neurobasal media</td>
+<td>N/A</td>
+<td>480 mL</td>
+</tr>
+<tr>
+<td>N2 100×</td>
+<td>1×</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>B27 50×</td>
+<td>1×</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>Pen-Strep mix 100×</td>
+<td>1×</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>∗Laminin 1 mg/mL</td>
+<td>1 μg/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗BDNF 100 μg/mL</td>
+<td>10 ng/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗GDNF 100 μg/mL</td>
+<td>10 ng/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗Ascorbic acid 200 μg/mL</td>
+<td>200 ng/mL</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>∗cAMP 100 mM</td>
+<td>10 μM</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">∗ Laminin, BDNF, GDNF, Ascorbic acid, and cAMP are labile compounds. Complete neuronal media should be made immediately before use by addition of these compounds at final concentrations as described above.</p>
+<div class="note">
+<span class="note-title">Note:</span> Neuronal media containing Neurobasal media, N2, and B27 can be stored at 4°C for up to 2 weeks.</div>
+<h3 id="sec2.1">Reconstitute special reagents</h3>
+<p>DHPC (1,2-diheptanoyl-sn-glycero-3-phosphocholine): Used to preserve the native conformation of proteins and facilitate antibody-antigen detection. Reconstitute DHPC in RNase-free water to 300 mM. Warm the DHPC powder to 20°C–22°C before reconstitution. Add water and keep at 20°C–22°C with occasional vortexing for approximately 1 h until full solubilization. Once reconstituted in water the solution is stable for up to 1 week if stored at 4°C. It is critical to store the solution in a glass container.</p>
+<p><b>Cycloheximide:</b> resuspend 100 mg of cycloheximide in 1 mL of methanol. Store it at 4°C for up to 1 day. Caution, cycloheximide is toxic and dangerous to the environment. Collect all waste and unused solutions and follow your institutional guidelines for proper disposal.</p>
+<p><b>DTT:</b> Reconstitute DTT to 1 M in RNase-free water. Filter-sterilize the solution and store it at −20°C in single-use aliquots. Caution when handling this reagent, DTT is a harmful irritant. DTT solution can be stored for several months.</p>
+<p><b>Protein L:</b> Reconstitute protein L as recommended by the manufacturer. Once it is reconstituted, protein L should be stored in single-use aliquots at −80°C. Aliquots can be stored for up to 3 months.</p>
+<h3 id="sec2.2">Equipment</h3>
+<ul>
+<li>Cell scrapers (e.g., Sarstedt, cat. no. 83.1832)</li>
+<li>Minicentrifuge (Eppendorf, model 5415D, or equivalent)</li>
+<li>NanoDrop 2000C spectrophotometer (Thermo Scientific, cat. no. ND-2000C)</li>
+<li>Refrigerated centrifuge (Eppendorf, model 5430R, or equivalent that can reach 20,000 × <i>g</i>, with rotor for 1.5 mL microcentrifuge tubes)</li>
+<li>RNase-free 1.5 mL microcentrifuge tubes</li>
+<li>RNase-free 50 mL conical tubes</li>
+<li>RNase-free 1,000 μL filter tips</li>
+<li>RNase-free 200 μL filter tips</li>
+<li>RNase-free 20 μL filter tips</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Neuronal enrichment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<p>After neuronal differentiation, non-neuronal cells (glia and undifferentiated neural progenitor cells) need to be depleted. This is done by negative selection using specific antibodies that recognize markers of non-neuronal cells (CD44 recognizes glial cells and neural stem cells, and CD184 recognizes neural stem cells) in magnetic-assisted cell sorting (MACS). This method is gentler than fluorescence-activated cell sorting (FACS) for cell enrichment since it uses gravity-based flow through a magnetic cartridge where cells bound to the antibody are trapped.</p>
+<p>In this protocol, neurons are differentiated from iPSC-derived neuronal progenitor cells for 3 weeks using a dual-SMAD inhibition method (<a href="#bib15">Tomishima, 2012</a>), enriched following the protocol below, and re-seeded for 1 more week in neuronal differentiation media for a total of 4 weeks of differentiation. For details of the differentiation protocol please refer to the original paper (<a href="#bib13">Rodrigues et al., 2020</a>).</p>
+<div class="note">
+<span class="note-title">Note:</span> before you start, cool the centrifuge to 4°C and cool a PBS+0.5% BSA (PBS+BSA) solution in ice. Place an ice bucket and tubes in the biosafety cabinet (BSC) to pre-chill the tubes. All centrifugation steps are done at 300 × <i>g</i> and 4°C. See protocol for centrifugation times. The tubes containing cells should be kept in ice at all times between steps unless stated differently. PBS+BSA solution should always be used ice-cold.</div>
+<p>Before resuspending the cells from centrifugations, it is important to “break” the cell pellets by flicking the tubes with your fingers. This step makes cell resuspension easier, gentler, and faster.</p>
+<p>Volumes below are recommended for cells growing in 10 cm dishes. Adjust volumes for other culture formats accordingly.</p>
+<ol>
+<li>Lift cells from culture plates using Accutase.
+<ol type="a">
+<li>Wash the cells with 5 mL of PBS at 20°C–22°C once and add 3 mL of Accutase. Incubate for 10 min at 37°C in 5% CO<sub>2</sub><sup>.</sup>
+<ol type="i">
+<li>During incubation, pre-wet the cell strainer (100 μm) with the ice-cold PBS+BSA solution. This can be done by placing the cell strainer onto a 50 mL plastic tube (Falcon tube) and pipetting 500 μL of the solution into the reservoir. Discard the tube and effluent.</li>
+</ol>
+</li>
+<li>After the Accutase incubation, add 7 mL of the ice-cold PBS+BSA solution to the cells, transfer the content to an ice-cold 15 mL tube and pipette the cell suspension up and down multiple times until complete cell dissociation. It is important to keep the tube in ice while you pipette.</li>
+<li>Centrifuge the cell suspension for 10 min to wash the cells.</li>
+<li>Resuspend the cell pellet by adding 10 mL of ice-cold PBS+BSA solution and pipette up and down until complete cell dissociation.</li>
+<li>Place the moistened cell strainer on a new 50 mL tube and pipette the cell suspension. Allow cells to flow through. Determine the total cell number and concentration.</li>
+</ol>
+</li>
+<li>Cell labeling
+<ol type="a">
+<li>Once determined the cell counts, centrifuge the cell suspension for 5 min.</li>
+<li>Resuspend the cell pellet in 40 μL of the PBS+BSA solution per 10<sup>7</sup> cells.
+<ol type="i">
+<li>Adjust the volumes accordingly if you have more or less cells.</li>
+<li>The high cell density at this step is important for the success of the protocol, therefore it is key to flick the tubes and break the cell pellets before resuspending the cells, especially when you will be using micropipettes to resuspend cells.</li>
+</ol>
+</li>
+<li>Add 20 μL of the FcR Blocking Reagent and Biotin-conjugated CD44 and CD184 antibodies per 10<sup>7</sup> cells.
+<ol type="i">
+<li>The final incubation volume per 10<sup>7</sup> cells will be 100 μL (40 μL cells + PBS+BSA, 20 μL of FcR Blocking Reagent, and 20 μL of each Biotin-conjugated CD44 and CD184 antibodies). Therefore, the dilution factor for each antibody is 1:5.</li>
+<li>Adjust the volumes accordingly if you have more or less cells while maintaining the antibody dilution factor to 1:5.</li>
+</ol>
+</li>
+<li>Mix well and incubate the antibody and cell suspension for 15 min in the refrigerator at 4°C.
+<ol type="i">
+<li>As per manufacture’s recommendations and to increase antibody’s binding specificity, it is important that this incubation be carried in the refrigerator instead of ice.</li>
+</ol>
+</li>
+<li>Wash the cells twice to remove unbound antibodies by adding 5 mL of PBS+BSA solution and centrifuge for 5 min.
+<ol type="i">
+<li>Add 5 mL of cold PBS+BSA and centrifuge at 300 × <i>g</i> for 5 min at 4°C. Discard the supernatant, flick the tubes to break the cell pellets and repeat this step for a second wash.</li>
+</ol>
+</li>
+<li>At the end of the second wash, resuspend the cells in 60 μL of PBS+BSA solution per 10<sup>7</sup> cells.</li>
+<li>Add 20 μL of the streptavidin magnetic MicroBeads per 10<sup>7</sup> cells. Mix well and incubate for 15 min in the refrigerator at 4°C.
+<ol type="i">
+<li>Mix well the MicroBeads solution flask before adding to the cell suspension.</li>
+</ol>
+</li>
+<li>Wash the cells twice to remove unbound MicroBeads by adding 5 mL of PBS+BSA solution and centrifuge for 5 min.
+<ol type="i">
+<li>Add 5 mL of cold PBS+BSA and centrifuge at 300 × <i>g</i> for 5 min at 4°C. Discard the supernatant, flick the tubes to break the cell pellets and repeat this step for a second wash.</li>
+</ol>
+</li>
+<li>Aspirate the supernatant and resuspend the cells (now attached to the MicroBeads) in 500 μL of PBS+BSA solution per 10<sup>7</sup> cells. Keep cells in ice.
+<ol type="i">
+<li>The cell suspension should be brownish.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Magnetic separation – This step should be performed at 20°C–22°C
+<ol type="a">
+<li>Place the Large cell column in the magnetic holder (MACS MultiStand) inside the BSC. Align a 15 mL tube under the column to collect the flow through.
+<ol type="i">
+<li>The OctoMACS separator allows use of 8 magnetic columns at the same time. Alternatively, the MiniMACS separator can be used if only one sample is processed at one given time.</li>
+<li>Use 1 Large cell column per 2 × 10<sup>7</sup> cells (in 500 μL – from step 2.i.). Do not add more than this number of cells otherwise the column can clog. If you have more cells, split the separation across multiple Large cell columns.</li>
+</ol>
+</li>
+<li>Pre-wet the column by adding 500 μL of PBS+BSA solution. Let the solution run by gravity and discard the collector tube.</li>
+<li>Apply 500 μL of the cell suspension (containing 2 × 10<sup>7</sup> cells) onto the column and let the suspension run by gravity. <a href="#troubleshooting">Troubleshooting 1</a>
+<ol type="i">
+<li>The flow through contains the neuronal fraction.</li>
+</ol>
+</li>
+<li>Wash the column by adding 500 μL of the PBS+BSA solution three times to collect unbound neurons still on the column.
+<ol type="i">
+<li>The final flow through volume containing the neurons should be of approximately 2 mL (500 μL of cell suspension plus 1.5 mL of PBS+BSA buffer).</li>
+</ol>
+</li>
+<li>Collect the flow through fractions (combine the multiple fractions from the same sample in case you split in multiple columns) and determine the cell concentration.</li>
+<li>Centrifuge the flow through and resuspend the cells in neuronal media.</li>
+<li>Seed the neurons on pre-coated plates at high cell densities to increase survival. The optimal density needs to be determined empirically for each neuronal line.
+<ol type="i">
+<li>For detail on pre-coating the plates before seeding the neurons, please refer to the original paper (<a href="#bib13">Rodrigues et al., 2020</a>).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> while we prefer to use Accutase for cell detachment as it is more efficient, gentler, and does not require an inhibition step, other enzymes (e.g., Trypsin) can also be used in place. However, proper optimization of the detachment step and its suitability in the context of this protocol (e.g., preservation of surface epitopes for antibody binding) is recommended.</div>
+<div class="note">
+<span class="note-title">Note:</span> the neuronal yield at the end of the enrichment protocol depends on the proportion of neurons versus other non-neuronal cells at the beginning of the protocol. In our laboratory, we typically yield 30 to 50% neurons from the total number of cells at the beginning of the protocol.</div>
+<h3 id="sec3.2">Cell transduction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>After enrichment, neurons should be transduced with the lentivirus containing the GFP-RPL10a cassette. Lentivirus production and transduction detailed protocols have been published previously (<a href="#bib8">Hotta et al., 2009</a>; <a href="#bib13">Rodrigues et al., 2020</a>)</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> lentiviral preparations should be handled with extreme caution. Please follow your institution’s biosafety recommendations.</div>
+<ol start="4">
+<li>Two days after enrichment (3 weeks plus 2 days of differentiation), change the media to new neuronal media (see neuronal media formulation in the <a href="#materials-and-equipment">Materials and equipment</a> section) excluding the growth factors (BDNF, cAMP, GDNF and IGF1).</li>
+<li>Add the lentivirus preparation at the end of the day.</li>
+<li>The next day in the morning change the media to new regular neuronal media (containing growth factors) and let the neurons differentiate for 4 more days to complete 4 weeks of differentiation. <a href="#troubleshooting">Troubleshooting 2</a>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is highly recommended that the cells used in the different experimental conditions are transduced with lentivirus produced in the same batch and with the same multiplicity of infection (MOI). We find that for iPSC-derived neurons, MOI ranges from 2 to 4 work well.</div>
+<div class="note">
+<span class="note-title">Note:</span> The GFP-RPL10a fusion protein will show a diffuse cytoplasmic distribution, but some concentration can be observed at the nucleolus as it is the site for ribosomal biogenesis (<a href="#fig1">Figure 1</a>).</div>
+<h3 id="sec3.3">Lysate preparation</h3>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Example of neuronal culture at 4 weeks of differentiation after transduction with the RPL10a-GFP transgene</div>
+<p>On the left, immunofluorescence signal in orange shows MAP2 as a marker of neuronal cells and on the right signal in green shows GFP to track the RPL10a-GFP fusion protein. Note the fusion protein shows a diffused distribution in the cytoplasm and concentrated nucleolus foci (yellow arrowheads). Scale bar, 10 μm.</p>
+</figcaption>
+</figure>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<p>The steps below describe the TRAP protocol (<a href="#bib7">Heiman et al., 2008</a>) optimized for <i>in vitro</i>-derived neuronal cells. A minimal number of 2 × 10<sup>7</sup> neurons is recommended.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> An important aspect of the protocol is the stabilization of the polysome complex to avoid ribosomal run-off. This is important in order to collect ribosome-bound RNAs and accurately reflect the translational state of the cell type of interest. This will not affect the quality of the RNAs collected for the input samples. In this protocol, polysomes are stabilized by a pre-treatment of the cells with cycloheximide (CHX) for 10 min and by the presence of magnesium in the lysis buffer. Another important factor to avoid ribosome run-off in to keep the cells and lysate in ice or at 4°C at all times. Preferably, cell washes, lysis, and incubations should be carried in a cold room using pre-chilled pipets.</div>
+<p>It is worth considering that the use of CHX, a protein synthesis inhibitor, can have adverse effects to the cell’s biology and caution should be taken when planning and drawing conclusions from TRAP-seq experiments. For example, CHX treatment for longer than 2 h is known to inhibit Nonsense-mediated RNA decay (NMD), which can affect abundance of NMD-targeted mRNAs, particularly mRNAs bearing long 3ʹUTRs. While we do not expect this effect to have a major impact in the TRAP-seq protocol, given that cells are treated with CHX for only 10 min, changes in mRNA abundance across experimental conditions should be observed and validated in the absence of CHX.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make all efforts to maintain RNase-free technique throughout the protocol. This involves thorough decontamination of surfaces and equipment with RNase decontamination reagents such as RNase-Zap (Sigma). We typically use a home-made RNase decontamination reagent containing 0.1 M NaOH and 0.1% SDS in RNase-free water. Use RNase-free certified plasticware and reagents, and aerosol-resistant tips. Gloves should be changed frequently. Keeping samples in ice or at 4°C will also help in minimizing RNase activity.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure all reagents, including the affinity matrix (see above), are ready and ice-cold before used. All steps below should preferably be performed in the cold room using pre-chilled pipets and carried as quickly as possible.</div>
+<ol start="7">
+<li>Add 100 μg/mL of CHX to the cells in culture media and return plates to the incubator for 10 min.</li>
+<li>Wash the cells 3× with 10 mL of ice-cold PBS containing 100 μg/mL of CHX.
+<ol type="a">
+<li>Keep the plates on ice, and aspirate as much PBS as possible after each wash.</li>
+<li>Collect all CHX waste for proper disposal. Follow your institution guidelines.</li>
+</ol>
+</li>
+<li>Add 1 mL of the ice-cold cell lysis buffer per 10 cm dish and incubate the plate on ice for 10 min.</li>
+<li>Scrape the cells and cellular debris from the plates using a pre-chilled cell scraper, and transfer to a pre-chilled 1.5 mL tube.</li>
+<li>Homogenize the sample on ice by passing through pre-chilled 23- then 25-gauge needles 10× each. Avoid introducing bubbles to the lysate.</li>
+<li>At this point, separate 10% of the lysate for RNA-seq, this will be the input sample. <a href="#troubleshooting">Troubleshooting 3</a>.
+<ol type="a">
+<li>Add the input lysate sample to a separate 1.5 mL tube and keep in the refrigerator set for 4°C. The total RNA from input and IP samples will be purified together to ensure that both samples are incubated for the same duration.</li>
+</ol>
+</li>
+<li>Centrifuge the remainder 90% lysate at 2,000 × <i>g</i> for 10 min at 4°C.</li>
+<li>Transfer the supernatant to a new pre-chilled tube and add 1/9 volume of DHPC 300 mM (reconstituted in water).
+<ol type="a">
+<li>For example, add 100 μL for a 900 μL sample. <a href="#troubleshooting">Troubleshooting 4</a>.</li>
+</ol>
+</li>
+<li>Mix the sample by inverting the tube and incubate in ice for 5 min.</li>
+<li>Centrifuge the sample at 20,000 × <i>g</i> for 10 min at 4°C, and transfer the supernatants to new pre-chilled tubes and proceed to IP.</li>
+</ol>
+<h3 id="sec3.4">Immunoprecipitation and RNA purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> if possible, this step should also be carried out in the cold room. Use pre-chilled solutions, tips, and magnetic rack.</div>
+<ol start="17">
+<li>Gently resuspend the pre-made affinity matrix and add 200 μL to each supernatant sample (from step 16).
+<ol type="a">
+<li>Make sure the affinity matrix is thoroughly resuspended by pipetting up and down before use.</li>
+</ol>
+</li>
+<li>Incubate samples at 4°C for 1 h with end-over-end rotation.</li>
+<li>Spin the tubes briefly for up to 5 s at maximum speed in a microcentrifuge at 4°C to collect beads from the cap of the tubes.</li>
+<li>Collect the beads using the magnetic rack.</li>
+<li>Add 1 mL of high-salt polysome buffer wash buffer to the beads.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not mix the sample by pipetting up and down as you may lose beads attached to the pipet tip. Instead, to wash the beads put the tube in the rack and after the beads are collected on the magnetic side quickly invert the tube 180° and put it back in the magnetic rack.</div>
+<p>This step washes out the beads as they go through the column of buffer, is gentler to the coated- beads and avoids introduction of bubbles. Do this step 3× for each wash.</p>
+<ol start="22">
+<li>Repeat the wash steps for a total of 4× using 1 mL of high-salt polysome wash buffer.</li>
+<li>After the fourth wash, remove all remaining wash buffer, remove the tubes from the magnetic rack and bring the samples to 20°C–22°C. At this stage, remove the input RNA samples from refrigerator and bring these samples to 20°C–22°C as well. IP and input samples are to be processed in the same way from here on.</li>
+<li>To extract RNA from the IP sample, resuspend the beads in 100 μL of Nanoprep lysis buffer with β-mercaptoethanol by vortexing. Collect the beads from the cap of the tube by brief centrifugation. For the input sample, simply add 100 μL of Nanoprep lysis buffer with β- mercaptoethanol and vortex.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The lysis buffer will be diluted to 0.5× in the input samples. In our experience, this does not lead to detrimental effects on the yields or quality of the recovered RNAs. Please see note below on alternative RNA extraction kits.</div>
+<ol start="25">
+<li>Incubate the samples for 10 min at 20°C–22°C.</li>
+<li>For the IP sample, separate the RNA from the beads using the magnetic rack (equilibrated to 20°C–22°C), and transfer the supernatant to a new tube.</li>
+<li>Proceed to RNA extraction and clean-up of the IP and input samples following the Nanoprep kit instructions. Make sure to perform the optional in-column DNase digestion step.</li>
+<li>Quantify the RNA samples using fluorescent-based methods (using Qubit for example). <a href="#troubleshooting">Troubleshooting 5</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We typically recover from 200 to 800 ng of RNA from the IP samples (90% of lysate) and 100 to 300 ng of RNA from the input samples (10% of lysate), when starting with 2 × 10<sup>7</sup> neurons.</div>
+<ol start="29">
+<li>Assay the integrity of the RNA on a Bioanalyzer 2100 using an RNA Pico/Nano chip. <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Other RNA purification kits can be used. Only make sure that the lysis buffer of the alternative kit contains guanidine thiocyanate to release the RNA from the affinity matrix.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Purified RNA samples can be kept frozen in the RNA elution buffer at −80°C for several years.</div>
+<div class="note">
+<span class="note-title">Note:</span> IP and input samples need to be ribosome-depleted before sequencing. Use standard methods for library preparation and sequencing.</div>
+<div class="note">
+<span class="note-title">Note:</span> We use the TruSeq Stranded Total RNA Library Prep kit for sequencing library preps. But we recognize that other sequencing library prep kits designed for total RNA can be used. Just be sure to include a ribosomal depletion step.</div>
+<p>The sample with the least concentration is used to calibrate the amount of RNA used for all other samples. We have had success sequencing samples with as low as 200 ng of RNA. It is not necessary to match RNA amounts between IP and input samples, but libraries for IP and input samples across different experimental conditions should be made with the same amount of RNA. Additionally, all libraries should be made and sequenced together to avoid introduction of sequencing batch effects.</p>
+<h3 id="sec3.5">Computational analysis: estimate of ribosomal engagement from sequencing data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> &lt;1 week</div>
+<p>The steps below describe the computational analyses to be carried out after sequencing is completed. Raw read files from the TRAP-seq (ribosome-engaged RNAs) and RNA-seq (input) are processed to provide estimations of the ratios of ribosome-engaged RNAs at the gene level per cell type, genotype, or condition. Ratios can then be compared across experimental samples to offer an estimate of changes in ribosome engagement or translation regulation.</p>
+<div class="note">
+<span class="note-title">Note:</span> All code required for computational analysis are available at github: (<a href="https://github.com/JellisLab/translatome-neurodevo">https://github.com/JellisLab/translatome-neurodevo</a>).</div>
+<ol start="30">
+<li>Estimate gene abundance based on transcripts quantified using Salmon program.
+<ol type="a">
+<li>Download the RNA sequencing data and perform preliminary quality control of reads using FASTQC.</li>
+<li>Download the most recent version of transcript sequences from Ensembl in FASTA format.
+<ol type="i">
+<li>At this point, you can choose to use mRNA or lncRNA sequences from Ensembl</li>
+</ol>
+</li>
+<li>Build an index for the obtained transcriptome.</li>
+<li>Quantify each transcript abundance using the index and RNA sequencing data.</li>
+<li>Sum estimated number of reads for all isoforms of the same gene to obtain the abundance at the gene level. We refer to this number as raw counts.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Further steps can be performed for quantifications of mRNA at the isoform level. For example, quantification of 3ʹUTRs can be done with sequences constructed for refined annotations of polyadenylation sites using the QAPA method described by <a href="#bib6">Ha et al. (2018)</a>.</div>
+<ol start="31">
+<li>Check the quality of quantified samples.
+<ol type="a">
+<li>Transform raw counts with variance stabilizing transformation using DESeq2.</li>
+<li>Calculate pairwise Pearson’s correlation and plot the principal component analysis (PCA).
+<ol type="i">
+<li>Replicates of the same cell type and condition generally cluster together and have higher correlations.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Estimate ribosomal engagement.
+<ol type="a">
+<li>Normalize raw counts for the same cell type and condition for both assays (TRAP and input) using DESeq2 size factors. All biological replicates should be included for the estimation of size factors.</li>
+<li>Estimate ribosomal engagement as a ratio between TRAP and input DESeq2 normalized counts for each biological replicate separately. Match biological replicates of parallel TRAP and input generated from the same lysate to minimize batch effects.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Below, the meaning of ribosomal engagement estimated as a ratio of TRAP and input counts is provided.</div>
+<p>Consider the connection between sequencing counts and number of mRNA molecules for TRAP and input samples for gene X:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si1.jpg" alt="Si1.jpg"> (Equation 1)</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si2.jpg" alt="Si2.jpg"> (Equation 2)</p>
+<p>Where <i>L</i> is the total number of counts in the sequencing library, β<sub>X</sub> is the fraction of mRNA molecules for gene X bound by ribosomes, <i>R</i><sub>X</sub> is the number of mRNA molecules for gene X before immunoprecipitation of GFP-tagged ribosomes, and <i>l</i><sub>X</sub> and <i>l</i><sub>R</sub> stand for the length of gene X and the length of a read. The fraction on the right-hand side represents the fraction of total number of counts from <i>L</i> that correspond to gene X. The sum in the denominator is taken over all genes.</p>
+<p>Now, we can estimate RE:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si3.jpg" alt="Si3.jpg"> (Equation 3)</p>
+<p>Ultimately, we aim to estimate the fraction of mRNAs bound by ribosomes <i>β</i><sub>X</sub>. The scaling factor <i>f</i> common between genes does not affect comparisons within the cell</p>
+<div class="note">
+<span class="note-title">Note:</span> The scaling factor <i>f</i> masks any global differences in <i>β</i><sub>X</sub> between cell types A and B. We define global shift as a change in medians of <i>β</i><sub>X</sub>. However, the scaling factor <i>f</i> can be eliminated using a reference gene (Equation <a href="#fd4">4</a>). Then, a shift in β<sub>X</sub> for a reference gene, determined with an alternative technique, for example with polysome profiling, can in principle be used to measure global shifts in fraction of mRNAs bound by ribosomes <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si4.jpg" alt="Si4.jpg"> (Equation <a href="#fd5">5</a>). Usage of multiple reference genes is desirable to overcome noise in measurements.</div>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si5.jpg" alt="Si45jpg"> (Equation 4)</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si6.jpg" alt="Si6.jpg"> (Equation 5)</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Raw estimated ribosomal engagement can have variation in the range of values between replicates. It increases noise in the estimate of the mean RE and skews the comparison of RE between cell types. Since this variation preserves the order of genes, based on high spearman correlation between biological replicates, we propose to eliminate scaling bias using quantile normalization (<a href="#fig2">Figure 2</a>).</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Example of ribosomal engagements values and the effect of quantile normalization</div>
+<p>On the left, boxplot shows ribosomal engagement for the biological replicates of induced pluripotent stem cells (iPSC) and neural progenitor cells (NPC) before (top row) and after quantile normalization (bottom row). On the right, the scatterplot compares ribosomal engagement of genes between iPSC and NPC before and after quantile normalization.</p>
+</figcaption>
+</figure>
+<ol start="33">
+<li>Correct ribosomal engagement to remove scaling bias.
+<ol type="a">
+<li>Adjust ranges of ribosomal engagement of all biological replicates and cell types together using the quantile normalization technique. Match all quantiles between the samples.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If scaling bias is absent, then the interaction term approach in DESeq2 (design= ~ assay + celltype + assay:celltype) to estimate <i>log2</i> fold-changes in ribosomal engagement between cell types is sufficient and desirable. However, if scaling bias is present, DESeq2 estimated <i>log2</i> fold-changes are skewed. Therefore, we propose to estimate the significance of ribosomal engagement shifts with Z- score approach.</div>
+<ol start="34">
+<li>Estimate significance of shifts in ribosomal engagement between cell types and conditions
+<ol type="a">
+<li>Calculate the mean and standard error of quantile normalized ribosomal engagement from biological replicates.</li>
+<li>Estimate Z-score using mean and standard error.</li>
+</ol>
+</li>
+</ol>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si7.jpg" alt="Si7.jpg"> (Equation 6)</p>
+<p>Where <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si8.jpg" alt="Si8.jpg"> is an estimate of a mean and <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/357-Si9.jpg" alt="Si9.jpg"> is an estimate of a standard error of a ribosomal enrichment for some gene in cell type A. Both statistics are estimated from biological replicates.</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<h3 id="sec4.1">Neuronal enrichment</h3>
+<p>The total number of neurons recovered after the enrichment protocol will vary depending on the starting number of neurons and the heterogeneity of the sample. In our laboratory we typically recover 30%–50% of the total number of cells in the beginning</p>
+<h3 id="sec4.2">Affinity purification of ribosome-engaged mRNAs</h3>
+<p>Recovery of RNAs after the IP step is the limiting factor for the success of the protocol. We typically use a minimum of 2 × 10<sup>7</sup> neurons per experiment. With this minimal number of cells, it is possible to split the cell lysate into two samples: one for IP (90% of the lysate) and a second for input (10% of lysate) measurements.</p>
+<h3 id="sec4.3">Computational analysis</h3>
+<p>Using this technique, it is possible to detect and quantify on average 13,000 genes per cell type. The majority of quantified genes (98%) have a coefficient of variation for quantile normalized ribosomal engagement lower than 0.5.</p>
+<p>Importantly, detection of mitochondrial genes is not expected using the TRAP-seq technique since RPL10a does not participate in mitochondrial mRNA translation. The ribosomal-engagement of mitochondrial genes (noise) is therefore typically in the bottom 0.1% of all detected genes, and points to high specificity and low background of the IP procedure.</p>
+<p>This technique is suitable to detect changes in translational activity between cell types, genotypes, or in different growth conditions.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The technique described here is not suitable to detect changes in translation regulation where the mechanism involves changes in the density of ribosomes per mRNA molecule. The IP procedure will co-elute most ribosome-engaged mRNAs regardless of the number of GFP-fused ribosomes associated with it (<a href="#bib13">Rodrigues et al., 2020</a>). Therefore, the translational mechanism inferred from changes detected using this technique is the changes in the fraction of ribosome-engaged mRNAs for each gene. For changes in the number of ribosomes per mRNA molecule, polysome profiling followed by sequencing of the fractions is advisable (<a href="#bib1">Blair et al., 2017</a>).</p>
+<p>As mentioned above, this technique is not suitable to detect changes in translation regulation of mitochondrial mRNAs.</p>
+<p>The cell lysis and polysome solubilization conditions, previously optimized by Heyman (<a href="#bib7">Heiman et al., 2008</a>) were formulated and validated to allow solubilization of cytosolic and rough endoplasmic reticulum-bound polysomes under nondenaturing conditions. However, we have not specifically compared ribosome engagement of mRNAs coding for proteins with or without endoplasmic reticulum-signal peptides. Therefore, the presented protocol is best suited for comparison of changes in ribosome engagement of the same mRNAs between different experimental conditions or cell types and, insofar as solubilization conditions are maintained across samples, relative comparisons can be made.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Cell flow is too slow (step 3.c).</p>
+<p>Reason: air bubbles forming under the liquid column atop of the magnetic column.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Using a 1 mL pipet tip, pipet gently up and down to push the bubble away.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>High cell death after transduction (step 6).</p>
+<p>Reason: High lentiviral MOI or the volume of lentiviral aliquot used was too big.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Optimize the amount of lentiviral prep so you can use the minimal volume while achieving close to 100% transduction efficiency.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Total volume of the lysates is different across samples generating input samples (10%) with different volumes (step 12).</p>
+<p>Reason: Insufficient aspiration of PBS 1× solution prior to lysis.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Ensure that all PBS 1× solution is removed after last wash before adding the lysis buffer.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Difficult to resuspend DHPC (step 14.a).</p>
+<p>Reason: Not enough time for resuspension or the DHPC powder is still cold.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Warm DHPC powder and RNase-free water to 20°C–22°C before reconstitution. Incubate the mixture at 20°C–22°C for 40 min and vortex every 10 min. Reconstituted DHPC can be stored at 4°C for 1 week in a glass flask. As per manufacture’s recommendation, do not store it in a plastic tube.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>RNA yields are low (step 28).</p>
+<p>Reason: RNA is degraded possible due to RNase contamination; inefficient IP due to the presence of EDTA; incomplete cell lysis.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>For RNA degradation, see <a href="#sec6.11">problem 6</a> below. Ensure cells are incubated with CHX prior to cell wash and lysis. Ensure CHX and MgCl<sub>2</sub> are added to all buffers as requested in the protocol. Complete cell lysis can usually be achieved by passing the lysates through needles as recommended in the protocol.</p>
+<p>Alternatively, homogenizers can also be used.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>RIN values are below 7 (step 29).</p>
+<p>Reason: RNA is degraded possible due to RNase contamination.</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>Ensure RNase-free techniques are employed throughout the protocol. It is common for laboratories to have an “RNA bench,” with designated equipment and micropipettes, where only RNA work is carried out. Particularly, do not perform bacterial DNA preps (e.g., minipreps) near this RNA bench as RNase-A is commonly used at high concentrations. Make all solutions using RNase-free water, use filtered tips, and change gloves frequently. Ensure RNase inhibitors are added to all solutions when requested in the protocol. Samples and solutions should be kept in ice all times unless otherwise stated.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Blair, J.D., Hockemeyer, D., Doudna, J.A., Bateup, H.S., and Floor, S.N. (2017). Widespread translational remodeling during human neuronal differentiation. Cell Rep. <i>21</i>, 2005-2016.</p>
+<p id="bib3">Cheung, A.Y.L., Horvath, L.M., Grafodatskaya, D., Pasceri, P., Weksberg, R., Hotta, A., Carrel, L., and Ellis, J. (2011). Isolation of MECP2-null Rett Syndrome patient hiPS cells and isogenic controls through X-chromosome inactivation. Hum. Mol. Genet. <i>20</i>, 2103-2115.</p>
+<p id="bib4">Djuric, U., Rodrigues, D.C., Batruch, I., Ellis, J., Shannon, P., and Diamandis, P. (2017). Spatiotemporal proteomic profiling of human cerebral development. Mol. Cell Proteomics <i>16</i>, 1548-1562.</p>
+<p id="bib5">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21.</p>
+<p id="bib6">Ha, K.C.H., Blencowe, B.J., and Morris, Q. (2018). QAPA: a new method for the systematic analysis of alternative polyadenylation from RNA-seq data. Genome Biol <i>19</i>, 45.</p>
+<p id="bib7">Heiman, M., Schaefer, A., Gong, S., Peterson, J.D., Day, M., Ramsey, K.E., Suárez-Fariñas, M., Schwarz, C., Stephan, D.A., Surmeier, D.J., et al. (2008). A translational profiling approach for the molecular characterization of CNS cell types. Cell <i>135</i>, 738-748.</p>
+<p id="bib8">Hotta, A., Cheung, A.Y.L., Farra, N., Garcha, K., Chang, W.Y., Pasceri, P., Stanford, W.L., and Ellis, J. (2009). EOS lentiviral vector selection system for human induced pluripotent stem cells. Nat Protoc. <i>4</i>, 1828-1844.</p>
+<p id="bib9">Kim, D., Langmead, B., and Salzberg, S.L. (2015). HISAT: a fast spliced aligner with low memory requirements. Nat. Methods <i>12</i>, 357-360.</p>
+<p id="bib16">Liao, Y., Smyth, G.K., and Shi, W. (2014). featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics <i>30</i>, 923-930.</p>
+<p id="bib10">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA- seq data with DESeq2. Genome Biol. <i>15</i>, 550.</p>
+<p id="bib11">Martin, M. (2011). Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet J. <i>17</i>, 10-12.</p>
+<p id="bib12">Patro, R., Mount, S.M., and Kingsford, C. (2014). Sailfish enables alignment-free isoform quantification from RNA-seq reads using lightweight algorithms. Nat Biotechnol <i>32</i>, 462-464.</p>
+<p id="bib13">Rodrigues, D.C., Mufteev, M., Weatheritt, R.J., Djuric, U., Ha, K.C.H., Ross, P.J., Wei, W., Piekna, A., Sartori, M.A., Byres, L., et al. (2020). Shifts in ribosome engagement impact key gene sets in neurodevelopment and ubiquitination in Rett Syndrome. Cell Rep. <i>30</i>, 4179-4196.e11.</p>
+<p id="bib14">Thorvaldsdóttir, H., Robinson, J.T., and Mesirov, J.P. (2013). Integrative Genomics Viewer (IGV): high- performance genomics data visualization and exploration. Brief. Bioinformatics <i>14</i>, 178-192.</p>
+<p id="bib15">Tomishima, M. (2012). Neural induction – Dual SMAD inhibition. StemBook (Harvard Stem Cell Institute).</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Deivid Rodrigues, <a href="mailto:deivid.rodrigues@sickkids.ca">deivid.rodrigues@sickkids.ca</a></p>
+<h4>Materials availability</h4>
+<p>The plasmid pSicoR-eIF1a-GFP-RPL10a carrying the GFP-fused RPL10a gene is available at Addgene. (Cat. Number 159890)</p>
+<h4>Data and code availability</h4>
+<p>All code necessary to perform the computational analysis is available at github (<a href="https://github.com/JellisLab/translatome-neurodevo">https://github.com/JellisLab/translatome-neurodevo</a>).</p>
+<h3>Acknowledgments</h3>
+<p>Research in the James Ellis lab is funded by grants from the <a href="https://doi.org/10.13039/501100000024">Canadian Institutes of Health Research</a> (CIHR; PJT-148746, EPS-129129, and ERARE Team grant ERT- 161303); the <a href="https://doi.org/10.13039/501100010785">Canada First Research Excellence Fund</a> (Medicine by Design Cycle I); the Col. Harland Sanders Rett Syndrome Research Fund, University of Toronto; the <a href="https://doi.org/10.13039/100008914">Ontario Brain Institute</a> (POND Network); and the <a href="https://doi.org/10.13039/501100008453">Ontario Institute for Regenerative Medicine</a> (New Ideas Grant). We thank Dr. Nathaniel Heintz for the original RPL10a-GFP plasmid, The Centre for Applied Genomics (TCAG) – SickKids, and The Donnelly Centre for RNA-seq.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, D.C.R., M.M., and J.E.; Software, M.M.; Investigation, D.C.R. and M.M.; Writing – Original Draft, D.C.R. and M.M.; Writing – Review &amp; Editing, D.C.R., M.M., and J.E.; Visualization, D.C.R. and M.M.; Supervision, J.E.; Funding Acquisition, J.E.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests</p>
+</section>
+</article>

@@ -1,0 +1,1558 @@
+<article>
+<section>
+<h1 id="header">Cell-Based Glycan Arrays—A Practical Guide to Dissect the Human Glycome</h1>
+<p><time datetime="2020-03-20">Published: March 20, 2020</time></p>
+<p>Christian Büll,<sup><a href="#aff1">1</a></sup> Hiren J. Joshi,<sup><a href="#aff1">1</a></sup> Henrik Clausen,<sup><a href="#aff1">1</a></sup> and Yoshiki Narimatsu<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Copenhagen Center for Glycomics, Department of Cellular and Molecular Medicine, Faculty of Health Sciences, University of Copenhagen, Blegdamsvej 3, DK-2200 Copenhagen N, Denmark</p>
+<p id="aff2"><sup>2</sup>GlycoDisplay ApS, Copenhagen, Denmark</p>
+<p id="fn1"><sup>3</sup>Technical Contact</p>
+<p id="fn2"><sup>4</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:yoshiki@sund.ku.dk">yoshiki@sund.ku.dk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100017">10.1016/j.xpro.2020.100017</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Exploring the biological functions of the human glycome is highly challenging given its tremendous structural diversity. We have developed stable libraries of isogenic HEK293 cells with loss or gain of glycosylation features that together form the cell-based glycan array, a self-renewable resource for the display of the human glycome in the natural context. This protocol describes the use of the cell-based glycan array for dissection of molecular interactions and biological functions of glycans using a wide range of biological assays.</p>
+<p>For complete details on the use and execution of this protocol, please refer to (<a href="#bib4">Narimatsu et al., 2019</a>).</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Cell-based glycan arrays enable display and interrogation of the human glycome</li>
+<li>Genetic dissection of molecular interactions with glycans in their natural context</li>
+<li>Production of recombinant glycoproteins with desired glycosylation</li>
+<li>Software <i>GlycoRadar</i> for cell-based glycan array data analysis and interpretation</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<h3>Experimental Design Considerations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Cell-based glycan arrays can be used in several different ways and for a variety of applications. They form a highly flexible system in which different cell sublibraries (<a href="#fig1">Figure 1</a>, <a href="#tbl1">Table 1</a>), cell types (<a href="#fig3">Figure 3</a>), assay types (<a href="#fig4">Figures 4</a>, <a href="#fig5">5</a>, and <a href="#fig7">7</a>), and analysis types for data interpretation can be used. Further engineering and connectivity between the sublibraries presented in <a href="#fig1">Figure 1</a> also holds the potential to expand and advance cell-based glycan arrays. This step describes how to select from these different components to devise a custom-made strategy for the use of cell-based glycan arrays.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Atlas of Human Glycosylation Pathways and Sublibraries</div>
+<p>Figure is adapted from: (<a href="#bib4">Narimatsu et al., 2019</a>). Rainbow depiction of the 15 distinct human glycosylation pathways including, from left to right: GPI-anchor, glycolipids (two pathways), N-linked glycans, O-GalNAc mucin-type, O-Fuc type (two pathways), O-GlcNAc type (epidermal growth factor; EGF), O-Man type (POMT-directed), O-Man type (TMTC-directed), C-Man type, O-Glc type, O-Xyl type (proteoglycans), O-Gal type (collagen), and O-GlcNAc type (cytosolic). The basic structural features of oligosaccharides for most glycosylation pathways are shown above each rainbow segment. Predicted basic glycan features missing in HEK293<sup>WT</sup> cells are faded out. The GTf genes are arranged in the pathway-specific initiation and core extention steps (117 genes) and in pathway-nonspecific elongation and capping steps (52 genes). Glycan symbols are drawn according to the SNFG format (<a href="#bib6">Varki et al., 2015</a>). The eight derived sublibraries for glycoconjugates (sublibrary #1), glycolipids (sublibrary #2), N-glycan branching (sublibrary #3), O-glycan core and branching (sublibrary #4), glycosaminoglycans (sublibrary #5), general elongation (sublibrary #6), and sialic acid capping (sublibraries #7, 8) are shown.</p>
+</figcaption>
+</figure>
+<table id="tbl1">
+<caption>Table 1.</caption>
+<thead>
+<tr>
+<th>Sublibrary</th>
+<th>Glycosylation Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Glycoconjugates</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Glycosphingolipids</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Branching and core fucose of N-glycans</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Core of GalNAc-type O-glycans</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Chondroitin/dermatin (CS/DS) and heparan sulfate (HS) GAGs</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Core structures LacNAc and LacDiNAc</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Gal capping by α2-3 and α2-6SA</td>
+</tr>
+<tr>
+<td>8</td>
+<td>GalNAc capping by α2-6SA</td>
+</tr>
+</tbody>
+</table>
+<p>A decision tree is provided in <a href="#fig2">Figure 2</a> to help selecting the appropriate settings.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Decision Tree to Guide the Use of the Cell-Based Glycan Array</div>
+<p>Illustration of the proposed iterative workflow and explanation of the rationale for the sequential selection of relevant sublibraries, cell systems and assays for the application of the cell-based glycan array. Prior knowledge on the glycan epitope recognized by a GBP of interest guides the initial selection of sublibraries to test. Confirm binding to a known glycan epitope by selecting a sublibrary that displays and dissects the particular structural features known for the epitope, e.g. if sialic acids are involved start with sublibrary #7. If the glycan epitope is partially known select a sublibrary that contains known features and if the epitope is unknown, select initiation library #1. After performing binding studies to a respective sublibrary, use the GlycoRadar tool to identify GTf genes required for binding. Select further sublibraries based on the identified GTf genes and their predicted functions to dissect the glycan epitope by connecting the data from screens of different sublibraries. Optionally, KI of a GTf gene that is not endogenously expressed or expression of specific carrier proteins could be required to induce GBP binding. Trancriptomics data from cell lines or tissues that express a glycan ligand for the GBP of interest can help to select an appropriate sublibrary to start with or help selecting GTf gene KIs and carrier proteins that could induce binding. Ultimately, repeated cycles of binding screening and connectivity between sublibraries will lead to the dissection of a specific glycan epitope.</p>
+</figcaption>
+</figure>
+<ol>
+<li>The two main applications of the cell-based glycan array are first the identification of structural glycan features recognized by glycan-binding proteins (GBP) or other glycan-binding reagents and the involved glycosyltransferase (GTf) genes and second the production of recombinant glycoproteins with desired glycosylation. For recombinant glycoprotein production move to point 3. For the identification of glycan features follow the steps outlined in point 2.</li>
+<li>Select a GBP or glycan-binding reagent and determine if the glycan epitope is known (a), partially known (b) or unknown (c) (<a href="#fig2">Figure 2</a>).</li>
+</ol>
+<ol type="a">
+<li>If the glycan epitope is known, select the sublibrary containing this glycosylation feature to confirm binding. The isogenic cells producing this glycan epitope can now be used to further explore interactions with the GBP or be used to produce glycoproteins carrying that glycan epitope.</li>
+<li>If the glycan epitope is partially known, select a sublibrary that contains knock-outs (KO) or knock-ins (KI) of pathway (non)-specific GTf genes related to the glycan epitope for further dissection based on the rainbow diagram (<a href="#fig1">Figure 1</a>).</li>
+<li>In case the glycan epitope is unknown, assess if the GBP binds to wild type wild type) HEK293 cells or other cell lines. If binding is observed to HEK293<sup>WT</sup> cells continue binding studies with sublibrary #1 that contains the major types of glycoconjugates (N-glycans, O-glycans, glycosphingolipids, etc.). If binding to another cell type, but not to HEK293<sup>WT</sup> cells is observed, compare the GTf gene expression between both cell lines to identify GTf genes not endogenously expressed in HEK293<sup>WT</sup> cells that can be knocked-in. If no binding is observed to any cell line, consult the troubleshooting section for more information.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Literature research or lectin databases (e.g. UniLectin) can provide information on glycan specificity, which can guide the selection of isogenic cells for binding assays.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Some glycan-binding reagents might only bind after removal of glycosylation features/glycan elements, for instance the galectins that are prevented from binding by capping sialic acids.</div>
+<ol start="3">
+<li>The isogenic cells are available as adherent or suspension culture systems (<a href="#fig3">Figure 3</a>A). If analysis of the cell morphology is desired, select the adherent condition. For binding assays, select either the adherent or the suspension condition. For recombinant protein production, it is recommended to select the serum-free suspension condition.</li>
+</ol>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Graphic Depiction of Handling of the Isogenic Cells and GBPs</div>
+<p>(A) Illustration of culturing, handling, and preservation of adherent and suspension cultured isogenic HEK293 cells. Adherent and suspension cells can be fixed with paraformaldehyde and cryopreserved for long-term storage and usage in binding experiments.</p>
+<p>(B) Graphic depiction of the sequential staining procedure suitable for high affinity glycan-binding reagents. Isogenic cells are incubated with tagged-GBPs followed by detection with a secondary staining reagent.</p>
+<p>(C) Graphic depiction of the pre-formed complex staining procedure suitable for low affinity glycan-binding reagents. GBPs can be pre-complexed using a secondary staining reagent (e.g. antibody, streptavidin) to create multivalent interactions with glycan ligands presented by the isogenic cells.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> For suspension cultures, an orbital shaker system for plates or tubes is required. If that system is unavailable, the adherent culture condition can be selected for efficient protein expression. However, the purity might be lower though due to the presence of serum during purification.</div>
+<ol start="4">
+<li>GBPs have specificity for a particular glycan structure, but some GBPs may recognize glycan clusters and/or parts of the protein or peptide sequence on which the glycan is presented. The cell-based glycan array enables addressing this protein context component of glycan recognition. If a glycan epitope has been identified, different reporter proteins, recombinant proteins with a tag (e.g. His, GFP) for purification or visualization, can be produced in the KO/KI cells for display of that glycan epitope on a specific protein. Both adherent and suspension cells can be transfected with high efficiency. Select a panel of membrane-bound reporter proteins for transient expression to assess the contribution of the protein context on binding.</li>
+<li>Reagent binding to the isogenic cells can be assayed in a high-throughput manner using flow cytometry. Immunocytochemistry can be selected to assess surface binding, and membrane localization, density or clustering, but also uptake of a GBP. For flow cytometry, fixed cells can be used instead of live cells to avoid extensive cell culture and simplify handling.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Fixation may influence glycan presentation and reagent binding and should be assessed beforehand by comparing binding to live versus fixed cells.</div>
+<ol start="6">
+<li>The cell-based glycan array generates different types of data that can be interpreted using the rainbow diagram (<a href="#fig1">Figure 1</a>) and the GlycoRadar online tool (<a href="#mmc2">Methods Video 1</a>) to identify GTf gene signatures, glycan features as well as protein context that underlie binding and that advance further GTf gene engineering to connect sublibraries for in-depth analysis of the reagent binding specificity.</li>
+</ol>
+<figure id="mmc2"><video controls="controls">
+                <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Mmc2.mp4" type="video/mp4"></source>
+                Your browser does not support HTML5 video.
+            </video>
+<figcaption>
+<div class="figcaption-title">Methods Video 1. Structural Interpretation with GlycoRadar, Step 3</div>
+<p>Open the GlycoRadar (<a href="http://glycoradar.glycomics.ku.dk/">glycoradar.glycomics.ku.dk</a>) online tool and drag in MFI data from Excel. Data from <a href="#fig4">Figure 4</a>C (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Mmc1.xlsx">Table S1</a>) showing GNL lectin binding are used as an example. Click ‘LibraryID’, ‘CellID’, ‘Level 1 binding’ and next the ‘series’ button. A radar plot is now generated and and GTf genes and involved glycan structures are highlighted.</p>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Illustration of the Experimental Output from Screening with the Cell-Based Glycan Array</div>
+<p>(A) Depiction of the predicted glycan structure outcome on N-glycoproteins, GalNAc-type O-glycoproteins and glycosphingolipids in isogenic cells from sublibrary #1, and the concept of high-throughput screening of sublibraries using flow cytometry.</p>
+<p>(B and C) Representative flow cytometry screening experiments showing the binding of ECL (N-glycans, LacNAc) and GNL (high Mannose) lectins, respectively, to cells from sublibrary #1. Data were acquired with a Sony SA3800 spectral cell analyzer and analysis was performed using FlowJo software. The gate was set on live cells based on the appearance in the forward scatter area (FSC-A) versus side scatter area (SSC-A) and single events were selected based on the FSC width (FSC-W) versus FSC-A. For the live, single cells the mean fluorescence intensity (MFI) values of GBP binding were exported to Excel (B). Radar charts are produced using GlycoRadar showing the binding of ECL (left) or GNL (right) to the different isogenic cells of sublibrary #1 and arrows indicate a significant decrease or increase in GBP binding events for a respective KO cell line (C).</p>
+</figcaption>
+</figure>
+<h3>Prepare the Following</h3>
+<ol start="7">
+<li>Set humidified cell incubator with orbital shaker to 37°C and 5% CO<sub>2</sub>.</li>
+<li>Fill freezing containers with isopropanol and store at 4°C before use. Change the isopropanol after every five usages.</li>
+<li>Set up the SA3800 spectral analyzer according to the manufacturer’s instructions. The spectral analyzer is equipped with 4 lasers (405, 488, 561, 638) collecting photons at wavelengths from 420 to 800 nm and an autosampler for high-throughput analysis.</li>
+<li>Pre-cool a plate centrifuge to 4 °C.</li>
+<li>Initialize an automated cell counter.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Streptavidin, Alexa Fluor™ 488 Conjugate</td>
+<td>Invitrogen</td>
+<td>Cat#S32354</td>
+</tr>
+<tr>
+<td>Goat anti-Mouse IgG (H+L), Alexa Fluor 488</td>
+<td>Thermo-Fisher</td>
+<td>Cat#A-11001</td>
+</tr>
+<tr>
+<td>Anti-STn (TKH2)</td>
+<td><a href="#bib8">Steentoft et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>DMEM-high glucose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#D-5796</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum (heat inactivated)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#F9665</td>
+</tr>
+<tr>
+<td>GlutaMAX</td>
+<td>Gibco</td>
+<td>Cat#35050061</td>
+</tr>
+<tr>
+<td>TrypLE<sup>TM</sup> Express Enzyme (1X), phenol red</td>
+<td>Gibco</td>
+<td>Cat#12605028</td>
+</tr>
+<tr>
+<td>FreeStyle™ F17 Expression Medium</td>
+<td>Gibco</td>
+<td>Cat#A13835-01</td>
+</tr>
+<tr>
+<td>Kolliphor P 188</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#K4894-500 g</td>
+</tr>
+<tr>
+<td>Polyethylenimine, Linear, MW 25000, (PEI 25K)</td>
+<td>Polysciences, Inc.</td>
+<td>Cat#23966-1</td>
+</tr>
+<tr>
+<td>Bovine serum albumin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#A3294</td>
+</tr>
+<tr>
+<td>Sodium azide</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#S8032</td>
+</tr>
+<tr>
+<td>DMSO</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#D2650</td>
+</tr>
+<tr>
+<td>Trypan Blue Solution, 0.4%</td>
+<td>Gibco</td>
+<td>Cat#15250061</td>
+</tr>
+<tr>
+<td>Dulbecco’s Phosphate Buffered Saline, 1x PBS</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#D8537</td>
+</tr>
+<tr>
+<td>Paraformaldehyde</td>
+<td>Merck</td>
+<td>Cat#1040051000</td>
+</tr>
+<tr>
+<td>Opti-MEM</td>
+<td>Gibco</td>
+<td>Cat#31985070</td>
+</tr>
+<tr>
+<td>Imidazole</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#56750</td>
+</tr>
+<tr>
+<td>Sodium phosphate</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#342483</td>
+</tr>
+<tr>
+<td>NuPAGE™ MES SDS Running Buffer (20X)</td>
+<td>Invitrogen</td>
+<td>Cat#NP000202</td>
+</tr>
+<tr>
+<td>Ni-NTA Agarose</td>
+<td>QIAGEN</td>
+<td>Cat#30210</td>
+</tr>
+<tr>
+<td>Biotinylated Erythrina Cristagalli Lectin (ECL, ECA)</td>
+<td>Vector Laboratories</td>
+<td>Cat#B-1145</td>
+</tr>
+<tr>
+<td>Biotinylated Galanthus Nivalis Lectin (GNL)</td>
+<td>Vector Laboratories</td>
+<td>Cat#B-1245</td>
+</tr>
+<tr>
+<td>Poly-L-lysine</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# P7280</td>
+</tr>
+<tr>
+<td colspan="3">Critical Commercial Assays</td>
+</tr>
+<tr>
+<td>Pierce™ BCA Protein Assay Kit</td>
+<td>Thermo Scientific</td>
+<td><a href="https://www.thermofisher.com/order/catalog/product/23225">Cat#23225</a></td>
+</tr>
+<tr>
+<td>PD Minitrap™ G-25</td>
+<td>GE Healthcare</td>
+<td>Cat#GE28-9180-07</td>
+</tr>
+<tr>
+<td>NuPAGE™ 4-12% Bis-Tris Protein Gels, 1.0 mm</td>
+<td>Invitrogen</td>
+<td>Cat#NP0349BOX</td>
+</tr>
+<tr>
+<td>InstantBlue™ Protein Stain</td>
+<td>Expedeon</td>
+<td>Cat#ISB1L</td>
+</tr>
+<tr>
+<td colspan="3">Experimental Models: Cell Lines</td>
+</tr>
+<tr>
+<td>HEK293</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#85120602</td>
+</tr>
+<tr>
+<td>Isogenic HEK293 cells</td>
+<td><a href="#bib4">Narimatsu et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>HEK293-6E cells</td>
+<td><a href="#bib3">L'Abbe et al., 2018</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Isogenic HEK293-6E cells</td>
+<td><a href="#bib4">Narimatsu et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>Secreted reporter protein constructs</td>
+<td><a href="#bib4">Narimatsu et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Membrane reporter protein constructs</td>
+<td><a href="#bib4">Narimatsu et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and Algorithms</td>
+</tr>
+<tr>
+<td>Excel 2016</td>
+<td>Microsoft</td>
+<td><a href="https://products.office.com/en-us/excel">https://products.office.com/en-us/excel</a></td>
+</tr>
+<tr>
+<td>FlowJo v10</td>
+<td>Tree Star</td>
+<td><a href="https://www.flowjo.com/solutions/flowjo">https://www.flowjo.com/solutions/flowjo</a></td>
+</tr>
+<tr>
+<td>GlycoRadar</td>
+<td>This protocol</td>
+<td><a href="http://glycoradar.glycomics.ku.dk/">glycoradar.glycomics.ku.dk</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Disposable Columns, 2 mL</td>
+<td>Pierce</td>
+<td>Cat#29920</td>
+</tr>
+<tr>
+<td>50 mL Centrifuge Tube</td>
+<td>Greiner Bio</td>
+<td>Cat#210261</td>
+</tr>
+<tr>
+<td>CryoPure Tube 1.6ml white</td>
+<td>Sarstedt</td>
+<td>Cat#72.380</td>
+</tr>
+<tr>
+<td>Costar® 6-well Clear TC-treated Multiple Well Plates</td>
+<td>Corning</td>
+<td>Cat#3516</td>
+</tr>
+<tr>
+<td>Eppendorf Safe-Lock Tubes, 1.5 mL</td>
+<td>Eppendorf</td>
+<td>Cat#0030120086</td>
+</tr>
+<tr>
+<td>15 ml Centrifuge Tube</td>
+<td>Greiner Bio</td>
+<td>Cat#188271</td>
+</tr>
+<tr>
+<td>Nunc™ 96-Well Polystyrene Round Bottom Mictrell Plates</td>
+<td>Thermo Scientific</td>
+<td>Cat#163320</td>
+</tr>
+<tr>
+<td>Pipette Basins</td>
+<td>Fischer Scientific</td>
+<td>Cat#13-681-502</td>
+</tr>
+<tr>
+<td>Nunc EasYFlask 175cm <sup>2</sup>
+</td>
+<td>Thermo Scientific</td>
+<td>Cat#159910</td>
+</tr>
+<tr>
+<td>TubeSpin Bioreactor Tubes, 50ml</td>
+<td>TPP</td>
+<td>Cat#87050</td>
+</tr>
+<tr>
+<td>Vacuum Filtration System, 0.45 μM</td>
+<td>VVR</td>
+<td>Cat#10040-438</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and Equipment</h2>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Similar flow cytometers, preferentially equipped with a high-throughput analysis system, can be used for analysis.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> You can use an automated cell counter or a cell counting chamber.</div>
+<h3>Culturing of Isogenic HEK293 Cells</h3>
+<p>A diverse panel of isogenic HEK293 cells with combinatorial KO/KI of GTf genes is available, with each cell lacking or expressing distinct glycosylation features (<a href="#tbl2">Table 2</a>). The isogenic cells were produced from either adherent culture HEK293 cells or from suspension culture HEK293-6E cells. The choice of starting point (adherent vs. suspension culture) depends on the downstream application. The adherent HEK293 cells are mainly used for binding studies with or without transient expression of membrane glycoprotein reporters, while the suspension HEK293-6E are more advantageous for the production of recombinant glycoproteins in high yields.</p>
+<table id="tbl2">
+<caption>Table 2. List of Available Isogenic HEK293 Cell Libraries</caption>
+<thead>
+<tr>
+<th>Library Identifier</th>
+<th>Unique Cell Identifier</th>
+<th>Sublibrary</th>
+<th>HEK293 Engineered Cells</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CBGA1.0-LIB1-HEK001</td>
+<td>HEK001</td>
+<td rowspan="15">Sublibrary 1 <br>Glycoconjugate <br>Initiation</td>
+<td>ΔMGAT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK002</td>
+<td>HEK002</td>
+<td>ΔCOSMC</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK003</td>
+<td>HEK003</td>
+<td>ΔB4GALT5/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK004</td>
+<td>HEK004</td>
+<td>ΔMGAT1/COSMC</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK005</td>
+<td>HEK005</td>
+<td>ΔMGAT1/B4GALT5/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK006</td>
+<td>HEK006</td>
+<td>ΔCOSMC/B4GALT5/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK007</td>
+<td>HEK007</td>
+<td>ΔMGAT1/COSMC/B4GALT5/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK008</td>
+<td>HEK008</td>
+<td>ΔB4GALT7</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK009</td>
+<td>HEK009</td>
+<td>ΔPOMGnT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK010</td>
+<td>HEK010</td>
+<td>ΔPOMGnT2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK011</td>
+<td>HEK011</td>
+<td>ΔPOMGnT1/2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK012</td>
+<td>HEK012</td>
+<td>ΔCOSMC/POMGnT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK013</td>
+<td>HEK013</td>
+<td>ΔPOMT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK014</td>
+<td>HEK014</td>
+<td>ΔPOMT2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB1-HEK015</td>
+<td>HEK015</td>
+<td>ΔTMTC1/2/3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB2-HEK058</td>
+<td>HEK058</td>
+<td rowspan="3">Sublibrary 2 <br>Glycosphingolipid <br>Branching</td>
+<td>ΔA4GALT</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB2-HEK059</td>
+<td>HEK059</td>
+<td>ΔB3GNT5</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB2-HEK060</td>
+<td>HEK060</td>
+<td>ΔST3GAL5/B4GALNT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK016</td>
+<td>HEK016</td>
+<td rowspan="9">Sublibrary 3 <br>N-glycan <br>Branching</td>
+<td>ΔMGAT2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK017</td>
+<td>HEK017</td>
+<td>ΔMGAT3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK018</td>
+<td>HEK018</td>
+<td>ΔMGAT4A</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK019</td>
+<td>HEK019</td>
+<td>ΔMGAT4B</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK020</td>
+<td>HEK020</td>
+<td>ΔMGAT4A/4B</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK021</td>
+<td>HEK021</td>
+<td>ΔMGAT5</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK022</td>
+<td>HEK022</td>
+<td>ΔMGAT4A/4B/5</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK023</td>
+<td>HEK023</td>
+<td>ΔMGAT3/MGAT4A/4B/5</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB3-HEK024</td>
+<td>HEK024</td>
+<td>ΔFUT8</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK025</td>
+<td rowspan="6">Sublibrary 4 <br>O-GalNAc <br>Branching</td>
+<td>ΔGCNT1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK026</td>
+<td>ΔCOSMC+B3GNT6 (Core3)</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK027</td>
+<td>+GCNT1 (Core2)</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK028</td>
+<td>ΔST3GAL1/2+GCNT1 (High Core2#1)</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK029</td>
+<td>ΔST3GAL1/2/3+GCNT1 (High Core2#2)</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK030</td>
+<td>ΔCOSMC+ST6GALNAC1 (STn)</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB5-HEK111</td>
+<td>HEK111</td>
+<td rowspan="3">Sublibrary 5 <br>GAG <br>Branching</td>
+<td>ΔCHSY1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB5-HEK112</td>
+<td>HEK112</td>
+<td>ΔCHSY1/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB5-HEK113</td>
+<td>HEK113</td>
+<td>ΔEXTL3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK031</td>
+<td>HEK031</td>
+<td rowspan="12">Sublibrary 6 <br>Elongation</td>
+<td>ΔB4GALT1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK032</td>
+<td>HEK032</td>
+<td>ΔB4GALT2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK033</td>
+<td>HEK033</td>
+<td>ΔB4GALT3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK034</td>
+<td>HEK034</td>
+<td>ΔB4GALT4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK035</td>
+<td>HEK035</td>
+<td>ΔB4GALT1/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK036</td>
+<td>HEK036</td>
+<td>ΔB4GALT1/2/3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK037</td>
+<td>HEK037</td>
+<td>ΔB4GALT1/3, B4GALNT3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK038</td>
+<td>HEK038</td>
+<td>ΔB4GALNT3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK039</td>
+<td>HEK039</td>
+<td>ΔB4GALNT4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK040</td>
+<td>HEK040</td>
+<td>ΔB4GALNT3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK041</td>
+<td>HEK041</td>
+<td>ΔB4GALT1/2/3/4, B4GALNT3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB6-HEK044</td>
+<td>HEK044</td>
+<td>ΔB3GnT2/4/8</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK062</td>
+<td>HEK062</td>
+<td rowspan="20">Sublibrary 7 <br>Capping <br>2,3 Sialylation</td>
+<td>ΔST3GAL1</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK063</td>
+<td>HEK063</td>
+<td>ΔST3GAL2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK064</td>
+<td>HEK064</td>
+<td>ΔST3GAL3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK065</td>
+<td>HEK065</td>
+<td>ΔST3GAL4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK066</td>
+<td>HEK066</td>
+<td>ΔST3GAL5</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK067</td>
+<td>HEK067</td>
+<td>ΔST3GAL6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK068</td>
+<td>HEK068</td>
+<td>ΔST3GAL1/2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK069</td>
+<td>HEK069</td>
+<td>ΔST3GAL1/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK070</td>
+<td>HEK070</td>
+<td>ΔST3GAL2/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK071</td>
+<td>HEK071</td>
+<td>ΔST3GAL1/2/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK072</td>
+<td>HEK072</td>
+<td>ΔST3GAL3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK073</td>
+<td>HEK073</td>
+<td>ΔST3GAL3/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK074</td>
+<td>HEK074</td>
+<td>ΔST3GAL4/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK075</td>
+<td>HEK075</td>
+<td>ΔST3GAL3/4/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK076</td>
+<td>HEK076</td>
+<td>ΔST3GAL1/2/3/4/5/6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK077</td>
+<td>HEK077</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK078</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST6GAL1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK079</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST3GAL4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK080</td>
+<td>HEK080</td>
+<td>ΔST6GAL1/2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB7-HEK081</td>
+<td>HEK081</td>
+<td>ΔST3GAL1/2/3/4/5/6, ST6GAL1/2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK103</td>
+<td>HEK103</td>
+<td rowspan="8">Sublibrary 8 <br>Capping <br>2,6 Sialylation</td>
+<td>ΔST6GalNAc2</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK104</td>
+<td>HEK104</td>
+<td>ΔST6GalNAc3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK105</td>
+<td>HEK105</td>
+<td>ΔST6GalNAc4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK106</td>
+<td>HEK106</td>
+<td>ΔST6GalNAc6</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK107</td>
+<td>HEK107</td>
+<td>ΔST6GalNAc2/3</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK108</td>
+<td>HEK108</td>
+<td>ΔST6GalNAc2/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK109</td>
+<td>HEK109</td>
+<td>ΔST6GalNAc3/4</td>
+</tr>
+<tr>
+<td>CBGA1.0-LIB8-HEK110</td>
+<td>HEK110</td>
+<td>ΔST6GalNAc2/3/4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK045</td>
+<td rowspan="8">Others <br>Biantennary <br>N-glycan <br>Elongation <br>+ <br>Branching <br>+ <br>Capping</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK046</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, ST6GAL1/2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK047</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, ST3GAL3/4/6</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK050</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, B4GALNT3/4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK051</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, B4GALNT3/4, ST6GAL1/2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK052</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, B4GALNT3/4, ST3GAL3/4/6</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK054</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, B4GALNT3/4, ST6GAL1/2, ST3GAL3/4/6</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK055</td>
+<td>ΔMGAT3/4A/4B/5, FUT4/B3GnT2, B4GALT1/2/3/4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK088</td>
+<td rowspan="8">2,3/2,6 <br>Sialylation <br>+ <br>Glycoconjugate</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST6GAL1 ΔMGAT1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK089</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST6GAL1, Cosmc</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK090</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST6GAL1, UGCG</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK091</td>
+<td>ΔST3GAL3/4/6, ST6GAL1/2+ST6GAL1, MGAT1/Cosmc</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK092</td>
+<td>ST3GAL3/4/6, ST6GAL1/2+ST6GAL1, MGAT1/UGCG</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK093</td>
+<td>ST3GAL3/4/6, ST6GAL1/2+ST6GAL1, Cosmc/UCCG</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK094</td>
+<td>ST3GAL3/4/6, ST6GAL1/2+ST6GAL1, MGAT1/Cosmc/UCCG</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK102</td>
+<td>ST3GAL3/4/6, ST6GAL1/2+ST3GAL4, MGAT1/Cosmc/UGCG</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK114</td>
+<td rowspan="21">HEK293 <br>Stably expressing <br>Human GP1Ba reporter</td>
+<td>ΔMGAT1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK115</td>
+<td>ΔCosmc</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK116</td>
+<td>ΔB4GALT5</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK117</td>
+<td>ΔMGAT1/B4GALT5</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK118</td>
+<td>ΔCosmc/B4GALT5</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK119</td>
+<td>ΔMGAT1/Cosmc</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK120</td>
+<td>ΔMGAT1/Cosmc/B4GALT5</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK121</td>
+<td>ΔGCNT1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK122</td>
+<td>ΔST3GAL1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK123</td>
+<td>ΔST3GAL2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK124</td>
+<td>ΔST3GAL1/2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK125</td>
+<td>ΔST3GAL1/2/GCNT1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK126</td>
+<td>ΔST3GAL4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK127</td>
+<td>ΔST3GAL6</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK128</td>
+<td>ΔST6GALNAC2</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK129</td>
+<td>ΔST6GALNAC3</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK130</td>
+<td>ΔST6GALNAC4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK131</td>
+<td>ΔST6GALNAC2/3</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK132</td>
+<td>ΔST6GALNAC2/4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK133</td>
+<td>ΔST6GALNAC3/4</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK134</td>
+<td>ΔST6GALNAC2/3/4</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>Sublibrary</td>
+<td>HEK293-6E engineered cells</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK135</td>
+<td rowspan="3">Ohters</td>
+<td>ΔMGAT3/4A/4B/5, B4GALNT3/4, ST6GAL1</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK136</td>
+<td>ΔCosmc</td>
+</tr>
+<tr>
+<td> </td>
+<td>HEK137</td>
+<td>ΔST3GAL1/2, GCNT1</td>
+</tr>
+</tbody>
+</table>
+<p>Adapted from <a href="#bib4">Narimatsu et al., 2019</a>.</p>
+<div class="note">
+<span class="note-title">Note:</span> Cryopreserved isogenic HEK293 cells (<a href="#tbl2">Table 2</a>) can be obtained on request from the lead contact.</div>
+<h3>Choice of Cell Lines</h3>
+<p>HEK293 cells are used for the cell-based glycan array, because they are widely used, well characterized and they can be readily transfected to express recombinant glycoproteins. HEK293 is predicted to express at least 121 of the 170 known human GTf genes, and thus has glycosylation capacities to display a large part of the human glycome (<a href="#bib4">Narimatsu et al., 2019</a>). The cell-based glycan array is based on the concept that combinatorial precise gene engineering of the repertoire of GTf genes expressed through KO and KI of genes, will generate libraries of isogenic cells with different glycosylation capacities that translate into display of distinct parts of the glycome by individual cells. Probing such libraries of isogenic cells with e.g. reagents that bind glycans (e.g. lectins, antibodies, and other receptors) could result in loss/gain of binding to select subsets of cells and inform of GTf genes required for display of a specific glycan ligand. Since our knowledge of the functions of the human GTf genes is quite advanced it is possible to predict to a degree the structural features of the glycan ligands involved. To aid in this prediction step we organized the GTf genome into an atlas of human glycosylation pathways (<a href="#fig1">Figure 1</a>) with predicted functions of each GTf gene visualized in a rainbow diagram (<a href="#bib2">Joshi et al., 2018</a>; <a href="#bib4">Narimatsu et al., 2019</a>).</p>
+<table>
+<caption>DMEM Culture Medium</caption>
+<tbody>
+<tr>
+<td>Supplement Dulbecco's Modified Eagle Medium</td>
+</tr>
+<tr>
+<td>10% (v/v) fetal bovine serum</td>
+</tr>
+<tr>
+<td>2 mM GlutaMAX</td>
+</tr>
+</tbody>
+</table>
+<p>Store at 4°C for up to 3 - 4 weeks.</p>
+<table>
+<caption>Freestyle F17 Medium</caption>
+<tbody>
+<tr>
+<td>Supplement Freestyle F17 medium</td>
+</tr>
+<tr>
+<td>2 mM GlutaMAX</td>
+</tr>
+<tr>
+<td>0.1% (v/v) Kolliphor P 188</td>
+</tr>
+</tbody>
+</table>
+<p>Store at 4°C for up to 3 - 4 weeks.</p>
+<table>
+<caption>Freezing Medium Adherent HEK293 Cells</caption>
+<tbody>
+<tr>
+<td>90% heat-inactivated FBS</td>
+</tr>
+<tr>
+<td>10% (v/v) DMSO</td>
+</tr>
+</tbody>
+</table>
+<p>Prepare fresh.</p>
+<table>
+<caption>Freezing Medium Suspension HEK293-6E Cells</caption>
+<tbody>
+<tr>
+<td>Complete Freestyle F17 medium</td>
+</tr>
+<tr>
+<td>10% (v/v) DMSO</td>
+</tr>
+</tbody>
+</table>
+<p>Prepare fresh.</p>
+<table>
+<caption>16% (w/v) Paraformaldehyde Stock</caption>
+<tbody>
+<tr>
+<td>8 g paraformaldehyde</td>
+</tr>
+<tr>
+<td>50 mL MQ</td>
+</tr>
+<tr>
+<td>Heat the solution to about 55–60°C (do not exceed 65°C) while stirring.</td>
+</tr>
+<tr>
+<td>Add 1 N sodium hydroxide dropwise until the solution turns clear (pH 7.0–7.4).</td>
+</tr>
+<tr>
+<td>Cool down to 20–25°C and filter the solution through a filter paper (0.2 μM).</td>
+</tr>
+</tbody>
+</table>
+<p>Store at 4°C for up to one month or frozen at -20°C for up to one year.</p>
+<p><b><i>Caution:</i></b> Paraformaldehyde is toxic! Take appropriate safety measures and work under a fume-hood.</p>
+<table>
+<caption>Staining Buffer</caption>
+<tbody>
+<tr>
+<td>1x PBS</td>
+</tr>
+<tr>
+<td>1% (w/v) bovine serum albumin</td>
+</tr>
+<tr>
+<td>0.02% (v/v) sodium azide</td>
+</tr>
+</tbody>
+</table>
+<p>Store at 4°C for up to 3 month.</p>
+<table>
+<caption>Column Equilibration Buffer</caption>
+<tbody>
+<tr>
+<td>200 mM phosphate buffer, pH 8.0</td>
+</tr>
+<tr>
+<td>1.2 M NaCl</td>
+</tr>
+<tr>
+<td>40 mM imidazole</td>
+</tr>
+</tbody>
+</table>
+<p>Prepare fresh.</p>
+<table>
+<caption>Column Washing Buffer</caption>
+<tbody>
+<tr>
+<td>50 mM phosphate buffer, pH8.0</td>
+</tr>
+<tr>
+<td>300 mM NaCl</td>
+</tr>
+<tr>
+<td>10 mM imidazole</td>
+</tr>
+</tbody>
+</table>
+<p>Prepare fresh.</p>
+<table>
+<caption>Column Elution Buffer</caption>
+<tbody>
+<tr>
+<td>50 mM phosphate buffer, pH8.0</td>
+</tr>
+<tr>
+<td>300 mM NaCl</td>
+</tr>
+<tr>
+<td>250 mM imidazole</td>
+</tr>
+</tbody>
+</table>
+<p>Prepare fresh.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<h3>HEK293 Adherent Culture</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 week</div>
+<p>Adherent HEK293-6E cells have the advantage that it is possible to assess morphological features (size, shape, cytoskeleton, adhesion, etc.) and to perform functional analysis (uptake, migration, signaling, etc.), because they are larger and stretched compared to suspension cells. Adherent cells are less suitable for the production of recombinant glycoproteins, because of serum in the media that interferes with purification. This step describes how to culture isogenic HEK293 cells in adherent form.</p>
+<ol>
+<li>Thaw vials of cryopreserved isogenic HEK293 cells and transfer into 50 mL canonical centrifuge tubes as soon as the cells are thawed. Add 10 mL of cold DMEM culture medium drop-wise and then fill the tube with cold medium to 50 mL.</li>
+<li>Spin the tube for 3 min, 300 xg at 4°C and discard the supernatant. Resuspend the cells in pre-warmed DMEM culture medium and seed 0.5–1 x 10<sup>5</sup> cells in 2–3 mL medium into a 6-well plate. Culture the cells at 37°C with 5% CO<sub>2</sub> in a humidified incubator and monitor growth daily.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> HEK293 cells detach easily, therefore avoid shaking of the culture plate and add or aspirate medium with care.</div>
+<ol start="3">
+<li>When the cells reach 70%–80% confluence (ca. 1 x 10<sup>6</sup> cells/well), carefully remove the culture medium and add 0.5 mL TrypLE dissociation reagent per well. Gently swirl the plate and incubate the plate for 2–3 min at 20–25°C until the cells have detached.</li>
+<li>Add 1.5 mL culture medium, resuspend the cells and transfer 20 μL suspension to a 1.5 mL tube and mix with 20 μL 0.4% trypan blue solution. Count the number of cells using a hemocytometer or automated cell-counter.</li>
+<li>Seed 2–3 x 10<sup>5</sup> cells into a new 6-well plate in 2–3 mL culture medium and check growth and confluence every 1–2 days.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The doubling time of HEK293 cells and the isogenic clones is approximately 24 hrs.</div>
+<div class="note">
+<span class="note-title">Note:</span> HEK293-6E cells detach easily in dissociation reagent and it is not necessary to wash them with 1x PBS before adding dissociation reagent.</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend freezing vials of the isogenic cells and to renew the culture after 20 passages. For further information regarding the culture of HEK293 adherent cells visit the ECACC website.</div>
+<h3>HEK293-6E Suspension Culture</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 week</div>
+<p>Suspension HEK293-6E cells grow in serum free medium and are thus highly useful for the production and purification of glycoproteins. Morphological and functional analysis of suspension cells is more difficult compared to adherent cells, because they are round and smaller. This step describes how the isogenic HEK293-6E cells are cultured in suspension condition.</p>
+<ol start="6">
+<li>Thaw vials of cryopreserved isogenic HEK293-6E cells and transfer into 50 mL bioreactor tubes with filter top as soon as the cells are thawed. First, add 10 mL of cold Freestyle F17 medium drop-wise and then fill the tube with cold medium to 50 mL.</li>
+<li>Spin the tube for 3 min, 300 xg at 4°C and discard the supernatant. Resuspend the cells in Freestyle F17 medium at a concentration of 1 x 10<sup>6</sup> cells/mL and place the 50 mL bioreactor tubes with filter top into an orbital tube shaker in a CO<sub>2</sub> incubator at 37°C.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not exceed a volume of 30 mL per tube and ensure that the shaking speed is sufficient to avoid sinking of the cells to the tube bottom.</div>
+<ol start="8">
+<li>Monitor cell growth and when the density reaches 2 x 10<sup>6</sup> cells/mL, add fresh medium to a final concentration of 0.5 x 10<sup>6</sup> cells/mL.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Optimal growth concentrations are 0.5–1 x 10<sup>6</sup> cells/mL. Make sure that the density does not exceed 2 x 10<sup>6</sup> cells/mL.</div>
+<div class="note">
+<span class="note-title">Note:</span> The doubling time of HEK293-6E cells and the isogenic clones is approximately 24 hrs.</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend freezing vials of isogenic cells and to renew the culture after 20 passages. Further information on the culture and application of HEK293-6E cells can be found in: (<a href="#bib3">L'Abbe et al., 2018</a>).</div>
+<h3>Cryopreservation of the Isogenic HEK293 Cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Both, adherent and suspension HEK293-6E cells can be cryopreserved for storage. The cryopreserved cells can be used to renew a culture upon exceeding 20 passages or for distribution. This step describes how the isogenic adherent HEK293 cells (A) and suspension HEK293-6E cells (B) can be cryopreserved.</p>
+<ol type="a">
+<li>Culture a 6-well of isogenic HEK293 cells in complete DMEM to 70%–80% confluence (about 1–2 x 10<sup>6</sup> cells). Carefully remove the culture medium and add 0.5 mL TrypLE dissociation reagent and gently shake the plate to distribute the dissociation reagent and incubate for 2–3 min until the cells have detached. Collect the cells with 2 mL complete DMEM to inactivate the trypsin and transfer to a 15 mL centrifuge tube.</li>
+<li>Collect medium containing 5 x 10<sup>6</sup> suspension cells from a culture in a 50 mL bioreactor tube with filter top.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Optimal growth concentrations are 0.5–1 x 10<sup>6</sup> cells/mL. Make sure that the density does not exceed 2 x 10<sup>6</sup> cells/mL.</div>
+<ol start="9">
+<li>Spin the cells for 3 min at 300 xg at 4°C and discard the supernatant.</li>
+<li>Resuspend the cells in 1 mL of the respective freeze medium at a concentration of 1 x 10<sup>6</sup> cells/mL for adherent HEK293 cells and 5 x 10<sup>6</sup> cells/mL for suspension HEK293-6E cells and transfer to 1.6 mL CryoPure tubes.</li>
+<li>Place the CryoPure tubes into a cooled freezing container and put the container into a -80°C freezer for 24 hrs. The cells can be stored at -80°C for several months or transferred to -150°C or liquid nitrogen for long-term storage.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The protocol can be adjusted to any number of cells. We recommend freezing 1 x 10<sup>6</sup> cells/mL for adherent HEK293 cells and 5 x 10<sup>6</sup> cells/mL for suspension HEK293-6E cells.</div>
+<h3>Transient Expression of Reporter Glycoproteins</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Glycans can be presented on specific proteins and some probes (e.g. antibodies) recognize a glycan feature only in the context of a specific carrier protein which might not be endogenously expressed in HEK293 cells. Therefore, glycoprotein reporters can be designed for transient expression in the isogenic cells. This step describes how such glycoprotein reporters can be transiently transfected into the isogenic HEK293 cells using a 6-well format (<a href="#fig5">Figure 5</a>A).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Using GFP-Tagged Reporter Constructs to Probe Protein Specific Glycosylation</div>
+<p>(A) Depiction of the transient transfection protocol of isogenic HEK293 cells with GFP-reporter protein for glycan display.</p>
+<p>(B) Representative flow cytometry analysis of GBP binding to isogenic HEK293 cells transiently expressing a GFP-reporter protein. The gate is set on live cells based on the FSC-A versus SSC-A and single events are gated by plotting the FSC-A versus FSC-W. Live, single cells are transformed to a histogram showing GFP expression on the x-axis. Gates for GFP- and GFP+ cells are set based on non-transfected control cells and GBP binding to the GFP- and GFP+ population is shown as histograms.</p>
+<p>(C and D) Immunocytochemistry of isogenic HEK293 cells. Scheme showing the protocol for staining of isogenic HEK293 cells on coverslips (C). Representative fluorescence microscope images show binding of anti-STn antibody (clone TKH2) to HEK293<sup>WT</sup> cells (above) and isogenic HEK293<sup> ΔCosmc/KI-ST6GALNAC1</sup> cells (HEK030) with combinatorial KO of <i>COSMC</i> and KI of <i>ST6GALNAC1</i> to produce homogenous STn O-glycosylation capacity (D).</p>
+</figcaption>
+</figure>
+<ol start="12">
+<li>Seed ca. 0.5 x10<sup>6</sup> isogenic HEK293 cells/well in 0.5 mL DMEM culture medium into 6-well plates one day prior to transfection (ca. 50%–60% confluency).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When using penicillin/streptomycin in culture media, carefully exchange the medium to antibiotics-free medium before transfection as the presence of antibiotics during transfection can result in lower transfection efficiency and cytotoxicity.</div>
+<ol start="13">
+<li>For each plasmid, prepare a 1.5 mL tube containing 200 μL Opti-MEM and 2 μg DNA.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure high purity of the plasmid, the OD260/280 ratio should be around 1.9 for optimal transfection.</div>
+<ol start="14">
+<li>Add 9 μg PEI 25K to the diluted DNA (3:1 ratio) and immediately vortex for 10 sec.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The 3:1 ratio PEI 25K:DNA was found to be optimal for most plasmids tested, but depending on the plasmid optimal transfection efficiency might be achieved at different ratios. Transfection should therefore be optimized for instance by comparing 1:1, 2:1, 3:1 and 6:1 ratios.</div>
+<ol start="15">
+<li>Incubate the tube for 10–15 min at 20–25°C.</li>
+<li>Add the PEI 25K/DNA mix dropwise to the 6-well while gently swirling the plate to evenly distribute the transfection reagent.</li>
+<li>After 24 h, carefully change the culture medium and harvest the cells 24–48 hrs post transfection for analysis or fixation.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Confirm expression of the transfected glycoprotein for instance by co-expression of a fluorescent reporter protein encoded in the expression plasmid or other techniques (e.g. ELISA, SDS-PAGE).</div>
+<div class="note">
+<span class="note-title">Note:</span> Other transfection reagents may be used and the protocol can be adjusted to other cell numbers or plate formats. Selection markers can be included to obtain cells with stable expression.</div>
+<h3>Fixation and Storage of Isogenic HEK293 Cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Culturing large numbers of isogenic cells at the same time for the array can be impracticable. The cells can be fixed to make handling of a large numbers of isogenic cells more convenient. This step describes how isogenic HEK293 cells can be fixed and frozen for use in binding assays or storage for later use (<a href="#fig3">Figure 3</a>A).</p>
+<ol start="18">
+<li>To obtain large numbers of isogenic HEK293 cells, culture a T175 flask of isogenic HEK293 cells in complete DMEM to 70%–80% confluence (about 20 x 10<sup>6</sup> cells). Carefully remove the culture medium and add 3 mL TrypLE dissociation reagent and gently shake the flask to distribute the dissociation reagent and incubate for 2–3 min until the cells have detached. Collect the cells with 7 mL complete DMEM to inactivate the trypsin and transfer to a 50 mL centrifuge tube.</li>
+<li>Spin the cells for 3 min at 300 xg at 4°C, discard supernatant.</li>
+<li>Wash the cells with 10 mL 1x PBS and centrifuge for 3 min at 300 xg at 4°C.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to remove all culture medium proteins and trypsin before fixation, to avoid cross-linking of these proteins with the cells.</div>
+<ol start="21">
+<li>Resuspend the cells in 10 mL 1x PBS and transfer 20 μL cell suspension to an 1.5mL Eppendorf tube and mix with 20 μL 0.4% trypan blue solution. Count the number of cells using a hemocytometer or automated cell-counter.</li>
+<li>Spin the cells for 3 min at 300 xg at 4°C, discard the supernatant and resuspend the cells thoroughly in 2% paraformaldehyde solution (5 x 10<sup>6</sup> cells/mL) and incubate for 10 min at 20–25°C.</li>
+<li>Centrifuge the tube for 3 min at 300 xg at 20–25°C, carefully aspirate the supernatant and wash three times by centrifugation with 1x PBS to remove all paraformaldehyde.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to remove all paraformaldehyde to prevent cross-linking events when using the cells for analysis at a later time point.</div>
+<ol start="24">
+<li>Resuspend cells in HEK293 freezing medium at a concentration of 10 x 10<sup>6</sup> cells/mL and aliquot 1 mL per 1.6 mL CryoPure tube.</li>
+<li>Place the CryoPure tubes into a cooled freezing container and place the container into a -80°C freezer for 24 hrs.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The fixed cells can be stored at -80°C or transferred to liquid nitrogen for long-term storage.</div>
+<div class="note">
+<span class="note-title">Note:</span> The protocol can be adjusted to any number of cells and can also be applied to cells transiently transfected with a glycoprotein. Cells may also be frozen in 96-well format instead of tubes.</div>
+<div class="note">
+<span class="note-title">Note:</span> Different fixation protocols may be used, but proper glycan presentation of fixed cells should be validated with lectins.</div>
+<h3>Preparation of Glycan-Binding Reagent</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Glycan-binding reagents with high affinity are suitable for sequential staining, while reagents with weak binding affinity can be pre-complexed to create multivalent interactions. This step describes how reagents such as GBPs can be prepared for binding experiments.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be aware that pre-complexing may enhance the binding signal but may also enhance non-specific (false-positive) interactions. Some reagents require cofactors such as calcium (C-type lectins) for binding or different pH levels. The optimal reagent concentration for staining varies a lot between different reagents and there is batch-to-batch variation as well. Therefore, it is recommended to test several dilutions prior to a screening experiment.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the reagent carries a fluorophore or tag that enables assaying the binding to the isogenic cells. If no tag is available, the reagent may be conjugated to a fluorophore or possibly antibodies exist that will allow detection.</div>
+<ol start="26">
+<li>Dissolve and store reagents according to the manufacturer’s instructions.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Some reagents are not stable in solution and should be used within a short time frame after dissolving. For binding reagents that are stored frozen, it is recommended to prepare several aliquots to avoid freeze-thaw cycles that can reduce their activity. If applicable, follow the manufacturer’s instruction regarding handling and storage and confirm activity of the reagent before performing large screening experiments.</div>
+<ol start="27">
+<li>Calculate the amount of volume needed for staining. For high-throughput staining in 96-well plates use 30–50 μL staining buffer per well.</li>
+<li>Depending on the reagent’s binding affinity, prepare a staining mix for sequential staining (a) or staining with pre-formed complexes (b) (<a href="#fig3">Figures 3</a>B and 3C).</li>
+</ol>
+<ol type="a">
+<li>Dilute the glycan-binding reagent to the desired final concentration (usually between 0.1–2 μg/mL) in staining buffer and keep at 4°C. Prepare these solutions freshly before every experiment.</li>
+<li>For pre-complexing, mix 0.1–2 μg/mL tagged reagent (e.g. biotin, Fc) with fluorophore-conjugated secondary staining reagent such as streptavidin (1:4 ratio) or antibodies (1:2 ratio) in staining buffer and incubate for 20 min at 4°C protected from light.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is recommended to prepare the staining solution freshly every time, especially the pre-formed complexes.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The concentration of the reagent (e.g. lectin) can influence its binding properties. Therefore, it is recommended to titrate the reagent before performing screening experiments and, if feasible, to also include 2–3 different concentrations in the screening assay.</div>
+<h3>High-throughput Flow Cytometry Analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–6 h</div>
+<p>Binding to a large panel of isogenic cells, the cell-based glycan array, can be assayed readily with high-throughput flow cytometry. This step describes the staining of isogenic cells with glycan-binding reagents and subsequent flow cytometry analysis (<a href="#fig4">Figures 4</a> and <a href="#fig5">5</a>B).</p>
+<ol start="29">
+<li>Collect a panel of isogenic cells with or without transfection of transient reporter, and prepare single cell suspensions from live or fixed cells in culture medium at a concentration of 0.5–1 x 10<sup>6</sup> cells/mL.</li>
+<li>Using a multichannel pipette and multichannel pipette reservoirs, distribute 100 μL/well cell suspension over 96-well round or V bottom microwell plates (0.5–1 x 10<sup>5</sup> cells/well). Preferably, use three plates that will serve as technical replicates. Furthermore, extra wells should be included as unstained and secondary staining reagent only controls.</li>
+<li>Spin the plates in a plate centrifuge at 300 xg for 3 min at 4°C. Remove the supernatant by ‘flicking’ the plates or careful aspiration and wash the cells by adding 150 μL staining buffer followed by centrifugation at 300 xg for 3 min at 4°C and removal of supernatant.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> After centrifugation ensure that a pellet is visible at the bottom of the plate and perform ‘flicking’ carefully to avoid loss of cells (<a href="#fig6">Figure 6</a>).</div>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Image Showing Cell Pellets in a 96-Well Round Bottom Microwell Plate after Centrifugation</div>
+</figcaption>
+</figure>
+<ol start="32">
+<li>Resuspend the cells in 30–50 μL staining solution and incubate the plates for 30–60 min at 4°C protected from light. Follow the protocol for sequential staining or staining with pre-formed complexes.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to stain live cells at 4°C to avoid uptake of the reagent or fluorophore and to avoid apoptotic signaling that can be induced by some lectins due to cross-linking of glycans.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Optimal incubation time might vary between reagents. It is recommended to optimize the staining before performing large screenings with the cell-based glycan array.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Other staining reactions (viability, surface marker) can be included in the staining mix, provided they do not interfere with glycan binding or the secondary staining reagents.</div>
+<ol start="33">
+<li>In case of sequential staining, wash the plate twice with staining buffer and incubate for 20 min at 4°C with 30–50 μL/well secondary staining reagent diluted in staining buffer. Protect the cells from light.</li>
+<li>Wash the plates twice and resuspend the cells in 100–200 μl staining buffer. Keep the cells at 4°C protected from light until analysis.</li>
+<li>Measure the samples by flow cytometry using the auto sampler function.</li>
+<li>For analysis and interpretation of the data, proceed to the expected outcomes section.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When using fixed cells, the staining procedure can be performed at 20–25°C.</div>
+<h3>Immunocytochemistry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–6 h</div>
+<p>Compared to flow cytometry, immunocytochemistry is less high-throughput, but it is useful to obtain information on the binding localization, clustering or uptake of a probe by cells. This step describes how the isogenic HEK293 cells can be stained with glycan-binding reagents for analysis with fluorescence microscopy (<a href="#fig5">Figures 5</a>C and 5D).</p>
+<ol start="37">
+<li>Coat sterile cover slips with 100 μg/mL poly-L-lysine for 5 min at 20–25°C.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Positively charged poly-L-Lysine allows negatively charged cells to attach firmly to the cover slips to avoid detachment during the staining procedure. Other reagents might also be used for coating.</div>
+<ol start="38">
+<li>Wash the cover slips three times with 1x PBS and place them on the bottom of 24-wells.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Remove all non-bound poly-L-Lysine to avoid attachment to cells.</div>
+<ol start="39">
+<li>Collect the isogenic HEK293 cells with TrypLE dissociation reagent and seed 0.1–0.2 x 10<sup>6</sup> cells in 0.5 mL on top of the coverslip into the 24-wells.</li>
+<li>Allow the cells to adhere and spread 12–18 h in the incubator at 37°C and 5% CO<sub>2</sub>.</li>
+<li>Carefully aspirate the supernatant and carefully wash the cells three times with 1 mL 1x PBS.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Remove all culture medium proteins and trypsin before fixation to avoid cross-linking of these proteins with the cells.</div>
+<ol start="42">
+<li>Add 0.5 mL 4% paraformaldehyde solution to the cells and incubate them for 10 min at 20–25°C.</li>
+<li>Wash thrice with 1x PBS.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to remove all paraformaldehyde to prevent cross-linking events when using the cells for analysis at a later time point.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The fixed cells can be kept at 4°C in 1x PBS for up to 24 hrs before proceeding to staining.</div>
+<ol start="44">
+<li>Block non-specific interactions by incubating the cells with 5% (w/v) bovine serum albumin in 1x PBS for 30 min at 20–25°C.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Before blocking, the cells can be permeabilized for intracellular staining by incubation with 0.1%–0.2% (v/v) Triton X-100 for 10 min at 20–25°C or other permeabilization reagents.</div>
+<ol start="45">
+<li>Wash once with 1x PBS and add 0.3 mL staining solution for 60 min at 20–25°C or 12–18 hrs at 4°C.</li>
+<li>Wash three times with staining buffer and incubate samples with 0.3 mL secondary staining reagent for 1 h at 20–25°C.</li>
+<li>Wash three times with staining buffer and one time with 1x PBS and mount the cover slips cell-side down with mounting medium.</li>
+<li>Assess binding using a fluorescent microscopy system and acquire representative images.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Other staining reagents can be included e.g. nucleic acid stains.</div>
+<div class="note">
+<span class="note-title">Note:</span> Quantitative data can be obtained by analyzing the fluorescence microscopy images with ImageJ or similar software.</div>
+<h3>Transfection of HEK293-6E Suspension Cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>The isogenic cells can be used to produce glycoproteins with display of a particular glycan feature of interest. This step describes how suspension HEK293-6E cells can be transiently transfected for the production and purification of secreted, recombinant glycoproteins with desired glycosylation features (<a href="#fig7">Figure 7</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/64-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Schematic Protocol for Expression and Purification of Recombinant Glycoprotein Reporters</div>
+<p>Illustrated is lipid-mediated transfection of HEK293-6E cells in suspension with a His-tagged reporter construct and purification by Ni-NTA chromatography.</p>
+</figcaption>
+</figure>
+<ol start="49">
+<li>Select isogenic HEK293-6E cells that display the desired glycan features and prepare a 50 mL bioreactor tube with filter top containing 30 mL of isogenic HEK293-6E cells in suspension at a density of 0.5 x 10<sup>6</sup> cells/mL two days before transfection.</li>
+<li>The day of transfection, transfer 20 μl suspension cells to a 1.5 ml tube and mix with 20 μl 0.4% trypan blue solution. Count the number of cells and determine cell density and viability and transfer 30 mL of 1 x10<sup>6</sup> cells/mL into a 50 mL bioreactor tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure the cell viability is above 95% and that the density is in the range of 1.0–2.0 x 10<sup>6</sup> cells/mL.</div>
+<ol start="51">
+<li>The next day, prepare a 15 mL tube containing 4 mL Opti-MEM and add 30 μg of plasmid encoding the secreted N-/O-glycoprotein of interest with a 6x His tag (or another tag suitable purification).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure high purity of the plasmid, the OD260/280 ratio should be close to 1.9 for optimal transfection.</div>
+<ol start="52">
+<li>Add 90 μg PEI 25K solution (3:1 ratio PEI:DNA) to the diluted plasmid, vortex for 10 sec and incubate the mixture at 20–25°C for 10–15 min.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The 3:1 ratio PEI:DNA was found to be optimal for most plasmids tested, but depending on the plasmid optimal transfection efficiency might be achieved at different ratios. Transfection should therefore be optimized for instance by comparing 2:1, 3:1, 4:1 and 6:1 ratios.</div>
+<ol start="53">
+<li>Take the suspension cells from the shaker and carefully add 4 mL of transfection solution while gently swirling the tube for even distribution. Return the tube to the shaker and incubate for 72–96 hrs.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Suspension cells sink down to the tube bottom fast after removal from the shaker. Ensure the cells are in suspension before adding the transfection mix. Gently swirling the tube while adding the transfection mix avoids pelleting of the cell.</div>
+<ol start="54">
+<li>After 72–96 h, spin down the tube for 3 min at 300 xg at 20–25°C and transfer the supernatant into a clean 50 mL tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Expression levels depend on the transfection efficiency and also vary between different N-/O-glycoprotein constructs. Usually, we obtain 50–100 μg/mL for most N-/O-glycoproteins tested.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Assure that no cells are present in the supernatant and that cell death is minimal in the culture, because endogenous protein with immature glycosylation could be released. Above 90% viability is desirable when harvesting the supernatant.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Take a 50–100 μL sample of the supernatant and assess correct expression of the N-/O-glycoprotein in the supernatant by SDS-PAGE analysis or other methods.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The supernatant can be frozen and stored at -20°C for purification at a later time point. Alternatively, the supernatant can be flash frozen by liquid nitrogen and stored at -80°C, which might preserve protein integrity better.</div>
+<h3>Purification of His-Tagged Glycoproteins</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–6 h</div>
+<p>The produced recombinant glycoproteins can be highly useful for a variety of applications including studies on how a particular glycan feature modulates protein function or distribution <i>in vivo</i> or targeting of a glycan-binding receptor. For these experiments it is important to work with highly pure material. This step describes how glycoproteins can be purified from cell culture supernatant of the transfected isogenic cells.</p>
+<ol start="55">
+<li>Filter the cell culture supernatant containing secreted His-tagged glycoprotein through a 0.45μm vacuum filter system to remove any cell debris.</li>
+<li>Pack about 200 μL nickel-nitrilotriacetic acid (Ni-NTA) affinity agarose into a 2 mL gravity-flow column and equilibrate the column with 5 agarose bed volumes (1 mL) equilibration buffer.</li>
+<li>Mix 30 mL of the cell culture supernatant with 10 mL of 4x column equilibration buffer.</li>
+<li>Run the sample twice over the Ni-NTA purification column and wash the column thrice with 10 agarose bed volumes (2 mL) column washing buffer.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep the flow rate at a moderate speed, as fast flow will reduce the yield of glycoproteins.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Collect the flow-through to assess the purification efficiency by SDS-PAGE analysis or other methods. The column size can be scaled up depending on the sample volume. Read the manufacturer’s instructions regarding the binding capacity of the Ni-NTA agarose (usually up to 50 mg/mL of 6x His-tagged proteins), imidazole concentrations and buffer volumes required. Alternatively, instead of using gravity-flow, Ni-NTA agarose beads can be added to the supernatant in 50 mL tubes followed by 12–18 hrs incubation at 4˚C and spin purification. This method may increase yield, but reduces purity with more non-specific proteins purified.</div>
+<ol start="59">
+<li>Elute the immobilized protein by adding 2 agarose bed volumes (0.4 mL) column elution buffer and collect into a 1.5 mL tube. Repeat this step two times to obtain a total of three fractions in separate tubes.</li>
+<li>Determine the protein content in the fractions containing the His-tagged protein by SDS-PAGE analysis.</li>
+<li>Select the fraction with the highest protein content (or pool fractions) and exchange the elution buffer to MQ, 1x PBS, 50 mM ammonium bicarbonate (Ambic) or another buffer type (compatible with the planned downstream applications) using a desalting column (e.g. PD MiniTrap™ G-25 column or Zeba<sup>TM</sup> column) according to the manufacturer’s instructions.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Ambic buffer is suitable for further mass spectrometry analysis.</div>
+<ol start="62">
+<li>Aliquot the purified glycoprotein and store at -20°C or flash freeze the protein and store at -80 °C, which may preserve protein integrity better.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Correct glycosylation of the purified recombinant glycoproteins can be confirmed by mass spectrometry.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected Outcomes</h2>
+<p>The glycosylation atlas with rainbow diagram was used to design a rational and systematic KO/KI strategy to develop sublibraries of stable isogenic HEK293 cells that each display one of the major steps in glycosylation in a dissectible fashion (<a href="#bib4">Narimatsu et al.</a>, 2019; <a href="#bib5">Narimatsu et al., 2018</a>). We developed eight sublibraries to dissect and inform of the involvement of the type of glycoconjugate (sublibrary #1), glycolipid (sublibrary #2), N-glycan branching (sublibrary #3), O-glycan core and branching (sublibrary #4), glycosaminoglycan (sublibrary #5), general elongation (sublibrary #6), and sialic acid capping (sublibraries #7, 8), in interactions with glycans (<a href="#fig1">Figure 1</a>, <a href="#tbl1">Tables 1</a> and <a href="#tbl2">2</a>). These sublibraries of cells form the current cell-based glycan array, which is continuously being expanded with additional combinations, especially between sublibraries, and with new glycosylation capacities using KI of GTf genes not endogenously expressed in HEK293 cells. The current array does not enable detailed dissection of glycosaminoglycans, but this can be done with the <i>GAGOme</i> cell-based glycan array recently developed in CHO cells (<a href="#bib1">Chen et al., 2018</a>). The cell-based glycan array can be assayed with different methods including high-throughput flow cytometry and any cell-based assays (e.g. immunocytochemistry, adhesion assays, uptake and signaling assays and more), and the cell libraries serve as easy accessible production platforms for recombinant glycoproteins with custom designed glycoforms (<a href="#bib4">Narimatsu et al., 2019</a>). The cell-based glycan array presents the option to express any protein of interest displaying different glycan features for interrogation of the specific protein context in glycan binding. We envision that use of the cell-based glycan array will start with establishing a positive binding signal with HEK293<sup>WT</sup> cells, followed by a sequential screening of individual sublibraries guided by the results and the atlas of glycosylation pathways to limit the workload. In cases where no binding to HEK293<sup>WT</sup> is found, prior knowledge of interactions with glycans may be needed to guide selection of engineered cells that display relevant glycan structures, which could be masked structures like aberrant truncated glycans (use KO cells) or structures not produced in HEK293<sup>WT</sup> (use KI cells). Screening of the sublibraries will identify GTf genes essential for binding and the structural glycan features they produce. Further data-driven engineering and connectivity between sublibraries is required to allow identification of the complete structure of a glycan ligand, the glycan epitope, as well as the mode of presentation in the cellular context for instance on a specific glycoprotein. To support data interpretation and connectivity between sublibraries, we have developed an open-access online tool designated GlycoRadar (<a href="http://glycoradar.glycomics.ku.dk/">glycoradar.glycomics.ku.dk</a>) for this protocol. The cell-based glycan array is a genetically stable and a self-renewable resource available to the research community.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and Statistical Analysis</h2>
+<h3>Structural Interpretation and Connectivity between Sublibraries</h3>
+<p>Assaying cell-based glycan arrays generates genetic signatures and interaction patterns that can be interpreted with the atlas of human glycosylation pathways to identify the GTf genes and glycan motifs as well as the glycoconjugate and protein/lipid context required for binding. To support this analysis, we developed the open-access GlycoRadar online tool. This step describes how GlycoRadar can be used to analyze and interpret data from flow cytometry experiments as well as other quantitative readouts using the data presented in <a href="#fig4">Figure 4</a>C as an example (<a href="#mmc2">Methods Video 1</a>).</p>
+<ol>
+<li>Upload the .fcs files into flow cytometry analysis software such as FlowJo or equivalent software. Gate on the live cell population based on the forward scatter area (FSC-A) versus side scatter area (SSC-A) and then on the single cells by plotting the FSC-A versus forward scatter height (FSC-H) (<a href="#fig4">Figures 4</a>B and<a href="#fig5">5</a>B).</li>
+<li>Export the mean fluorescence intensity (MFI) values to Excel and add a column with the respective library identifier shown in <a href="#tbl2">Table 2</a> (e.g. CBGA1.0-LIB1-HEK001).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make histograms and assess if the fluorescence is distributed homogenously. Usually, the staining/labeling of isogenic cells is rather homogenous. If there is large variation in the fluorescence distribution, the staining could be incomplete and we recommend to optimize the staining procedure (sequential vs pre-formed complexes, concentration, duration, type of buffer).</div>
+<ol start="3">
+<li>Open GlycoRadar (<a href="http://glycoradar.glycomics.ku.dk/">glycoradar.glycomics.ku.dk</a>) and drag and drop the MFI data from Excel (<a href="#mmc1">Table S1</a>) into the <i>‘paste data here’</i> field of GlycoRadar as shown in <a href="#mmc2">Methods Video 1</a>.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Quantitative data generated by other assays that allow comparison of binding intensities between isogenic cells or recombinant glycoproteins (e.g. ELISA, immunocytochemistry) can be used for interpretation in a similar manner.</div>
+<ol start="4">
+<li>Click on ‘LibraryID’, ‘CellID’, ‘Level 1 binding’ and the ‘series’ (e.g. dilution 1/500) button. A radar plot showing the candidate GTf genes, respective glycan structures that are displayed/deleted in the library and the binding data is generated.</li>
+<li>Based on the binding to HEK293<sup>WT</sup> cells or negative control, the baseline value can be adjusted and GlycoRadar automatically identifies the essential GTf gene(s) for binding.</li>
+<li>Click on the ‘save’ button behind the identified GTf gene(s) and the glycan structure(s) involved in binding will be highlighted in the upper panel.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Instead of using GlycoRadar, data can be interpreted manually using the atlas of glycosylation pathways. In addition, next to experimental data, information may be deduced based on pathway-specificity of the identified GTf genes.</div>
+<ol start="7">
+<li>Based on the identified GTf genes relevant for binding, select another sublibrary for further binding studies to obtain more detailed insights into the glycan epitope as indicated in GlycoRadar. For instance, if sublibrary #1 was used in the initial screen and the glycoconjugate specificity has been determined, continue to assay a related sublibrary to obtain information on e.g. branching or capping. Connectivity between the sublibraries ultimately allows dissection of the complete glycan epitope, glycoconjugate and protein/lipid carrier required for recognition.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> GlycoRadar currently supports data analysis for the isogenic cells and libraries indicated in <a href="#tbl2">Table 2</a>. Glycoradar is currently being further developed to support all sublibraries in future.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>HEK293<sup>WT</sup> cells express a broad glycan repertoire that is representative of the diversity found within the human glycome. However, a number of GTf genes are not expressed (40-50 genes) and several glycan features are predicted to be absent or present at low abundance (<a href="#fig1">Figure 1</a>). This limitation should be considered especially when there is no detectable binding to HEK293<sup>WT</sup> cells. Screening of cells with KI of GTf genes not endogenously expressed could overcome this issue, although currently only a limited number of these KI cells are available. Another option is to screen cells with KO designs that unmask internal glycan structures such as galactose after removal of sialic acids. The current cell-based glycan array design does not recapitulate all combinatorial KO/KI possibilities as this would be an excessive number of cells and effort. Furthermore, to keep the size of the cell-based glycan array operable, the glycome is divided into sublibraries (#1–8) representing the most common biosynthetic steps in glycosylation, i.e. initiation, core extension, elongation and branching, and capping. Connectivity between these sublibraries may be needed and this will require further genetic engineering to be guided by data obtained for specific glycan-binding reagents. The atlas of glycosylation pathways and GlycoRadar will guide and enable engineering strategies to identify the complete glycan motif and context that is required for binding. We envision that investigators will use the GlycoCRISPR resource with validated high efficiency gRNAs (<a href="#bib5">Narimatsu et al., 2018</a>), and this resource will also allow the transfer of the specific engineering to other cell models of interest.</p>
+<p>It is our experience that in general KO/KI of GTf genes results in glycan outcomes as predicted from the atlas of glycosylation pathway. However, for all the isoenzyme families and pathway unspecific GTf genes the outcomes may only reveal subtle non-redundant functions and not have global effects and/or affect multiple types of glycoconjugates. The key factor to consider is that the reliability of the interpretations of KO/KI results and predictions of structural glycan features increases with the number of positive/negative events obtained. Consequently, the pursuit of sequential screening of sublibraries and in some cases additional engineering should always be considered. Finally, the dissection of glycan-binding reagent binding specificities with the cell-based glycan array relies on substantial changes in binding as a result of GTf gene KO/KI. Small differences in binding to different isogenic cells can occur and are most likely the result of overlapping functions and competition of GTfs. Therefore, only substantial changes in binding should be considered significant unless supported by further dissection.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem</h3>
+<p>No/low binding of glycan-binding reagent is observed.</p>
+<h3>Possible Solution</h3>
+<p>The glycosylation feature required for binding might not be expressed or is masked (e.g. by sialylation). This problem could be solved by KI of the required GTf gene or removal of masking glycans e.g. by sialidase. Furthermore, a specific protein context could be required that can be introduced for instance by transient overexpression. Optimize staining for instance by testing different concentrations, incubation times or sequential staining versus pre-complexing. Assure that the reagent is intact and has not lost binding activity due to degradation by gel-electrophoresis or other assays. Note that there can be batch-to-batch variation. Determine effective concentrations for every batch.</p>
+<h3>Problem</h3>
+<p>KO/KI of one glycan feature e.g. glycoconjugate results only in a minor change in binding.</p>
+<h3>Possible Solution</h3>
+<p>The reagent could recognize more than one glycan feature (e.g. N-glycan and O-glycan) and therefore only combination KO of the features will abrogate binding. Furthermore, competing GTfs could produce similar structures (e.g. GalNAc transferases or sialyltransferases) and need to be taken out in combination to see substantial changes in binding.</p>
+<h3>Problem</h3>
+<p>The recombinant glycoprotein is not expressed or is expressed at low levels.</p>
+<h3>Possible Solution</h3>
+<p>Verify that the construct sequence is correct and that the protein of interest is produced efficiently in HEK293-6E<sup>WT</sup> cells cultured in FreeStyle F17 medium. If that is the case, the altered glycosylation could influence production, folding or secretion of the recombinant protein. A different isogenic cell clone could be tested or it might be possible to produce the glycoform in another production cell line such as genetically modified CHO cells.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Chen, Y.H., Narimatsu, Y., Clausen, T.M., Gomes, C., Karlsson, R., Steentoft, C., Spliid, C.B., Gustavsson, T., Salanti, A., Persson, A., et al. (2018). The GAGOme: a cell-based library of displayed glycosaminoglycans. Nat. Methods <i>15</i>, 881-888.</p>
+<p id="bib2">Joshi, H.J., Hansen, L., Narimatsu, Y., Freeze, H.H., Henrissat, B., Bennett, E., Wandall, H.H., Clausen, H., and Schjoldager, K.T. (2018). Glycosyltransferase genes that cause monogenic congenital disorders of glycosylation are distinct from glycosyltransferase genes associated with complex diseases. Glycobiology <i>28</i>, 284-294.</p>
+<p id="bib3">L'Abbe, D., Bisson, L., Gervais, C., Grazzini, E., and Durocher, Y. (2018). Transient Gene Expression in Suspension HEK293-EBNA1 Cells. Methods Mol. Biol. <i>1850</i>, 1-16.</p>
+<p id="bib4">Narimatsu, Y., Joshi, H.J., Nason, R., Van Coillie, J., Karlsson, R., Sun, L., Ye, Z., Chen, Y.H., Schjoldager, K.T., Steentoft, C., et al. (2019). An atlas of human glycosylation pathways enables display of the human glycome by gene engineered cells. Molecular Cell <i>75</i>, 394-407.e5.</p>
+<p id="bib5">Narimatsu, Y., Joshi, H.J., Yang, Z., Gomes, C., Chen, Y.H., Lorenzetti, F.C., Furukawa, S., Schjoldager, K.T., Hansen, L., Clausen, H., et al. (2018). A validated gRNA library for CRISPR/Cas9 targeting of the human glycosyltransferase genome. Glycobiology <i>28</i>, 295-305.</p>
+<p id="bib6">Steentoft, C., Yang, Z., Wang, S., Ju, T., Vester-Christensen, M.B., Festari, M.F., King, S.L., Moremen, K., Larsen, I.S.B., Goth, C.K., et al., 2019. A validated collection of mouse monoclonal antibodies to human glycosyltransferases functioning in mucin-type O-glycosylation. Glycobiology <i>29</i>, 645–656.</p>
+<p id="bib7">Varki, A., Cummings, R.D., Aebi, M., Packer, N.H., Seeberger, P.H., Esko, J.D., Stanley, P., Hart, G., Darvill, A., Kinoshita, T., et al. (2015). Symbol nomenclature for graphical representations of glycans. Glycobiology <i>25</i>, 1323-1324.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Supplemental Information</h3>
+<p>Supplemental Information can be found online at <a href="https://doi.org/10.1016/j.xpro.2020.100017">https://doi.org/10.1016/j.xpro.2020.100017</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/501100003554">Lundbeck Foundation</a>, the <a href="https://doi.org/10.13039/501100009708">Novo Nordisk Foundation</a>, and the <a href="https://doi.org/10.13039/501100001732">Danish National Research Foundation</a> (DNRF107). This project has received funding from the <a href="https://doi.org/10.13039/501100007601">European Union’s Horizon 2020 research and innovation programme</a> under the Marie Sklodowska-Curie grant agreement no. 787684 (to C.B.).</p>
+<h3>Author Contributions</h3>
+<p>C.B., H.J.J., H.C., and Y.N. conceived and wrote the protocol.</p>
+<h3>Declaration of Interests</h3>
+<p>The University of Copenhagen has filed a patent application on the cell-based display platform. GlycoDisplay Aps, Copenhagen, Denmark, has obtained a license for the field of the patent application. Y.N. and H.C. are co-founders of GlycoDisplay Aps, have ownership in the company, and serve as unpaid consultants.</p>
+</section>
+</article>

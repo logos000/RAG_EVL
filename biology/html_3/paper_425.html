@@ -1,0 +1,1595 @@
+<article>
+<section>
+<h1 id="header">PhenoMapping: a protocol to map cellular phenotypes to metabolic bottlenecks, identify conditional essentiality, and curate metabolic models</h1>
+<p><time datetime="2021-01-22">Published: January 22, 2021</time></p>
+<p>Anush Chiappino-Pepe<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#fn3">4</a>,<a href="#fn4">5</a>,<a href="#cor1">*</a></sup> and Vassily Hatzimanikatis<sup><a href="#aff1">1</a></sup></p>
+<p id="aff1"><sup>1</sup>Laboratory of Computational Systems Biotechnology, École Polytechnique Fédérale de Lausanne, EPFL, Lausanne, Switzerland</p>
+<p id="fn1"><sup>2</sup>Present address: Department of Genetics, Harvard Medical School, Boston, MA, USA</p>
+<p id="fn2"><sup>3</sup>Present address: Department of Chemical Engineering, Massachusetts Institute of Technology, Cambridge, MA, USA</p>
+<p id="fn3"><sup>4</sup>Technical contact</p>
+<p id="fn4"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:anush.chiappinopepe@alumni.epfl.ch">anush.chiappinopepe@alumni.epfl.ch</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100280">10.1016/j.xpro.2020.100280</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Targeted identification of cellular processes responsible for a phenotype is of major importance in guiding efforts in bioengineering and medicine. Genome-scale metabolic models (GEMs) are widely used to integrate various types of omics data and study the cellular physiology under different conditions. Here, we present PhenoMapping, a protocol that uses GEMs, omics, and phenotypic data to map cellular processes and observed phenotypes. PhenoMapping also classifies genes as conditionally and unconditionally essential and guides a comprehensive curation of GEMs.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib52">Stanway et al. (2019)</a> and <a href="#bib28">Krishnan et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Systematic identification of cellular processes causing phenotypes</li>
+<li>Decoding nutrient usage from genetic screens, as shown in two parasites</li>
+<li>Curation of two genome-scale models leads to 80% accuracy in essentiality predictions</li>
+<li>Classification of conditional essentiality will guide drug targeting strategies</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>In this first section, we present a brief relation of PhenoMapping to prior art and the preparatory steps to perform a PhenoMapping analysis (<a href="#fig1">Figure 1</a>). We discuss a set of decisions to make and how they impact the subsequent PhenoMapping analysis. In addition, we introduce the input data needed and how to set up the GEM and software. To adapt to all ranges of expertise in metabolic modeling, we provide links to the troubleshooting section, where we describe technical details to perform the related steps. We present as an example the application of these preparatory steps to <i>Plasmodium berghei</i> in the section <a href="#expected-outcomes">Expected outcomes</a>. These steps were applied similarly in <i>Toxoplasma gondii</i> and are generalizable to any organism and study case. For examples of studies validating the results and insights obtained following the PhenoMapping protocol, please refer to <a href="#bib52">Stanway et al., 2019</a> and <a href="#bib28">Krishnan et al., 2020</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Preparatory steps for a PhenoMapping analysis</div>
+<p>Color code is consistent with related steps in the main PhenoMapping workflow. We include an approximate assessment of the timing each step takes.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.1">Relation of method to prior art</h3>
+<p>Identifying cellular processes responsible for a phenotype is especially complex and relevant in biological systems. Genome-scale models (GEMs) are widely used to integrate all available biochemical information of an organism and various types of omics data to study the metabolic function at different conditions. The protocol described here builds on three decades of method development to construct and analyze GEMs. It complements available protocols (<a href="#bib55">Thiele and Palsson, 2010</a>) and tools (<a href="#bib1">Agren et al., 2013</a>; <a href="#bib12">Devoid et al., 2013</a>; <a href="#bib19">Heirendt et al., 2019</a>, <a href="#bib19">2019</a>; <a href="#bib34">Lieven et al., 2020</a>; <a href="#bib36">Machado et al., 2018</a>; <a href="#bib46">Salvy et al., 2018</a>; <a href="#bib59">Wang et al., 2018</a>) for high-quality reconstruction and analysis of GEMs. This protocol provides a systematic guideline to identify cellular bottlenecks underlying phenotypes. It also describes how to use the knowledge about metabolic bottlenecks toward the understanding of conditional essentiality and curation of GEMs, as recently shown (<a href="#bib28">Krishnan et al., 2020</a>; <a href="#bib52">Stanway et al., 2019</a>).</p>
+<p>Alternative methods to increase the predictive accuracy of GEMs include automatized approaches like AMMEDEUS (<a href="#bib38">Medlock and Papin, 2020</a>), GrowMatch (<a href="#bib29">Kumar and Maranas, 2009</a>) or GlobalFit (<a href="#bib18">Hartleb et al., 2016</a>), and others less automatized like RING (<a href="#bib51">Sohn et al., 2012</a>). The solutions provided by these methods may remain limited to the physico-chemical constraints integrated into the GEM. This protocol suggests a systematic classification and evaluation of such physico-chemical constraints for the identification and curation of a broader range of knowledge gaps in GEMs. Moreover, through the systematic classification and analysis of bottlenecks defined in this protocol, one gains important biological insights like substrates linked to conditional gene essentiality that had remained rather unexplored <i>in silico</i> so far. Currently, tools like COBRA (<a href="#bib19">Heirendt et al., 2019</a>), RAVEN (<a href="#bib59">Wang et al., 2018</a>), modelSEED (<a href="#bib12">Devoid et al., 2013</a>), KBase (US Department of Energy Systems Biology Knowledgebase, <a href="http://kbase.us">http://kbase.us</a>), CarveMe (<a href="#bib36">Machado et al., 2018</a>), TFA (<a href="#bib46">Salvy et al., 2018</a>) etc. are widely used to construct and analyze GEMs. PhenoMapping, as defined in this protocol and accompanying GitHub repository (<a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a>), can be applied in combination with any of those tools. This protocol provides rigorous details for a PhenoMapping study design, integrative analysis using omics and phenotypic data, and comprehensive evaluation of results.</p>
+<h3 id="sec1.2">Organism and cellular state choice</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–10 min</div>
+<ol>
+<li>Select an organism and strain or cell line of interest.</li>
+<li>Select the <i>cellular state(s)</i> of interest.
+<ol type="a">
+<li>Select a life-stage (if applicable).</li>
+<li>Select a specific time point in the life-stage.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> the cellular state selected will determine the metabolic state of your organism or cell, which further restricts the gathering of data (see section on <a href="#sec4.9">Phenotypic, media, and omics data collection</a>) and selection of a cellular objective (see section <a href="#sec4.15">Cellular objective definition</a>) in the PhenoMapping analysis. We recommend the “safe and easy” selection of a highly metabolically active state for which the cellular objective can be represented as a “desire to maximize growth.”</div>
+<h3 id="sec1.3">Metabolic model selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ~1 day</div>
+<div class="note">
+<span class="note-title">Note:</span> the time spent to select a GEM varies dramatically depending both on the experience of the user with the organism of study and analysis of GEMs, and on the availability and quality of the GEMs.</div>
+<ol start="3">
+<li>Search in databases like BiGG (<a href="#bib26">King et al., 2015</a>), modelSEED (<a href="#bib22">Henry et al., 2010</a>), KBase (US Department of Energy Systems Biology Knowledgebase, <a href="http://kbase.us">http://kbase.us</a>), LCSB database (<a href="#bib31">LCSB, 2020</a>), etc. or publications for a GEM of your organism of interest.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> if there exists no GEM for your organism and strain, you may want to follow standard protocols to construct a GEM; <a href="#troubleshooting">Troubleshooting 1</a>. If there exist multiple GEMs, you need to select one for the subsequent analysis; <a href="#troubleshooting">Troubleshooting 2</a>. Any additional analysis and evaluation of the GEMs prior to PhenoMapping are an alternative with a consequent time extension.</div>
+<ol start="4">
+<li>Select a GEM for your organism and strain of interest.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> in the subsequent steps the GEM will be thermodynamically curated, prepared, and initialized to be ready for a PhenoMapping analysis.</div>
+<h3 id="sec1.4">Thermodynamic curation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ~1 day</div>
+<div class="note">
+<span class="note-title">Note:</span> the time spent to thermodynamically curate a GEM varies considerably depending on the tools used to perform this task. In addition, the time will vary based on the extent to which the user wants to <i>a posteriori</i> evaluate and curate the performance of the GEM under thermodynamic constraints. If no systematic tool is used to curate the GEM thermodynamically, variables like GEM size will affect the timing too.</div>
+<ol start="5">
+<li>Include all thermodynamic data in the GEM as necessary within the TFA framework (<a href="#bib20">Henry et al., 2006</a>, <a href="#bib21">2007</a>; <a href="#bib24">Jankowski et al., 2008</a>; <a href="#bib46">Salvy et al., 2018</a>) to perform a thermodynamically consistent flux balance analysis; <a href="#troubleshooting">Troubleshooting 3</a>.</li>
+<li>Verify the GEM has all fields required to be thermodynamically curated in a systematic fashion following the steps defined in the section <a href="#sec1.11">Software setup</a>.</li>
+</ol>
+<h3 id="sec1.5">Phenotypic, media, and omics data collection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–8 h</div>
+<div class="note">
+<span class="note-title">Note:</span> the time spent in a literature search and mapping of the data to the GEM greatly varies depending on the organism of study, amount of data available, and automatization of the mapping.</div>
+<ol start="7">
+<li>Get phenotypic data for the organism and cellular state to study.
+<ol type="a">
+<li>List all genes in the GEM and map the collected data of <i>in vivo</i> phenotypes (e.g., essential or dispensable upon single gene knockout).</li>
+</ol>
+</li>
+<li>Gather information about the media composition at the cellular state.
+<ol type="a">
+<li>List all extracellular metabolites in the GEM and map the available information about the availability of each metabolite at the cellular state.</li>
+</ol>
+</li>
+<li>Assemble available metabolomics data for the organism and cellular state to study.
+<ol type="a">
+<li>List the set of metabolites included in the GEM and map the corresponding concentration ranges (minimum and maximum absolute values).</li>
+</ol>
+</li>
+<li>Assemble available RNA-seq or proteomics datasets for the organism and cellular state to study.
+<ol type="a">
+<li>List all genes in the GEM and map the corresponding and unique RNA or protein level.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.6">Medium definition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–10 min</div>
+<ol start="11">
+<li>Select a media composition for the PhenoMapping analyses.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> we recommended to select a rich medium at this point. We define a rich medium when a broad range of metabolites (if possible, all extracellular) are allowed to be taken up by the GEM. Selecting a rich medium at this stage will allow PhenoMapping to map substrate availability to essentiality (conditional essentiality). PhenoMapping will only be able to map conditionally essential genes and the responsible substrates for the genes’ essentiality, if those substrates are made available (can be taken up) at this step (see section <a href="#sec3.2">Metabolic model contextualization</a>).</div>
+<ol start="12">
+<li>Define the medium composition in the GEM with the desired maximum uptake rates allowed; <a href="#troubleshooting">Troubleshooting 4</a>.</li>
+</ol>
+<h3 id="sec1.7">Genetic background and essentiality definition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–5 min</div>
+<ol start="13">
+<li>Select the type of essentiality analysis to perform.
+<ol type="a">
+<li>Single gene knockout.</li>
+<li>Single reaction knockout.</li>
+<li>Multiple gene knockout, or multiple reaction knockout.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> by default, PhenoMapping performs single gene knockout. This is because the phenotypic data available are normally single gene knockout data. If a single gene knockout analysis is selected, PhenoMapping will map bottlenecks to individual essential genes. A single gene knockout analysis is normally preferred to a multiple knockout analysis because it is faster (given the current available methods to unbiasedly perform double or multiple gene knockout analysis <i>in silico</i>). In this protocol, we will refer to single essential genes. And, the same concepts apply to any set of essential genes or reactions identified <i>in silico</i> as decided at this step.</div>
+<ol start="14">
+<li>Decide the genetic background of the <i>in silico</i> organism (GEM) on which the PhenoMapping analysis will be performed.
+<ol type="a">
+<li>Keep the wild-type genetic background to perform PhenoMapping analyses of single essential genes.</li>
+<li>Define <i>in silico</i> deletion strains, i.e., with a deleted gene or reaction or multiple deleted genes or reactions (even if that does not match the genetic background of the organism chosen) to efficiently identify bottlenecks of sets of redundant genes.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> a scenario with a knockout background might be desired when one knows that a gene is part of a synthetic lethal pair and one desires to map bottlenecks to the synthetic lethal pair. This strategy will not require a double knockout analysis within PhenoMapping, which is more time consuming and computationally expensive.</div>
+<ol start="15">
+<li>Define an <i>essentiality threshold</i> or a percentage of the optimal value of the objective function. The knockout that renders a value of objective function below this threshold is considered as lethal (see <a href="#sec3.3">Essentiality prediction</a> section).
+<ol type="a">
+<li>PhenoMapping uses by default an essentiality threshold of 0.1, which indicates that every gene whose knockout leads to a growth reduction of 90% or more with respect to a reference value (normally the wild-type growth) is considered essential.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.8">Cellular objective definition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–5 min</div>
+<div class="note">
+<span class="note-title">Note:</span> the time spent to define the objective function varies considerably depending on three main factors: the type of objective function chosen; the feasibility of the GEM for the given objective function under the defined conditions; and the experience of the user to accurately formulate the desired objective function. Difficulties in any of these points can expand the timing to days and weeks.</div>
+<ol start="16">
+<li>Select and define in the GEM an objective function that represents the cellular objective at the state of study (<a href="#bib50">Schuetz et al., 2007</a>). By default, PhenoMapping uses maximization of growth as the objective function (<a href="#bib14">Feist and Palsson, 2010</a>); <a href="#troubleshooting">Troubleshooting 5</a>.</li>
+<li>Verify that it is possible to obtain a solution for the objective function selected in the medium and genetic background defined; <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+</ol>
+<h3 id="sec1.9">Accuracy metric definition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–5 min</div>
+<ol start="18">
+<li>Familiarize with the description of knockouts based on the predicted outcome using the GEM:
+<ol type="a">
+<li>Positives: the GEM predicts little or no effect on wild-type growth (positive growth) upon knockout of the gene</li>
+<li>Negatives: the GEM predicts a negative effect on wild-type growth upon knockout of the gene</li>
+</ol>
+</li>
+<li>Familiarize with a contingency matrix for the comparison of predictions and data, which includes the following definitions:
+<ol type="a">
+<li>True positives (TP): dispensable both <i>in silico</i> and <i>in vivo.</i>
+</li>
+<li>True negatives (TN): essential both <i>in silico</i> and <i>in vivo.</i>
+</li>
+<li>False positives (FP): dispensable <i>in silico</i> and essential <i>in vivo.</i>
+</li>
+<li>False negatives (FN): essential <i>in silico</i> and dispensable <i>in vivo.</i>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="20">
+<li>Select a metric to assess the accuracy of your GEM in the essentiality prediction. These metrics can be systematically computed within PhenoMapping (see section <a href="#expected-outcomes">Expected outcomes</a>):
+<ol type="a">
+<li>Matthew correlation coefficient (MCC):<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si1.jpg" alt="Si1.jpg">
+</li>
+<li>Overall accuracy:<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si2.jpg" alt="Si2.jpg">
+</li>
+<li>Negative prediction rate (NPR):<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si3.jpg" alt="Si3.jpg">
+</li>
+<li>Positive prediction rate (PPR):<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si4.jpg" alt="Si4.jpg">
+</li>
+<li>Sensitivity:<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si5.jpg" alt="Si5.jpg">
+</li>
+<li>Specificity:<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si6.jpg" alt="Si6.jpg">
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the MCC and overall accuracy tend to be used as the main metrics of accuracy assessment. However, they assume that incorrect predictions, i.e., FPs and FNs, are equally “bad,” and this is arguably not the case. Given a reliable and high-quality dataset of phenotypes, one would normally prefer to work with a GEM that has less FNs than FPs. Such GEM is not over-constrained, so it does not incorrectly predict essential genes, but it lacks a set of constraints to increase the number of true essentiality predictions.</div>
+<h3 id="sec1.10">Data setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>This section includes a suggestion on the setup of data within the PhenoMapping repository. The data were set up in this format for the example scripts and PhenoMapping analyses of the <i>Plasmodium berghei</i> metabolic model (iPbe) (<a href="#bib52">Stanway et al., 2019</a>) and <i>Toxoplasma gondii</i> metabolic model (iTgo) (<a href="#bib28">Krishnan et al., 2020</a>).</p>
+<ol start="21">
+<li>GEM setup
+<ol type="a">
+<li>Save the GEM in MATLAB (.mat) format in the folder “models” of the PhenoMapping directory.</li>
+<li>Generate a folder with your model name in the PhenoMapping subfolder “tests/ref.”</li>
+</ol>
+</li>
+<li>Phenotypic data setup
+<ol type="a">
+<li>Format the phenotypic data in a 2-column csv file: genes names (column 1) and observed phenotype upon knockout (column 2).</li>
+<li>Store the csv file with the phenotypic data in the PhenoMapping subfolder tests/ref/modelname.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> verify gene identifiers match those included in the model in the field “genes.” If not available in the GEM, a warning will state that these genes are not in the GEM and the data will not be considered for further analysis.</div>
+<ol start="23">
+<li>Media data setup
+<ol type="a">
+<li>Format the media data in a 2-column csv file: metabolite names or identifiers (column 1) and information about their availability or uptake (column 2).</li>
+<li>Store the csv file with media data in the PhenoMapping subfolder “tests/ref/modelname.”</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> verify metabolite identifiers match those included in the model in the field “mets” or “metNames.” If not available in the GEM, a warning will state that these metabolites are not present in the GEM and the data will not be integrated or considered for further analysis.</div>
+<ol start="24">
+<li>Metabolomics data setup
+<ol type="a">
+<li>Format the metabolomics data as a 3-column csv file: names of metabolites for which concentration data are available (column 1) and concentration data formatted as explained below in columns 2 and 3.</li>
+<li>Compute the minimum (average minus standard deviation) and maximum (average plus standard deviation) values of concentration measured.</li>
+<li>Convert the units of the metabolomics data into mol/L<sub>cell</sub>.</li>
+<li>Add the concentration values to the csv file: minimum concentration values (column 2) and maximum concentration values (column 3).</li>
+<li>Store the csv file with metabolomics data in the PhenoMapping subfolder tests/ref/modelname.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> verify metabolite identifiers match those included in the model in the field “mets” or “metNames.” If not available in the GEM, a warning will state that these metabolites are not present in the GEM and the data will not be integrated or considered for further analysis.</div>
+<ol start="25">
+<li>Transcriptomics or proteomics data setup
+<ol type="a">
+<li>Format the transcriptomics or proteomics data in a 2-column csv file: genes names (column 1) and a unique value of measured RNA or protein level (column 2).
+<div class="note">
+<span class="note-title">Note:</span> the units of the RNA-seq or proteomics measurements are not relevant at this point as long as all RNAs or proteins measured share these units. This is because the GEMs used in PhenoMapping do not integrate the concentration of RNAs or proteins as variables. PhenoMapping will evaluate the distribution of RNA or protein levels across all genes in the GEM and will discretize these distributions in three groups using TEX-FBA (<a href="#bib42">Pandey et al., 2019</a>); lowly expressed, medium expression, and highly expressed (see the section describing the transcriptomics analysis and TEX-FBA parameters definition).</div>
+</li>
+<li>Store the csv file with transcriptomics or proteomics data in the PhenoMapping subfolder tests/ref/modelname.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.11">Software setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–30 min</div>
+<p>This section includes a suggestion on the setup of paths and preprocessing of the GEM for a PhenoMapping analysis using a sample script. There are many alternatives, and some are discussed in more detail in the tutorials script within the PhenoMapping repository and in this protocol in the <a href="#troubleshooting">Troubleshooting</a> section.</p>
+<div class="note">
+<span class="note-title">Note:</span> PhenoMapping requires MATLAB, CPLEX, and the GitHub repositories matTFA, TEX-FBA, and PhenoMapping. Links to these have been included in the <a href="#materials-and-equipment">Materials and equipment</a> section.</div>
+<ol start="26">
+<li>Prepare a settings script using as reference the templates provided in the PhenoMapping subfolder tests, i.e., settings_ipbeblood.m, settings_ipbeliver.m, settings_itgo.m.
+<ol type="a">
+<li>Provide paths, file names, and variable names for the GEM and data to be used in PhenoMapping.</li>
+<li>Select whether the GEM should be thermodynamically curated. This is an input of the initTestPhenoMappingModel function.</li>
+</ol>
+</li>
+<li>Run the settings script to (1) verify that all paths to matTFA, TEX-FBA, and CPLEX are found, (2) check that all data files are found, and (3) preprocess the GEM for PhenoMapping analysis.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> this step will highlight any problem to add paths to CPLEX, matTFA, or TEX-FBA. This step will also spot any missing information or field in the GEM as required for PhenoMapping; <a href="#troubleshooting">Troubleshooting 7</a>.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>
+<i>P. berghei</i> relative growth rate phenotypes in blood stages</td>
+<td><a href="#bib5">Bushell et al., 2017</a></td>
+<td><a href="https://doi.org/10.1016/j.cell.2017.06.030">https://doi.org/10.1016/j.cell.2017.06.030</a></td>
+</tr>
+<tr>
+<td>
+<i>P. berghei</i> relative growth rate phenotypes in liver stages</td>
+<td><a href="#bib52">Stanway et al., 2019</a></td>
+<td><a href="https://doi.org/10.1016/j.cell.2019.10.030">https://doi.org/10.1016/j.cell.2019.10.030</a></td>
+</tr>
+<tr>
+<td>
+<i>P. berghei</i> RNA-seq data in blood stages</td>
+<td><a href="#bib40">Otto et al., 2014</a></td>
+<td><a href="https://doi.org/10.1186/s12915-014-0086-0">https://doi.org/10.1186/s12915-014-0086-0</a></td>
+</tr>
+<tr>
+<td>
+<i>P. berghei</i> RNA-seq data in liver stages</td>
+<td><a href="#bib6">Caldelari et al., 2019</a></td>
+<td><a href="https://doi.org/10.1186/s12936-019-2968-7">https://doi.org/10.1186/s12936-019-2968-7</a></td>
+</tr>
+<tr>
+<td>Compiled metabolomics dataset from <i>P. falciparum</i>
+</td>
+<td><a href="#bib11">Chiappino-Pepe et al., 2017</a></td>
+<td><a href="https://doi.org/10.1371/journal.pcbi.1005397">https://doi.org/10.1371/journal.pcbi.1005397</a></td>
+</tr>
+<tr>
+<td>GEM of <i>P. berghei iPbe</i>
+</td>
+<td><a href="#bib52">Stanway et al., 2019</a></td>
+<td><a href="https://doi.org/10.1016/j.cell.2019.10.030">https://doi.org/10.1016/j.cell.2019.10.030</a></td>
+</tr>
+<tr>
+<td>
+<i>T. gondii</i> relative growth rate phenotypes in tachyzoites</td>
+<td>(<a href="#bib61">Sidik et al., 2016</a>)</td>
+<td><a href="https://doi.org/10.1016/j.cell.2016.08.019">https://doi.org/10.1016/j.cell.2016.08.019</a></td>
+</tr>
+<tr>
+<td>
+<i>T. gondii</i> tachyzoite RNA-seq data</td>
+<td>(<a href="#bib62">Hehl et al., 2015</a>); ToxoDB v45</td>
+<td><a href="http://www.toxodb.org">www.toxodb.org</a></td>
+</tr>
+<tr>
+<td>GEM of <i>T. gondii iTgo</i>
+</td>
+<td><a href="#bib28">Krishnan et al., 2020</a></td>
+<td><a href="https://doi.org/10.1016/j.chom.2020.01.002">https://doi.org/10.1016/j.chom.2020.01.002</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>PhenoMapping</td>
+<td><a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>TEX-FBA</td>
+<td><a href="http://www.github.com/EPFL-LCSB/texfba">www.github.com/EPFL-LCSB/texfba</a></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>matTFA</td>
+<td><a href="http://www.github.com/EPFL-LCSB/matTFA">www.github.com/EPFL-LCSB/matTFA</a></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td>Mathworks (<a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a>)</td>
+<td>R2016a - R2019a</td>
+</tr>
+<tr>
+<td>CPLEX</td>
+<td><a href="https://www.ibm.com/analytics/cplex-optimizer">https://www.ibm.com/analytics/cplex-optimizer</a></td>
+<td>12.8</td>
+</tr>
+<tr>
+<td>COBRA Toolbox (used updated version within matTFA)</td>
+<td><a href="http://www.github.com/EPFL-LCSB/matTFA">www.github.com/EPFL-LCSB/matTFA</a></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Software</h3>
+<p>MATLAB (MathWorks: <a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> While the current implementation of PhenoMapping is in MATLAB, the PhenoMapping rationale and workflow is extendable to any other programming language like python.</div>
+<p>CPLEX (IBM: <a href="https://www.ibm.com/analytics/cplex-optimizer.html">https://www.ibm.com/analytics/cplex-optimizer.html</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> While the current implementation of PhenoMapping uses CPLEX, other available solvers like gurobi could be implemented and used.</div>
+<p>matTFA (GitHub: <a href="http://www.github.com/EPFL-LCSB/matTFA">www.github.com/EPFL-LCSB/matTFA</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> An implementation of matTFA in python exists and it is called pyTFA (<a href="#bib46">Salvy et al., 2018</a>).</div>
+<p>TEX-FBA (GitHub: <a href="http://www.github.com/EPFL-LCSB/texfba">www.github.com/EPFL-LCSB/texfba</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> While the current implementation of TEX-FBA is in MATLAB, the TEX-FBA formulation is extendable to any other programming language like python.</div>
+<p>PhenoMapping (GitHub: <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a>)</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> PhenoMapping only requires CPLEX, matTFA, and TEX-FBA to be on the MATLAB path for optimization analysis. Further instructions on how to optimally handle paths in PhenoMapping are available in <a href="#troubleshooting">Troubleshooting 7</a>.</div>
+<h3 id="sec2.2">Data</h3>
+<p>The data used in PhenoMapping are collected from separate studies. Here, we summarize data types for which a PhenoMapping analysis is currently implemented. We define two types of data depending on their use in PhenoMapping: data type 1 involves phenotypic data used for a comparison with the GEM predictions to assess the accuracy of the GEM; and data type 2 involves other datasets like omics data and media data integrated into the GEM to contextualize it. None of the datasets but the GEM is truly essential since one can perform a purely <i>in silico</i> analysis of phenotypes and bottlenecks with a metabolic model in PhenoMapping. However, broader biological insights are achieved when experimental data are integrated into the PhenoMapping pipeline. We define how essential each dataset is (++++, necessary; +++, strong; ++, medium; +, low) for a PhenoMapping analysis, and the suggested labels or values for the data.</p>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Data (PhenoMapping data type)</th>
+<th>Degree of requirement</th>
+<th>Suggested labels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><i>GEM</i></td>
+<td>++++</td>
+<td>MATLAB format with standard fields defined in constraint-based modeling</td>
+</tr>
+<tr>
+<td>Phenotypic data (data type 1)</td>
+<td>+++</td>
+<td>essential; non-essential; (slow<sup><a href="#dtbl2fna">a</a></sup>)</td>
+</tr>
+<tr>
+<td>Media data (data type 2)</td>
+<td>+</td>
+<td>available; non-available; (unknown)</td>
+</tr>
+<tr>
+<td>Thermodynamic data (data type 2)</td>
+<td>++</td>
+<td>Thermodynamically curated GEM (<a href="#bib46">Salvy et al., 2018</a>)</td>
+</tr>
+<tr>
+<td>Metabolomics data (data type 2)</td>
+<td>++</td>
+<td>Absolute values (mol/L<sub>cell</sub>). Minimum and maximum measured or allowed concentration values per metabolite</td>
+</tr>
+<tr>
+<td>RNA-seq data (data type 2)</td>
+<td>++</td>
+<td>TPMs or absolute values. Unique RNA level per gene</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl2fna" class="table-footnote"><sup>a</sup>Some experimental datasets like those obtained for the blood and liver stages of the <i>Plasmodium</i> development (<a href="#bib5">Bushell et al., 2017</a>; <a href="#bib52">Stanway et al., 2019</a>) may include “slow” phenotypes. These genes might be considered as essential or dispensable in PhenoMapping depending on the GEM context, as explained in the next sections.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> PhenoMapping identifies metabolic bottlenecks responsible for the essentiality of a gene. PhenoMapping can map bottlenecks to <i>in silico</i> essential genes but stronger biological insights can be obtained when experimentally observed essential genes or phenotypic data (data type 1) are used in the pipeline.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> To study context-specific functions of the cell, PhenoMapping integrates omics and media data (data type 2) into a GEM. If no omics data are available, PhenoMapping will only map context-specific essential genes to substrate availability. If omics data are available, PhenoMapping will identify which minimum alternative sets of concentration levels (as measured in the omics datasets) can explain an observed gene essentiality or phenotype (data type 1).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>To enable identification of cellular processes underlying phenotypes, PhenoMapping leverages all available biochemical information of an organism as integrated into a GEM, as well as omics (e.g., metabolomic, transcriptomic) and phenotypic data in one or more conditions or life stages. These measurements are used along with the metabolic model of the organism of interest to study context-specific metabolic function and essentiality, identify sets of conditions that explain phenotypes, and if necessary further curate the GEM. Comparison between essentiality predictions and phenotypic data allows to assess accuracy of the GEM. Some of the steps have been extensively described previously, and some were recently first introduced (<a href="#bib11">Chiappino-Pepe et al., 2017</a>; <a href="#bib52">Stanway et al., 2019</a>). Here, we present a comprehensive protocol describing the proper and practical integration of all relevant PhenoMapping steps, as well as advice on checks and troubleshooting, to allow efficient and accurate analysis of origin of phenotypes and curation of GEMs (<a href="#fig2">Figure 2</a>). We define both <b>setup</b> and <b>analysis steps</b>. In a <b>setup step</b>, we conceptualize a study or perform changes in the GEM that do not involve any analysis. These steps are GEM- and case-specific and require mental or manual work. In an <b>analysis step</b>, we perform actual analysis on the GEM. All <b>analysis steps</b> are automatized within PhenoMapping. We emphasize the applications of this protocol to study eukaryotic pathogens like malaria (<i>Plasmodium</i>) and toxoplasma (<i>Toxoplasma</i>) parasites for which there is a higher uncertainty in the metabolism and growing conditions. This protocol can be easily adjusted for other complex eukaryotic organisms like human cells and also prokaryotic systems.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. The PhenoMapping workflow showing steps (colored boxes) and input data (boxes marked with databases)</div>
+<p>A GEM is a necessary input (solid arrow) to the workflow and phenotypic and omics data are optional inputs (dashed arrows). When phenotypic data are not available a purely <i>in silico</i> analysis of predicted phenotypes and bottlenecks will be performed. The PhenoMapping workflow involves five steps to map phenotypes to bottlenecks: PhenoMapping study design (blue), metabolic model contextualization (lila), essentiality prediction (pink), accuracy assessment (red), and bottleneck identification (green). An additional step can be added to curate the metabolic model if needed (yellow). The PhenoMapping workflow is often iterative (feedback loop). We include an approximate assessment of the timing each step takes.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.1">PhenoMapping study design</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–30 min</div>
+<p>The PhenoMapping workflow is summarized in <a href="#fig2">Figure 2</a>. The first step is a <b>setup step</b> and involves the design of a PhenoMapping analysis. PhenoMapping classifies the information included in a GEM in two classes: organism-specific and context-specific information. Each class has also its layers of information that correspond to constraints in a GEM with different types of physico-chemical meaning and hierarchy (<a href="#fig3">Figure 3</a>). In the PhenoMapping study design, we use the knowledge of these layers to select pieces of information and data (among all datasets collected in the <a href="#before-you-begin">Before you begin</a> section) to integrate into a GEM for the next analyses.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Layers of information or physico-chemical constraint types in a GEM and their hierarchy as suggested within PhenoMapping</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> the hierarchy of the organism-specific layers in PhenoMapping makes it possible to distinguish between two classes of incorrect essentiality predictions or false negatives: those arising due to a lack of information in the model, like missing genome annotations, and those arising due to an incorrectly defined pre-assumed transport/reaction directionality or enzymatic irreversibility (<i>ad hoc</i> constraints). PhenoMapping suggests adding first all possible missing gene annotations and metabolite transports, and later introducing <i>ad hoc</i> irreversibility constraints when needed. The hierarchy of the context-specific layers in PhenoMapping is suggested based on the uncertainty of the data and methodology to integrate such data into the GEM. For example, data on media composition tend to be more reliable than measures of RNA levels. In addition, simulating the effect of a lack of substrate in the medium is more straightforward than simulating the effect of an RNA level on the cellular physiology using a GEM.</div>
+<ol>
+<li>Select the type of PhenoMapping analysis to perform:
+<ol type="a">
+<li>
+<i>Organism-specific</i> PhenoMapping analysis to identify unconditionally essential genes and curate a generic GEM. This analysis also maps phenotypes to the following layers of information: (1) metabolic functions annotated to the genome, (2) enzyme localization, (3) transportability of metabolites between intracellular compartments, (4) enzymatic irreversibility, and (5) a set of metabolic tasks related to biomass production (<a href="#fig3">Figure 3</a>).</li>
+<li>
+<i>Context-specific</i> PhenoMapping analysis to study conditional essentiality and generate a context-specific GEM. This analysis also maps phenotypes to the following layers of information: the (6) media composition or uptakes, (7) thermodynamic feasibility at some given intracellular conditions including metabolite concentrations, (8) gene expression, and (9) transcriptional regulation or regulation of expression between isoenzymes (<a href="#fig3">Figure 3</a>).</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Within an organism-specific or context-specific analysis, select the layer(s) of information to keep within the GEM:
+<ol type="a">
+<li>
+<i>Biochemistry layer.</i> Analysis of the biochemistry layer serves to identify essential genes as defined uniquely by the genome annotation and metabolic capabilities included in the GEM. This analysis will not account for any physiological constraint in cellular metabolism and hence allows to identify metabolic gaps purely due to missing functional annotations.</li>
+<li>
+<i>Localization layer</i> (in eukaryotes). A comparative analysis between the biochemistry and localization layer will identify genes that become essential due to compartmentalization of enzymes and metabolic pathways. The localization layer includes (on the top of the biochemistry layer) localization of enzymes and metabolites, and allows transport of all metabolites without a phosphate, acyl-carrier protein (ACP), and CoA moiety between cytosol and other compartments. If there is experimental evidence that there exists a transporter for a metabolite with a phosphate, acyl-carrier protein, and CoA moiety, this should be allowed.
+<div class="note">
+<span class="note-title">Note:</span> there exists arguably some uncertainty in transport mechanisms and annotated transporters in cells and cellular organisms. In PhenoMapping, as done before (<a href="#bib11">Chiappino-Pepe et al., 2017</a>; <a href="#bib28">Krishnan et al., 2020</a>; <a href="#bib52">Stanway et al., 2019</a>; <a href="#bib56">Tymoshenko et al., 2015</a>), we assume that any metabolite that contains a phosphate, acyl-carrier protein (ACP), and CoA moiety might not easily diffuse (by simple diffusion) through lipid bilayer membranes and requires a specialized transporter or transport mechanism. The exception is free phosphate that cells normally take up.</div>
+</li>
+<li>
+<i>Intracellular transportability layer</i> (in eukaryotes). A comparative analysis between the localization and intracellular transportability layers will highlight genes that become essential when there exist constraints on intracellular transportability. Beside the localization information, this analysis will integrate <i>ad hoc</i> directionalities for transporters or blocked transports.</li>
+<li>
+<i>Enzymatic irreversibility layer.</i> Analysis of the enzymatic irreversibility layer can be compared to the biochemistry (in prokaryotes) or intracellular transportability (in eukaryotes). Such comparison suggests genes that become essential due to irreversible biotransformations (<a href="#bib2">Ataman and Hatzimanikatis, 2015</a>). This layer includes <i>ad hoc</i> and pre-assigned reaction directionalities that should be applicable in every growing context and life-stage.
+<div class="note">
+<span class="note-title">Note:</span> many GEMs tend to include pre-assumed reaction directionalities as <i>ad hoc</i> reaction bounds. While this approach might increase the prediction accuracy at a specific growth condition, it can also limit the usage of such GEMs in a different scenario and the identification of actual bottlenecks responsible for a phenotype. For example, there might be a set of metabolites whose concentrations are responsible for those reaction directionalities (see Metabolomics layer); we would not identify these bottleneck metabolites when the source of the reaction directionality is not TFA but <i>ad hoc</i> reaction bounds. We recommend defining generic GEMs with the minimum information on a context such that they serve as platforms for integration of media composition and omics data and generation of context-specific GEMs. Such strategy was followed before (<a href="#bib28">Krishnan et al., 2020</a>; <a href="#bib52">Stanway et al., 2019</a>) with the generation of generic GEMs like iPbe and iTgo and context-specific GEMs like iPbe-blood, iPbe-liver, and iTgo-tachy.</div>
+</li>
+<li>
+<i>Metabolic tasks.</i> Metabolic tasks serve to evaluate in a modular way how metabolism works, as described before (<a href="#bib1">Agren et al., 2013</a>; <a href="#bib7">Carey et al., 2017</a>; <a href="#bib11">Chiappino-Pepe et al., 2017</a>; <a href="#bib44">Richelle et al., 2019</a>; <a href="#bib56">Tymoshenko et al., 2015</a>; <a href="#bib59">Wang et al., 2018</a>). In an analysis of metabolic tasks, we define a set of input molecules (extracellular nutrients or intracellular precursors) and expected output molecules (biomass precursors or expected end products of a metabolic pathway). Next, we evaluate whether the task is feasible. A task is feasible when it is possible to produce all output molecules using the input molecules. We next evaluate what metabolic pathway was used and which genes are essential to fulfill a task.</li>
+<li>
+<i>Media layer.</i> Analysis of <i>in silico</i> minimal media allows to study nutritional requirements, evaluate substrate substitutability, and identify genes that become essential upon substrate inaccessibility. The minimum sets of substrates that rescue essentiality when added to an <i>in silico</i> minimal medium are bottleneck substrates (<a href="#bib52">Stanway et al., 2019</a>). The media layer study comprises a systematic analysis of <i>in silico</i> minimal media, essentiality at each minimal medium, and identification of bottleneck substrates.
+<div class="note">
+<span class="note-title">Note:</span> media analysis with PhenoMapping is especially useful in organisms for which the growing conditions (media composition) and nutritional requirements is uncertain. This is the case in intracellular parasites (<a href="#bib11">Chiappino-Pepe et al., 2017</a>; <a href="#bib28">Krishnan et al., 2020</a>; <a href="#bib52">Stanway et al., 2019</a>; <a href="#bib56">Tymoshenko et al., 2015</a>).</div>
+</li>
+<li>
+<i>Metabolomics layer.</i> Thermodynamics-based flux analysis will pinpoint genes that become essential due to a set of reaction directionalities imposed by thermodynamic constraints. It is possible to identify sets of metabolites whose concentration ranges determine such reaction directionalities and these are called bottleneck metabolites (<a href="#bib11">Chiappino-Pepe et al., 2017</a>). The metabolomics layer study involves a systematic integration of metabolomics data within the TFA framework (<a href="#bib46">Salvy et al., 2018</a>), thermodynamically consistent essentiality analysis with or without metabolomics, and identification of bottleneck metabolites.</li>
+<li>
+<i>Transcriptomics layer.</i> Integrative analysis of RNA-seq data helps to identify genes that become essential due to gene expression constraints. TEX-FBA (<a href="#bib42">Pandey et al., 2019</a>) will try to maximize consistency between RNA levels and metabolic reaction fluxes. There will be three classes of genes: highly, medium, and lowly expressed (defined by TEX-FBA parameters; <a href="#troubleshooting">Troubleshooting 8</a>). For reactions linked to highly expressed genes, TEX-FBA tries to increase metabolic flux. For reactions uniquely linked to lowly expressed genes, TEX-FBA tries to minimize metabolic flux. The maximum number of such type of agreements counts for a consistency score. Reaction fluxes linked to genes with medium expression are free to vary. PhenoMapping uses TEX-FBA to integrate RNA-seq data and calculate a maximum consistency score. It next performs essentiality analysis at the maximum consistency score and identifies the metabolic fluxes that are responsible for a gene essentiality, also called bottleneck reactions (<a href="#bib52">Stanway et al., 2019</a>).</li>
+<li>
+<i>Regulation layer.</i> Transcriptomics data analysis also allows identifying isoenzymes that become essential due to lack of transcriptional regulation of counterpart isoenzymes or bottleneck isoenzymes. PhenoMapping regulation analysis include a systematic integration of transcriptomics data within the TEX-FBA framework (<a href="#bib42">Pandey et al., 2019</a>), essentiality analysis with transcriptomics considering lack of regulation between isoenzymes, and identification of bottleneck isoenzymes.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">Metabolic model contextualization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10–30 min</div>
+<p>The second step in the PhenoMapping workflow (<a href="#fig2">Figure 2</a>) is a <b>setup step</b> and involves the contextualization of the GEM as designed in the first step. Predictions from a GEM are the consequence of the biochemical information and physico-chemical constraints integrated into the GEM (<a href="#fig3">Figure 3</a>). Here, we define the protocol to define each layer of information in the GEM. We assume that the initial GEM already includes all the corresponding organism-specific information and putatively context-specific information like a medium composition.</p>
+<ol start="3">
+<li>Select one step between the followings to perform a PhenoMapping analysis at each iteration.
+<ol type="a">
+<li>Generate a GEM with the ground <i>biochemistry layer.</i>
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM.</li>
+<li>Define a rich medium and allow uptake and secretion of all metabolites in the medium.</li>
+<li>Remove <i>ad hoc</i> reaction (intracellular reactions and transports) directionalities in the GEM.</li>
+<li>If applicable (eukaryotic organism), remove compartmentalization. This is done by defining all reactions in the cytosol or by allowing all metabolites to be transported and present in all intracellular compartments.</li>
+</ul>
+</li>
+<li>Generate a GEM with <i>localization layer</i> (in eukaryotes).
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM.</li>
+<li>Define a rich medium and allow uptake and secretion of all metabolites in the medium.</li>
+<li>Remove <i>ad hoc</i> reaction (intracellular reactions and transports) directionalities in the GEM.</li>
+<li>If applicable (eukaryotic organism), allow all metabolites without a phosphate, acyl-carrier protein (ACP), and CoA moiety to be transported between cytosol and other compartments. If there is experimental evidence about a transporter for a metabolite with a phosphate, acyl-carrier protein, and CoA moiety, this should be allowed.</li>
+</ul>
+</li>
+<li>Generate a GEM with <i>intracellular transportability layer</i> (in eukaryotes).
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM.</li>
+<li>Define a rich medium and allow uptake and secretion of all metabolites in the medium.</li>
+<li>Remove <i>ad hoc</i> directionalities only for intracellular reactions in the GEM.
+<div class="note">
+<span class="note-title">Note:</span> do not modify the directionalities of intracellular metabolite transportability from the initial GEM.</div>
+</li>
+</ul>
+</li>
+<li>Generate a GEM with <i>enzymatic irreversibility layer.</i>
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM.</li>
+<li>Define a rich medium and allow uptake and secretion of all metabolites in the medium.</li>
+</ul>
+</li>
+<li>Prepare a GEM for <i>metabolic tasks</i> analysis.
+<ul>
+<li>Decide whether an analysis with or without thermodynamic constraints should be performed.</li>
+<li>Select the sets of metabolites whose production you want to test. By default, this will be all biomass building blocks.</li>
+<li>Define an essentiality threshold (see section <a href="#sec4.13">Essentiality definition</a>).</li>
+</ul>
+</li>
+<li>Generate a <i>thermodynamically curated GEM</i> for subsequent context-specific PhenoMapping analysis.
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM.</li>
+<li>Define a rich medium and allow uptake and secretion of all metabolites in the medium.</li>
+<li>Define thermodynamically relevant information for each intracellular compartment: pH, generic metabolite concentrations (minimum and maximum allowed values), generic ionic strength (unique value), membrane potential.</li>
+<li>Curate the GEM thermodynamically within the TFA framework.</li>
+</ul>
+</li>
+<li>Generate a GEM for a <i>media</i> analysis.
+<ul>
+<li>Select whether analysis of uptakes or secretions should be performed.</li>
+<li>Select the sets of transports of extracellular metabolites among which the minimal uptake or secretion analysis will be performed; <a href="#troubleshooting">Troubleshooting 4</a>. By default, all substrates in the media will be selected. We indicate below two types of analysis (targeted or untargeted) that one can perform depending on the substrates made available and the uptakes selected for media analysis.
+<div class="critical">
+<span class="critical-title">Critical:</span> it is important to note that the algorithm will not unblock uptakes or secretions in the GEM. If uptakes and secretions were blocked in the GEM input to the PhenoMapping media analysis, they will remain blocked in the media analysis. Hence, it is important to properly define a media composition before one begins the PhenoMapping analysis (see section <a href="#sec4.11">Medium definition</a>).</div>
+<p><b>Recommended:</b> For an untargeted analysis of <i>in silico</i> minimal media, one should have defined a rich medium in the GEM (see the <a href="#sec4.11">Medium definition</a> section; <a href="#sec7">Troubleshooting 4</a>). At this stage, all uptakes should be selected for the media analysis. Following this setup, one will identify all alternative minimal sets of molecules required for <i>in silico</i> growth in the correct combination. It was shown before (<a href="#bib11">Chiappino-Pepe et al., 2017</a>) that such an analysis provides further understanding of the molecular substructures or backbone moieties that a cell needs to scavenge. The requirement to scavenge such moieties occurs when the biochemical information and further physio-chemical constraints defined in the GEM (that probably represent the metabolic function of the organism) do not allow the biosynthesis of such backbone moieties.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> For a targeted analysis of <i>in silico</i> minimal media, one should have defined a specific medium in the GEM before beginning the PhenoMapping analysis. In this medium the GEM should be feasible. At this stage, one defines the subset of substrates of interest for the media analysis. This analysis identifies within the subset of substrates, the minimum number of substrates required to achieve a minimum value of the objective (e.g., growth).</div>
+</li>
+<li>Perform the <i>in silico</i> minimal medium analysis.</li>
+<li>Define in the GEM a combined minimal medium comprising all substrates identified across all alternative <i>in silico</i> minimal media. We use minimal media alternatives that contain the same number of substrates.
+<div class="critical">
+<span class="critical-title">Critical:</span> defining here a combined minimal medium simplifies the process to infer the medium of a context-specific GEM. Check the section <a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a> (<a href="#sec4.15">Results of a PhenoMapping analysis of bottleneck substrates</a>) for more details on the importance of this last step to optimally guide the definition of the media in the context-specific GEM.</div>
+</li>
+</ul>
+</li>
+<li>Generate a GEM for a <i>metabolomics</i> analysis.
+<ul>
+<li>Integrate the metabolomics dataset into the GEM.</li>
+<li>Verify that the GEM is feasible within TFA when metabolomics data are integrated; <a href="#troubleshooting">Troubleshooting 9</a>.</li>
+</ul>
+</li>
+<li>Generate a GEM for a <i>transcriptomics</i> and <i>regulation</i> analysis.
+<ul>
+<li>Decide whether or not to plot the distribution of gene expression values.</li>
+<li>Select the TEX-FBA parameters defining the percentile of lowly and highly expressed genes in the distribution of gene expression values; <a href="#troubleshooting">Troubleshooting 8</a>.</li>
+<li>Select the TEX-FBA parameters defining the bounds assigned to lowly and highly expressed reactions; <a href="#troubleshooting">Troubleshooting 8</a>.</li>
+<li>Select the reactions for which gene expression constraints should not be defined</li>
+<li>Decide which transcriptomics profile an output GEM should include.
+<div class="note">
+<span class="note-title">Note:</span> upon integration of transcriptomics data, TEX-FBA will identify all alternative transcriptomic profiles that render a maximum consistency score between gene and reaction levels. One can select one specific transcriptomic profile for the subsequent analysis. Alternatively, one can also select a combined expression profile, which will account uniquely for the expression constraints common to all transcriptomic profiles.</div>
+</li>
+<li>Integrate the transcriptomics dataset into the GEM.</li>
+</ul>
+</li>
+<li>Define the following inputs common to any context-specific PhenoMapping analysis.
+<ul>
+<li>Remove all constraints related to omics data integrated into the GEM. This is not necessary if one uses a generic GEM.</li>
+<li>Define the expected value of the selected objective function (normally growth) at the conditions to study.</li>
+<li>Define the selected essentiality threshold (see section <a href="#sec4.13">Genetic background and essentiality definition</a>).
+<div class="note">
+<span class="note-title">Note:</span> a value of the selected objective function and essentiality threshold will be used to identify a minimum required objective value. For example, in the media analysis, we first identify the <i>in silico</i> minimal media or the minimum number of substrates required to achieve at least a required value of the objective. Such value is given by the input values of the objective function and essentiality threshold.</div>
+</li>
+<li>Select a time limit (in seconds) for the CPLEX solver. By default, none.</li>
+<li>Define whether one wants to identify uniquely alternatives for the optimal value of the objective function (preferred). Alternatively, one can look for suboptimal solutions. For example, one can find an <i>in silico</i> minimal media with 19 substrates and identify all alternative combinations of 19 substrates that allow growth. One can also identify alternative combinations with 20 or more substrates.</li>
+<li>Select a maximum number of alternative solutions to obtain. This is applicable every time a mixed integer formulation is defined. For example, for the identification of alternative <i>in silico</i> minimal media and alternative bottleneck substrates.
+<div class="note">
+<span class="note-title">Note:</span> it is preferred to select a high number of alternatives like 5,000; check <a href="#troubleshooting">Troubleshooting 10</a> for suggestions when the optimization crashes or the number of alternatives selected was not enough.</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Essentiality prediction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–10 min</div>
+<p>The third step in an <b>analysis step</b> and involves a prediction of gene essentiality with the contextualized GEM. If one performs a context-specific PhenoMapping analysis, the set of essential genes will be compared with the unconditionally essential genes or genes predicted as essential with the general GEM input to the PhenoMapping workflow. If one performs an organism-specific PhenoMapping analysis, one might compare the set of essential genes with the ones obtained in the immediate previous layer of information. Predictions of gene essentiality are expected to vary between the contextualized GEMs. Here, we define the suggested steps to identify essential genes in any GEM within PhenoMapping.</p>
+<div class="note">
+<span class="note-title">Note:</span> check <a href="#troubleshooting">Troubleshooting 11</a> if infeasibilities arise when calculating essentialities.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> In a transcriptomic analysis, one can perform two types of essentiality analysis consistent with transcriptomics: (a) fix a unique transcriptomic profile; this is done by fixing the integer variables linked to all up and down reaction levels; (b) fix an assembly of transcriptomic profiles that satisfy a maximum consistency score. The maximum consistency score is a variable within TEX-FBA and defines the number of reactions that can carry low or high fluxes and are consistent with the classification of lowly and highly expressed genes, respectively. There may exist multiple alternative transcriptomic profiles that share the same maximum consistency score. These alternatives are an assembly of transcriptomic profiles. To fix such an assembly, we define the lower bound of the maximum consistency score with a value that is some decimals below the optimal objective value. This is to avoid problems with the precision of the solver; <a href="#troubleshooting">Troubleshooting 12</a>. To provide some flexibility around the transcriptomic profiles, one can further relax the lower bound of the maximum consistency score by some integers. This option-b only differs from option-a if there is more than one alternative transcriptomic profile for the maximum consistency score within TEX-FBA.</div>
+<ol start="4">
+<li>Define the objective function chosen for the GEM; <a href="#troubleshooting">Troubleshooting 5</a>.</li>
+<li>Double check that the contextualized GEM is feasible; <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+<li>Perform the <i>in silico</i> essentiality study.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> An essentiality analysis per growth associated metabolic task can be performed. This will identify which biomass building block is responsible for the observed essentiality (<a href="#bib11">Chiappino-Pepe et al., 2017</a>) (<a href="#fig4">Figure 4</a>).</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Schema of growth simulation using a GEM</div>
+<p>(A)The GEM uses a set of substrates or nutrients to produce molecules required for growth or biomass building blocks in the stoichiometrically required amounts (η<sub>i</sub>). Biomass building blocks are monomers of macromolecules required for the cellular function. The stoichiometric coefficients of the biomass building blocks satisfy the concentration of macromolecules in the cell (v, w, x, y, z).</p>
+<p>(B) Predicted growth upon single knockout of each gene in the blood-stage-specific <i>P. berghei</i> GEM (iPbe-blood). We classify genes based on the essentiality threshold (dashed line bottom) and growth reduction threshold (dashed line top) into essential, growth reducing, and dispensable. The essentiality threshold (here 10%) and growth reducing threshold (here 90%) define which genes are essential and growth reducing, respectively, based on the predicted growth upon knockout (KO growth) compared to the predicted wild-type growth (WT growth). iPbe-blood predicts 146 essential genes, 9 growth reducing genes, and 273 dispensable genes (with solver version CPLEX 12.8.1 or above). Acronyms: AAs, amino acids; PG, phosphatidylglycerol; PE, phosphatidylethanolamine; PS, phosphatidylserine; PC, phosphatidylcholine; free FA, free fatty acids; TAG, triacylglycerol; DAG, diacylglycerol.</p>
+</figcaption>
+</figure>
+<ol start="7">
+<li>Select an output to identify essential genes:
+<ol type="a">
+<li>Ratio of optimal value of the objective function between the input (normally wild-type) GEM and the single gene knockout GEM.</li>
+<li>Absolute value of the objective function in the single gene knockout GEM.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> both approaches if compared with the corresponding reference values (as described in the next point) ultimately result in the same set of essential genes. However, selecting the absolute value of the objective function to identify essential genes allows to define an arbitrary value of the objective function as reference. This latter option might be more appropriate in a situation of high uptake rates (very unconstrained model) and high growth.</div>
+<ol start="8">
+<li>Identify all knockouts rendering a value below the essentiality threshold chosen (<a href="#fig4">Figure 4</a>)
+<ol type="a">
+<li>If the ratio is below the essentiality threshold the gene is considered as essential.</li>
+<li>If the predicted value of the objective function is below the product of the essentiality threshold and the initial value of the objective function the gene is considered as essential.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> by default, in PhenoMapping all infeasible solutions (NaN) upon a gene knockout consider the gene essential. However, a lack of convergence in the optimization and problems with the solver might also render infeasible solutions; <a href="#troubleshooting">Troubleshooting 12</a>.</div>
+<h3 id="sec3.4">Accuracy assessment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–5 min</div>
+<p>The fourth step is an <b>analysis step</b> and involves an accuracy assessment of the gene essentiality prediction with the contextualized GEM. This step is possible when there are phenotypic data available in the PhenoMapping workflow (<a href="#fig2">Figure 2</a>). In this step, a contingency matrix is generated (<a href="#fig5">Figure 5</a>) and the set of correct and incorrect predictions is identified.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Contingency matrix for the blood-stage-specific <i>P. berghei</i> GEM (iPbe-blood) compared to the blood-stage-specific PlasmoGEM phenotypes</div>
+<p>The accuracy values for this contingency matrix are: MCC = 0.63, overall accuracy = 0.79, NPR = 0.96, PPR = 0.67, sensitivity = 0.96, and specificity = 0.67.</p>
+</figcaption>
+</figure>
+<ol start="9">
+<li>Compare the list of <i>in silico</i> essential and non-essential genes with the experimentally observed (<i>in vivo</i>) phenotypes.</li>
+<li>Classify all compared genes in the GEM in four groups: TPs, TNs, FPs, and FNs.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> if “slow” phenotypes are available, one should decide how to treat them, i.e., as essential, or dispensable. This decision might be determined by the layer of information analyzed within PhenoMapping. For example, during a PhenoMapping analysis of the biochemistry layer, slow phenotypes might be better considered as dispensable. This is because one expects that slow phenotypes arise due to the presence of a redundant and non-optimal function that can partially compensate for the loss of the slow-phenotype gene. However, during a PhenoMapping analysis of the transcriptomics layer, slow phenotypes might be well considered as essential. This is because a GEM with transcriptomics data integrated identifies genes that are essential to maintain the defined (optimal) transcriptomic state. Hence, knocking out such a gene might render a transition to a different (suboptimal) transcriptomic or physiological state.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> one can also add a classification for genes without data, blocked, or with slow phenotypes (<a href="#fig5">Figure 5</a>). The genes classified as blocked and without data are not considered for the computation of the accuracy. The treatment of the slow phenotypes may vary depending on the context of the GEM.</div>
+<div class="note">
+<span class="note-title">Note:</span> Blocked genes are genes linked to reactions that cannot carry any flux in the reference conditions, also called blocked reactions. This occurs when any of the metabolites participating in the linked reactions cannot be mass balanced. Blocked reactions are identified with a flux variability analysis (<a href="#bib37">Mahadevan and Schilling, 2003</a>). We recommend performing a flux variability analysis in the generic GEM (in a rich medium and without any data integrated) and without any growth requirement. That way, there are no conditional or context-specific constraints leading to the non-function of the gene.</div>
+<ol start="11">
+<li>Generate a contingency matrix by defining the number of TPs, TNs, FPs, and FNs.</li>
+<li>Compute the selected metric to assess the accuracy using the numbers defined in the contingency matrix.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> there might be situations in which the number of available <i>in vivo</i> phenotypes is very low compared to the number of genes in the GEM or with <i>in silico</i> phenotypes. Such cases decrease the confidence on the accuracy of the model. Although there is little that a user can do to improve such a situation regarding the availability of phenotypes, the user can choose how to evaluate the FPs and FNs to better assess the accuracy of the GEM’s predictions. FNs arise when the model misses biochemical information or gene annotations or has incorrectly defined constraints. FPs arise when the model misses the definition of a context or constraints. As previously mentioned in this protocol, one can argue that (if the data are fully trustable) having more FNs than FPs in a GEM is worse than having more FPs than FNs. This is because one does not want to include false constraints into the GEM. In many situations a single constraint in the GEM (as identified with PhenoMapping) can be responsible for the essentiality of a FN and a TN. In such a case, we recommend not blindly integrating such constraint to increase the TNs (since that will also increase the FNs). We recommend first adding missing information into the GEM like new biochemistry or gene annotations such that later the named constraint becomes responsible uniquely for the essentiality of the TN. This means we recommend focusing first on correcting or reducing FNs (increasing TPs) and then on reducing FPs (increasing TNs) using PhenoMapping. See the follow-up discussion in the section <a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a>. The fact that PhenoMapping maps phenotypes to constraints may also increase the confidence on the prediction of genes without phenotype. If a constraint is responsible for one or more TNs and a gene for which no <i>in vivo</i> phenotype is available, we might feel more confident on the essentiality of the gene – primarily if the TNs and the gene without phenotype share metabolic pathways or tasks.</div>
+<h3 id="sec3.5">Bottleneck identification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–60 min</div>
+<p>The fifth and last step of the PhenoMapping workflow is an <b>analysis step</b> and involves the mapping of bottlenecks to phenotypes. After new genes are identified as essential in the contextualized GEM, PhenoMapping will identify the bottlenecks or underlying cellular processes responsible for that essentiality. This is done by performing one-by-one a knockout of the essential genes in the contextualized GEM and identifying the conditions that rescue growth (<a href="#fig6">Figure 6</a>). Here, we define the steps to identify bottlenecks as followed within the systematic bottleneck analysis of each layer of information.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Representation of bottlenecks studies in PhenoMapping</div>
+<p>(A–C) (A) Bottleneck substrates, (B) bottleneck metabolites, and (C) bottleneck reaction levels. PhenoMapping first simulates with the GEM some conditions (here: (A) <i>in silico</i> minimal media, (B) metabolomics data integrated, and (C) transcriptomics data integrated) and identifies <i>in silico</i> a phenotype (here single gene essentiality for growth). Next, PhenoMapping looks for the bottlenecks responsible for the predicted phenotype (here: (A) missing substrates in the media, (B) sets of metabolite concentration ranges, and (C) sets of levels of reaction fluxes and their corresponding RNA levels). The color code is consistent with the related step in the main PhenoMapping workflow (<a href="#fig2">Figure 2</a>).</p>
+</figcaption>
+</figure>
+<ol start="13">
+<li>Knockout the essential gene in the contextualized GEM.</li>
+<li>Identify all alternative bottlenecks or the minimum set of information (e.g., substrates, metabolite concentrations, reaction levels) that should be relaxed to rescue the gene knockout (<a href="#fig6">Figure 6</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> bottleneck substrates are those that can rescue essentiality of the gene when added to the <i>in silico</i> minimal medium. Bottleneck metabolites are those whose concentrations ranges should be relaxed (with respect to the experimentally measured concentration ranges) to rescue essentiality of the gene. Bottleneck reactions are those whose levels (considered to be high or low within the feasible flux range) should be relaxed to rescue essentiality of the gene.</div>
+<h3 id="sec3.6">Metabolic model curation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–60 days</div>
+<div class="note">
+<span class="note-title">Note:</span> the timing to curate a GEM varies radically depending on the available GEM and data and the experience and endurance of the user. Many aspects of the GEM can require curation. The problems in a GEM can range from being badly elementally balanced to missing a considerable amount of gene annotations and associated reactions; see <a href="#troubleshooting">Troubleshooting 2</a> to identify all elements that an ideal GEM may include. This section aims to define a pipeline to spot and solve those problems faster.</div>
+<p>This is a step that combines both <b>setup</b> and <b>analysis steps</b>. We curate a metabolic model when we change the biological and biochemical information it contains. Such information involves genes, gene functions, protein associations (protein complexes or isoenzymes), biochemical reactions, transporters, and biomass building blocks. Since GEMs are normally constructed following a bottom-up approach, it is more likely that a metabolic model curation involves adding missing information. However, curation of a GEM might also involve removing incorrectly defined <i>ad hoc</i> constraints.</p>
+<p>The curation of the GEM is an optional step in the iterative PhenoMapping workflow (<a href="#fig2">Figure 2</a>). The information achieved by mapping <i>in silico</i> bottlenecks to phenotypes facilitates and accelerates the identification of missing biological and biochemical information in the GEM, as well as incorrectly defined <i>ad hoc</i> constraints.</p>
+<p>A suggested workflow to curate the GEM using PhenoMapping is defined in <a href="#fig7">Figure 7</a>. This workflow is primarily manual. Here, we suggest conceptually how to perform a GEM curation in combination with the main PhenoMapping workflow (<a href="#fig2">Figure 2</a>). We propose analyzing one-by-one the incorrect gene predictions: first the FNs and then the FPs. One may follow the steps below in the order defined and select the steps depending on the type of inconsistency (FN or FP) for the gene of study. If the GEM is modified, one may perform a new essentiality analysis and accuracy assessment to evaluate the impact of the curation on the GEM performance.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Suggested workflow to curate a metabolic model in combination with the PhenoMapping workflow</div>
+<p>This workflow identifies missing biological and biochemical information in a GEM.</p>
+<p>(A) The workflow to curate false negatives (FNs) involves four steps.</p>
+<p>(B) The workflow to curate false positives (FPs) includes three steps. The curation of a GEM requires collecting and using different types of datasets. The color code is consistent with the related step in the main PhenoMapping workflow (<a href="#fig2">Figure 2</a>).</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Adding information around true predictions may prevent mismatches in a more constrained scenario. For instance, one needs to identify isoenzymes linked to a reaction (even if the reaction is true positive) to prevent it from being false negative in a constrained scenario. When one supposedly has all information mapped to the GEM, we may wait until a false prediction arises to introduce corrective measures. False predictions arise normally in the PhenoMapping analysis with layers of information that are hierarchically higher. Alternatively, we may perform an unbiased integration of alternative information around true predictions and screen the performance of the model in a more constrained scenario for selection of the best corrective measure. This later option is not discussed here.</div>
+<p>In this section, we do not consider the integration of context-specific information (like definition of uptake rates and integration of metabolomics and transcriptomics data) as part of the metabolic model curation. We consider that the integration of context-specific information is part of the metabolic model contextualization. The section <a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a> explains how to contextualize a GEM based on the bottleneck information from a context-specific PhenoMapping analysis.</p>
+<div class="note">
+<span class="note-title">Note:</span> curating a metabolic model can be a daunting and time-consuming task. Be patient, do sports, eat healthy, and talk with friends and family to remain mentally ok.</div>
+<ol start="15">
+<li>(FN) Perform an essentiality analysis per metabolic task.
+<ol type="a">
+<li>If there is a metabolic task uniquely responsible for a set of FNs and no true prediction, remove the biomass building block from the biomass reaction.</li>
+<li>If a biomass building block was removed, update the stoichiometric coefficients of the remaining biomass building blocks accordingly (<a href="#bib10">Chan et al., 2017</a>).</li>
+</ol>
+</li>
+<li>(FN) Perform a reannotation of the genome defining more relaxed parameters, e.g., E-values, or look in databases for genes with the same function that are not part of the GEM.
+<ol type="a">
+<li>If there exists a potential gene with the same function, add the gene to the GEM with an OR relation in the gene-protein-reaction association.</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>(FN) Perform a gap-filling with the gene knocked out to identify missing alternative biochemistry in the GEM.
+<ol type="a">
+<li>Select a proper database to look for alternative biochemistry. We distinguish three classes of databases: (1) GEMs of closely related organisms, which can be found in databases for GEMs like BiGG (<a href="#bib26">King et al., 2015</a>), modelSEED (<a href="#bib12">Devoid et al., 2013</a>), KBase (US Department of Energy Systems Biology Knowledgebase, <a href="http://kbase.us">http://kbase.us</a>), publications, etc.; (2) databases of biological reactions like KEGG (<a href="#bib30">Kyoto University, 1995</a>), MetaCyc (<a href="#bib9">Caspi et al., 2018</a>), BRENDA (<a href="#bib25">Jeske et al., 2019</a>), etc.; (3) the upper bound of biochemistry with hypothetical biochemical reactions between known compounds based on known enzyme reaction rules, i.e., the ATLAS of Biochemistry (<a href="#bib15">Hadadi et al., 2016</a>; <a href="#bib17">Hafner et al., 2020</a>).
+<div class="critical">
+<span class="critical-title">Critical:</span> the compatibility of metabolite identifiers between the GEM and the database plays a critical role in the selection of the database. Metabolite identifiers need to match to assure the proper connectivity of the metabolic networks of the GEM and database. It is also important to consider which version of the database to use. We would recommend working with the latest version, but that might create conflicts with metabolite identifiers or other identifiers like genes. For this reason, the user might consider working with an earlier version.</div>
+</li>
+<li>Identify a gap-filler that suits the GEM, database, computational power available, and desired gap-filling strategy.
+<ul>
+<li>There exist multiple examples of gap-fillers, as summarized before (<a href="#bib41">Pan and Reed, 2018</a>). Some recent examples are: gapseq (<a href="#bib60">Zimmermann et al., 2020</a>) or OptFill (<a href="#bib49">Schroeder and Saha, 2020</a>).</li>
+</ul>
+</li>
+<li>If there exists an alternative biochemistry that rescues the knockout, integrate it into the GEM.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>(FN) Investigate the possibility of a metabolite in the GEM being scavenged to rescue the KO.
+<ol type="a">
+<li>If there is evidence that the metabolite selected might be available at the cellular state studied, and the transport of such metabolite is possible (by any transport mechanism), define the transport in the GEM.</li>
+</ol>
+</li>
+<li>(FP) Search for a missing metabolic task downstream of the FP gene.
+<ol type="a">
+<li>If there is a downstream product that could be a biomass precursor and its definition as a metabolic task does not create inconsistencies, add it to the biomass reaction.</li>
+<li>If a biomass building block was added, update the stoichiometric coefficients of the remaining biomass building blocks accordingly (<a href="#bib10">Chan et al., 2017</a>).</li>
+</ol>
+</li>
+<li>(FP) Perform a flux variability analysis with a non-zero lower bound for the objective function.
+<ol type="a">
+<li>If the reactions linked to the gene cannot carry flux, perform a gap-filling (next step).</li>
+</ol>
+</li>
+<li>(FP) Perform a gap-filling with the objective function redefined to require flux through the FP gene.
+<ol type="a">
+<li>Select a proper database to search for missing biochemistry.</li>
+<li>Identify a gap-filler that suits the GEM, database, computational power available, and desired gap-filling strategy.
+<ul>
+<li>There exist multiple examples of gap-fillers, as summarized before (<a href="#bib41">Pan and Reed, 2018</a>). Some recent examples are: gapseq (<a href="#bib10">Chan et al., 2017</a>) or OptFill (<a href="#bib49">Schroeder and Saha, 2020</a>).</li>
+</ul>
+</li>
+<li>If there exist biochemical steps that can connect the metabolic network defined in the GEM with the FP gene, define it.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The order in which these steps are applied affects the definition of the GEM and later the identification of bottlenecks. We recommend following the order of steps defined in this section. The steps to curate FNs and FPs are defined in this order to identify first issues on which the user has more confidence. For example, to curate FNs we first check if there is an error in the objective function (a fact). Then we evaluate whether a gene is missing from the GEM (an E-value defines the confidence of the annotation). If no gene is found, we perform a gap-filling (a hypothetical non-annotated biochemical function). If no gap-filling reaction is found, we allow uptake of a metabolite (GEMs show the highest uncertainty in the definition of metabolite transports).</div>
+<h3 id="sec3.7">The PhenoMapping workflow is often iterative</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable</div>
+<p>One would perform as many passages through the PhenoMapping workflow as layers of information one desires to analyze (feedback in <a href="#fig2">Figure 2</a>). The layers of information can be analyzed independently or in a cumulative fashion. An independent analysis is recommended for the first PhenoMapping iterations and in a generic GEM. A cumulative analysis is recommended after an independent analysis and in a context-specific GEM. The order of the analysis would be hierarchical as suggested in <a href="#fig3">Figure 3</a> and argued in the section <a href="#sec3.1">PhenoMapping study design</a>. In addition, more iterations through the PhenoMapping workflow might be required when a curation of the GEM is selected.</p>
+<ol start="22">
+<li>Perform an independent, individual, and separate analysis of each layer of context-specific information to identify individual bottlenecks responsible for phenotypes. In an independent analysis of constraint types, a generic GEM is used to integrate each dataset independently, identify new essential genes, and map gene essentiality to bottlenecks.</li>
+<li>Perform also a cumulative and hierarchical integration of constraint types (<a href="#fig3">Figure 3</a>). In such a cumulative analysis, new essentialities might be identified at each integration step and can be mapped to sets of constraints within the last layer of information considered. The independent analysis of constraint types may limit the set of predicted phenotypes. A cellular phenotype is the product of a cumulative rather than individual effect of physico-chemical constraints. Hence, a cumulative analysis is recommended to analyze a context-specific GEM.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Here, we present an example to aid in the definition of a PhenoMapping analysis and understanding of its output. We use the example of blood-stage and liver-stage <i>P. berghei</i> to illustrate the iterative workflow of PhenoMapping (<a href="#fig8">Figure 8</a>). The same analysis was performed for tachyzoite <i>T. gondii.</i> The metabolic models of <i>P. berghei</i> (iPbe) and <i>T. gondii</i> (iTgo), the <i>P. berghei</i> blood- and liver-stage relative growth phenotypes, the tachizoyte <i>T. gondii</i> genome-wide screen, and all integrated omics data are available in <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a>. The scripts with all input values used for the analyses are also available in the GitHub repository. These files are enough to enable the user to follow along and repeat all computational steps of these examples with PhenoMapping. We present the results obtained for both examples. Additional analyses of the outputs were done as explained in the following section.</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Schema of preparatory steps as applied to study blood and liver-stage phenotypes with iPbe and PhenoMapping</div>
+<p>The preparatory steps are shown in <a href="#fig1">Figure 1</a>. Color code is consistent with related steps in the main PhenoMapping workflow (<a href="#fig2">Figure 2</a>).</p>
+</figcaption>
+</figure>
+<h3 id="sec4.1">Preparatory steps for a PhenoMapping analysis of genome-wide blood and liver-stage phenotypes in <i>P. berghei</i>
+</h3>
+<p>All preparatory steps for the PhenoMapping analysis of iPbe were performed as follows (<a href="#fig8">Figure 8</a>), and the result (models and data) are available in <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a>.</p>
+<h3 id="sec4.2">Organism and cellular state choice</h3>
+<p>In the PhenoMapping analysis of <i>P. berghei</i> two conditions were selected for study and comparison, i.e., the blood and liver stages of the malaria life cycle. The time points at each life-stage, i.e., 24 h in the blood stages and 48 h in the liver stages, were selected to represent the highest metabolically active state during each developmental stage. Similarly, in the PhenoMapping analysis of <i>T. gondii</i> the highly metabolically active state, i.e., tachyzoite, was selected.</p>
+<h3 id="sec4.3">Metabolic model selection</h3>
+<p>There was no GEM available for <i>P. berghei</i>, and we constructed a GEM as explained in detail before (<a href="#bib52">Stanway et al., 2019</a>). We used as reference a previously developed GEM for <i>P. falciparum</i> (iPfa) (<a href="#bib11">Chiappino-Pepe et al., 2017</a>) and applied the PhenoMapping principles discussed here and multiple iterations through the Metabolic model curation loop (<a href="#bib52">Stanway et al., 2019</a>). This construction rendered the life-stage agnostic GEM of <i>P. berghei</i> called iPbe.</p>
+<h3 id="sec4.4">Thermodynamic curation</h3>
+<p>We collected thermodynamic data for iPbe specific to the liver and blood stages (Table S3 in (<a href="#bib52">Stanway et al., 2019</a>)). We added such data in the “<i>CompartmentData</i>” field in iPbe.</p>
+<p>We mapped metabolite SEED IDs where available to all metabolites, as required in the current version of matTFA (<a href="#bib46">Salvy et al., 2018</a>) for a thermodynamic curation of the GEM. We saved such data in the “metSEEDID” field in iPbe.</p>
+<div class="note">
+<span class="note-title">Note:</span> in the current PhenoMapping repository, a thermodynamic curation and setup of the GEM for PhenoMapping analysis can be done with the function <i>initTestPhenoMappingModel</i>. In such function, one should define the input <i>tagThermo</i> as 1 or true. An example is provided in the “<i>settings</i>” scripts (see section <a href="#sec4.11">Software setup</a>).</div>
+<h3 id="sec4.5">Phenotypic, media, and omics data collection</h3>
+<p>Phenotypic data: we used the values of relative growth rate upon single gene knockout obtained with the PlasmoGEM technology in the blood stages (<a href="#bib5">Bushell et al., 2017</a>) and liver stages (<a href="#bib52">Stanway et al., 2019</a>).</p>
+<p>Metabolomics data: as an <i>in silico</i> study case, we used the values of metabolite concentration ranges obtained in <i>P. falciparum</i> (<a href="#bib53">Teng et al., 2009</a>, <a href="#bib54">2014</a>; <a href="#bib58">Vo Duy et al., 2012</a>). However, we did not integrate such values in the final blood- and liver-stage specific GEMs.</p>
+<p>Transcriptomics data: we used previously reported RNA-seq values for the blood-stage (<a href="#bib40">Otto et al., 2014</a>) and liver-stage (<a href="#bib6">Caldelari et al., 2019</a>) <i>P. berghei</i>. We computed the average of the replicates at the time point of highly active metabolic state.</p>
+<h3 id="sec4.6">Medium definition</h3>
+<p>For the blood-stage-specific PhenoMapping analyses, we allowed the uptake of all 248 metabolites present in the extracellular space of iPbe.</p>
+<p>For the liver-stage-specific PhenoMapping analyses, we allowed the uptake of 247 metabolites, which includes all 248 extracellular metabolites in iPbe but oxyhemoglobin.</p>
+<h3 id="sec4.7">Genetic background and essentiality definition</h3>
+<p>We preserved the wild-type genetic background (without any gene knockout) for all context-specific PhenoMapping analyses. We selected a single gene knockout essentiality analysis.</p>
+<h3 id="sec4.8">Cellular objective definition</h3>
+<p>Since we selected a highly proliferative and metabolically active state both in the blood and liver stages, we defined as cellular objective the desire to maximize growth.</p>
+<h3 id="sec4.9">Accuracy metric definition</h3>
+<p>We used the MCC and overall accuracy as the final metrics of accuracy assessment. To generate iPbe-blood and iPbe-liver, we tried to increase the positive prediction rate while keeping the negative prediction rate constant. This rationality was followed in the selection of constraints to integrate into iPbe after each passage through the PhenoMapping workflow.</p>
+<div class="note">
+<span class="note-title">Note:</span> in the current PhenoMapping repository, an accuracy assessment can be done with the function <i>accuracyAssessment</i>. An example is provided in <i>test_accuracyAssessment</i>.</div>
+<h3 id="sec4.10">Data setup</h3>
+<p>GEM setup: we saved the two versions of iPbe, i.e., with thermodynamic and medium data for the blood and liver stages, in the “models” folder of the GitHub repository as “tipbe4blood.mat” and “tipbe4liver.mat.”</p>
+<p>We generated a “pbe” folder in the directory “tests/ref”, where we saved all data in the format defined.</p>
+<h3 id="sec4.11">Software setup</h3>
+<p>We adapted the settings script to iPbe for blood and liver-stage analyses, i.e., <i>settings_ipbeblood</i>, <i>settings_ipbeliver</i>. These are saved in the “<i>tests</i>” folder. We next run them to add all relevant directories to the path and prepare iPbe for PhenoMapping.</p>
+<h3 id="sec4.12">PhenoMapping workflow applied to study genome-wide blood and liver-stage phenotypes in <i>P. berghei</i>
+</h3>
+<p>These steps and results could be generated automatically by running the <i>tutorial_basics</i> script in <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a> v1.0 (<a href="#fig9">Figure 9</a>, entry point 1). One can also work with the individual test scripts for an analysis of each layer of information within PhenoMapping.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Schema of the PhenoMapping workflow</div>
+<p>Schema of the PhenoMapping workflow applied to (1) analyze genome-wide blood and liver-stage phenotypes with iPbe and (2) generate the blood-stage-specific iPbe (blood-iPbe) and liver-stage-specific iPbe (liver-iPbe). We first performed an independent PhenoMapping media, metabolomics, and transcriptomics analysis to identify bottleneck substrates, metabolites, and reaction levels, respectively. The mapping of phenotypes to bottlenecks guided the definition of the media composition and consideration of highly and lowly expressed genes in the final life-stage specific models, as explained in the section <a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a>.</p>
+</figcaption>
+</figure>
+<p>Running the “<b>analysis steps</b>” of the <a href="#step-by-step-method-details">Step-by-step</a> section (using the <i>tutorial_basics</i> script) for the <u>liver-stage PhenoMapping analysis of iPbe</u> takes approximately 4 h in a MacBook Pro 2.2 GHz Intel Core i7 16 GB 1,600 MHz DDR3. The time it takes to perform a PhenoMapping analysis is GEM-specific and it does not necessarily correlate with the size of the metabolic network but rather with the inherent complexity or connectivity of the network.</p>
+<p>This script will save all results in a temporary result folder called “<i>tmpresults</i>.” The script <i>test_io</i> can be used to extract all data from the temporary results folder and save it in a text format.</p>
+<h3 id="sec4.13">Generic considerations for all context-specific PhenoMapping analyses</h3>
+<p>The life-stage agnostic model iPbe does not contain any constraint related to omics data. Hence, we did not have to remove them.</p>
+<p>We selected a value of 0.12 h<sup>-1</sup> and 0.35 h<sup>-1</sup> of optimal growth for the blood and liver analyses, respectively.</p>
+<div class="note">
+<span class="note-title">Note:</span> we calculated the growth value assuming that 16 and 30,000 merozoites of <i>P. berghei</i> are exponentially formed from a single cell in 24 and 30 h in the blood and liver stages, respectively.</div>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/425-Si7.jpg" alt="Si1.jpg"></p>
+<p>, where <i>N</i><sub>t</sub> and <i>N</i><sub>o</sub> are the initial and final number of cells and <i>gr</i> is the growth rate.</p>
+<p>The essentiality threshold was 10% or 0.1 across all analyses.</p>
+<p>We did not select a CPLEX time limit.</p>
+<p>We looked only for alternative solutions of optimal value (tagMin=1) when analyzing <i>in silico</i> minimal media. The analysis of <i>in silico</i> minimal media is a mixed integer linear programming (MILP) problem. This means we identified all alternative <i>in silico</i> minimal media with the same number of substrates. Such number is the minimal possible to achieve at least 10% (value of the essentiality threshold) of the optimal growth.</p>
+<p>The bottleneck analyses in PhenoMapping are also MILP formulations and we looked for <i>all</i> alternative bottleneck sets (of optimal and suboptimal integer count). This is done by default in the identification of bottleneck substrates and reaction levels, and we specified it (tagMax=0) in the analysis of bottleneck metabolites.</p>
+<p>We selected a maximum value of 5,000 alternatives.</p>
+<h3 id="sec4.14">Results of a single gene knockout analysis in the life-stage agnostic iPbe</h3>
+<p>A single gene knockout in iPbe with TFA yields 109 <i>in silico</i> essential genes, as obtained with the <i>test_core_essentiality</i> script. These genes are considered unconditionally essential.</p>
+<div class="note">
+<span class="note-title">Note:</span> in the current PhenoMapping repository, an essentiality analysis can be done with the function <i>thermoSingleGeneDeletion</i>. An example is provided in the <i>test_core_essentiality</i> script. Each PhenoMapping layer calls this function automatically within its own set of functions. The <i>thermoSingleGeneDeletion</i> function performs a prediction of essential genes using the FastSL formulation (<a href="#bib43">Pratapa et al., 2015</a>) and additionally accounting for thermodynamic constraints.</div>
+<h3 id="sec4.15">Results of a PhenoMapping analysis of bottleneck substrates</h3>
+<p>The PhenoMapping results for a bottleneck substrate analysis are saved in the form of tables, as presented in <a href="#tbl1">Table 1</a>. This table is a subset of all bottleneck results obtained with the <i>test_core_substrates</i> and <i>test_core_substrates_joint</i> scripts. In the first column, there is a list of genes identified as essential at <i>in silico</i> minimal media. The second and third column map the experimentally observed phenotype to the <i>in silico</i> essential gene. The subsequent columns are alternative solutions of bottleneck substrates.</p>
+<table id="tbl1">
+<caption>Table 1. Subset of PhenoMapping result of bottleneck substrates</caption>
+<thead>
+<tr>
+<th>Essential gene at IMM<sup><a href="#tblfn1">a</a></sup>
+</th>
+<th>Blood phenotype<sup><a href="#tblfn2">b</a></sup>
+</th>
+<th>Liver phenotype<sup><a href="#tblfn3">c</a></sup>
+</th>
+<th>Bottleneck substrates, Alt 1</th>
+<th>Bottleneck substrates, Alt 2</th>
+<th>Bottleneck substrates, Alt 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBANKA_0516900</td>
+<td>essential</td>
+<td>no info</td>
+<td>spermine</td>
+<td>S-adenosyl-methioninamine|N-methyl-putrescine</td>
+<td>aminopropyl-cadaverine|N-methyl-putrescine</td>
+</tr>
+<tr>
+<td>PBANKA_0522400</td>
+<td>Dispensable</td>
+<td>essential</td>
+<td>(9Z)-octadecenoic acid</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>PBANKA_0608000</td>
+<td>Dispensable</td>
+<td>slow</td>
+<td>coproporphyri-nogen III</td>
+<td>heme</td>
+<td>protoporphy-rinogen IX</td>
+</tr>
+<tr>
+<td>PBANKA_0613600</td>
+<td>Dispensable</td>
+<td>dispensable</td>
+<td>pantetheine</td>
+<td>N-((R)-pantothe-noyl)-L-cysteine</td>
+<td> </td>
+</tr>
+<tr>
+<td>PBANKA_0621800</td>
+<td>Slow</td>
+<td>dispensable</td>
+<td>14-dihydroxy-2-naphthoate</td>
+<td>2-succinyl-benzoate</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p id="tblfn1" class="table-footnote"><sup>a</sup>Essential gene at <i>in silico</i> minimal medium.</p>
+<p id="tblfn2" class="table-footnote"><sup>b</sup>PlasmoGEM phenotypes for blood-stage development of <i>P. berghei</i>.</p>
+<p id="tblfn3" class="table-footnote"><sup>c</sup>PlasmoGEM phenotypes for liver-stage development of <i>P. berghei</i>.</p>
+<p>Bottleneck substrates are those that can rescue the essentiality of the gene (column 1) when added to the <i>in silico</i> minimal medium. Hence, the absence of all of those alternative sets of substrates in the minimal medium is responsible for the essentiality of the gene.</p>
+<div class="note">
+<span class="note-title">Note:</span> an example of PhenoMapping analysis of the media is provided in the scripts <i>test_core_substrates</i> and <i>test_core_substrates_joint</i>. These scripts include functions for analysis of <i>in silico</i> minimal media (function: <i>analysisIMM</i>), generation of alternative solutions (function: <i>findDPMax</i>), identification of essential genes at each <i>in silico</i> minimal medium (function: <i>getEssGeneIMM</i>), and identification of bottleneck substrates (function: <i>linkEssGeneIMM2Subs</i>). All substeps defined in the section <a href="#sec3.2">Metabolic model contextualization</a> are inputs to these functions. These inputs are also defined in the scripts to facilitate their identification.</div>
+<div class="note">
+<span class="note-title">Note:</span> all results are available in Table S3.4 from (<a href="#bib52">Stanway et al., 2019</a>).</div>
+<h3 id="sec4.16">Results of a PhenoMapping analysis of bottleneck metabolites</h3>
+<p>The PhenoMapping results for a bottleneck metabolite analysis look as presented in <a href="#tbl2">Table 2</a>. In the first column, there is a list of genes identified as essential when metabolomics data are integrated. The second and third column map the experimentally observed phenotype to the essential gene. The subsequent columns are alternative solutions of bottleneck metabolites.</p>
+<table id="tbl2">
+<caption>Table 2. Subset of PhenoMapping result of bottleneck metabolites</caption>
+<thead>
+<tr>
+<th>Essential gene [met]<sup><a href="#tblfn4">a</a></sup>
+</th>
+<th>Blood phenotype<sup><a href="#tblfn5">b</a></sup>
+</th>
+<th>Liver phenotype<sup><a href="#tblfn6">c</a></sup>
+</th>
+<th>Bottleneck metabolites, Alt 1</th>
+<th>Bottleneck metabolites, Alt 2</th>
+<th>Bottleneck metabolites, Alt 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBANKA_0507400</td>
+<td>slow</td>
+<td>dispensable</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[c]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UMP[c]|UMP[r]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[r]</td>
+</tr>
+<tr>
+<td>PBANKA_0918200</td>
+<td>slow</td>
+<td>essential</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[r]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UMP[c]|UMP[r]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[c]</td>
+</tr>
+<tr>
+<td>PBANKA_1112400</td>
+<td>no info</td>
+<td>no info</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[r]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UDP-N-acetyl-D-glucosamine[r]|UMP[c]</td>
+<td>UDP-N-acetyl-D-glucosamine[c]|UMP[c]|UMP[r]</td>
+</tr>
+<tr>
+<td>PBANKA_1232300</td>
+<td>dispensable</td>
+<td>dispensable</td>
+<td>UDP-glucose[c]|UMP[r]</td>
+<td>UDP-glucose[c]|UDP-glucose[r]|UMP[c]</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p id="tblfn4" class="table-footnote"><sup>a</sup>Essential gene when metabolomics data are integrated.</p>
+<p id="tblfn5" class="table-footnote"><sup>b</sup>PlasmoGEM phenotypes for blood-stage development of <i>P. berghei</i>.</p>
+<p id="tblfn6" class="table-footnote"><sup>c</sup>PlasmoGEM phenotypes for liver-stage development of <i>P. berghei</i>.</p>
+<p>Bottleneck metabolites are those whose concentrations ranges should be relaxed (with respect to the experimentally measured concentration ranges) to rescue the essentiality of the gene (column 1). Hence, any of those alternative sets of metabolite concentrations is responsible for the essentiality of the gene.</p>
+<div class="note">
+<span class="note-title">Note:</span> an example of PhenoMapping metabolomics analysis is provided in the script <i>test_core_metabolomics</i>. This script includes functions for integration of metabolomics data (function: <i>prepMetabCons</i>), identification of essential genes when metabolomics data are integrated (function: <i>thermoSingleGeneDeletion</i>), and identification of bottleneck metabolites (function: <i>linkEssGeneMetab2Mets</i>). All substeps defined in the section <a href="#sec3.2">Metabolic model contextualization</a> are inputs to these functions. These inputs are defined in the <i>test_core_metabolomics</i> script to facilitate their identification.</div>
+<div class="note">
+<span class="note-title">Note:</span> all results are available in Table S3.7 from (<a href="#bib52">Stanway et al., 2019</a>).</div>
+<h3 id="sec4.17">Results of a PhenoMapping analysis of bottleneck reactions</h3>
+<p>The PhenoMapping results for a bottleneck reaction analysis look as presented in <a href="#tbl3">Table 3</a>. In the first column, there is a list of genes identified as essential when transcriptomics data are integrated. The second and third column map the experimentally observed phenotype to the essential gene. The subsequent columns are alternative solutions of bottleneck reaction.</p>
+<table id="tbl3">
+<caption>Table 3. Subset of PhenoMapping result of bottleneck reaction levels</caption>
+<thead>
+<tr>
+<th>Essential gene RNA-seq<sup><a href="#tblfn7">a</a></sup>
+</th>
+<th>Blood phenotype<sup><a href="#tblfn8">b</a></sup>
+</th>
+<th>Liver phenotype<sup><a href="#tblfn9">c</a></sup>
+</th>
+<th>Bottleneck reactions, Alt 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBANKA_0107400</td>
+<td>Dispensable</td>
+<td>dispensable</td>
+<td>UP_R00667_c</td>
+</tr>
+<tr>
+<td>PBANKA_0516900</td>
+<td>Essential</td>
+<td>no info</td>
+<td>UP_R00670_c|UP_R00178_c</td>
+</tr>
+<tr>
+<td>PBANKA_1346500</td>
+<td>Dispensable</td>
+<td>essential</td>
+<td>UP_R07761_r</td>
+</tr>
+</tbody>
+</table>
+<p id="tblfn7" class="table-footnote"><sup>a</sup>Essential gene when transcriptomics data are integrated.</p>
+<p id="tblfn8" class="table-footnote"><sup>b</sup>PlasmoGEM phenotypes for blood-stage development of <i>P. berghei</i>.</p>
+<p id="tblfn9" class="table-footnote"><sup>c</sup>PlasmoGEM phenotypes for liver-stage development of <i>P. berghei</i>.</p>
+<p>Bottleneck reactions are those whose levels (considered to be UP or DOWN within the feasible flux range) should be relaxed to rescue the essentiality of the gene (column 1). Hence, any of those alternative sets of reactions is responsible for the essentiality of the gene.</p>
+<div class="note">
+<span class="note-title">Note:</span> an example of a PhenoMapping transcriptomics and regulation analysis is provided in the scripts <i>test_core_transcriptomics</i> and <i>test_core_transcriptomics_noregulation</i>, respectively. This script includes functions for integration of transcriptomics data (function: <i>integrateGeneExp</i>), identification of essential genes when transcriptomics data are integrated (functions: <i>getEssGeneExp</i> and <i>getEssReg</i>), and identification of bottleneck reactions due to RNA levels (function: <i>linkEssGene2Exp</i>). All substeps defined in the section <a href="#sec3.2">Metabolic model contextualization</a> are inputs to these functions. These inputs are defined in the <i>test_core_transcriptomics</i> script to facilitate their identification.</div>
+<div class="note">
+<span class="note-title">Note:</span> all results are available in Table S3.8 from (<a href="#bib52">Stanway et al., 2019</a>).</div>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Here, we discuss a methodology to handle PhenoMapping results (<a href="#fig9">Figure 9</a>, entry point 2), i.e., phenotype-bottleneck mapping. This interpretation can aid in the understanding of context-specific physiology and the generation of a context-specific GEM. Following, we analyze the results presented in the section <a href="#expected-outcomes">Expected outcomes</a> (<a href="#tbl1">Tables 1</a>, <a href="#tbl2">2</a>, and <a href="#tbl3">3</a>).</p>
+<h3 id="sec5.1">Results of a PhenoMapping analysis of bottleneck substrates</h3>
+<p>Here, we explain how to use the bottleneck substrate information from PhenoMapping and phenotypic data to infer the composition of the media and substrate availability in the context of study.</p>
+<p>The bottleneck substrate analysis links genes identified as essential at an <i>in silico</i> minimal medium (here referred to as <i>IMM-genes</i>) and substrates (<a href="#tbl1">Table 1</a>). The absence of all alternative sets of bottleneck substrates from the <i>in silico</i> minimal medium is responsible for the essentiality of the IMM-gene. This means, we should avoid the presence of any of the mapped combinations of bottleneck substrates in the <i>in silico</i> medium if the IMM-gene is experimentally defined as essential. When an alternative contains more than one bottleneck substrate, it is enough to remove one of the substrates in the set from the medium to avoid the presence of the combined set. Otherwise, if the IMM-gene is experimentally observed to be dispensable, we should add any alternative combination of bottleneck substrates to the <i>in silico</i> minimal medium to rescue the IMM-gene essentiality.</p>
+<ol>
+<li>Define a minimal medium composition in the GEM – to be consistent with the medium defined in the section <a href="#sec3.2">Metabolic model contextualization</a>. This medium is also the one on which we performed the analysis of bottleneck substrates.
+<ol type="a">
+<li>If we did not apply the last optional step in the media analysis, we select and define one alternative <i>in silico</i> minimal medium.</li>
+<li>If we applied the last optional step in the media analysis (preferred), we define the combined minimal media. As described before, such media comprises all substrates identified across all alternative <i>in silico</i> minimal media. We combine substrates of all alternative <i>in silico</i> minimal media that contain the same total number of substrates.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> what should be the starting <i>in silico</i> minimal medium composition given that there are many alternatives?</div>
+<p>To avoid the need to select one of the alternative <i>in silico</i> minimal medium and be biased toward a selected minimal medium composition, we suggest to use a joint <i>in silico</i> minimal medium. This medium comprises all substrates identified in all alternative <i>in silico</i> minimal media. One can perform first the bottleneck substrate analysis at each <i>in silico</i> minimal medium (<i>test_core_substrates</i> script) and later perform a bottleneck substrate analysis at a joint <i>in silico</i> minimal medium (<i>test_core_substrates_joint</i> script). This is part of the last optional step in the media analysis included in the section <a href="#sec3.2">Metabolic model contextualization</a>.</p>
+<ol start="2">
+<li>Identify genes with essential phenotype at <i>in silico</i> minimal media or IMM-genes.</li>
+</ol>
+<p><b>Example:</b> in <a href="#tbl1">Table 1</a>, an IMM-gene is PBANKA_0516900.</p>
+<ol start="3">
+<li>Identify each alternative set of bottleneck substrates linked to the IMM-gene.</li>
+</ol>
+<p><b>Example:</b> the IMM-gene PBANKA_0516900 is mapped to three sets of bottleneck substrates (<a href="#tbl1">Table 1</a>): 1) spermine, 2) S-Adenosyl-methioninamine and N-Methyl-putrescine, and 3) Aminopropyl-cadaverine and N-Methyl-putrescine.</p>
+<ol start="4">
+<li>Identify the experimental phenotype of the IMM-gene.</li>
+</ol>
+<p><b>Example:</b> in the blood stages, PBANKA_0516900 is essential. There is no available phenotype for the liver stages (<a href="#tbl1">Table 1</a>).</p>
+<ol start="5">
+<li>Decide whether the alternative sets of substrates should be added or not to the (joint) <i>in silico</i> minimal media based on the experimental phenotype information.
+<ol type="a">
+<li>If the IMM-gene is essential based on experiments, do not add any of the alternative sets of substrates in its full definition to the (joint) <i>in silico</i> minimal medium.
+<div class="note">
+<span class="note-title">Note:</span> an alternative set of bottleneck substrates may contain more than one substrate (see <a href="#tbl1">Table 1</a> alternative solutions 2 and 3 for IMM-gene PBANKA_0516900). This result means that the combined and simultaneous presence of all substrates within the set rescues the <i>in silico</i> essentiality of the IMM-gene. In other words, one can rescue the <i>in silico</i> essentiality of the IMM-gene when one adds simultaneously all substrates within a set to the <i>in silico</i> minimal medium. Hence, these substrates should not be present simultaneously in the medium of the final context-specific model to assure the <i>in silico</i> conditional essentiality of the gene.</div>
+</li>
+<li>If the IMM-gene is dispensable based on experiments, we should add at least one of the alternative sets of substrates to the <i>in silico</i> minimal medium.</li>
+<li>If there is no available experimental phenotype for the IMM-gene, decide about the availability of the mapped bottleneck substrates using information from the other IMM-genes.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> what happens if a set of bottleneck substrates is linked both to a dispensable and essential experimental phenotype?</div>
+<p>Based on our definition of the accuracy metric, we prioritize to avoid a new FN rather than to correct a FP. Hence, we will add bottleneck substrates to the medium when they correct FPs without generating FNs. Bottleneck substrates linked both to FPs and FNs might not be real metabolic bottlenecks underlying the observed phenotypes. However, such scenarios might suggest more careful consideration and further curation of the GEM is necessary.</p>
+<ol start="6">
+<li>Decide which bottleneck substrates to add to the <i>in silico</i> minimal medium.
+<ol type="a">
+<li>If the IMM-gene is essential or based on experiments, we can add as many bottleneck substrates as desired as long as they do not combine as identified in any of the alternative solutions of bottleneck substrates.</li>
+<li>If the IMM-gene is dispensable or growth reducing based on experiments, we select one or more alternative sets of bottleneck substrates. These sets will be added to the medium.</li>
+<li>If the IMM-gene is growth reducing based on experiments, we may limit the uptake rate of such bottleneck substrates.</li>
+</ol>
+</li>
+<li>Define the media as selected in the previous step
+<ol type="a">
+<li>Select a set of bottleneck substrates linked to dispensable and growth reducing IMM-genes (based on experimental phenotypes). Any alternative set of bottleneck substrates linked to an IMM-gene is equally valid. Hence, when possible, select sets of bottleneck substrates that are not mapped to IMM-genes that are experimentally essential.</li>
+<li>Assemble a media composition that includes the joint minimal media and the selected set of bottleneck substrates linked to dispensable and growth reducing genes.</li>
+<li>Define that media composition in the GEM.</li>
+<li>Verify that the GEM identifies now new context-specific essentiality predictions (decreasing FPs) while not increasing FNs. If this is not the case, one might want to reevaluate the medium definition to include those bottleneck substrates that are responsible for the FNs.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> can we gain information about the function of the metabolic pathways from a bottleneck substrates analysis?</div>
+<p>Yes, from the bottleneck substrates analysis one can infer flux coupling between genes/reactions. Coupled genes/reactions might be those sharing alternative combinations of bottleneck substrates.</p>
+<p><b>Example:</b> PhenoMapping suggests that the essentiality of PBANKA_0516900 is due to the simultaneous absence in the media of all combinations of bottleneck substrates. Hence, the media for iPbe-blood should not contain any such combinations of bottleneck substrates. We should eliminate spermine from the medium, and we can select any substrate from the alternatives two and three.</p>
+<p>There is no available phenotype for the liver stages, so we should decide first what is the media composition based on the remaining genes. If no gene with available phenotype is linked to these bottleneck substrates, we may allow them or not to be taken up in iPbe-liver.</p>
+<p>The gene PBANKA_0522400 is mapped to a single bottleneck substrate (<a href="#tbl1">Table 1</a>), i.e., (9Z)-Octadecenoic acid. In the blood stages, PBANKA_0522400 is dispensable. Based on PhenoMapping, (9Z)-Octadecenoic acid should be available in the blood stages to avoid a false essentiality prediction. However, in the liver stages, PBANKA_0522400 is essential. Therefore, based on PhenoMapping, (9Z)-Octadecenoic acid should be inaccessible in the liver stages to correctly predict the IMM-gene as essential.</p>
+<p>The gene PBANKA_0613600 is dispensable both in the blood and liver stages (<a href="#tbl1">Table 1</a>). Hence any set of the bottleneck substrates should be accessible in both stages. We decide to keep both alternative sets in the medium, i.e., N-((R)-Pantothe-noyl)-L-cysteine and Pantetheine.</p>
+<h3 id="sec5.2">Results of a PhenoMapping analysis of bottleneck metabolites</h3>
+<p>Here, we explain how to use the bottleneck metabolites information from PhenoMapping together with metabolomic and phenotypic data to identify sets of metabolites whose concentrations are key determinants of the phenotype in the context of study. We did not integrate this dataset into iPbe to generate iPbe-blood or iPbe-liver. We only used this dataset as a study case to identify putative bottleneck metabolites.</p>
+<p>The bottleneck metabolite analysis links genes identified as essential when metabolomics data are integrated (here referred to as <i>Met-gene</i>) and intracellular metabolite concentrations (<a href="#tbl2">Table 2</a>). The presence of any alternative set of bottleneck metabolite concentrations is responsible for the essentiality of the Met-gene. This means, we should keep any of the mapped combinations of bottleneck metabolite concentrations if the Met-gene is experimentally defined as essential. Otherwise, if the Met-gene is experimentally observed to be dispensable, we should prohibit the simultaneous definition of bottleneck metabolite concentrations identified in every alternative. When an alternative contains more than one bottleneck metabolite, it is enough to remove one metabolite in each alternative set from the whole metabolomics dataset to avoid the Met-gene essentiality prediction.</p>
+<ol start="8">
+<li>Identify essential genes when metabolomics data are integrated into the GEM or Met-gene.</li>
+</ol>
+<p><b>Example:</b> in <a href="#tbl2">Table 2</a>, an example of Met-gene is PBANKA_1232300.</p>
+<ol start="9">
+<li>Identify each alternative set of bottleneck metabolites linked to the Met-gene.</li>
+</ol>
+<p><b>Example:</b> the bottleneck metabolites mapped to the Met-gene PBANKA_1232300 are: 1) a set of two metabolites, i.e., UDP-glucose in the cytosol and UMP in the endoplasmic reticulum, and 2) a set of three metabolites, i.e., UDP-glucose in the cytosol and in the endoplasmic reticulum, together with UMP in the cytosol (<a href="#tbl2">Table 2</a>).</p>
+<ol start="10">
+<li>Identify the experimental phenotype of the Met-gene.</li>
+</ol>
+<p><b>Example:</b> the gene PBANKA_1232300 is dispensable both in the liver and blood stages of the malaria infection based on the experimental PlasmoGEM screen data (<a href="#tbl2">Table 2</a>).</p>
+<ol start="11">
+<li>Decide whether the alternative sets of metabolites should be kept or not in the metabolomics dataset based on the experimental phenotype information.
+<ol type="a">
+<li>If the Met-gene is essential based on experiments, integrate at least one of the alternative sets of metabolite concentrations into the GEM.</li>
+<li>If the Met-gene is dispensable based on experiments, do not add any of the alternative sets of metabolites in its full definition to the metabolomics dataset.</li>
+<li>If there is no available experimental phenotype for the Met-gene, preferably keep the bottleneck metabolite concentration data in the metabolomics dataset unless it creates conflict with other Met-genes.</li>
+</ol>
+</li>
+</ol>
+<p><b>Example:</b> only the simultaneous presence of the concentrations of metabolites within a set renders the Met-gene essential. Hence, cytosolic UDP-glucose is the metabolite that should be removed from the whole metabolomics dataset to render PBANKA_1232300’s knockout dispensable <i>in silico</i>. This is because, UDP-glucose in the cytosol is the only metabolite that participates in all alternatives (<a href="#tbl2">Table 2</a>).</p>
+<p>PBANKA_0918200 is dispensable in the blood and essential in the liver stages (<a href="#tbl2">Table 2</a>). There are three sets of bottleneck metabolites mapped to it. <i>A priori</i>, these concentration ranges should be absent in the blood-stage GEM and present in the liver-stage GEM. However, these bottleneck metabolite concentrations are also mapped to dispensable genes in the liver stages, e.g., PBANKA_0507400.</p>
+<p>Since we want to prevent the increase in false rate prediction, we would not integrate these concentrations into the liver-stage GEM. This is an example of a bottleneck that individually but not holistically can explain a phenotype. Hence, it is probable this is not the correct biological marker of the gene essentiality.</p>
+<h3 id="sec5.3">Results of a PhenoMapping analysis of bottleneck reactions</h3>
+<p>Here, we explain how to use the bottleneck reactions information from PhenoMapping together with transcriptomic and phenotypic data to identify sets of reaction levels whose concentrations are key determinants of the phenotype in the context of study.</p>
+<p>The bottleneck reaction analysis links genes identified as essential when transcriptomics data are integrated (here referred to as <i>RNA-gene</i>) and reaction flux levels (<a href="#tbl3">Table 3</a>). The presence of any alternative set of bottleneck reactions is responsible for the essentiality of the RNA-gene. This means, we should keep any of the mapped combinations of bottleneck reaction levels if the RNA-gene is experimentally defined as essential. Otherwise, if the RNA-gene is experimentally observed to be dispensable, we should prohibit the simultaneous definition of bottleneck reaction levels identified in every alternative. When an alternative contains more than one bottleneck reaction, it is enough to remove one reaction in each alternative set from the whole transcriptomics dataset to avoid the RNA-gene essentiality prediction.</p>
+<ol start="12">
+<li>Identify essential genes in the GEM when transcriptomics data are integrated or RNA-gene.</li>
+</ol>
+<p><b>Example:</b> in <a href="#tbl3">Table 3</a>, an example of RNA-gene is PBANKA_0107400.</p>
+<ol start="13">
+<li>Identify each alternative set of bottleneck reaction levels linked to the RNA-gene.</li>
+</ol>
+<p><b>Example:</b> PhenoMapping maps the essentiality of the gene to a high flux through cytosolic reaction R00667 (<a href="#tbl3">Table 3</a>).</p>
+<ol start="14">
+<li>Identify the experimental phenotype of the RNA-gene.</li>
+</ol>
+<p><b>Example:</b> the RNA-gene PBANKA_0107400 is dispensable both in the blood and liver stages (<a href="#tbl3">Table 3</a>).</p>
+<ol start="15">
+<li>Decide whether the alternative sets of reaction levels should be kept or not in the transcriptomics dataset based on the experimental phenotype information.
+<ol type="a">
+<li>If the RNA-gene is essential based on experiments, integrate at least one of the alternative sets of reaction levels to the GEM.</li>
+<li>If the RNA-gene is dispensable based on experiments, do not add any of the alternative sets of reaction levels in its full definition to the transcriptomics dataset.</li>
+<li>If there is no available experimental phenotype for the RNA-gene, preferably keep the bottleneck reactions data in the transcriptomics dataset unless it creates conflict with other RNA-genes.</li>
+</ol>
+</li>
+<li>Integrate the updated RNA-seq data into the GEM.
+<ol type="a">
+<li>List the set of bottleneck reaction levels for which we will not consider a direct correlation of gene level to reaction level.</li>
+<li>Define this set of reactions as input for the integration of RNA-seq data with TEX-FBA. This is the input called <i>rxnLevelOUT</i> of the TEX-FBA function <i>integrateGeneExp.</i> This input is a cell of reaction identifiers.</li>
+</ol>
+</li>
+</ol>
+<p><b>Example:</b> we should not keep the high gene expression level to high flux correlation assumption through the bottleneck reaction R00667 in the GEM (neither iPbe-blood or iPbe-liver). We can infer the bottleneck reaction does not necessarily carry a high flux in the blood and liver stages in <i>Plasmodium</i>.</p>
+<p>PBANKA_0516900 is essential in the blood stages (<a href="#tbl3">Table 3</a>). PhenoMapping maps the essentiality to a combined pair of cytosolic reactions, i.e., R00670 and R00178, that carry high flux. <i>A priori</i>, we can keep these two high reaction fluxes in iPbe-blood to predict PBANKA_0516900 as essential. However, the presence of R00670 will increase the incorrect prediction of essentiality for PBANKA_0107400. We hence decide not to allow these constraints in iPbe-blood.</p>
+<p>PBANKA_1346500 is dispensable in the blood and essential in the liver stages (<a href="#tbl3">Table 3</a>). The responsible reaction is R07761 in the endoplasmic reticulum. R07761’s high flux should not be imposed in the blood stages and should be present in the liver stages.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>We enumerate below some limitations of PhenoMapping. We explain the source of these limitations, their putative effect on the predictions, and the possibility to overcome these limitations with future work.</p>
+<h3 id="sec6.1">Limited information about regulation</h3>
+<p>PhenoMapping only considers the possibility of lack of regulation of gene expression between isoenzymes. Other regulatory processes that control gene expression and, with it, the cell functions available for the phenotype of study are not part of GEMs yet. This lack of information about regulatory processes, determines that PhenoMapping misses conditional essentiality (conditional TNs). When our knowledge about the regulation of gene expression increases, we will be able to include these interactions in mathematical models of the cell function. Next, PhenoMapping can be expanded to map phenotypes to those regulatory processes.</p>
+<h3 id="sec6.2">Limited biochemical information</h3>
+<p>GEMs are databases of the metabolic function. However, we still lack knowledge about gene functions. The limited biochemical information available determines incorrect essentiality predictions (both FNs and FPs). Computational predictions of novel biochemistry (as available in the ATLAS of Biochemistry (<a href="#bib15">Hadadi et al., 2016</a>; <a href="#bib17">Hafner et al., 2020</a>)) and experimental characterization of protein functions are invaluable to expand our knowledge of biochemistry and better define GEMs. PhenoMapping can be combined with gap-fillers and databases of novel biochemistry to reduce the number of FNs and FPs (in preparation). The databases and GEMs should be updated as we increase our biochemical knowledge.</p>
+<h3 id="sec6.3">Limited information about metabolite transportability</h3>
+<p>The information about metabolite transportability is limited, mostly in less characterized organisms. Metabolite transportability is relevant in the prediction of essential functions in GEMs. Missing transporters might lead to incorrect essentiality predictions (both FNs and FPs). To handle this situation, in PhenoMapping we suggest allowing the simple diffusion of metabolites without phosphate, CoA, and acyl-carrier protein (ACP) moieties, unless experimentally invalidated. PhenoMapping can later map conditionally essential gene functions to the (non-)function of a subset of transporters. When our knowledge of metabolite transportability increases, we can integrate this information into PhenoMapping to validate or invalidate the predictions.</p>
+<h3 id="sec6.4">Limited information about metabolite concentrations</h3>
+<p>When metabolomics data are not available for a thermodynamically consistent analysis, it is assumed that intracellular metabolite concentrations can vary between 1 μM and 50 mM. This range covers the intracellular concentrations of a wide set of metabolites in various cells and conditions (<a href="#bib4">Bennett et al., 2009</a>; <a href="#bib23">Ishii et al., 2007</a>; <a href="#bib53">Teng et al., 2009</a>, <a href="#bib54">2014</a>; <a href="#bib58">Vo Duy et al., 2012</a>). Such broad concentration ranges might allow some reactions to work bidirectionally, while in reality the reactions might be unidirectional. In this regard, PhenoMapping might be missing the prediction of essential genes (TNs) and the mapping to the responsible sets of metabolite concentrations. A sensitivity analysis of metabolite concentrations (<a href="#bib27">Kiparissides and Hatzimanikatis, 2017</a>) can help identify sets of metabolites relevant for a phenotype. Ultimately, a broader coverage in metabolomics studies and the integration of these datasets into PhenoMapping will allow better predictions of essentiality and mapping of essentiality to metabolite concentrations.</p>
+<h3 id="sec6.5">Assuming correlation between gene expression (mRNA) and reaction flux levels</h3>
+<p>In the TEX-FBA framework and PhenoMapping, we assume <i>a priori</i> that higher and lower mRNA levels correlate with higher and lower reaction fluxes, respectively. TEX-FBA and PhenoMapping do not impose such correlation as other methods do, but rather try to maximize the number of reactions for which this assumption is possible (quantified in the form of a maximum consistency score). It is known that mRNA levels and flux levels do not fully correlate, and hence we might encounter wrong essentiality predictions when transcriptomics data are integrated. PhenoMapping allows to identify those FNs or reactions for which the mRNA-flux correlation is not valid. These reactions can be ignored in a subsequent integration of transcriptomics data within PhenoMapping. A preferred option is to integrate proteomics data into PhenoMapping, since the correlation of protein and flux levels is higher.</p>
+<h3 id="sec6.6">Assuming essentiality with omics data integrated represents essentiality for growth</h3>
+<p>PhenoMapping contextualizes GEMs by integrating omics data and later identifies new conditionally essential genes. We say these genes are conditionally essential for the objective function defined (normally growth). However, they are rather essential to maintain the cellular state defined by the omics data and methodology used. It might happen that upon knockout of such a conditionally essential gene, a cell can rapidly achieve another cellular state that also sustains growth and hence that gene is not truly essential for survival. Non-linear dynamic models will be necessary to predict transitions between metabolic states and changes in metabolite concentrations and reaction fluxes upon perturbations. These dynamic models as well as metabolic control analysis help to rank essential genes based on how sensitive growth is to a perturbation of the enzyme function.</p>
+<div class="note">
+<span class="note-title">Note:</span> some of these assumptions are inherited from the methodologies used to integrate data into the GEMs, i.e., matTFA (<a href="#bib46">Salvy et al., 2018</a>) and TEX-FBA (<a href="#bib42">Pandey et al., 2019</a>).</div>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1: There is no GEM available</h3>
+<p>You do not have a GEM for the organism and strain of interest, but you do have a draft GEM. We define a draft GEM as a metabolic model that has not been extensively curated. Draft GEMs normally show varying degrees of genome annotation, metabolite connectivity, and medium and biomass definition. FBA can be performed to a certain extent in such GEMs. Draft GEMs could be generated automatically with available systematic construction pipelines, as recently shown with paraDIGM (<a href="#bib8">Carey et al., 2019</a>).</p>
+<h3 id="sec7.2">Potential solution 1</h3>
+<p>A detailed explanation on the reconstruction steps of a GEM is out of the scope of this protocol, but we provide here some references that might be of guidance. A protocol for guidance on high-quality reconstruction of GEMs following a bottom-up approach is available (<a href="#bib55">Thiele and Palsson, 2010</a>). Such bottom-up reconstructions could be performed with available toolboxes like COBRA (<a href="#bib3">Becker et al., 2007</a>; <a href="#bib13">Ebrahim et al., 2013</a>; <a href="#bib19">Heirendt et al., 2019</a>; <a href="#bib48">Schellenberger et al., 2011</a>), RAVEN (<a href="#bib1">Agren et al., 2013</a>; <a href="#bib59">Wang et al., 2018</a>), modelSEED (<a href="#bib12">Devoid et al., 2013</a>), KBase (US Department of Energy Systems Biology Knowledgebase, <a href="http://kbase.us">http://kbase.us</a>), etc. GEMs can also be constructed following a top-down approach, as suggested with CarveMe (<a href="#bib36">Machado et al., 2018</a>). GEMs can also be adaptded from other strains, as recently suggested (<a href="#bib63">Norsigian et al., 2020</a>).</p>
+<p>Once a draft GEM is available, one should improve its performance iteratively by using available frameworks. Among those we highlight:</p>
+<ol>
+<li>RAVEN: one can perform analysis of metabolic tasks in the draft GEM. Such analysis identifies gaps in metabolism and guides the definition of reactions that render functional metabolic pathways (<a href="#bib1">Agren et al., 2013</a>; <a href="#bib59">Wang et al., 2018</a>).</li>
+<li>MEMOTE: one can systematically identify missing standard information and major flaws in the GEM like elemental imbalance or a wrongly defined biomass reaction (<a href="#bib34">Lieven et al., 2020</a>).</li>
+<li>AMMADEUS: one can use an ensemble of draft GEMs and unsupervised learning to generate models that are consistent with experimental data (<a href="#bib38">Medlock and Papin, 2020</a>).</li>
+<li>NICegame: one can fill metabolic gaps with metabolic reactions, like hypothetical reactions from the ATLAS of Biochemistry (<a href="#bib15">Hadadi et al., 2016</a>; <a href="#bib17">Hafner et al., 2020</a>), and annotate orphan reactions with BridgIT (<a href="#bib16">Hadadi et al., 2019</a>). The NICegame workflow works with any objective function (in preparation).</li>
+<li>PhenoMapping: this protocol can also be followed to refine GEMs in a modular fashion.</li>
+</ol>
+<h3 id="sec7.3">Problem 2: There are multiple GEMs available for the organism of interest</h3>
+<p>There are multiple GEMs available for the organism and strain of interest, and you need to choose one.</p>
+<h3 id="sec7.4">Potential solution 2</h3>
+<p>The selection of a GEM is critical for the subsequent analysis.</p>
+<ol>
+<li>Use available tools like MEMOTE (<a href="#bib34">Lieven et al., 2020</a>) to systematically evaluate a series of benchmarks that assure the GEM is properly elementally balanced and defined following community standards. MEMOTE will generate a report with a score that serves as a quantitative basis for comparison.</li>
+<li>Compare the GEMs based on the following criteria. These are elements that an ideal GEM may include:
+<ol type="a">
+<li>An available history of its development, e.g., a GitHub history as available for Yeast 8 (<a href="#bib35">Lu et al., 2019</a>).</li>
+<li>Elementally balanced reactions.</li>
+<li>The metabolic pathways of interest.</li>
+<li>Compatibility of metabolite identifiers with a desired reference database.</li>
+<li>Fully defined metabolites vs generic metabolites with R groups.</li>
+<li>The highest genome annotation coverage.</li>
+<li>A curated electron transport chain pathway with proper ratios between protons (H<sup>+</sup>) pumped, reacting cofactors, and ATP formed.</li>
+<li>A curated gene-protein-reaction definition. Especial attention should be given to reactions catalyzed by a protein complex, since these genes should be linked with an “AND” rule.</li>
+<li>A broad and non-context-specific set of biomass building blocks with stoichiometric coefficients properly defined to produce 1 g of biomass (<a href="#bib10">Chan et al., 2017</a>).</li>
+<li>The broadest set of intracellular compartments.</li>
+<li>A curated and unbiased localization of reactions. If there is uncertainty in the localization of an enzyme, a multi-localization might be preferred to avoid biased metabolic flux distributions and false essentiality predictions (FNs).</li>
+<li>A curation of reactions occurring at the membrane interphase.</li>
+<li>A list of metabolic tasks used to evaluate the performance and coverage of the model.</li>
+<li>A minimum set of <i>ad hoc</i> and pre-assigned reaction directionalities. Pre-assigned directionalities should aim to define the enzymatic irreversibility of reactions and not a pre-assumed thermodynamically feasible directionality (<a href="#bib2">Ataman and Hatzimanikatis, 2015</a>).</li>
+<li>Thermodynamic data for the extracellular environment and intracellular compartments, i.e., pH, as well as membrane potential and ionic strength.</li>
+<li>Thermodynamic properties of compounds, i.e., ranges of Gibbs free energy of formation (Δ<sub>f</sub>G′) at the corresponding extracellular of intracellular conditions (<a href="#bib24">Jankowski et al., 2008</a>).</li>
+<li>Thermodynamic properties and curation of reactions, i.e., balancing with protons (H<sup>+</sup>) and computation of ranges of Gibbs free energy of reaction (Δ<sub>r</sub>G′) at the defined conditions (<a href="#bib20">Henry et al., 2006</a>, <a href="#bib21">2007</a>; <a href="#bib24">Jankowski et al., 2008</a>; <a href="#bib46">Salvy et al., 2018</a>).</li>
+<li>Definition of metabolic channeling when applicable and verified that separately the individual reactions are not thermodynamically feasible (<a href="#bib11">Chiappino-Pepe et al., 2017</a>).</li>
+<li>Multiple identifiers and 2D structure information linked to a metabolite to facilitate comparison with other models and databases.</li>
+<li>Properly mapped metabolic subsystems to reactions.</li>
+<li>E.C. numbers linked to reactions.</li>
+<li>Information about the sources and methodology used for the gene-function annotation, including reference genome or protein sequences, software, annotation parameters, and reaction databases.</li>
+<li>A summary of the orphan reactions (reactions that are not linked to any gene), their source database, and the metabolic tasks that motivated their inclusion in the GEM.</li>
+<li>The criteria followed to define transports and transport mechanisms, since these constitute the set of reactions with the highest uncertainty in the annotation.</li>
+<li>Information about the sources and methodology used for the localization: reference protein sequences, software, parameters.</li>
+</ol>
+</li>
+<li>Analyze reaction fluxes (when the conditions of interest are defined in the GEMs) and compare the GEMs in terms of:
+<ol type="a">
+<li>Blocked reactions.</li>
+<li>Disconnected or dead-end metabolites.</li>
+<li>Gene and reaction essentiality and comparison with available phenotypes for a pre-assessment of the GEM accuracy. At this point it is recommended that the number of FNs is the lowest possible.</li>
+<li>Metabolic tasks fulfilled.</li>
+<li>Other analyses that you may be interested in should be included in this list.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec7.5">Problem 3: The GEM is not thermodynamically curated</h3>
+<p>You would like to perform a thermodynamically consistent analysis within PhenoMapping, which uses matTFA (<a href="#bib46">Salvy et al., 2018</a>), but the GEM is not thermodynamically curated.</p>
+<h3 id="sec7.6">Potential solution 3</h3>
+<ol>
+<li>If you want to perform a PhenoMapping analysis accounting for thermodynamic constraints, you additionally need to assemble and include the following information and fields in the GEM, i.e., the COBRA model structure:
+<ol type="a">
+<li>
+<i>metSEEDID</i>: list of SEED IDs mapped to the metabolites. It shares length with metabolites. This field does not include compartment information and hence it might contain duplicated seed identifiers.</li>
+<li>
+<i>CompartmentData</i>: includes thermodynamic data related to compartments.</li>
+<li>
+<i>CompartmentData.compSymbolList</i>: row cell with one letter as defined for each compartment.</li>
+<li>
+<i>CompartmentData.compNameList</i>: row cell with names of compartments.</li>
+<li>
+<i>CompartmentData.membranePot</i>: square matrix containing membrane potential information between compartments. It shares length with compartment.</li>
+<li>
+<i>CompartmentData.pH</i>: row vector with pH values for each compartment. It shares length with compartment.</li>
+<li>
+<i>CompartmentData.ionicStr</i>: row vector with ionic strength values in each compartment. It shares length with compartment.</li>
+<li>
+<i>CompartmentData.compMaxConc</i>: row vector with maximum default molar concentration values (M or mol/L<sub>cell</sub>) allowed for metabolites in each compartment. It shares length with compartment.</li>
+<li>
+<i>CompartmentData.compMinConc</i>: row vector with minimum default molar concentration values (M or mol/L<sub>cell</sub>) allowed for metabolites in each compartment. It shares length with compartment.</li>
+<li>
+<i>metCompSymbol</i>: list of one letter compartment symbols defining localization of each metabolite. It should be of the same length and order as the “<i>mets</i>” and corresponding fields. It is not strictly necessary to include this field, since PhenoMapping will attempt to generate it based on the compartmentalization information provided in the metabolite identifiers. PhenoMapping will extract the compartment letter provided after any of the following symbols “_,” “[”, or “(” appearing among the last three characters of the metabolite identifier in “<i>mets</i>.” Metabolites without such tags will be automatically assigned to the cytosol. A manual check is recommended to assure such assumption is correct or to define a tag to the metabolites that miss it.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> one can automatically generate the metCompSymbol structure within PhenoMapping. The metabolite SEED identifiers and thermodynamic information included in the remaining fields is GEM- and context-specific and should be gathered and mapped by the user.</div>
+<ol start="2">
+<li>Perform a systematic thermodynamic curation within PhenoMapping.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> if you want to provide your own thermodynamically curated GEM (skipping the systematic thermodynamic curation within PhenoMapping), verify it contains the following TFA-specific fields (<a href="#bib46">Salvy et al., 2018</a>):</div>
+<ul>
+<li>a. <i>constraintNames</i>: list of constraints included in the model.</li>
+<li>b. <i>varNames</i>: list of variables included in the model.</li>
+<li>c. <i>var_lab</i>: lower bound of variables. It shares length with variables.</li>
+<li>d. <i>var_ub</i>: upper bound of variables. It shares length with variables.</li>
+<li>e. <i>A</i>: matrix of constraints (rows) and variables (columns).</li>
+<li>f. <i>f</i>: vector defining objective function. It shares length with variables.</li>
+<li>g. <i>rhs</i>: vector containing values of the right hand side of the linear problem. It shares length with constraints.</li>
+<li>h. <i>constraintType</i>: type of constraint. It shares length with constraints.</li>
+<li>i. <i>vartypes</i>: type of variable. It shares length with variables.</li>
+<li>j. <i>objtype</i>: −1 if it is a maximization problem, and +1 if it is a minimization problem.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> for further reference, please check the structure of these fields in the iPbe model available in the PhenoMapping repository.</div>
+<h3 id="sec7.7">Problem 4: Unfamiliar with the process to define a medium composition within PhenoMapping</h3>
+<p>How to define a media composition in a GEM within PhenoMapping.</p>
+<h3 id="sec7.8">Potential solution 4</h3>
+<ol>
+<li>Familiarize with the definition of uptakes in a GEM for a PhenoMapping analysis:</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> for every optimization problem, PhenoMapping (as matTFA) will take into account the lower reaction bounds (<i>var_lb</i>) and upper reaction bounds (<i>var_ub</i>) defined for each reaction variable. We recommend working with net fluxes of reactions (tagged with NF_ and followed by the reaction name) included in the list of variables of the GEM (<i>varNames</i>).</div>
+<p>The definition of bounds of net reaction fluxes follows standards defined in the COBRA Toolbox (<a href="#bib19">Heirendt et al., 2019</a>):</p>
+<p>For a general reaction defined as A ⇔ B, a negative lower bound of the net reaction flux implies that the enzyme can produce metabolite A by catalyzing the reaction in the backward direction. Analogously, a positive upper bound of the net reaction flux implies that the enzyme can produce metabolite B by catalyzing the reaction in the forward direction. Bounds defined as zero block a specific reaction directionality. These can be known enzymatic irreversibilities and as <i>ad hoc</i> / pre-assumed reaction directionalities, which are not desired (<a href="#bib2">Ataman and Hatzimanikatis, 2015</a>).</p>
+<p>We suggest defining a medium composition through the definition of bounds of exchange or boundary reactions:</p>
+<p>Exchange or boundary reactions should be defined as A ⇔ ∅. For this definition, a negative lower bound for the net flux of the exchange reaction implies that the uptake of the metabolite A is allowed. Uptakes are blocked when the lower bound is zero or positive. A positive upper bound for the net flux of the reaction allows secretion of the metabolite A.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> PhenoMapping will automatically define as A ⇔ ∅ any exchange or boundary reaction that is inversely defined as ∅ ⇔ A. This is done within the functions <i>initTestPhenoMappingModel</i> and <i>analysisIMM</i>.</div>
+<ol start="2">
+<li>Allow uptake of all metabolites in the medium by defining an arbitrary negative lower bound (e.g., −50 mmol/g-DW/h) for the corresponding exchange reactions and transporters in the <i>lb</i> field of the GEM.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> beware some GEMs block transports of molecules (from the extracellular space to the cytosol) and not the exchange or boundary reactions of those molecules. Both the transport and exchange of a molecule should be open for molecules to be allowed to be consumed.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> transport of metabolites that follow a specific mechanism different from simple diffusion should be treated carefully. If no thermodynamic constraints are taken into account, it might be better to keep pre-assigned directionalities for such transporters to avoid major flaws. For example, there might exist imports of molecules that consume ATP. Such imports might end up generating ATP through secretion of molecules if their pre-assigned directionalities are relaxed in a pure FBA.</div>
+<ol start="3">
+<li>Convert the model to a PhenoMapping friendly format using <i>initTestPhenoMappingModel.</i>
+</li>
+<li>Select the metabolites whose uptake will be allowed.</li>
+<li>Select the uptake rate (in mmol/g-DW/h) for those metabolites.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the uptake rate could be obtained from experimental data. This value is normally constrained for the carbon sources defined in the medium. For example, the uptake rate of glucose in the GEM of <i>Escherichia coli</i> is normally 10 mmol/g-DW/h. Some molecules like oxygen can easily diffuse through cellular membranes. Others have not been measured. In such cases, one could define a default large value like 50 mmol/g-DW/h.</div>
+<ol start="6">
+<li>Identify all exchange reactions. This can be done with standard COBRA functions included in matTFA like <i>findExcRxns.</i>
+</li>
+<li>Block the uptake of all metabolites by defining a lower bound (<i>var_lb</i>) of value zero for the net flux of the exchange reactions (in <i>varNames</i>).</li>
+<li>Among all exchange reactions, identify those corresponding to the metabolites for uptake.</li>
+<li>Allow the uptake of this set of metabolites by defining a negative lower bound (<i>var_lb</i>) for the net flux of their exchange reactions (in <i>varNames</i>).</li>
+<li>Refine the lower bounds with the (negative) values of uptake rate selected for the set of metabolites.</li>
+<li>Optimize and check if the GEM is feasible in the defined medium composition.</li>
+<li>If the GEM remains infeasible perform the analysis of missing substrates in the medium as described in <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+</ol>
+<h3 id="sec7.9">Problem 5: There is no objective function defined in the GEM</h3>
+<p>There is no objective function defined in the GEM, and you would like to define one.</p>
+<h3 id="sec7.10">Potential solution 5</h3>
+<p>For every optimization problem, PhenoMapping (as matTFA) will optimize the value of the variables (<i>varNames</i>) defined as objective in the vector <i>f</i>. The problem will be a maximization if the <i>objtype</i> is −1 and a minimization if the <i>objtype</i> is +1. PhenoMapping will define both maximization (see <i>findDPMax</i> function) and minimization (see <i>findDPMin</i> function) problems.</p>
+<ol>
+<li>Verify that the variable(s) (<i>varNames</i>) to optimize are the only ones marked with a 1 in the corresponding row of the vector <i>f.</i>
+</li>
+<li>Definition of maximization of growth as the objective function implies having a 1 in the row of the forward biomass reaction. The forward biomass reaction is defined with the tag <i>F_</i> and followed by the biomass reaction name in <i>varNames.</i>
+</li>
+<li>Verify that the GEM is feasible, else proceed to <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+</ol>
+<h3 id="sec7.11">Problem 6: The GEM is not feasible</h3>
+<p>The GEM is not feasible for the objective function selected.</p>
+<h3 id="sec7.12">Potential solution 6</h3>
+<ol>
+<li>List the potential reasons that make the GEM infeasible. We define here two general sources of infeasibility:
+<ol type="a">
+<li>The GEM includes context-specific information (constraints) under which the selected objective function is not feasible.</li>
+<li>The GEM lacks the biochemistry or metabolite transportability capabilities to perform the selected objective function.</li>
+</ol>
+</li>
+<li>Evaluate whether the GEM contains the biochemistry and transport capabilities to render the objective function feasible.
+<ol type="a">
+<li>Define the biochemistry layer as defined in the PhenoMapping workflow. This can also be done by removing all <i>ad hoc</i> constraints from the GEM and defining a rich medium.</li>
+<li>Evaluate the feasibility of the GEM. If the GEM is feasible, proceed to step 3. Otherwise, jump to step 5.</li>
+</ol>
+</li>
+<li>If the GEM became feasible in the biochemistry layer, identify the minimum number of initial pre-assigned directionalities that should be relaxed to render a feasible GEM.
+<ol type="a">
+<li>Use as input the GEM with the biochemistry layer.</li>
+<li>Define MILP constraints linked to each pre-assigned directionality.</li>
+<li>Define a requirement for the objective function.</li>
+<li>Identify alternative sets of minimum number of reactions whose pre-assigned directionalities should be relaxed.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the rationality defined in step 3 is followed in the analysis of <i>in silico</i> minimal media or minimal secretion. An analysis of <i>in silico</i> minimal media identifies the minimum number of substrates that we should add to the medium to allow growth. Similarly, an analysis of <i>in silico</i> minimal secretion identifies the minimum number of growth by-products that we should allow to be secreted in the GEM to satisfy mass balances and allow growth. Point 4 defines step-by-step how to perform the <i>in silico</i> minimal media analysis. An analogous procedure applies to the <i>in silico</i> minimal secretion analysis and all other analyses that follow the rationality defined in step 3.</div>
+<ol start="4">
+<li>Application of step 3 for the analysis of missing substrates in the medium.
+<ol type="a">
+<li>List the set of uptakes that are blocked in the infeasible GEM.</li>
+<li>Define an <i>in silico</i> rich medium in the infeasible GEM, in which all uptakes are open.</li>
+<li>Set a requirement for the objective function (non-zero lower bound).</li>
+<li>Define only the set of blocked uptakes as input for the analysis of <i>in silico</i> minimal media.</li>
+<li>Identify the minimum number of substrates required to render the GEM feasible.</li>
+<li>Include the additional set of substrates in the medium of the previously infeasible GEM.</li>
+<li>Verify that the GEM is now feasible.</li>
+</ol>
+</li>
+<li>If the objective function in the infeasible GEM is growth or growth is set as a requirement (with a fixed non-zero lower bound), evaluate the individual production of biomass building blocks (within the analysis of metabolic tasks).
+<ol type="a">
+<li>Using the infeasible GEM, identify the biomass building blocks that cannot be produced individually.</li>
+<li>Verify that removing those from the biomass reaction turns the GEM feasible.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the result of the metabolic task analysis will also allow to connect a non-produced biomass building block with a set of substrates or pre-assigned directionalities. One can verify that the substrates and metabolic pathways identified are meaningful for the production of the biomass building block.</div>
+<ol start="6">
+<li>We follow this step if the GEM did not become feasible in the biochemistry layer or the set of pre-assigned directionalities identified should not be violated. Such scenario requires a curation of the GEM by adding new biochemistry or transport capabilities.
+<ol type="a">
+<li>Use as input the infeasible GEM.</li>
+<li>Set a requirement for the objective function (non-zero lower bound).</li>
+<li>Identify a database of biochemical reactions.</li>
+<li>Merge the infeasible GEM with the database of biochemical reactions.</li>
+<li>Identify alternative biochemistry to render the GEM feasible.</li>
+<li>Define the hypothetical biochemistry in the GEM.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> NICegame (in preparation) is an example of an approach to follow in this scenario since it fills metabolic gaps with hypothetical reactions and annotates genes to orphan reactions.</div>
+<ol start="7">
+<li>If no biochemistry was found to render the GEM feasible in step 6, one may:
+<ol type="a">
+<li>Use as input the GEM with the biochemistry layer and repeat step 6.</li>
+<li>Identify the furthest metabolic precursor of the non-produced biomass building block (as identified in step 5) and define a transport and exchange in the GEM to allow its uptake.</li>
+<li>Identify a by-product in the metabolic pathway of the non-produced biomass building block (as identified in step 5) whose secretion is not possible. Define a transport and exchange in the GEM to allow its secretion.</li>
+<li>Completely eliminate the non-produced biomass building block from the biomass reaction. This last option implies redefining the objective function by normalizing the stoichiometric coefficients (<a href="#bib10">Chan et al., 2017</a>).</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec7.13">Problem 7: The MATLAB paths to initialize the GEM and PhenoMapping are not found</h3>
+<p>The paths to initialize the GEM and PhenoMapping are not found.</p>
+<h3 id="sec7.14">Potential solution 7</h3>
+<p>There are multiple alternatives to initialize paths.</p>
+<p>We recommend setting up the repositories to capitalize on the systematic identification of paths as predefined in PhenoMapping:</p>
+<ol>
+<li>Clone the matTFA, TEX-FBA, and PhenoMapping repositories in the same path, i.e., sharing the same root or directory.</li>
+<li>Identify the directory of the CPLEX folder called CPLEX_StudioVersion. For example, <i>CPLEX_Studio128.</i>
+</li>
+<li>Run the script <i>settings.</i>
+</li>
+<li>When the following message arises: "Please provide your cplex path and press enter," paste the whole path to the CPLEX folder of point 2. Press enter.</li>
+</ol>
+<p>In the script <i>tutorial_basics</i> you can find other suggestions on how to set up the repositories matTFA, TEX-FBA, and PhenoMapping. You could also adapt the function <i>initPhenoMappingPaths</i>. For example, one may want to include personalized paths or directories to be added automatically.</p>
+<h3 id="sec7.15">Problem 8: The default TEX-FBA parameters for a transcriptomics analysis with PhenoMapping result in many FNs</h3>
+<p>You would like to adjust the TEX-FBA parameters before integrating transcriptomics data.</p>
+<h3 id="sec7.16">Potential solution 8</h3>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> adjust the percentiles of lowly and highly expressed genes.</div>
+<ol>
+<li>Plot the distribution of gene expressions for all genes in the GEM.</li>
+<li>Select the percentiles of lowly and highly expressed genes based on the distribution.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> the selection of percentiles should be adjusted based on the transcriptomics dataset and GEM. The identification of bottleneck reaction levels can guide the definition of a better set of lowly and highly expressed genes. We have seen those percentile values that cut the tails of the distribution at the inflection point lead to low number of bottleneck reaction levels with incorrect <i>in silico</i> essentiality.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> adjust the flux limits assigned to lowly and highly expressed genes.</div>
+<ol start="3">
+<li>To relax flux limits, decrease the lower bound required for highly expressed genes (<i>p</i><sub>h</sub> parameter) and increase the upper bound required for lowly expressed genes (<i>p</i><sub>l</sub> parameter).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> TEX-FBA performs a flux variability analysis and defines flux limits within the feasible range of fluxes. Many methodologies can be followed to define flux limits. These require slight adjustments of the TEX-FBA formulation.</div>
+<h3 id="sec7.17">Problem 9: The GEM is infeasible when metabolomics data are integrated</h3>
+<p>You integrated metabolomics data into the GEM within the TFA framework or PhenoMapping, and the GEM is infeasible.</p>
+<h3 id="sec7.18">Potential solution 9</h3>
+<p>This happens because there is a set of metabolite concentrations that define a set of infeasible reaction directionalities. These new reaction directionalities block flux through an essential reaction or set of redundant reactions. Hence, one can identify bottleneck metabolites that render the GEM infeasible. This can be done by linking <i>a priori</i> dispensable genes with bottleneck metabolites.</p>
+<ol>
+<li>Use the function <i>linkEssGeneMetab2Mets</i> for which an example implementation is defined in the script <i>test_core_metabolomics.</i>
+</li>
+<li>Identify all genes that are dispensable in the GEM prior to metabolomics data integration. This set of genes will be the input <i>essTFAmetab</i> to the function <i>linkEssGeneMetab2Mets.</i>
+</li>
+<li>The rest of the inputs to <i>linkEssGeneMetab2Mets</i> are defined as in the sample script <i>test_core_metabolomics.</i>
+</li>
+<li>Obtain the solution of bottleneck metabolites linked to all dispensable genes.</li>
+<li>Identify the minimum number of metabolites that appear in all solutions of bottleneck metabolites.</li>
+<li>Delete those bottleneck metabolites from the input metabolomics dataset.</li>
+<li>Integrate the new metabolomics dataset into the GEM.</li>
+<li>Verify the GEM with a reduced metabolomics dataset is feasible now. This should always be the case.</li>
+<li>If the GEM is not feasible, you have probably not selected a complete minimum set of bottleneck metabolites to be removed from the input metabolomics dataset. Return to step 5 from this Potential Solution 9.</li>
+</ol>
+<h3 id="sec7.19">Problem 10: The PhenoMapping analysis stopped and you had not generated all alternative MILP solutions</h3>
+<p>Your PhenoMapping analysis involving a mixed integer linear programming (MILP) formulation stopped. It could have stopped for any reason, e.g., the number of alternatives defined was low and you did not identify all alternative solutions of the optimal size, or you stopped the optimization, or the solver crashed, etc. You would like to continue the optimization without regenerating all previous solutions.</p>
+<h3 id="sec7.20">Potential solution 10</h3>
+<p>To avoid regenerating solutions of a MILP problem one should regenerate the integer cut constraints. PhenoMapping integrates integer cuts into the GEM every time a new solution for a MILP is generated (see function <i>findDPMax</i> and <i>findDPMin</i>). Those intermediate solutions are saved in the PhenoMapping directory (tmpresults subfolder) and can be an input for the steps below to regenerate the cut constraints.</p>
+<p>Here, we show how to restore integer cuts for all MILP maximization problems within PhenoMapping, which use the function <i>findDPMax</i> to generate alternative solutions. An example of MILP maximization problem is the media analysis. The media analysis tend to involve many solutions (thousands) and hence this troubleshooting pipeline might become handy.</p>
+<ol>
+<li>Use the function <i>recoverModel4DPMax.</i> This function restores integer cut constraints in the GEM. Integer cut constraints avoid the repeated prediction of a solution to a MILP.</li>
+<li>Identify the model that you used as input for the function <i>findDPMax</i> before it stopped. This will be the first input for <i>recoverModel4DPMax.</i>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> PhenoMapping saves in the folder <i>tmpresults</i> a matrix with intermediate solutions for every problem. The intermediate MILP solutions are tagged with “_<i>DPs</i>,” as defined within <i>findDPMax</i>. The name of the file before the tag “_<i>DPs</i>” is an input to the <i>findDPMax</i> function.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> intermediate solutions are deleted at the end of every example script, with the function <i>elimIntermPMFile</i>. It is wise not to delete intermediate solutions if the number of alternatives is low and you expect to use those intermediate solutions later.</div>
+<ol start="3">
+<li>Identify the name of the file where the intermediate solutions are saved.</li>
+<li>Load the matrix saved in the file. This will be the second and last input for the function <i>recoverModel4DPMax.</i>
+</li>
+<li>Run the function <i>recoverModel4DPMax</i> and the output is the new model with the cut constraints regenerated.</li>
+</ol>
+<h3 id="sec7.21">Problem 11: The essentiality analysis fails although the GEM is feasible</h3>
+<p>Your essentiality analysis shows error but your GEM is feasible.</p>
+<h3 id="sec7.22">Potential solution 11</h3>
+<p>This occurs because PhenoMapping uses a thermodynamically consistent implementation of FastSL (<a href="#bib43">Pratapa et al., 2015</a>) to accelerate the identification of essential genes. This formulation identifies the optimal value of the objective function, e.g., growth, and sets <u>a requirement of the objective value</u>. Next, it minimizes flux through all reactions in the GEM. The first solution achieved (a single solution among all possible alternative flux solutions) is used to identify fluxes with zero value, as done in the parsimonious FBA or pFBA (<a href="#bib33">Lewis et al., 2010</a>). Reactions that do not carry flux are by definition not essential and hence do not need to be tested afterward in an essentiality analysis. A strict definition of the <u>required objective value</u> can render the next problem infeasible. Hence, one might need to relax this value.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> the <u>required objective value</u> should not be lower than (1 - essentiality threshold). The essentiality threshold should have been previously defined for a PhenoMapping analysis.</div>
+<div class="note">
+<span class="note-title">Note:</span> the thermodynamically consistent implementation of pFBA is included in the function <i>optimizeThermoModel</i>.</div>
+<ol>
+<li>Identify the <u>requirement of the objective value</u> defined within <i>optimizeThermoModel.</i>
+</li>
+<li>Reduce the <u>requirement of the objective value</u> but do not define a requirement &lt; (1 - essentiality threshold).</li>
+<li>You may need to round the <u>required objective value</u> to avoid problems with the precision of the solver.</li>
+</ol>
+<h3 id="sec7.23">Problem 12: You obtain solver-related infeasible solutions</h3>
+<p>You obtain solver-related infeasible solutions. These are infeasible solutions that arise due to problems with the solver or problem-definition rather than the GEM per se. For example, the solver may not converge fast enough to a solution and returns a NaN.</p>
+<h3 id="sec7.24">Potential solution 12</h3>
+<p>Infeasible solutions are unfortunately common when working with optimization problems and solvers. There can be multiple reasons for these infeasibilities, and the resolution is very case-specific. Here, we provide a check list with some common troubleshooting approaches we have used to face solver-related infeasibilities.</p>
+<ol>
+<li>Consider as essential any gene knockout rendering an infeasible solution in the essentiality analysis with TEX-FBA.</li>
+<li>Verify that the GEM is feasible by evaluating it as defined in <a href="#troubleshooting">Troubleshooting 6</a>.</li>
+<li>Tighten the reaction flux bounds with the minimum and maximum feasible solutions as identified with a flux variability analysis (FVA) (<a href="#bib37">Mahadevan and Schilling, 2003</a>). This is done by defining the FVA solution as lower and upper bound of the net fluxes. The FVA should account for thermodynamic constraints if the infeasibility arises within TFA. Round the fluxes to have less than five decimals. These rounded values should fall outside the flux range accounting for all decimals.</li>
+<li>Tighten the bounds of the Gibbs free energy of reaction (Δ<sub>r</sub>G′) with the minimum and maximum feasible solutions as identified with a thermodynamically consistent Variability Analysis for these variables. These rounded values should fall outside the Δ<sub>r</sub>G′ range accounting for all decimals.</li>
+<li>If you defined a time limit for the solver, increase it.</li>
+<li>Verify that the feasibility tolerance of the solver is low enough. By default, in matTFA and PhenoMapping the feasibility tolerance is 10<sup>−9</sup>. This value of tolerance for CPLEX is defined in the function <i>changeToCPLEX_WithOptions</i> within the matTFA package.</li>
+<li>Evaluate any other parameter specific to the solver like the time limit, integrality tolerance, emphasis on precision, or scaling. An example of how these parameters are defined and the default values within matTFA is provided in the function <i>changeToCPLEX_WithOptions</i> within the matTFA package.</li>
+<li>Round all reaction bounds to have less than five decimals.</li>
+<li>Verify that the product of any stoichiometric coefficient (e.g., in the biomass reaction) and the corresponding reaction flux (e.g., growth) is not below the tolerance of the solver.</li>
+<li>If applicable, round the metabolomics data integrated to have less than five decimals.</li>
+<li>Round any right-hand-side value (<i>rhs</i>) to have less than five decimals.</li>
+</ol>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Agren, R., Liu, L., Shoaie, S., Vongsangnak, W., Nookaew, I., and Nielsen, J. (2013). The RAVEN Toolbox and its use for generating a genome-scale metabolic model for <i>Penicillium chrysogenum</i>. PLoS Comput. Biol. <i>9</i>, e1002980. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref1">View at publisher</a></p>
+<p id="bib2">Ataman, M. and Hatzimanikatis, V. (2015). Heading in the right direction: thermodynamics-based network analysis and pathway engineering. Curr. Opin. Biotechnol. <i>36</i>, 176-182. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref2">View at publisher</a></p>
+<p id="bib3">Becker, S.A., Feist, A.M., Mo, M.L., Hannum, G., Palsson, B.Ø., and Herrgard, M.J. (2007). Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox. Nat. Protoc. <i>2</i>, 727-738. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref3">View at publisher</a></p>
+<p id="bib4">Bennett, B.D., Kimball, E.H., Gao, M., Osterhout, R., Van Dien, S.J., and Rabinowitz, J.D. (2009). Absolute metabolite concentrations and implied enzyme active site occupancy in <i>Escherichia coli</i>. Nat. Chem. Biol. <i>5</i>, 593-599. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref4">View at publisher</a></p>
+<p id="bib5">Bushell, E., Gomes, A.R., Sanderson, T., Anar, B., Girling, G., Herd, C., Metcalf, T., Modrzynska, K., Schwach, F., Martin, R.E., et al. (2017). Functional profiling of a <i>Plasmodium</i> genome reveals an abundance of essential genes. Cell <i>170</i>, 260-272.e8. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref5">View at publisher</a></p>
+<p id="bib6">Caldelari, R., Dogga, S., Schmid, M.W., Franke-Fayard, B., Janse, C.J., Soldati-Favre, D., and Heussler, V. (2019). Transcriptome analysis of <i>Plasmodium berghei</i> during exo-erythrocytic development. Malar. J. <i>18</i>, 330. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref6">View at publisher</a></p>
+<p id="bib7">Carey, M.A., Papin, J.A., and Guler, J.L. (2017). Novel <i>Plasmodium falciparum</i> metabolic network reconstruction identifies shifts associated with clinical antimalarial resistance. BMC Genomics <i>18</i>, 543. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref7">View at publisher</a></p>
+<p id="bib8">Carey, M.A., Medlock, G.L., Stolarczyk, M., Petri, W.A., Guler, J.L., and Papin, J.A. (2019). Comparative analyses of parasites with a comprehensive database of genome-scale metabolic models. bioRxiv 772467. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref8">View at publisher</a></p>
+<p id="bib9">Caspi, R., Billington, R., Fulcher, C.A., Keseler, I.M., Kothari, A., Krummenacker, M., Latendresse, M., Midford, P.E., Ong, Q., Ong, W.K., et al. (2018). The MetaCyc database of metabolic pathways and enzymes. Nucleic Acids Res. <i>46</i>, D633-D639. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref9">View at publisher</a></p>
+<p id="bib10">Chan, S.H.J., Cai, J., Wang, L., Simons-Senftle, M.N., and Maranas, C.D. (2017). Standardizing biomass reactions and ensuring complete mass balance in genome-scale metabolic models. Bioinformatics <i>33</i>, 3603-3609. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref10">View at publisher</a></p>
+<p id="bib11">Chiappino-Pepe, A., Tymoshenko, S., Ataman, M., Soldati-Favre, D., and Hatzimanikatis, V. (2017). Bioenergetics-based modeling of <i>Plasmodium falciparum</i> metabolism reveals its essential genes, nutritional requirements, and thermodynamic bottlenecks. PLoS Comput. Biol. <i>13</i>, e1005397. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref11">View at publisher</a></p>
+<p id="bib12">Devoid, S., Overbeek, R., DeJongh, M., Vonstein, V., Best, A.A., and Henry, C. (2013). Automated genome annotation and metabolic model reconstruction in the SEED and Model SEED. Methods Mol. Biol. <i>985</i>, 17-45. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref12">View at publisher</a></p>
+<p id="bib13">Ebrahim, A., Lerman, J.A., Palsson, B.O., and Hyduke, D.R. (2013). COBRApy: COnstraints-Based Reconstruction and Analysis for Python. BMC Syst. Biol. <i>7</i>, 74. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref13">View at publisher</a></p>
+<p id="bib14">Feist, A.M. and Palsson, B.O. (2010). The biomass objective function. Curr. Opin. Microbiol. <i>13</i>, 344-349. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref14">View at publisher</a></p>
+<p id="bib15">Hadadi, N., Hafner, J., Shajkofci, A., Zisaki, A., and Hatzimanikatis, V. (2016). ATLAS of biochemistry: a repository of all possible biochemical reactions for synthetic biology and metabolic engineering studies. ACS Synth. Biol. <i>5</i>, 1155-1166. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref15">View at publisher</a></p>
+<p id="bib16">Hadadi, N., MohammadiPeyhani, H., Miskovic, L., Seijo, M., and Hatzimanikatis, V. (2019). Enzyme annotation for orphan and novel reactions using knowledge of substrate reactive sites. Proc. Natl. Acad. Sci. U S A <i>116</i>, 7298. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref16">View at publisher</a></p>
+<p id="bib17">Hafner, J., MohammadiPeyhani, H., Sveshnikova, A., Scheidegger, A., and Hatzimanikatis, V. (2020). Updated ATLAS of biochemistry with new metabolites and improved enzyme prediction power. ACS Synth. Biol. <i>9</i>, 1479-1482. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref17">View at publisher</a></p>
+<p id="bib18">Hartleb, D., Jarre, F., and Lercher, M.J. (2016). Improved metabolic models for <i>E. coli</i> and <i>Mycoplasma genitalium</i> from globalfit, an algorithm that simultaneously matches growth and non-growth data sets. PLoS Comput. Biol. <i>12</i>, e1005036. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref18">View at publisher</a></p>
+<p id="bib62">Hehl, A.B., Basso, W.U., Lippuner, C., Ramakrishnan, C., Okoniewski, M., Walker, R.A., Grigg, M.E., Smith, N.C., and Deplazes, P. (2015). Asexual expansion of Toxoplasma gondii merozoites is distinct from tachyzoites and entails expression of non-overlapping gene families to attach, invade, and replicate within feline enterocytes. BMC Genomics <i>16</i>, 66. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/opt23h803cZu3">View at publisher</a></p>
+<p id="bib19">Heirendt, L., Arreckx, S., Pfau, T., Mendoza, S.N., Richelle, A., Heinken, A., Haraldsdóttir, H.S., Wachowiak, J., Keating, S.M., Vlasov, V., et al. (2019). Creation and analysis of biochemical constraint-based models using the COBRA Toolbox v.3.0. Nat. Protoc. <i>14</i>, 639-702. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref19">View at publisher</a></p>
+<p id="bib20">Henry, C.S., Jankowski, M.D., Broadbelt, L.J., and Hatzimanikatis, V. (2006). Genome-scale thermodynamic analysis of <i>Escherichia coli</i> metabolism. Biophys. J. <i>90</i>, 1453-1461. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref20">View at publisher</a></p>
+<p id="bib21">Henry, C.S., Broadbelt, L.J., and Hatzimanikatis, V. (2007). Thermodynamics-based metabolic flux analysis. Biophys. J. <i>92</i>, 1792-1805. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref21">View at publisher</a></p>
+<p id="bib22">Henry, C.S., DeJongh, M., Best, A.A., Frybarger, P.M., Linsay, B., and Stevens, R.L. (2010). High-throughput generation, optimization and analysis of genome-scale metabolic models. Nat. Biotechnol. <i>28</i>, 977-982. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref22">View at publisher</a></p>
+<p id="bib23">Ishii, N., Nakahigashi, K., Baba, T., Robert, M., Soga, T., Kanai, A., Hirasawa, T., Naba, M., Hirai, K., Hoque, A., et al. (2007). Multiple high-throughput analyses monitor the response of <i>E. coli</i> to perturbations. Science <i>316</i>, 593. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref23">View at publisher</a></p>
+<p id="bib24">Jankowski, M.D., Henry, C.S., Broadbelt, L.J., and Hatzimanikatis, V. (2008). Group contribution method for thermodynamic analysis of complex metabolic networks. Biophys. J. <i>95</i>, 1487-1499. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref24">View at publisher</a></p>
+<p id="bib25">Jeske, L., Placzek, S., Schomburg, I., Chang, A., and Schomburg, D. (2019). BRENDA in 2019: a European ELIXIR core data resource. Nucleic Acids Res. <i>47</i>, D542-D549. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref25">View at publisher</a></p>
+<p id="bib26">King, Z.A., Lu, J., Dräger, A., Miller, P., Federowicz, S., Lerman, J.A., Ebrahim, A., Palsson, B.O., and Lewis, N.E. (2015). BiGG Models: a platform for integrating, standardizing and sharing genome-scale models. Nucleic Acids Res. <i>44</i>, D515-D522. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref26">View at publisher</a></p>
+<p id="bib27">Kiparissides, A. and Hatzimanikatis, V. (2017). Thermodynamics-based metabolite sensitivity analysis in metabolic networks. Metab. Eng. <i>39</i>, 117-127. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref27">View at publisher</a></p>
+<p id="bib28">Krishnan, A., Kloehn, J., Lunghi, M., Chiappino-Pepe, A., Waldman, B.S., Nicolas, D., Varesio, E., Hehl, A., Lourido, S., Hatzimanikatis, V., et al. (2020). Functional and computational genomics reveal unprecedented flexibility in stage-specific <i>Toxoplasma</i> metabolism. Cell Host Microbe <i>27</i>, 290-306.e11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref28">View at publisher</a></p>
+<p id="bib29">Kumar, V.S. and Maranas, C.D. (2009). GrowMatch: an automated method for reconciling in silico/in vivo growth predictions. PLoS Comput. Biol. <i>5</i>, e1000308. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref29">View at publisher</a></p>
+<p id="bib30">Kyoto University (1995). KEGG (Kyoto Encyclopedia of Genes and Genomes). <a class="external-link" href="https://www.genome.jp/kegg/kegg1.html">https://www.genome.jp/kegg/kegg1.html</a>.</p>
+<p id="bib31">LCSB (2020). Laboratory of Computational Systems Biotechnology (LCSB) database. <a class="external-link" href="https://lcsb-databases.epfl.ch/">https://lcsb-databases.epfl.ch/</a>.</p>
+<p id="bib33">Lewis, N.E., Hixson, K.K., Conrad, T.M., Lerman, J.A., Charusanti, P., Polpitiya, A.D., Adkins, J.N., Schramm, G., Purvine, S.O., Lopez-Ferrer, D., et al. (2010). Omic data from evolved <i>E. coli</i> are consistent with computed optimal growth from genome-scale models. Mol. Syst. Biol. <i>6</i>, 390. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref33">View at publisher</a></p>
+<p id="bib34">Lieven, C., Beber, M.E., Olivier, B.G., Bergmann, F.T., Ataman, M., Babaei, P., Bartell, J.A., Blank, L.M., Chauhan, S., Correia, K., et al. (2020). MEMOTE for standardized genome-scale metabolic model testing. Nat. Biotechnol. <i>38</i>, 272-276. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref34">View at publisher</a></p>
+<p id="bib35">Lu, H., Li, F., Sánchez, B.J., Zhu, Z., Li, G., Domenzain, I., Marcišauskas, S., Anton, P.M., Lappa, D., Lieven, C., et al. (2019). A consensus <i>S. cerevisiae</i> metabolic model Yeast8 and its ecosystem for comprehensively probing cellular metabolism. Nat. Commun. <i>10</i>, 3586. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref35">View at publisher</a></p>
+<p id="bib36">Machado, D., Andrejev, S., Tramontano, M., and Patil, K.R. (2018). Fast automated reconstruction of genome-scale metabolic models for microbial species and communities. Nucleic Acids Res. <i>46</i>, 7542-7553. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref36">View at publisher</a></p>
+<p id="bib37">Mahadevan, R. and Schilling, C.H. (2003). The effects of alternate optimal solutions in constraint-based genome-scale metabolic models. Metab. Eng. <i>5</i>, 264-276. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref37">View at publisher</a></p>
+<p id="bib38">Medlock, G.L. and Papin, J.A. (2020). Guiding the refinement of biochemical knowledgebases with ensembles of metabolic networks and machine learning. Cell Syst. <i>10</i>, 109-119.e3. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref38">View at publisher</a></p>
+<p id="bib63">Norsigian, C.J., Fang, X., Seif, Y., Monk, J.M., and Palsson, B.O. (2020). A workflow for generating multi-strain genome-scale metabolic models of prokaryotes. Nature Protocols <i>15</i>, 1-14. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/optwrezWhLSJk">View at publisher</a></p>
+<p id="bib40">Otto, T.D., Böhme, U., Jackson, A.P., Hunt, M., Franke-Fayard, B., Hoeijmakers, W.A.M., Religa, A.A., Robertson, L., Sanders, M., Ogun, S.A., et al. (2014). A comprehensive evaluation of rodent malaria parasite genomes and gene expression. BMC Biol. <i>12</i>, 86. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref40">View at publisher</a></p>
+<p id="bib41">Pan, S. and Reed, J.L. (2018). Advances in gap-filling genome-scale metabolic models and model-driven experiments lead to novel metabolic discoveries. Curr. Opin. Biotechnol. <i>51</i>, 103-108. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref41">View at publisher</a></p>
+<p id="bib42">Pandey, V., Gardiol, D.H., Chiappino-Pepe, A., and Hatzimanikatis, V. (2019). TEX-FBA: a constraint-based method for integrating gene expression, thermodynamics, and metabolomics data into genome-scale metabolic models. bioRxiv 536235. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref42">View at publisher</a></p>
+<p id="bib43">Pratapa, A., Balachandran, S., and Raman, K. (2015). Fast-SL: an efficient algorithm to identify synthetic lethal sets in metabolic networks. Bioinformatics <i>31</i>, 3299-3305. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref43">View at publisher</a></p>
+<p id="bib44">Richelle, A., Chiang, A.W.T., Kuo, C.-C., and Lewis, N.E. (2019). Increasing consensus of context-specific metabolic models by integrating data-inferred cell functions. PLoS Comput. Biol. <i>15</i>, e1006867. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref44">View at publisher</a></p>
+<p id="bib46">Salvy, P., Fengos, G., Ataman, M., Pathier, T., Soh, K.C., and Hatzimanikatis, V. (2018). pyTFA and matTFA: a Python package and a Matlab toolbox for thermodynamics-based flux analysis. Bioinformatics <i>35</i>, 167-169. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref46">View at publisher</a></p>
+<p id="bib48">Schellenberger, J., Que, R., Fleming, R.M.T., Thiele, I., Orth, J.D., Feist, A.M., Zielinski, D.C., Bordbar, A., Lewis, N.E., Rahmanian, S., et al. (2011). Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox v2.0. Nat. Protoc. <i>6</i>, 1290-1307. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref48">View at publisher</a></p>
+<p id="bib49">Schroeder, W.L. and Saha, R. (2020). OptFill: a tool for infeasible cycle-free gapfilling of stoichiometric metabolic models. IScience <i>23</i>, 100783. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref49">View at publisher</a></p>
+<p id="bib50">Schuetz, R., Kuepfer, L., and Sauer, U. (2007). Systematic evaluation of objective functions for predicting intracellular fluxes in <i>Escherichia coli</i>. Mol. Syst. Biol. <i>3</i>, 119. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref50">View at publisher</a></p>
+<p id="bib61">Sidik, S.M., Huet, D., Ganesan, S.M., Huynh, M.-H., Wang, T., Nasamu, A.S., Thiru, P., Saeij, J.P.G., Carruthers, V.B., Niles, J.C., et al. (2016). A Genome-wide CRISPR Screen in Toxoplasma Identifies Essential Apicomplexan Genes. Cell <i>166</i>, 1423-1435.e12. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/optDvXCWXF37Z">View at publisher</a></p>
+<p id="bib51">Sohn, S.B., Kim, T.Y., Lee, J.H., and Lee, S.Y. (2012). Genome-scale metabolic model of the fission yeast <i>Schizosaccharomyces pombe</i> and the reconciliation of in silico/in vivo mutant growth. BMC Syst. Biol. <i>6</i>, 49. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref51">View at publisher</a></p>
+<p id="bib52">Stanway, R.R., Bushell, E., Chiappino-Pepe, A., Roques, M., Sanderson, T., Franke-Fayard, B., Caldelari, R., Golomingi, M., Nyonda, M., Pandey, V., et al. (2019). Genome-scale identification of essential metabolic processes for targeting the <i>Plasmodium</i> liver stage. Cell <i>179</i>, 1112-1128.e26. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref52">View at publisher</a></p>
+<p id="bib53">Teng, R., Junankar, P.R., Bubb, W.A., Rae, C., Mercier, P., and Kirk, K. (2009). Metabolite profiling of the intraerythrocytic malaria parasite <i>Plasmodium falciparum</i> by <sup>1</sup>H NMR spectroscopy. NMR Biomed. <i>22</i>, 292-302. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref53">View at publisher</a></p>
+<p id="bib54">Teng, R., Lehane, A.M., Winterberg, M., Shafik, S.H., Summers, R.L., Martin, R.E., van Schalkwyk, D.A., Junankar, P.R., and Kirk, K. (2014). <sup>1</sup>H-NMR metabolite profiles of different strains of <i>Plasmodium falciparum</i>. Biosci. Rep. <i>34</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref54">View at publisher</a></p>
+<p id="bib55">Thiele, I. and Palsson, B.Ø. (2010). A protocol for generating a high-quality genome-scale metabolic reconstruction. Nat. Protoc. <i>5</i>, 93-121. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref55">View at publisher</a></p>
+<p id="bib56">Tymoshenko, S., Oppenheim, R.D., Agren, R., Nielsen, J., Soldati-Favre, D., and Hatzimanikatis, V. (2015). Metabolic needs and capabilities of <i>Toxoplasma gondii</i> through combined computational and experimental analysis. PLOS Comput. Biol. <i>11</i>, e1004261. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref56">View at publisher</a></p>
+<p id="bib58">Vo Duy, S., Besteiro, S., Berry, L., Perigaud, C., Bressolle, F., Vial, H.J., and Lefebvre-Tournier, I. (2012). A quantitative liquid chromatography tandem mass spectrometry method for metabolomic analysis of <i>Plasmodium falciparum</i> lipid related metabolites. Anal. Chim. Acta <i>739</i>, 47-55. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref58">View at publisher</a></p>
+<p id="bib59">Wang, H., Marcišauskas, S., Sánchez, B.J., Domenzain, I., Hermansson, D., Agren, R., Nielsen, J., and Kerkhoven, E.J. (2018). RAVEN 2.0: a versatile toolbox for metabolic network reconstruction and a case study on Streptomyces coelicolor. PLoS Comput. Biol. <i>14</i>, e1006541. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref59">View at publisher</a></p>
+<p id="bib60">Zimmermann, J., Kaleta, C., and Waschina, S. (2020). gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models. bioRxiv <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30267-7/sref60">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Anush Chiappino-Pepe (<a href="mailto:anush.chiappinopepe@alumni.epfl.ch">anush.chiappinopepe@alumni.epfl.ch</a>).</p>
+<h4>Materials Availability</h4>
+<p>Outputs generated with this protocol are provided in previous publications (<a href="#bib28">Krishnan et al., 2020</a>; <a href="#bib52">Stanway et al., 2019</a>). These outputs are reproducible as described here.</p>
+<h4>Data and Code Availability</h4>
+<p>Documented implementation of the PhenoMapping workflow in MATLAB is available on <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a>.</p>
+<p>PhenoMapping requires the matTFA toolbox (<a href="#bib46">Salvy et al., 2018</a>) for TFA and the TEX-FBA toolbox (<a href="#bib42">Pandey et al., 2019</a>) for the integration of gene expression data.</p>
+<p>The metabolic models of <i>P. berghei</i> (iPbe) and <i>T. gondii</i> (iTgo), the <i>P. berghei</i> blood-stage relative growth phenotypes, the tachizoyte <i>T. gondii</i> genome-wide screen, and all integrated omics data are available in <a href="http://www.github.com/EPFL-LCSB/phenomapping">www.github.com/EPFL-LCSB/phenomapping</a> <u>v1.0</u>. These files are enough to enable the user to follow along and repeat all computational steps of the examples presented in this PhenoMapping protocol.</p>
+<h3>Acknowledgments</h3>
+<p>The authors would like to thank Dr. Aarti Krishnan, Dr. Vikash Pandey, Dr. Noushin Hadadi, Evangelia Vayena, Chris Giuliano, and Raina Thomas for critical discussions of the PhenoMapping repository. The authors would like to thank the reviewers, Dr. Noushin Hadadi, Evangelia Vayena, and Dr. Liliana Ángeles-Martínez for critical feedback of the manuscript. All figures (except <a href="#fig3">Figures 3</a> and <a href="#fig4">4</a>B) were created with <a href="http://BioRender.com">BioRender.com</a>. A.C.-P. and V.H. were funded by grant 2013/155 (MalarX), a <a href="https://doi.org/10.13039/501100012390">SystemsX.ch</a> grant awarded by the SNSF. The authors would like to thank Dr. Dominique Soldati-Favre, Dr. Oliver Billker, and Dr. Volker T Heussler for motivating the development of PhenoMapping.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, A.C.-P. and V.H.; Methodology, A.C.-P.; Software, A.C.-P.; Formal analysis, A.C.-P.; Investigation, A.C.-P.; Writing – Original Draft, A.C.-P.; Writing – Review &amp; Editing, A.C.-P.; Visualization, A.C.-P.; Supervision, A.C.-P. and V.H.; Project Administration, A.C.-P. and V.H.; Funding Acquisition, V.H.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

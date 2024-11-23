@@ -1,0 +1,669 @@
+<article>
+<section>
+<h1 id="header">Data-deposition protocols for correlative soft X-ray tomography and super-resolution structured illumination microscopy applications</h1>
+<p><time datetime="2021-01-15">Published: January 15, 2021</time></p>
+<p>Andrii Iudin,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Ugis Sarkans,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Mohamed A. Koronfel,<sup><a href="#aff2">2</a>,<a href="#fn1">4</a></sup> Tom Fish,<sup><a href="#aff2">2</a></sup> Ian Dobbie,<sup><a href="#aff3">3</a></sup> Maria Harkiolaki,<sup><a href="#aff2">2</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup> Ardan Patwardhan,<sup><a href="#aff1">1</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup> and Gerard J. Kleywegt<sup><a href="#aff1">1</a>,<a href="#fn3">6</a></sup></p>
+<p id="aff1"><sup>1</sup>European Molecular Biology Laboratory, European Bioinformatics Institute, Wellcome Genome Campus, Hinxton, Cambridge CB10 1SD, UK</p>
+<p id="aff2"><sup>2</sup>Diamond Light Source, Harwell Science and Innovation Campus, Didcot OX11 0DW, UK</p>
+<p id="aff3"><sup>3</sup>Micron, Department of Biochemistry, University of Oxford, Oxford OX1 3QU, UK</p>
+<p id="fn1"><sup>4</sup>These authors contributed equally</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="fn3"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:maria.harkiolaki@diamond.ac.uk">maria.harkiolaki@diamond.ac.uk</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:ardan@ebi.ac.uk">ardan@ebi.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100253">10.1016/j.xpro.2020.100253</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol illustrates the steps necessary to deposit correlated 3D cryo-imaging data from cryo-structured illumination microscopy and cryo-soft X-ray tomography with the BioStudies and EMPIAR deposition databases of the European Bioinformatics Institute. There is currently a real need for a robust method of data deposition to ensure unhindered access to and independent validation of correlative light and X-ray microscopy data to allow use in further comparative studies, educational activities, and data mining.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib6">Kounatidis et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Step-by-step guide for CLXM data deposition to EMBL-EBI archives</li>
+<li>Establishes technical metadata requirements for efficient image sharing and reuse</li>
+<li>Example deposition of CLXM dataset from a study of reovirus infection in U2OS cells</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/374-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Background</h3>
+<p>3D cryo-imaging has become an integral method for many advanced biomedical investigations (<a href="#bib8">Verkade and Collinson, 2019</a>) . Methodological progress invariably pushes the limits of resolution but also moves data collection in the direction of method integration and correlative approaches. A significant leap was the development of cryo-imaging which enabled nanometer-resolution imaging at near-physiological conditions (<a href="#bib4">Henderson et al., 1990</a>). Although cryo-imaging was initially implemented in electron microscopy (EM), soft X-ray tomography (SXT) is now providing an alternative for imaging of cellular ultrastructure in thicker vitrified samples (on the order of 10 μm compared to &lt; 0.5 μm for EM), without the need for any chemical processing (<a href="#bib1">Duke et al., 2014</a>; <a href="#bib3">Harkiolaki et al., 2018</a>). Recently, a novel correlative imaging scheme between cryo-soft X-ray tomography (cryo-SXT) and cryo-structural illumination microscopy (cryo-SIM) (<a href="#fig1">Figure 1</a>) added the strength of fluorescence localization within the same field of view and at matching resolutions (<a href="#bib6">Kounatidis et al., 2020</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/374-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Illustration of correlative imaging combining structured illumination microscopy and soft X-ray tomography</div>
+<p>The top panel displays a volume representation of SIM data showing endosomal vesicles (in red) carrying reovirus components (in green), and the SXT volume of the same area denoted by two orthoslices (middle). The bottom panel shows the correlation of SIM and SXT data in 3D. Data adapted from <a href="#bib6">Kounatidis et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<p>Cryo-CLXM data can be acquired at synchrotron facilities such as beamline B24 at Diamond Light Source, UK. Access to this facility is granted based on a peer-reviewed application process (<a href="https://www.diamond.ac.uk/Users/Apply-for-Beamtime.html">https://www.diamond.ac.uk/Users/Apply-for-Beamtime.html</a>).</p>
+<p>The life sciences are becoming increasingly data-dependent, and better approaches to facilitating the examination of scientific research data are needed, as exemplified by the FAIR data initiative (<a href="#bib9">Wilkinson et al., 2016</a>). There is an urgent need for open bio-imaging data archives, using community-supported standards, that provide a platform for large-scale data analysis, data sharing/validation and methods development (<a href="#bib2">Ellenberg et al., 2018</a>). Recent imaging, computational, and data-storage advancements have led to the establishment of the BioImage Archive at the European Bioinformatics Institute (EMBL-EBI). EMBL-EBI builds and maintains EMPIAR (<a href="#bib5">Iudin et al., 2016</a>) for storing 2D and 3D electron and X-ray microscopy/tomography data, and BioStudies (<a href="#bib7">Sarkans et al., 2018</a>) for storing bio-imaging data from all other modalities including light microscopy (and, more generally data associated with a publication for which no dedicated archive exists). EMPIAR and BioStudies together are appropriate resources for storing CLXM data, where related X-ray and light microscopy datasets are linked together through identification codes in each of the two archives. Describing correlative imaging experiments involves a substantial amount of data collection and processing information and parameters. Therefore, a clear protocol for data and metadata communication is an essential requirement, for both biologists and microscopists, for further advancement of the field.</p>
+<div class="note">
+<span class="note-title">Note:</span> Data deposition into the EMPIAR archive has to be performed in accordance with the EMPIAR policies and procedures (<a href="https://empiar.org/policies">https://empiar.org/policies</a>). More details about the BioStudies archive can be found at (<a href="https://www.ebi.ac.uk/biostudies/">https://www.ebi.ac.uk/biostudies/</a>).</div>
+<p>A number of actions before commencing deposition of data are important to ensure no delays: (a) the necessary data files need to be collated in a sensible directory structure to allow ease of access; (b) metadata for each dataset should be available; (c) appropriate web access and upload speeds should be secured; (d) all necessary file-transfer software should be installed and tested.</p>
+<h3 id="sec1.2">Data organization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 60 min to 1 day</div>
+<ol>
+<li>Organize the data in directories with appropriate naming and structure for ease of identification and retrieval (<a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/374-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Suggested directory structure for efficient data management</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Define each time point or distinct states as separate samples. For example, if studying a dynamic process through time points, each of the time points imaged would represent a separate sample.</li>
+<li>Identify and collect all data sets associated with each sample.</li>
+<li>Define dataset pairs of multiples that comprise a correlative imaging set.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The maximum file-path length on Windows operating systems is 260 characters.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The size of a single file should not exceed 1 TB. For larger files, contact the staff of the relevant depository (EMPIAR or BioStudies)</div>
+<h3 id="sec1.3">Metadata availability</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 60 min to 1 day</div>
+<ol start="2">
+<li>Ensure knowledge of and/or access to the information and parameters which describe each experiment (<a href="#tbl1">Table 1</a>). These metadata are essential for data validation and informed reuse. Although currently incomplete metadata will not hinder the submission process, it is strongly recommended that they are submitted along with the experimental data.
+<table id="tbl1">
+<caption>Table 1. Metadata fields necessary for submitting data to BioStudies and EMPIAR</caption>
+<thead>
+<tr>
+<th> </th>
+<th>Cryo-SIM datasets (BioStudies)</th>
+<th>X-ray microscopy datasets (EMPIAR)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General information</td>
+<td>Dataset titleData collection dateData collection location (facility and RRID if applicable)Instrument used (beamline and microscope)Researchers and technical staff (names, affiliations, ORCIDs)Funding (beamline proposal or associated)Publication DOI (if applicable)</td>
+<td>Dataset titleData collection dateData collection location (facility and RRID if applicable)Instrument used (beamline and microscope)Researchers and technical staff (names, affiliations, ORCIDs)Funding (beamline proposal or associated)Publication DOI (if applicable)</td>
+</tr>
+<tr>
+<td>Sample specification</td>
+<td>Sample ID (origin publication, ATCC number, etc.)Fluorophores used and administration route (endogenously expressed or otherwise)Fiducialization regime (e.g., nanoparticles-size-chemical composition-geometry)Sample carrier and substrate</td>
+<td>Sample ID (origin publication, ATCC number, etc.)Fluorophores used and administration route (endogenously expressed or otherwise)Fiducialization regime (e.g., nanoparticles-size-chemical composition-geometry)Sample carrier and substrate</td>
+</tr>
+<tr>
+<td>Microscope setup</td>
+<td>Objective∗ (NA and serial number)Lasers usedDetector type∗Emission filtersFOV∗Pixel size</td>
+<td>Energy of illumination (eV or Å; normally in the region of 500 eV for water-window imaging)Zone plate used∗Magnification∗FOVPixel size∗</td>
+</tr>
+<tr>
+<td>Acquisition parameters</td>
+<td>Number of excitation wavelengthsExcitation wavelength, exposure, and powerNumber of focal planes (size Z)Stack height (((size Z ÷ 15) − 1) × 0.125)Diffraction angleLinewidth per k<sub>0</sub> per wavelength∗Acquisition data order (SI<sub>acquired</sub>)Reported data order (SI<sub>reported</sub>)Detector settings∗ (gain, binning, temperature, fan settings)Attenuation filter setting∗Software (version) used2D mosaic of grid area (optional)∗∗</td>
+<td>
+<ol>
+<li style="list-style-type: none;">Exposure time and type</li>
+<li style="list-style-type: none;">Attenuation∗</li>
+<li style="list-style-type: none;">Tilt-series parameters
+<ul>
+<li>Angle range (start/end)∗</li>
+<li>Angle step∗</li>
+<li>Number of frames</li>
+</ul>
+</li>
+<li style="list-style-type: none;">Overlaps (with adjacent FOVs)∗</li>
+<li style="list-style-type: none;">Notes on radiation damage if present∗</li>
+<li style="list-style-type: none;">2D mosaic of grid area (optional)∗∗</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td>Raw data</td>
+<td>Format type (.dv/.mrc)Image dimensions (width and height in pixels and microns)Pixel type (e.g., unsigned byte, 32-bit float, etc.)Max/min intensities recordedAssociated brightfield Z stack file∗∗</td>
+<td>Type (background subtracted/referenced)∗Format type (.txrm/.tiff)Image dimensions (width and height in pixels and microns)∗Pixel type (e.g., unsigned byte, 32-bit float, etc.)Non-referenced raw data file (optional)∗∗</td>
+</tr>
+<tr>
+<td>Data processing</td>
+<td>
+<ol>
+<li style="list-style-type: none;">Software (version) used</li>
+<li style="list-style-type: none;">Associated OTF files (optional)∗∗</li>
+<li style="list-style-type: none;">Reconstruction summary values per channel:
+<ul>
+<li>Best fit</li>
+<li>Optimized k<sub>0</sub>
+</li>
+<li>Calculated linespacing</li>
+<li>Amplitude</li>
+</ul>
+</li>
+</ol>
+</td>
+<td>
+<ol>
+<li style="list-style-type: none;">Software (version) used</li>
+<li style="list-style-type: none;">Associated background reference image∗∗</li>
+<li style="list-style-type: none;">Processing type (manual/automated)</li>
+<li style="list-style-type: none;">Reconstruction protocol (WBP, SIRT, Patch)</li>
+<li style="list-style-type: none;">Reconstruction summary values∗∗∗:
+<ul>
+<li>Residual error mean/residual error standard deviation</li>
+<li>Weighted mean residual error</li>
+<li>Correlation coefficients</li>
+<li>Fourier shell/ring correlation cut off</li>
+</ul>
+</li>
+</ol>
+</td>
+</tr>
+<tr>
+<td>Processed data</td>
+<td>3D image dimensionsVoxel sizeResolutionColor depth (bits per pixel)</td>
+<td>Image formatImage dimensionsPixel type (e.g., unsigned byte, 32-bit float, etc.)</td>
+</tr>
+<tr>
+<td>Chromatic shift</td>
+<td>Software (version) usedChA-ChB transformation matrix:t<sub>z</sub>, t<sub>y</sub>, t<sub>x</sub>, r<sub>z</sub>, m<sub>z</sub>, m<sub>y</sub>, m<sub>x</sub>(t, translation; r, rotation; m, magnification)</td>
+<td> </td>
+</tr>
+<tr>
+<td>Correlation</td>
+<td>Transformation matrices, and/or other means to define correlation</td>
+<td>Related dataset IDs (these are “accession codes” which are received upon successful deposition of data to one of EBI’s archives; see <a href="#expected-outcomes">Expected outcomes</a> section). If available, provide the accession code of a related dataset which was uploaded to a different archive (e.g., for CLXM datasets, these are the accession codes for associated SXT and SIM datasets respectively).Transformation matrices, and/or other means to define correlation</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Metadata that may be supplied by the facility are denoted with ∗ (all other data can be mined or calculated from file-header metadata; header metadata can be accessed, as text XML format, by opening 2D or 3D image files in specialized freeware such as Fiji (<a href="https://imagej.net/Fiji/Downloads">https://imagej.net/Fiji/Downloads</a>) using its Bio-Formats importer). Individual files relating to data processing and acquisition are denoted with ∗∗. Values obtained post-data processing through respective reconstruction software (IMOD or equivalent) are denoted with ∗∗∗.</p>
+</li>
+</ol>
+<h3 id="sec1.4">Assess available infrastructure</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol start="3">
+<li>Evaluate your internet connection and speed of upload (e.g., via Ookla: <a href="http://www.speedtest.net">www.speedtest.net</a>); ideally &gt;5 Mbps.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In cases of low upload speed ensure connection stability to accommodate long data-upload times.</div>
+<h3 id="sec1.5">File upload software setup and installation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min to 2 h</div>
+<ol start="4">
+<li>Decide on the most appropriate method (software) for the data-transfer process. There are three available methods for uploading SIM data to BioStudies and two methods for uploading data to the EMPIAR database (<a href="#tbl2">Table 2</a>).
+<table id="tbl2">
+<caption>Table 2. Comparison of the file-transfer methods available for uploading data to the BioStudies and EMPIAR databases</caption>
+<thead>
+<tr>
+<th>Method</th>
+<th>Application</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Globus (a web application for file transfers)</td>
+<td>EMPIAR only</td>
+<td>Requires no software download</td>
+<td>Requires setup of local endpoint</td>
+</tr>
+<tr>
+<td>Aspera (command-line-based transfer client)</td>
+<td>EMPIAR and BioStudies</td>
+<td>Fastest (more suitable for long-distance and/or large data transfers)</td>
+<td>Might require additional firewall settings setup (dependent on local setup)Requires familiarity with command-line operations</td>
+</tr>
+<tr>
+<td>Aspera (web interface)</td>
+<td>EMPIAR only</td>
+<td>Does not requires knowledge of command-line operations</td>
+<td>Might require additional firewall settings setup (dependent on local setup)A maximum limit on files to upload at once, dependent on the memory available to the web-browser</td>
+</tr>
+<tr>
+<td>File Transfer Protocol, FTP/sFTP</td>
+<td>EMPIAR and BioStudies</td>
+<td>Multitude software available on any operating system</td>
+<td>Slower compared to AsperaFTP poses security risks (use software that supports sFTP)</td>
+</tr>
+<tr>
+<td>Hypertext Transfer Protocol, HTTPS</td>
+<td>BioStudies only</td>
+<td>Least demanding technicallyNo software downloads are required</td>
+<td>Slowest of all methods</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Download and/or set up the chosen method(s) for data transfer as follows (all freely available):
+<ol type="a">
+<li>
+<b>Globus</b> (<a href="https://www.globus.org">https://www.globus.org</a>) - requires setup of a personal endpoint (where the data will be uploaded from) and an active account login (the depositor’s current organization/institution login details may be used):
+<ol type="i">
+<li>Visit the Globus webpage and click “<i>login</i>.” Check if login through your institution is available; otherwise, create a Globus ID or use a Google or ORCID account.</li>
+<li>Login to your account to reach the <i>“File Manager”</i> interface. Click the <i>“Endpoints</i>” tab from the left-hand-side menu, then click <i>“Create a Personal Endpoint</i>” (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S1</a>A).</li>
+<li>Download and install “Globus Connect Personal” for your operating system (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S1</a>B).</li>
+<li>When installation is complete, login through <i>“Globus Connect Personal</i>” and finish the setup by entering a collection name and description (optional) for this personal endpoint (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S1</a>C).</li>
+</ol>
+</li>
+<li>Aspera (command-line client):
+<ol type="i">
+<li>Download the appropriate Aspera command-line client for your operating system (<a href="https://www.ibm.com/aspera/connect/">https://www.ibm.com/aspera/connect/</a>).</li>
+<li>Extract the contents of the downloaded compressed file into a directory of your choice.</li>
+</ol>
+</li>
+<li>Aspera (web interface):
+<ol type="i">
+<li>Download and run the IBM Aspera Connect installation file (<a href="https://www.ibm.com/aspera/connect/">https://www.ibm.com/aspera/connect/</a>).</li>
+<li>Install the IBM Aspera Connect web-browser add-on/extension.</li>
+</ol>
+</li>
+<li>
+<b>FTP/sFTP:</b> use any freely available FTP client (such as FileZilla <a href="https://filezilla-project.org/download.php">https://filezilla-project.org/download.php</a>) which is available for your operating system.</li>
+<li>
+<b>HTTP:</b> No specific setup is required.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Soft X-ray tomography data of U2OS cells</td>
+<td>EMPIAR archive</td>
+<td>EMPIAR-10416</td>
+</tr>
+<tr>
+<td>Structured illumination microscopy data of U2OS cells</td>
+<td>BioStudies archive</td>
+<td>S-BIAD-19</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Globus</td>
+<td><a href="https://www.globus.org">https://www.globus.org</a></td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Aspera</td>
+<td><a href="https://www.ibm.com/aspera/connect/">https://www.ibm.com/aspera/connect/</a></td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Cryo-structured illumination microscope (Diamond Light Source, Beamline B24)</td>
+<td>Custom built</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Cryo-transmission X-ray microscope (Diamond Light Source, Beamline B24)</td>
+<td>Zeiss</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>This section details the steps required for depositing SIM data to BioStudies and SXT data to EMPIAR. An overview of the whole process is provided in <a href="#fig3">Figure 3</a>.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/374-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Overview of the workflow for uploading CLXM data to the appropriate EMBL-EBI archives</div>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> At present SIM data should be deposited in BioStudies first to generate a BioStudies accession code, which is needed for depositing SXT data in EMPIAR.</div>
+<h3 id="sec2.1">Deposition of light microscopy data (BioStudies)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min to 1 week depending on number of files and overall data size</div>
+<p>The deposition of light microscopy data to the BioStudies archive comprises three main steps: (a) registering an account with BioStudies, (b) uploading the data, and (c) uploading the metadata (as per <a href="#tbl1">Table 1</a>). These steps are described in detail below.</p>
+<ol>
+<li>Register at the BioStudies database
+<ol type="a">
+<li>Open the BioStudies submission page: <a href="https://www.ebi.ac.uk/biostudies/submissions">https://www.ebi.ac.uk/biostudies/submissions</a>.</li>
+<li>Click on “Register.”</li>
+<li>Complete the form providing the following personal information: name, email address, ORCID (optional), and a password.
+<div class="note">
+<span class="note-title">Note:</span> The data will be stored, processed, and shared in a GDPR-compliant fashion according to EMBL-EBI and BioStudies GDPR privacy notices.</div>
+</li>
+<li>Activate your account by opening the link sent to the email address you provided.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Login to the BioStudies submission system using the same link as in step 1a. In the home portal you can find a history of previous data submissions, as well as those still in progress under the “Drafts” tab.</li>
+</ol>
+<ol start="3">
+<li>To begin the data-upload process click on the “Files” tab in the upper right corner (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>A). Depending on your chosen method for upload follow the instructions below:
+<ol type="a">
+<li>Aspera:
+<ol type="i">
+<li>Click the “FTP/Aspera” button on the upper right corner (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>A).</li>
+<li>In the pop-up window, note the code for the “secret” directory as shown in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>B (this will be the destination directory to which the data are to be uploaded).</li>
+<li>In the command prompt, type the path to the ascp file in the directory where you installed the Aspera client (refer to step 2b in the “File upload software setup and installation” section above), followed by the connection settings, the path of the source directory to be uploaded and, the path of the destination “secret” directory. This information is provided in the FTP/Aspera pop-up window (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>B).</li>
+<li style="list-style-type: none;">For example, to begin the upload, first enter the path to the Aspera executable (this varies by operating system):
+<ul>
+<li>Windows:
+<ul>
+<li style="list-style-type: none;">C:\Users\&lt;your_user_name&gt;\AppData\Local\Programs\Aspera\Aspera Connect\bin\ascp.exe</li>
+</ul>
+</li>
+<li>Mac:
+<ul>
+<li style="list-style-type: none;">∼/Applications/Aspera\ Connect.app/Contents/Resources/ascp</li>
+</ul>
+</li>
+<li>Linux:
+<ul>
+<li style="list-style-type: none;">∼/.aspera/connect/bin/ascp</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> Default paths are used in the above examples. The path to the Aspera executable (ascp) will depend on where you installed the Aspera client</div>
+</li>
+<li>Followed by the arguments:</li>
+<li style="list-style-type: none;">-P33001 -i ..\etc\asperaweb_id_dsa.openssh -d &lt;directory to upload&gt; <a href="mailto:bsaspera_w@hx-fasp-1.ebi.ac.uk:.%3c">bsaspera_w@hx-fasp-1.ebi.ac.uk:.&lt;</a>;secret directory&gt;</li>
+</ul>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Refer to <a href="#troubleshooting">Troubleshooting 1</a> if Aspera transfer is blocked by your local firewall.</div>
+</li>
+</ol>
+<ol start="2" type="a">
+<li>Transfer via FTP: you can use any freely available FTP client such as FileZilla (<a href="https://filezilla-project.org/">https://filezilla-project.org/</a>) or use the command line to execute FTP commands as follows:
+<ol type="i">
+<li>Click the “FTP/Aspera” button on the upper right corner (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>A).</li>
+<li>In the pop-up window note the code for the “secret” directory as shown in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>B (this will be the destination directory where the data are to be uploaded to).</li>
+<li>Open a command prompt and type <i>ftp</i> then at the <i>ftp&gt;</i> prompt type <i>open</i> followed by the link to your chosen FTP server.</li>
+<li>When prompted type your username and password.</li>
+<li>Define the source and destination directories as follows: type <i>cd</i> followed by the path of the source directory, then type <i>put</i> followed by the destination directory which will be your secret directory noted from step (ii).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Further help on how to transfer files using FTP or Aspera can be found at <a href="https://www.ebi.ac.uk/ega/about/ftp-aspera">https://www.ebi.ac.uk/ega/about/ftp-aspera</a>.</div>
+</li>
+<li>Transfer via HTTP: click “File upload” or “Folder upload,” select from your local system the files or folder to be uploaded and confirm. The upload progress for each of the files and directories selected will be shown in the “Progress” column of the “Files” table (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S2</a>A).
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> 1 min – 1 week depending on number of files and overall data size.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Upload the relevant metadata describing the dataset (based on <a href="#tbl1">Table 1</a>). This can be done in one of two ways:
+<ol type="a">
+<li>Web form (under development):
+<ol type="i">
+<li>Fill all mandatory fields.</li>
+<li>Click the “Submit” button which appears after all relevant fields are completed.</li>
+</ol>
+</li>
+<li>Excel template:
+<ol type="i">
+<li>Download template from ftp://ftp.biostudies.ebi.ac.uk/biostudies/pub/BioImaging/templates/ (file “SIM_template.xlsx”).</li>
+<li>Complete the template.</li>
+<li>Send the completed file to <a href="mailto:biostudies@ebi.ac.uk">biostudies@ebi.ac.uk</a> for processing.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> You will now receive your BioStudies accession code which can be cited in your publication. This code will also be required to complete the deposition of the corresponding SXT data to EMPIAR.</div>
+<h3 id="sec2.2">Deposition of X-ray microscopy data (EMPIAR)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min to 1 week depending on number of files and overall data size</div>
+<ol start="5">
+<li>Register an account with the EMPIAR database
+<ol type="a">
+<li>Open the EMPIAR deposition webpage: <a href="https://empiar.org/deposition/login">https://empiar.org/deposition/login</a>.</li>
+<li>Click on “Register as a new user.”</li>
+<li>Compete the web form providing general information, such as your name, contact details, and a password.
+<div class="note">
+<span class="note-title">Note:</span> The data will be stored, processed, and shared in a GDPR-compliant fashion, according to EMBL-EBI (<a href="https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website">https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website</a>) and EMPIAR Deposition System Data Protection (<a href="https://empiar.org/deposition/gdpr">https://empiar.org/deposition/gdpr</a>) schemes.</div>
+</li>
+<li>Activate the account by opening the web link sent to the email address that you provided.
+<div class="optional">
+<span class="optional-title">Optional:</span> you can use your Google, Facebook, or ORCID account to sign in.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Login to the EMPIAR deposition system using the same link as in step 5a to reach the deposition home portal; then click on “Begin/Continue an EMPIAR deposition” (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S3</a>A).</li>
+<li>Click on “Create a new deposition” (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S3</a>B) to reach the “Deposition overview” page.</li>
+</ol>
+<ol start="8">
+<li>Complete the web form providing some of the initial metadata associated with your dataset as follows:
+<ol type="a">
+<li>
+<i>Deposition image:</i> click “choose a file” to upload a figure (not subject to copyright, e.g., by a journal) that illustrates a facet of your data or study (see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S4</a>A).
+<div class="note">
+<span class="note-title">Note:</span> This image will be used on the EMPIAR website to illustrate your entry.</div>
+</li>
+<li>
+<i>Citations:</i> complete the details of the publication where the data are described (e.g., DOI, journal name, authors etc.).
+<div class="note">
+<span class="note-title">Note:</span> Publication details can be automatically filled if you provide a DOI or PubMed ID.</div>
+<div class="note">
+<span class="note-title">Note:</span> More than one publication can be added by pressing the “Add Citation” button. The first publication provided will be the primary one.</div>
+<div class="note">
+<span class="note-title">Note:</span> If the data are not published yet, then some of the fields can be omitted or filled by pressing the associated “N/A” button. Publication details can be updated by curators at a later stage but remains the depositor’s responsibility to communicate publications associated with this data as and when they are released.</div>
+</li>
+<li>
+<i>Entry details:</i> enter a title for the dataset, followed by “Entry type” and “Release instructions” as follows:
+<ol type="i">
+<li>Entry type: select the type or modality used to acquire the dataset from the available options. For the scope of this protocol, select the “<b>CLXM”</b> option to upload the SXT data here (while the corresponding SIM data should be uploaded in the BioStudies archive as explained above).
+<div class="note">
+<span class="note-title">Note:</span> You will be required to provide the BioStudies accession code (refer to footnote 1) where the corresponding SIM data are stored (see step 8d).</div>
+</li>
+<li>Release instructions: choose an option (listed in <a href="#tbl3">Table 3</a>) to indicate when the entry should be released (made available to the public) once it has been submitted and processed successfully.
+<table id="tbl3">
+<caption>Table 3. Description of the available release instructions which define the date for the public release of the data</caption>
+<thead>
+<tr>
+<th>Release Instruction</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REL</td>
+<td>As soon as the processing has finished and the entry approved by the depositor, the release procedure will be initiated. For data sizes in the TB range this process could take several days</td>
+</tr>
+<tr>
+<td>EMDBPUB</td>
+<td>Wait until the associated EMDB entry has been released before releasing the EMPIAR entry (only applicable to EMPIAR entries related to one or more EMDB entries)</td>
+</tr>
+<tr>
+<td>HPUB</td>
+<td>Wait until either the primary citation has been published or one year has elapsed since the date of deposition (whichever comes first)</td>
+</tr>
+<tr>
+<td>HOLD</td>
+<td>Wait until 1 year has passed from deposition</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+<li>
+<i>Cross-references:</i> enter the accession codes of related datasets. For CLXM data, the BioStudies code for the corresponding light microscopy data is required. Click “N/A” for other unrelated codes such as EMDB (see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S4</a>B).</li>
+<li>
+<i>Entry authors, Corresponding author and Principal Investigator(s):</i> provide the relevant information of the research team that conducted the study.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Entry authors may differ from the publication(s) authors specified previously.</div>
+<div class="note">
+<span class="note-title">Note:</span> All authors must be listed under “Entry authors” including those listed as corresponding author and principal investigator(s).</div>
+<ol start="9">
+<li>Press the “Save &amp; Validate” button on the “Deposition overview” page. If all fields have been successfully completed, you will be transferred to the “Upload data” page.</li>
+</ol>
+<ol start="10">
+<li>Upload the data using one of the three available methods:
+<ol type="a">
+<li>Transfer via Globus:
+<ol type="i">
+<li>In the “Upload data” page, click “<i>Globus</i>” under “Options for upload” and note your username and password for the EMBL-EBI endpoint (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S5</a>A).</li>
+<li>Ensure you have set up your Globus account and personal endpoint (refer to step 2a in “File upload software setup and installation”).</li>
+<li>Login at the Globus webpage <a href="http://www.globus.org">www.globus.org</a> to reach the “File Manager” interface.</li>
+<li>In the “Collection” field, search for and select “EMBL-EBI Private endpoint,” then enter your authentication username and password noted from step (i). Enter your EMPIAR directory by selecting the link provided back in the “Upload data” page under the option <i>“Globus”</i> (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S5</a>B).</li>
+<li>In the Globus “File Manager,” click “Transfer or Sync…” then search for and select your personal endpoint in the second “Collection” field (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S5</a>C).</li>
+<li>Under your personal endpoint, navigate to the directory to be uploaded and click “Start” to begin the transfer to the EMPIAR directory. You can follow the status of your transfer under the “Activity” tab (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S5</a>C).</li>
+</ol>
+</li>
+<li>Transfer via Aspera (command-line client):
+<ol type="i">
+<li>In the command prompt, type the path to the ascp file in the directory where you installed the Aspera client (refer to step 2b in the “File upload software setup and installation” section above), followed by the connection settings, the path of the source directory to be uploaded, and the path of the destination EMPIAR directory. This information is provided by selecting “Aspera Command Line” under “Options to upload.”</li>
+<li style="list-style-type: none;">For example, to begin the upload, first enter the path to the Apera executable (this varies by operating system):
+<ul>
+<li>Windows:
+<ul>
+<li style="list-style-type: none;">C:\Users\&lt;your_user_name&gt;\AppData\Local\Programs\Aspera\Aspera Connect\bin\ascp.exe</li>
+</ul>
+</li>
+<li>Mac:
+<ul>
+<li style="list-style-type: none;">∼/Applications/Aspera\ Connect.app/Contents/Resources/ascp</li>
+</ul>
+</li>
+<li>Linux:
+<ul>
+<li style="list-style-type: none;">∼/.aspera/connect/bin/ascp</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> Default paths are used in the above examples. The path to the Aspera executable (ascp) will depend on where you installed the Aspera client</div>
+</li>
+<li>Followed by the arguments:</li>
+<li style="list-style-type: none;">QT -P 33001 -l 200M -L- -k3 &lt;directory to upload&gt; <a href="mailto:emp_dep@hx-fasp-1.ebi.ac.uk:upload/%3c;your_unique_directory_name%3e/data">emp_dep@hx-fasp-1.ebi.ac.uk:upload/&lt;;your_unique_directory_name&gt;/data</a>
+</li>
+</ul>
+</li>
+</ol>
+<ol start="2" type="i">
+<li>When prompted enter the provided password for your EMPIAR upload.</li>
+</ol>
+</li>
+<li>Transfer via Aspera Connect (web interface):
+<ol type="i">
+<li>Click on “Aspera web interface” under “Options to upload.”</li>
+<li>Select either the “Upload files” or “Upload directories” option.</li>
+<li>Select the files or directories to upload from the pop-up dialog (a maximum limit of files/directories selected will be set by your web-browser and operating system).</li>
+</ol>
+</li>
+<li>Transfer via FTP: you can use any freely available FTP client such as FileZilla (<a href="https://filezilla-project.org/">https://filezilla-project.org/</a>) or use the command line to execute FTP commands following similar steps as in step 3b of the “Deposition of Light Microscopy Data” section. You will need to contact EMPIAR team (<a href="mailto:empdep-help@ebi.ac.uk">empdep-help@ebi.ac.uk</a>) to obtain your destination directory.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Refer to <a href="#troubleshooting">Troubleshooting 1</a> if Aspera transfer is blocked by your local firewall.</div>
+<div class="note">
+<span class="note-title">Note:</span> Refer to <a href="#troubleshooting">Troubleshooting 2</a> if problems are encountered using the above upload methods.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> 1 min – 1 week depending on number of files and overall data size</div>
+<ol start="11">
+<li>In the “Upload data” page, click the “Associate image sets with the data” link from the left-hand-side menu (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S5</a>A).</li>
+</ol>
+<ol start="12">
+<li>Complete the web form of the requested metadata to describe at least one image set. Additional metadata (in accordance with <a href="#tbl1">Table 1</a>) should be entered in the “Details” field of the web form.
+<div class="note">
+<span class="note-title">Note:</span> This is for bioimage data only. Any textual and other supplementary data should not be created as a separate image set, but rather described in the free text “Details” field. Some of the fields can be automatically filled from the header of an image file by clicking the “Populate Form” button.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> check the data for consistency by:</div>
+<ol type="a">
+<li>Downloading a script that compares checksums of files on your machine and those stored in EMPIAR using the MD5 message-digest algorithm.</li>
+<li>Downloading a listing of files present on the EMPIAR side.</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Press the “Save + Validation” button on the “Associate image sets with the data” page.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> describe EMDB-SFF (<a href="https://emdb-empiar.org/emschema/segmentation.html/">https://emdb-empiar.org/emschema/segmentation.html/</a>) segmentation files. Segmentation is the decomposition of 3D volumes into regions that can be associated with defined (biological) objects. You can also provide the original segmentation files from software such as Amira HyperSurface (.surf), Segger (.seg), EMDB Map masks (.map), IMOD (.mod), etc.</div>
+<div class="note">
+<span class="note-title">Note:</span> Click the “Add segmentations” button at the bottom of the “Associate image sets with the data” page. A page “Associate segmentations with the data” will be opened where you can select one of your image sets and associate it with a segmentation file. This can be done for multiple files / image sets. If you change your mind you can click “Remove all segmentations.” You will not be able to submit unless you either remove all segmentations or save them with validation.</div>
+<ol start="14">
+<li>Click the “Submit entry” button.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> You will be redirected to the main deposition page where you can see your accession code, which can be cited in your publication.</div>
+<div class="note">
+<span class="note-title">Note:</span> Once the entry has been checked by the EMPIAR curation team, you will receive a request to approve the entry.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>After successful deposition of datasets into the BioStudies and EMPIAR archives, the user will receive the following information (via their email address):</p>
+<ol>
+<li>Accession codes: these are codes that can be cited in publications to allow users to access the dataset. Accession codes are in the form of S-BIAD##### and EMPIAR-##### for the BioStudies and EMPIAR archives, respectively. <br> The recommended method to quote a dataset in a publication is by including the following statement “The dataset is available in the BioStudies database (<a href="https://www.ebi.ac.uk/biostudies">https://www.ebi.ac.uk/biostudies</a>) under accession number S-BIAD##### and in the EMPIAR database (<a href="https://empiar.org">https://empiar.org</a>) under accession number EMPIAR-#####”.</li>
+<li>A “secret” link that can be used to access the dataset before the public release date. Access through this link does not require a login and it can, for example, be passed to journal editors to share the data with peer reviewers. However, this link should not be included in publications.</li>
+<li>When the conditions for public release are met, a new email notification will be received to indicate that the data have become publicly available.</li>
+<li>Partial/Full validation of the submitted data (under development).</li>
+</ol>
+<p>The EMBL-EBI holds over 300 petabytes of data and serves millions of requests per day. Delivering secure, searchable data resources that facilitate research data accessibility and reuse (see <a href="https://empiar.org/reuse">https://empiar.org/reuse</a>) is one of the core missions of EMBL-EBI. We expect that the BioImage Archive will fuel new scientific breakthroughs similar to those seen in genome sequencing. To achieve this, it is essential to establish the technical and biological metadata required for efficient image sharing and informed reuse, and ensure adoption of those guidelines in the community. Example of submitted data and deposition entries can be seen in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/protocol-id-Mmc1.extension">Figure S6</a> and accessed in the BioStudies and EMPIAR archives using the following accession codes S-BIAD19 and EMPIAR-10416, respectively.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>It is conceivable that further metadata fields could be required in the future to allow independent validation of raw and reconstructed data. In addition, the metadata fields highlighted (<a href="#tbl1">Table 1</a>) are specific for the two methods presented here (SXT and SIM) as these are implemented at the correlative cryo-imaging beamline B24 at the UK synchrotron Diamond Light Source and may be renamed in the future to become part of consensus metadata fields for related imaging techniques.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Firewall issues with home server.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Contact your systems administrator to enable an access point for your file transfer. You might need to modify the rules to accommodate the following:</p>
+<p>Permit TCP outbound to 193.62.197.71 on port 33001</p>
+<p>Permit UDP outbound to 193.62.197.71 on port 33001</p>
+<p>Permit UDP inbound from 193.62.197.71 on port 33001</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>None of the transfer methods works</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Email <a href="mailto:biostudies@ebi.ac.uk">biostudies@ebi.ac.uk</a> and/or <a href="mailto:empdep-help@ebi.ac.uk">empdep-help@ebi.ac.uk</a> and provide as much information as possible: logs, time and date, command used, operating system, location.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Duke, E.M.H., Razi, M., Weston, A., Guttmann, P., Werner, S., Henzler, K., Schneider, G., Tooze, S.A., and Collinson, L.M. (2014). Imaging endosomes and autophagosomes in whole mammalian cells using correlative cryo-fluorescence and cryo-soft X-ray microscopy (cryo-CLXM). Ultramicroscopy <i>143</i>, 77-87.</p>
+<p id="bib2">Ellenberg, J., Swedlow, J.R., Barlow, M., Cook, C.E., Sarkans, U., Patwardhan, A., Brazma, A., and Birney, E. (2018). A call for public archives for biological image data. Nat. Methods <i>15</i>, 849-854.</p>
+<p id="bib3">Harkiolaki, M., Darrow, M.C., Spink, M.C., Kosior, E., Dent, K., and Duke, E. (2018). Cryo-soft X-ray tomography: using soft X-rays to explore the ultrastructure of whole cells. Emerg. Top. Life Sci. <i>2</i>, 81-92.</p>
+<p id="bib4">Henderson, R., Baldwin, J.M., Ceska, T.A., Zemlin, F., Beckmann, E., and Downing, K.H. (1990). Model for the structure of bacteriorhodopsin based on high-resolution electron cryo-microscopy. J. Mol. Biol. <i>213</i>, 899-929.</p>
+<p id="bib5">Iudin, A., Korir, P.K., Salavert-Torres, J., Kleywegt, G.J., and Patwardhan, A. (2016). EMPIAR: a public archive for raw electron microscopy image data. Nat. Methods <i>13</i>, 387-388.</p>
+<p id="bib6">Kounatidis, I., Stanifer, M.L., Phillips, M.A., Paul-Gilloteaux, P., Heiligenstein, X., Wang, H., Okolo, C.A., Fish, T.M., Spink, M.C., Stuart, D.I., et al. (2020). 3D correlative cryo-structured illumination fluorescence and soft X-ray microscopy elucidates reovirus intracellular release pathway. Cell <i>182</i>, 515-530.e17.</p>
+<p id="bib7">Sarkans, U., Gostev, M., Athar, A., Behrangi, E., Melnichuk, O., Ali, A., Minguet, J., Rada, J.C., Snow, C., Tikhonov, A., et al. (2018). The BioStudies database-one stop shop for all data supporting a life sciences study. Nucleic Acids Res. <i>46</i>, D1266-D1270.</p>
+<p id="bib8">(2019). In Correlative Imaging, P. Verkade and L. Collinson, eds. (Wiley).</p>
+<p id="bib9">Wilkinson, M.D., Dumontier, M., Aalbersberg, I.J., Appleton, G., Axton, M., Baak, A., Blomberg, N., Boiten, J.W., da Silva Santos, L.B., Bourne, P.E., et al. (2016). Comment: The FAIR Guiding Principles for scientific data management and stewardship. Sci. Data <i>3</i>, 160018.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Gerard J. Kleywegt, <a href="mailto:gerard@ebi.ac.uk">gerard@ebi.ac.uk</a></p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>Datasets included can be found in EMPIAR and BioStudies with accession codes EMPIAR-10416 and S-BIAD-19 respectively.</p>
+<h3>Acknowledgments</h3>
+<p>We would like to thank the staff and associates of beamline B24 for technical support and constructive feedback. Special thanks to Ilias Kounatidis, Chidinma Okolo, Nina Vyas, and Kamal Nahas. The work on EMPIAR is supported by <a href="https://doi.org/10.13039/501100000265">MRC</a>/<a href="https://doi.org/10.13039/501100000268">BBSRC</a> (grant MR/P019544/1) and by <a href="https://doi.org/10.13039/100012116">EMBL-EBI</a>. The work on BioStudies is supported by <a href="https://doi.org/10.13039/501100000268">BBSRC</a> (grant BB/R015082/1) and by EMBL-EBI. The UK Government via UKRI continues to support EMBL-EBI's technical hardware infrastructure with EMBL providing supporting operational costs.</p>
+<h3>Author Contributions</h3>
+<p>A.I., U.S., and M.A.K. wrote the manuscript. T.M. and I.D. helped with metadata format and evaluation. A.P., M.H., and G.J.K. reviewed and coordinated the development of the protocol.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

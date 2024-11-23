@@ -1,0 +1,841 @@
+<article>
+<section>
+<h1 id="header">EU-RNA-seq for in vivo labeling and high throughput sequencing of nascent transcripts</h1>
+<p><time datetime="2021-08-27">Published: August 27, 2021</time></p>
+<p>Katherine C. Palozola,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor1">*</a></sup> Greg Donahue,<sup><a href="#aff1">1</a></sup> and Kenneth S. Zaret<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Perelman School of Medicine, University of Pennsylvania, Philadelphia, PA, 19104, USA</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:palozola@pennmedicine.upenn.edu">palozola@pennmedicine.upenn.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:zaret@pennmedicine.upenn.edu">zaret@pennmedicine.upenn.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100651">10.1016/j.xpro.2021.100651</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The protocol allows for labeling nascent RNA without isolating nuclei. The cell-permeable uridine analog, 5-ethynyluridine (EU), is added to media to allow <i>in vivo</i> labeling of nascent transcripts. Cells are lysed, total RNA is collected, and biotin is conjugated to EU-labeled RNAs. Custom biotin RNAs are added and biotinylated RNAs are isolated for generation of cDNA libraries. The sequencing data are normalized to controls for quantitative assessment of the nascent transcriptome. The protocol takes 4 days, not including sequencing and analysis.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref8">Palozola et al. (2017)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Labeling nascent RNAs with EU does not require nuclear isolation</li>
+<li>EU-RNA-Seq maps nascent transcripts across a large dynamic range</li>
+<li>Control biotin RNAs are customizable</li>
+<li>Custom biotin RNAs allow for global normalization following sequencing</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Commonly used approaches for mapping nascent transcription include Global run-on sequencing (GRO-seq, <a href="#bib2">Core et al., 2008</a>), Precision nuclear run-on (PRO-Seq, <a href="#bib6">Mahat et al., 2016</a>), and native elongating transcript sequencing (NET-seq, <a href="#bib7">Mayer and Churchman, 2016</a>). In GRO-seq, nascent RNAs are metabolically labeled with bromouridine (BrU). However, since BrU is not cell-permeable, this approach requires cell lysis and nuclear isolation prior to the addition of Bru thus making it an in vitro labeling approach. In contrast, both PRO- and NET-seq rely on the detection of RNA Pol II binding rather than nucleotide incorporation. In the NET-seq protocol, nascent transcripts are isolated through their highly stable DNA-RNA-RNA Pol II interaction via antibody pull-down. This methodology relies on the physical isolation of RNA Pol II and thus is not suitable for regions where RNA Pol II levels are low, such as in mitotic chromatin.</p>
+<p>Regardless of the state of the nuclear envelope, lysis and nuclear isolation processes may significantly affect the nascent transcriptome and so is not the most suitable choice. To circumvent these issues, others have simply isolated chromatin-associated RNAs and depleted them of poly-adenylated RNAs in an attempt to sequence only nascent RNAs (<a href="#bib4">Liang et al., 2015</a>). This approach, however, does not offer the time resolution of a pulse-label and so the age of the resulting transcripts is not known. TT-seq (<a href="#bib10">Schwalb et al., 2016</a>) circumvents the issue of cell permeability since it uses the cell-permeable 4sU for labeling. However, since 4sU only labels the 3′ end of nascent RNAs, TT-seq requires RNA fragmentation prior to isolation. It is thus suitable for capturing only the most transient of transcripts.</p>
+<p>EU-RNA can be conjugated to biotin fluorophores for visualization of nascent transcriptional events or can be conjugated to biotin and isolated with streptavidin for sequencing. EU-RNA-seq maps across exon and intron sequences, exhibits strand specificity, can be globally normalized to artificial spike-in RNAs, and covers a large dynamic range of nascent transcripts. The approach was developed and has primarily been used to quantify residual transcription in mitotic cells (<a href="#bib8">Palozola et al., 2017</a>; <a href="#bib9">Perea-Resa et al., 2020</a>; <a href="#bib5">Kang et al., 2020</a>), when prior literature had assumed that the vast majority of genes are silent during division. The sensitivity of EU-RNA-seq also allowed the detection of waves of transcription reactivation during mitotic exit (<a href="#bib8">Palozola et al., 2017</a>), a process that has previously been reported as simple on/off transcriptional state change (<a href="#bib3">Hsiung et al., 2016</a>). It will be of interest to compare EU-RNA-seq and methods requiring nuclear isolation in interphase cells to determine the effect of nuclear isolation on the nascent transcriptome. The protocol has been used in cancer cell lines (<a href="#bib11">Yokoyama et al., 2016</a>) to determine the effects of small molecules, as well as to study early transcriptional events in Xenopus embryos (<a href="#bib1">Chen et al., 2019</a>).</p>
+<h3 id="sec1.1">Reagent setup</h3>
+<ol>
+<li>Growth Media (cell culture specific)
+<ol type="a">
+<li>Can be prepared in advance and stored at 4°C, protected from light.</li>
+<li>Heat to 37°C immediately before use.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High Glucose DMEM</td>
+<td>n/a</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Pen/Strep</td>
+<td>1%</td>
+<td>5 mL</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>EU Stock Solution
+<ol type="a">
+<li>Can be prepared in advance and stored at −20°C, protected from light, for several months.</li>
+<li>Mix vigorously by vortexing.</li>
+<li>Thaw on ice immediately prior to use.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5-Ethynyluridine</td>
+<td>100 mM</td>
+<td>5 mg</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>186 uL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec1.2">Generation of candidate control Biotin-RNAs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<div class="note">
+<span class="note-title">Note:</span> The described procedure is for generating the controls used in <a href="#bib8">Palozola et al., 2017</a>. However, experiment-specific considerations should be taken for control choice. Specifically, be sure to choose sequences that will not be transcribed in your samples. In particular, it helps to choose sequences from another species. Once chosen, the control sequences must be tested for their ability to be pulled down from EU-RNA containing samples proportionally and amplified linearly during library generation and qPCR (see relevant <a href="#troubleshooting">Troubleshooting</a> sections below).</div>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Control</th>
+<th>Genomic location</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>control #1</td>
+<td>hg18 chr7:110045645-110046034hg19 chr7:110258409-110258798</td>
+<td>TACCTTCCCTTCTACCTCATCTTTCTTCTGCCTCCATCTTCAACAGCTTCTCTCTAACTTTTCTGTTTTCCTGCTTTGCTTTTAAGGGTTTGTGTGATTACATTAAATATTGCCCCCTCCCCTAGAAACATTCAGGTTCCTTATCTAATTTAAGGTCAGAATTATTAAACTTAATTCTGTCTCCAAAGTCCCTTC</td>
+</tr>
+<tr>
+<td>control #2</td>
+<td>hg18 chr13:105896287-105896586hg19 chr13:107098286-107098585</td>
+<td>GTGTATTACAAAAAGCTACAAATGATAAAAACAAGTAGTATTGTTTTTTAATCAATGAGTTACATTTTACAGATTTCAGTATACAGAAAAATTGGGCAGAGTATACAGACAGTCCCATATGTCACCCCCCATACACATCTCCCTTGTTGTCATCTCACTACATTTGTTACAACCGATGAATCAATATTGACAGATTATGA</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Plasmid Linearization
+<ol type="a">
+<li>Digest ~25 ug of each plasmid.
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>1×</td>
+<td>5 uL</td>
+</tr>
+<tr>
+<td>HindIII-HF</td>
+<td>40 U</td>
+<td>2 uL</td>
+</tr>
+<tr>
+<td>control sequence plasmid<sup><a href="#dtbl4fnlowast">∗</a></sup>
+</td>
+<td>25 ug</td>
+<td>to 25 ug</td>
+</tr>
+<tr>
+<td>H2O</td>
+<td>n/a</td>
+<td>to 50 uL</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl4fnlowast" class="table-footnote"><sup>∗</sup>any sequence that is not expressed in the experimental system</p>
+</li>
+<li>Incubate at 37°C for 4 h.</li>
+<li>Confirm linearization.
+<ol type="i">
+<li>Remove 2 uL (4%) of each reaction, add 8 uL H2O, 2 uL 6× loading buffer, and run on a 0.7% agarose gel at 90 V for 1 h.</li>
+</ol>
+</li>
+<li>Once linearization is confirmed, clean up the remaining reaction with Qiagen PCR purification columns and elute in 20 uL EB.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>In Vitro Transcription with Biotin-UTP
+<ol type="a">
+<li>Use MaxiScript kit to make RNA from 1 ug of each linearized control template.
+<ol type="i">
+<li>Thaw frozen reagents on ice. All reagents should be microfuged briefly before opening to prevent loss.</li>
+<li>Place the RNA Polymerase on ice.</li>
+<li>Vortex the 10× Transcription Buffer and ribonucleotide solutions until they are completely in solution.</li>
+<li>Once they are thawed, store the ribonucleotides on ice, but keep the 10× Transcription Buffer at 20°C–22°C. All reagents should be microfuged briefly before opening to prevent loss.
+<div class="critical">
+<span class="critical-title">Critical:</span> Assemble the transcription reaction at 20°C–22°C.</div>
+</li>
+<li>The spermidine in the 10× Transcription Buffer can coprecipitate the template DNA if the reaction is assembled on ice.</li>
+<li>Add components in order.
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H20</td>
+<td>n/a</td>
+<td>to 20 uL</td>
+</tr>
+<tr>
+<td>linearized plasmid</td>
+<td>1 ug</td>
+<td>to 1 ug</td>
+</tr>
+<tr>
+<td>10× Transcription Buffer</td>
+<td>1</td>
+<td>2 uL</td>
+</tr>
+<tr>
+<td>10 mM ATP</td>
+<td> </td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>10 mM CTP</td>
+<td> </td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>10 mM GTP</td>
+<td> </td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>10 mM UTP</td>
+<td> </td>
+<td>0.6 uL</td>
+</tr>
+<tr>
+<td>bio-11-UTP</td>
+<td> </td>
+<td>0.4 uL</td>
+</tr>
+<tr>
+<td>T7 enzyme</td>
+<td>1×</td>
+<td>2 uL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Mix thoroughly. Gently flick the tube then centrifuge brifly to collect.</li>
+<li>Incubate 1 h at 37°C.</li>
+<li>Add 3 uL TURBO DNase, mix well, and incubate at 37°C for 15 min.</li>
+<li>Add 3 uL of 0.5 M EDTA. EDTA blocks the head-induced RNA degradation that can occur in Transcription Buffer.</li>
+<li>Optional step: Troubleshooting Problem 1.</li>
+</ol>
+</li>
+<li>Removal of free nucleotides
+<ol type="i">
+<li>Add 340.6 uL RNase-free water for a total volume of 400 uL.</li>
+<li>Add 400 uL phenol chloroform isoamyl alcohol and vortex to mix.</li>
+<li>Spin max speed 5 min.</li>
+<li>Transfer upper phase to a fresh tube and repeat steps i to iv.</li>
+<li>Adjust volume to 350 uL with NF water.</li>
+<li>Add 16 uL 5 M NaCl and 1.5 uL glycogen.</li>
+<li>Add 375 uL (1 volume) −20°C pre-chilled 100% EtOH.</li>
+<li>Incubate at −20°C 12–20 h.</li>
+<li>Spin at 20,000 × <i>g</i> for 10 min at 4°C and discard supernatant.</li>
+<li>Wash with 500 uL −20°C pre-chilled 80% EtOH, spin as above, and remove supernatant.</li>
+<li>Air dry pellet and resuspend in 20 uL NF water.</li>
+</ol>
+</li>
+<li>Confirm on Gel
+<ol type="i">
+<li>Combine 2 uL sample (10%) and 2 uL gel loading buffer (from MaxiScript kit)</li>
+<li>Incubate at 95°C for 2 min and immediately transfer to ice.</li>
+<li>run on a 2% agarose gel at 100 V for 1 h.<br> (1) Suggestion: do not include EtBr in agarose. Instead, stain and destain the gel after running.</li>
+</ol>
+</li>
+<li>Quantify RNA with Nanodrop or Qubit.
+<ol type="i">
+<li>expected concentration: ~500 ng/uL</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.3">Culture cells</h3>
+<div class="note">
+<span class="note-title">Note:</span> Considerations must be taken for the system in use. Here, we refer to the HUH7 cells used for the original development of the protocol in <a href="#bib8">Palozola et al., 2017</a>. As in the original protocol, each replicate consists of one 10-cm plate. Adjustments will need to be made for cells grown in suspension.</div>
+<ol start="5">
+<li>Culture HUH7 cell on 10-cm plates to 80% confluency in 5 mL Growth Media.
+<ol type="a">
+<li>One plate per condition per replicate</li>
+<li>One plate per control per replicate
+<ol type="i">
+<li>Include a NoEU control for each condition to account for background pulldown in Step 26.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>High glucose DMEM</td>
+<td>Thermo Fisher</td>
+<td>10566-016</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>HyClone</td>
+<td>7195</td>
+</tr>
+<tr>
+<td>Pen/Strep</td>
+<td>Thermo Fisher</td>
+<td>15140122</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td>Invitrogen</td>
+<td>1113</td>
+</tr>
+<tr>
+<td>TRIzol Reagent</td>
+<td>Ambion</td>
+<td>15596026</td>
+</tr>
+<tr>
+<td>miRNAeasy Kit</td>
+<td>QIAGEN</td>
+<td>217004</td>
+</tr>
+<tr>
+<td>Glycogen</td>
+<td>Sigma-Aldrich</td>
+<td>10901393001</td>
+</tr>
+<tr>
+<td>Ammonium acetate</td>
+<td>Sigma-Aldrich</td>
+<td>631-61-8</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Invitrogen</td>
+<td>10977-015</td>
+</tr>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>New England Biolabs</td>
+<td>B7204</td>
+</tr>
+<tr>
+<td>HindIII-HF</td>
+<td>New England Biolabs</td>
+<td>R3104</td>
+</tr>
+<tr>
+<td>PCR Purification Kit</td>
+<td>QIAGEN</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>miRNeasy Kit</td>
+<td>QIAGEN</td>
+<td> </td>
+</tr>
+<tr>
+<td>Click-iT Nascent RNA Capture Kit</td>
+<td>Invitrogen</td>
+<td>C10365</td>
+</tr>
+<tr>
+<td>Biotin-UTP</td>
+<td>Thermo Fisher</td>
+<td>AM8450</td>
+</tr>
+<tr>
+<td>MAXIscript T7 In Vitro Transcription Kit</td>
+<td>Thermo Fisher</td>
+<td>AM1320</td>
+</tr>
+<tr>
+<td>RNaseOUT</td>
+<td>Thermo Fisher</td>
+<td>10777019</td>
+</tr>
+<tr>
+<td>iScript</td>
+<td>Bio-Rad</td>
+<td>1708890</td>
+</tr>
+<tr>
+<td>Agencourt RNAClean XP beads</td>
+<td>Beckman Coulter</td>
+<td>A66514</td>
+</tr>
+<tr>
+<td>Ovation Human FFPE RNA-Seq Kit</td>
+<td>NuGEN</td>
+<td>0340-32</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>HUH7 cells</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>oligo 5078: TTA GCT GAA GAC CCC TGC TC</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5079: TGG AAA CCA GTG ATG GGA CT</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5080: CCT GGG ACA GCT TCA GCT AC</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5081: GGG AGG TCA ACT GCA TGA AT</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5082: AGA CCC CTG CTC TTT CAA CA</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5083: TGA GCA TGG ATT TTG TGA GAG AA</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5084: ACC CTA CGC AGC ACA GTT TT</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>oligo 5089: TGC ACA TCC TTC TGT CTC TCT</td>
+<td>IDT</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>Plasmid 1408: control #1</td>
+<td>Zaret Lab</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Plasmid 1409: control #2</td>
+<td>Zaret Lab</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>1.5 mL Nuclease-free microcentrifuge tubes</td>
+<td>USA Scientific</td>
+<td>1615-5510</td>
+</tr>
+<tr>
+<td>10 cm Plates</td>
+<td>Greiner Bio-One</td>
+<td>664061</td>
+</tr>
+<tr>
+<td>18 cm Cell lifters</td>
+<td>GeneMate</td>
+<td>T-2443-4</td>
+</tr>
+<tr>
+<td>Microcentrifuge</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Vortex mixer</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Magnetic stand for 1.5 mL tubes</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Qubit/NanoDrop</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">EU labeling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min</div>
+<p>EU-labeling allows for the incorporation of 5-ethynyluridine (EU) into nascent transcripts as they are being generated. For most cell lines, it takes approximately 30–40 min for EU to cross both the cell and nuclear membranes and begin to be incorporated at detectable rates.</p>
+<ol>
+<li>Prepare fresh Labeling Media
+<ol type="a">
+<li>Prepare 1 mL per 10-cm plate of cells.</li>
+<li>Use pre-warmed Growth Media.</li>
+<li>Invert the solution several times to thoroughly resuspend the EU.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5-Ethynyluridine (100 mM)</td>
+<td>3 mM</td>
+<td>30 uL</td>
+</tr>
+<tr>
+<td>Growth Media</td>
+<td>n/a</td>
+<td>970 uL</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Add 1 mL of pre-warmed Labeling Media to the 5 mL of Growth Media in which you’ve cultured your cells on a 10 cm plate to 80% confluency.
+<ol type="a">
+<li>Swirl the plate gently to mix for a final concentration of 0.5 mM EU.</li>
+<li>Incubate at 37°C for 40 min.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The incubation time in labeling media should be optimized for the cell line in use and should occur under normal culturing conditions. See <a href="#sec5.3">Troubleshooting Problem 2</a>.</div>
+<h3 id="sec2.2">Harvest total RNA, including EU-RNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>Total RNA is harvested from the cells. This includes all cellular RNA, including that which was labeled with EU during the 40-min labeling step.</p>
+<ol start="3">
+<li>Gently aspirate the Labeling Media from the cells.
+<ol type="a">
+<li>Add 1 mL PBS to the side of the plate and gently swirl around to rinse the remaining media off of the cells.</li>
+<li>Gently aspirate the PBS from the cells.</li>
+</ol>
+</li>
+<li>Add 700 uL TRIzol reagent directly to the cells and use a cell lifter to spread around the TRIzol and dislodge the cells from the plate.
+<ol type="a">
+<li>Transfer the cells in TRIzol to a 1.5 mL microcentrifuge tube</li>
+<li>Vortex on maximum speed for 1 min.</li>
+</ol>
+</li>
+<li>Snap freeze in liquid nitrogen.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Samples can be stored at −80°C.</div>
+<ol start="6">
+<li>Purify RNA with the miRNeasy Kit, as per manufacturer’s protocol.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Other RNA isolation kits may also be used, but we chose the miRNeasy kit to capture as many forms of nascent RNAs as possible.</div>
+<ol start="7">
+<li>Quantify the total RNA recovered.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Samples can be stored at −80°C after completion of step 7.</div>
+<h3 id="sec2.3">Biotinylation of cellular EU-RNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min</div>
+<p>This step conjugates biotin-azide to the EU in any EU-labeled RNAs present in the total RNA harvested from the cells. Be sure to perform this step on an unlabeled, “NoEU” control as well.</p>
+<ol start="8">
+<li>Prepare 2.3 ug of total RNA in a final volume of 15.75 uL water.</li>
+<li>Perform the click reaction as per manufacturer’s protocol in 50 uL total volume.</li>
+<li>Proceed immediately to RNA precipitation.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Perform the 30-min incubation of the click reaction on a rotator or vortexer to keep the beads moving. We suggest 30 min with gentle agitation.</div>
+<h3 id="sec2.4">RNA precipitation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h (after an 12–20 hr incubation)</div>
+<p>This part of the protocol is largely from the Invitrogen Click-iT Nascent RNA Capture kit, with some small modifications. The purpose is to clean up the samples following the click reaction.</p>
+<ol start="11">
+<li>Add 1 uL of glycogen, 50 uL of 7.5 M ammonium acetate, and 700 uL of chilled 100% EtOH, invert the tube to mix and incubate at −70°C for 12–20 h.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> While the manufacturer’s protocol states that the −70°C incubation can be performed for a minimum of 3 h or on dry ice for 30 min, we recommend a 12–20 hr incubation for optimal recovery.</div>
+<ol start="12">
+<li>Spin at 13,000 × <i>g</i> for 20 min at 4°C.</li>
+<li>Remove the supernatant from the tube without disturbing the pellet and add 700 uL of chilled 75% EtOH.</li>
+<li>Vortex briefly to mix and spin at 13,000 × <i>g</i> for 10 min at 4°C.</li>
+<li>Repeat the 75% EtOH wash.</li>
+<li>Let the pellet air dry at 20°C–22°C.</li>
+<li>Thoroughly resuspend the pellet in 10 uL water.</li>
+<li>Quantify RNA by Qubit.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The RNA can be stored at −80°C after completion of step 18.</div>
+<h3 id="sec2.5">Biotin-EU-RNA and biotin-spike-in pull-down</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="19">
+<li>Thaw sample RNA and biotin-control RNAs on ice.</li>
+<li>Add 5e-5 ug spike-in control #1 and 5e-4 spike-in control #2 to 1.7 ug of sample RNA in a total volume of 5 uL.</li>
+<li>Dispense 5 uL beads per sample into 1.5 mL microcentrifuge tubes.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Use only 5 uL of bead solution for the pull down instead of the manufacturer’s recommended 50 uL. The reaction volumes have been adjusted by 0.1<b>×</b> to account for this reduction in bead volume.</div>
+<ol start="22">
+<li>Per sample:
+<ol type="a">
+<li>Wash the beads 3× with 9 uL Wash Buffer 2.</li>
+<li>Resuspend beads in 5 uL Wash Buffer 2.</li>
+<li>Dilute RNaseOUT 1:10 then prepare Master Mix as follows per reaction.
+<table id="undtbl7">
+<caption>Master Mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click-iT Buffer (G)</td>
+<td>12.5 uL</td>
+</tr>
+<tr>
+<td>RNaseOUT</td>
+<td>0.2 uL</td>
+</tr>
+<tr>
+<td>H20</td>
+<td>2.3 uL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 15 uL of master mix to each 10 uL sample.</li>
+</ol>
+</li>
+</ol>
+<ol start="23">
+<li>Incubate on heat block at 69°C for 5 min.</li>
+<li>Add 5 uL pre-washed beads to each reaction.
+<ol type="a">
+<li>Pipet up and down to mix.</li>
+</ol>
+</li>
+<li>Incubate at 24°C for 30 min with gentle agitation.
+<ol type="a">
+<li>Suggestion: tap tubes every few minutes to keep beads in suspension.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Perform the incubation on a rotating heat block to keep the beads moving.</div>
+<ol start="26">
+<li>Place samples on a magnetic rack and wash the beads, as per manufacturer’s protocol.
+<ol type="a">
+<li>5× with 50 uL wash buffer 1</li>
+<li>5× with 50 uL wash buffer 2</li>
+<li>Resuspend beads in 5 uL Wash Buffer 2.</li>
+</ol>
+</li>
+<li>Optional, but recommended: proceed to <a href="#sec5.5">Troubleshooting Problems 3</a> and <a href="#sec5.7">4</a>.</li>
+</ol>
+<h3 id="sec2.6">cDNA library generation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 Days</div>
+<p>This section of the protocol is largely based on the manufacturer’s protocol, with some small modifications to account for using beads as the starting template.</p>
+<ol start="28">
+<li>Perform the library generation with NuGen’s Ovation Human FFPE RNA-Seq Kit, as per the manufacturer’s protocol, with the following adjustments:
+<ol type="a">
+<li>Begin with the 5 uL of resuspended beads from step 26.</li>
+<li>Briefly remove the sample from the PCR machine every 5 min during PCR programs 2 and 3 and tap/flick the side of the tube to keep the beads from settling at the bottom.</li>
+<li>After adding the Second Strand Stop Buffer (B3), transfer the tube to a magnetic rack, let stand for 2 min to clear the solution, and carefully remove the supernatant from the beads with a pipette while the tube is still on the rack.</li>
+</ol>
+</li>
+<li>Optional, but recommended: proceed to <a href="#sec5.9">Troubleshooting Problem 5</a>.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep the supernatant and discard the beads.</div>
+<h3 id="sec2.7">Sequencing</h3>
+<p>Paired-end sequencing to 75 bp was performed on the Illumina NextSeq500 High Output Kit v2.5 75 Cycles. Reads were trimmed to 35 nucleotides and aligned to human genome build hg19, as described below.</p>
+<h3 id="sec2.8">Background subtraction and spike-in normalization</h3>
+<p>Sequencing data must be aligned to the genome and processed to produce per-gene tag counts adjusted for library size, interphase contamination, and spike-in proportion. Data may be visualized by the use of bigWig format track files on UCSC Genome Browser or IGV.</p>
+<ol start="30">
+<li>Align reads to the genome using bowtie2 / tophat with command-line parameter --very-sensitive in end-to-end mode. Sort aligned tags by tag ID using samtools sort -n, then remove PCR duplicates using PICARD MarkDuplicates with command-line parameters REMOVE_DUPLICATES=True and ASSUME_SORT_ORDER=queryname.
+<ol type="a">
+<li>To quantify tag levels at transcript models, first download transcript models in BED format from an online database such as UCSC Genome Browser. Critically, the file should have the chromosome / contig, TSS, and TES of each transcript model in columns 1, 2, and 3, respectively. If spike-in controls were used, include the coordinates of the relevant loci in this file. Use deepTools multiBamSummary in BED-file mode and write counts for all samples to a file with option --outRawCounts. Calculate the RPM for each sample as 1,000,000 / number of aligned tags and then adjust each count as itself multiplied by the RPM, divided by the number of kilobases in the transcript model, defined as (max(TSS,TES)-min(TSS,TES))/1000. Subtract NoEU samples from experimental samples, then zero out negative values. Where spike-ins were added, sum the tags aligned to all spike-in loci and adjust for RPM, then divide all counts by this scalar.</li>
+<li>To make bigWig track files, use deepTools bamCoverage to obtain bigWigs with command-line parameter --normalizeUsing CPM. Do this for experimental and NoEU control samples, then subtract NoEU using deepTools bigWigCompare --operation subtract. If a spike-in was used, control the spike-in ratio using the --scaleFactors parameter and the scalar calculated above.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The expected yield of total RNA isolated after labeling (Step 7) is approximately 0.005 ng/cell for a mitotic population and 0.015 ng/cell for an asynchronous population. There should be very little, if any, loss of RNA following biotinylation (Step 18).</p>
+<p>Since EU labels nascent transcripts, it is expected that mapped reads will span both exon and introns (<a href="#fig1">Figures 1</a>A and 1B). This should be visible on the genome browser (<a href="#fig1">Figure 1</a>A). We recommend visualizing low count genes to empirically determine how sensitive the method can be in a given experimental system.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Expected outcomes from EU-RNA-seq</div>
+<p>(A) Browser view shows mapped reads span both introns and exons.</p>
+<p>(B) Genomic quantification of read coverage over exons, introns, and intergenic regions. p &lt; 0.001.</p>
+<p>(C) Log2-based read density of all transcripts in an asynchronous population.</p>
+</figcaption>
+</figure>
+<p>Due to the 40-min incubation period, a portion of the nascent transcripts may have been spliced by the time they are captured, thus signal may be stronger over exons than over introns. This will usually be visible at the level of the genome browser, but should also be quantified to determine the proportion of transcripts in your data set that follow this pattern (<a href="#fig1">Figure 1</a>B).</p>
+<p>EU-RNA-seq labels transcripts over a large dynamic range and in our hands results in a bimodal distribution of expression in an asynchronous population. When viewing transcripts on the genome browser that fall in either mode, we found that the modes separate background signal from true transcriptional events.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The main limitation to our approach is that it takes approximately 40 min for 5-ethynyluridine to permeate the cell membrane, nuclear membrane, and be significantly incorporated (<a href="#bib12">Caravaca et al., 2013</a>). This is, however, based on the HUH7 cells that we used. We encourage you to use click tagging of Alexafluorophore to determine the timing needed in each cell type or system to determine the incubation period needed to achieve fluorophore signal of the labeling event. For instance, see <a href="#bib1">Chen et al, 2019</a> where they performed labeling in embryos.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>These subprotocols provide detailed overviews of the optimization of EU-labeling and the design and validation of the custom, biotin-RNA controls sequences used as spike-ins for global normalization in <a href="#bib8">Palozola et al., 2017</a>. The goal is to sufficiently label nascent transcripts for sequencing and to control for global differences in transcription level between two populations (<a href="#fig2">Figure 2</a>) and the resulting over-amplification of sequences in low-abundance populations. Known quantities of control sequences are added to each EU-labeled RNA sample prior to pull down and cDNA library generation (<a href="#fig3">Figure 3</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Different basal levels of transcription affect library generation</div>
+<p>(A) An unknown fraction of the total RNA harvested is labeled with EU.</p>
+<p>(B) Biotin-azide is conjugated to EU via a “click” reaction.</p>
+<p>(C) All biotinylated RNAs are pulled down on streptavidin-coated magnetic beads.</p>
+<p>(D and E) (D) cDNA libraries are generated directly off the beads and the (E) relative gene expression between populations is misrepresented after library amplification.</p>
+</figcaption>
+</figure>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Spike-in controls globally normalize for differences in basal transcriptional levels between samples</div>
+<p>(A) An unknown fraction of the total RNA harvested is labeled with EU.</p>
+<p>(B) Biotin-azide is conjugated to EU via a “click” reaction.</p>
+<p>(C) Custom, biotin-RNA sequences are spiked-in at known levels.</p>
+<p>(D) All biotinylated RNAs are pulled down on streptavidin-coated magnetic beads.</p>
+<p>(E) cDNA libraries are generated directly off the beads.</p>
+</figcaption>
+</figure>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Confirm the successful in vitro transcription of the control sequences using biotin-UTP.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>We recommend running the reaction product on a gel to confirm transcription has occurred. Combine 6.6 μL of 2X loading buffer and 6.6 μL of each reaction, and at 95°C for 2 minutes, and immediately return to ice. Run on a 2% agarose gel at 100V for 1 hr. To improve visualization of the transcription product, we suggest pouring the gel as thin as possible and excluding EtBr. Instead, stain and destain the gel after running. To stain, submerge the gel in 1X TAE containing EtBr and rock at 20-22°C for 5 minutes. Then remove the excess EtBr by washing the gel 3X 5 minutes in 1X TAE before imaging.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>The amount of labeling time necessary to sufficiently label nascent transcripts for detection by sequencing will vary depending on the biological system in use. We recommend using a labeling time that allows for sufficient incorporation to visualize the nascent transcripts when the EU is conjugated to a fluorophore.</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Label cells as above for a minimum of 10 minutes. For adherent cells cultured in a monolayer, such as the HUH7 cells used in Palozola et al, we recommend a minimum labeling of 30 minutes. Follow manufacturer's protocol to complete the click reaction with fluorophore and visualize with a fluorescent microscope to ensure sufficient incorporation of the EU.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Once the control sequences are generated as described above, the next step is to determine whether the control sequences are pulled down proportionally on streptavidin-coated magnetic beads in the presence of cellular RNA containing an unknown amount of biotin-EU-RNA. This is important to ensure that the in vivo labeled transcripts do not out-compete the synthetic sequences for binding to the beads, thus affecting their pull-down.</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>Pull down the spike-in controls in the presence of cellular biotin-EU-RNA, in excess of what will be used in the final assay. Quantify the resulting control sequences by qPCR. We recommend pulse labeling HUH7 cells with 0.5 uM EU for 40 minutes, harvesting total RNA, and performing the click reaction as in steps 1-18. Next, add control sequences to 1.5 ug total RNA and pull down with streptavidin-coated magnetic beads as described in steps 19-26. Combine 4 uL of 5X iScript reaction mix and 1 uL of iScript reverse transcriptase with the 15 uL click-it reaction. Incubate reaction mix on heat blocks with gentle shaking: 5 minutes at 25°C, 30 minutes at 42°C (Use a pipet to keep the beads suspended during this longer incubation.), and 5 minutes at 85°C. Use a magnetic rack to remove the beads and adjust the total volume to 50 uL with NF-water. Precipitate as in steps 11-18 and quantify controls by qPCR (<a href="#fig4">Figure 4</a>A). All controls should pulled down proportionally in the presence of biotin-EU-RNA (<a href="#fig4">Figure 4</a>B-C).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The custom biotin-RNA control sequences retain their proportionality when pulled down and converted to cDNA</div>
+<p>(A–C) (A) Experimental approach to validating controls. Ct values following RT-qPCR of (B) control #1 or (C) control #2, when added at the indicated levels to 1.5 ug of asynchronous biotin-EU-RNA and pulled down with streptavidin-coated magnetic beads. Expected values are based on linear pull down and cDNA conversion.</p>
+</figcaption>
+</figure>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Once you have shown that control sequences are pulled down proportionally, the next step is to determine whether the amount of cellular biotin-EU-RNA affects pull down of the control biotin-RNA sequences. This is important since lower basal levels of transcription in one sample could result in the enrichment of the spike-in upon pull down.</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>Pull down the spike-in controls in the presence of various amounts of cellular biotin-EU-RNA. Quantify the resulting control sequences by qPCR. We recommend pulse labeling HUH7 cells with 0.5 uM EU for 40 minutes, harvesting total RNA, and performing the click reaction as in steps 1-18. Next, add control sequences 1 and 2 to 0.5, 1.0, or 1.5 ug total RNA and pull down with streptavidin-coated magnetic beads as described in steps 19-26. Generate first and second strand cDNA, remove beads, and quantify controls by qPCR. (<a href="#fig5">Figure 5</a>A). The amount of input cellular EU-RNA should not predictably affect pull down of the control sequences (<a href="#fig5">Figure 5</a>B-C).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The custom biotin-RNA control sequences retain their proportionality independent of cellular EU-RNA level</div>
+<p>(A–C) (A) Experimental approach to validating controls. Ct values following RT-qPCR of (B) control #1 or (C) control #2, when added at the indicated levels to 0.5, 1.0, or 1.5 ug of asynchronous biotin-EU-RNA and pulled down with streptavidin-coated magnetic beads. Expected values are based on linear pull down and cDNA conversion. Error bars represent standard error of the mean (SEM).</p>
+</figcaption>
+</figure>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Once you have shown that control sequences are pulled down proportionally in the presence of various amounts of cellular biotin-EU-RNA, the next step is to determine whether the process of generating cDNA libraries affects the relative proportion of the control sequences. This is important since it is the amount of the spike-in sequence present in the final libraries that will be used to scale the transcriptomic data after sequencing.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>Pull down the spike-in controls in the presence of various amounts of cellular biotin-EU-RNA. Generate cDNA libraries as above, and quantify the resulting control sequences by qPCR. Pulse-label asynchronous HUH7 cell with 0.5 uM EU for 40 minutes, harvest total RNA, and perform click reaction to conjugate biotin to the unknown fraction of that contains EU. Add control sequences 1 and 2 to 2 ug total RNA, pull down with streptavidin-coated magnetic beads, generate cDNA libraries (step 27) and quantify controls by qPCR (<a href="#fig6">Figure 6</a>A). The proportionality of the control sequences should be retained after library generation (<a href="#fig6">Figure 6</a>B-C).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/961-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. The custom biotin-RNA control sequences retain their proportionality when converted to cDNA libraries</div>
+<p>(A–C) (A) Experimental approach to validating controls. Ct values following RT-qPCR of (B) control #1 or (C) control #2, when added at the indicated levels to 1.5 ug of asynchronous biotin-EU-RNA and pulled down with streptavidin-coated magnetic beads and converted to cDNA libraries. Expected values are based on linear pull down and cDNA conversion.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib12">Caravaca, J.M., Donahue, G., Becker, J.S., He, X., Vinson, C., and Zaret, K.S. (2013). Bookmarking by specific and nonspecific binding of FoxA1 pioneer factor to mitotic chromosomes. Genes &amp; Development <i>27</i>, In press. <a class="external-link" href="https://doi.org/10.1101/gad.206458.112">https://doi.org/10.1101/gad.206458.112</a></p>
+<p id="bib1">Chen, H., Einstein, L.C., Little, S.C., and Good, M.C. (2019). Spatiotemporal patterning of zygotic genome activation in a model vertebrate embryo. Dev. Cell <i>49</i>, 852-866. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref1">View at publisher</a></p>
+<p id="bib2">Core, L.J., Waterfall, J.J., and Lis, J.T. (2008). Nascent RNA sequencing reveals widespread pausing and divergent initiation at human promoters. Science <i>322</i>, 1845-1848. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref2">View at publisher</a></p>
+<p id="bib3">Hsiung, C.C.S., Bartman, C.R., Huang, P., Ginart, P., Stonestrom, A.J., Keller, C.A., Face, C., Jahn, K.S., Evans, P., Sankaranarayanan, L., et al. (2016). A hyperactive transcriptional state marks genome reactivation at the mitosis-G1 transition. Genes Dev. <i>30</i>, 1423-1439. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref3">View at publisher</a></p>
+<p id="bib4">Liang, K., Woodfin, A.R., Slaughter, B.D., Unruh, J.R., Box, A.C., Rickels, R.A., Gao, X., Haug, J.S., Jaspersen, S.L., and Shilatifard, A. (2015). Mitotic transcriptional activation: clearance of actively engaged Pol II via transcriptional elongation control in mitosis. Mol. Cell <i>60</i>, 1-34. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref4">View at publisher</a></p>
+<p id="bib5">Kang, H., Shokhirev, M.N., Xu, Z., Chandran, S., Dixon, J.R., and Hetzer, M.W. (2020). Dynamic regulation of histone modifications and long-range chromosomal interactions during postmitotic transcriptional reactivation. Genes Dev. <i>34</i>, 913-930. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref5">View at publisher</a></p>
+<p id="bib6">Mahat, D.B., Kwak, H., Booth, G.T., Jonker, I.H., Danko, C.G., Patel, R.K., Waters, C.T., Munson, K., Core, L.J., and Lis, J.T. (2016). Base-pair resolution genome-wide mapping of active RNA polymerases using precision nuclear run-on (PRO-seq). Nat. Protoc. <i>11</i>, 1455-1476. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref6">View at publisher</a></p>
+<p id="bib7">Mayer, A. and Churchman, L.S. (2016). Genome-wide profiling of RNA polymerase transcription at nucleotide resolution in human cells with native elongating transcript sequencing. Nat. Protoc. <i>11</i>, 813. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref7">View at publisher</a></p>
+<p id="bib8">Palozola, K.C., Donahue, G., Liu, H., Grant, G.R., Becker, J.S., Cote, A., Yu, H., Raj, A., and Zaret, K.S. (2017). Mitotic transcription and waves of gene reactivation during mitotic exit. Science <i>358</i>, 119-122. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref8">View at publisher</a></p>
+<p id="bib9">Perea-Resa, C., Bury, L., Cheeseman, I.M., and Blower, M.D. (2020). Cohesin removal reprograms gene expression upon mitotic entry. Mol. Cell <i>78</i>, 127-140. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref9">View at publisher</a></p>
+<p id="bib10">Schwalb, B., Michel Zacher, M.B., Fruhauf, K., Demel, C., Tresch, A., Gagneur, J., and Cramer, P. (2016). TT-seq maps the human transient transcriptome. Science <i>352</i>, 1225-1228. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref10">View at publisher</a></p>
+<p id="bib11">Yokoyama, Y., Zhu, H., Lee, J.H., Kossenkov, A.V., Wu, S.Y., Wickramasinghe, J.M., Yin, X., Palozola, K.C., Gardini, A., Showe, L.C., et al. (2016). BET inhibitors suppress ALDH activity by targeting ALDH1A1 super-enhancer in ovarian cancer. Cancer Res. <i>76</i>, 6320-6330. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00358-0/sref11">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Ken Zaret (<a href="mailto:zaret@pennmedicine.upenn.edu">zaret@pennmedicine.upenn.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>Spike-in control sequences generated for this study are available upon request.</p>
+<h4>Data and code availability</h4>
+<p>Custom scripts are available upon request.</p>
+<h3>Acknowledgments</h3>
+<p>We thank training grant T32GM00812 to K.C.P. and <a href="https://doi.org/10.13039/100000002">NIH</a> grant GM36477 to K.S.Z.</p>
+<h3>Author contributions</h3>
+<p>K.C.P. developed the spike-ins, pull-down, and library generation methods, with guidance from K.S.Z. G.D. developed the method of background normalization and NoEU subtraction.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

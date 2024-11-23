@@ -1,0 +1,702 @@
+<article>
+<section>
+<h1 id="header">MegaGate: A toxin-less gateway molecular cloning tool</h1>
+<p><time datetime="2021-10-29">Published: October 29, 2021</time></p>
+<p>Christian Kramme,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a></sup> Alexandru M. Plesa,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a></sup> Helen H. Wang,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Bennett Wolf,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Merrick Pierson Smela,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Xiaoge Guo,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Richie E. Kohman,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Pranam Chatterjee,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">5</a>,<a href="#cor1">*</a></sup> and George M. Church<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Genetics, Harvard Medical School, Boston, MA 02115, USA</p>
+<p id="aff2"><sup>2</sup>Wyss Institute for Biologically Inspired Engineering, Harvard University, Boston, MA 02115, USA</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical contact</p>
+<p id="fn3"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:pranam.chatterjee@wyss.harvard.edu">pranam.chatterjee@wyss.harvard.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100907">10.1016/j.xpro.2021.100907</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Gateway cloning employs the use of the <i>ccdb</i> toxin and has low colony numbers, making it difficult to apply at scale to clone libraries of cDNA vectors. In this protocol, we describe MegaGate, a toxin-less Gateway technology capable of robust cDNA library cloning that is efficient, cheap, and scalable. MegaGate eliminates the <i>ccdb</i> toxin used in Gateway recombinase cloning and instead utilizes meganuclease-mediated digestion to eliminate background vectors during cloning and is 99.8% efficient with high colony numbers.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref4">Kramme et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>MegaGate is a toxin-less Gateway molecular cloning tool</li>
+<li>MegaGate shows 99.8% cloning efficiency and high colony numbers compared with Gateway</li>
+<li>MegaGate can clone 300+ genes into barcoded destination vectors in a single pool</li>
+<li>MegaGate is universally compatible with existing pENTR libraries and ORF cloning</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1120-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the process of MegaGate cloning. The “<a href="#before-you-begin">before you begin</a>” section additionally describes obtaining or generating MegaDestination vectors and MegaGate-compatible pENTR vectors. pENTR vectors, known as Entry vectors, are vectors commonly used in Gateway cloning, which contain the to-be-cloned gene flanked by AttL sites. These vectors are used with the “LR” reaction of Gateway enzyme mixes to shuttle the gene into the desired destination vector, which has the corresponding AttR sites. Here we discuss using the classical <i>att</i> Gateway sites and two meganucleases, I-SceI and I-CeuI, for the MegaGate reaction.</p>
+<p>A general schematic of how MegaGate functions is presented in the <a href="#fig1">Figure 1</a>A. Conceptually, MegaGate functions similarly to Gateway in that the lambda phage recombinase, present in Gateway commercial mixes, shuttles a gene of interest from pENTR to pDestination. In Gateway, this shuttle event replaces the <i>ccdb</i> toxin, present on the destination vector, with the gene of interest. Therefore<i>, ccdb</i>-sensitive bacteria that receive plasmids with the gene of interest grow, while those that receive unreacted pDestination vector die. In MegaGate, bacteria that receive a plasmid with the gene of interest grow under antibiotic selection. However, if a plasmid does not contain a gene of interest, it retains the meganuclease recognition cassette which is digested by the meganucleases in the MegaGate reaction mix. This linearized plasmid is unable to propagate in bacteria, thus bacteria that receive this digested pDestination die during antibiotic selection. Therefore, MegaGate is able to effectively replace the toxin of Gateway with meganuclease restriction digest.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1120-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Generating pMegaDestination vectors for cloning</div>
+<p>(A) Schematic of MegaGate cloning reaction.</p>
+<p>(B) Schematic of steps to generate custom pMegaDestination vectors.</p>
+<p>(C) Representative gel image of a MegaCassette PCR reaction. Two Megacassette PCR reactions (MC1 and MC2) were run on a 4% E-Gel for visualization versus the E-Gel Ultra Low range ladder and the E-Gel 1KB Plus DNA Express ladder.</p>
+</figcaption>
+</figure>
+<p>MegaGate is compatible with traditional Gateway donor libraries. The use of meganucleases, whose recognition sequences are highly uncommon naturally, ensures MegaGate is universally compatible with mammalian open reading frame cloning. In addition, without the toxin, MegaGate vectors can be propagated and easily modified, such as by adding DNA barcodes, in standard bacteria such as NEB 5-Alpha and do not require <i>ccdb</i>-resistant bacterial strains that are challenging to clone and work with.</p>
+<h3 id="sec1.1">Procure MegaDestination vectors</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>A variety of inducible and constitutive, piggyBac-compatible MegaDestination vectors are available on Addgene from this publication and are listed in the <a href="#key-resources-table">key resources table</a> (KRT). Additional MegaGate-compatible plasmids can be found in our previous publication. (<a href="#bib4">Kramme et al., 2021</a>) These destination vectors are compatible with expression vector cloning for inserting AttL1/AttL2-flanked pENTR-ORFs via MegaGate.</p>
+<p>In addition, any expression vector such as 1435 pSG5L Flag HA (Addgene #10791), PB-CA (Addgene #20960), pLEX_305 (Addgene #41390) can be customized into a MegaDestination vector to allow for user-defined screening applications. The MegaCassette, a DNA sequence containing the meganuclease restriction sites flanked by AttR1 and AttR2 should be cloned downstream of a desired promoter to create a MegaGate compatible expression vector. See <a href="#fig1">Figure 1</a>B for schematic representation of the below steps for creating custom pMegaDestination vectors. In addition, the full length MegaCassette is provided in the KRT for reference. To generate a custom MegaDestination vector perform the following:</p>
+<ol>
+<li>Design primers for Gibson Assembly of MegaCassette into custom vector.
+<ol type="a">
+<li>Design Gibson overhangs using a tool such as Geneious Gibson Assembly or by creating 20 to 25 bp overhangs on the 5′ and 3′ side of the selected cut sites on the desired expression vector. (<a href="#bib3">Gibson et al., 2009</a>)</li>
+<li>Add the 5′ custom overhang to MegaCassette_Fwd primer. Refer to the KRT for primer sequence of MegaCassette_Fwd.</li>
+<li>Add the reverse complement of the 3′ custom overhang to the MegaCassette_Rev primer. Refer to KRT for primer sequence MegaCassette_Rev.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The above primers are for amplification of the MegaCassette, provided in the KRT.</div>
+<ol start="2">
+<li>Utilize a unique restriction enzyme to linearize the custom expression vector in the position the MegaCassette will be inserted.
+<div class="note">
+<span class="note-title">Note:</span> For best results, utilize two different enzymes to generate non-overlapping sticky ends and to remove any unwanted parts of custom vector.</div>
+<ol type="a">
+<li>Gel Purify the linearized vector using a 2% agarose gel. Extract the linearized backbone using NEB Monarch Gel Extraction Kit or similar kit.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Utilizing a vector containing a MegaCasette, such as Addgene vector #175267, as the input, amplify the MegaCassette with the following reaction conditions.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> MegaCassettes can be synthesized by providers such as IDT. This cassette should be synthesized with the Gibson overhangs present for ease of cloning. If synthesizing, proceed directly to step 6.</div>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Addgene Vector 175267</td>
+<td>50 ng</td>
+</tr>
+<tr>
+<td>Step 1A Custom MegaCassette fwd Primer (10uM)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>Step 1B Custom MegaCassette Rev Primer (10uM)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>2<b>×</b> Q5 Master Mix</td>
+<td>12.5 uL</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td>Fill to 25 uL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>25 uL</b></td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Place reaction into thermocycler with the following cycling conditions:</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th colspan="4">Cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>5 s</td>
+<td rowspan="3">25</td>
+</tr>
+<tr>
+<td>Anneal</td>
+<td>60°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Final Extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="5">
+<li>Gel purify the PCR product on a 2% agarose gel, see <a href="#fig1">Figure 1</a>C for an example gel for this reaction. The correct band can be isolated through gel purification using NEB Monarch Gel purification kit or through bead purification using Promega ProNext beads. Alternative kits for gel purification or bead purification can be utilized.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure the product is the correct size (∼400bp for a traditional MegaCassette).</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> If a large number of off-target bands are present, DMSO can be added to the reaction at 5% to increase specificity.</div>
+<ol start="6">
+<li>Perform Gibson Assembly.
+<ol type="a">
+<li>Combine the gel-purified MegaCassette product with the gel purified linearized backbone vector at a molar ratio of 5:1 insert to backbone.</li>
+<li>Add 2<b>×</b> Gibson assembly master mix.</li>
+<li>Incubate 15 min to 1 h at 50°C.</li>
+<li>Transform into competent <i>E. coli</i> such as NEB 5-Alpha and plate on LB agar with antibiotic selection.</li>
+<li>Select colonies after 14–16 h 37°C culture and send for Sanger sequencing to confirm proper insertion of cassette.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Multiple primers should be used for sequencing confirmation to ensure entire MegaCassette is inserted correctly. AttR sites are challenging to sequence with Sanger, so primers binding inside and outside of the MegaCassette will be necessary for proper sequencing. Primers for sanger sequencing that bind inside the MegaCassette are listed in the KRT as MegaCassette_Sanger 1–2. The binding locations for these primers are depicted in <a href="#fig1">Figure 1</a>B. Additional primers that bind outside of the MegaCassette on the vector backbone will need to be custom generated depending on the application.</div>
+<h3 id="sec1.2">Procure pENTR vectors</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>MegaGate is compatible with traditional Gateway donor libraries known as pENTR libraries. Common examples are the ORFeome and TFome. (<a href="#bib8">Rual et al., 2004</a>; <a href="#bib7">Ng et al., 2020</a>) If available, one may obtain pENTR ORFs by ordering from the ORFeome, TFome or Addgene, specifically ORFs with pENTR or pDONOR in their description.</p>
+<p>If a gene is not available, one can simply make a pENTR ORF through the following steps.</p>
+<ol start="7">
+<li>Design sequence specific primers.
+<ol type="a">
+<li>Design a binding site of ∼20 bp on the 5′ and 3′ end of the target sequence.</li>
+<li>Add ATTB1 to the 5′ primer and ATTB2 to the 3′ primer, both of which can be found in the KRT.</li>
+<li>Amplify the gene of interest using a polymerase such as NEB 2<b>×</b> Q5 Polymerase Master Mix, according to manufacturer’s instructions. (<a href="https://www.neb.com/protocols/2012/12/07/protocol-for-q5-high-fidelity-2x-master-mix-m0492">https://www.neb.com/protocols/2012/12/07/protocol-for-q5-high-fidelity-2x-master-mix-m0492</a>). Utilize a plasmid containing the gene of interest, genomic DNA or cDNA.</li>
+</ol>
+</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Synthesize the full-length gene from a provider such as IDT, and place full length ATTB1 and ATTB2 on 5′ and 3′ ends of gene. If synthesizing, use the reverse complement of the ATTB2 sequence provided in the KRT. Proceed directly to step 10.</div>
+<ol start="8">
+<li>Gel purify the PCR product, using methods described above.</li>
+<li>Obtain a suitable pDONOR vector such as pDONOR221 from Thermo Fisher Cat #12536017.</li>
+<li>Perform Gateway BP cloning to insert ORF into pDONOR according to manufacturer instructions. (<a href="https://tools.thermofisher.com/content/sfs/manuals/gateway_clonaseii_man.pdf">https://tools.thermofisher.com/content/sfs/manuals/gateway_clonaseii_man.pdf</a>)</li>
+<li>Transform into competent <i>E. coli</i> such as NEB 5-Alpha and plate on LB agar with antibiotic selection and grow 14–16 h at 37°C.</li>
+<li>Pick colonies and sequence confirm the ORF identity and grow liquid culture to obtain a plasmid preparation of at least 5 ng/ul.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>NEB 5-Alpha</td>
+<td>New England Biolabs</td>
+<td>Cat: C2987</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>LR Clonase II</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat: 11791020</td>
+</tr>
+<tr>
+<td>BP Clonase II</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat: 11789020</td>
+</tr>
+<tr>
+<td>I-SceI (5U/ ul)</td>
+<td>New England Biolabs</td>
+<td>Cat: R0694</td>
+</tr>
+<tr>
+<td>I-CeuI (5U/ ul)</td>
+<td>New England Biolabs</td>
+<td>Cat: R0699</td>
+</tr>
+<tr>
+<td>10<b>×</b> CutSmart Buffer</td>
+<td>New England Biolabs</td>
+<td>Cat: B7204</td>
+</tr>
+<tr>
+<td>T5 Exonuclease</td>
+<td>New England Biolabs</td>
+<td>Cat: M0663</td>
+</tr>
+<tr>
+<td>Gibson Assembly Master Mix</td>
+<td>New England Biolabs</td>
+<td>Cat: E2611</td>
+</tr>
+<tr>
+<td>BsaI-HFV2</td>
+<td>New England Biolabs</td>
+<td>Cat: R3733</td>
+</tr>
+<tr>
+<td>BsmBI-V2</td>
+<td>New England Biolabs</td>
+<td>Cat: R0739</td>
+</tr>
+<tr>
+<td>SapI</td>
+<td>New England Biolabs</td>
+<td>Cat: R0569</td>
+</tr>
+<tr>
+<td>ProNex Size-Selective Purification System</td>
+<td>Promega</td>
+<td>Cat: NG2001</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS Assay Kit</td>
+<td>Invitrogen</td>
+<td>Cat: Q32851</td>
+</tr>
+<tr>
+<td>Q5 High Fidelity 2<b>×</b> Mastermix</td>
+<td>New England Biolabs</td>
+<td>Cat: M0492</td>
+</tr>
+<tr>
+<td>Qiagen Plasmid Plus Midi Kit</td>
+<td>QIAGEN</td>
+<td>Cat: 12941</td>
+</tr>
+<tr>
+<td>QIAprep Spin Miniprep Kit</td>
+<td>QIAGEN</td>
+<td>Cat: 27104</td>
+</tr>
+<tr>
+<td>Monarch DNA Gel Extraction Kit</td>
+<td>New England Biolabs</td>
+<td>Cat: T1020</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw MegaGate pooled cloning NGS data</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>PRJNA753802</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>ORF-BC_Rev: TCTTATCATGTCTGGATCGCGG (For identifying gene-barcode pairs in <a href="#fig3">Figure 3</a>)</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MegaCassette_Fwd : ACCACAAGTTTGTACAAAAAAGC</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MegaCassette_Rev : ACCACTTTGTACAAGAAAGC</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MegaCassette_Sanger_1 : TAAGCGCGCTATGATGGAGG (For sequence confirming the MegaCassette)</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MegaCassette_Sanger_2 : ATAGCCTCCATCATAGCGCG (For sequence confirming the MegaCassette)</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pPB-EF1a-MegaGate-DD-Hygro</td>
+<td>This Paper</td>
+<td>Addgene Plasmid # 175267</td>
+</tr>
+<tr>
+<td>pPB-EF1a-MegaGate-HA-Hygro</td>
+<td>This Paper</td>
+<td>Addgene Plasmid # 175268</td>
+</tr>
+<tr>
+<td>pPB-EF1a-MegaGate-DD-Blast</td>
+<td>This Paper</td>
+<td>Addgene Plasmid # 175270</td>
+</tr>
+<tr>
+<td>pPB-EF1a-MegaGate-HA-Blast</td>
+<td>This Paper</td>
+<td>Addgene Plasmid # 175271</td>
+</tr>
+<tr>
+<td>PB-CT3G-ERP2-MG</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175501</td>
+</tr>
+<tr>
+<td>PB-CT3G-cERP2-MG</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175503</td>
+</tr>
+<tr>
+<td>PB-hEF1a-MG-U6-sgRNA</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175505</td>
+</tr>
+<tr>
+<td>PB-CT3G-ERP2-MG-IRES2-mNeonGreen</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175506</td>
+</tr>
+<tr>
+<td>PB-CT3G-CERP2-MG-IRES2-mCherry</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175507</td>
+</tr>
+<tr>
+<td>PB-CT3G-CERP2-MG-IRES2-mNeonGreen</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175508</td>
+</tr>
+<tr>
+<td>PB-CT3G-CERP2-MG-IRES2-mTagBFP2</td>
+<td><a href="#bib4">Kramme et al. (2021)</a></td>
+<td>Addgene Plasmid # 175509</td>
+</tr>
+<tr>
+<td>ATTB1 : GGGGACAAGTTTGTACAAAAAAGCAGGCTTA</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ATTB2 : GGGGACCACTTTGTACAAGAAAGCTGGGTA</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>MegaCassette (Sequence is found and annotated in MegaDestination vectors listed under Recombinant DNA. Contains AttR1, I-SceI, I-CeuI, AttR2):ACAAGTTTGTACAAAAAAGCTGAACGAGAAACGTAAAATGATATAAATATCAATATATTAAATTAGATTTTGCATAAAAAACAGACTACATAATACTGTAAAACACAACATATCCAGTCACTATGGCGACAGAAGAAGTATAGGGATAACAGGGTAATTGTTGTAAGCGCGCTATGATGGAGGCTATGCCACTAGAATCTGCGTTCGCTACCTTAGGACCGTTATAGTTAGAAGGAAAGCTCCATCATAGTGACTGGATATGTTGTGTTTTACAGTATTATGTAGTCTGTTTTTTATGCAAAATCTAATTTAATATATTGATATTTATATCATTTTACGTTTCTCGTTCAGCTTTCTTGTACAAAGTGGT</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Geneious Prime 2019.2.3</td>
+<td>Biomatters Ltd.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>GraphPad Prism v8.3.1 for MacOS</td>
+<td>Graph Pad software</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl3">
+<caption>Complete MegaGate LR Reaction</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LR Clonase II Enzyme Mix</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>I-SceI (5 U/ul)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>I-CeuI (5U/ul)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>10<b>×</b> CutSmart Buffer</td>
+<td>5 uL</td>
+</tr>
+<tr>
+<td>pENTR vector</td>
+<td>50ng</td>
+</tr>
+<tr>
+<td>pMegaDestination vector</td>
+<td>75ng</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td>Fill to 50 uL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>50 uL</b></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>The conceptual workflow of MegaGate cloning is presented in the Graphical Abstract. The Protocol has three main steps: assemble the reaction, place into thermocycler, transform and sequence colonies.</p>
+<h3 id="sec3.1">Assemble the MegaGate reaction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<p>All components for a MegaGate reaction are combined at once and placed into a thermocycler. The below reaction is for creation of expression vectors by reacting pENTR vectors with pMegaDestination vectors.</p>
+<ol>
+<li>Assemble the following MegaGate reaction on ice.</li>
+</ol>
+<table id="undtbl4">
+<caption>Complete MegaGate LR Reaction</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LR Clonase II Enzyme Mix</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>I-SceI (5U/ul)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>I-CeuI (5U/ul)</td>
+<td>1 uL</td>
+</tr>
+<tr>
+<td>10<b>×</b> CutSmart Buffer</td>
+<td>5 uL</td>
+</tr>
+<tr>
+<td>pENTR vector</td>
+<td>50ng</td>
+</tr>
+<tr>
+<td>pMegaDestination vector</td>
+<td>75ng</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td>Fill to 50 uL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>50 uL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The same reaction can be used for MegaGate BP reactions, replacing LR Clonase II with BP Clonase II and using the appropriate AttB flanked gene insert and a pMegaDonor vector.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> If scaling MegaGate reaction down to 25 uL total, it is critical that the reagents are used in the same concentration. If using alternative endonucleases in customized vectors, the amounts and protocols will need to be optimized for the specific nuclease. A single meganuclease can additionally be used instead of two (use 2 uL instead of 1 ulL) with a resulting decrease in efficiency, as is seen in <a href="#fig3">Figure 3</a>D. Additionally, non-meganuclease enzymes such as Golden Gate Type IIS enzymes can be used effectively, as seen in <a href="#fig3">Figure 3</a>G.</div>
+<div class="note">
+<span class="note-title">Note:</span> If using MegaGate for pooled cloning, total pENTR vector should be 50 ng. pENTR vectors should be pooled in an equimolar fashion to minimize cloning bias (<a href="#fig2">Figures 2</a>C–2E). For best results, keep the deviation in insert size at less than 25% and be aware that smaller inserts clone more efficiently (<a href="#fig2">Figures 2</a>C–2E). Greater than 50 ng of pENTR can be utilized if needed. pENTR vector amounts of less than 10 ng will result in substantial reduction in colonies obtained. For ORFs larger than 5 KB, greater than 50 ng can be utilized to increase efficiency.</div>
+<div class="note">
+<span class="note-title">Note:</span> pMegaDestination vectors can be pooled, such as barcoded destination vectors (<a href="#fig2">Figures 2</a>C–2E). Pooled destination vectors should not exceed 75ng total to minimize background.</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1120-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Utilization of MegaGate for single and pooled cloning</div>
+<p>(A) Depiction of representative MegaGate transformant plates versus Gateway transformant plate. A pENTR-sfGFP was used for both reactions at 50 ng. Gateway was performed according to manufacturer’s instruction using 4 ul of LR Clonase II enzyme mix and TE-8. Gateway and MegaGate were performed using 75 ng of each destination vector, which are equivalent sizes. The reactions were additionally performed utilizing the same aliquot of LR Clonase and NEB 5-alpha cells to ensure there was no bias.</p>
+<p>(B) Percent ORF capture (pink) measured as the ratio of input genes captured in expression vectors in a single MegaGate cloning reaction for single genes and pooled groups. Number of barcodes captured per gene (teal) for the single genes and pools was determined via NGS alignment of destination vector amplicons.</p>
+<p>(C–E) Cloning efficiency as a function of ORF length. Cloning efficiency is measured as the relative abundance of the gene in the expression vector pool divided by the relative abundance of the gene in the pENTR pool, as measured by NGS counts. Genes are arrayed by length on the x-axis. Each pool contained 300 pENTR genes, pooled by size. 50 ng of total pENTR gene were used for a single MegaGate reaction for each pool. Colonies were transformed and plated on four plates per pool and colonies were scrapped and grown overnight to obtain expression plasmids. PCR of the gene insert on the pENTR and pExpression plasmids was utilized to prepare libraries for NGS, and indexed PCR libraries were run on an Illumina MiSeq. Geneious RNA aligner was used to align reads to ORFs for each pENTR and corresponding pExpression pool and BBMap was used to call barcodes for each ORF read in the expression pool.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.2">Thermocycle the MegaGate reaction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h and 20 min</div>
+<p>This step performs the MegaGate reaction entirely within a thermocycler.</p>
+<ol start="2">
+<li>Insert the assembled MegaGate reaction into thermocycler with the following settings.</li>
+</ol>
+<table id="undtbl5">
+<thead>
+<tr>
+<th colspan="3">Cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway Insertion</td>
+<td>25°C</td>
+<td>1 h</td>
+</tr>
+<tr>
+<td>Restriction Digest</td>
+<td>37°C</td>
+<td>1 h</td>
+</tr>
+<tr>
+<td>Inactivation</td>
+<td>65°C</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> If using custom nucleases not listed in KRT, the manufacturer recommended cutting temperature should be utilized instead of 37°C. In addition, isothermal reactions at 25°C and 37°C can be utilized with a corresponding lowering in overall efficiency (<a href="#fig3">Figure 3</a>E).</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Reaction can be stored at −20°C for later bacterial transformation or proceed directly to transformation. The reaction is stable for up to one week; however, more testing is needed to determine the stability of the reaction for greater than one week.</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1120-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Cloning efficiency optimization of MegaGate cloning reactions</div>
+<p>(A and B) Cloning efficiency is determined as the number of colonies on the plus insert plate compared to the total number of colonies on the minus insert plate. Reaction conditions tested are as follows: (A) endonuclease cutting time (B) total reaction volume.</p>
+<p>(C) All components added at once (one step) reaction versus separate recombinase and endonuclease reactions (two step).</p>
+<p>(D) Units of meganuclease added.</p>
+<p>(E) Multi-temperature reactions versus isothermal.</p>
+<p>(F) Number of restriction sites on MegaDestination vector.</p>
+<p>(G) Meganuclease versus Type IIS endonuclease.</p>
+<p>(H) Gateway BP reaction versus MegaGate BP reaction colonies obtained.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.3">Transform and sequence the MegaGate reaction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This step performs the transformation of the reaction into NEB 5-Alpha bacteria, with subsequent incubation and colony picking.</p>
+<ol start="3">
+<li>Transform 2 uL of the finished MegaGate reaction into 10 uL of NEB 5-Alpha cells according to manufacturer’s instructions. <a href="https://www.neb.com/protocols/0001/01/01/high-efficiency-transformation-protocol-c2987">https://www.neb.com/protocols/0001/01/01/high-efficiency-transformation-protocol-c2987</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Any standard bacterial strain can be used for cloning and propagation.</div>
+<ol start="4">
+<li>Plate reaction onto LB agar plate with proper antibiotic and grow 14–16 h at 37°C.</li>
+<li>Pick single colonies for individual cloning reactions or alternatively scrape plates for library preparations.</li>
+<li>Grow colonies in liquid broth (LB) media with antibiotic 12–16 h at 37°C to propagate plasmids.</li>
+<li>Harvest plasmids from bacteria using plasmid preparation kits such as QIAPrep Spin MiniSpin kit.</li>
+<li>Sequence plasmids using Sanger sequencing or NGS to confirm insertion. If using barcoded versions of MegaDestinations from <a href="#bib4">Kramme et al. (2021)</a> or this paper, one can use the ORF-BC_Rev primer in the KRT for Sanger sequencing to identify the barcode and inserted gene simultaneously.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>A typical MegaGate transformant plate versus a Gateway transformant plate is shown in <a href="#fig2">Figure 2</a>A. As can be seen, MegaGate often obtains far higher colony numbers compared to Gateway. Expected outcomes from single gene and pooled (300+ ORF) cloning to barcoded destination vectors are shown in <a href="#fig2">Figures 2</a>B–2E. <a href="#fig2">Figure 2</a>B provides summary statistics for single and pooled cloning reactions, represented as percent ORF capture, which is measured as the ratio of pENTR ORFs successfully cloned into destination vectors, and barcodes per ORF, which is measured via Sanger sequencing or next generation sequencing (NGS) of unique barcodes per ORF in the expression vector pool. <a href="#fig2">Figure 2</a>B is further expanded on in <a href="#fig2">Figures 2</a>C–2E, which show the cloning efficiency for the three separate pooled reactions of 300 ORFs per pool, which were grouped by size. As can be seen in <a href="#fig2">Figure 2</a>C, when the standard deviation of ORF sizes in the pool is large, larger ORFs clone less efficiently than smaller ORFs, seen as a decrease in efficiency as ORF size increases for this pool. When ORF size deviation is reduced, as is the case for pool 2 and 3 in <a href="#fig2">Figures 2</a>D and 2E, there is a flat distribution of cloning efficiency in which the relative ratio of the ORFs in the pENTR pool is similar to the relative ratio of ORFs in the resulting expression pool.</p>
+<p>Additionally, cloning efficiency outcomes from alternate reaction conditions are shown in <a href="#fig3">Figure 3</a>. In order to optimize the MegaGate reaction, we systematically tested cutting duration (<a href="#fig3">Figure 3</a>A), reaction volume (<a href="#fig3">Figure 3</a>B), unique reaction steps (<a href="#fig3">Figure 3</a>C), units of cutting enzyme in reaction (<a href="#fig3">Figure 3</a>D), reaction temperature (<a href="#fig3">Figure 3</a>E), number of restriction digest sites on vector (<a href="#fig3">Figure 3</a>F), restriction enzyme type (<a href="#fig3">Figure 3</a>G), and the use of BP Clonase in MegaGate versus Gateway (<a href="#fig3">Figure 3</a>H). We additionally tested these reaction conditions for their total obtained colony numbers, which can be seen in <a href="#fig4">Figure 4</a>. Based on these optimization reactions, we determined that an all-in-one reaction mix with a three-step temperature change in a 50 uL reaction was most optimal for Megagate cloning in terms of cloning efficiency and colonies obtained, which is described above. Our results also show the MegaGate reaction can be effectively customized, such as changing recombinase or restriction endonucleases, to fit specific cloning needs. Refer to <a href="#bib4">Kramme et al. (2021)</a> for further applications of MegaGate cloning within the STAMPScreen mammalian genetic screening pipeline.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1120-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Colony number optimization of MegaGate cloning reactions</div>
+<p>Colony numbers obtained from different MegaGate optimization cloning reactions are shown with colonies obtained on the x-axis and the condition on the y-axis. Colony number was determined by counting colonies from a 2 uL transformation and multiplying by 25 to account for the total colonies in the 50 uL MegaGate reaction. Colony numbers from the plus insert condition are shown in teal and colonies from the minus insert condition (background colonies) are shown in pink.</p>
+</figcaption>
+</figure>
+<p>The results of a single MegaGate cloning reaction are generally 99.8% cloning efficiency, measured as the relative ratio of colonies containing the desired insert versus colonies without the insert. The total colony number varies based on destination vector and gene insert. On average, inserts of around 1 kb will yield 100–300 colonies from a single 2 uL transformation, as can be seen in <a href="#fig2">Figures 2</a>A and <a href="#fig4">4</a>. Smaller inserts will yield 1000+ colonies and larger inserts (10 kb +) will yield around 10–50 colonies. Background colonies i.e., those lacking an insert, will appear at roughly 0.2% on average when the reaction is performed optimally. Modifications of the protocol such as scaling the reaction down, limiting insert amount, excessive destination amount and altered cycling times or temperatures will result in higher background or lower overall colony numbers. When MegaGate is used for pooled cloning of 300 + ORF inserts, we expect a roughly 95% ORF capture on the first attempt if the pENTR library is maintained as roughly equimolar (<a href="#fig2">Figure 2</a>B). Large differences in pENTR-ORF frequency can result in loss of lower abundance ORFs. In addition, for pooled cloning, ORFs should be pooled based on size. Libraries with large differences in size can enrich smaller ORFs which clone more efficiently than larger ORFs (<a href="#fig2">Figures 2</a>C–2E). For MegaGate reactions using the BP Clonase system, expect on average 5–50 colonies per ORF. This reaction is less efficient overall than the LR reaction and may require further optimization.</p>
+<p>MegaGate is an enabling technology for use in cDNA screening and cell engineering for mammalian systems. We previously detailed an all-in-one pipeline for mammalian genetic screening known as STAMPScreen (<a href="#bib4">Kramme et al., 2021</a>), in which MegaGate is utilized to generate cDNA screening libraries. MegaGate improves on traditional Gateway cloning by elimination of the <i>ccdb</i> cassette while maintaining compatibility with ORF libraries such as the ORFeome and does not suffer from the ORF PCR amplification or restriction site compatibility constraints of Golden Gate and Gibson cloning (<a href="#bib5">Magnani et al., 2006</a>; <a href="#bib2">Engler et al., 2008</a>; <a href="#bib3">Gibson et al., 2009</a>). MegaDestination vectors can optionally feature unique DNA barcodes that can be captured through gDNA barcode sequencing (BAR-Seq), as well as captured alongside the transcriptome through RNA-Seq, scRNA-Seq, and targeted RNA-Seq which are common in many NGS-based screening pipelines (<a href="#bib9">Smith et al., 2009</a>; <a href="#bib6">Martin et al., 2016</a>). We show that MegaGate cloning is efficient at cloning more than 1000 human genes individually or in pools and linking each gene with a unique barcode that can be determined through NGS or Sanger sequencing. The expression vectors are then easily integrated into the genomes of hiPSCs or primary fibroblasts to generate stable cell lines with doxycycline inducible genetic cassettes (<a href="#bib11">Yusa et al., 2011</a>). We additionally show in STAMPScreen the development of dual expression systems in which a sgRNA can be cloned into the MegaDestination vector using Golden Gate and a subsequent cDNA is inserted via MegaGate. This technology can be utilized to repress or induce native genes when paired with CRISPRi and CRISPRa tools while simultaneously overexpressing the cDNA construct (<a href="#bib10">Yeo et al., 2018</a>; <a href="#bib1">Chavez et al., 2016</a>). We envision this form of MegaGate cloning to effectively pair genome-wide sgRNA libraries with genome-wide cDNA libraries for library-by-library dual screening. When paired with the computational tools for target prediction and transcriptomic analysis, MegaGate is an effective tool for generating expression libraries for high-throughput screening.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>MegaGate is generally universal in its application with only a few limitations. For cloning purposes, genetic sequences that contain the selected meganuclease restriction sites cannot be cloned with MegaGate; however, these restriction site sequences are extremely rare and almost never naturally both present in open reading frames. When one meganuclease cannot be used for this reason, one may utilize twice the amount of the other available meganuclease to obtain positive colonies, albeit with lower efficiency. In addition, we have shown that other restriction endonucleases such as Type IIS enzymes function equally to the meganucleases and can be used as substitutes if a meganuclease cannot be used (<a href="#fig3">Figure 3</a>G). In addition, MegaGate has been extensively tested and optimized with nucleases from New England Biolabs. We have not optimized or tested the use of isoforms and buffers of these nucleases from other providers such as Thermo Fisher. We do not anticipate there being issues and fully expect the technology to be compatible with other enzymes and enzyme providers, but further research is needed.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Low or no colonies obtained from MegaGate LR cloning</p>
+<p>A MegaGate reaction may show very low or no colonies after transformation step (Step 3).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>If no colonies are obtained, ensure that the selection plate has the appropriate concentration of antibiotic by plating of a positive control. Additionally, when using LR Clonase II and BP Clonase II it is crucial these reagents are always kept on ice as they are extremely sensitive to degraded performance. The most common cause of MegaGate failure is a poorly performing batch of LR Clonase II or BP Clonase II. Ensure the batch is not degraded via a positive control provided by the manufacturer and if it is, obtain a new batch. Additionally, sequence confirm the AttR sites of the MegaDestination and the AttL sites of the pENTR vector to ensure there are no mutations preventing recombinase function. Some ORFs, particularly those greater than 5 kb benefit from increased amounts of pENTR input, therefore increasing the input to 75 ng or more may increase efficiency. One may also transform a larger amount of final product to obtain colonies from poorly performing reactions. Although rare, ensure the insert sequence and backbone of any customized MegaDestination vector do not contain I-SceI or I-CeuI meganuclease restriction sites. In the event all solutions fail, one may try to split the reaction into two parts. First add all MegaGate components except for CutSmart and the meganucleases and place to thermocycler for 1 h at 25°C. Then add CutSmart and the meganucleases and incubate at 37°C for 1 h then 65°C for 20 min. Splitting the reaction to two parts has been shown to generally increase colony number and shows equivalent cloning efficiency (<a href="#fig2">Figure 2</a>C).</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Large number of background colonies obtained from MegaGate LR cloning</p>
+<p>If a negative control is used, where no pENTR is provided, on average there will be 1 to 10 colonies on the plate at a roughly 200-fold reduction compared to the positive control. Increased numbers of background colonies seen in the sequencing step (Step 8) are a sign of an issue with the reaction.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Ensure that the antibiotic selection plates utilized have a sufficiently high concentration of antibiotic and are not degraded. For the provided MegaDestination vector, we utilize carbenicillin at 100ug/mL and for pMegaDONOR221 we utilize kanamycin at 50ug/mL. Additionally, ensure that both meganucleases were added to the reaction and that the mixture is thoroughly vortexed. Meganucleases are sensitive to degradation, particularly I-SceI, which is stored at −80°C. If enzymes have been subjected to more than 40 freeze thaws, consider using fresh batches to ensure the enzymes are fully functional. One should also sequence confirm the integrity of the MegaCassette in the MegaDestination to ensure that both restriction sites are free of mutations. If large background still exists, increase the amount of meganuclease in reaction and extend the cutting time (37°C step) to 2 h.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Meganuclease recognition site is present in my ORF of interest</p>
+<p>If a meganuclease (I-SceI or I-CeuI) recognition site is present in the ORF of interest, the MegaGate reaction will fail to clone, due to the expression vector being linearized by the meganucleases, resulting in no colonies after the transformation step (Step 3).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>If only one of two meganuclease recognition sites is present in the ORF, do not include that meganuclease in the MegaGate reaction. Increase the remaining meganuclease to 2 ul. The reaction will likely be overall less efficient, particularly if only I-CeuI is utilized, but will still yield positive colonies. If both meganucleases have recognition sites in the ORF, one will need to clone a new MegaCassette into the expression vector, as described in above in the <a href="#before-you-begin">before you begin</a> section. Alternate endonucleases such as Type IIS Golden Gate enzymes function equivalently to meganucleases and can be utilized as replacements. The meganuclease recognition site can be removed from the gene of interest through codon optimization or site directed mutagenesis.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>MegaGate BP Reaction shows little to no transformant colonies</p>
+<p>The MegaGate BP reaction in general shows 10–100 fold less colonies obtained compared to the MegaGate LR reaction. More research is needed to determine the cause of this low efficiency. After performing a MegaGate BP reaction, one may obtain no colonies after transformation step (Step 3).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Since BP reactions are commonly used to generate pENTR vectors from a single pDONOR vector (not pools of unique pDONOR vectors), one can simply use the Gateway BP reaction with pDONOR221 or pDONOR223 to generate the vector using the manufacturer’s instructions. If using MegaGate BP reaction, one can increase the amount of input PCR product to greater than 100 ng in order to obtain more positive colonies. Ensure that the BP Clonase being utilized is fresh, with limited freeze-thaw cycles. Additionally, transform more of the overall reaction to NEB 5-Alpha bacteria to obtain more transformants.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Sanger Sequencing of MegaGate gene inserts in expression vectors show “no priming”, “early termination” or “high background”</p>
+<p>Sanger sequencing (Step 8) of picked colonies may show issues. When sanger sequencing of expression vectors shows one of the above issues, it is likely that the colony sequenced is either a background no-insert colony, a primer-dimer insert, or a colony with multiple plasmids.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>For early termination errors, the colony is most likely to be a background colony containing no insert. These colonies often show early termination, due to the sanger sequencing prematurely terminating when sequencing across two full length ATT sites, which are repetitive in nature and contain secondary structures. If a large number of early termination colonies is obtained, there is likely an issue with the MegaGate reaction set up. Refer to <a href="#sec6.3">problem 2</a> troubleshooting to lower background colonies. If the no priming error occurs, the issue is likely with the sequencing facility or a MegaGate BP reaction. In our experience, the “no priming” error often results from insufficient colony picking during sequencing or from the use of poorly performing sequencing primers. Submission of plasmid preparations (versus colonies) has been shown to fix this issue. For MegaGate BP reactions or Gateway BP reactions, excessive “no priming” results is often caused by primer-dimers being cloned into the pENTR vectors. These primer-dimers, which arise from the PCR amplification of the ORF of interest, must be removed by gel extraction. Failure to remove these will lead to the dimers being cloned into the pDONOR and occurs at a high frequency due to the small size of the dimers, which clone more efficiently. To correct the issue, gel extract the band of interest prior to cloning. For the high background error, ensure that the colonies are not plated densely such that colonies are merging or multiple colonies are picked at once. If error continues, lower the amount of reaction transformed from 2ul to 0.2ul to ensure multiple plasmids are not present in individual bacteria.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Chavez, A., Tuttle, M., Pruitt, B., Ewen-Campen, B., Chari, R., Ter-Ovanesyan, D., Haque, S., Cecchi, R., Kowal, E., Buchthal, J., et al. (2016). Comparison of cas9 activators in multiple species. Nat. Methods <i>13</i>, 563-567. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref1">View at publisher</a></p>
+<p id="bib2">Engler, C., Kandzia, R., and Marillonnet, S. (2008). A one pot, one step, precision cloning method with high throughput capability. PLoS One <i>3</i>, e3647. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref2">View at publisher</a></p>
+<p id="bib3">Gibson, D.G., Young, L., Chuang, R., Venter, J., Hutchinson, C., and Smith, H. (2009). Enzymatic assembly of DNA molecules up to several hundred kilobases. Nat. Methods <i>6</i>, 343-345. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref3">View at publisher</a></p>
+<p id="bib4">Kramme, C., Plesa, A., Wang, H., Wolf, B., Smela, M., Guo, X., Kohman, R., Chatterjee, P., and Church, G. (2021). An integrated pipeline for mammalian genetic screening. Cell Rep. Methods <i>1</i>, 100082. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref4">View at publisher</a></p>
+<p id="bib5">Magnani, E., Bartling, L., and Hake, S. (2006). From gateway to multisite gateway in one recombination event. BMC Mol. Biol. <i>7</i>, 46. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref5">View at publisher</a></p>
+<p id="bib6">Martin, D.P., Miya, J., Reeser, J.W., and Roychowdhury, S. (2016). Targeted RNA sequencing assay to characterize gene expression and genomic alterations. J. Vis. Exp. <i>114</i>, 54090. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref6">View at publisher</a></p>
+<p id="bib7">Ng, A.H.M., Khoshakhlagh, P., Arias, J., Pasquini, G., Wang, K., Swiersy, A., Shipman, S., Appleton, E., Kiaee, K., Kohman, R., et al. (2020). A comprehensive library of human transcription factors for cell fate engineering. Nat. Biotechnol. <i>39</i>, 510-519. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref7">View at publisher</a></p>
+<p id="bib8">Rual, J.F., Hirozane-Kishikawa, T., Hao, T., Bertin, N., Li, S., Dricot, A., Li, N., Rosenberg, J., Lamesch, P., Vidalain, P., et al. (2004). Human ORFeome version 1.1: a platform for reverse proteomics. Genome Res. <i>14</i>, 2128-2135. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref8">View at publisher</a></p>
+<p id="bib9">Smith, A.M., Heisler, L., Mellor, J., Kaper, F., Thompson, M., Chee, M., Roth, F., Giaever, G., and Nislow, C. (2009). Quantitative phenotyping via deep barcode sequencing. Genome Res. <i>19</i>, 1836-1842. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref9">View at publisher</a></p>
+<p id="bib10">Yeo, N.C., Chavez, A., Lance-Byrne, A., Chan, Y., Menn, D., Milanova, D., Kuo, C., Guo, X., Sharma, S., Tung, A., et al. (2018). An enhanced CRISPR repressor for targeted mammalian gene regulation. Nat. Methods <i>15</i>, 611-616. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref10">View at publisher</a></p>
+<p id="bib11">Yusa, K., Zhou, L., Li, M.A., Bradley, A., and Craig, N.L. (2011). A hyperactive piggyBac transposase for mammalian applications. Proc. Natl. Acad. Sci. U S A <i>108</i>, 1531-1536. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00613-4/sref11">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Pranam Chatterjee, <a href="mailto:pranam.chatterjee@wyss.harvard.edu">pranam.chatterjee@wyss.harvard.edu</a>.</p>
+<h4>Materials availability</h4>
+<p>Plasmids generated in this study and referenced in <a href="#bib4">Kramme et al. (2021)</a> have been deposited to Addgene. Refer to KRT for specific catalog numbers.</p>
+<h4>Data and code availability</h4>
+<p>Additional data and code can be found in <a href="#bib4">Kramme et al. (2021)</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was funded by the Synthetic Biology Platform at the <a href="https://doi.org/10.13039/100001400">Wyss Institute</a> for Biologically Inspired Engineering.</p>
+<h3>Author contributions</h3>
+<p>C.K. and A.M.P. designed experiments, invented and optimized MegaGate cloning, built vectors, and designed and conducted further STAMPScreen validation. H.H.W. conducted further STAMPScreen validation. B.W. assisted with MegaGate and transcriptome analysis. M.P.S. built MegaGate vectors and conducted further STAMPScreen validation. X.G. conducted further STAMPScreen validation. P.C. conceived, designed, and implemented machine learning and bioinformatics protocols for further STAMPScreen validation. C.K. wrote the paper, with input from all authors. R.E.K. and G.M.C. acquired funding. P.C., R.E.K., and G.M.C. supervised the project.</p>
+<h3>Declaration of interests</h3>
+<p>C.K., A.M.P., and G.M.C. are listed as inventors on US Provisional Patent Application 63/148,656 entitled “Compositions and Methods for Molecular Cloning.”</p>
+</section>
+</article>

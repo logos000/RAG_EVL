@@ -1,0 +1,862 @@
+<article>
+<section>
+<h1 id="header">An optimized, amplicon-based approach for sequencing of SARS-CoV-2 from patient samples using COVIDSeq assay on Illumina MiSeq sequencing platforms</h1>
+<p><time datetime="2021-08-20">Published: August 20, 2021</time></p>
+<p>Rahul C. Bhoyar,<sup><a href="#aff1">1</a></sup> Vigneshwar Senthivel,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Bani Jolly,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Mohamed Imran,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Abhinav Jain,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Mohit Kumar Divakar,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Vinod Scaria,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#cor1">*</a></sup> and Sridhar Sivasubbu<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>CSIR- Institute of Genomics and Integrative Biology (CSIR-IGIB), Mathura Road, Delhi, 110025, India</p>
+<p id="aff2"><sup>2</sup>Academy of Scientific and Innovative Research (AcSIR), Ghaziabad, Uttar Pradesh, 201002, India</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:vinods@igib.in">vinods@igib.in</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:sridhar@igib.in">sridhar@igib.in</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100755">10.1016/j.xpro.2021.100755</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Sequencing of SARS-CoV-2 genomes is crucial for understanding the genetic epidemiology of the COVID-19 pandemic. It is also critical for understanding the evolution of the virus and also for the rapid development of diagnostic tools. The present protocol is a modification of the Illumina COVIDSeq test. We describe an amplicon-based next-generation sequencing approach with short turnaround time, adapted for bench-top sequencers like MiSeq, iSeq, and MiniSeq.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00461-5/sref1">Bhoyar et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>An amplicon-based next-generation sequencing approach for detection of SARS-CoV-2 RNA</li>
+<li>Optimized for low-throughput bench-top equipment for smaller batch sizes</li>
+<li>The protocol is compatible with all commonly used viral RNA isolation methods</li>
+<li>An accelerated SARS-CoV-2 sequencing protocol with turnaround time &lt; 30 h</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The study was approved by the Institutional Human Ethics Committee (IHEC No. Dated CSIR-IGIB/IHEC/2020-21/01). After obtaining informed consent from patients, samples from nasal, nasopharyngeal, and oropharyngeal swabs were collected according to the standard protocol in 3 mL sterile viral transport medium (VTM) tube. All the samples were transported to the laboratory at a cold temperature (2°C–8°C) within 72 h post collection, and stored at −80°C till further used.</p>
+<h3 id="sec1.1">Introduction</h3>
+<p>The Illumina COVIDSeq assay is an amplicon-based next-generation sequencing (NGS) approach for the detection of SARS-CoV-2 RNA isolated from nasopharyngeal, oropharyngeal, and mid-turbinate nasal swabs from patients. The assay is one of the first NGS based SARS-CoV-2 detection assays approved for use under U.S Food and Drug Administration’s Emergency Use Authorization (EUA). The COVIDSeq test was first standardized and validated for Illumina NovaSeq sequencer and can accommodate 384 to 3072 samples, depending on the configuration of flow cells and the instrument (<a href="#bib1">Bhoyar et al. 2021</a>). RNA required for SARS-CoV-2 sequencing can be extracted from decontaminated nasopharyngeal swabs using the methods mentioned in EUA approval that include; Quick-DNA/RNA Viral MagBead Kit (Zymo Research, # R2141) or QIAamp Viral RNA Mini Kit (Qiagen, part # 52906). However, the protocol is compatible with all commonly used viral RNA isolation methods including, Nextractor® NX-48S (GENOLUTION), Trueprep (Molbio Diagnostics Pvt. Ltd.) and TRIzol (Invitrogen).</p>
+<p>While originally adapted and optimized for larger sequencers, this assay could be optimized for low throughput bench-top equipment for smaller batch sizes. This manuscript details the optimized protocol with marginal modifications along with an open-source pipeline for the analysis and interpretation of data. While the protocol has been standardized for the Illumina MiSeq sequencing platform, by considering the final loading concentration of the library and the data output, the proposed protocol can be adopted for any bench-top sequencer from Illumina Inc.</p>
+<h3 id="sec1.2">Requirements for library preparation</h3>
+<p>This protocol consists of the following key steps:</p>
+<p><b>RNA extraction-</b> Prior to RNA extraction, the VTM samples were subjected to heat inactivation at 50°C for 30 min. RNA is extracted from the inactivated specimen (VTM), using any of the following mentioned protocol that includes; QIAmp (QIAGEN), Nextractor® NX-48S (GENOLUTION), TruePrep (Molbio Diagnostics Pvt. Ltd.) and TRIzol (Invitrogen).</p>
+<p><b>cDNA synthesis-</b> Generates complementary DNA to the RNA by reverse transcriptase using random hexamers.</p>
+<p><b>Target amplification-</b> The synthesized cDNA undergoes two separate PCR reactions to amplify the virus genome present in the sample.</p>
+<p><b>Library preparation, Pooling and Quantification-</b> During this process, the pooled amplified products undergo bead-based tagmentation where it gets fragmented and tagged to the adapter sequences. The adapter-tagged fragments undergo another round of PCR amplification, after which indexed tagged libraries will be pooled and cleaned using the purification beads. The pooled library product is quantified using Qubit High Sensitivity dsDNA quantification kit (Invitrogen).</p>
+<p><b>Sequencing-</b> The sequencing-ready libraries are clustered onto a flow cell and sequenced using sequencing by synthesis (SBS) chemistry on the Illumina MiSeq sequencing system.</p>
+<p><b>Analysis-</b> This step includes genome assembly, variant calling and phylogenetic analysis using established protocols (available in the GitHub repository:<a href="https://github.com/bnijolly/Genepi">https://github.com/bnijolly/Genepi</a>).</p>
+<ol>
+<li>Prepare the following reagents
+<ol type="a">
+<li>Isolated SARS-CoV-2 RNA samples.</li>
+<li>A pre-amplification environment with a Biosafety level 2 (BSL-2) facility is required during RNA sample handling and cDNA preparation.</li>
+<li>Personal Protective Equipment (PPE), as recommended by WHO for handling viral samples contagious to humans.</li>
+<li>Two 96-well PCR thermal cyclers.</li>
+<li>Thermo mixer with a 96-well PCR plate holder.</li>
+<li>Qubit HS dsDNA quantification kit along with instrument (Thermofisher).</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.3">cDNA preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>During this process, the extracted SARS-CoV-2 RNA is annealed using random hexamers and the RNA fragments primed with random hexamers are reverse-transcribed into first strand cDNA using reverse transcriptase enzyme.</p>
+<p>(All steps to be carried out within the Biosafety cabinet of the BSL-2 facility)</p>
+<ol start="2">
+<li>Annealing of RNA
+<ol type="a">
+<li>Label a new 96 well PCR plate as cDNA plate (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Layout of the sample plate to be used denoting the samples, PC and NC</div>
+<p>Up-to 94 samples can be processed at once. A positive control (CPC HT) and Negative Control (ELB HT)is included in every plate that is processed using the COVIDSeq protocol.</p>
+</figcaption>
+</figure>
+</li>
+<li>Add 8.5 μL of the isolated SARS-CoV-2 sample into the wells of the cDNA plate.</li>
+<li>Add 8.5 μL of EPH3 HT to each well.</li>
+<li>Mix well with a P10 or P20 multichannel pipette. If plate shaker is available, within the laminar hood, shake the plate at 1600 rpm for 1 min.</li>
+<li>Seal and spin the plate at 1000 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Place the cDNA plate on a thermal cycler and run the following program
+<ol type="i">
+<li>Choose the preheat lid option</li>
+<li>Set the final volume of the reaction as 17 μL</li>
+<li>65<sup>o</sup>C for 3 min</li>
+<li>Hold at 4<sup>o</sup>C</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>First strand cDNA synthesis
+<ol type="a">
+<li>Prepare First strand cDNA Mastermix (for 96 samples) by mixing 864 μL of FSM HT and 96 μL of RVT HT in a 1.5mL microcentrifuge tube.</li>
+<li>Add 8 μL of the First strand cDNA mastermix into each well of the cDNA plate and pipette well to mix.</li>
+<li>Seal and spin the plate at 1000 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Place the cDNA plate on a thermal cycler and run the following program
+<ol type="i">
+<li>Choose the preheat lid option</li>
+<li>Set the final volume of the reaction as 25 μL</li>
+<li>25<sup>o</sup>C for 5 min</li>
+<li>50<sup>o</sup>C for 10 min</li>
+<li>80<sup>o</sup>C for 5 min</li>
+<li>Hold at 4<sup>o</sup>C</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The procedure can be paused here and the cDNA plate can be stored at −20<sup>o</sup>C for up to 7 days.</div>
+<h3 id="sec1.4">Amplification of cDNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>In this step, the SARS-CoV-2 virus genome present in the test samples is amplified using two separate PCR reactions that are then pooled together.</p>
+<ol start="4">
+<li>Amplification of prepared cDNA
+<ol type="a">
+<li>Label two 96-well PCR plates as COV1 and COV2.</li>
+<li>Prepare PCR1 Mastermix and PCR2 Mastermix in two separate 15 mL tubes.
+<ol type="i">
+<li>Add the following to each tube:
+<table id="undtbl1">
+<thead>
+<tr>
+<th>S.No</th>
+<th>Item name</th>
+<th>Volume for 96 samples</th>
+<th>Volume for 1 sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Nuclease Free Water</td>
+<td>451.2 μL</td>
+<td>4.7 μL</td>
+</tr>
+<tr>
+<td>2</td>
+<td>IPM HT</td>
+<td>1440 μL</td>
+<td>15μL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CPP1 HT (for PCR1)/ CPP2 HT (for PCR2)</td>
+<td>412.8μL</td>
+<td>4.3μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+<li>Add 5 μL each of first strand cDNA from the cDNA plate to corresponding wells of COV1 and COV2 plates.</li>
+<li>Add 20 μL of PCR1 Mastermix to each well of COV1 plate.</li>
+<li>Add 20 μL of PCR2 Mastermix to each well of COV2 plate.</li>
+<li>Seal and shake the COV1 and COV2 plates at 1600 rpm for 1 min.</li>
+<li>Centrifuge the plates at 1000 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Place the plates on individual thermal cyclers and run the following program
+<ol type="i">
+<li>Choose the preheat lid option</li>
+<li>Set the final volume of the reaction as 25 μL</li>
+<li>Set up the PCR with the following conditions
+<table id="undtbl2">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98<sup>o</sup>C</td>
+<td>3 min</td>
+<td>x 1 cycle</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98<sup>o</sup>C</td>
+<td>15 s</td>
+<td rowspan="2">x 35 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>65<sup>o</sup>C</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4<sup>o</sup>C</td>
+<td colspan="2">∞</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+<li>The program has a run time of approximately 03 h and 30 min.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The procedure can be paused here and the COV1 and COV2 plates can be stored at −20<sup>o</sup>C for up to 3 days.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Ethanol, Molecular Grade</td>
+<td>Merck</td>
+<td>100983</td>
+</tr>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>Ambion</td>
+<td>AM9906</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Illumina COVIDSeq Test 3072 samples</td>
+<td>Illumina</td>
+<td>20043675</td>
+</tr>
+<tr>
+<td>MiSeq Reagent Kit V3 (150 cycles)</td>
+<td>Illumina</td>
+<td>MS-102-3001</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS Assay Kit</td>
+<td>Thermo Fisher</td>
+<td>Q32851</td>
+</tr>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>SARS-CoV-2 RNA</td>
+<td>NasopharyngealoOropharyngeal swab samples</td>
+<td>NA</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>IDT for Illumina PCR Indexes Set 1–4</td>
+<td>Illumina</td>
+<td>20043137</td>
+</tr>
+<tr>
+<td colspan="3">Software and Algorithms</td>
+</tr>
+<tr>
+<td>bcl2fastq Conversion Software</td>
+<td>Illumina</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>Phylogenetic Assignment of Named Global Outbreak Lineages (PANGOLIN)</td>
+<td>Center for Genomic Pathogen Surveillance</td>
+<td><a href="https://github.com/cov-lineages/pangolin">https://github.com/cov-lineages/pangolin</a></td>
+</tr>
+<tr>
+<td>Nextstrain open-source toolkit</td>
+<td><a href="#bib4">Hadfield et al.,2018</a></td>
+<td><a href="https://github.com/nextstrain">https://github.com/nextstrain</a></td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Scripts used for the SARS-CoV-2 sequencing analysis and interpretation</td>
+<td><a href="#bib2">Poojary et al., 2020</a></td>
+<td><a href="https://github.com/banijolly/Genepi">https://github.com/banijolly/Genepi</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>96-Well PCR thermal cyclers</td>
+<td>Veriti 96-Well Thermal Cycler</td>
+<td>4375786</td>
+</tr>
+<tr>
+<td>Thermomixer with a 96-well PCR plate holder</td>
+<td>Eppendorf ThermoMixer C</td>
+<td>05–412-503</td>
+</tr>
+<tr>
+<td>96-Well PCR plate</td>
+<td>Thermo Fisher</td>
+<td>AB0600</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Description</th>
+<th>Storage</th>
+<th>Total volume required per reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SARS-CoV-2 RNA <sup><a href="#dtbl4fna">a</a></sup>
+</td>
+<td>Sample</td>
+<td>−20<sup>o</sup>C</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>CPC HT<sup><a href="#dtbl4fnb">b</a></sup>
+</td>
+<td>COVIDSeq Positive Control HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>ELB HT<sup><a href="#dtbl4fnb">b</a></sup>
+</td>
+<td>Elution Buffer HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>EPH3 HT</td>
+<td>Elution Prime Fragment 3HC Mix</td>
+<td>−20<sup>o</sup>C</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>FSM HT</td>
+<td>First Strand Mix HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>9 μL</td>
+</tr>
+<tr>
+<td>RVT HT</td>
+<td>Reverse Transcriptase HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>IPM HT</td>
+<td>Illumina PCR Mix HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>CPP1 HT</td>
+<td>COVIDSeq Primer Pool HT 1</td>
+<td>−20<sup>o</sup>C</td>
+<td>4.3 μL</td>
+</tr>
+<tr>
+<td>CPP2 HT</td>
+<td>COVIDSeq Primer Pool HT 2</td>
+<td>−20<sup>o</sup>C</td>
+<td>4.3 μL</td>
+</tr>
+<tr>
+<td>TB1 HT</td>
+<td>Tagmentation Buffer 1 HT</td>
+<td>4<sup>o</sup>C</td>
+<td>12 μL</td>
+</tr>
+<tr>
+<td>EBLTS HT</td>
+<td>Enrichment BLT HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>4 μL</td>
+</tr>
+<tr>
+<td>ST2 HT</td>
+<td>Stop TagmentBuffer2 HT</td>
+<td>4<sup>o</sup>C</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>TWB HT</td>
+<td>Tagmentation Wash Buffer HT</td>
+<td>4<sup>o</sup>C</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>EPM HT</td>
+<td>Enhanced PCR Mix HT</td>
+<td>−20<sup>o</sup>C</td>
+<td>24 μL</td>
+</tr>
+<tr>
+<td>Index adapter<sup><a href="#dtbl4fna">a</a></sup>
+</td>
+<td>IDT for Illumina PCR Indexes- Set 1,2,3,4</td>
+<td>−20<sup>o</sup>C</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>ITB</td>
+<td>Illumina Tune Beads</td>
+<td>RT</td>
+<td>396 μL (for 96 samples)</td>
+</tr>
+<tr>
+<td>80% Ethanol<sup><a href="#dtbl4fna">a</a></sup>
+</td>
+<td>80% Ethanol</td>
+<td>RT</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>RSB</td>
+<td>Resuspension Buffer</td>
+<td>4<sup>o</sup>C</td>
+<td>55 μL</td>
+</tr>
+<tr>
+<td>0.2N NaOH</td>
+<td>Denaturation solution</td>
+<td>RT</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>HT1</td>
+<td>Neutralizing Buffer</td>
+<td>−20<sup>o</sup>C</td>
+<td>2.4 mL</td>
+</tr>
+<tr>
+<td>PhiX</td>
+<td>Spike in Control</td>
+<td>20<sup>o</sup>C</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>NFW<sup><a href="#dtbl4fna">a</a></sup>
+</td>
+<td>Nuclease Free Water</td>
+<td>RT</td>
+<td>25 mL</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl4fna" class="table-footnote"><sup>a</sup>Items not included along with the Illumina COVIDSeq test kit</p>
+<p id="dtbl4fnb" class="table-footnote"><sup>b</sup>Positive control and Elution Buffer are provided in the COVIDSeq test kit. CPC HT is provided at a stock concentration of 1 million copies/μL. A working solution of 5 copies/μL have to be prepared before adding to the plate. Elution buffer is used directly as a negative control.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Library preparation and library pooling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 h</div>
+<p>In this step, the prepared cDNA of the SARS-CoV-2 genome is tagmented (tagged and fragmented), indexed and amplified to become sequencing-ready libraries.</p>
+<ol>
+<li>Tagmentation of PCR amplicons
+<ol type="a">
+<li>Label a new 96-well PCR plate as TAG plate.</li>
+<li>From COV1 and COV2 plates, combine 10 μL of contents from each well to their respective wells in TAG1 plate, and mix well. This results in a total volume of 20 μL in each well of the TAG1 plate.</li>
+<li>To make Tagmentation Mastermix:
+<ol type="i">
+<li>Label a 15 mL tube as Tagmentation Mastermix.</li>
+<li>Follow the table below to prepare Tagmentation Mastermix.
+<table id="undtbl4">
+<thead>
+<tr>
+<th>S.No</th>
+<th>Item name</th>
+<th>Volume for 96 samples</th>
+<th>Volume for 1 sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Nuclease-free water</td>
+<td>1920 μL</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>2</td>
+<td>TB1 HT</td>
+<td>1152 μL</td>
+<td>12 μL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>EBLTS HT</td>
+<td>384 μL</td>
+<td>4 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Vortex for 30 s to mix well.</li>
+</ol>
+</li>
+<li>Add 30 μL of Tagmentation Mastermix to each well in the TAG1 plate.</li>
+<li>Seal and shake the TAG1 plate at 1600 rpm for 1 min.</li>
+<li>Centrifuge at 1000 <b>×</b> <i>g</i> for 1 min if the contents of the well are found sticking to the walls or the seal of the TAG1 plate.</li>
+<li>Place on a thermal cycler and run the following program.
+<ol type="i">
+<li>Choose the preheat lid option</li>
+<li>Set the total volume of the reaction as 50 μL.</li>
+<li>55<sup>o</sup>C for 5 min</li>
+<li>Hold at 10<sup>o</sup>C.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Post Tagmentation Clean-up
+<ol type="a">
+<li>Centrifuge the TAG1 plate at 500 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Remove the seal and add 10 μL of ST2 HT to each well of the TAG1 plate.</li>
+<li>Seal and shake at 1600rpm for 1 min.</li>
+<li>Incubate the plate at room temperature (22°C–25°C) for 5 min.</li>
+<li>Centrifuge the TAG1 plate at 500 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Remove the seal carefully and place the plate on a magnetic stand.</li>
+<li>Wait for 3 min/until the liquid is clear.</li>
+<li>Remove and discard all supernatants from the wells.</li>
+<li>Wash the beads as follows
+<ol type="i">
+<li>Remove the plate from the magnetic stand.</li>
+<li>Add 100 μL of TWB HT to each well.</li>
+<li>Seal and shake at 1600 rpm for 1 min and centrifuge at 500 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Remove the seal and place the plate on the magnetic stand. Wait for 3 min/until the liquid is clear.</li>
+<li>Remove and discard the supernatant from each well.</li>
+</ol>
+</li>
+<li>Repeat the wash steps (step i; i-v) one more time.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do <b>not</b> discard the supernatant after the second wash, to prevent the beads from over drying.</div>
+<ol start="3">
+<li>Amplification of tagmented amplicons
+<ol type="a">
+<li>In a 15 mL tube, prepare Enhanced PCR Mix
+<ol type="i">
+<li>Add 2304 μL of EPM HT (24 μL <b>×</b> 96 samples).</li>
+<li>Add 2304 μL of Nuclease-free water (24 μL <b>×</b> 96 samples).</li>
+<li>Vortex the tube to mix.</li>
+</ol>
+</li>
+<li>Remove and discard the supernatant from the TAG1 plate.</li>
+<li>Use a 10 μL or 20 μL pipette to remove any remaining TWB HT from the TAG1 plate.</li>
+<li>Add 40 μL of Enhanced PCR Mix to each well of the TAG1 plate.</li>
+<li>Add 10 μL of index adapters to each well of the TAG1 plate.</li>
+<li>Seal and shake the plate at 1600 rpm for 1 min and centrifuge the plate at 500 <b>×</b> <i>g</i> for 1 min.
+<div class="critical">
+<span class="critical-title">Critical:</span> Inspect the tubes to make sure the beads are fully resuspended and are not found at the bottom of the tubes.</div>
+</li>
+<li>Place on a thermal cycler and run the following PCR program
+<ol type="i">
+<li>Choose the preheat lid option and set the temperature to 100<sup>o</sup>C.</li>
+<li>Set the total volume of the reaction to be 50 μL.
+<table id="undtbl5">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initialization</td>
+<td>72<sup>o</sup>C</td>
+<td>3 min</td>
+<td>x1 cycle</td>
+</tr>
+<tr>
+<td>Initial Denaturation</td>
+<td>98<sup>o</sup>C</td>
+<td>3 min</td>
+<td>x1 cycle</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98<sup>o</sup>C</td>
+<td>20 s</td>
+<td rowspan="3">x7 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60<sup>o</sup>C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72<sup>o</sup>C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72<sup>o</sup>C</td>
+<td>3 min</td>
+<td>x1 cycle</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>10<sup>o</sup>C</td>
+<td colspan="2">∞</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Library pooling and Clean up
+<ol type="a">
+<li>Centrifuge the TAG1 plate at 500 <b>×</b> <i>g</i> for 1 min.</li>
+<li>Remove the seal and place the plate on a magnetic stand and wait for 3 min/until the liquid is clear.</li>
+<li>Transfer 5 μL of library from each well into an 8-tubes strip. This results in a pooled volume of 60 μL in each tube of the 8-tubes strip.
+<div class="critical">
+<span class="critical-title">Critical:</span> Discard and change tips for each column of samples while transferring.</div>
+</li>
+<li>Transfer 55 μL of pooled library from each tube to a 1.5 mL microcentrifuge tube. This results in a total of 440 μL of pooled libraries (from 96 samples).</li>
+<li>Add 396 μL of ITB to each tube (ITB volume is calculated by multiplying the total volume of the pooled libraries with 0.9 i.e., for 96 samples: 440 μL <b>×</b> 0.9 = 396 μL)</li>
+<li>Vortex the tube to mix well.</li>
+<li>Incubate the tube at room temperature for 5 min.</li>
+<li>Spin briefly and place the tube on a 1.5mL tube magnetic stand and wait for 5 min.</li>
+<li>Remove and discard all supernatants.</li>
+<li>Wash the beads as follows:
+<ol type="i">
+<li>Add 1000 μL of freshly prepared 80% ethanol to the tube and wait for 30 s.</li>
+<li>Remove and discard the supernatant.</li>
+<li>Repeat the above-mentioned wash steps one more time for a <b>total of 2 washes</b> with 80% ethanol.</li>
+</ol>
+</li>
+<li>Remove any residual ethanol left on the tube.</li>
+<li>Air dry the beads for 2 min.</li>
+<li>Add 55 μL of Resuspension Buffer to the tube and vortex to mix.</li>
+<li>Incubate at room temperature for 2 min.</li>
+<li>Spin briefly and place the tube in the magnetic stand and wait for 2 min.</li>
+<li>Label a new 1.5 mL tube as Final Pool.</li>
+<li>Transfer 50 μL of the supernatant into the Final Pool tube.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The procedure can be paused here and the Final Pool tube can be stored at −20<sup>o</sup>C for 30 days.</div>
+<ol start="5">
+<li>Quantification and Normalization of the library pool
+<ol type="a">
+<li>Using the Qubit High Sensitivity dsDNA quantification kit (Invitrogen), quantify the library pool
+<ol type="i">
+<li>Dilute 1 μL of the pooled library sample in the ratio of 1:3.</li>
+<li>Use 2 μL of the diluted library for quantification.</li>
+<li>Calculate the actual concentration of the library by factoring in the dilution.</li>
+</ol>
+</li>
+<li>Load 2 μL of the pooled library (undiluted) onto a 2% agarose gel. The libraries should be observed between the size 300–400 bp.</li>
+<li>Using the formula below, calculate the concentration of the library in Molar units.</li>
+<li>Dilute the library with Resuspension Buffer to a final concentration of 4nM.</li>
+<li>The formula for calculating Molarity:</li>
+</ol>
+</li>
+</ol>
+<p>[Library Conc (ng/μL)]/ [660(g/mol) x average library size (bp)]<b>×</b>10<sup>6</sup>= Conc. of Library (nM)</p>
+<h3 id="sec3.2">Sequencing the libraries</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ~22 h: according to MiSeq reagent kit V3 (2 × 75bp)</div>
+<p>The prepared COVIDSeq libraries will be sequenced in this step using the MiSeq sequencing platform</p>
+<ol start="6">
+<li>Preparing PhiX
+<ol type="a">
+<li>Label a new 1.5 mL tube as PhiX Control.</li>
+<li>Combine 2 μL of PhiX stock library (10nM) and 3 μL of Nuclease-free water to make 4nM PhiX library
+<div class="critical">
+<span class="critical-title">Critical:</span> Prepare a fresh PhiX dilution and use it within 12 hours of preparation.</div>
+</li>
+<li>Label a new 1.5 mL tube as PhiX-Final and add 5 μL of diluted PhiX (4nM) and 5 μL of 0.2N freshly prepared NaOH.</li>
+<li>Vortex the tube briefly to mix. Spin and incubate the tube at room temperature for 5 min.</li>
+<li>Add 990 μL of prechilled HT1 to the PhiX-Final tube resulting in 1mL of 20pM PhiX library.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Denaturation of COVIDSeq library
+<ol type="a">
+<li>Label a new 1.5 mL tube as Library-Final and add 5 μL of diluted library (4nM) and 5 μL of 0.2N freshly prepared NaOH.</li>
+<li>Vortex the tube briefly to mix. Spin and incubate the tube at room temperature for 5 min.</li>
+<li>Add 990 μL of pre-chilled HT1 to the tube resulting in 1mL of 20pM Final library.
+<div class="critical">
+<span class="critical-title">Critical:</span> For instructions regarding final loading concentration and PhiX spike-in for MiSeq system, refer to the MiSeq system Denature and Dilute Libraries Guide.</div>
+</li>
+<li>To prepare 6pM final loading concentration library
+<ol type="i">
+<li>Label a new 1.5mL tube as 6pM Final Library tube.</li>
+<li>Add 180 μL of the 20pM library from the Library-Final tube.</li>
+<li>Add 420 μL of pre-chilled HT1 and mix well.</li>
+<li>Discard 6 μL of the mixture.</li>
+<li>Add 6 μL of the 20pM PhiX library for 1% spike in as recommended by Illumina Inc.</li>
+<li>Mix well with a pipette, spin briefly and place the tube on ice. The library is ready to be loaded onto the flow cell.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The final library has to be loaded onto the flow cell within 30 minutes of preparation.</div>
+<div class="note">
+<span class="note-title">Note:</span> To reduce the handling time, the denaturation of the library and PhiX can be performed simultaneously.</div>
+<ol start="8">
+<li>Sequencing and expected Output
+<ol type="a">
+<li>Load the library into the MiSeq Sequencing cartridge and initiate sequencing as per the MiSeq Sequencing guide by Illumina Inc.</li>
+<li>For sequencing using MiSeq v3 2<b>×</b>75 cycles kit, the estimated yield is about 3.3–3.8 Gb as per Illumina Inc.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Upon successful tagmentation and size selection the final library pool will appear as ~300 bp size band on 2% agarose gel (<a href="#fig2">Figure 2</a>). Any deviation in the fragment size may be the result of erroneous tagmentation or size selection, which can be minimized with proper handling and pipetting practices.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Quality of the final library pool was analyzed by agarose gel electrophoresis (2%), the expected fragment of ~300 bp size was observed</div>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec5.1">Genome assembly, variant calling, and phylogenetic analysis</h3>
+<p>This step describes the basic bioinformatics pipeline for genome assembly and identification of variants in the SARS-CoV-2 genome. The raw sequencing data generated by Illumina sequencing platforms are in the form of Binary Base Call (BCL) files and require conversion to FASTQ format before further processing.</p>
+<ol>
+<li>The BCL files generated by the sequencer are demultiplexed to FASTQ files using the bcl2fastq conversion software provided by Illumina using the command:</li>
+</ol>
+<p>bcl2fastq --runfolder-dir&lt;path to the directory of the sequencing run files&gt; --sample-sheet &lt;path to the sample sheet&gt; --output-dir&lt;path to demultiplexed output folder&gt;</p>
+<ol start="2">
+<li>The raw FASTQ files need to undergo additional processing steps, including quality control, trimming, alignment against the SARS-CoV-2 reference genome and sorting. The resulting BAM file containing mapped and sorted reads are then used to call variants and generate a consensus sequence of the genomes in FASTA file format. The steps to assemble SARS-CoV-2 genomes from raw FASTQ files are detailed in a recent protocol (<a href="#bib2">Poojary et al 2020</a>). Sample parameters and metrics that may be used to assess the quality of the assembled genomes are given in <a href="#tbl1">Table 1</a>.
+<table id="tbl1" class="dense-table">
+<caption>Table 1. Data generated from a single sample of the 96 samples sequenced using the MiSeq platform</caption>
+<thead>
+<tr>
+<th>Sample ID</th>
+<th>Number of raw reads R1</th>
+<th>Number of raw reads R2</th>
+<th>Number of reads after trimming R1</th>
+<th>Number of reads after trimming R2</th>
+<th>% Of reads Aligned with reference</th>
+<th>Number of base Pairs Covered</th>
+<th>X coverage</th>
+<th>Genome coverage</th>
+<th>Number of variants called</th>
+<th>Pango lineage</th>
+<th>Time taken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSXXXX</td>
+<td>1431919</td>
+<td>1431919</td>
+<td>1221580</td>
+<td>1221580</td>
+<td>99.52%</td>
+<td>84310380</td>
+<td>2819.46</td>
+<td>99.84%</td>
+<td>11</td>
+<td>B.1.36</td>
+<td>318 s</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>For assignment of lineages to the assembled genome FASTA sequences, we use the Phylogenetic Assignment of Named Global Outbreak Lineages (PANGOLIN) software command line tool using the command:</li>
+</ol>
+<p>pangolin &lt;FASTA sequence file name&gt;.fasta</p>
+<p>Alternatively, the web version of PANGOLIN (available at <a href="https://pangolin.cog-uk.io/">https://pangolin.cog-uk.io/</a>) can be used to assign lineages to the generated FASTA sequences (<a href="#bib3">Rambaut et al 2020</a>).</p>
+<ol start="4">
+<li>The FASTA sequence files can also be used to analyze and visualize evolutionary relationships through phylogenetic clustering. For performing the phylogenetic analysis, we use the open-source tool-kit Nextstrain following a recently detailed protocol (<a href="#bib5">Jolly and Scaria 2021</a>). The comparison of data output, coverage and time taken for analysis between MiSeq and NovaSeq 6000 is provided in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Mmc1.xlsx">Tables S1</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Mmc2.xlsx">S2</a>.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>As explained in our previous report (<a href="#bib1">Bhoyar et al 2021</a>), the Illumina COVIDSeq assay can detect RNA from SARS-CoV-2 in nasopharyngeal, oropharyngeal, and mid-turbinate nasal swabs from patients suspected to have COVID-19 with the highest C<sub>T</sub> 37 to the lowest C<sub>T</sub> samples. However, we have noticed that in order to capture the whole SARS-CoV-2 genome, RNA samples below C<sub>T</sub> 22 should be considered.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Amplification in the negative control (NC) (Step: cDNA Preparation)</p>
+<p>In some cases, users may get amplification in the negative control well in the COVIDSeq assay.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>To avoid amplification in the negative control we encourage the users to stick to the following practices.</p>
+<ol>
+<li>Autoclave all the pipettes before initiating a new experiment.</li>
+<li>Thoroughly decontaminate the Biosafety cabinet before the experiment.</li>
+<li>Use fresh pipette tips and fresh consumables between samples and dispensing reagents.</li>
+<li>Use aerosol resistant pipette tips to minimize the risk of carry over and sample to sample cross contamination.</li>
+<li>Use fresh PCR plate sealing films every time.</li>
+</ol>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Low genome coverage in samples (Step-Genome Assembly, Variant Calling and Phylogenetic Analysis).</p>
+<p>Users may find the genome coverage in certain samples is low and the samples do not return any variant after the analysis.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Users may ensure that the starting material has a high viral load i.e., we recommend samples with a C<sub>T</sub> value of &lt;25 for 99% genome coverage.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bhoyar, R.C., Jain, A., Sehgal, P., Divakar, M.K., Sharma, D., Imran, M., Jolly, B., Ranjan, G., Rophina, M., Sharma, S., et al. (2021). High throughput detection and genetic epidemiology of SARS-CoV-2 using COVIDSeq next-generation sequencing. PLoS One <i>16</i>, e0247115. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00461-5/sref1">View at publisher</a></p>
+<p id="bib2">Poojary, M., Shantaraman, A., Jolly, B., and Scaria, V. (2020). Computational protocol for assembly and analysis of SARS-nCoV-2 genomes. Res. Rep. <i>4</i>, e1-e14doi. <a class="external-link" href="https://doi.org/10.9777/rr.2020.10001">https://doi.org/10.9777/rr.2020.10001</a></p>
+<p id="bib3">Rambaut, A., Holmes, E.C., O’Toole, Á., Hill, V., McCrone, J.T., Ruis, C., du Plessis, L., and Pybus, O.G. (2020). A dynamic nomenclature proposal for SARS-CoV-2 lineages to assist genomic epidemiology. Nat. Microbiol. <i>5</i>, 1403-1407. <a class="external-link" href="https://doi.org/10.1038/s41564-020-0770-5">https://doi.org/10.1038/s41564-020-0770-5</a></p>
+<p id="bib4">Hadfield, J., Megill, C., Bell, S.M., Huddleston, J., Potter, B., Callender, C., Sagulenko, P., Bedford, T., and Neher, R.A. (2018). Nextstrain: real-time tracking of pathogen evolution. Bioinformatics <i>1</i>, 4121-4123. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bty407">https://doi.org/10.1093/bioinformatics/bty407</a></p>
+<p id="bib5">Jolly, B. and Scaria, V. (2021). Computational analysis and phylogenetic clustering of SARS-CoV-2 genomes. Bio Protoc. <i>11</i>, e3999. <a class="external-link" href="https://doi.org/10.21769/BioProtoc.3999">https://doi.org/10.21769/BioProtoc.3999</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Dr. Sridhar Sivasubbu (<a href="mailto:sridhar@igib.in">sridhar@igib.in</a>).</p>
+<h4>Materials availability</h4>
+<p>All the materials used in the protocol are available without any restrictions; the details of the kits used in the protocol are given in the “<a href="#key-resources-table">key resources table</a>”.</p>
+<h4>Data and code availability</h4>
+<p>All the scripts used for the SARS-CoV-2 sequencing analysis and interpretation are adopted from <a href="#bib2">Poojary et al 2020</a> (GitHub repository: <a href="https://github.com/banijolly/Genepi">https://github.com/banijolly/Genepi</a>).</p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Mmc1.xlsx">Table S1. Data generated from Miseq platform for comparison, related to step 4 in “quantification and statistical analysis”</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/937-Mmc2.xlsx">Table S2. Data generated from NovaSeq6000 platform for comparison, related to related to step 4 in “quantification and statistical analysis”</a></p>
+<h3>Acknowledgments</h3>
+<p>Authors acknowledge funding from the <a href="https://doi.org/10.13039/501100012522">Council of Scientific and Industrial Research</a> (CSIR), India, through grants CODEST and MLP2005. The funders had no role in the design of experiment, analysis, or decision to publish.</p>
+<h3>Author contributions</h3>
+<p>All of the authors contributed substantially to the conception and design of the study, the acquisition of data, analysis, and interpretation. S.S. and V.S. contributed with funding acquisition.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

@@ -1,0 +1,584 @@
+<article>
+<section>
+<h1 id="header">Training protocol for probabilistic Pavlovian conditioning in mice using an open-source head-fixed setup</h1>
+<p><time datetime="2021-09-10">Published: September 10, 2021</time></p>
+<p>Panna Hegedüs,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> Anna Velencei,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Claire-Hélène de Belval,<sup><a href="#aff1">1</a>,<a href="#aff3">3</a></sup> Julia Heckenast,<sup><a href="#aff1">1</a></sup> and Balázs Hangya<sup><a href="#aff1">1</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Lendület Laboratory of Systems Neuroscience, Institute of Experimental Medicine, Budapest, Hungary</p>
+<p id="aff2"><sup>2</sup>János Szentágothai Doctoral School of Neurosciences, Semmelweis University, Budapest, Hungary</p>
+<p id="aff3"><sup>3</sup>Interdisciplinary Masters’ in Life Sciences, Ecole Normale Supérieure, Paris, France</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:hegedus.panna@koki.hu">hegedus.panna@koki.hu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:hangya.balazs@koki.hu">hangya.balazs@koki.hu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100795">10.1016/j.xpro.2021.100795</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>High throughput, temporally controlled, reproducible quantitative behavioral assays are important for understanding the neural mechanisms underlying behavior. Here, we provide a step-by-step training protocol for a probabilistic Pavlovian conditioning task, where two auditory cues predict probabilistic outcomes with different contingencies. This protocol allows us to study the differential behavioral and neuronal correlates of expected and surprising outcomes. It has been tested in combination with chronic <i>in vivo</i> electrophysiological recordings and optogenetic manipulations in ChAT-Cre and PV-Cre mouse lines.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref6">Hegedüs et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>We provide a training protocol for a probabilistic Pavlovian conditioning task in mice</li>
+<li>Two auditory cues predict probabilistic outcomes with different contingencies</li>
+<li>Possible to combine with chronic <i>in vivo</i> electrophysiology and optogenetics</li>
+<li>Ideal for testing behavioral and neural correlates of expected and surprising outcomes</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/978-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Pavlovian or classical conditioning is an associative learning paradigm. As a hallmark, the outcome does not depend on the actions of the performing agent, as in the case of Ivan Pavlov’s famous experiment, in which his dog formed an association between a previously neutral auditory stimulus and food reward (<a href="#bib3">Fanselow and Poulos, 2005</a>). This allows the experimenter to have full control over the outcome contingencies, making this task ideal for probing the neural mechanisms underlying the processing of probabilistic outcomes (<a href="#bib13">Pearce and Hall, 1980</a>; <a href="#bib17">Schultz et al., 1997</a>). This Pavlovian training protocol was tested in combination with extracellular tetrode recordings (<a href="#bib6">Hegedüs et al., 2021</a>) and optogenetic tagging of neurons. We confirmed that it is suitable for optogenetic manipulations and fiber photometry experiments as well. Although not tested, we believe that it would also allow investigation of the effects of pharmacological or chemogenetic manipulations on associative learning. We further envision that, with an addition of a head plate designed for imaging window surgeries, it could be used in combination with two photon imaging. Before presenting the training protocol, we describe the preparatory phase of the experiment including animal welfare, headbar surgery and proper handling of mice.</p>
+<h3 id="sec1.1">The training setup</h3>
+<p>The training apparatus consists of a sound-attenuated training chamber, a head-fixation platform, an open source behavior control unit (Bpod, Sanworks), peripheries for interacting with the animal (lick port, water and air delivery systems, speakers to provide sound stimuli), a camera, optional open source stimulator unit (PulsePal, Sanworks (<a href="#bib16">Sanders and Kepecs, 2014</a>)) and data acquisition board (Open Ephys (<a href="#bib19">Siegle et al., 2017</a>)), and a PC (<a href="#fig1">Figures 1</a>A and 1B). The custom-built sound-insulated Faraday-cage minimizes environmental noise (<a href="#fig1">Figure 1</a>C) and electric noise during the experiment. In the center of the box, an adjustable platform is placed along with two headbar holders to keep the mice’s head in a fixed position during the training sessions. A lick port delivering water reward and a cannula delivering air puff as punishment are adjusted to the animal’s position. A camera is placed at the top right corner of the box and speakers for delivering auditory cues are mounted on the sidewalls of the box. The behavioral protocol is controlled via an open source closed-loop finite state machine (Bpod, Sanworks, see <a href="#fig1">Figures 1</a>A and 1B). This setup allows us to train mice on high-precision behavioral protocols with temporally controlled stimuli (<a href="#fig1">Figure 1</a>D). Details of this open source multipurpose training platform were published in (<a href="#bib20">Solari et al., 2018</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/978-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. The experimental setup</div>
+<p>(A) Schematic diagram of the setup. Modified from (<a href="#bib20">Solari et al., 2018</a>).</p>
+<p>(B) Photos of mice performing the auditory Pavlovian conditioning task. 1, lick port; 2, tubing for air puff; 3, headbar holders; 4, camera; 5, speakers; 6, sound absorbing foams.</p>
+<p>(C) Sound pressure levels associated with the flow of air at air-puff punishment, the click sound of the solenoid valve at reward presentation and background noise. Box-whisker plots show median, interquartile range and non-outlier range. ∗∗∗, p &lt; 0.001, Mann-Whitney U-test.</p>
+<p>(D) Delay measurements for sound cues, water and air puff delivery. Underlying data are from refs. (<a href="#bib20">Solari et al., 2018</a>; <a href="#bib6">Hegedüs et al., 2021</a>).</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Regularly calibrate valve opening durations to deliver the right amount of water rewards. It is possible to calibrate sound pressure levels of auditory stimuli as well. See (<a href="#bib20">Solari et al., 2018</a>) for details.</div>
+<h3 id="sec1.2">Animal welfare</h3>
+<p>Our experiments were carried out using ChAT-Cre, PV-Cre and 3×Tg-AD Bl6 (<a href="#bib12">Oddo et al., 2003</a>) young adult (3–6 months) and aged (12–21 months) mice of both sexes.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Before the experiment, ensure that animal care and all experiments are conducted according to the relevant ethical guidelines, reviewed and approved by your institute’s animal welfare and ethical committee, as well as all necessary regulatory agencies.</div>
+<h3 id="sec1.3">Headbar surgery</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h + 1 week recovery period</div>
+<p>We provide a description of our surgical protocol for mounting a headbar, which is used for head fixation while training mice in the head-fixed setup. We use titanium headbars weighing 0.27 g (dimensions, 19 mm × 3 mm × 1 mm); however, we expect other headfixation systems to provide similar results.</p>
+<ol>
+<li>Put the mouse on the scale and measure its pre-surgery weight.</li>
+</ol>
+<ol start="2">
+<li>General anesthesia
+<ol type="a">
+<li>Briefly place the mouse in an anesthesia induction chamber (custom-built or commercial) to induce anesthesia by isoflurane inhalation.
+<div class="critical">
+<span class="critical-title">Critical:</span> Continuously monitor breathing during the induction.</div>
+</li>
+<li>Inject a mixture of ketamine-xylazine intraperitoneally (83 mg/kg and 17 mg/kg respectively, dissolved in saline).</li>
+<li>Confirm the loss of nociceptive reflexes by pinching the paws/tail with surgical tweezers.</li>
+<li>Monitor breathing and nociceptive reflexes throughout the surgery.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Shave the scalp. It is recommended to apply a small amount of water on the fur before shaving to limit the spread of potential airborne allergens.</li>
+<li>Disinfect the scalp skin with Betadine.</li>
+<li>Inject Lidocaine (or other approved local anesthetic) subcutaneously to achieve local anesthesia of the scalp skin and connective tissue.</li>
+<li>Fix the animal’s head in the stereotaxic frame.</li>
+<li>Cover the eyes with eye ointment (e.g., Corneregel) to protect them from dehydration and strong light.</li>
+<li>Remove the skin, connective tissue and periosteum from the calvaria using surgical scissors, forceps and scraper. Optionally, make small scratches on the skull with a scalpel to increase the surface for better adhesion of the dental cement.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the skull is perfectly clean and dry. Tissue debris can lead to improper adhesion of the surgical cement and detachment of the implant.</div>
+<ol start="9">
+<li>Level the skull along both the lateral and antero-posterior axes. We recommend using two symmetrical points over the parietal plates, 2 mm from the sagittal suture for lateral leveling (<a href="#bib7">Király et al., 2020</a>).</li>
+<li>Cover the calvaria surface with high-adhesive dental cement (e.g., Metabond).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Most high-adhesive cements should be kept and mixed on ice to aid polymerization.</div>
+<ol start="11">
+<li>Mount the headbar on the top of the skull by using acrylic powder and liquid resin (e.g., from Lang Dental). We recommend positioning the headbar over or right in front of Bregma. Implanting a small wood stick holder can help positioning the head of the mouse during head-fixation.</li>
+<li>Once the dental cement is cured, remove the mouse from the stereotax.</li>
+<li>Place the mouse on the scale and measure its weight, now with the implant mounted.</li>
+<li>Inject analgesic according to your approved protocol (e.g., buprenorphine, BupaQ).</li>
+<li>We recommend injecting 0.5 mL saline subcutaneously to prevent dehydration. It is recommended to distribute large amounts to multiple injection sites.</li>
+<li>Put the mouse in its homecage. Place the cage on a heating pad until the mouse wakes up to prevent hypothermia.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Animals were single-housed from the day of the surgery during the entire course of the experiment to prevent aggression and damage to the implants, and to allow proper control over water intake.</div>
+<div class="note">
+<span class="note-title">Note:</span> Avoid low cage tops that can block the movement of implanted mice. Cage tops can also be used upside down if they do not leave enough space for the implanted mice.</div>
+<h3 id="sec1.4">Handling, water restriction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–20 min / day for 1 week</div>
+<p>After surgery, mice are allowed a 1-week recovery period. Handling and water restriction of mice starts 1–2 weeks prior to the training protocol. Animals are handled and habituated to human touch on a daily basis. Below, we provide a short description of our handling protocol (see also <a href="#fig2">Figures 2</a>A–2C).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/978-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Animal handling</div>
+<p>(A–C) Different phases of handling mice: the experimenter putting one hand in the cage (A), lifting the mouse (B) and letting it explore (C). Note that the mouse in panel B was implanted with a moveable tetrode drive besides the headbar, while the mouse in panel C had fixed bilateral optic fiber implants. Note also that lifting the mouse by the tail should be avoided; however, gently holding the tail during lifting can prevent the mouse from falling.</p>
+<p>(D) Provide water in a weigh boat or equivalent container.</p>
+<p>(E) Measure the weight daily.</p>
+<p>(F) Mice drop weight at the beginning of water restriction, but the weight loss should be moderate, and the weight should stabilize after a few days and remain stable throughout the experimental phase.</p>
+</figcaption>
+</figure>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> It is possible to include longer delays between headbar surgery and start of handling and water restriction. However, please note that if the training is combined with recording, then extending this delay could result in decreased signal quality.</div>
+<ol start="17">
+<li>Transport the animals to the behavioral testing room or facility a few days prior to the beginning of handling (typically ∼1 week after surgery).</li>
+<li>The experimenter opens the cage in a way that half of it is still covered by the top and places his/her gloved hand into the cage and allows the mice to sniff it or climb onto it.</li>
+<li>The experimenter lifts the mouse and places it onto his/her open palm a little above the cage; this way the animal starts to get used to human touch but still has the option to climb off.</li>
+<li>If the animal is not trying to escape from the experimenter, he/she should lift the mouse and let it explore and sniff the experimenter’s hand.</li>
+<li>Measure the weight of the mouse.</li>
+<li>Reward the animal with a snack (e.g., sunflower seed) after the handling. We found that mice became used to human touch sooner when the handling process was associated with food reward, in spite of the fact that no food restriction was applied.</li>
+<li>Water restriction protocol can be started in parallel with handling (<a href="#fig2">Figures 2</a>D–2F). Place a small weigh boat into the cage and fill it with 1 mL of water daily (1–1.5 mL for aged mice), measured with a syringe. Below we provide a list of behavioral and appearance changes that can be signs of dehydration; observing these signs at any time, the daily amount of water should be raised, or the water restriction should be suspended. Signs of severe dehydration in mice:
+<ol type="a">
+<li>After pinching the skin over the back, the skin remains bunched up</li>
+<li>Mice are weak and having trouble with gripping the cage bar</li>
+<li>Mice are curled up in the corner and barely moving or exploring</li>
+<li>Shrunken or recessed eyes</li>
+<li>Fuzzy facial and back fur</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The weight of the animals should be measured daily, and their behavior and potential signs of dehydration should be monitored regularly.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>ChAT-IRES-Cre mice</td>
+<td><a href="https://www.jax.org/">https://www.jax.org/</a></td>
+<td>Cat#006410</td>
+</tr>
+<tr>
+<td>PV-Cre mice</td>
+<td><a href="https://www.jax.org/">https://www.jax.org/</a></td>
+<td>Cat#008069</td>
+</tr>
+<tr>
+<td>3×Tg-AD mice</td>
+<td><a href="https://www.mmrrc.org/">https://www.mmrrc.org/</a></td>
+<td>Cat#34830-JAX</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>MATLAB R2016a</td>
+<td><a href="https://mathworks.com/">https://mathworks.com/</a></td>
+<td>R2016a</td>
+</tr>
+<tr>
+<td>Algorithms for behavioral analysis</td>
+<td><a href="https://github.com/hangyabalazs/VP_data_analysis">https://github.com/hangyabalazs/VP_data_analysis</a></td>
+<td>Commit#6308804</td>
+</tr>
+<tr>
+<td>Algorithms for closed loop behavioral control</td>
+<td><a href="https://github.com/hangyabalazs/Bpod_r0_5">https://github.com/hangyabalazs/Bpod_r0_5</a></td>
+<td>CuedOutComeTask</td>
+</tr>
+<tr>
+<td>Code for simple data analysis of lick responses and neural recordings</td>
+<td><a href="https://github.com/hangyabalazs/CellBase">https://github.com/hangyabalazs/CellBase</a></td>
+<td>ultimate_psth.m</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Isoflurane</td>
+<td><a href="https://vetcentre.com/">https://vetcentre.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Ketamine</td>
+<td><a href="https://vetcentre.com/">https://vetcentre.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Xylazine</td>
+<td><a href="https://vetcentre.com/">https://vetcentre.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Lidocaine</td>
+<td>Local pharmacy</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Betadine</td>
+<td>Local pharmacy</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Buprenorphine</td>
+<td><a href="http://www.richter-pharma.com/">http://www.richter-pharma.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Promethazine</td>
+<td><a href="https://vetcentre.com/">https://vetcentre.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Paraformaldehyde</td>
+<td><a href="https://taab.co.uk/">https://taab.co.uk/</a></td>
+<td>Cat#P001</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Standard surgical scissor</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#14060-10</td>
+</tr>
+<tr>
+<td>Surgical forceps</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#11151-10</td>
+</tr>
+<tr>
+<td>Scraper</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#10075-16</td>
+</tr>
+<tr>
+<td>Jet Set-4 Denture Repair Powder and Liquid</td>
+<td><a href="https://www.langdental.com/">https://www.langdental.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Metabond dental cement</td>
+<td><a href="http://www.parkell.com/">http://www.parkell.com/</a></td>
+<td>Cat#S380</td>
+</tr>
+<tr>
+<td>Headbar</td>
+<td>Custom made</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Headbar holders</td>
+<td>Custom made</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Sound-attenuated training chamber</td>
+<td><a href="https://github.com/hangyabalazs/Rodent_behavior_setup/">https://github.com/hangyabalazs/Rodent_behavior_setup/</a></td>
+<td>Commit#85897d1</td>
+</tr>
+<tr>
+<td>Lick port</td>
+<td><a href="https://www.shapeways.com/">https://www.shapeways.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Infrared sensor and emitter</td>
+<td><a href="https://www.digikey.com/">https://www.digikey.com/</a></td>
+<td>Cat#480-1958-ND and Cat#480-1969-ND</td>
+</tr>
+<tr>
+<td>Speakers</td>
+<td><a href="https://www.digikey.com/">https://www.digikey.com/</a></td>
+<td>Cat#668-1447-ND</td>
+</tr>
+<tr>
+<td>Camera</td>
+<td><a href="https://www.flir.eu/iis/machine-vision/">https://www.flir.eu/iis/machine-vision/</a></td>
+<td>Cat#FL3-U3-32S2M-CS</td>
+</tr>
+<tr>
+<td>Bpod</td>
+<td><a href="https://sanworks.io/">https://sanworks.io/</a></td>
+<td>Cat#1027</td>
+</tr>
+<tr>
+<td>Teensy 3.2</td>
+<td><a href="https://www.pjrc.com/teensy/">https://www.pjrc.com/teensy/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PulsePal (if photostimulation is performed)</td>
+<td><a href="https://sanworks.io/">https://sanworks.io/</a></td>
+<td>Cat#1102</td>
+</tr>
+<tr>
+<td>Optogenetics Kit (if photostimulation is performed)</td>
+<td>
+<a href="https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=6148">https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=6148</a>; light source alternative: <a href="http://laserglow.com">laserglow.com</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Data Acquisition System (if recording is performed)</td>
+<td><a href="https://open-ephys.org/acquisition-system/starter-kit">https://open-ephys.org/acquisition-system/starter-kit</a></td>
+<td>Version#2.4</td>
+</tr>
+<tr>
+<td>Plastic tubing</td>
+<td><a href="https://www.thermofisher.com/">https://www.thermofisher.com/</a></td>
+<td>Cat#8001-0102 and Cat#8001-0204</td>
+</tr>
+<tr>
+<td>Polyethylene tubing</td>
+<td><a href="https://www.warneronline.com/">https://www.warneronline.com/</a></td>
+<td>Cat#64-0755/PE-160</td>
+</tr>
+<tr>
+<td>Feeding needle</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#18060-20</td>
+</tr>
+<tr>
+<td>Bulldog serrefine</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#18050-28</td>
+</tr>
+<tr>
+<td>Bone rongeour</td>
+<td><a href="https://www.finescience.com/en-US/">https://www.finescience.com/en-US/</a></td>
+<td>Cat#16012-12</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Behavioral training</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20–60 min / day for 6–8 days for the full training protocol</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min for step 2</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min for step 3</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 40 min for step 4</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 40 min for step 5</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 50 min for step 6</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> 60 min for step 7</div>
+<p>We provide a detailed description of the training protocol from the beginning to the point when the mice have learned the task (<a href="#fig3">Figures 3</a>A and 3B). We use a 1 training session/day protocol, i.e., each training step we describe here should be performed on consecutive days. The probabilistic training protocol consists of two cues and associated reinforcement; one cue predicts likely reward (80% reward, 10% punishment, 10% omission) and the other cue predicts likely punishment (25% reward, 65% punishment, 10% omission).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/978-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The probabilistic Pavlovian conditioning task</div>
+<p>(A) Flowchart indicating the states of the task.</p>
+<p>(B) Schematic diagram of reinforcement contingencies during different training phases.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> These contingencies were calibrated to keep mice motivated on the task. We found that mice often stop licking the water spout when applying a higher ratio of air-puff punishments.</div>
+<div class="note">
+<span class="note-title">Note:</span> It takes approximately 1 week for young adult animals to reach Stage 5 on the task and then an additional week to achieve stable, good performance. Nevertheless, behavioral sessions of the full task can be continued beyond this period for recording or other purposes based on the experimental design. We observed stable performance for 2–3 months, beyond which we have no experience.</div>
+<ol>
+<li>Initial steps (perform these before each training session)
+<ol type="a">
+<li>Turn on the computer, plug in the speakers, launch Matlab and Bpod. If combined with recording, start the data acquisition system (e.g., Open Ephys; see refs. (<a href="#bib5">Hangya et al., 2015</a>; <a href="#bib10">Laszlovszky et al., 2020</a>)). If combined with optogenetic tagging (<a href="#bib11">Lima et al., 2009</a>; <a href="#bib9">Kvitsiani et al., 2013</a>; <a href="#bib5">Hangya et al., 2015</a>; <a href="#bib22">Széll et al., 2020</a>), turn on the laser.</li>
+<li>Make sure that the water tank used for reward is filled.</li>
+<li>Clean the head-fixation platform with 70% ethanol.</li>
+<li>Remove the air bubbles from the water tube by opening the water valves through Bpod. Make sure to collect the water and thus keep the setup dry.</li>
+<li>Put the mouse onto the head-fixation platform of the setup. If combined with recording and/or optogenetics, connect the cables and/or patch chords as appropriate for your system.</li>
+<li>Carefully restrain the head of the animal.</li>
+<li>Adjust the position of the licking spout with an xyz-stage so that it is close to but not touching the animal’s snout.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the licking spout is well-positioned, within convenient range of the animal’s tongue. Too close, too far, and asymmetric positions critically impact behavioral performance. Using a dentist’s mirror tool can aid optimal positioning.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that air has been completely removed from the water delivery system.</div>
+<ol start="2">
+<li>Habituation to head restraint (see <a href="#sec6.1">problem 1</a>), learning to lick for water (Operant phase)
+<ol type="a">
+<li>In a brief operant phase, the mouse receives water reward (3–5 μL) every time it licks the water spout (see <a href="#sec6.3">problem 2</a>).</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If the mouse appears distressed, is vocalizing or trying to escape, terminate the protocol and attempt to repeat another time.</div>
+<ol start="3">
+<li>Introducing the cue that predicts likely reward (Stage 1)
+<ol type="a">
+<li>The animal performs 20 operant trials (as in the Operant phase), then the reward predicting cues start.</li>
+<li>Each trial starts with a no-lick period, in which the mouse has to withhold licking for 1.5 s. This is followed by a variable foreperiod, randomized between 2 and 4 s.</li>
+<li>Then, a 1 s long pure tone is played, followed by a variable 200–400 ms delay (300 ms on average, with uniform distribution), after which the animal receives water reward in 80% of the trials, in a pseudorandomized order.</li>
+<li>In this stage, there is no punishment; therefore, the reinforcer is omitted in the other 20% of the trials.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend starting the training with the likely reward cue, since the high probability of reward after the cue motivates mice better during the initial training phase.</div>
+<div class="note">
+<span class="note-title">Note:</span> If the mouse licks in the foreperiod, the trial is restarted from the no-lick period. This way of enforcing no licking before the stimulus is not critical for forming the cue-reward association. However, it helps interpret the anticipatory lick response of mice (see <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>). It also helps disentangle neural responses correlated with licking vs. different phases of the trials when concurrent recordings are performed (see <a href="#sec6.5">problem 3</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The variable delay between tone offset and reward delivery is important for the formation of the anticipatory lick response (see <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>). In our experience, if the reward delivery time is fully predictable, some mice do not develop anticipatory lick responses.</div>
+<ol start="4">
+<li>Introducing the cue that will predict likely punishment (Stage 2)
+<ol type="a">
+<li>The animal performs 5 operant trials before the cued outcome trials. Two pure tones of well-separated pitch (e.g., 4 kHz and 12 kHz) predict likely reward (75% of all trials) or unlikely reward (25% of all trials) in a pseudorandomized order. (The latter cue will predict likely punishment in future training phases.)</li>
+<li>There is no punishment in this training phase; therefore, the likely reward cues are followed by reward in 80% and omission in 20% of the cases, whereas the unlikely reward cues are followed by reward in 25% and omission in 75%.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend testing mice with reversed cue-reward contingencies to rule out that the cue tones themselves induce differential behavior or neural activity based on their potential behavioral significance or previous experience of the animals.</div>
+<ol start="5">
+<li>Introducing punishment (Stage 3)
+<ol type="a">
+<li>Operant trials are not included for this phase.</li>
+<li>Air puff punishments are introduced in this phase. This modifies the outcome probabilities as follows: the likely reward cues predict 80% reward, 10% punishment, 10% omission and the likely punishment cues predict 25% reward, 65% punishment and 10% omission.</li>
+<li>These probabilities represent the final task contingencies. The two trial types are pseudorandomly interleaved in a 3:1 ratio, as in the previous phase.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The animals’ performance can transiently drop at this stage due to the aversive nature of air puff punishment (see <a href="#sec6.7">problem 4</a>).</div>
+<ol start="6">
+<li>Ramping up likely punishment trials (Stage 4)
+<ol type="a">
+<li>Likely reward and likely punishment trials are pseudorandomly interleaved in a 6:4 ratio.</li>
+</ol>
+</li>
+<li>Final task (Stage 5)
+<ol type="a">
+<li>Likely reward and likely punishment trials are pseudorandomly interleaved in a 1:1 ratio.</li>
+<li>This is the final phase of the training protocol, and it can be maintained throughout the course of the experiment.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Mice are actively engaged in more trials if they are trained at the beginning of their active (dark) phase (<a href="#bib15">Remmelink et al., 2017</a>; <a href="#bib2">Birtalan et al., 2020</a>), although we had success in training during the light phase as well. Nevertheless, we recommend adjusting the time of training to the light/dark cycle of the animals (see also <a href="#sec6.9">problem 5</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Training should be performed at a consistent time of day, maintained throughout the experiment (<a href="#bib4">Gritton et al., 2012</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> When training multiple animals sequentially, keeping the order of mice helps maintain consistency during the experiment and further reducing environmental factors that can lead to poor performance. However, see <a href="#sec6.7">problem 4</a>.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Overtraining animals on intermediate stages slows down or prevents further learning; ideally do not train more than 1 or 2 days on the intermediate stages of the task. Note that aged (over 12 months) mice learn slower and may be trained up to 3 days on intermediate steps.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Skipping training days at the initial phase of the training (especially in the first week) can significantly reduce performance and the animal may not be able to learn the task eventually.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The cumulative water consumed during the training session should be taken into account when calculating daily water consumption.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The daily water should be provided hours after the training session, ideally approximately at the same time every day, to prevent mice from forming an association between water and the end of training.</div>
+<h3 id="sec2.2">Perfusion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>After concluding the behavioral experiments, animals are anesthetized, and the brain tissue is preserved by transcardial perfusion of 4% paraformaldehyde (PFA) fixative.</p>
+<div class="note">
+<span class="note-title">Note:</span> This process is performed when the training protocol is combined with neuronal recordings or optogenetic manipulations, to allow histological processing of the brains. However, transcardial perfusion is not necessary for purely behavioral or systemic pharmacological manipulation studies.</div>
+<ol start="8">
+<li>Put mice in an isoflurane chamber to induce anesthesia.</li>
+<li>Inject mice with a mixture of ketamine, xylazine and promethazine intraperitoneally (83 mg/kg, 17 mg/kg and 8 mg/kg respectively, dissolved in saline) to achieve deep anesthesia.</li>
+<li>Wait until the animal does not respond to tail pinch.</li>
+<li>Restrain the limbs on the perfusion platform.</li>
+<li>Start the perfusion pump with saline.</li>
+<li>Make a longitudinal cut on the skin over the abdominal region by using small surgical scissors and tweezers.</li>
+<li>Hold the xiphoid process with a pair of forceps and cut the diaphragm to open the chest cavity. Carefully avoid piercing the heart.</li>
+<li>Cut the ribcage on both sides; hold the basis of the sternum and lift it up, exposing the heart.</li>
+<li>Make a small incision at the apex of the left ventricle and insert a feeding needle (connected to the perfusion pump). Gently push the needle into the aorta. Fix the needle with a small clamp.</li>
+<li>Make a small cut on the right atrium to drain the blood.</li>
+<li>Perfuse with saline for ∼2 min, then switch to 4% paraformaldehyde fixative for an additional 20 min.</li>
+<li>Stop the pump and disconnect the feeding needle.</li>
+<li>Decapitate the animal and remove the brain.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> The brain can be immersed in 4% PFA for enhanced preservation or can be stored in a buffer solution with sodium-azid at 4C°.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>During successful training, mice form an association between the outcome predicting cues and the reinforcers. They learn the task contingencies, which is expressed by their differential anticipatory licking in response to the likely reward and likely punishment predicting cues (see <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>). We consider a licking response anticipatory when it happens after the cue onset but before reinforcement delivery (∼1.2 s time window from cue onset in the present protocol). Note that for learning outcome probabilities, mice have to integrate rewards over multiple trials. Therefore, this is a harder task than associating specific cues with different reward size, which can be inferred from a single trial (<a href="#bib21">Stephenson-Jones et al., 2020</a>).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>We suggest that simple behavioral analysis should be performed on each training day to monitor the progress of the animals during training. Mice start licking the water spout after cue presentation in the anticipation of reward. As training progresses and mice start learning the cue contingencies, they develop differential anticipatory licking in response to the cues: they lick more vigorously (with higher frequency) if reward is more likely. We routinely calculate and visualize lick rasters (<a href="#fig4">Figure 4</a>A) and peri-event time histogram of licking activity (<a href="#fig4">Figures 4</a>B and 4C) aligned to cue onset to judge the difference in anticipatory lick rate after the sound cue. Learning curves can be plotted by tracking the changes in anticipatory lick rate across training days (<a href="#fig4">Figure 4</a>D). Reaction times can be measured as the time difference between cue onset and the first lick of the animal (<a href="#fig4">Figure 4</a>E). We use the custom-developed ultimate_psth.m Matlab code for calculating anticipatory lick rates, available at <a href="https://github.com/hangyabalazs/CellBase">https://github.com/hangyabalazs/CellBase</a>.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/978-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Behavioral analysis</div>
+<p>(A) Raster plot of individual licks aligned to cue onset from an example session. Top, licks after the cues predicting likely reward; bottom, licks after the cues predicting likely punishment.</p>
+<p>(B) Peri-event time histogram (PETH) of licking frequency aligned to cue onset corresponding to the same example session.</p>
+<p>(C) Average PETH of anticipatory licking of n = 7 training sessions. Error shade represents SEM.</p>
+<p>(D) Learning curve of an example mouse.</p>
+<p>(E) Statistical comparison of lick rate (left) and reaction time (right) after cues predicting likely reward or likely punishment in an example session with n = 165 likely reward trials and n = 165 likely punishment trials. For reaction time comparison, the trials in which mice showed licking were used (n = 80 likely reward trials and n = 8 likely punishment trials). Box-whisker plots show median, interquartile range and non-outlier range. ∗∗∗, p &lt; 0.001, Mann-Whitney U test.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This training protocol allows efficient training of mice on a probabilistic Pavlovian task, enabling direct control over outcome contingencies. Nevertheless, it has some limitations.</p>
+<p>Training multiple animals in parallel can be time-consuming and labor-intensive, limiting the number of mice. This could be solved by fully automating the training (<a href="#bib14">Qiao et al., 2019</a>; <a href="#bib2">Birtalan et al., 2020</a>); however, that would either require using voluntary head-fixation protocols (<a href="#bib18">Scott et al., 2013</a>; <a href="#bib1">Aoki et al., 2017</a>) or switching to a freely behaving paradigm.</p>
+<p>Efficient training requires some level of specific expertise from the experimenter. In our experience, the crucial skill is to learn the proper positioning of the lick port. While the feedback on behavioral performance from the Bpod behavior control system is useful, it is possible that the mouse can perform the task but stops early due to suboptimal positioning of the lick port. If this happens early in training or multiple times, it may influence performance on the long term. This could be improved by including a motorized stage for moving the lick port, which would allow reliable positioning and even enable automating this important step.</p>
+<p>In Pavlovian conditioning tasks, the outcome does not depend on the animals’ actions, endowing the experimenter with full control over the outcomes. However, as a downside, it is hard to measure the animals’ performance and get access to the level of learning. We address this by using the difference in anticipatory lick rate that develops throughout the task (see <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>). Nevertheless, there is no guarantee that a linear relationship exists between learning outcome probabilities and anticipatory licking, which complicates the interpretation of performance comparisons across mice.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The animal might show signs of strong distress (vocalizing and attempting to escape) at the first session that prevents starting the Operant phase (step 2).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Remove the animal from the setup immediately to prevent further stress. Take a couple more days before the training, and while handling the animal, place it on the setup platform and let it explore. Consider giving it the daily amount of water on the setup platform as well. This way the experimenter can reduce the anxiety of the animal associated with head restraint.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>The animal does not lick for water in the Operant phase (step 2).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Repeat the Operant phase at another time. Do not leave the mouse in the setup for an extended period, which often causes stress.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>The animal shows impulsive licking behavior that interferes with the training. If a no-lick period is used in the protocol, this behavior leads to multiple restarting of most trials (step 3).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>A brief period of free water before or at the beginning of the training session may help reduce impulsive licking. Counterintuitively, larger reward sizes can lead to impulsive/poor behavior (<a href="#bib8">Kuchibhotla et al., 2019</a>). We suggest starting from a reward size of 5 μL at the beginning of training and decreasing it gradually to 2–3 μL for best performance.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The mouse stops licking upon the introduction of punishment (step 5).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>The first introduction of the punishment during training (Stage 3) might cause a setback in the animal’s performance. First, repeat Stage 3 on the next day. If the problem persists, it might help training one or two more days at Stage 2; however, overtraining on intermediate phases should generally be avoided. As a rule of thumb, advance the mouse to the next stage as soon as it responds to at least 30% of the likely reward cues.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The animal stops licking early during the training session (step 7).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Allowing some free water by briefly opening the water valve via Bpod might help increase motivation. When training multiple animals sequentially, training at a slightly different time of day by changing the order of mice may help optimize their individual performance. However, try this only if problems occur; otherwise keeping the same order of mice helps develop consistent performance.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Aoki, R., Tsubota, T., Goya, Y., and Benucci, A. (2017). An automated platform for high-throughput mouse behavior and physiology with voluntary head-fixation. Nat. Commun. <i>8</i>, 1196. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref1">View at publisher</a></p>
+<p id="bib2">Birtalan, E., Bánhidi, A., Sanders, J.I., Balázsfi, D., and Hangya, B. (2020). Efficient training of mice on the 5-choice serial reaction time task in an automated rodent training system. Sci Rep. <i>10</i>, 22362. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref2">View at publisher</a></p>
+<p id="bib3">Fanselow, M.S. and Poulos, A.M. (2005). The neuroscience of mammalian associative learning. Annu. Rev. Psychol. <i>56</i>, 207-234. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref3">View at publisher</a></p>
+<p id="bib4">Gritton, H.J., Kantorowski, A., Sarter, M., and Lee, T.M. (2012). Bidirectional interactions between circadian entrainment and cognitive performance. Learn. Mem. <i>19</i>, 126-141. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref4">View at publisher</a></p>
+<p id="bib5">Hangya, B., Ranade, S.P., Lorenc, M., and Kepecs, A. (2015). Central Cholinergic neurons are rapidly recruited by reinforcement feedback. Cell <i>162</i>, 1155-1168. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref5">View at publisher</a></p>
+<p id="bib6">Hegedüs, P., Heckenast, J., and Hangya, B. (2021). Differential recruitment of ventral pallidal e-types by behaviorally salient stimuli during Pavlovian conditioning. iScience <i>24</i>, 102377. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref6">View at publisher</a></p>
+<p id="bib7">Király, B., Balázsfi, D., Horváth, I., Solari, N., Sviatkó, K., Lengyel, K., Birtalan, E., Babos, M., Bagaméry, G., Máthé, D., et al. (2020). In vivo localization of chronically implanted electrodes and optic fibers in mice. Nat. Commun. <i>11</i>, 4686. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref7">View at publisher</a></p>
+<p id="bib8">Kuchibhotla, K.V., Hindmarsh Sten, T., Papadoyannis, E.S., Elnozahy, S., Fogelson, K.A., Kumar, R., Boubenec, Y., Holland, P.C., Ostojic, S., and Froemke, R.C. (2019). Dissociating task acquisition from expression during learning reveals latent knowledge. Nat. Commun. <i>10</i>, 2151. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref8">View at publisher</a></p>
+<p id="bib9">Kvitsiani, D., Ranade, S., Hangya, B., Taniguchi, H., Huang, J.Z., and Kepecs, A. (2013). Distinct behavioural and network correlates of two interneuron types in prefrontal cortex. Nature <i>498</i>, 363-366. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref9">View at publisher</a></p>
+<p id="bib10">Laszlovszky, T., Schlingloff, D., Hegedüs, P., Freund, T.F., Gulyás, A., Kepecs, A., and Hangya, B. (2020). Distinct synchronization, cortical coupling and behavioral function of two basal forebrain cholinergic neuron types. Nat. Neurosci. <i>23</i>, 992-1003. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref10">View at publisher</a></p>
+<p id="bib11">Lima, S.Q., Hromádka, T., Znamenskiy, P., and Zador, A.M. (2009). PINP: a new method of tagging neuronal populations for identification during in vivo electrophysiological recording. PLoS One <i>4</i>, e6099. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref11">View at publisher</a></p>
+<p id="bib12">Oddo, S., Caccamo, A., Shepherd, J.D., Murphy, M.P., Golde, T.E., Kayed, R., Metherate, R., Mattson, M.P., Akbari, Y., and LaFerla, F.M. (2003). Triple-transgenic model of Alzheimer’s disease with plaques and tangles: intracellular Abeta and synaptic dysfunction. Neuron <i>39</i>, 409-421. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref12">View at publisher</a></p>
+<p id="bib13">Pearce, J.M. and Hall, G. (1980). A model for Pavlovian learning: Variations in the effectiveness of conditioned but not of unconditioned stimuli. Psychol. Rev. <i>87</i>, 532-552. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref13">View at publisher</a></p>
+<p id="bib14">Qiao, M., Zhang, T., Segalin, C., Sam, S., Perona, P., and Meister, M. (2019). Mouse academy: high-throughput automated training and trial-by-trial behavioral analysis during learning. bioRxiv. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref14">View at publisher</a></p>
+<p id="bib15">Remmelink, E., Chau, U., Smit, A.B., Verhage, M., and Loos, M. (2017). A one-week 5-choice serial reaction time task to measure impulsivity and attention in adult and adolescent mice. Sci. Rep. <i>7</i>, 1-13. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref15">View at publisher</a></p>
+<p id="bib16">Sanders, J.I. and Kepecs, A. (2014). A low-cost programmable pulse generator for physiology and behavior. Front. Neuroeng. <i>7</i>, 43. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref16">View at publisher</a></p>
+<p id="bib17">Schultz, W., Dayan, P., and Montague, P.R. (1997). A neural substrate of prediction and reward. Science <i>275</i>, 1593-1599. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref17">View at publisher</a></p>
+<p id="bib18">Scott, B.B., Brody, C.D., and Tank, D.W. (2013). Cellular Resolution Functional Imaging in Behaving Rats Using Voluntary Head Restraint. Neuron <i>80</i>, 371-384. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref18">View at publisher</a></p>
+<p id="bib19">Siegle, J.H., López, A.C., Patel, Y.A., Abramov, K., Ohayon, S., and Voigts, J. (2017). Open Ephys: an open-source, plugin-based platform for multichannel electrophysiology. J. Neural Eng. <i>14</i>, 45003. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref19">View at publisher</a></p>
+<p id="bib20">Solari, N., Sviatkó, K., Laszlovszky, T., Hegedüs, P., and Hangya, B. (2018). Open source tools for temporally controlled rodent behavior suitable for electrophysiology and optogenetic manipulations. Front. Syst. Neurosci. <i>12</i>, 18. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref20">View at publisher</a></p>
+<p id="bib21">Stephenson-Jones, M., Bravo-Rivera, C., Ahrens, S., Furlan, A., Xiao, X., Fernandes-Henriques, C., and Li, B. (2020). Opposing contributions of GABAergic and glutamatergic ventral pallidal neurons to motivational behaviors. Neuron. 1-13. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref21">View at publisher</a></p>
+<p id="bib22">Széll, A., Martínez-Bellver, S., Hegedüs, P., and Hangya, B. (2020). OPETH: Open source solution for real-time peri-event time histogram based on open ephys. Front. Neuroinform. <i>14</i>, 1-19. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00501-3/sref22">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Balázs Hangya (<a href="mailto:hangya.balazs@koki.hu">hangya.balazs@koki.hu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>MATLAB code developed to analyze the data is available at <a href="http://www.github.com/hangyabalazs/VP_data_analysis">www.github.com/hangyabalazs/VP_data_analysis</a>. Behavioral data is available from the technical contact upon reasonable request.</p>
+<h3>Acknowledgments</h3>
+<p>We thank Nicola Solari and Katalin Sviatkó for providing data for <a href="#fig1">Figures 1</a>D and <a href="#fig2">2</a>F, respectively. This work was supported by the ‘‘Lendület’’ Program of the <a href="https://doi.org/10.13039/100007626">Hungarian Academy of Sciences</a> (LP2015-2/2015), <a href="https://doi.org/10.13039/501100011019">NKFIH</a> KH125294, <a href="https://doi.org/10.13039/501100011019">NKFIH</a> K135561, the <a href="https://doi.org/10.13039/100010663">European Research Council</a> Starting Grant no. 715043, and the Artificial Intelligence National Laboratory Programme of the Ministry of Innovation and Technology to B.H. and the Kerpel-Fronius Talent Support Program of <a href="https://doi.org/10.13039/501100002332">Semmelweis University</a> (EFOP-3.6.3.-VEKOP-16-2017-00009) and the New National Excellence Program of the Ministry of Innovation and Technology (ÚNKP-20-3-II) to P.H. We thank Mackenzie Mathis for open access science art at SciDraw (accessible at <a href="https://doi.org/10.5281/zenodo.3925907">https://doi.org/10.5281/zenodo.3925907</a>).</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, B.H.; methodology design, B.H. and P.H.; methodology implementation, P.H., J.H., A.V., and C.-H.B.; data analysis and statistical design, B.H. and P.H.; writing—original draft, P.H.; writing—review and editing, P.H., A.V., C.-H.B., J.H., and B.H.; visualization, P.H., C.-H.B., and A.V.; funding acquisition, B.H. and P.H.; supervision, B.H.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

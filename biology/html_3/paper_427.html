@@ -1,0 +1,1005 @@
+<article>
+<section>
+<h1 id="header">Open-source computational framework for studying <i>Drosophila</i> behavioral phase</h1>
+<p><time datetime="2021-01-22">Published: January 22, 2021</time></p>
+<p>Boyan Kostadinov,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup> Hannah Lee Pettibone,<sup><a href="#aff2">2</a>,<a href="#fn1">4</a></sup> Evardra Valerie Bell,<sup><a href="#aff3">3</a></sup> Xiaona Zhou,<sup><a href="#aff1">1</a></sup> Ausra Pranevicius,<sup><a href="#aff3">3</a></sup> Orie Thomas Shafer,<sup><a href="#aff2">2</a></sup> and Maria Paz Fernandez<sup><a href="#aff3">3</a>,<a href="#fn3">6</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Mathematics Department, NYC College of Technology, City University of New York, Brooklyn, NY 11201, USA</p>
+<p id="aff2"><sup>2</sup>Advanced Science Research Center, The Graduate Center, City University of New York, New York, NY 10031, USA</p>
+<p id="aff3"><sup>3</sup>Department of Neuroscience and Behavior, Barnard College of Columbia University, New York, NY 10027, USA</p>
+<p id="fn1"><sup>4</sup>These authors contributed equally</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="fn3"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:bkostadinov@citytech.cuny.edu">bkostadinov@citytech.cuny.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:mpfernand@barnard.edu">mpfernand@barnard.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100285">10.1016/j.xpro.2020.100285</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol describes a standardized method for analyzing <i>Drosophila</i> behavioral rhythmicity under light dark cycles, temperature ramps, and free running conditions. The protocol constitutes a step-by-step guide from generation of appropriate <i>Drosophila</i> genetic crosses to behavioral experiments. We also provide an open-source computational framework using R for the analysis of the phase of behavior using circular statistics. An extended method for complete use is also provided.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib4">Fernandez et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>R framework for analysis of <i>Drosophila</i> behavioral phase and circular statistics analysis</li>
+<li>Visualization of activity, phase of behavior, and rose plots</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Experimental design: plan genetic crosses</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol>
+<li>Design the crossing scheme for the desired F1 offspring. Assume that for most crosses kept at 25°C, F1 will be ready to load into the activity monitors ~15 days after the crosses are set (11 days to have progeny + 3–4 days to let the adult flies age).
+<ol type="a">
+<li>For example, to obtain F1 in which the s-LNv arbor is truncated as previously described (<a href="#bib4">Fernandez et al., 2020</a>), <i>w;Pdf(BMRJ)-Gal4/</i>CyO; females should be crossed to <i>w;;</i>UAS-Unc5-HA males (see <a href="#key-resources-table">Key resources table</a>).</li>
+<li>Ideally, crosses should have replicates set up on the same day, plan accordingly when collecting flies.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the combination of balancer chromosomes, if applicable, will lead to sufficient progeny and plan to select against balancers in the appropriate developmental stage (<a href="#bib3">Chyb and Gompel, 2013</a>).</div>
+<h3 id="sec1.2">Virgin female collection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–7 days</div>
+<ol start="2">
+<li>4 weeks prior to the desired experiment start date, begin to collect <i>Drosophila</i> virgin females. For the best collection results, we recommend clearing the fly bottles or vials in the early morning and collecting every 3–5 h throughout the day.</li>
+<li>Repeat collection process until each cross has 8–12 virgin females per vial.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Virgin females older than ~10 days will yield less progeny.</div>
+<h3 id="sec1.3">Fly rearing and crosses</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 weeks</div>
+<ol start="4">
+<li>Day 0: ~20 days prior to the experiment start date (the exact time depends on genotype and environmental conditions, particularly temperature), set up the fly crosses. Collect 4–5 males of the desired genotypes and place them in vials containing fly media with their respective virgin females.
+<ol type="a">
+<li>Each cross should be duplicated to ensure sufficient F1 for loading.</li>
+<li>Make sure the males are healthy, young (3–7 days old) and do not have damaged wings.</li>
+</ol>
+</li>
+<li>Day 5: Flip all crosses into fresh vials once it is clear that abundant larvae are present in the media, this is critical to avoid parental and F1 flies from mixing. Save the flipped vials for more F1 progeny to be loaded in a second trial, if desired.</li>
+</ol>
+<ol start="6">
+<li>Day 5: Place the original vials in an incubator set for proper entertainment conditions. This ensures F1 will be in the correct environmental conditions upon eclosion.
+<div class="note">
+<span class="note-title">Note:</span> if this is not possible due to incubator availability, flies may have to be kept in the environmental condition of the experiment for longer.</div>
+<ol type="a">
+<li>For standard entrainment conditions we recommend keeping flies at 25°C under a 12:12 Light Dark (LD) cycle for at least 3 days. Ideally, the LD cycle timing should match that of the behavioral experiment. If the light regime timing used for rearing differs significantly from that of the behavioral experiment, should be given more time under LD to re-entrain (<a href="#bib6">Helfrich-Forster et al., 2001</a>).</li>
+<li>For experiments involving entrainment temperature ramps we recommend rearing flies at 25°C under constant darkness from the time the crosses are set until the progeny is loaded into activity monitors.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Day 11: Begin to collect F1 males as they eclose. Keep them in small groups (4–8 flies) until the time of the experiment.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Virgin females can be used as well (mated females would lay eggs on the food, which could be overcome by shortening the duration of the experiments).</div>
+<ol start="8">
+<li>Day 16: Clear the adults from the second flip if a second behavioral run is desired from the same crosses. Repeat steps 6 and 7 with these vials.</li>
+</ol>
+<div class="critical"><span class="critical-title">Critical:</span></div>
+<ul>
+<li>Vials with crosses should not be overcrowded or F1 flies will be too small and may exhibit abnormal behavior.</li>
+<li>F1 can only be collected up to 18 days from the day the cross was set up (conservatively) to ensure that there are no F2 offspring among the flies.</li>
+</ul>
+<h3 id="sec1.4">Activity monitor tube preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="9">
+<li>Prepare tubes at least two days prior to running the experiment. If prepared earlier, make sure to refrigerate and keep covered. Begin by preparing a food solution.
+<ol type="a">
+<li>Obtain sufficient numbers of Trikinetics 5 mm tubes for the experiment, and include extra tubes. Each Drosophila Activity Monitor (DAM) can hold 32 tubes and we recommend at least one full monitor per genotype. Ideally, tubes should be autoclaved before use. To prepare 310 tubes use a 500 mL Erlenmeyer flask. Add 5 g of Bacto agar and 10 g of sucrose. Then add 250 mL of deionized water.</li>
+<li>Microwave (1,000 watts) for ~45 s. Carefully remove the flask and stir with a glass rod. Place the flask back into the microwave for 30 s, remove, and stir solution with a glass rod. Continue microwaving in 10-s increments and stirring until a clear solution is attained.</li>
+<li>Split the solution into 2 × 1,000 mL beakers.</li>
+<li>Place tubes into bundles of approximately 32 tubes using rubber bands. Carefully place the bundles into the beakers making sure that the tubes are perpendicular to the bottom of the beaker and the food solution is evenly distributed within all tubes.</li>
+<li>Once all bundles are placed in the liquid, cover beakers with a piece of paper towel and secure with a rubber band. This will prevent contamination.</li>
+<li>Place the beakers in a cold room or refrigerator at 4°C for 4–24 h.</li>
+</ol>
+</li>
+<li>Seal the tubes using paraffin wax.
+<ol type="a">
+<li>Carefully remove tubes from the beaker. Discard any tubes that do not contain at least 1 cm of solid agar that lacks air bubbles.</li>
+<li>Place the tubes in a container under a fume hood. Within the fume hood, gather a hot plate, a crucible, paraffin wax, and a second crate lined with paper towels. Turn the hotplate to 250°C–300°C. Place the crucible on top of the hot plate fill with paraffin wax to approximately 5 cm depth.</li>
+<li>Allow the paraffin wax to melt until entirely liquid, then reduce heat of the hotplate to low.</li>
+<li>Take a tube from the tube-filled cardboard crate and dip the end with food into the wax. Remove the tube and let the wax dry (~2 s) and then dip the same end again in the wax. Let the wax dry again and then place the tube in second container. Repeat this process with all remaining tubes, making sure that the wax completely covers the end of the tube, as a failure to completely seal the tubes would allow food dry out.</li>
+<li>Move the container containing the wax-sealed tubes to 4°C. Cover the tubes with a sheet of paper towel and leave aside for at least an hour to chill.</li>
+</ol>
+</li>
+</ol>
+<div class="critical"><span class="critical-title">Critical:</span></div>
+<ul>
+<li>Use agar tubes within 10 days and always keep refrigerated. If they must be stored for more than a day, enclose them in plastic bag.</li>
+<li>Tubes should have ~1 cm of food. If they do not have enough, they will dry out. If they have too much, flies will not have enough room to move, and if not placed correctly it could interfere with the infrared light of the activity monitors.</li>
+</ul>
+<h3 id="sec1.5">Software download</h3>
+<ol start="11">
+<li>To acquire and download data, we used <i>DAMFilescan</i> and <i>DAM System3</i> respectively. They can be downloaded from: <a href="http://www.trikinetics.com/">www.trikinetics.com</a><u>.</u>
+</li>
+<li>To obtain phase values:
+<ol type="a">
+<li>The code described in the present manuscript and a detailed protocol can be found in the GitHub repository: <a href="https://github.com/bkostadi/STARProtocolsExtendedMethods">https://github.com/bkostadi/STARProtocolsExtendedMethods</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The phase values reported in <a href="#bib4">Fernandez et al. 2020</a> were obtained using a MATLAB code previously described in (<a href="#bib17">Yao et al., 2016</a>). In this manuscript we have expanded the capabilities of this MATLAB code and re-implemented the key procedures using R, so that it is open access and freely available.</div>
+<ol start="13">
+<li>To analyze and visualize phase values, we use the programming environment R and a number of R packages with RStudio as the Integrated Development Environment (IDE). Both, the R packages and our code are freely available and open-source:
+<ol type="a">
+<li>R can be downloaded from the R Project: <a href="https://www.r-project.org/">https://www.r-project.org/</a>
+</li>
+<li>RStudio can be downloaded from: <a href="https://rstudio.com/products/rstudio/download/">https://rstudio.com/products/rstudio/download/</a>
+</li>
+<li>The source RMarkdown (Rmd) file with our complete code can be downloaded from our GitGub repository: <a href="https://github.com/bkostadi/STARProtocolsExtendedMethods">https://github.com/bkostadi/STARProtocolsExtendedMethods</a>
+</li>
+</ol>
+</li>
+<li>Analysis of rhythmicity: period, rhythmic power, and percent rhythmicity (optional).</li>
+</ol>
+<p>For our previous experiments we used the commercial software <i>Clocklab.</i> A detailed protocol to use <i>Clocklab</i> has been previously described (<a href="#bib13">Pfeiffenberger et al., 2010b</a>).</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> There are several free, open-source programs such as <i>RhythmicAlly</i> (<a href="#bib1">Abhilash and Sheeba, 2019</a>)( or ActogramJ (<a href="#bib15">Schmid et al., 2011</a>).</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>w;Pdf(BMRJ)-Gal4/CyO;</td>
+<td>(<a href="#bib10">Park et al., 2000</a>, <a href="#bib14">Renn et al., 1999</a>)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>w;;UAS-Unc5-HA</td>
+<td>Barry Dickson, Janelia Farm (<a href="#bib7">Keleman and Dickson, 2001</a>)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>;;UAS-DbtLONG myc(27MIC)/(TM3)</td>
+<td>Jeffrey Price, University of Missouri at Kansas City (<a href="#bib9">Muskus et al., 2007</a>)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>w<sup>1118</sup>
+</td>
+<td>Bloomington Drosophila Stock Center</td>
+<td>ID 3605</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R</td>
+<td>The R Foundation</td>
+<td>RRID:SCR_001905<a href="https://www.r-project.org/">https://www.r-project.org/</a>
+</td>
+</tr>
+<tr>
+<td>DAM FileScan</td>
+<td>Trikinetics; (<a href="#bib12">Pfeiffenberger et al., 2010a</a>)</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+</tr>
+<tr>
+<td>DAM System3</td>
+<td>Trikinetics; (<a href="#bib12">Pfeiffenberger et al., 2010a</a>)</td>
+<td><a href="https://www.trikinetics.com/">https://www.trikinetics.com/</a></td>
+</tr>
+<tr>
+<td>ClockLab (optional)</td>
+<td>Actimetrics</td>
+<td>RRID:SCR_014309<a href="https://www.actimetrics.com/products/clocklab/">https://www.actimetrics.com/products/clocklab/</a>
+</td>
+</tr>
+<tr>
+<td>MATLAB (optional)</td>
+<td>MathWorks</td>
+<td>RRID: SCR_001622<a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a>
+</td>
+</tr>
+<tr>
+<td>R code for analyzing and visualizing phases</td>
+<td>Dr. Boyan Kostadinov, computational framework developed for this study</td>
+<td>The R code developed for this study is available at: <a href="https://github.com/bkostadi/STARProtocolsExtendedMethods">https://github.com/bkostadi/STARProtocolsExtendedMethods</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Bacto Agar</td>
+<td>Becton Dickinson Microbiology</td>
+<td>Cat#214010</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#S7903; CAS: 57-50-1</td>
+</tr>
+<tr>
+<td>Paraffin</td>
+<td>Fisher Scientific</td>
+<td>Cat#T555</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>DAM2 Drosophila activity monitors</td>
+<td>Trikinetics; (<a href="#bib12">Pfeiffenberger et al., 2010a</a>)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>DAM Drosophila environmental monitors</td>
+<td>Trikinetics; (<a href="#bib12">Pfeiffenberger et al., 2010a</a>)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Fly food</td>
+<td>Archon Scientific</td>
+<td>Item#W10101</td>
+</tr>
+<tr>
+<td>Power supply</td>
+<td>Trikinetics</td>
+<td>#PSIU9</td>
+</tr>
+<tr>
+<td>Monitor tubes</td>
+<td>Trikinetics</td>
+<td>#PGT10x100</td>
+</tr>
+<tr>
+<td>Cable splitter</td>
+<td>Trikinetics</td>
+<td>#SPLT5</td>
+</tr>
+<tr>
+<td>Monitor cables</td>
+<td>Trikinetics</td>
+<td>#CAB2 and #CAB10</td>
+</tr>
+<tr>
+<td>Brushes for sorting</td>
+<td>Flinn Scientific</td>
+<td>#: AB1419</td>
+</tr>
+<tr>
+<td>Benchtop Flowbuddy Complete</td>
+<td>Genesee Scientific</td>
+<td>Cat#59-122BC</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Hardware requirements</h3>
+<ol type="a">
+<li>PC or Mac computer for data acquisition</li>
+<li>Second PC or Mac computer for data analysis</li>
+<li>A USB flash drive</li>
+</ol>
+<h3 id="sec2.2">Equipment requirements</h3>
+<ol type="a">
+<li>Incubators:
+<ol type="i">
+<li>Temperature ramps require incubators capable of ramping temperature. For our previous experiments (<a href="#bib4">Fernandez et al., 2020</a>) we used #I30VL from Percival Scientific.</li>
+<li>For standard LD experiments a basic monitoring incubator with automated light capability will suffice. For our previous experiments (<a href="#bib4">Fernandez et al., 2020</a>) we used #I30VL from Percival Scientific.</li>
+</ol>
+</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> DigiTherm CircKinetics from TriTech Research</div>
+<ol start="2" type="a">
+<li>Tracking system:</li>
+</ol>
+<p>For our previous experiments we used Trikinetics DAM2 Drosophila Activity Monitors. Several alternative methods for tracking fly behavior have been described, such as the Ethoscope (<a href="#bib5">Geissmann et al., 2017</a>).</p>
+<div class="note">
+<span class="note-title">Note:</span> The R code protocol described in this paper to obtain phase values is based on the DAM system, but it could be modified to be used with alternative tracking systems.</div>
+<ol start="3" type="a">
+<li>Anesthesia setup:</li>
+</ol>
+<p>For our previous experiments we used Genesee Scientific Benchtop Flowbuddy with Flypad and Gun.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Many laboratories use custom made pads connect them to CO<sub>2</sub> tanks.</div>
+<p>Several companies make brushes for sorting <i>Drosophila</i>, such as Carolina ( # 173094) or Genesee (Cat #: 59-204). Simple, fine art brushes can also work well.</p>
+<ol start="4" type="a">
+<li>Fly food:</li>
+</ol>
+<p>For our previous experiments we used Archron Scientific #W10101</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> in house fly food following Bloomington Stock Center’s recipe (<a href="https://bdsc.indiana.edu/information/recipes/bloomfood.html">https://bdsc.indiana.edu/information/recipes/bloomfood.html</a>), or other commercial sources such as Genesee Scientific’s Nutryfly #66-115)</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Behavior experiments</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 weeks</div>
+<ol>
+<li>Place the tip of the CO<sub>2</sub> gun into the vial of the flies and tilt the vial upside down. Remove the plug from the vial and place flies onto the fly pad connected to the CO<sub>2</sub> cylinder keeping the CO<sub>2</sub> flow to the flypad. Using a brush carefully place one fly into each glass tube and then block the entry to the tube using a small piece of yarn (CYC4) or paper (~1 cm long).
+<ol type="a">
+<li>Make sure to remove all of the flies from the stage in under 10 min to reduce overexposure to CO<sub>2</sub>, too much CO<sub>2</sub> can be lethal to the flies. Also, when placing flies into tubes be careful not to damage the fly’s wings, legs, etc.</li>
+</ol>
+</li>
+<li>Once flies are placed into their respective tubes, insert each tube into the Trikinetics DAM2 monitor channel. Make sure to slide the tube so that food, wax, and are placed outside each channel port to avoid blocking the infrared beam.</li>
+<li>Once all tubes are loaded into a monitor (maximum 32 tubes), stabilize the tubes using rubber bands as follows: Using forceps put a rubber band around a set of 16 tubes and then weave the band among these tubes by alternating the placement of the band under one tube and over the next, repeating until the tubes are secured and do not shift when the monitor is moved (see graphical abstract). Be sure to record which monitors numbers (the monitors come already numbered) correspond to each of your experimental genotypes. We also suggest labeling each monitor with the genotypes of the flies they contain.</li>
+<li>Once the fly tubes are loaded into the monitors, place them in into incubator(s) previously programmed with the desired environmental conditions. Attach a telephone cable to each monitor and feed all cables into cable splitters that converge on a single cable output for the incubator that is plugged into a computer running the DAM system.
+<ol type="a">
+<li>Ideally, an environmental monitor should be placed inside each incubator to post-hoc confirmation of environmental conditions during the experiment.</li>
+<li>Run the DAM System program and check that it is reading all the monitors. All monitors used in the experiment must appear as green following file scans to ensure that they are all connected. Data should be collected in 1 min bin/scan.</li>
+</ol>
+</li>
+<li>Allow flies to entrain to the programmed light and or temperature cycle for five to seven days.
+<ol type="a">
+<li>Standard LD experiments consist of 12 h:12 h light dark cycles at a constant 25°C.</li>
+<li>Other photoperiod lengths such as 16:8, 14:10, 10:14, or 8:16 could be used as well, as long as the data are saved properly for phase analysis (see step 12: <b>CRITICAL</b>).</li>
+<li>Our temperature ramp conditions are 12 h of heating (20°C to 28°C) 12 h of cooling (28°C to 20°C) in constant darkness for 8 days.</li>
+</ol>
+</li>
+<li>Once the entrainment period ends, then adjust incubator settings to constant conditions (e.g., constant darkness and constant temperature at 25°C for 10–14 days).</li>
+<li>After the experiment ends, freeze tubes for at least 6 h to kill flies and then soak them in hot soapy water. Remove paraffin wax, flies, agar, and yarn. Wash and autoclave tubes and dry them before storing for future experiments.</li>
+</ol>
+<div class="critical"><span class="critical-title">Critical:</span></div>
+<ul>
+<li>If using Percival Incubators, incubators should be set to “non-ramping” mode for standard LD experiments or “ramping” mode for temperature ramps. For temperature ramps it is important to not overcrowd the incubator. We recommend no more than 10 monitors per incubator, spaced out as much as possible. This keeps the total thermal resistance provided by the monitors, tubes, and cable remains low enough to ensure that every fly is heated and cooled by programmed daily temperature changes, thereby allowing for proper entrainment.</li>
+<li>The incubator room needs to be dark and well-ventilated while the experiment is running.</li>
+<li>The incubator room should be as quiet as possible and its door should have cushioning to prevent slamming.</li>
+</ul>
+<h3 id="sec3.2">Saving the data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>After the experiment has been run, data must be processed using these steps.</p>
+<h4 id="sec3.2.1">Downloading behavior data from incubators</h4>
+<ol start="8">
+<li>Insert an USB flash drive on the computer running DAM System software.</li>
+<li>Open the DAM File Scan program:
+<ol type="a">
+<li>Press “Select Data Input Folder,” choose folder “DAMSystem3Data.”</li>
+<li>Adjust the Monitor Range to include the monitor numbers used for the experiment.</li>
+<li>Check “verify data” and press “Scan.” Do not exit the DAM application before scanning is complete.</li>
+<li>The first bin should be at midnight on the day <u>after</u> the experiment was loaded and the last day should be the final full day of the experiment.</li>
+<li>Change the “bin length” to 1 min bins.</li>
+<li>Set “Output Data Types” to “Monitor Counts.”</li>
+<li>Set “Extra Readings” to “Sum into bin.”</li>
+<li>Indicate the “RunName.”</li>
+<li>Hit “Save.”</li>
+</ol>
+</li>
+<li>To minimize the chances of interfering with the data acquisition computer and avoid interfering with ongoing experiments, transfer the saved experiment to a different computer for analysis.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Visualizing the data via Actograms. In the steps below we describe how to do this using <i>Clocklab</i>. An analysis protocol has been previously described (<a href="#bib4">Fernandez et al., 2020</a>). Alternatively, circadian data can be analyzed using the open access R code <i>Rhythmically</i> (<a href="#bib1">Abhilash and Sheeba, 2019</a>).</div>
+<ol start="11">
+<li>Open DAMFileScan:
+<ol type="a">
+<li>For the input folder, use the RunName folder, i.e., “yymmdd[initials]”.
+<div class="note">
+<span class="note-title">Note:</span> If you get the error message “no monitors found,” open the folder through your computer’s finder and rename each monitor file to “Monitor1,” “Monitor2,” etc.</div>
+</li>
+<li>Adjust the Monitor Range to include the monitors used for the experiment.</li>
+<li>Verify data and Scan and adjust “Bin length” to “30 min bins.”</li>
+<li>“Output Data type” as “Channel Files” and “Extra Readings” as “sum into bin.”</li>
+<li>Check “make channel files.”</li>
+<li>Hit “Save.”</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Open Clocklab:
+<ol type="a">
+<li>Go to Clocklab/Export/Preferences and select printing 4 × 4 actograms per page.</li>
+<li>Go to Clocklab/Export/Batch Print(graph).</li>
+<li>Select the relevant channel files.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep the data collection computer offline so that there is no risk of losing data collected through DAM file scan during automated updates. Note that some new operative systems may already be programmed to account for changes in daylight savings time and would switch the time even if online. This would result in the 1 min/bin data being collapsed in a 1-h window and would affect data analysis.</div>
+<h3 id="sec3.3">Processing the data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>We provide the data files and the RMarkdown (Rmd) source file with the R code and text narrative, which can be loaded into RStudio and run by code chunk for a complete reproduction of all results and figures. This part of the paper is also posted on GitHub, where one can find the source Rmd document as well as the data files. For details and code regarding this step, see Supplemental methods, section 3.1.</p>
+<p>We use R as the programming environment and RStudio as the IDE. The following freely available software installers are available for Windows, Mac, and Linux:</p>
+<ul>
+<li>
+<b>MiKTeX</b> installers (for PDF output): <a href="http://miktex.org/download">http://miktex.org/download</a>
+</li>
+<li>
+<b>R</b> installers: <a href="http://cran.stat.ucla.edu/">http://cran.stat.ucla.edu/</a>
+</li>
+<li>
+<b>RStudio</b> installers: <a href="https://www.rstudio.com/">https://www.rstudio.com/</a>
+</li>
+</ul>
+<div class="critical">
+<span class="critical-title">Critical:</span> MiKTeX is required only for generating PDF documents from the source Rmd file inside RStudio. After the source Rmd document is loaded inside RStudio, the following R packages must be installed and loaded: <b>tidyverse</b>, <b>signal</b>, <b>pracma</b>, <b>circular</b>, <b>scales</b>, <b>reshape2</b>, <b>svglite</b>.</div>
+<ol start="13">
+<li>Obtaining phase values Example: Computing the <b>evening phases</b> for the entire sample of 32 flies on the last (5th) day of the LD cycle (LD5).
+<ol type="a">
+<li>Use the <b>DAMFileScan111X</b> (V1.11) to scan Monitor data (text) files and aggregate the data into 15 min bins for a certain time range.
+<div class="note">
+<span class="note-title">Note:</span> File names must be of the form MonitorNNN.txt or MonitorNNN.csv, where NNN = 1 to 120, and files must consist of 42 columns, tab or comma delimited, containing data for 32 flies.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The time of day for which phase is being determined should be <b>centered</b> on the resulting data file. In our example, lights on is 10:00AM (morning transition) and lights off is 10:00PM (evening transition). Therefore, data was saved in a +/- 12 h window relative to the evening transition on LD5, so that the evening transition (10PM = lights off) is centered on the data file.<br> First bin: 10:15 AM on LD5<br> Last bin: 10:00 AM on LD6</div>
+Note that the 10:15AM bin represents the fly activity between 10:00AM and 10:15AM, and the 10:00AM bin represents the fly activity between 09:45AM and 10:00AM. The resulting output was saved in the text file LD5APm15mCtM016.txt.</li>
+<li>Using the statistical programming language R and the Integrated Development Environment (IDE) RStudio, load the text file LD5APm15mCtM016.txt and do some initial processing before computing the evening phases.
+<div class="note">
+<span class="note-title">Note:</span> We used the <b>tidyverse</b> collection of R packages for data analysis and visualizations developed by RStudio.</div>
+</li>
+<li>Load the text file (LD5APm15mCtM016.txt in our example) and save it to the data dataframe.
+<div class="note">
+<span class="note-title">Note:</span> since this is a tab delimited file we use the <b>readr</b> package (a part of the <b>tidyverse</b>) function read_delim() with the second argument "\t" and col_names = FALSE. If the col_types argument is not set to specify character type for column three (X3) then the 3rd column will be saved as a time column (of type hms).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Monitor text files that will be loaded into the program should be located in the same folder as the Rmd file. Otherwise, the code must be modified to reflect the location the monitor file is stored in.<br> The dataframe data has 96 observations for the 96 bins covering the 24 h that we have selected (centered at 10:00PM on LD5), divided into 15 min bins. It has 42 variables, where the last 32 variables (columns) are representing the 32 flies (<a href="#tbl1">Table 1</a>).</div>
+<table id="tbl1">
+<caption>Table 1. The head of the LD5 data</caption>
+<thead>
+<tr>
+<th>X1</th>
+<th>X2</th>
+<th>X3</th>
+<th>X4</th>
+<th>X5</th>
+<th>X6</th>
+<th>X7</th>
+<th>X8</th>
+<th>X9</th>
+<th>X10</th>
+<th>X11</th>
+<th>X12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401340</td>
+<td>6 Jul 20</td>
+<td>10:15:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>10</td>
+<td>45</td>
+</tr>
+<tr>
+<td>401355</td>
+<td>6 Jul 20</td>
+<td>10:30:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>35</td>
+<td>37</td>
+</tr>
+<tr>
+<td>401370</td>
+<td>6 Jul 20</td>
+<td>10:45:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>30</td>
+<td>25</td>
+</tr>
+<tr>
+<td>401385</td>
+<td>6 Jul 20</td>
+<td>11:00:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>24</td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Remove the first 10 columns. Because of how data are saved via DAMSystem, activity for the 32 flies is given in the last 32 columns (Column 11 (X11) represents the first fly.).
+<div class="note">
+<span class="note-title">Note:</span> It is useful to keep column 3, which is the column of times that specify the bins. The resulting first column will be renamed (it was the 3rd column of times in the original data).</div>
+</li>
+<li>Rename the remaining fly columns.
+<div class="note">
+<span class="note-title">Note:</span> The function flyname(x) takes as an argument x the name of a fly column, say X11 (for the first fly), and it returns the name fly1. We use the str_sub() function from the <b>stringr</b> package in the <b>tidyverse</b>, which extracts a substring.</div>
+</li>
+<li>Using the flyname() function, rename the fly columns 2:33 as fly1, fly2, etc.</li>
+</ol>
+</li>
+</ol>
+<p>For plotting, it is useful to add to the data a new variable state for the 96 bins with 48 light and 48 dark values, depending on which part of the light/dark cycle the bin belongs to. <a href="#tbl2">Table 2</a> shows the first 12 columns and rows 47:50 of the resulting data. Note that the state changes from light to dark at bin 49 that corresponds to time 22:15, which captures the fly activity between 10:00PM and 10:15PM. This is an important observation for computing the evening phase.</p>
+<table id="tbl2">
+<caption>Table 2. The LD5 data at 10:00PM, showing rows 47:50</caption>
+<thead>
+<tr>
+<th>time</th>
+<th>State</th>
+<th>fly1</th>
+<th>fly2</th>
+<th>fly3</th>
+<th>fly4</th>
+<th>fly5</th>
+<th>fly6</th>
+<th>fly7</th>
+<th>fly8</th>
+<th>fly9</th>
+<th>fly10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21:45:00</td>
+<td>Light</td>
+<td>37</td>
+<td>33</td>
+<td>30</td>
+<td>22</td>
+<td>30</td>
+<td>23</td>
+<td>27</td>
+<td>55</td>
+<td>37</td>
+<td>23</td>
+</tr>
+<tr>
+<td>22:00:00</td>
+<td>light</td>
+<td>22</td>
+<td>25</td>
+<td>25</td>
+<td>18</td>
+<td>19</td>
+<td>23</td>
+<td>33</td>
+<td>41</td>
+<td>30</td>
+<td>18</td>
+</tr>
+<tr>
+<td>22:15:00</td>
+<td>dark</td>
+<td>38</td>
+<td>33</td>
+<td>40</td>
+<td>36</td>
+<td>34</td>
+<td>30</td>
+<td>49</td>
+<td>77</td>
+<td>56</td>
+<td>36</td>
+</tr>
+<tr>
+<td>22:30:00</td>
+<td>dark</td>
+<td>34</td>
+<td>33</td>
+<td>42</td>
+<td>40</td>
+<td>32</td>
+<td>51</td>
+<td>41</td>
+<td>71</td>
+<td>54</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec3.4">Visualizing activity</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>The <b>ggplot2 package</b> from the <b>tidyverse</b> (<a href="#bib16">Wickham and Grolemund, 2016</a>) was used for all visualization purposes. For details and code used in this step, see Supplemental methods, section 3.2.</p>
+<p>For illustration purposes, we visualize the activity of fly1 by using bars centered at the corresponding bins obtained by seq_along(fly1), set as the x variable (<a href="#fig1">Figure 1</a>). The bars are colored in light or dark gray based on their state value (with fill=state).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Plot of fly activity on LD5 centered at ZT12</div>
+</figcaption>
+</figure>
+<h3 id="sec3.5">Average activity plots</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>Before computing the row averages to get the average activity plot, dead flies should be removed. We define a fly to be “dead” if it has zero activity in every single bin. In particular, having a non-zero activity in one bin only would classify the fly as “alive.” For details and code used in this step, see Supplemental methods, section 3.3.</p>
+<ol start="14">
+<li>Generate average activity plots.
+<ol type="a">
+<li>Compute the index vector of all live flies using the live_flyindex() function.</li>
+<li>Compute the average activity across all live flies on LD5 by taking row-wise averages.</li>
+<li>Create the average activity plot with ggplot(), shown in <a href="#fig2">Figure 2</a>, using the new avg variable inside data that we created in part b.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. The average activity of all live flies on LD5</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.6">Smoothing the data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>A filter applied on the fly counts removes the high frequencies in the spectrum, i.e., a low-pass filter that smooths out the data.</p>
+<ol start="15">
+<li>Apply a Butterworth filter. For details and the code used in this step, see Supplemental methods, section 3.4.<br> The Butterworth filter is a recursive filter of the form:<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Si1.jpg" alt="Si1.jpg"><br> where <i>u<sub>j</sub></i>, <i>j</i> = 1, ..., <i>N</i> is the original signal, and <i>v<sub>j</sub></i>, <i>j</i> = 1, ..., <i>N</i> is the filtered signal. Note that this filter depends not only on the current and the previous <i>P</i> original data points, but also on the previously filtered <i>Q</i> points, relative to the current point. Thus, the current filtered value depends not only on a weighted average of the unfiltered values (first sum), but also recursively on the previously computed <i>Q</i> filtered values (second sum). The art of filter design is to compute the values of the <i>P</i> + 1 parameters <i>a<sub>p</sub></i>, <i>p</i> = 0, ..., <i>P</i> and the <i>Q</i> parameters <i>b<sub>q</sub></i>, <i>q</i> = 0, ..., <i>Q</i> so that the frequency requirements are met. We use a 2nd order low-pass Butterworth filter with <i>P</i> = <i>Q</i> = 2.<br> This filter is causal since it uses only past data and this leads to a phase delay in the filtered data. The phase delay can be removed by additional filtering backward in time.
+<ol type="a">
+<li>To compute the Butterworth filter weights, use the function butter() from the <b>signal</b> package.</li>
+<li>Then, use the function filtfilt(), which applies a linear digital filter twice, once forward and once backward in time. The double filter has <i>zero-phase delay</i> and a filter order twice that of the original. <i>Having a zero-phase delay is essential for the phase computations in the context of fly activity.</i>
+</li>
+</ol>
+</li>
+</ol>
+<p><a href="#fig3">Figure 3</a> shows the results of applying single and double filters to the noisy data generated by a pure sinusoid. The double filter traces very closely the original pure sinusoidal signal used to generate the noisy data, except around the end points. The phase delay of the single filter is also quite clear.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Single and double Butterworth filters applied to noisy data generated from a pure sinusoid</div>
+</figcaption>
+</figure>
+<h3 id="sec3.7">Obtaining the evening phase of a single fly</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>A Butterworth filter was applied to smooth out the fly data and compute the evening phase for a single fly using a window centered at 10:00 PM on LD5. For the 15 min bin data the <b>49th bin</b> was used (first bin in dark state), to represent the evening phase bin relative to which the phase shift was computed. For details and code used in this step, see Supplemental methods, section 3.5.</p>
+<ol start="16">
+<li>To generate the Butterworth filter parameters, use the butter() function from the <b>signal</b> R package. The arguments are:
+<ul>
+<li>n is the filter order. We first explore the data with n=1,2 for a first and second order filter.</li>
+<li>W is the critical frequency of the filter and it must be a scalar for a low-pass filter. For digital filters, W must be between 0 and 1, where 1 is the Nyquist frequency. We start our explorations with either W=0.1 (10 Hz) or W=0.2 (5 Hz).</li>
+<li>type is set to “low” for a low-pass filter.</li>
+<li>plane is set to “z” for a digital filter.</li>
+<li>a, which holds the autoregressive (AR) polynomial coefficients for the recursive part.</li>
+<li>B, which holds the moving average (MA) polynomial coefficients for the weighted sum part.</li>
+</ul>
+</li>
+</ol>
+<ol start="17">
+<li>Compute the evening phase for a single fly.
+<ol type="a">
+<li>In the example provided, we found all peaks in the filtered data using the findpeaks() function from the <b>pracma</b> R package and then found the peak whose time index minimizes the distance from the time index of ZT12. Distance is given as the absolute value of the difference.</li>
+<li>We added to the original data the smoothed data for the single fly, using the mutate() function and applying the double filter filtfilt() to the fly data using the Butterworth filter, described above. Then, we use the findpeaks() function from the <b>pracma</b> R package to find the peak closest to lights off (ZT12). An evening phase value of −0.5 h was obtained for fly18.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.8">Plotting the raw, unfiltered data with the phase value</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15 min</div>
+<ol start="18">
+<li>Use the R function phasePlot()which generates plots like one shown in <a href="#fig4">Figure 4</a>, which includes the raw activity data for fly18. The raw data was smoothed using a first order filter with 5 Hz critical frequency (W=0.2). The filtered data for this particular fly is plotted using a line plot in blue color. Note that the algorithm does not pick the highest peak of activity, but the peak closest to lights off as it can be seen in the case of fly18, where the phase corresponds to the second-highest peak.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Raw and filtered data for a single fly and its evening phase on LD5 (Figure 6 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+<p>For details and code used in this step, see Supplemental methods, section 3.6. For detailed information regarding the full phase sample in LD, see Supplemental methods, section 3.7.</p>
+<h3 id="sec3.9">Phase analysis on DD1</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>For details and code used in this step, see Supplemental methods, section 4 (subsections 4.1 and 4.2)</p>
+<ol start="19">
+<li>Load in RStudio the DD1 data file DD1APm15mCtM016.txt obtained from <b>DAMFileScan111X.</b> Note that the DD1 data are centered at 10:00PM on DD1. The resulting dataframe has 96 observations for the 96 bins covering the 24 h that we have selected, divided into 15 min bins. It has 42 variables, where the last 32 variables (columns) are representing the 32 flies. <a href="#tbl3">Table 3</a> shows the first 12 columns and the first 4 rows of the data. Column 11 (X11) represents the first fly on DD1.
+<table id="tbl3">
+<caption>Table 3. The head of the DD1 data</caption>
+<thead>
+<tr>
+<th>X1</th>
+<th>X2</th>
+<th>X3</th>
+<th>X4</th>
+<th>X5</th>
+<th>X6</th>
+<th>X7</th>
+<th>X8</th>
+<th>X9</th>
+<th>X10</th>
+<th>X11</th>
+<th>X12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>402780</td>
+<td>7 Jul 20</td>
+<td>10:15:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>27</td>
+<td>15</td>
+</tr>
+<tr>
+<td>402795</td>
+<td>7 Jul 20</td>
+<td>10:30:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>25</td>
+<td>7</td>
+</tr>
+<tr>
+<td>402810</td>
+<td>7 Jul 20</td>
+<td>10:45:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+<td>0</td>
+</tr>
+<tr>
+<td>402825</td>
+<td>7 Jul 20</td>
+<td>11:00:00</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>23</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Supplemental methods, Table 4.</p>
+</li>
+</ol>
+<p>Next, we performed the same data processing that we did for the LD5 data. <a href="#tbl4">Table 4</a> shows the first 12 columns and a slice of rows 47:50 around 10:00 PM of our data.</p>
+<table id="tbl4">
+<caption>Table 4. The DD1 data around 10:00PM, showing rows 47:50</caption>
+<thead>
+<tr>
+<th>Time</th>
+<th>state</th>
+<th>fly1</th>
+<th>fly2</th>
+<th>fly3</th>
+<th>fly4</th>
+<th>fly5</th>
+<th>fly6</th>
+<th>fly7</th>
+<th>fly8</th>
+<th>fly9</th>
+<th>fly10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21:45</td>
+<td>light</td>
+<td>20</td>
+<td>14</td>
+<td>22</td>
+<td>18</td>
+<td>12</td>
+<td>34</td>
+<td>13</td>
+<td>31</td>
+<td>20</td>
+<td>17</td>
+</tr>
+<tr>
+<td>22:00</td>
+<td>light</td>
+<td>30</td>
+<td>11</td>
+<td>38</td>
+<td>10</td>
+<td>16</td>
+<td>27</td>
+<td>25</td>
+<td>35</td>
+<td>27</td>
+<td>21</td>
+</tr>
+<tr>
+<td>22:15</td>
+<td>dark</td>
+<td>28</td>
+<td>12</td>
+<td>20</td>
+<td>20</td>
+<td>26</td>
+<td>37</td>
+<td>27</td>
+<td>38</td>
+<td>20</td>
+<td>10</td>
+</tr>
+<tr>
+<td>22:30</td>
+<td>dark</td>
+<td>14</td>
+<td>21</td>
+<td>0</td>
+<td>35</td>
+<td>25</td>
+<td>21</td>
+<td>20</td>
+<td>45</td>
+<td>25</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Supplemental methods, Table 5.</p>
+<p>Note that the table indicates “light” or “dark” for clarity but this refers to subjective day and subjective night, respectively (free running conditions in <i>Drosophila</i> are constant darkness and constant temperature).</p>
+<p>To illustrate, we show in <a href="#fig5">Figure 5</a> the evening phase obtained for fly2, using the optimal filtering parameters obtained by calibrating the filter to the LD5 data. The distribution of the phase sample on DD1 obtained with optimal filter parameters is show in <a href="#fig6">Figure 6</a>.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Raw and filtered activity for fly2 and its evening phase on DD1 with optimal filter parameters (Figure 11 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. The frequency histogram of the phase sample on DD1 (Figure 12 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+<h3 id="sec3.10">Circular data analysis and visualizations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>In this section, we illustrate the circular data analysis (<a href="#bib2">Batschelet, 1981</a>)(<a href="#bib8">Levine et al., 2002</a>, <a href="#bib11">Pewsey et al., 2013</a>) and visualization functionality of the R package <b>circular</b>, which can be installed in RStudio from CRAN. For illustration purposes, we use the actual phase data from our original paper (<a href="#bib4">Fernandez et al., 2020</a>). For details and code used in this step, see Supplemental methods, section 5. A good introduction to the analytical aspects of circular statistics can be found in (<a href="#bib11">Pewsey et al., 2013</a>), and the R package <b>circular</b> is illustrated in (<a href="#bib2">Batschelet, 1981</a>).</p>
+<p>Data were obtained from a system entrained to a 24 h environmental cycle (lights on=ZT00). Negative phases represent increased activity (anticipation) before lights on or lights off transitions, thus if a transition was anticipated there would be a negative phase value. On the other hand, the positive phases represent a delay in response relative to ZT00 time set at “midnight” on our clock.</p>
+<ol start="20">
+<li>Import the raw phase data into RStudio. The phases dataframe has 7 variables and 64 observations, including NAs. The variables represent the phases for different genotypes. For details and code used in this step, see Supplemental methods, section 5.1.</li>
+<li>Transform the phases into proper hours by taking the original phases modulo 24, and then converting the hours into radians. For details and code used in this step, see Supplemental methods, section 5.2.</li>
+</ol>
+<p>The zero-hour ZT00 is set at 24 h, or 2<i>π</i> radians. The conversion formula is given by:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Si11.jpg" alt="Si11.jpg"></p>
+<p>where <i>ϕ</i><sub>0</sub> is the raw phase, (<i>ϕ</i><sub>0</sub> <i>mod</i> 24) is taking the raw phase modulo 24, which gives a proper hour on the 24 h clock, and <i>ϕ</i><sub>1</sub> is the converted angular phase, given in radians. We then need to create a circular data object, using the function circular() from the <b>circular</b> package, which contains the phases as angles measured in radians on a 24 h clock.</p>
+<p>We illustrate the application of the Watson-Wheeler Test for Homogeneity of Angles and the Watson Two-Sample Test of Homogeneity to determine whether the phases for control and experimental lines are significantly different. Watson’s non-parametric two-sample statistic <i>U</i><sup>2</sup> provides a criterion to test whether two samples differ significantly from each other. For both tests, the null hypothesis is that the two samples of angles come from the same underlying population.</p>
+<ol start="22">
+<li>Generate <b>circular data plots.</b> Applying the generic plot() function to a circular data object, creates a circular data plot. For details and code used in this step, see Supplemental methods, section 5.3.</li>
+</ol>
+<p><a href="#fig7">Figure 7</a> shows the plot for the first phase variable (the genotype PdfGal4) in the circular data object. Inside plot(), the argument stack = TRUE allows for different observations corresponding to the same (or close enough) angle to be stacked on the top of each other.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Pdf-Gal4 phases in radians (Figure 13 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+<p>The <b>circular mean</b> computes the mean direction of a circular variable. Each angular observation in the circular variable is treated as a unit vector, or a point on the unit circle. The resultant vector of all observations is computed and the direction of the resultant vector is returned as the circular mean, which is implemented in the <b>circular</b> package as a method for the generic function mean(), applied to a circular data object.</p>
+<p>Since the phase data have NA values, we use the na.rm = TRUE argument to remove the NA values.</p>
+<div class="note">
+<span class="note-title">Note:</span> NA stands for "not available," and it is a reserved symbol in R used to represent a missing value. For example, the phases corresponding to dead flies would be computed as NAs, because there are no data available for dead flies.</div>
+<p>For details and code used in this step, see Supplemental methods, section 5.4.</p>
+<ol start="23">
+<li>Visualize the circular mean as the mean direction of a circular variable by plotting an arrow that represents the resultant mean direction vector, using arrows.circular(). The call arrows.circular(data) displays the vectors on the unit circle corresponding to the angles (in radians) in the circular variable data, relative to the zero on the 24 h clock. To display the mean resultant vector, we use the <b>mean resultant length</b> of the circular variable, computed with rho.circular(). This is shown in <a href="#fig8">Figure 8</a>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Mean direction, shown by the blue arrow (Figure 15 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+<p>The rose diagram represents frequencies in the circular data by areas of sectors on the unit circle and can be added to an existing circular plot using the rose.diag() function. For more details on the many arguments this function has, please refer to the <b>circular</b> package documentation. There are two conventions in the literature regarding rose diagrams. Here we use the default convention of the rose.diag() function, where the radius of a segment is taken to be the square root of the relative frequency. With this convention, when we compare segments in a rose diagram, <b>the ratio of the areas of two segments is the same as the ratio of the relative frequencies</b>, since the segment areas are proportional to the radius squared. See the supplement for more details.</p>
+<ol start="24">
+<li>Add a rose diagram to a circular plot as well as an arrow pointing in the mean circular direction of the circular data, as shown in <a href="#fig9">Figure 9</a>. In the rose.diag() function, the argument bins=16 controls the number of segments, and the argument prop=1.1 scales the size of all segments relative to the outer circle, with larger values increasing the size of the segments, having a default value of one. For details and code used in this step, see Supplemental methods, section 5.5.
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Mean direction vector (in blue), and a rose diagram of PdfGal4 (Figure 16 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The <b>Watson two-sample test</b> can be applied to determine whether the phases for control and experimental lines are significantly different. For details and code used in this step, see Supplemental methods, section 5.6.</p>
+<p>Watson’s non-parametric two-sample <i>U</i><sup>2</sup> statistic provides a criterion to test whether two samples differ significantly from each other. The circular data should consist of two independent random samples of circular observations drawn from populations with a continuous distribution . The null hypothesis <i>H</i><sub>0</sub> states that <b>the two samples belong to the same parent population</b>.</p>
+<p>The <b>decision rule</b> states that:</p>
+<ul>
+<li>If <i>U</i><sup>2</sup>&lt; critical value: the null hypothesis cannot be dismissed.</li>
+<li>If <i>U</i><sup>2</sup>&gt; critical value: reject the null hypothesis and conclude that the two samples differ significantly.</li>
+</ul>
+<p>The Watson two-sample test for homogeneity can be used on two or more samples of circular data, using the function watson.twotwo.test(). The difference between the samples can be in either the mean or the variance. The p-value is estimated by assuming that the test statistic follows a chi-squared distribution. For this approximation to be valid, each dataset must have at least 10 elements. The alpha argument of this function specifies the <b>significance level</b> of the test. Valid levels are 0.001, 0.01, 0.05, 0.1. This argument can be omitted, in which case, a range for the p-value will be returned.</p>
+<p>One can also apply the <b>Watson-Wheeler test for homogeneity</b> on two or more samples of circular data, using the function watson.wheeler.test() from the <b>circular</b> package. The difference between the samples can be in either the mean or the variance.</p>
+<ol start="25">
+<li>Create the circular plot of uasDBTL and PdfDBTL, along with arrows pointing to the circular means of the two datasets, and their rose diagrams, shown in <a href="#fig10">Figure 10</a>. For details and code, see Supplemental methods, section 5.7.
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. The circular plot and rose diagrams of uasDBTL and PdfDBTL (Figure 17 in supplemental experimental procedures)</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>A more complex definition of a “dead fly” may be needed for the average activity plot, which accounts for flies that can be considered “dead” even though they may have some non-zero activity within a given time interval. Additionally, it may be required to optimize the filter calibration for speed if applied to large data, and if used to create a Shiny App running on a RStudio server. Further, it may be useful to add a function that creates an average activity plot across any given range of LD days that can be used for filter calibration.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>A lack of behavior tracking to temperature ramp cycles by control flies, caused by overcrowded incubators and low humidity levels.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>For better entertainment conditions we suggest limiting the number of monitors per incubator to a maximum of 10, if using Percival models. We also suggested adding a tub of water to the bottom of each incubator to control for humidity. We predict that overcrowding the incubator prevents each individual fly tube to heat up to the fullest expression, making it hard for the flies to properly entrain to these conditions.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>A high percentage of F1 flies that die during the experimental run.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This problem has multiple possible solutions. The first is to limit the flies’ exposure to CO<sub>2</sub>, as overexposure to CO<sub>2</sub> is lethal to the flies. When loading the flies try to minimize the time they spend on the fly pad, the maximum time is 10 min. The second solution is to ensure there is enough food in the vials and it is properly made to sustain the flies for 20 days. Finally, ensure the flies you load are young and healthy. If environmental monitors were used, check to make sure unprogrammed changes in temperature were not responsible for killing flies.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Abhilash, L. and Sheeba, V. (2019). RhythmicAlly: Your R and shiny–based open-source ally for the analysis of biological rhythms. J. Biol. Rhythm. <i>34</i>, 551-561. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref1">View at publisher</a></p>
+<p id="bib2">Batschelet, E. (1981). Circular statistics in biology (Academic Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref2">View at publisher</a></p>
+<p id="bib3">Chyb, S. and Gompel, N. (2013). Atlas of <i>Drosophila</i>morphology : wild-type and classical mutants (Academic Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref3">View at publisher</a></p>
+<p id="bib4">Fernandez, M.P., Pettibone, H.L., Bogart, J.T., Roell, C.J., Davey, C.E., Pranevicius, A., Huynh, K.V., Lennox, S.M., Kostadinov, B.S., and Shafer, O.T. (2020). Sites of circadian clock neuron plasticity mediate sensory integration and entrainment. Curr. Biol. <i>30</i>, 2225-2237.e5. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref4">View at publisher</a></p>
+<p id="bib5">Geissmann, Q., Garcia Rodriguez, L., Beckwith, E.J., French, A.S., Jamasb, A.R., and Gilestro, G.F. (2017). Ethoscopes: An open platform for high-throughput ethomics. PLoS Biol. <i>15</i>, e2003026. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref5">View at publisher</a></p>
+<p id="bib6">Helfrich-Forster, C., Winter, C., Hofbauer, A., Hall, J.C., and Stanewsky, R. (2001). The circadian clock of fruit flies is blind after elimination of all known photoreceptors. Neuron <i>30</i>, 249-261. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref6">View at publisher</a></p>
+<p id="bib7">Keleman, K. and Dickson, B.J. (2001). Short- and long-range repulsion by the <i>Drosophila</i> Unc5 netrin receptor. Neuron <i>32</i>, 605-617. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref7">View at publisher</a></p>
+<p id="bib8">Levine, J.D., Funes, P., Dowse, H.B., and Hall, J.C. (2002). Signal analysis of behavioral and molecular cycles. BMC Neuroscience <i>3</i>, 1. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref8">View at publisher</a></p>
+<p id="bib9">Muskus, M.J., Preuss, F., Fan, J.-Y., Bjes, E.S., and Price, J.L. (2007). <i>Drosophila</i> DBT lacking protein kinase activity produces long-period and arrhythmic circadian behavioral and molecular rhythms. Mol. Cell. Biol. <i>27</i>, 8049-8064. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref9">View at publisher</a></p>
+<p id="bib10">Park, J.H., Helfrich-Forster, C., Lee, G., Liu, L., Rosbash, M., and Hall, J.C. (2000). Differential regulation of circadian pacemaker output by separate clock genes in <i>Drosophila</i>. Proc. Natl. Acad. Sci. U S A <i>97</i>, 3608-3613. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref10">View at publisher</a></p>
+<p id="bib11">Pewsey, A., NeuhäUser, M., and Ruxton, G.D. (2013). Circular statistics in R (Oxford University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref11">View at publisher</a></p>
+<p id="bib12">Pfeiffenberger, C., Lear, B.C., Keegan, K.P., and Allada, R. (2010a). Locomotor activity level monitoring using the Drosophila Activity Monitoring (DAM) System. Cold Spring Harb. Protoc. <i>2010</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref12">View at publisher</a></p>
+<p id="bib13">Pfeiffenberger, C., Lear, B.C., Keegan, K.P., and Allada, R. (2010b). Processing circadian data collected from the Drosophila Activity Monitoring (DAM) System. Cold Spring Harb. Protoc. <i>2010</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref13">View at publisher</a></p>
+<p id="bib14">Renn, S.C.P., Park, J.H., Rosbash, M., Hall, J.C., and Taghert, P.H. (1999). A pdf neuropeptide gene mutation and ablation of PDF neurons each cause severe abnormalities of behavioral circadian rhythms in <i>Drosophila</i>. Cell <i>99</i>, 791-802. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref14">View at publisher</a></p>
+<p id="bib15">Schmid, B., Helfrich-Forster, C., and Yoshii, T. (2011). A new ImageJ plug-in "ActogramJ" for chronobiological analyses. J. Biol. Rhythms <i>26</i>, 464-467. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref15">View at publisher</a></p>
+<p id="bib16">Wickham, H. and Grolemund, G. (2016). R for data science : import, tidy, transform, visualize, and model data (O'Reilly). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref16">View at publisher</a></p>
+<p id="bib17">Yao, Z., Bennett, A.J., Clem, J.L., and Shafer, O.T. (2016). The <i>Drosophila</i> clock neuron network features diverse coupling modes and requires network-wide coherence for robust circadian rhythms. Cell Rep. <i>17</i>, 2873-2881. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30272-0/sref17">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Maria P. Fernandez (<a href="mailto:mfernand@barnard.edu">mfernand@barnard.edu</a>).</p>
+<h4>Materials Availability</h4>
+<p>All unique/stable reagents generated in this study are available from the lead technical contact and the corresponding author without restriction. Further information and requests for resources and reagents should be directed to and will be fulfilled by Maria P. Fernandez and Boyan Kostadinov.</p>
+<h4>Data and Code Availability</h4>
+<p>The<a href="https://github.com/bkostadi/circular_analysis">GitHub</a> repository contains the RMarkdown (Rmd) source document with the code used for all computations and visualizations discussed in the paper. For a full reproducibility, it also contains the data files used in the source Rmd document. We use the<a href="https://www.r-project.org/">R programming environment</a> and the<a href="https://rstudio.com/">RStudio</a> IDE for all data analysis and visualizations.</p>
+<h3>Supplemental Information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/427-Mmc1.pdf">Document S1. Supplemental experimental procedures, Figures S1–S17, and Tables S1–S6</a></p>
+<h3>Acknowledgments</h3>
+<p>The work was supported by a National Institutes of Health <a href="https://doi.org/10.13039/100000065">NINDS</a> grant (R01NS077933) to O.T.S. and start-up funds from <a href="https://doi.org/10.13039/100013085">Barnard College</a> to M.P.F.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, B.S.K., O.T.S., and M.P.F.; Methodology, B.S.K.; Software, B.S.K. and X.Z.; Validation, B.S.K., H.L.P., E.B., and X.Z.; Formal Analysis, B.S.K., H.L.P., and M.P.F.; Investigation, H.L.P., A.P., O.T.S., and M.P.F.; Data Curation, B.S.K., A.P., and E.B.; Writing – Original Draft, M.P.F.; Writing – Review &amp; Editing, B.S.K., H.L.P., A.P., O.T.S., and M.P.F.; Visualization, B.S.K.; Supervision, O.T.S. and M.P.F.; Project Administration, O.T.S. and M.P.F.; Funding Acquisition, O.T.S. and M.P.F.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

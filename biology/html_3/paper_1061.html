@@ -1,0 +1,2347 @@
+<article>
+<section>
+<h1 id="header">Identification of SARS-CoV-2 S RBD escape mutants using yeast screening and deep mutational scanning</h1>
+<p><time datetime="2021-10-08">Published: October 8, 2021</time></p>
+<p>Cyrus M. Haas,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup> Irene M. Francino-Urdaniz,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a></sup> Paul J. Steiner,<sup><a href="#aff1">1</a></sup> and Timothy A. Whitehead<sup><a href="#aff1">1</a>,<a href="#fn3">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Chemical and Biological Engineering, University of Colorado, Boulder, Boulder, CO 80303, USA</p>
+<p id="fn1"><sup>2</sup>These authors contributed equally</p>
+<p id="fn2"><sup>3</sup>Technical contact</p>
+<p id="fn3"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:cyrus.haas@colorado.edu">cyrus.haas@colorado.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:timothy.whitehead@colorado.edu">timothy.whitehead@colorado.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100869">10.1016/j.xpro.2021.100869</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Here, we describe a protocol to identify escape mutants on the severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) spike (S) receptor-binding domain (RBD) using a yeast screen combined with deep mutational scanning. Over 90% of all potential single S RBD escape mutants can be identified for monoclonal antibodies that directly compete with angiotensin-converting enzyme 2 for binding. Six to 10 antibodies can be assessed in parallel. This approach has been shown to determine escape mutants that are consistent with more laborious SARS-CoV-2 pseudoneutralization assays.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.celrep.2021.109627">Francino-Urdaniz et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A protocol for identifying S escape mutations for anti-S monoclonal antibodies</li>
+<li>All anti-S antibodies that competitively inhibit ACE2 can be tested</li>
+<li>Protocol uses yeast display screening of freely available S RBD libraries</li>
+<li>Open-source software used to analyze sequencing data and identify escape mutants</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Protocol overview</h3>
+<p>This method identifies S RBD nAb escape mutations by identifying S RBD mutants that are not bound by a nAb but retain the ability to bind ACE2.</p>
+<p>SARS-CoV-2 initiates infection with binding of the Spike receptor binding domain (S RBD) to angiotensin-converting enzyme 2 (ACE2). Many neutralizing antibodies (nAbs) prevent infection by binding to S RBD and blocking ACE2 binding. We have constructed three different S RBD libraries based on the original Wuhan-Hu-1 S RBD N343Q (333-537) (SRA: SAMN18250431-SAMN18250483). The first is in the original background, the second is in the E484K background, and the third is in the N501Y background. The E484K and N501Y mutations exist in currently circulating Alpha, Beta, and Gamma variants. These libraries are available from <a href="https://www.addgene.org/Timothy_Whitehead/">AddGene</a>. Each is provided as two sub-libraries (Tile 1 and Tile 2) for compatibility with 250bp paired-end Illumina sequencing. Tile 1 contains mutations at positions 333-437, while tile 2 contains mutations at positions 438-537.</p>
+<h3 id="sec1.2">Prepare chemically competent <i>S. cerevisiae</i> EBY100</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 h</div>
+<p>Competent yeast can be prepared in advance and stored at −80°C for at least 6 months (<a href="#bib11">Medina-Cucurella and Whitehead, 2018</a>).</p>
+<ol>
+<li>Prepare chemically competent <i>S. cerevisiae</i> EBY100 (MYA-4941<sup>TM</sup>)
+<ol type="a">
+<li>Grow EBY100 cells from glycerol stock in 500 mL YPD (<a href="#materials-and-equipment">recipe</a>) at 30°C and 300rpm until culture reaches an OD<sub>600</sub> of 1.2 (about 4 h).</li>
+<li>Harvest the EBY100 cells by centrifugation at 4000 × <i>g</i> for 5 min.</li>
+<li>Wash the pellet by resuspending in 250 mL sterile H<sub>2</sub>O and repelleting by centrifugation at 4000 × <i>g</i> for 5 min.</li>
+<li>Wash the pellet with 10 mL of 100 mM lithium acetate and repellet by centrifugation at 4000 × <i>g</i> for 5 min.</li>
+<li>Resuspend cells in 3.5 mL of 100 mM lithium acetate and then add 1.5 mL of 50% v/v glycerol and mix.</li>
+<li>Prepare 210 μL aliquots and store at −80°C. Do not use dry ice to freeze the cells.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Typical transformation efficiencies for these prepared cells are 5×10<sup>5</sup> colony forming units (cfu) per μg digested DNA.</div>
+<h3 id="sec1.3">Plasmid preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>For this step, the plasmid containing yeast display backbone (pJS697) and a plasmid containing the S RBD insert (see <a href="#tbl1">Table 1</a> for variations) are digested. All yeast display plasmids are freely available via <a href="https://www.addgene.org/Timothy_Whitehead/">AddGene</a> as <i>E. coli</i> glycerol cell stocks.</p>
+<table id="tbl1">
+<caption>Table 1. List of plasmids that can be used for yeast display screening</caption>
+<thead>
+<tr>
+<th>Plasmid</th>
+<th>Characteristics</th>
+<th>Antibiotic resistance</th>
+<th>AddGene collection #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pJS697</td>
+<td>Contains yeast display backbone</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699</td>
+<td>Contains insert gene encoding Wuhan-Hu-1 S RBD N343Q (333-537) (“WT”)</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001</td>
+<td>Contains insert gene encoding Wuhan-Hu-1 S RBD N343Q, E484K (333-537) (“E484K”)</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002</td>
+<td>Contains insert gene encoding Wuhan-Hu-1 S RBD N343Q, N501Y (333-537) (“N501Y”)</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699_L1</td>
+<td>Library of mutations on WT RBD between positions 333 and 437</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699_L2</td>
+<td>Library of mutations on WT RBD between positions 438 and 537</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001_T1</td>
+<td>Library of mutations on E484K RBD between positions 333 and 437</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001_T2</td>
+<td>Library of mutations on E484K RBD between positions 438 and 537</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002_T1</td>
+<td>Library of mutations on N501Y RBD between positions 333 and 437</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002_T2</td>
+<td>Library of mutations on N501Y RBD between positions 438 and 537</td>
+<td>Kan</td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Digest backbone (pJS697; two BsaI restriction sites) and RBD-encoding (pJS699; two NotI restriction sites) plasmids. The pIFU-series plasmids follow the same procedure as pJS699.
+<ol type="a">
+<li>Set up digestion reactions as follows:
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pJS697 (pJS697 for library)</td>
+<td>n/a</td>
+<td>1 μg (5 μg)</td>
+</tr>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>n/a</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>BsaI-HFv2</td>
+<td>n/a</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>to 50 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Digestions are set up following NEB recommendations (<a href="http://nebcloner.neb.com/#!/redigest">NEB cloner</a>).</div>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pJS699 (or pJS699_L1, pJS699_L2)</td>
+<td>n/a</td>
+<td>1 μg (5 μg)</td>
+</tr>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>n/a</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>NotI-HF</td>
+<td>n/a</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>to 50 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Digestions are set up following NEB recommendations (<a href="http://nebcloner.neb.com/#!/redigest">NEB cloner</a>).</div>
+</li>
+<li>Incubate the digestion reactions for one hour at 37°C.</li>
+<li>Purify linear DNA from digested plasmids.
+<ol type="i">
+<li>Purify the backbone from the pJS697 digestion using a Monarch PCR &amp; DNA purification kit. The digestion will result in two linear DNA pieces: the insert between BsaI sites is 26bp and the backbone is 6042bp in length. DNA smaller than 45bp will not stick to the column (<a href="https://international.neb.com/faqs/2015/12/03/what-size-primers-can-be-effectively-removed-from-a-pcr-reaction">Monarch PCR &amp; DNA Cleanup kit</a>) so the eluate will only contain the backbone. Thus, gel electrophoresis and extraction are not necessary with the pJS697 digestion.</li>
+<li>Purify the linear insert from the pJS699 digestion containing S RBD by gel electrophoresis and gel extraction. The digestion will result in two linear DNA pieces: one at 832 bp and the other at 2692 bp. Excise the 832 bp fragment and purify using a Monarch Gel Extraction kit (<a href="https://www.neb.com/protocols/2015/11/23/monarch-dna-gel-extraction-kit-protocol-t1020">NEB</a>).</li>
+</ol>
+</li>
+<li>Quantify the linear DNA products by A<sub>260</sub> using a UV-Vis plate reader or nanodrop spectrophotometer. Typical yields for the digestion of 1 μg plasmid DNA are 600 ng (30 ng/μL) for backbone and 100 ng (5 ng/μL) for the gene encoding S RBD.
+<div class="note">
+<span class="note-title">Note:</span> Linearized plasmids can be stored frozen at -20°C for at least 3 weeks.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.4">Co-transformation of S RBD wild type into <i>S. cerevisiae</i> EBY100</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>Here, the yeast display backbone from the digest reaction (pJS697) is recombined with the insert containing the S RBD by co-transformation into chemically competent <i>S. cerevisiae</i> EBY100 (ATCC MYA-4941) following <a href="#bib11">Medina-Cucurella and Whitehead (2018)</a>. This step along with transformations for the S RBD libraries can be prepared in parallel.</p>
+<p><b>Day 1: Plasmid co-transformation for linear DNA of yeast display backbone</b></p>
+<ol start="3">
+<li>Co-transform linear DNA corresponding to the yeast display backbone and S RBD insert into chemically competent <i>S. cerevisiae</i> EBY100 (MYA-4941<sup>TM</sup>) (<a href="#fig1">Figure 1</a>A).
+<ol type="a">
+<li>Boil 10 μL salmon sperm DNA 10min at 97°C using a Thermal Cycler.</li>
+<li>Thaw chemically competent EBY100. Thawing can be performed either at 20°C–25°C or on ice.</li>
+<li>In a 1.5mL microcentrifuge tube add in order:
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EBY100 cells</td>
+<td>n/a</td>
+<td>70 μL</td>
+</tr>
+<tr>
+<td>50% w/v PEG 3350</td>
+<td>n/a</td>
+<td>240 μL</td>
+</tr>
+<tr>
+<td>1M lithium acetate</td>
+<td>n/a</td>
+<td>36 μL</td>
+</tr>
+<tr>
+<td>Salmon sperm DNA</td>
+<td>n/a</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>356 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Swirl with pipette tip and vortex to mix thoroughly until solution looks homogeneous. Yeast cells are hardy and will remain viable after a hard mix.</li>
+<li>To 50 μL of the cell mixture, add DNA in a 3:1 molar ratio of insert to backbone for a final 350 ng of DNA (100 ng linearized pJS699 insert and 250 ng linearized pJS697). The amount of DNA will typically result in &gt;10<sup>4</sup> transformants.
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The amount of DNA used can be reduced, and the molar ratio does not need to be strictly 3:1.</div>
+</li>
+<li>Incubate 30min at 30°C in a static incubator or Thermal Cycler.</li>
+<li>Incubate 20min at 42°C in a water bath or Thermal Cycler.</li>
+<li>Spin down 1 min at 16000 × <i>g</i> using a microcentrifuge. Remove supernatant.</li>
+<li>Resuspend in 100 μL SDCAA<sup>+</sup> without antibiotics (<a href="#materials-and-equipment">recipe</a>) and incubate for 5 min at 20°C–25°C.</li>
+<li>Plate 3 serial dilutions into SDCAA agar plates (<a href="#materials-and-equipment">recipe</a>) and incubate 2–3 days at 30°C.</li>
+</ol>
+</li>
+</ol>
+<p><b>Day 3: Select colonies</b></p>
+<ol start="11" type="a">
+<li>Select 3-5 individual colonies from the SDCAA agar plate and inoculate in 1.5 mL SDCAA<sup>+</sup> in a 14 mL culture tube (VWR Cat# 10127-334). Grow for 16–20 h at 30°C and 300 rpm in a shaker incubator.</li>
+</ol>
+<p><b>Day 4: Making yeast stocks</b></p>
+<ol start="12" type="a">
+<li>Use a spectrophotometer to record OD<sub>600</sub>. In a centrifuge, spin cells down 30 s at 16000 × <i>g</i> and make 1 mL yeast stocks at OD<sub>600</sub>=1 in yeast storage buffer (<a href="#materials-and-equipment">recipe</a>). Saturated <i>S. cerevisiae</i> EBY100 cultures will have an OD<sub>600</sub> of 3-5. We typically perform a 10-fold dilution of culture to determine the OD<sub>600</sub>. Each 1.5 mL culture will produce an average of six 1 mL yeast stocks.</li>
+</ol>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Preparative steps for the escape mutant protocol</div>
+<p>(A) Homologous recombination in yeast. Left to right: the two plasmids (one containing the backbone and the other one the S RBD insert) are digested independently and the segments are collected. The linearized plasmids are co-transformed into yeast. Yeast cells generate a single plasmid through homologous recombination.</p>
+<p>(B) S RBD displayed on the yeast surface bound to antibody. A PE fluorescence signal increase is observed when an antibody binds to S RBD. Two independent populations are detected when screening using FACS. The IgG<sup>low</sup>/RBD Display<sup>low</sup> population are yeast cells not containing plasmid.</p>
+<p>(C) S RBD labeled with biotinylated ACE2.</p>
+<p>(D) Antibodies may bind competitively or non-competitively. Incubation of unlabeled antibody followed by co-incubation with biotinylated ACE2 results in loss of ACE2 binding signal only for the competitive inhibition case. This protocol is designed to identify escape mutants for neutralizing antibodies that function by competitive inhibition of ACE2.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.5">Co-transformation of S RBD libraries into <i>S. cerevisiae</i> EBY100</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<p><b>Day 1: Plasmid co-transformation for S RBD libraries</b></p>
+<ol start="4">
+<li>Co-transform the libraries into chemically competent <i>S. cerevisiae</i> EBY100 (MYA-4941<sup>TM</sup>) (<a href="#fig1">Figure 1</a>A).
+<ol type="a">
+<li>Boil 30 μL salmon sperm DNA 10min at 97°C using a Thermal Cycler.</li>
+<li>Thaw chemically competent EBY100 at 20°C–25°C or on ice.</li>
+<li>In a 1.5mL microcentrifuge tube add in order:
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EBY100 cells</td>
+<td>n/a</td>
+<td>210 μL</td>
+</tr>
+<tr>
+<td>50% w/v PEG 3350</td>
+<td>n/a</td>
+<td>720 μL</td>
+</tr>
+<tr>
+<td>1M lithium acetate</td>
+<td>n/a</td>
+<td>108 μL</td>
+</tr>
+<tr>
+<td>Salmon sperm DNA</td>
+<td>n/a</td>
+<td>30 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1068 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Swirl with pipette tip and vortex to mix thoroughly until solution looks homogeneous. Yeast cells are hardy and will remain viable.</li>
+<li>Add DNA in a 3:1 insert to backbone molar ratio to give a final concentration of 1.5 μg DNA (1.06 μg vector and 440 ng insert). Alternatively, to obtain more transformants, the amount of DNA transformed can increase up to 5 μg total without increasing the amount of other reagents.</li>
+<li>Incubate 30min at 30°C in a static incubator (preferred) or Thermal Cycler.</li>
+<li>Incubate 20min at 42°C in a water bath (preferred) or Thermal Cycler.</li>
+<li>Spin down 30s at 16000 × <i>g</i> using a microcentrifuge. Remove supernatant.</li>
+<li>Resuspend in 1mL SDCAA (<a href="#materials-and-equipment">recipe</a> - make SDCAA<sup>+</sup> without antibiotics) and incubate for 5 min at 20°C–25°C.</li>
+<li>Make 6 serial dilutions and plate 10 μL of each in an SDCAA agar plate to calculate transformation efficiency. Incubate 2–3 days at 30°C. Obtaining near-complete (&gt;99.9%) coverage of the libraries requires &gt;1.2×10<sup>5</sup> transformants for each library (<a href="#bib14">Steiner et al., 2020</a>). The first tile (333-437) contains 1120 mutations and the second tile encodes 1260 mutations. The number of transformants obtained can be increased by scaling up the transformation, using more DNA, or using freshly prepared competent cells before freezing.</li>
+<li>Transfer remaining culture into 100mL SDCAA<sup>+</sup> (<a href="#materials-and-equipment">recipe</a>) in a 500 mL flask. Incubate at 30°C and 300rpm in the incubator shaker until saturation. This typically takes 48 h.</li>
+</ol>
+</li>
+</ol>
+<p><b>Day 4: Making yeast stocks</b></p>
+<ol start="12" type="a">
+<li>Make 1 mL yeast stocks at OD<sub>600</sub>=10
+<ol type="i">
+<li>Centrifuge the cell culture 3 min at 3200 × <i>g.</i>
+</li>
+<li>Remove the supernatant and resuspend the cell pellet in yeast storage buffer (<a href="#materials-and-equipment">recipe</a>) at OD<sub>600</sub>=10. Stocks can be stored for over a year at -80<sup>o</sup>C.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.6">Confirm that neutralizing antibodies selected bind and inhibit the yeast displayed glycosylated WT RBD</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>A recommended though not essential step is to confirm that your neutralizing antibody binds to displayed RBD and can competitively inhibit binding of surface-displayed S RBD to soluble ACE2. Here, yeast cells are grown from frozen stocks and induced for 16–20 h. For labeling, our lab prepares chemically biotinylated soluble ACE2-Fc produced by the Institute of Protein Design (<a href="#bib15">Walls et al., 2020</a>). However, biotinylated soluble ACE2 is now commercially available (e.g., R&amp;D Systems Cat# BT933-020). We have not validated the use of other sources of ACE2 in this protocol. We biotinylate ACE2-Fc with NHS-Biotin following the vendor’s protocol (User guide: <a href="https://www.thermofisher.com/document-connect/document-connect.html?url=https%3A%2F%2Fassets.thermofisher.com%2FTFS-Assets%2FLSG%2Fmanuals%2FMAN0011206_EZ_NHS_Biotin_Reag_UG.pdf&amp;title=VXNlciBHdWlkZTogIEVaLUxpbmsgTkhTLUJpb3RpbiBSZWFnZW50cw==">EZ-link NHS Biotin</a>) using a biotin to protein molar ratio from 20:1 to 80:1.</p>
+<p><b>Day 1: Cell induction</b></p>
+<ol start="5">
+<li>Thaw a 1mL stock of yeast cells harboring the S RBD display plasmid.</li>
+<li>Pellet the cells by centrifuging 1 min at 16000 × <i>g</i> using a microcentrifuge, remove supernatant, and resuspend in 1 mL SDCAA<sup>+</sup> (<a href="#materials-and-equipment">recipe</a>). Transfer culture to a 14 mL culture tube (VWR Cat#10127-334).</li>
+<li>Incubate at least 4h at 30°C and 300rpm in an incubator shaker. The cell concentration should double, but the culture should not be saturated. It is convenient to set this culture up in the morning so that cytometer screening can be performed during daytime hours on the following day.</li>
+<li>Measure the culture OD<sub>600</sub> with a spectrophotometer. Centrifuge the cells 1 min at 16000 × <i>g</i> in a microcentrifuge and resuspend to OD<sub>600</sub>=1 in SGCAA<sup>+</sup> (<a href="#materials-and-equipment">recipe</a>).</li>
+<li>Transfer 1 mL of the culture to a new 14 mL culture tube and incubate for 22 h at 22°C and 300 rpm in an incubator shaker.</li>
+</ol>
+<p><b>Day 2: Test cells for (1) surface display of S RBD, (2) ability to bind biotinylated ACE2, (3) ability to bind antibody of interest, and (4) for antibody ability to competitively inhibit ACE2</b>.</p>
+<ol start="10">
+<li>Transfer the culture to a 1.5 mL microcentrifuge tube and centrifuge for 1 min at 16000 × <i>g</i> using a microcentrifuge.</li>
+<li>Measure the culture OD<sub>600</sub> and resuspend the cells in ice cold PBSF to an OD<sub>600</sub>=2. From this point, keep the cells on ice at all times except when otherwise specified. We typically perform a 10-fold dilution of the culture with PBSF to determine the OD<sub>600</sub>. The yeast culture does not usually grow during the 16–20 h induction with common resuspension volumes under 1 mL.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> On the same day, prepare PBSF (<a href="#materials-and-equipment">recipe</a>) and keep on ice for the duration of the experiments. PBSF needs to be ice cold whenever added to cells.</div>
+<p><b>Screen unlabeled cells</b></p>
+<ol start="12">
+<li>Add 5 μL cells with 45 μL of PBSF (‘unlabeled’ cells) in a 1.5mL microcentrifuge tube. Incubate 30 min at RT (20°C–25°C).</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge and resuspend the cells in 100μL ice cold PBSF. Screen 25,000 unlabeled cells. These unlabeled cells are used to set a FSC-A/FITC<sup>+</sup> gate to collect 0% of the events. Refer to <u>FACS</u> for more detail on setting the gates (<a href="#fig2">Figure 2</a>B).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Sort gates needed for FACS screening of potential S RBD escape mutants</div>
+<p>(A) Competitive binding reaction cartoons between neutralizing antibody and ACE2. Top is the control where the displayed S RBD is not labeled, top right shows the SAPE<sup>+</sup>/FITC<sup>+</sup> gate collecting the top 2%. Bottom shows escape mutants that no longer bind to nAb but keep the affinity for ACE2. Bottom right shows the SAPE<sup>+</sup>/FITC<sup>+</sup> gate collecting the top 2%.</p>
+<p>(B) Collection gates on FACS. FSC/SSC+ gate for isolation of yeast cells, FSC-H/FSC-A gate to discriminate single cells, an FSC-A/FITC<sup>+</sup> gate selects the cells displaying the RBD on their surface and from this last gate, the top 2% by a PE<sup>+</sup>/FITC<sup>+</sup> is collected.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<p><b>Check display of S RBD</b></p>
+<ol start="14">
+<li>Label 5 μL cells with 44 μL of PBSF and 1 μL of anti-c-myc FITC in a 1.5mL microcentrifuge tube. Mix by pipetting up and down several times. Incubate the cells on ice for 10 min protected from light.</li>
+<li>Centrifuge the cells 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL ice cold PBSF and remove supernatant. Cell pellets can be stored on ice until ready to screen.</li>
+<li>Resuspend the cells in 100μL ice cold PBSF and screen 25,000 cells using FACS and analyze the FSC-H/FITC<sup>+</sup> gate.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If less than 30% of cells display RBD, do not continue and induce a new cell stock. Refer to <a href="#sec7.1">troubleshooting 1</a> for potential fixes.</div>
+<p><b>Check ACE2 binding, Ab binding, and competitive inhibition</b></p>
+<ol start="17">
+<li>Set up three separate labeling reactions in three different 1.5 mL microcentrifuge tubes as shown below. For tubes 1 and 3, a lower ACE2 concentration can be used if saturating conditions are maintained (we have also used 30 nM biotinylated ACE2).</li>
+</ol>
+<table id="undtbl5">
+<thead>
+<tr>
+<th> </th>
+<th>Tube 1</th>
+<th>Tube 2</th>
+<th>Tube 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Cells</b></td>
+<td>5μL</td>
+<td>5μL</td>
+<td>5μL</td>
+</tr>
+<tr>
+<td><b>Biotinylated ACE2</b></td>
+<td>75nM</td>
+<td>-</td>
+<td>75nM</td>
+</tr>
+<tr>
+<td><b>Antibody</b></td>
+<td>10μg/mL</td>
+<td>10μg/mL</td>
+<td>10μg/mL</td>
+</tr>
+<tr>
+<td><b>PBSF</b></td>
+<td>To 50μL total volume</td>
+<td>To 50μL total volume</td>
+<td>To 50μL total volume</td>
+</tr>
+<tr>
+<td> </td>
+<td colspan="3">Incubate for 30 min at 20°C–25°C.</td>
+</tr>
+<tr>
+<td><b>Biotinylated ACE2</b></td>
+<td>-</td>
+<td>-</td>
+<td>75nM</td>
+</tr>
+<tr>
+<td> </td>
+<td>-</td>
+<td>-</td>
+<td>Incubate for 30 min at 20°C–25°C.</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">For example: In tube 1, if your biotinylated ACE2 concentration was 1 μM, you would add 5 μL of cells, 41.2 μL PBSF, and 3.8 μL antibody.</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> Yeast surface titration can be performed following <a href="#bib2">Chao et al. (2006)</a> to determine the effective dissociation constant. The observed dissociation constants of different ACE2-Fc preparations range from 200 pM to 2 nM.</div>
+<ol start="18">
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL PBSF and remove supernatant.</li>
+<li>Resuspend each cell pellet in 50 μL fluorescent labeling mix (<a href="#materials-and-equipment">recipe</a>). The set up for each tube is shown in the following table.</li>
+</ol>
+<table id="undtbl6">
+<thead>
+<tr>
+<th> </th>
+<th>Tube 1</th>
+<th>Tube 2</th>
+<th>Tube 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>anti-c-myc FITC</b></td>
+<td>0.6μL</td>
+<td>0.6μL</td>
+<td>0.6μL</td>
+</tr>
+<tr>
+<td><b>Goat anti-Human IgG FC PE</b></td>
+<td>-</td>
+<td>0.25μL</td>
+<td>-</td>
+</tr>
+<tr>
+<td><b>Streptavidin-Phycoerythrin (SAPE)</b></td>
+<td>0.25μL</td>
+<td>-</td>
+<td>0.25μL</td>
+</tr>
+<tr>
+<td><b>PBSF</b></td>
+<td>49.15 μL</td>
+<td>49.15 μL</td>
+<td>49.15 μL</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep the fluorophores on ice and protected from light at all times.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Goat anti-Human IgG Fc PE conjugate is used as the secondary label for the antibody labeling reaction because our neutralizing antibodies are human IgGs. Different antibody platforms (e.g. Fabs, scFvs) or non-human antibodies would require a different secondary label.</div>
+<ol start="20">
+<li>Incubate 10 min on ice protected from light.</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL PBSF and remove supernatant.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The cell pellet can be stored on ice until ready to screen. We do not recommend storing on ice for longer than 1h as fluorophores can dissociate, resulting in a lower signal.</div>
+<ol start="22">
+<li>Resuspend the cells in 100 μL PBSF. Screen 25,000 cells.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The results of this experiment tell us the likelihood of success for the escape mutant protocol. First, the ACE2 binding population signal must be significantly higher and independent from the non-displaying population on the PE<sup>+</sup>/FITC<sup>+</sup> (<a href="#fig1">Figure 1</a>C). Refer to <a href="#sec7.3">troubleshooting 2</a> to help improve signal. Second, if no PE signal increase is observed for the biotinylated ACE2 labeling (tube 1) <b>and</b> antibody labeling (tube 2) yeast cells, then the antibody does not bind to the aglycosylated RBD and cannot be used with this method (see <a href="#fig1">Figure 1</a>B for expected results). Third, the competitive inhibition reaction should result in minimal PE signal corresponding to ACE2 binding (tube 3). If a PE signal increase is observed, the antibody does not compete with ACE2 for binding to the RBD and thus, cannot be used with this method (<a href="#fig1">Figure 1</a>D).</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The fluorescent channel associated with the binding event will be dependent on the choice of secondary label. We use phycoerythrin (PE) as a fluorophore as it is compatible with anti-c-myc FITC and utilizes a 488 nm laser. Other fluorophores can be used.</div>
+<ol start="23">
+<li>If the antibody binds to RBD and blocks ACE2 binding, co-transform the libraries into yeast and make yeast stocks:
+<ol type="a">
+<li>Centrifuge the cell culture 3 min at 3200 × <i>g.</i>
+</li>
+<li>Remove the supernatant and resuspend the cell pellet in yeast storage buffer (<a href="#materials-and-equipment">recipe</a>) at OD<sub>600</sub>=10. Stocks can be stored for over a year at −80<sup>o</sup>C.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.9">Prepare operating system for running software with its dependencies</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>To identify potential escape mutations from deep sequencing data, we developed Python software as outlined in <a href="#bib4">Francino-Urdaniz et al. (2021)</a>. The steps below identify prerequisites necessary for running the software.</p>
+<ol start="24">
+<li>Download and install Python3 if it is not already installed. Instructions for this process can be found at <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>. We recommend using Python v3.9 and higher. While older releases may work, the software has only been tested on recent versions of Python.</li>
+<li>Install necessary packages.
+<ol type="a">
+<li>Ensure pip is installed with Python3 with the following command at the command line: pip3 --version. Pip is often installed with newer versions of Python. If pip is not downloaded, further instructions for installation can be found at <a href="https://pip.pypa.io/en/stable/installation/">https://pip.pypa.io/en/stable/installation/</a>.</li>
+<li>Use pip to download the necessary packages: matplotlib, numpy, openpyxl, pandas, scipy, and statsmodels. These packages can be installed easily at the command line with pip3 --install package_name. More detailed instructions are at <a href="https://packaging.python.org/tutorials/installing-packages/">https://packaging.python.org/tutorials/installing-packages/</a>. Download our software available on GitHub: <a href="https://github.com/WhiteheadGroup/SpikeRBDStabilization.git">https://github.com/WhiteheadGroup/SpikeRBDStabilization.git</a>. A complete description of the software and its structure are provided in step-by-step methods.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-c-myc FITC, 0.6 μL per 1e5 cells (80× dilution)</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-116-485</td>
+</tr>
+<tr>
+<td>Goat anti-human IgG Fc secondary antibody, PE, eBiosciences, 0.25 μL per 1e5 cells (200× dilution)</td>
+<td>Invitrogen</td>
+<td>Cat# 12-4998-82</td>
+</tr>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>
+<i>E. coli</i> Mach1<sup>TM</sup>
+</td>
+<td>Thermo Scientific</td>
+<td>Cat# C862003</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>ACE2-Fc</td>
+<td>Institute of Protein Design, Laboratory of Professor Neil King</td>
+<td><a href="#bib15">Walls et al., 2020</a></td>
+</tr>
+<tr>
+<td>NotI-HF</td>
+<td>NEB</td>
+<td>Cat# R3189</td>
+</tr>
+<tr>
+<td>BsaI-HFv2</td>
+<td>NEB</td>
+<td>Cat# R3733</td>
+</tr>
+<tr>
+<td>CutSmart® Buffer</td>
+<td>NEB</td>
+<td>Cat# B7204S</td>
+</tr>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>IDT</td>
+<td>Cat# 11-05-01-14</td>
+</tr>
+<tr>
+<td>Ultrapure Agarose</td>
+<td>Invitrogen</td>
+<td>Cat# 16500-500</td>
+</tr>
+<tr>
+<td>TAE Buffer (Tris-acetate-EDTA) (50×)</td>
+<td>Thermo Scientific</td>
+<td>Cat# B49</td>
+</tr>
+<tr>
+<td>SYBR Safe DNA Gel Stain</td>
+<td>Invitrogen</td>
+<td>Cat# S33102</td>
+</tr>
+<tr>
+<td>Gel Loading Dye, Purple</td>
+<td>NEB</td>
+<td>Cat# B7024</td>
+</tr>
+<tr>
+<td>UltraPure™ Salmon Sperm DNA Solution</td>
+<td>Invitrogen</td>
+<td>Cat# 15632011</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Macron<sup>TM</sup> Chemicals</td>
+<td>Cat# 5092-16</td>
+</tr>
+<tr>
+<td>HEPES-free acid</td>
+<td>Millipore</td>
+<td>Cat# 391338</td>
+</tr>
+<tr>
+<td>HEPES sodium salt</td>
+<td>Amresco</td>
+<td>Cat# 0485</td>
+</tr>
+<tr>
+<td>PEG 3350</td>
+<td>Spectrum</td>
+<td>Cat #P0125</td>
+</tr>
+<tr>
+<td>Lithium acetate dihydrate</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# L6883</td>
+</tr>
+<tr>
+<td>PBS - phosphate-buffered saline (10×) pH 7.4</td>
+<td>Invitrogen</td>
+<td>Cat# AM9624</td>
+</tr>
+<tr>
+<td>Streptavidin phycoerythrin (SAPE)</td>
+<td>Invitrogen</td>
+<td>Cat# S866</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumina (BSA), Fraction V, Fatty Acid-Free</td>
+<td>VWR</td>
+<td>Cat# 7907-25</td>
+</tr>
+<tr>
+<td>EZ-Link NHS-Biotin</td>
+<td>Thermo Fisher</td>
+<td>Cat# 20217</td>
+</tr>
+<tr>
+<td>Zymolyase</td>
+<td>Zymo Research</td>
+<td>Cat# E1005</td>
+</tr>
+<tr>
+<td>Sodium chloride</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 746398</td>
+</tr>
+<tr>
+<td>Difico yeast nitrogen base without amino acids</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#Y026</td>
+</tr>
+<tr>
+<td>Bacto casamino acids, technical grade</td>
+<td>Fisher</td>
+<td>Cat# 223120</td>
+</tr>
+<tr>
+<td>Sodium phosphate dibasic anhydrous</td>
+<td>Fisher Chemical</td>
+<td>Cat# BP3321</td>
+</tr>
+<tr>
+<td>Sodium phosphate monobasic monohydrate</td>
+<td>Fisher Chemical</td>
+<td>Cat# S369-500</td>
+</tr>
+<tr>
+<td>D-Galactose</td>
+<td>Fisher Bioreagents</td>
+<td>Cat# BP656-500</td>
+</tr>
+<tr>
+<td>Dextrose</td>
+<td>Fisher Chemical</td>
+<td>Cat# D19212</td>
+</tr>
+<tr>
+<td>Peptone</td>
+<td>Fisher</td>
+<td>Cat# 211677</td>
+</tr>
+<tr>
+<td>Yeast extract</td>
+<td>Fisher</td>
+<td>Cat# 212750</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>BD Biosciences</td>
+<td>Cat# 214010</td>
+</tr>
+<tr>
+<td>Pen/Strep</td>
+<td>Fisher</td>
+<td>Cat# 15140-122</td>
+</tr>
+<tr>
+<td>Kanamycin</td>
+<td>GoldBio</td>
+<td>Cat# K-120-25</td>
+</tr>
+<tr>
+<td>Exonuclease I</td>
+<td>NEB</td>
+<td>Cat# M0293S</td>
+</tr>
+<tr>
+<td>Lambda exonuclease</td>
+<td>NEB</td>
+<td>Cat# M0262S</td>
+</tr>
+<tr>
+<td>Lambda exonuclease reaction buffer 10×</td>
+<td>NEB</td>
+<td>Cat# B0262S</td>
+</tr>
+<tr>
+<td>Q5 HotStart 2× MasterMix</td>
+<td>NEB</td>
+<td>Cat# M0494L</td>
+</tr>
+<tr>
+<td>rSAP</td>
+<td>NEB</td>
+<td>Cat# M0371L</td>
+</tr>
+<tr>
+<td>70% v/v Denatured ethanol solution</td>
+<td>Fisher Bioreagents</td>
+<td>Cat# BP82031GAL</td>
+</tr>
+<tr>
+<td>IDTE pH 8.0 (1× TE Solution)</td>
+<td>IDT</td>
+<td>Cat# 11-05-01-13</td>
+</tr>
+<tr>
+<td>Quant-iT™ PicoGreen™ dsDNA Reagent</td>
+<td>Thermo Scientific</td>
+<td>Cat# T7581</td>
+</tr>
+<tr>
+<td>Lambda DNA</td>
+<td>Thermo Scientific</td>
+<td>Cat# SD0011</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Monarch PCR &amp; DNA Cleanup Kit</td>
+<td>NEB</td>
+<td>Cat# T1030</td>
+</tr>
+<tr>
+<td>Monarch DNA Gel Extraction Kit</td>
+<td>NEB</td>
+<td>Cat# T1020</td>
+</tr>
+<tr>
+<td>Monarch Plasmid Miniprep Kit</td>
+<td>NEB</td>
+<td>Cat# T1010</td>
+</tr>
+<tr>
+<td>Zymoprep Yeast Plasmid Miniprep II</td>
+<td>Zymo Research</td>
+<td>Cat# D2004</td>
+</tr>
+<tr>
+<td>Agencourt AMPure XP</td>
+<td>Beckman Coulter</td>
+<td>Cat# A63881</td>
+</tr>
+<tr>
+<td>PhiX</td>
+<td>Illumina</td>
+<td>Cat# FC-110-3001</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>Saccharomyces cerevisiae</i> EBY100</td>
+<td>ATCC</td>
+<td>MYA-4941<sup>TM</sup>
+</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>IFU-104</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td>gttcagagttctacagtccgacgatctggaggaggctctgg</td>
+</tr>
+<tr>
+<td>IFU-105</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td>ccttggcacccgagaattccaccaagctataacgcagcc</td>
+</tr>
+<tr>
+<td>IFU-106</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td>gttcagagttctacagtccgacgatcggctgcgttatagcttgg</td>
+</tr>
+<tr>
+<td>IFU-107</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td>ccttggcacccgagaattccagccccctttgtttttaaccaa</td>
+</tr>
+<tr>
+<td>Forward outer primer</td>
+<td><a href="#bib9">Kowalsky et al., 2015</a></td>
+<td>aatgatacggcgaccaccgagatctacacgttcagagttctacagtccga</td>
+</tr>
+<tr>
+<td>Reverse outer primer</td>
+<td><a href="#bib9">Kowalsky et al., 2015</a></td>
+<td>caagcagaagacggcatacgagat<b>nnnnnn</b>gtgactggagttccttggcacccgagaattcca</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pJS697</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699</td>
+<td><a href="#bib16">Banach et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699_L1</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pJS699_L2</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001_T1</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU001_T2</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002_T1</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td>pIFU002_T2</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Python software (dms and analysis modules)</td>
+<td><a href="#bib4">Francino-Urdaniz et al., 2021</a></td>
+<td><a href="https://github.com/WhiteheadGroup/SpikeRBDStabilization.git">https://github.com/WhiteheadGroup/SpikeRBDStabilization.git</a></td>
+</tr>
+<tr>
+<td>Python3</td>
+<td>N/A</td>
+<td><a href="https://www.python.org/">https://www.python.org/</a></td>
+</tr>
+<tr>
+<td>Benchling</td>
+<td>N/A</td>
+<td><a href="https://www.benchling.com">https://www.benchling.com</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>−20°C Freezer</td>
+<td>VWR</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>−80°C Freezer</td>
+<td>Fisher Scientific, model: REVCO EXF</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Pipettes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Centrifuge (does not need to be refrigerated)</td>
+<td>Eppendorf, model: 5810R</td>
+<td>Cat# 05-413-113</td>
+</tr>
+<tr>
+<td>Microcentrifuge (does not need to be refrigerated)</td>
+<td>Fisher, model: accuSpin microcentrifuge 17</td>
+<td>Cat# 13-100-675</td>
+</tr>
+<tr>
+<td>Vortex mixer</td>
+<td>Thermo Scientific, model: M37165</td>
+<td>Cat# M16710-33Q</td>
+</tr>
+<tr>
+<td>Static incubator</td>
+<td>VWR, model: Gr Con 4CF</td>
+<td>Cat# 89511-420</td>
+</tr>
+<tr>
+<td>Incubator shaker</td>
+<td>Eppendorf, model: New Brunswick I26 Inc Shaker</td>
+<td>Cat# M1324-0000</td>
+</tr>
+<tr>
+<td>UV-Vis absorbance plate reader</td>
+<td>BioTek, model: Synergy H1M</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Spectrophotometer</td>
+<td>Thermo Fisher Scientific, model: 4001/4</td>
+<td>Cat# 4001</td>
+</tr>
+<tr>
+<td>Cell sorter with a 488 nm laser</td>
+<td>SONY, model: LE-SH800SAP</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Thermal cycler</td>
+<td>Eppendorf, model: Mastercycler<sup>TM</sup> pro</td>
+<td>Cat# 950040025</td>
+</tr>
+<tr>
+<td>Horizontal Gel Electrophoresis System</td>
+<td>Bio-Rad, model: Wide Mini-Sub Cell GT with PowerPac Basic Power Supply</td>
+<td>Cat# 1640301</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl7">
+<caption>Yeast extract-peptone-dextrose (YPD) media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yeast extract</td>
+<td>10 g/L</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>Peptone</td>
+<td>20 g/L</td>
+<td>20 g</td>
+</tr>
+<tr>
+<td>Dextrose</td>
+<td>20 g/L</td>
+<td>20 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 1 L</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 L</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22 μm filter. Store at 20°C–25°C, protected from light for up to one month.</p>
+<table id="undtbl8">
+<caption>Yeast storage buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Glycerol ≥ 99.5%</td>
+<td>20% v/v</td>
+<td>200 mL</td>
+</tr>
+<tr>
+<td>HEPES</td>
+<td>10 mM</td>
+<td>2.38 g</td>
+</tr>
+<tr>
+<td>HEPES sodium salt</td>
+<td>10 mM</td>
+<td>2.60 g</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>200 mM</td>
+<td>11.69 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 1 L</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 L</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Take to pH7.5 with NaOH.<br> Filter sterilize using a 0.22 μm filter and store at 20°C–25°C for up to one year.</p>
+<table id="undtbl9">
+<caption>SCAA media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Difico yeast nitrogen base</td>
+<td>6.7 g/L</td>
+<td>3.35 g</td>
+</tr>
+<tr>
+<td>Bacto casamino acids</td>
+<td>5 g/L</td>
+<td>2.5 g</td>
+</tr>
+<tr>
+<td>NaH<sub>2</sub>PO<sub>4</sub>·H<sub>2</sub>O</td>
+<td>62 mM</td>
+<td>4.28 g</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>38 mM</td>
+<td>2.7 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 450 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>450 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22 μm filter and store at 20°C–25°C for up to six months.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Add NaH<sub>2</sub>PO<sub>4</sub>·H<sub>2</sub>O before Na<sub>2</sub>HPO<sub>4</sub> to ensure full dissolution of the phosphates.</div>
+<table id="undtbl10">
+<caption>20% w/v dextrose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dextrose</td>
+<td>20% w/v</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 500 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22μm filter and store at 20°C–25°C for up to six months.</p>
+<table id="undtbl11">
+<caption>20% w/v galactose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Galactose</td>
+<td>20% w/v</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 500 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22μm filter and store at 20°C–25°C for up to six months.</p>
+<table id="undtbl12">
+<caption>SDCAA<sup>+</sup>
+</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20% w/v dextrose</td>
+<td>20g/L</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>SCAA</td>
+<td>n/a</td>
+<td>90 mL</td>
+</tr>
+<tr>
+<td>100× Pen/Strep</td>
+<td>1×</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>50 mg/mL Kanamycin</td>
+<td>50 μg/mL</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>101.1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make on the same day of use and keep at 4°C.</p>
+<table id="undtbl13">
+<caption>SGCAA<sup>+</sup>
+</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20% w/v galactose</td>
+<td>20 g/L</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>SCAA</td>
+<td>n/a</td>
+<td>90 mL</td>
+</tr>
+<tr>
+<td>100× Pen/Strep</td>
+<td>1×</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>50 mg/mL Kanamycin</td>
+<td>50 μg/mL</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>101.1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make on the same day of use and keep at 4°C.</p>
+<h3 id="sec2.1">SDCAA agar plates</h3>
+<table id="undtbl14">
+<caption>Solution A</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaH<sub>2</sub>PO<sub>4</sub>·H<sub>2</sub>O</td>
+<td>62 mM</td>
+<td>4.28 g</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>38 mM</td>
+<td>2.7 g</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>15 g/L</td>
+<td>7.5 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 450 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>450 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Autoclave 20 min at 121°C and 0.5 bar gauge.</p>
+<table id="undtbl15">
+<caption>Solution B</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Difico yeast nitrogen base</td>
+<td>6.7 g/L</td>
+<td>3.35 g</td>
+</tr>
+<tr>
+<td>Bacto casamino acids</td>
+<td>5 g/L</td>
+<td>2.5 g</td>
+</tr>
+<tr>
+<td>Dextrose</td>
+<td>20% w/v</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22μm filter.</p>
+<p>Cool autoclaved mixture (<b>Solution A</b>) with stirring until below 50°C, add filter-sterilized solution (<b>Solution B</b>), mix well, and pour plates. Plates can be stored for up to 6 months at 4°C.</p>
+<table id="undtbl16">
+<caption>PBSF</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bovine serum albumin frac V</td>
+<td>1 g/L</td>
+<td>100 mg</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td>n/a</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize using a 0.22μm filter and store at 4°C for no longer than 3 days.</p>
+<table id="undtbl17">
+<caption>Fluorescent labeling mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>anti-c-myc FITC</td>
+<td>n/a</td>
+<td>0.60 μL</td>
+</tr>
+<tr>
+<td>SAPE</td>
+<td>n/a</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>PBSF</td>
+<td>n/a</td>
+<td>49.15 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make on same day of use and store on ice, protected from light. We recommend making a master mix, adding an extra 10% for each reaction.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Cell induction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 26 h</div>
+<p>S RBD is expressed in yeast from a galactose-inducible promoter. The first step is to expand cells from a frozen stock and then induce S RBD display by growth on galactose.</p>
+<ol>
+<li>Thaw 1mL stock of yeast cells harboring the S RBD display plasmid of the desired library for identifying escape mutants and WT for controls (<u>Confirm that antibodies selected bind and inhibit the displayed WT RBD</u>). It is convenient to start this growth step in the morning so that cytometer screening can be performed during daytime hours on the following day.</li>
+<li>Pellet the cells by centrifuging 1 min at 16000 × <i>g</i> using a microcentrifuge, remove supernatant, and resuspend in SDCAA<sup>+</sup> (<a href="#materials-and-equipment">recipe</a>).</li>
+<li>Transfer culture to a 14 mL culture tube for volumes lower than 1.5 mL (VWR Cat#10127-334) or a 250 mL shaker flask for large volumes (Fisher Cat# 10040F). Incubate cells at 30°C and 300rpm for 4–6 h.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Do not grow cultures of more than 1.5 mL volume in 14 mL tubes, as they are insufficiently aerated for optimal display.</div>
+<ol start="4">
+<li>Measure the culture OD<sub>600</sub> with a spectrophotometer. If 1.2 &lt; OD<sub>600</sub> &lt; 5, harvest the cells by centrifugation for 1 min at 16000 × <i>g</i> in a microcentrifuge and resuspend to OD<sub>600</sub>=1 in SGCAA<sup>+</sup> (<a href="#materials-and-equipment">recipe</a>).</li>
+<li>Transfer the appropriate amount of the culture to a new 14mL culture tube or a 250mL shaker flask as necessary and incubate 22h at 22°C and 300rpm in an incubator shaker. As previously stated, we recommend using 14 mL culture tubes for the volumes lower than 1.5 mL and 250 mL shaker flasks for larger volumes.</li>
+</ol>
+<h3 id="sec3.2">Competitive binding reactions</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>Yeast cells displaying nearly all possible single point mutants on surface exposed positions of S RBD are pre-incubated with a neutralizing antibody before co-incubation with biotinylated ACE2. These cells are then labeled with secondary fluorophores to detect S RBD expression and ACE2 binding. Fluorescence activated cell sorting (FACS) is used to isolate the population of cells still able to bind ACE2.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The binding reactions cannot be stored to sort another day. If multiple antibodies are being tested, we recommend splitting the samples into multiple days.</div>
+<ol start="6">
+<li>Transfer the culture to a 1.5 mL microcentrifuge tube for low volumes or a 15 mL conical tube for larger volumes and centrifuge for 1 min at 16000 × <i>g</i> using a centrifuge.</li>
+<li>Measure the culture OD<sub>600</sub> and resuspend the cells in ice cold PBSF to an OD<sub>600</sub>=2 for the controls and to an OD<sub>600</sub>=10 for sorting. We typically perform a 10-fold dilution of culture to determine the OD<sub>600</sub>. The yeast culture will not necessarily increase in OD<sub>600</sub> during this 16–24 h induction.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Keep this suspension on ice during the whole procedure except when otherwise specified.</div>
+<p><b>Screen unlabeled cells</b></p>
+<ol start="8">
+<li>Combine 5 μL cells with 45 μL of PBSF (‘unlabeled’ cells) in a 1.5 mL microcentrifuge tube. Incubate 30 min at 20°C–25°C.</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge and resuspend the cells in 100μL ice cold PBSF. Screen 25,000 unlabeled cells and set the FSC-A/FITC<sup>+</sup> gate as in <a href="#fig2">Figure 2</a>B.</li>
+</ol>
+<p><b>Check display of S RBD</b></p>
+<ol start="10">
+<li>Label 5 μL cells with 44 μL of PBSF and 1 μL of anti-c-myc FITC in a 1.5mL microcentrifuge tube. Mix by pipetting up and down several times. Incubate the cells on ice for 10 min protected from light.</li>
+<li>Centrifuge the cells 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL ice cold PBSF and remove supernatant. Cell pellets can be stored on ice until ready to screen.</li>
+<li>Resuspend the cells in 100μL ice cold PBSF and screen 25,000 cells. If the yeast does not display the S RBD, do not prepare the binding reactions and refer to <a href="#sec7.1">troubleshooting 1</a>.</li>
+</ol>
+<p><b>Check unlabeled cells, ACE2 binding, and competitive inhibition.</b> These are the recommended controls for WT and each library sorted. The unlabeled cells will be used to set the correct gates on FACS for each different library sorted. The ACE2 binding is the positive control and the competitive inhibition the negative control.</p>
+<ol start="13">
+<li>Set up three separate labeling reactions in three different 1.5 mL microcentrifuge tubes using the cells at OD<sub>600</sub>=2. Incubate 30 min at 20°C–25°C. Ensure that the biotin:protein molar ratio has been adjusted before starting the escape mutant identification, else, refer to ‘<a href="#sec1.6">Confirm that neutralizing antibodies selected bind and inhibit the yeast displayed glycosylated WT RBD</a>’.
+<table id="undtbl18">
+<thead>
+<tr>
+<th> </th>
+<th>Tube 1</th>
+<th>Tube 2</th>
+<th>Tube 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Library Cells</b></td>
+<td>5μL</td>
+<td>5μL</td>
+<td>-</td>
+</tr>
+<tr>
+<td><b>WT Cells</b></td>
+<td>-</td>
+<td>-</td>
+<td>5μL</td>
+</tr>
+<tr>
+<td><b>Biotinylated ACE2</b></td>
+<td>-</td>
+<td>75nM</td>
+<td>-</td>
+</tr>
+<tr>
+<td><b>Free ACE2</b></td>
+<td>-</td>
+<td>-</td>
+<td>10μg/mL</td>
+</tr>
+<tr>
+<td><b>PBSF</b></td>
+<td>To 50μL total volume</td>
+<td>To 50μL total volume</td>
+<td>To 50μL total volume</td>
+</tr>
+<tr>
+<td> </td>
+<td colspan="3">Incubate for 30 min at 20°C–25°C.</td>
+</tr>
+<tr>
+<td><b>Biotinylated ACE2</b></td>
+<td>-</td>
+<td>-</td>
+<td>75nM</td>
+</tr>
+<tr>
+<td> </td>
+<td>-</td>
+<td>-</td>
+<td>Incubate for 30 min at 20°C–25°C.</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL PBSF and remove supernatant.</li>
+<li>Resuspend the second and third pellet with 50 μL fluorescent labeling mix (<a href="#materials-and-equipment">recipe</a>). The first tube must not be labeled. Keep the fluorophores on ice and protected from light at all times.</li>
+<li>Incubate 10 min on ice and protect from light.</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 200 μL PBSF and remove supernatant. The cell pellet can be stored on ice until ready to screen. We do not recommend storing on ice for longer than 1h as fluorophores might dissociate, resulting in a lower signal.</li>
+<li>Resuspend the cells in 100 μL PBSF and screen 25,000 cells.</li>
+</ol>
+</li>
+</ol>
+<p><b>Competitive binding reactions to identify escape mutants</b></p>
+<ol start="14">
+<li>In a 1.5mL microcentrifuge tube add 150 μL of cells, PBSF, and 10 μg/mL antibody to a final volume of 400 μL. Incubate 30 min at 20°C–25°C. Then, add biotinylated ACE2 to a final concentration of 75nM. Again, incubate 30 min at 20°C–25°C (<a href="#fig2">Figure 2</a>A).
+<div class="critical">
+<span class="critical-title">Critical:</span> If multiple samples are sorted, it is better to incubate pellets on ice before the next step. Fluorescent label right before sorting to ensure maximum fluorescence. To minimize binding loss, stagger the binding reactions to minimize the storage time so that when the reaction is completed, the sample can be sorted.</div>
+<ol type="a">
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 1 mL PBSF and remove supernatant. Cell pellets can be stored on ice for ∼4 h without significant binding loss if all the supernatant is removed.</li>
+<li>Resuspend each cell pellet with 200 μL fluorescent labeling mix (<a href="#materials-and-equipment">recipe</a>). Keep the fluorescent labeling mix on ice and always protected from light.
+<div class="critical">
+<span class="critical-title">Critical:</span> Better results are obtained if the cells are fluorescently labelled right before sorting.</div>
+</li>
+<li>Incubate 10 min on ice and protect from light.</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge. Wash twice with 1 mL PBSF and remove supernatant. Cell pellets can be stored covered and on ice until ready to screen.
+<div class="optional">
+<span class="optional-title">Optional:</span> While sorting, the fluorescence signal might decrease over time. If the decrease is significant, divide the sample into two 500 μL samples and spin down again, remove supernatant and spin down to make sure no liquid is left in the sample. Store each pellet on ice until ready to use.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.6">Fluorescence-activated cell sorting (FACS)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> approx. 40 min per sorted sample</div>
+<p>Cells are sorted by FACS using four separate gates (<a href="#fig2">Figure 2</a>). We first set an SSC/FSC gate for isolation of yeast cells. The second gate set is on FSC-H/FSC-A to discriminate single yeast cells from budding cells and/or aggregates. The third gate is an FSC-A/FITC<sup>+</sup> gate that selects the cells displaying the RBD on their surface and excludes cells not displaying RBD. The fourth gate is a square gate collecting the top 2% by a PE<sup>+</sup>/FITC<sup>+</sup> (<a href="#fig2">Figure 2</a>B). The first three gates are set using unlabeled cells as described below. The collection PE<sup>+</sup>/FITC<sup>+</sup> gate is adjusted for each sorted sample to collect the cells giving the top 2% PE fluorescence signal. We set a 2% limit for collecting the population of the PE fluorescence signal for two reasons. First, collecting the entire population would require collecting considerably more cells to obtain the same quality in results since different PE signal increases correlate with varying affinity. In addition, collecting the top 2% allows us to set a false discovery rate (FDR) given that cells with higher signal are likely to contain escape mutants.</p>
+<ol start="15">
+<li>Using the unlabeled cells, set the FSC/SSC, FSC-H/FSC-A, FSC-A/FITC<sup>+</sup> gates as shown in <a href="#fig2">Figure 2</a>B.</li>
+<li>Using the same unlabeled cells, obtain the reference population by collecting at least 200,000 cells by sorting only for passing through the FSC/SSC gate. This reference population contains all the mutations in the library. It will be the reference to calculate the enrichment ratio for each mutation. For this and all other cell populations, collect cells into a 14mL culture tube (VWR Cat#10127-334).</li>
+<li>Sort the control population. Here we use cells that have not labeled with antibody or ACE2 but have been fluorescently labeled with SAPE and anti-c-myc FITC. Collect 200,000 cells that pass through FSC/SSC, FSC-H/FSC-A, FSC-A/FITC<sup>+</sup>, and the PE<sup>+</sup>/FITC<sup>+</sup> gates.</li>
+<li>For every other sample, collect 200,000 cells that pass through FSC/SSC, FSC-H/FSC-A, FSC-A/FITC<sup>+</sup>, and the PE<sup>+</sup>/FITC<sup>+</sup> gates. The square PE<sup>+</sup>/FITC<sup>+</sup> gates will have to be reset for each sample to ensure 2% collection.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Using our Sony SH-800 cytometer, it typically takes 40min to collect 200,000 cells in the control and sample populations. This time results from a sorting rate of 5-10,000 cells per sec and maintaining a 70% sorting efficiency.</div>
+<div class="note">
+<span class="note-title">Note:</span> To avoid complexity bottlenecks, it is important that the number of collected cells is at least 150× the theoretical library size. For a library with NNK mutations on 56 and 63 mutations for library 1 and 2 respectively, 168,000 cells for library 1 and 189,000 cells for library 2 must be collected. Results are improved with more collected cells.</div>
+<h3 id="sec3.7">Cell recovery</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>Cells are recovered and yeast stocks are prepared.</p>
+<p><b>Day 1</b></p>
+<ol start="19">
+<li>Centrifuge collection tube containing the collected cells 5 min at 3200 × <i>g</i> using a centrifuge. Collected cells are smaller than typical yeast bulk population, and therefore a longer centrifugation time of 5 min is required.</li>
+<li>Remove approx. 80% of the supernatant and resuspend in 1.5mL SDCAA<sup>+</sup> at 30°C for 16–20 h at 300rpm in an incubator shaker in the 14mL culture tubes.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 14mL culture tubes cannot hold more than 1.5mL. Larger volumes are not well aerated. To use a larger resuspension volume, grow the culture in a 25 mL shaker flask.</div>
+<p><b>Day 2</b></p>
+<ol start="21">
+<li>Passage cells into 3 culture tubes using 1.5mL SDCAA<sup>+</sup> on each. Incubate at 30°C and 300rpm for 16–24 h.</li>
+</ol>
+<p><b>Day 3</b></p>
+<ol start="22">
+<li>Prepare 1mL cell stocks at OD<sub>600</sub>=4 in yeast storage buffer at −80°C.
+<ol type="a">
+<li>Centrifuge the cell culture 2 min at 3200 × <i>g.</i>
+</li>
+<li>Remove the supernatant and resuspend the cell pellet in yeast storage buffer (<a href="#materials-and-equipment">recipe</a>) at OD<sub>600</sub>=4. Stocks can be stored for over a year at −80<sup>o</sup>C. In total, at least 1 mL cell stock at OD<sub>600</sub>=4 is needed for deep sequencing preparation.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.8">Deep sequencing library preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>After 16–24 h of growth, plasmid DNA from this population is isolated and prepared for deep sequencing. Plasmid DNA from cells is extracted and amplicons prepared for Illumina sequencing (<a href="#fig3">Figure 3</a>). The protocol used is adapted from Method B detailed in <a href="#bib9">Kowalsky et al. (2015)</a>.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Schematic of deep sequencing library preparation</div>
+<p>Barcodes and Illumina adapters are added to the DNA library through two rounds of PCR. The amplicon is sequenced using an Illumina MiSeq.</p>
+</figcaption>
+</figure>
+<p><b>Day 1: Yeast miniprep</b></p>
+<ol start="23">
+<li>Perform a yeast miniprep.
+<ol type="a">
+<li>On ice, thaw a cell stock prepared in step 23.</li>
+<li>Pellet the cells by centrifuging 1 min at 16000 × <i>g</i> using a microcentrifuge and resuspend in 200 μL Solution 1 from Zymo Yeast Plasmid Miniprep II kit.</li>
+<li>Add 5μL Zymolyase (5U/μL).</li>
+<li>Incubate in a 37˚°C incubator for 4h on an end-to-end mixer or incubate at 37°C with mixing by pipetting up and down (ten times) every hour.</li>
+<li>Perform 1 freeze-thaw cycle using a dry ice/EtOH bath followed by a 42°C incubation for 10 min. Alternatively, freeze at −80°C for 20 min and thaw at 42°C in a temperature bath.</li>
+<li>Add 200 μL Solution 2 from Zymo Yeast Plasmid Miniprep kit, mix end-over-end and let sit for 5 min. The solution will be transparent.</li>
+<li>Add 400 μL Solution 3 from Zymo Yeast Plasmid Miniprep kit mix end-over-end centrifuge 5 min at 16000 × <i>g.</i> The solution will turn yellow, and precipitate will form.</li>
+<li>Transfer supernatant to a NEB miniprep column.
+<div class="note">
+<span class="note-title">Note:</span> The NEB miniprep column has a higher DNA binding capacity (15 μg) compared to the Zymo miniprep columns (5 μg). The rationale for using NEB miniprep columns is that lysed cells contain large amounts of sheared yeast genomic DNA in addition to the desired plasmid DNA.</div>
+</li>
+<li>Centrifuge 1 min at 16000 × <i>g</i> using a microcentrifuge.</li>
+<li>Add 700 μL Wash 1 buffer from NEB mini-prep kit and centrifuge 1 min at 16000 × <i>g.</i>
+</li>
+<li>Add 700 μL Wash 2 buffer from NEB mini-prep kit and centrifuge 1 min at 16000 × <i>g.</i>
+</li>
+<li>Add again 700 μL Wash 2 buffer from NEB mini-prep kit and centrifuge 1 min at 16000 × <i>g.</i>
+</li>
+<li>Decant the supernatant and centrifuge 1 min at 16000 × <i>g</i> to dry the column.</li>
+<li>Add 30 μL elution buffer from NEB mini-prep kit to elute the DNA and centrifuge 1 min at 16000 × <i>g.</i>
+</li>
+<li>Reload column with eluate and spin again.</li>
+</ol>
+</li>
+</ol>
+<ol start="24">
+<li>Enzymatic cleanup of yeast genomic DNA. In PCR tubes add in order:</li>
+</ol>
+<table id="undtbl19">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lambda buffer 10×</td>
+<td>n/a</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>Miniprep DNA</td>
+<td>n/a</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>Exonuclease I</td>
+<td>n/a</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>Lambda exonuclease</td>
+<td>n/a</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>30°C</td>
+<td>1:30 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>80°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="25">
+<li>Plasmid cleanup. Using Monarch PCR &amp; DNA cleanup kit according to the manufacturer instructions. Elute in 30 μL elution buffer.</li>
+</ol>
+<p>Can divide into two days or continue same day from here.</p>
+<p><b>Day 2: Sequencing sample preparation</b></p>
+<ol start="26">
+<li>The Illumina universal sequences are attached to the amplicon with an overlapping region included in the primers (<a href="#fig3">Figure 3</a>) using a first PCR.</li>
+</ol>
+<p>Primers used for first PCR (corresponding to “Overlap sequence” on <a href="#fig3">Figure 3</a>):</p>
+<table id="undtbl20">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Sequence</th>
+<th>Section of RBD amplification</th>
+<th>Library compatibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IFU-104</td>
+<td>L1_Inner_FWD</td>
+<td>gttcagagttctacagtccgacgatctggaggaggctctgg</td>
+<td rowspan="2">333-437</td>
+<td rowspan="2">pJS699_L1, pIFU001_T1 and pIFU002_T1</td>
+</tr>
+<tr>
+<td>IFU-105</td>
+<td>L1_Inner_REV</td>
+<td>ccttggcacccgagaattccaccaagctataacgcagcc</td>
+</tr>
+<tr>
+<td>IFU-106</td>
+<td>L2_Inner_FWD</td>
+<td>gttcagagttctacagtccgacgatcggctgcgttatagcttgg</td>
+<td rowspan="2">438-537</td>
+<td rowspan="2">pJS699_L2, pIFU001_T2 and pIFU002_T2</td>
+</tr>
+<tr>
+<td>IFU-107</td>
+<td>L2_Inner_REV</td>
+<td>ccttggcacccgagaattccagccccctttgtttttaaccaa</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNA (from PCR cleanup)</td>
+<td>n/a</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>Fwd inner primer (10μM)</td>
+<td>n/a</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>Rev inner primer (10μM)</td>
+<td>n/a</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>2× Q5 Master mix</td>
+<td>n/a</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="4">1<sup>st</sup> PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">25 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>64°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="27">
+<li>Perform a PCR cleanup to remove unwanted single stranded DNA.</li>
+</ol>
+<p>To the PCR products add:</p>
+<table id="undtbl21">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR Products</td>
+<td>n/a</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Exonuclease I</td>
+<td>n/a</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>rSAP</td>
+<td>n/a</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>65 μL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions (PCR cleanup)</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>37°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>80°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="28">
+<li>Attach the barcodes and the Illumina adapter with a 2<sup>nd</sup> PCR reaction. The barcode must be unique for each sample to allow the analysis of different samples on a single MiSeq run.</li>
+</ol>
+<p>Primers used on 2nd PCR (corresponding to the Illumina primers – “Illumina adapter” and “Barcode” – in <a href="#fig3">Figure 3</a>):</p>
+<table id="undtbl22">
+<thead>
+<tr>
+<th>Description</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Illumina_FWD (RP1)</td>
+<td>aatgatacggcgaccaccgagatctacacgttcagagttctacagtccga</td>
+</tr>
+<tr>
+<td>Illumina_REV</td>
+<td>caagcagaagacggcatacgagat<b>nnnnnn</b>gtgactggagttccttggcacccgagaattcca</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> nnnnnn refers to unique RPI Illumina barcode (full list: <a href="https://support.illumina.com/downloads/illumina-adapter-sequences-document-1000000002694.html">Illumina Adapter Sequences</a> and <a href="#bib9">Kowalsky et al., 2015</a>). In this study, we used adapters #1–20 but any set of adapters can be used.</div>
+<table id="undtbl23">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>n/a</td>
+<td>18 μL</td>
+</tr>
+<tr>
+<td>DNA (from cleaning step)</td>
+<td>n/a</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>Fwd outer primer (10μM)</td>
+<td>n/a</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>Rev outer primer (10μM)</td>
+<td>n/a</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>2× Q5 MM</td>
+<td>n/a</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="4">2<sup>nd</sup> PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">25 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>64°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="29">
+<li>Gel extract the amplified DNA using Monarch Gel Extraction kit. Select the approx. 500bp band. A clear band should be seen with the correct size (515 bp for Tile 1 and 487bp for Tile 2) on the SYBR safe gel. If this band is not seen, refer to <a href="#sec7.5">troubleshooting 3</a>. If products cannot be seen in a SYBR safe gel, there will not be enough DNA for sequencing (minimum 2ng DNA is required).</li>
+<li>Clean up with Agencourt AMPure XP following standard procedure on a 96 well format (<a href="https://www.beckmancoulter.com/wsrportal/techdocs?docname=B37419">Instructions For Use</a>).</li>
+</ol>
+<ol start="31">
+<li>Quantification with Quant-iT™ PicoGreen™ dsDNA Reagent following standard procedure (<a href="https://www.thermofisher.com/document-connect/document-connect.html?url=https%3A%2F%2Fassets.thermofisher.com%2FTFS-Assets%2FLSG%2Fmanuals%2Fmp07581.pdf&amp;title=UXVhbnQtaVQgUGljb0dyZWVuIGRzRE5BIFJlYWdlbnQgYW5kIEtpdHM=">Quant-iT™ PicoGreen ® dsDNA Reagent and Kits</a>).
+<ol type="a">
+<li>Prepare Quant-iT<sup>TM</sup> reagent.
+<ol type="i">
+<li>Thaw Quant-iT<sup>TM</sup> reagent at 20°C–25°C covered in foil.</li>
+<li>Prepare a working solution by diluting the Quant-iT<sup>TM</sup> reagent 200-fold in TE.
+<div class="critical">
+<span class="critical-title">Critical:</span> The working solution must be prepared on the same day of the quantification and stay protected from the light, preferably wrapped in aluminum foil.</div>
+</li>
+</ol>
+</li>
+<li>In a black 96-well plate (Product # 3792), prepare a 1:2 standard curve starting at 100ng/mL of Lambda DNA using the first row of the plate. Add 100 μL in each well and include a blank with 100 μL TE.</li>
+<li>In the same plate, add 1 μL of purified sample in 99 μL TE.
+<div class="note">
+<span class="note-title">Note:</span> If the sample concentration is &lt; 40 ng/μL, up to 2.5 μL of sample can be used. On the contrary, if the concentration is too high, necessary dilutions in IDTE can be carried out.</div>
+</li>
+<li>Add 100 μL Quant-iT<sup>TM</sup> working solution to each well and incubate for 5 min at 20°C–25°C while covered in foil.</li>
+<li>Measure the fluorescence using a plate reader (ex: 480nm, em: 520 nm). Subtract the blank from all the samples and use the Lambda DNA serial dilutions to generate a standard curve of fluorescence vs DNA concentration. With the curve, determine the concentration of each sample. In our hands the concentrations are between 6 ng/μL and 60 ng/μL.</li>
+</ol>
+</li>
+</ol>
+<ol start="32">
+<li>Pool individual barcoded amplicons into a single test tube. In a 1.5 mL tube, mix equivalent molar amounts of each sample to have the same number of reads and submit to a sequencing facility.</li>
+</ol>
+<h3 id="sec3.9">Illumina sequencing</h3>
+<p>Libraries can be sequenced on an Illumina MiSeq using the MiSeq V2-500 cycle kit. While we have used the University of Colorado sequencing core, there are commercial and academic cores that offer sequencing as a fee-for-service (NovoGene or Rush University Medical Center, for example). The libraries have been split into two tiles assuming the use of 250 bp paired end sequencing, but our software supports longer paired-end reads as well. One critical detail essential for sequencing is dealing with the low nucleotide diversity of the RBD libraries. We circumvent this issue primarily by instructing the sequencing core to add PhiX in the pooled library, which is a crucial step for correct clustering of the sequences. PhiX is a well characterized adapter-ligated library that helps balance nucleotide diversity. We have obtained good sequencing results with 35% PhiX. Refer to <a href="#sec7.7">troubleshooting 4</a> if the DNA is not clustering correctly.</p>
+<p>We typically obtain around 90% coverage for all the libraries screened.</p>
+<h3 id="sec3.10">Run software and generate results</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;1 h</div>
+<p>This is the primary computational step in the protocol. This software package can perform all necessary analysis and interpretation of results. With the completion of this step, potential escape mutations are identified for a given antibody.</p>
+<p><b>Software description</b></p>
+<p>This software is divided into two separate modules. The first module manages the input FASTQ files and is abbreviated ‘dms’ for <b><u>d</u></b>eep <b><u>m</u></b>utational <b><u>s</u></b>canning. The second module, titled ‘analysis’, is responsible for interpreting the output generated from the dms module. Apart from specifying which experiment to analyze before the analysis module is run, the transition between these two modules is seamless.</p>
+<p>This protocol results in a total of three output files. The dms module generates one of these files and the analysis module identifies the other two. The output from the dms module is a comma-separated values (CSV) file that identifies the single mutations, their corresponding counts in each population, and an enrichment ratio (ER) that compares these counts. Next, the analysis module generates a CSV file with additional columns to the file generated in the dms module. The new columns identify the following for each observed mutation: the threshold ER value determined from the control data for a given tile, the p-value calculated by the one-sided exact Poisson rate ratio test, the FDR value, and the minimum number of nucleotides away the given mutation could be from the wild type sequence. The second output of the analysis module is a heatmap in Microsoft Excel that identifies potential escape mutations in blue. Refer to <a href="#fig4">Figure 4</a> for details on the outputs mentioned above.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. An example of the analysis output from the software</div>
+<p>The CSV file is first generated, adding the results of statistical calculations. The second output from the analysis module is the Microsoft Excel document containing a heatmap with escape mutant residues identified. In the heatmap, wild type residues and positions are listed in the top two rows of the file and each possible mutation is listed in the left column. Three colors exist in each Excel output file: gray cells indicate that the mutation was not observed in the population; white cells indicate mutations that were observed in the population but did not meet the criteria for escape mutant; and, blue cells represent mutations that meet the necessary criteria to be classified as potential escape mutants for the given antibody.</p>
+</figcaption>
+</figure>
+<p>The dms module assumes that amplicons are of the same fixed length and that each amplicon is read in both the forward and reverse directions, leading to a pair of FASTQ files. When the module is run, it merges the paired reads of the FASTQ files, collapses identical synonymous mutations into single counts, and subsequently calculates enrichment ratios between specified populations (see ‘<a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a> section’). A detailed explanation of this process has already been published (<a href="#bib3">Fowler et al., 2011</a>; <a href="#bib7">Klesmith and Hackel, 2019</a>).</p>
+<p>The analysis module performs the necessary analytical steps to identify the escape mutations. While a thorough explanation of the statistical approach is detailed in Quantification and statistical analysis, please refer to <a href="#fig5">Figure 5</a> for an overview of the entire process.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The flow structure of the software</div>
+<p>For each module (Deep mutational scanning; Analysis) the actions taken and output are listed.</p>
+</figcaption>
+</figure>
+<ol start="33">
+<li>Complete the configuration file to include the details of the experiment. For the dms module, the user should fill out the configuration file to include all experiments. Therefore, the module can be run once and the analysis can be streamlined. An example configuration file is on Github. We recommend that this example file is copied and that the original document remains available for reference. For an explanation of each section and option in the configuration file, please refer to <a href="#tbl2">Tables 2</a> and <a href="#tbl3">3</a>.
+<ol type="a">
+<li>If the experiment of interest only uses one tile, refer to <a href="#sec7.9">troubleshooting 5</a>.
+<div class="critical">
+<span class="critical-title">Critical:</span> The example configuration file is already filled out so that users only need to complete the file names, the file paths, and create names for their experiments. If the original libraries are used, no additional changes are needed to the configuration file. All other parameters and details are set as default and do not need to be changed for a successful run of the software.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="34">
+<li>Run the software by execution of commands at the command line. Some command line flags can be used here to override information set in the configuration file. Details about these command line arguments are in <a href="#tbl4">Table 4</a>.
+<ol type="a">
+<li>Run the dms module. This module can be run with following command (assume the configuration file is titled <i>example.config</i> and that it is found in the root directory):
+<div class="textbox">
+<p><code>python3 -m dms --config example.config</code></p>
+</div>
+<ul>
+<li>The dms module will deposit output files in a folder found in the root directory of the software unless the output directory is intentionally changed. The files are always deposited into the folder titled “Output”. If that folder does not exist in the directory, an output folder will be created.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> The dms package is a general deep mutational scanning tool. It can be run independently of any other analysis and does not depend on the other module described here.</div>
+</li>
+<li>Run the analysis module with the following command (again, assume the configuration file is titled <i>example.config</i> and that it is found in the root directory). The [Analysis] section of the configuration file must be updated before every run to represent accurate experiments. However, all other sections of the configuration file should remain the same for both modules:
+<div class="textbox">
+<p><code>python3 -m analysis --config example.config</code></p>
+</div>
+<ol type="i">
+<li>Details on the approach for this analysis can be found in the Quantification and statistical analysis section.</li>
+</ol>
+The analysis module will deposit output files in a folder found in the root directory. The files are always deposited into the folder titled “Processed”. If that folder does not exist in the directory, the folder will be created.
+<div class="note">
+<span class="note-title">Note:</span> We provide the CSV outputs of the dms module on Github in the “Output” folder. There are two files: one representing the control population (example_control.csv), cells without ACE2 labeling, and the other representing an antibody population for CC12.1 (<a href="#bib4">Francino-Urdaniz et al., 2021</a>), titled example_CC12.1.csv. In addition, the example configuration file provided is already configured to properly run the analysis module with these example files. The only required change is to update the file paths to the Output folder containing the aforementioned example files. To run the analysis module with this data, follow the instructions in step 34b.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The analysis module is written with the intention that it will be executed shortly after running the dms module. Therefore, if output files of the dms module are significantly edited, the analysis module may not run as expected.</div>
+</li>
+</ol>
+<table id="tbl2">
+<caption>Table 2. Descriptions of sections in the configuration file</caption>
+<thead>
+<tr>
+<th>Configuration file section</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parameters</td>
+<td>This section defines the basic parameters for the dms module.Available options (described in <a href="#tbl2">Table 2</a>): max_mismatches, min_quality, and fastq_file_dir.</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>This section defines a tile that will be analyzed. For every tile in an experiment, a new tile section should be created. To define a tile, change the name after the colon.Available options (described in <a href="#tbl2">Table 2</a>): wt_seq, first_aa, cds_start, cds_end, and positions.<b>Note:</b> this section should generally remain unchanged from the example configuration file. The option to change these parameters is provided as a convenience for anyone following these protocols with different libraries.</td>
+</tr>
+<tr>
+<td>Samples</td>
+<td>This section defines the different samples in the experiment, connecting the tiles with the file names for the paired-end reads. All samples are in this section, no other [Samples] section is necessary to define multiple samples.The title for each sample is chosen by the user and should be entered without quotation marks. Each sample must be unique, and all samples should be options under [Samples].The samples must be defined as follows: <b>sample_name: ‘Tx’, ‘FASTQ_filename1’, ‘FASTQ_filename2’</b>‘Tx’ - the tile identifier that must match the tile name provided in the tile section.‘FASTQ_filename1’ - the name of the FASTQ file that contains the sample’s forward reads.‘FASTQ_filename2’ - the name of the FASTQ file that contains the sample’s reverse reads</td>
+</tr>
+<tr>
+<td>Experiments</td>
+<td>This section defines each experiment by giving it a name and identifying the reference and selected populations. All experiments are in this section, no other [Experiments] section is necessary to define multiple experiments.The title for each experiment is chosen by the user and should be entered without quotation marks. Each experiment must be unique, and all experiments should be options under [Experiments].The experiments must be defined as follows: <b>experiment_name: ‘reference_sample’, ‘selected_sample’</b>‘reference_sample’ - the name of the sample that contains the reference population‘selected_sample’ - the name of the sample that contains the desired selected population∗Both ‘reference_sample’ and ‘selected_sample’ must be defined in the [Samples] section as options. The name of these samples must be copied exactly into quotes in the [Experiments] section.</td>
+</tr>
+<tr>
+<td>Proteins</td>
+<td>This section combines different tiles that correspond to the same protein. This is so the information across all tiles for a given protein can be consolidated into single concise files.The title for each protein is chosen by the user and should be entered without quotation marks. Each protein must be unique, and all proteins should be defined under this section.The proteins must be defined as follows: <b>protein_name: ‘experiment_name1’, ‘experiment_name2’, …, ‘experiment_nameN’</b>‘experiment_name1’ - the name of the experiment that is the first tile for the protein‘experiment_name2’ - the name of the experiment that is the second tile for the protein∗All experiment_names must be defined in the [Experiments] section as options. The name of these samples must be compiled exactly into quotes in the [Proteins] section.It is possible to define a protein with a single experiment, but the single quoted experiment name must be followed by a comma in the definition.</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>This section defines statistical parameters for the analysis module. The information provided here results in the final escape mutant hits identified.Available options (described in <a href="#tbl2">Table 2</a>): control_filepath, antibody_filepath, output_title, FDR, significance.</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl3">
+<caption>Table 3. Descriptions of options for each section in the configuration file</caption>
+<thead>
+<tr>
+<th>Configuration file section</th>
+<th>Configuration file options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parameters</td>
+<td>max_mismatches</td>
+<td>The maximum number of mismatches allowed when reading overlapping sequences of paired-end reads from FASTQ deep sequencing files. Reads with a higher number of mismatches are discarded.The input must be a positive integer or None. If None, then no reads will be discarded due to mismatches.The default value used in our analysis is 10.</td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td>min_quality</td>
+<td>The minimum sequencing quality score required to keep a read in the analysis. A read with a score lower than this minimum benchmark will be discarded.The input must be a positive integer or None. If None, then no reads will be discarded due to quality.The default value used in our analysis is 10.</td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td>fastq_file_dir</td>
+<td>This option allows the user to specify the directory that contains the FASTQ files to be analyzed. The file path should be a folder that contains FASTQ files with the file names provided in the configuration file. An absolute file path should be used.The input must be a string.An example for this value is: ‘/Users/lab/Documents/fastq_files’</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>wt_seq</td>
+<td>The nucleotide DNA sequence of the tile which includes the entire sequence of a read from deep sequencing. This generally includes the primers used.The input must be a string of capital letters.The default values used in our analysis is different for each Tile and shown below:<u>Tile 1:</u> 'TGGAGGAGGCTCTGGTGGAGGCGGTAGCGGAGGCGGAGGGTCGACAAACTTGTGCCCTTTTGGTGAAGTTTTTCAAGCCACCAGATTTGCATCTGTTTATGCTTGGAACAGGAAGAGAATCAGCAACTGTGTTGCTGATTATTCTGTCCTATATAATTCCGCATCATTTTCCACTTTTAAGTGTTATGGAGTGTCTCCTACTAAATTAAATGATCTCTGCTTTACTAATGTCTATGCAGATTCATTTGTAATTAGAGGTGATGAAGTCAGACAAATCGCTCCAGGGCAAACTGGAAAGATTGCTGATTATAATTATAAATTACCAGATGATTTTACAGGCTGCGTTATAGCTTGG'<u>Tile 2:</u> 'GGCTGCGTTATAGCTTGGAATTCTAACAATCTTGATTCTAAGGTTGGTGGTAATTATAATTACCTGTATAGATTGTTTAGGAAGTCTAATCTCAAACCTTTTGAGAGAGATATTTCAACTGAAATCTATCAGGCCGGTAGCACACCTTGTAATGGTGTTGAAGGTTTTAATTGTTACTTTCCTTTACAATCATATGGTTTCCAACCCACTAATGGTGTTGGTTACCAACCATACAGAGTAGTAGTACTTTCTTTTGAACTTCTACATGCACCAGCAACTGTTTGTGGACCTAAAAAGTCTACTAATTTGGTTAAAAACAAAGGGGGC'</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>first_aa</td>
+<td>The residue number of the first amino acid in the protein sequence.The defaults used in our analysis are:<u>Tile 1:</u> 333<u>Tile 2:</u> 437</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>cds_start</td>
+<td>The nucleotide position in a merged read is where the coding sequence starts (after primers or any other miscellaneous nucleotides at the start of the read). Note: this index is given using Python slicing conventions, so it is zero-indexed. For example, the sequence ‘GATC’ is numbered 0123. If the sequence starts at ‘A’, cds_start would be 1.The input must be a nonnegative integer.The default used in our analysis is different for each Tile and shown below:<u>Tile 1:</u> 43<u>Tile 2:</u> 18</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>cds_end</td>
+<td>The nucleotide position in a merged read is where the coding sequence ends (before primers or any other miscellaneous nucleotides at the end of the read). Note: this index is given using Python slicing conventions, and so is the index of the first nucleotide that is not part of the coding sequence. For example, if the CDS is ‘AT’ in ‘GATC’, cds_end would be 3.The input must be a nonnegative integer.The default values used in our analysis is different for each Tile and shown below:<u>Tile 1:</u> 355<u>Tile 2:</u> 321</td>
+</tr>
+<tr>
+<td>Tile:Tx</td>
+<td>positions</td>
+<td>The amino acid positions of interest in the experiment. If the user only desires certain positions in the output files, this is where those positions should be specified.The input must be a list of integers. For example: [22, 42, 44, 51]. If you desire only one residue, enter the integer as a list (e.g., [31]).The default positions used in our analysis is different for each Tile and shown below:<u>Tile 1:</u> 333, 334, 335, 339, 340, 344, 345, 346, 349, 351, 352, 354, 356, 357, 358, 359, 360, 362, 363, 364, 366, 367, 370, 372, 373, 375, 376, 377, 378, 380, 381, 382, 383, 384, 385, 386, 388, 389, 390, 394, 396, 405, 408, 411, 412, 413, 414, 415, 417, 420, 421, 424, 426, 427, 428, 430<u>Tile 2:</u> 437, 439, 440, 441, 444, 445, 446, 447, 448, 449, 450, 452, 455, 456, 457, 458, 459, 460, 462, 463, 464, 465, 466, 468, 469, 470, 471, 473, 474, 475, 477, 478, 479, 481, 482, 483, 484, 485, 486, 487, 489, 490, 492, 493, 494, 498, 499, 500, 501, 503, 504, 505, 506, 508, 516, 517, 518, 519, 520, 521, 522, 523, 527</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>control_filepath</td>
+<td>The file path, including the file name, to the output file from the initial deep mutational scanning module for the control experiment. Absolute file paths should be used.Include extensions, if applicable.An example of this value is: ‘/Users/lab/Documents/rbd/Output/example_control.csv'.</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>antibody_filepath</td>
+<td>The file path, including the file name, to the output from the initial deep mutational scanning module for the desired antibody experiment. Absolute file paths should be used.Include extensions, if applicable.An example of this value is: ‘/Users/lab/Documents/rbd/Output/example_CC12.1.csv'.</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>output_title</td>
+<td>The prefix to be used in the processed file names at the end of running the analysis module.An example of this value is: ‘CC12-1’</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>FDR</td>
+<td>The target false discovery rate (FDR) for identifying an enrichment ratio threshold. This threshold is then used to determine escape mutant hits.The default used in our analysis is 1.</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>significance</td>
+<td>The p-value cutoff used to determine if a given enrichment ratio is significantly greater than the threshold value.The default used in our analysis is 0.01.</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl4">
+<caption>Table 4. Command line flags that can be used when running dms module</caption>
+<thead>
+<tr>
+<th>Command Line flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘--use_multiprocessing’ [boolean]</td>
+<td>This flag provides an option for the user to use the multiprocessing module or to turn it off. The multiprocessing module reads FASTQ files using multiple cores and can speed up the run time.The default is set to True and the argument parser accepts yes, no, true, or false as options.</td>
+</tr>
+<tr>
+<td>‘--fastq_file_dir’ [file path]</td>
+<td>This flag allows the user to specify the directory that contains the FASTQ files to be analyzed. The file path should be a folder that contains FASTQ files with the file names provided in the configuration file.The default is an empty string.</td>
+</tr>
+<tr>
+<td>‘--output_dir’ [file path]</td>
+<td>This flag allows the user to specify the output directory where all CSV and Microsoft Excel files will be saved when the run is complete.The default is an empty string.</td>
+</tr>
+<tr>
+<td>‘--max_mismatches’ [number]</td>
+<td>The maximum number of mismatches allowed when reading overlapping sequences of paired-end reads from FASTQ deep sequencing files. Reads with a higher number of mismatches are discarded.The default is set to None which sets no limit to the number of mismatches and does not discard reads due to mismatches. Any other input should be a positive integer.</td>
+</tr>
+<tr>
+<td>‘--min_quality’ [number]</td>
+<td>The minimum deep sequencing quality score required to keep a read in the analysis. A read with a score lower than this minimum benchmark will be discarded.The default is set to None which sets no lower limit on the quality of a read and accepts all scores. Any alternative input must be a positive integer.</td>
+</tr>
+<tr>
+<td>‘--min_ref_counts’ [number]</td>
+<td>The cutoff used to discard variants that have a low number of counts in the reference population. Variants with reference counts below this cutoff will be discarded.The default is set to 5 and inputs must be a nonnegative integer.</td>
+</tr>
+<tr>
+<td>‘--pseudocount’ [number]</td>
+<td>The pseudocount used when a variant contains counts observed in the reference population but not in the selected population. This is required because observing no counts in the selected population while having counts in the reference population will lead to an undefined enrichment ratio.The default is set to 1 and inputs must be a positive integer.</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>There are several expected outcomes from the experimental procedure. These outcomes are included in the protocol, but they are also written here for completeness. First, in the preparation steps, co-transformation into yeast should result in &gt;10<sup>4</sup> transformants for the wild type S RBD (Before you begin: #3e) and &gt;1.2×10<sup>5</sup> transformants for each S RBD library (<a href="#bib14">Steiner et al., 2020</a>) (Before you begin: #4j). Second, when making yeast stocks for the wild type S RBD (Before you begin: #3l), each 1.5 mL <i>S. cerevisiae</i> EBY100 culture will produce an average of six 1 mL yeast stocks. Third, the FACS step sorting 200,000 cells from the competing assay (Step-by-step method details: #18) should take around 40 min to collect if using our Sony SH-800 system. This time results from a sorting rate of 5-10,000 cells per sec and maintaining a 70% sorting efficiency. Finally, gel extraction in the sample preparation stage before sequencing (Step-by-step method details: #29) should always give one clear band with the correct size on the SYBR safe gel (515 bp for Tile 1 and 487bp for Tile 2). Any other expected outcomes during the experimental stages are very small and listed with their associated steps.</p>
+<p>After the experimental work, the major outcome of the computational step is a statistical measure of how likely each single point mutant present in the library is of being an escape mutant for a specific neutralizing antibody. This information is captured in a comma-separated values (CSV) file generated by the analysis module. The most important information in this CSV file is a false discovery rate (FDR) for each mutation. The FDR for a mutation quantifies how many mutations we would expect to have similar, or more significant, enrichment ratios and depths of coverage by random chance. Other information contained in the CSV file for the set of mutants includes their corresponding counts in each population, an enrichment ratio (ER) that compares these counts, a p-value calculated by the one-sided exact Poisson rate ratio test, and the minimum number of nucleotides away the given mutation could be from the wild type sequence. The second output of this software is a heatmap in Microsoft Excel that identifies potential escape mutations in blue. Refer to <a href="#fig4">Figure 4</a> for details on the outputs mentioned above.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>All statistical analysis is performed by the custom software developed for this protocol. This occurs entirely in Step 3 from the procedures above. To determine escape mutations, the antibody population must be compared against the control group. A control was used to help identify which mutations are randomly expected to appear in the given library. With this data, we can determine the mutations present in the selected antibody population that occur more frequently than would typically be expected when looking at the control data. This information is captured as the FDR value. If these specific mutations have enough counts to be confident of their presence in the antibody library, then we call those variants escape mutations. A more detailed and formal explanation of the statistical approach follows.</p>
+<p>First, the critical metric for determining escape mutants in this analysis is the enrichment ratio at each position. An enrichment ratio is the log<sub>2</sub> transform of the frequency of an observed mutation in the selected population divided by the frequency of that mutation in the reference population (<a href="#fig6">Figure 6</a>A). This calculation is performed by the dms module prior to running any statistical analysis.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1061-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Statistical approach used to determine potential escape mutants</div>
+<p>(A) An example of an enrichment ratio calculation. This calculation uses the total counts in the selected population, <math> <mrow> <msub> <mi>S</mi> <mi>T</mi> </msub> </mrow> </math>, the total counts in the reference population, <math> <mrow> <msub> <mi>R</mi> <mi>T</mi> </msub> </mrow> </math>, and the total counts of the given N501Y mutation in the selected and reference populations, <math> <mrow> <msub> <mi>S</mi> <mi>j</mi> </msub> </mrow> </math> and <math> <mrow> <msub> <mi>R</mi> <mi>j</mi> </msub> </mrow> </math>, respectively.</p>
+<p>(B) Demonstrating that the best fit for this data is a kernel density estimate (KDE). The KDE fits very closely to the data, while other common probability distributions, such as the normal and logistic curves, do not.</p>
+<p>(C) Showing the final statistical step that considers the depth of coverage when deciding to identify an escape mutation. For mutations with high depth of coverage, the returned p-value will be much smaller than for mutations with lower depths of coverage.</p>
+</figcaption>
+</figure>
+<p>When running the analysis module, a kernel density estimate (KDE) is first fit to the control data. This provides an empirical ER distribution for cells sorted without antibody or ACE2 labeling, which serves as a null hypothesis in which observed ERs are due to stochasticity in sorting and other non-relevant differences between variants. In determining which distribution to use for this data, we initially fit common probability distributions (<a href="#fig6">Figure 6</a>B). However, KDE consistently provided a better fit to the data. In addition, a KDE eliminates the need to make the underlying assumptions common with parametric functions, yet still provides an accurate distribution (<a href="#bib8">Kvam and Vidakovic, 2007</a>). Thus, given the unpredictable nature of the control data, a nonparametric probability distribution such as the KDE was chosen to ensure a reliable distribution for each given control group without making any assumptions about the distribution of data.</p>
+<p>Using this KDE from the null distribution, a threshold value for enrichment ratios can be determined. We estimate the false discovery rate (FDR) for a given threshold <math> <mrow> <mi>E</mi> <msub> <mi>R</mi> <mi>t</mi> </msub> </mrow> </math> as the number ERs we expect to find above that threshold in the null experiment. This is given by <math> <mrow> <mtext>FDR</mtext> <mo>=</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <mtext>F</mtext> <mrow> <mo>(</mo> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mtext>∗N</mtext> </mrow> </math>, where <math> <mrow> <mtext>F</mtext> </mrow> </math> is the experimentally determined cumulative distribution function (CDF) of the control experiment ERs and is the number of variants in the library. Rearranging, we find <math> <mrow> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> <mo>=</mo> <msup> <mtext>F</mtext> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>−</mo> <mfrac> <mtext>FDR</mtext> <mtext>N</mtext> </mfrac> </mrow> <mo>)</mo> </mrow> </mrow> </math>, where <math> <mrow> <msup> <mtext>F</mtext> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> </mrow> </math> is the inverse CDF. For a library size using these experiments (<math> <mrow> <mtext>N</mtext> <mo>=</mo> <mn>1120</mn> </mrow> </math> for tile 1 or <math> <mrow> <mtext>N</mtext> <mo>=</mo> <mn>1260</mn> </mrow> </math> for tile 2) and with an <math> <mrow> <mtext>FDR</mtext> <mo>=</mo> <mn>1</mn> </mrow> </math>, the typical range for this threshold is <math> <mrow> <mn>2.2</mn> <mo>&lt;</mo> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> <mo>&lt;</mo> <mn>2.6</mn> </mrow> </math>.</p>
+<p>We then compare each observed ER in an experiment to this threshold to see which variants have enrichment ratios larger than <math> <mrow> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> </mrow> </math>. However, comparing just the observed ER to the threshold would ignore the depth of coverage for each mutation. Since the depth of coverage provides information about our confidence in the observed ER, we use it directly in the comparison. This is explained in detail below.</p>
+<p>For a given experiment, we have two sets of reads <math> <mrow> <mrow> <mo>{</mo> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> <mo>}</mo> </mrow> </mrow> </math> and two totals <math> <mrow> <msup> <mtext>n</mtext> <mtext>p</mtext> </msup> </mrow> </math>, where <math> <mrow> <mtext>p</mtext> <mo>∈</mo> <mrow> <mo>{</mo> <mrow> <mtext>ref</mtext> <mo>,</mo> <mtext> sel</mtext> </mrow> <mo>}</mo> </mrow> </mrow> </math> is the reference or selected population. Note that, since we discard reads that don’t encode single mutations, it is not generally true that <math> <mrow> <munder> <mrow> <mo>∑</mo> </mrow> <mtext>i</mtext> </munder> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> <mo>=</mo> <msup> <mtext>n</mtext> <mtext>p</mtext> </msup> </mrow> </math>. We approximate each read count <math> <mrow> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> </mrow> </math> as being distributed as <math> <mrow> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> <mo>∼</mo> <mi>P</mi> <mi>o</mi> <mi>i</mi> <mi>s</mi> <mrow> <mo>(</mo> <mrow> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> <msubsup> <mtext>n</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> </mrow> <mo>)</mo> </mrow> </mrow> </math> for some unknown rate <math> <mrow> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>p</mtext> </msubsup> </mrow> </math>. If we knew this rate, the true enrichment ratio would be given by <math> <mrow> <msub> <mtext>ER</mtext> <mtext>i</mtext> </msub> <mo>=</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mrow> <mo>(</mo> <mfrac> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>sel</mtext> </msubsup> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>ref</mtext> </msubsup> </mfrac> <mo>)</mo> </mrow> </mrow> </math>. Therefore, testing the hypothesis that <math> <mrow> <msub> <mtext>ER</mtext> <mtext>i</mtext> </msub> <mo>≥</mo> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> </mrow> </math> amounts to testing that <math> <mrow> <mfrac> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>sel</mtext> </msubsup> <msubsup> <mtext>r</mtext> <mtext>i</mtext> <mtext>ref</mtext> </msubsup> </mfrac> <mo>≥</mo> <msup> <mn>2</mn> <msub> <mtext>ER</mtext> <mtext>t</mtext> </msub> </msup> </mrow> </math>, which we do with <math> <mrow> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>ref</mtext> </msubsup> <mo>,</mo> <msup> <mtext>n</mtext> <mtext>ref</mtext> </msup> <mo>,</mo> <msubsup> <mtext>k</mtext> <mtext>i</mtext> <mtext>sel</mtext> </msubsup> <mo>,</mo> </mrow> </math> and <math> <mrow> <msup> <mtext>n</mtext> <mtext>sel</mtext> </msup> </mrow> </math> using a one-sided Poisson rate ratio test implemented in the Python package statsmodels (<a href="#bib12">Seabold and Perktold, 2010</a>). The significance level of the test, <math> <mrow> <mtext>α</mtext> </mrow> </math>, is determined by the user and can be changed in the configuration file. Our analysis used <math> <mrow> <mtext>α</mtext> <mo>=</mo> <mn>0.01</mn> </mrow> </math>. Please refer to <a href="#fig6">Figure 6</a>C for additional details.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The method described has several experimental parts that introduce limitations to the protocol. First, this protocol identifies only the subset of neutralizing antibodies that directly compete with ACE2 for binding on S RBD. Neutralizing antibodies for SARS-CoV-2 can bind on Spike at locations other than the RBD (<a href="#bib1">Cerutti et al., 2021</a>; <a href="#bib17">Li et al., 2021</a>; <a href="#bib10">Mccallum et al., 2021</a>), and some neutralizing antibodies recognize the N343 glycan that we have removed from the displayed S RBD to avoid hyper-mannosylation (<a href="#bib6">Jigami, 2014</a>). A different approach taken by the Bloom research group can be considered if non-competing antibodies must be analyzed (<a href="#bib5">Greaney et al., 2020</a>; <a href="#bib13">Starr et al., 2021</a>) that also bind on the S RBD. We have previously tried to display the S ectodomain in yeast but were not successful (<a href="#bib4">Francino-Urdaniz et al., 2021</a>).</p>
+<p>Second, this procedure is only designed to identify escape mutants resulting from single amino acid mutations. The smaller single mutation library limits our ability to test the possibility that a combination of amino acid mutations could work in conjunction and ultimately lead to escaping antibody binding. Larger and more complex libraries would be needed to test this type of escape mutant. In addition, the custom software developed with this protocol is not written to identify such scenarios.</p>
+<p>Third, the residues examined in this study are all located on the surface of S RBD. While ACE2 and other antibodies will only interact directly with these surface residues, it is possible that buried residues could have indirect impacts on binding. Furthermore, since we test monomeric S RBD some surface mutations identified as putative escapes by this method could produce steric clashes in the full trimeric S. Each mutation is pleiotropic with unpredictable potential changes in the fitness of the virus. Thus, the escape mutants identified by this protocol will necessarily be a subset of the escape mutants for these same positions observed in nature.</p>
+<p>Finally, given that a mutation was observed in the population, the output is binary (yes/no for an escape mutant). Some true escape mutants may be missed if the mutation does not appear with high enough frequency in the antibody population. This is especially true if ER values are close to the cutoff, if the mutation is not sampled in the reference library, or if the control population has some aberrations that skew the ER threshold higher.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>S RBD does not display on the yeast surface or has a very low display. This problem may rise in Before you begin step 16 or Step-by-step method details step 12.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Low display percentages occur with insufficient culture aeration during growth. Ensure the 14 mL culture tube is shaking and that the culture volume is 1.5 mL or less. Induction time and temperature were optimized for our laboratory settings and may need to be altered to optimize display. Other common temperatures are 18°C and 30°C.</p>
+<p>If necessary, a 0.2 w/v% galactose can be added to the SDCAA<sup>+</sup> and 0.2 w/v% dextrose can be added to the SGCAA<sup>+</sup>. If the RBD is still not displaying, co-transform again.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>No or low PE signal increase when binding biotinylated ACE2 to the displayed RBD. This problem may arise in Before you begin step 22 or Step-by-step method details step 13 Tube 2.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Increase the biotin to protein ratio. If the signal increases as the ratio increases, use the necessary ratio to see a good PE signal increase.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Product from the second PCR when preparing the libraries for deep sequencing does not show on a SYBR safe gel in Step-by-step method details step 29.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>First check that there is some product on the right band size using the more sensitive SYBR gold stain. If so, rerun the PCR steps using more cycles. Else, cells could have been contaminated during cell recovery or the yeast miniprep did not have a high enough yield.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Illumina deep sequencing does not cluster correctly. This would occur after preparing for sequencing in Step-by-step method details Illumina sequencing.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Increase PhiX percentage to increase nucleotide diversity to promote correct clustering.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>The example configuration file is not set up by default for running with only one tile. Thus, using the software for an experiment that only has a single tile may result in an error if the configuration file is not formatted correctly through the initial setup in Step-by-step method details step 33.</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>To run a single tile, continue to add the experiment in the [Proteins] section. However, after identifying the first tile, add a comma and then a space (leaving the rest of the line blank). For example, if the experiment name is ‘6-29’ and the chosen title for the protein is ‘1_6–29’ then use the following format in the [Proteins] section.</p>
+<p>Control_1: '1_Control',</p>
+<p>This should fix any issues.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib16">Banach, B.B., Cerutti, G., Fahad, A.S., Shen, C.-H., Olivera de Souza, M., Katsamba, P.S., Tsybovsky, Y., Wang, P., Nair, M.S., Huang, Y., et al. (2021). Paired Heavy and Light Chain Signatures Contribute to Potent SARS-CoV-2 Neutralization in Public Antibody Responses. SSRN Electronic Journal. . <a class="external-link" href="https://doi.org/10.2139/ssrn.3754549">https://doi.org/10.2139/ssrn.3754549</a></p>
+<p id="bib1">Cerutti, G., Guo, Y., Zhou, T., Gorman, J., Lee, M., Rapp, M., Reddem, E.R., Yu, J., Bahna, F., Bimela, J., et al. (2021). Potent SARS-CoV-2 neutralizing antibodies directed against spike N-terminal domain target a single supersite. Cell Host and Microbe <i>29</i>, 819-833.e7. <a class="external-link" href="https://doi.org/10.1016/j.chom.2021.03.005">https://doi.org/10.1016/j.chom.2021.03.005</a></p>
+<p id="bib2">Chao, G., Lau, W.L., Hackel, B.J., Sazinsky, S.L., Lippow, S.M., and Wittrup, K.D. (2006). Isolating and engineering human antibodies using yeast surface display. Nat. Protoc. <i>1</i>, 755-768. <a class="external-link" href="https://doi.org/10.1038/nprot.2006.94">https://doi.org/10.1038/nprot.2006.94</a></p>
+<p id="bib3">Fowler, D.M., Araya, C.L., Gerard, W., and Fields, S. (2011). Enrich: software for analysis of protein function by enrichment and depletion of variants. Bioinformatics <i>27</i>. . <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btr577">https://doi.org/10.1093/bioinformatics/btr577</a></p>
+<p id="bib4">Francino-Urdaniz, I.M., Steiner, P.J., Kirby, M.B., Zhao, F., Haas, C.M., Barman, S., Rhodes, E.R., Leonard, A.C., Peng, L., Sprenger, K.G., et al. (2021). One-shot identification of SARS-CoV-2 S RBD escape mutants using yeast screening. Cell Rep. <i>36</i>. . <a class="external-link" href="https://doi.org/10.1016/j.celrep.2021.109627">https://doi.org/10.1016/j.celrep.2021.109627</a></p>
+<p id="bib5">Greaney, A.J., Starr, T.N., Gilchuk, P., Zost, S.J., Binshtein, E., Loes, A.N., Hilton, S.K., Huddleston, J., Eguia, R., Crawford, K.H.D., et al. (2020). Complete mapping of mutations to the SARS-CoV-2 spike receptor-binding domain that escape antibody recognition. Cell Host and Microbe <i>29</i>, 44-57.e9. <a class="external-link" href="https://doi.org/10.1016/j.chom.2020.11.007">https://doi.org/10.1016/j.chom.2020.11.007</a></p>
+<p id="bib6">Jigami, Y. (2014). Yeast glycobiology and its application. Biosci. Biotechnol. Biochem. 8451. <a class="external-link" href="https://doi.org/10.1271/bbb.70725">https://doi.org/10.1271/bbb.70725</a></p>
+<p id="bib9">Kowalsky, C.A., Klesmith, J.R., Stapleton, J.A., Kelly, V., Reichkitzer, N., and Whitehead, T.A. (2015). High-resolution sequence-function mapping of full-length proteins. PLoS One <i>10</i>, 1-23. <a class="external-link" href="https://doi.org/10.1371/journal.pone.0118193">https://doi.org/10.1371/journal.pone.0118193</a></p>
+<p id="bib7">Klesmith, J.R. and Hackel, B.J. (2019). Improved mutant function prediction via PACT: protein analysis and classifier toolkit. Bioinformatics <i>35</i>. . <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bty1042">https://doi.org/10.1093/bioinformatics/bty1042</a></p>
+<p id="bib8">Kvam, P.H. and Vidakovic, B. (2007). Nonparametric Statistics with Applications to Science and Engineering (John Wiley &amp; Sons). <a class="external-link" href="https://doi.org/10.1002/9780470168707">https://doi.org/10.1002/9780470168707</a></p>
+<p id="bib17">Li, Y., Ma, M., Lei, Q., Li, Y., Ma, M., Lei, Q., Wang, F., Hong, W., Lai, D., Hou, H., and Xu, Z. (2021). Linear epitope landscape of the SARS-CoV-2 Spike protein constructed from 1,051 COVID-19 patients. CellReports <i>34</i> (<i>13</i>), 108915. <a class="external-link" href="https://doi.org/10.1016/j.celrep.2021.108915">https://doi.org/10.1016/j.celrep.2021.108915</a></p>
+<p id="bib10">Mccallum, M., MarcoDe, A., Lempp, F.A., Tortorici, M.A., Pinto, D., Walls, A.C., Beltramello, M., Chen, A., Liu, Z., Zatta, F., et al. (2021). N-terminal domain antigenic mapping reveals a site of vulnerability for SARS-CoV-2. Cell <i>184</i>, 2332-2347.e16. <a class="external-link" href="https://doi.org/10.1016/j.cell.2021.03.028">https://doi.org/10.1016/j.cell.2021.03.028</a></p>
+<p id="bib11">Medina-Cucurella, A.V. and Whitehead, T.A. (2018). Characterizing protein-protein interactions using deep sequencing coupled to yeast surface display. Methods Mol. Biol. . <a class="external-link" href="https://doi.org/10.1007/978-1-4939-7759-8_7">https://doi.org/10.1007/978-1-4939-7759-8_7</a></p>
+<p id="bib12">Seabold, S. and Perktold, J. (2010). Statsmodels : Econometric and statistical modeling with python. Proc. 9th Python Sci. Conf. <i>57</i> (<i>Scipy</i>), 92-96. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00575-X/sref12">View at publisher</a></p>
+<p id="bib13">Starr, T.N., Greaney, A.J., Dingens, A.S., and Bloom, J.D. (2021). Complete map of SARS-CoV-2 RBD mutations that escape the monoclonal antibody LY-CoV555 and its cocktail with LY-CoV016. Cell Rep. Med. <i>2</i>, 100255. <a class="external-link" href="https://doi.org/10.1016/j.xcrm.2021.100255">https://doi.org/10.1016/j.xcrm.2021.100255</a></p>
+<p id="bib14">Steiner, P.J., Baumer, Z.T., and Whitehead, T.A. (2020). A method for user-defined mutagenesis by integrating oligo pool synthesis technology with nicking mutagenesis. Bio-protocol <i>10</i>, e3697. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00575-X/sref14">View at publisher</a></p>
+<p id="bib15">Walls, A.C., Park, Y.-J., Tortorici, M.A., Wall, A., McGuire, A.T., and Veesler, D. (2020). Structure, function, and antigenicity of the SARS-CoV-2 spike glycoprotein. Cell <i>180</i>, 1-12. <a class="external-link" href="https://doi.org/10.1016/j.cell.2020.02.058">https://doi.org/10.1016/j.cell.2020.02.058</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Tim Whitehead <a href="mailto:timothy.whitehead@colorado.edu">timothy.whitehead@colorado.edu</a>.</p>
+<h4>Materials availability</h4>
+<p>All plasmids and mutational libraries used in this work are available from AddGene (<a href="https://www.addgene.org/Timothy_Whitehead/">https://www.addgene.org/Timothy_Whitehead/</a>).</p>
+<h4>Data and code availability</h4>
+<p>Original software has been deposited on Github (<a href="https://github.com/WhiteheadGroup/SpikeRBDStabilization.git">https://github.com/WhiteheadGroup/SpikeRBDStabilization.git</a>).</p>
+<h3>Acknowledgments</h3>
+<p>Research reported in this publication was supported by the <a href="https://doi.org/10.13039/100000060">National Institute of Allergy and Infectious Diseases</a> of the National Institutes of Health under award number R01AI141452 to T.A.W. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health. This research was also supported by a Balsells Fellowship to I.M.F.-U. and a CU Boulder BSI fellowship to C.M.H.</p>
+<h3>Author contributions</h3>
+<p>C.M.H. and P.J.S. developed computational software; I.M.F.-U., P.J.S., and T.A.W. developed experimental protocol; C.M.H., I.M.F.-U., P.J.S., and T.A.W. wrote the protocol.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

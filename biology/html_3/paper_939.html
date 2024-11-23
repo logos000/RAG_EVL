@@ -1,0 +1,1120 @@
+<article>
+<section>
+<h1 id="header">A high-throughput DNA FISH protocol to visualize genome regions in human cells</h1>
+<p><time datetime="2021-08-20">Published: August 20, 2021</time></p>
+<p>Elizabeth H. Finn<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor1">*</a></sup> and Tom Misteli<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Center for Cancer Research, National Cancer Institute, National Institutes of Health, Bethesda, MA, 20892, USA</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:Elizabeth.Finn@nih.gov">Elizabeth.Finn@nih.gov</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:Mistelit@mail.nih.gov">Mistelit@mail.nih.gov</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100741">10.1016/j.xpro.2021.100741</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Here, we describe an end-to-end high-throughput imaging protocol to visualize genomic loci in cells at high throughput using DNA fluorescence <i>in situ</i> hybridization, automated microscopy, and computational analysis. This is particularly useful for quantifying patterns of heterogeneity in relative gene positioning or differences within subpopulations of cells. We focus on important experimental design and execution steps in this one-week protocol, suggest ways to ensure and verify data quality, and provide practical solutions to common problems.</p>
+<p>For complete details on the generation and use of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref4">Finn et al. (2019)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>DNA fluorescence <i>in situ</i> hybridization technique for high-content imaging</li>
+<li>Optimized for use in a 384-well plate format with cultured cells</li>
+<li>One-week protocol to assess thousands of cells per condition in tens of conditions</li>
+<li>Thorough discussion of troubleshooting for new probes, probe types, and cell types</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the specific steps for using nick translated FISH probes generated from Bacterial Artificial Chromosomes (BACs) to visualize genomic regions in skin fibroblasts. However, we have used this protocol with minor adjustments for many probe types (nick translated probes that are directly labeled or labeled with a hapten such as biotin, probes generated from Bacterial Artificial Chromosomes, or fosmids, or plasmids, and oligo-library based probes; <a href="#sec7.1">troubleshooting 1</a>) and in numerous cell types (other adherent cells such as HCT116, HBEC, and PANC-1; pluripotent stem cells such as H1 hESCs and induced pluripotent stem cells; and suspension-grown cells such as Jurkat; <a href="#sec7.3">troubleshooting 2</a>).</p>
+<h3 id="sec1.1">Grow cells on 384-well plates</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days to 1 week, depending on cell doubling time and treatment conditions</div>
+<ol>
+<li>Dissociate cells by treating with trypsin for 5 min</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Any cell dissociation reagent can work well at this step.</div>
+<ol start="2">
+<li>Neutralize with equal volume trypsin-neutralizing solution or cell culture media</li>
+<li>Lift by pipetting in a serological pipette several times</li>
+<li>Spin 5 min at 250 <i>g</i> to pellet</li>
+<li>Meanwhile, count cells</li>
+<li>Decant residual media, resuspend in fresh media to get approximately 140,000 cells/mL</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This assumes an optimal seeding density of ∼7,000 cells per well. Depending on subsequent steps, culture time, and cell type, you will likely need to alter the plating density at this step. We recommend doing a preliminary experiment testing multiple seeding densities to determine optimal plating density, which is approximately 80% confluence at the time of imaging. (<a href="#fig1">Figure 1</a>)</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. DAPI staining to measure appropriate cell density</div>
+<p>(A) Sparse cells are likely stressed and will require additional imaging time to sample fully.</p>
+<p>(B) Dense cells often overlap, confounding automated segmentation methods at overlaps (red arrows).</p>
+<p>(C) Ideally plated cells at approximately 80% confluence.</p>
+<p>(D) 80% confluent cells imaged at 4× in a dissecting scope.</p>
+<p>Scale bars: 25 microns.</p>
+</figcaption>
+</figure>
+<ol start="7">
+<li>Add 50 μL cell suspension to each well</li>
+<li>Spin 30 s to remove bubbles</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Rest plate at 20°C–22°C for 30 minutes. This step slows adhesion and can be useful if your cells tend to be clumpy. (<a href="#sec7.5">Troubleshooting 3</a>)</div>
+<ol start="9">
+<li>Grow at least 24 h at 37°C</li>
+</ol>
+<h3 id="sec1.2">Determination of optimal cell plating density</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days, mostly inactive</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend performing a cell titration as a first experiment to see how your cells grow on 384-well plates, how densely you should plate them, and whether you need to consider additional steps like gentle medium exchanges with a sponge from the outset (for more information about proper imaging density, see <a href="#sec7.3">troubleshooting 2</a> and <a href="#fig1">Figure 1</a>; for more information about when gentle exchanges may be necessary see <a href="#sec7.5">troubleshooting 3</a>).</div>
+<ol start="10">
+<li>Dissociate, spin, and count cells as above (steps 1–5), but plate cells in a density gradient between 1,000 and 20,000 cells per well, with three wells per condition.</li>
+<li>After 24 h growth, fix cells by adding 50 μL 8% PFA in PBS for a final concentration of 4% PFA.</li>
+<li>Incubate 15 min at 20°C–22°C.</li>
+<li>Rinse three times in PBS.</li>
+<li>Incubate with DAPI diluted in PBS for 10 min at 20°C–22°C.</li>
+<li>Image and determine maximum density before cells begin overlapping.</li>
+</ol>
+<h3 id="sec1.3">Preparation of buffers, DNA, and reagents</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend a multi-step procedure to grow sufficient quantities of bacteria from which to purify BACs as they are low-copy plasmids. The yield and purity of the starting DNA is a strong determinant of the efficiency of nick translation. BACs are generally shipped as agar stabs. Most BACs are chloramphenicol-resistant and we grow them in LB with freshly-added chloramphenicol to a final concentration of 25μg/mL, but double check when ordering new BAC clones.</div>
+<ol start="16">
+<li>Grow bacteria from single colony into large-scale culture
+<ol type="a">
+<li>Streak bacteria onto LB agar plate with appropriate selective antibiotic, grow 18–24 h</li>
+<li>Pick colonies and grow 4 mL cultures in LB + appropriate antibiotic 18–24 h
+<div class="optional">
+<span class="optional-title">Optional:</span> Clones should be kept as a glycerol stock. We recommend making glycerol stocks at this stage when prepping from agar stabs.</div>
+</li>
+<li>Use 4 mL culture to inoculate 400 mL culture in LB + appropriate antibiotic and grow 18–24 h</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>Purify DNA via alkaline lysis. We use a nucleobond BAC 100 Maxiprep kit from Takara.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The kit that has worked the best in our hands is the Nucleobond BAC 100 kit (Takara) but it is a fairly standard large-scale alkaline lysis column purification. Any other such kit designed for working with low-copy plasmids should work and kit-free protocols for efficient isolation of BAC DNA are also suitable (<a href="#bib13">Villalobos et al., 2004</a>).</div>
+<ol start="18">
+<li>Quantitate DNA concentration.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Nick translation theoretically only requires DNA at 65 μg/mL but a more concentrated stock nearly always works better. A range between 100 and 200 μg/mL is sufficient in our hands. (<a href="#sec7.7">troubleshooting 4</a>)</div>
+<ol start="19">
+<li>Pre-make reagents for nick translation
+<ol type="a">
+<li>Prepare nick translation buffer</li>
+<li>Dilute β-mercaptoethanol</li>
+<li>Mix nucleotide stocks</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> These reagents are kept at −20°C for long term storage. We do however recommend aliquoting nucleotide stocks to avoid freeze-thaw cycles and using opaque tubes to protect nucleotide stocks from light.</div>
+<ol start="20">
+<li>Prepare hybridization buffer
+<ol type="a">
+<li>Combine all ingredients</li>
+<li>Mix by gentle rotation for at least 18 h at 20°C–22°C</li>
+</ol>
+</li>
+<li>Make SSC dilutions</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Hybridization buffer and SSC at various dilutions can be kept at 20°C–22°C for long periods of time. All other buffers should be made fresh.</div>
+<h3 id="sec1.4">Optimization of nick translation with new DNAse</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h, including a 2 h incubation</div>
+<div class="note">
+<span class="note-title">Note:</span> This step is necessary whenever opening a newly purchased and prepared DNAse stock (not aliquot). It is also best practice, when beginning optimizing for a new probe, especially if you have one or a few probes that you plan on using for multiple experiments. It is a timecourse and a titration experiment to determine optimal DNAse concentrations and reaction times. The specific concentrations and times listed are suggestions only.</div>
+<ol start="22">
+<li>Mix five working solutions of DNAse by diluting PCR-grade water:
+<ol type="a">
+<li>1:2000</li>
+<li>1:1000</li>
+<li>1:500</li>
+<li>1:200</li>
+<li>1:100</li>
+</ol>
+</li>
+<li>Prepare five nick translation reactions (as described below, ideally with prepared BAC DNA that has been successfully used for FISH before) with each DNAse working solution above.</li>
+<li>Incubate one of each working solutions from step 22) at 16°C for each of the following timepoints:
+<ol type="a">
+<li>45 min</li>
+<li>60 min</li>
+<li>75 min</li>
+<li>90 min</li>
+<li>120 min</li>
+</ol>
+</li>
+<li>Stop reactions by addition of EDTA and heat treatment as described below. Once reaction has been stopped, keep on ice or at −20°C until all are finished.</li>
+<li>Run all products on a gel as described below to determine optimal baseline concentrations and cutting times (<a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Quality control for probe preparation</div>
+<p>(A) Probes run on a 2% agarose gel counterstained with GelRed. The image shows probe lengths for three colors of tagged dUTP; note that different types of dUTP will integrate more or less efficiently and result in smears of different lengths and brightnesses. Decreasing concentration of DNAse from left to right within a color. Optimal probe length between 100bp and 1000bp marked with dashed lines.</p>
+<p>(B) Brightly colored, precipitated probe pellet.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>1M Tris HCl, pH 8.0</td>
+<td>Thermo Fisher</td>
+<td>Cat#15568025</td>
+</tr>
+<tr>
+<td>1M Tris HCl, pH 7.5</td>
+<td>Thermo Fisher</td>
+<td>Cat#15567027</td>
+</tr>
+<tr>
+<td>1M MgCl<sub>2</sub>
+</td>
+<td>Quality Biological</td>
+<td>Cat#351-033-721</td>
+</tr>
+<tr>
+<td>BSA, lyophilized powder</td>
+<td>Millipore Sigma</td>
+<td>Cat#A9418</td>
+</tr>
+<tr>
+<td>100 mM dATP</td>
+<td>Thermo Fisher</td>
+<td>Cat#10216018</td>
+</tr>
+<tr>
+<td>100 mM dGTP</td>
+<td>Thermo Fisher</td>
+<td>Cat#10218014</td>
+</tr>
+<tr>
+<td>100 mM dCTP</td>
+<td>Thermo Fisher</td>
+<td>Cat#10217016</td>
+</tr>
+<tr>
+<td>1 mM DY488-dUTP (listed as fluorescent nucleotide stock within the protocol)</td>
+<td>Dyomics</td>
+<td>Cat#488-34</td>
+</tr>
+<tr>
+<td>1 mM DY549P1-dUTP (listed as fluorescent nucleotide stock within the protocol)</td>
+<td>Dyomics</td>
+<td>Cat#549P1-34</td>
+</tr>
+<tr>
+<td>1 mM DY647P1-dUTP (listed as fluorescent nucleotide stock within the protocol)</td>
+<td>Dyomics</td>
+<td>Cat#647P1-34</td>
+</tr>
+<tr>
+<td>β-Mercaptoethanol</td>
+<td>Bio-Rad</td>
+<td>Cat#1610710</td>
+</tr>
+<tr>
+<td>DNAse I grade II, lyophilized powder</td>
+<td>Roche</td>
+<td>Cat#11284932001</td>
+</tr>
+<tr>
+<td>
+<i>E. Coli</i> DNA Polymerase I</td>
+<td>NEB</td>
+<td>Cat#M0209S</td>
+</tr>
+<tr>
+<td>3M Sodium Acetate (NaOAc)</td>
+<td>Thermo Fisher</td>
+<td>Cat#R1181</td>
+</tr>
+<tr>
+<td>0.5M EDTA</td>
+<td>Thermo Fisher</td>
+<td>Cat#15575020</td>
+</tr>
+<tr>
+<td>1 mg/mL Human Cot-1 DNA</td>
+<td>Thermo Fisher</td>
+<td>Cat#15279011</td>
+</tr>
+<tr>
+<td>10 mg/mL Yeast tRNA</td>
+<td>Thermo Fisher</td>
+<td>Cat#AM7119</td>
+</tr>
+<tr>
+<td>50% w/v Dextran sulfate</td>
+<td>Millipore Sigma</td>
+<td>Cat#S4030</td>
+</tr>
+<tr>
+<td>Deionized formamide, pH 7.0</td>
+<td>Ambion</td>
+<td>Cat#AM9344</td>
+</tr>
+<tr>
+<td>20× Saline sodium citrate (SSC)</td>
+<td>Corning</td>
+<td>Cat#46-020-CM</td>
+</tr>
+<tr>
+<td>10% Tween-20</td>
+<td>Millipore Sigma</td>
+<td>Cat#P9416</td>
+</tr>
+<tr>
+<td>16% Paraformaldehyde (PFA)</td>
+<td>Electron Microscopy Sciences</td>
+<td>Cat#15710</td>
+</tr>
+<tr>
+<td>10% Triton X-100</td>
+<td>Millipore Sigma</td>
+<td>Cat#X100</td>
+</tr>
+<tr>
+<td>Saponin from Quillaja bark, powder</td>
+<td>Millipore Sigma</td>
+<td>Cat#S7900</td>
+</tr>
+<tr>
+<td>1N HCl</td>
+<td>Fisher Scientific</td>
+<td>Cat#SA48</td>
+</tr>
+<tr>
+<td>4′6-Diamidino-2-phenylindole (DAPI)</td>
+<td>Millipore Sigma</td>
+<td>Cat#9542</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Millipore Sigma</td>
+<td>Cat#G5516</td>
+</tr>
+<tr>
+<td>100% Ethanol</td>
+<td>Millipore Sigma</td>
+<td>Cat#E7023</td>
+</tr>
+<tr>
+<td>Phosphate Buffered Saline (PBS)</td>
+<td>Millipore Sigma</td>
+<td>Cat#D8537</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Nucleobond BAC 100 Maxiprep</td>
+<td>Takara</td>
+<td>Cat#740579</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>DNA FISH raw images</td>
+<td>4D Nucleome</td>
+<td>4DNFI2VH2VA2</td>
+</tr>
+<tr>
+<td>FISH Spot positions</td>
+<td>4D Nucleome</td>
+<td>4DNFID78GRES</td>
+</tr>
+<tr>
+<td>SpotLearn pipeline</td>
+<td>GitHub</td>
+<td><a href="https://github.com/CBIIT/Misteli-Lab-CCR-NCI/tree/master/Gudla_CSH_2017">https://github.com/CBIIT/Misteli-Lab-CCR-NCI/tree/master/Gudla_CSH_2017</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>HFF c6 hTERT immortalized human foreskin fibroblasts</td>
+<td>4DN</td>
+<td>4DNINE5V67ON</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>1.5 mL DNA LoBind Tube</td>
+<td>Eppendorf</td>
+<td>Cat#022431021</td>
+</tr>
+<tr>
+<td>1.5 mL LightSafe microcentrifuge tube</td>
+<td>Millipore Sigma</td>
+<td>Cat#Z688312</td>
+</tr>
+<tr>
+<td>CellCarrier-384 Ultra Microplates</td>
+<td>PerkinElmer</td>
+<td>Cat#6007550</td>
+</tr>
+<tr>
+<td>Aluminum foil plate seal</td>
+<td>Greiner</td>
+<td>Cat#676090</td>
+</tr>
+<tr>
+<td>Water bath set to 16°C</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Water bath set to 37°C–45°C</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Benchtop microcentrifuge for 1.5–2.0 mL tubes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Vortex</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cooled microcentrifuge for 1.5–2.0 mL tubes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tabletop plate centrifuge</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Humidified incubator for cell culture</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Humidified incubator for hybridization</td>
+<td>Fisher Scientific</td>
+<td>15-015-2632</td>
+</tr>
+<tr>
+<td>Utility sponge (optional)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Slide moat (preferred) or heat block</td>
+<td>Daigger</td>
+<td>EF14654</td>
+</tr>
+<tr>
+<td>Thermoshaker (preferred) or heat block</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>500 nm Tetraspeck fluorescent beads</td>
+<td>Thermo Fisher</td>
+<td>Cat#T281</td>
+</tr>
+</tbody>
+</table>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We list suppliers for standard molecular biological buffers and reagents. In most cases similar products from other suppliers can be substituted with no issue.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol has been optimized for use on plastic 384-well imaging plates, and we did not observe any difference between plates from various vendors. However, glass-bottom plates frequently do not stand up to the denaturation step, as glass and plastic have different thermal expansion coefficients and this results in cracks and leaks. This protocol could be scaled up for use in 96-well plates, but the required volume of hybridization mix would make those experiments expensive. We have, however, used a similar technique effectively on coverslips, adapting it only by performing the hybridization step on a slide sealed with rubber cement and performing washes by moving coverslips between wells of a 24-well dish.</div>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>10× nick translation buffer</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl, pH 8.0</td>
+<td>0.5 M</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>1 M MgCl<sub>2</sub>
+</td>
+<td>50 mM</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>10 mg/mL BSA</td>
+<td>0.5 mg/mL</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>0.01 M β-mercaptoethanol</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>β-mercaptoethanol</td>
+<td>10 μM</td>
+<td>0.7 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>999.3 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Mix both nick translation buffer and β-mercaptoethanol dilution by vortexing, and store at −20°C for up to 6 months.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> β-mercaptoethanol is very pungent and can be irritating upon inhalation. Working with it in a fume hood is critical for the health of the experimenter.</div>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Nucleotide mixture stock</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25 mM dATP</td>
+<td>166 μM</td>
+<td>4 μL</td>
+</tr>
+<tr>
+<td>25 mM dCTP</td>
+<td>166 μM</td>
+<td>4 μL</td>
+</tr>
+<tr>
+<td>25 mM dGTP</td>
+<td>166 μM</td>
+<td>4 μL</td>
+</tr>
+<tr>
+<td>1 mM Dyomics labeled dUTP</td>
+<td>166 μM</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>1 M Tris pH 7.4</td>
+<td>20 mM</td>
+<td>8 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>280 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>400 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make on ice, mix by vortexing. Aliquot to prevent freeze-thaw cycles, store in opaque tubes to protect from light at −20°C. Store for up to 6 months.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We use Dyomics directly labeled dUTPs as we find their dyes to be both bright and stable. We have also used Alexa labeled dUTPs from Thermo Fisher, Cy-dye labeled dUTPs, and dUTPs conjugated to a hapten such as biotin or digoxygenin which can be resolved in a secondary step, all with good results.</div>
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Hybridization buffer</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50% w/v dextran sulfate</td>
+<td>15%</td>
+<td>300 μL</td>
+</tr>
+<tr>
+<td>Deionized formamide, pH 7.0</td>
+<td>50%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>20× SSC</td>
+<td>2×</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>10% Tween-20</td>
+<td>1%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Mix by gentle inversion for at least 18 h to thoroughly mix without adding bubbles. Store at 20°C–22°C. Store for up to 6 months.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Formamide is a hazardous substance and a known teratogen. It must be disposed of properly, and working with it in a fume hood is critical for the health of the experimenter.</div>
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Permeabilization buffer</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10% Triton-X 100</td>
+<td>0.5%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>Saponin</td>
+<td>0.5% w/v</td>
+<td>50 μg</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td>n/a</td>
+<td>QS to 10 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Mix by vortexing. Make fresh on the day of the experiment.</p>
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Equilibration buffer</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20× SSC</td>
+<td>2×</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Formamide</td>
+<td>50%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>4 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Mix by inversion. Make fresh on the day of the experiment.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Formamide is a hazardous substance and a known teratogen. It must be disposed of properly and working with it in a fume hood is critical for the health of the experimenter.</div>
+<table id="undtbl7">
+<caption>Other solutions:</caption>
+<thead>
+<tr>
+<th>Name</th>
+<th>Reagents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNAse 1 stock</td>
+<td>1 mg/mL DNAse in 50% glycerol. Store at −20°C indefinitely.</td>
+</tr>
+<tr>
+<td>0.1N HCl</td>
+<td>1N HCl, ddH<sub>2</sub>O. Make fresh.</td>
+</tr>
+<tr>
+<td>DAPI stock</td>
+<td>5 mg/mL DAPI in PBS. Store at 4°C for up to six months.</td>
+</tr>
+<tr>
+<td>10 mg/mL BSA</td>
+<td>10 mg/mL BSA in ddH<sub>2</sub>O. Store at −20°C indefinitely but avoid freeze-thaw cycles.</td>
+</tr>
+</tbody>
+</table>
+<p>This protocol is designed to prepare cells grown on plates to be imaged in a high-content screening microscope such as the Perkin Elmer Opera or Yokogawa Cell Voyager systems. As FISH spots are generally diffraction limited, our best results have required a 60× water immersion lens (NA 1.2) and no binning, but deconvolved images detected with an epifluorescent scope at high magnification work similarly well as confocal images.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Nick translation (sufficient for 3 wells of a 384-well plate)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>This step randomly digests a BAC probe into &lt;1000 base pair linear segments, amplifies them by duplicating them with polymerase, and directly labels these segments through the addition of fluorescently tagged dUTP.</p>
+<p>The volumes described below, for 1 μg starting probe DNA in a total reaction volume of 25 μL, are generally suitable to make enough probe to stain 3 wells of a 384-well plate.</p>
+<p>In our hands, nick translation reactions have been successfully scaled up from a total volume of 25 μL as described here to a maximum of 500 μL. We do not recommend scaling up an individual reaction farther than this. If more than 500 μL of probe is required, set up several reactions up in parallel, and then pool the concentrated products.</p>
+<ol>
+<li>Mix the nick translation reaction, on ice and protected from light.
+<ol type="a">
+<li>Dilute DNAse in PCR-grade water 1:1000 to a final concentration of 1 μg/mL
+<div class="critical">
+<span class="critical-title">Critical:</span> Retest this dilution with known probes every time you open a fresh 1 mg/mL stock of DNAse, as the appropriate concentration varies between 1:500 and 1:2000.</div>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the probe used, this dilution can be adapted from 1:500–1:2000.</div>
+</li>
+<li>Dilute DNA to 65 μg/mL in PCR-grade water on ice by mixing:
+<ol type="i">
+<li>1 μg probe DNA</li>
+<li>Fill to 15.5 μL PCR-grade water</li>
+</ol>
+</li>
+<li>Mix master mix (scaled up as necessary) on ice and protected from light:
+<ol type="i">
+<li>2.5 μL 10× nick translation buffer</li>
+<li>2.5 μL fluorescent nucleotide stock</li>
+<li>2.5 μL β-mercaptoethanol</li>
+<li>1 μL diluted DNAse stock</li>
+<li>1 μL DNA polymerase</li>
+</ol>
+</li>
+<li>Add 9.5 μL master mix per 2 μg probe DNA to each reaction tube</li>
+<li>Tap tubes to remove bubbles and spin 1 min at 20,000 <i>g</i> in a desktop centrifuge.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Incubate at 16°C in a water bath in a cold room for 80 min</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> we have tried anywhere from 30 min to 3 hours with varied results. Retest this when you are troubleshooting a new probe (<a href="#sec7.9">troubleshooting 5</a>).</div>
+<ol start="3">
+<li>Stop the reaction:
+<ol type="a">
+<li>Add 1 μL of 0.5 M EDTA</li>
+<li>Incubate at 72°C for 10 min</li>
+</ol>
+</li>
+<li>As a quality control step, run 5 μL of the reaction volume on a 2% agarose gel at 60 V for 30 min. Verify that probes run as a smear between 100 bp and 1000 bp (<a href="#sec7.9">troubleshooting 5</a>) (<a href="#fig2">Figure 2</a>A).</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Nick translated probes can be stored at −20°C for up to six months, although freeze-thaw cycles should be avoided. We have had the best results with relatively freshly made probes, stored for up to a week.</div>
+<h3 id="sec3.2">Probe precipitation and resuspension in hybridization mix (sufficient for 3 wells of a 384-well plate)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h to 1 day</div>
+<p>Probes generated by nick translation are diluted in an aqueous solution and must be resuspended in hybridization mix for the FISH protocol. They also still contain residual DNAse and DNA polymerase. We use an ethanol precipitation step to clean the DNA and concentrate it, which allows us to resuspend it in hybridization mix.</p>
+<p>The volumes described here, starting with 20 μL of nick translated probe in each of three colors, are usually suitable for staining 3 wells of a 384-well plate.</p>
+<ol start="5">
+<li>Mix the following in a micro-centrifuge tube:
+<ol type="a">
+<li>20 μL nick translated probe in each color you will be using</li>
+<li>9 μL human Cot-1 DNA (competitor; final concentration: 25 ng/μL)</li>
+<li>6 μL yeast tRNA (carrier; final concentration: 165 ng/μL)</li>
+<li>12 μL NaOAc</li>
+<li>150 μL ethanol</li>
+</ol>
+</li>
+<li>Vortex to mix and spin 1 min at 20,000 <i>g</i> in a desktop centrifuge</li>
+<li>Chill at −20°C for 60 min</li>
+<li>Spin at 4°C at 20,000 <i>g</i> for 30 min</li>
+<li>Gently decant supernatant and air dry tubes while inverted and protected from light for 10 min</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The pellet at this point should be brightly colored (<a href="#fig2">Figure 2</a>B). Its color depends on the fluorophores used. Green fluorophores (such as DY-488) tend to make pellets more yellow, red fluorophores (such as DY-549) tend to make pellets more pink, and dark red fluorophores (such as DY-647) tend to make pellets more blue. (<a href="#sec7.11">troubleshooting 6</a>)</div>
+<div class="note">
+<span class="note-title">Note:</span> To remove residual ethanol without over-drying the pellet, we often use a shorter drying step and dry the sides of the tube with a Kimwipe<sup>TM</sup> (<a href="#mmc1">Methods video S1</a>).</div>
+<ol start="10">
+<li>Resuspend the pellet
+<ol type="a">
+<li>Add 45 μL hybridization buffer</li>
+<li>Heat to 65°C and vortex, or use a thermomixer at 65°C and 700+ rpm for at least 60 min (<a href="#sec7.13">troubleshooting 7</a>)</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Resuspended probes in hybridization mix can be stored at −20°C for up to six months, although freeze-thaw cycles should be avoided. We have had the best results with relatively freshly made probes, stored for up to a week.</div>
+<figure id="mmc1"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Mmc1.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. Use of a KimwipeTM to remove residual ethanol after precipitation of probes, related to step 9</div>
+</figcaption>
+</figure>
+<h3 id="sec3.3">Fixation, washes, and permeabilization of the plate</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This step prepares cells for the hybridization process. Cells are fixed with paraformaldehyde, permeabilized to ensure access of probes through cell and nuclear membranes, chromatin is slightly deproteinated to allow probes to bind, and finally samples are equilibrated in a formamide solution to destabilize the DNA base pairing and allow denaturation to occur at lower temperatures.</p>
+<p>For all washes in this step, we use 100 μL per well of a 384-well plate, but high precision is not necessary. For techniques to exchange media in 384-well plates, see <a href="#mmc2">Methods video S2</a>.</p>
+<ol start="11">
+<li>Fix cells directly from cell culture
+<ol type="a">
+<li>Add 50 μL 8% PFA in PBS to wells already containing cells and 50 μL media (final: 100 μL of 4% PFA in PBS).</li>
+<li>Incubate 10 min at 20°C–22°C</li>
+<li>Rinse thrice in PBS</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 8% PFA in PBS is best made fresh the day of the experiment, but can be stored for up to a week at 4°C.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Formaldehyde is a hazardous substance. It must be disposed of properly and working with it in a fume hood is critical for the health of the experimenter.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Cells can be held here up to 24 hours at 4°C in PBS or transferred to 70% ethanol and kept at −20°C for up to a week. Longer than that and signals start degrading, especially if using oligo-library based probes or plasmid probes. At this step, plates should be sealed with parafilm and/or plastic plate seals to prevent drying out during storage. If cells are stored after fixation, bring them fully to 20°C–22°C before continuing.</div>
+<ol start="12">
+<li>Incubate in permeabilization solution for 20 min at 20°C–22°C.</li>
+<li>Rinse twice in PBS</li>
+<li>Denature in 0.1N HCl for 15 min at 20°C–22°C</li>
+<li>Neutralize in 2× SSC for 5 min at 20°C–22°C</li>
+<li>Incubate in equilibration buffer for at least 30 min at 20°C–22°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Cells in equilibration buffer can be kept at 4°C for a few days or up to a week. Longer incubations in fact often improve staining of larger regions. At this step, plates should be sealed with parafilm and/or plastic plate seals to prevent drying out during storage.</div>
+<figure id="mmc2"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Mmc2.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. Techniques of performing exchange of washes in plates: shaking over a reservoir and gentle extraction with a sponge, related to steps 11–16, 23–27, and troubleshooting 2 and 3</div>
+</figcaption>
+</figure>
+<h3 id="sec3.4">Hybridization and washes</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 days</div>
+<p>This step combines the probe with the cells, allows stable binding, and washes off excess probe before imaging.</p>
+<p>For all washes in this step, we use 100 μL per well of a 384-well plate, but precision is not necessary.</p>
+<ol start="17">
+<li>Add probe mix to wells
+<ol type="a">
+<li>Aspirate equilibration buffer gently with a 200 μL micropipette</li>
+<li>Immediately add 13.5 μL probe mix (<a href="#mmc3">Methods video S3</a>)</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not let cells get dry at this step. We often go 3 wells at a time, pipetting probe mixes by hand. Use of an automated liquid handler that can handle viscous solutions (as the hybridization solution is quite viscous) may facilitate this step.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not fully empty pipette when adding probe mix; this will cause bubbles that can interfere with the experiment.</div>
+<ol start="18">
+<li>Seal plate with foil plate seal to block light and prevent evaporation</li>
+<li>Tap plate firmly against benchtop to disrupt bubbles (<a href="#mmc3">Methods video S3</a>)</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is recommended to add fiducial beads to two wells on the plate at this step, as using beads to check proper alignment between imaging channels and realigning images in post-processing is recommended for high precision measurements. However, without cells to stick to beads tend to float in PBS, and so beads should be dried onto an empty well. Thus, if you are using beads as fiducial markers, do not cover these wells with foil.</div>
+<ol start="20">
+<li>Spin plate 1 min at at least 100 <i>g</i> in a plate centrifuge</li>
+<li>Denature by placing plate directly onto preheated slide moat, at 85°C for 7.5 min</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Most slide moats do not have completely flat surfaces; make sure that all wells are fully in contact with the metal surface of the slide moat.</div>
+<div class="note">
+<span class="note-title">Note:</span> This hybridization temperature and time has worked well for us for a variety of cell and probe types, but during optimization with different cell types and probe types we have tested anywhere from 75°C to 95°C and anywhere from 3 to 10 minutes (see <a href="#sec7.15">troubleshooting 8</a>).</div>
+<ol start="22">
+<li>Immediately move to humid hybridization chamber at 37°C, hybridize at least 18 h</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Hybridization of repetitive regions is typically completed in around 30 minutes, and unique genome regions should be largely hybridized within 18 hours of hybridization.</div>
+<ol start="23">
+<li>Rinse once in 2× SSC at 20°C–22°C</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This step mostly just dissolves and lifts the hybridization solution. You can instead aspirate the hybridization solution with a pipette if cells are sufficiently adherent.</div>
+<ol start="24">
+<li>Wash three times for 5 min in 1× SSC at 42°C</li>
+<li>Wash three times for 5 min in 0.1× SSC at 42°C</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> These wash conditions have worked well for us with a variety of cell and probe types, but during troubleshooting we have tested a wide variety of different wash conditions including: changing the concentration, duration, and temperature of these washes, as well as adding formamide to these wash steps (see <a href="#sec7.17">troubleshooting 9</a>, <a href="#sec7.19">troubleshooting 10</a>).</div>
+<ol start="26">
+<li>Stain with DAPI
+<ol type="a">
+<li>Dilute DAPI in PBS</li>
+<li>Incubate 10 min at 20°C–22°C</li>
+</ol>
+</li>
+<li>Rinse once with PBS</li>
+<li>Plate with PBS, seal plate with foil</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Imaging of high-throughput experiments in 384-well format requires an automated microscope designed for high content imaging such as a Perkin Elmer Opera, Yokogawa CV8000 or similar.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Stained cells can be kept at 4°C, sealed as described, for up to one month before imaging, although prompt imaging is recommended.</div>
+<figure id="mmc3"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Mmc3.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S3. Technique of applying hybridization mix onto plates while minimizing bubbles formed, related to steps 17–19</div>
+</figcaption>
+</figure>
+<h3 id="sec3.5">Image acquisition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–12 h</div>
+<p>Routinely, we image 10–20 fields per well, in four channels, in a z-stack around 10 microns high and with slices every half micron, in each of 45–100 wells per experiment.</p>
+<ol start="29">
+<li>If stored at 4°C prior to imaging, warm plate at 20°C–22°C for one hour or at 37°C for 15 min to prevent condensation on the bottom of the plate.</li>
+<li>Meanwhile, turn on the water line on the microscope for water immersion lenses</li>
+<li>Clean the bottom of the plate with 70% ethanol and load it into the microscope</li>
+<li>Find the approximate focal plane and height of the cells in the DAPI channel</li>
+<li>Verify the signal-to-noise in all channels used: DAPI should be at least 5:1 and FISH signals should be easily discernible.</li>
+<li>Program in the following image acquisition steps. Each channel’s acquisition should be unbinned and with the same z-stack, centered around the determined software focus. Optimize the laser power and exposure time so that all FISH channels have good signal-to-noise ratios (3-fold is ideal) and the signal is not oversaturated:
+<ol type="a">
+<li>Software focus optimizing the DAPI channel focus within a 10 μm z-stack surrounding the approximate focal plane found in step 32.</li>
+<li>DAPI image acquisition (Ex: 405, Em: 445/50)</li>
+<li>Dyomics DY488 or another green fluorophore acquisition (Ex: 488, Em: 525/50)</li>
+<li>Dyomics DY549P1 or another red fluorophore acquisition (Ex: 561, Em: 600/27)</li>
+<li>Dyomics DY647P1 or another deep red fluorophore acquisition (Ex: 640, Em: 676/29)</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When selecting your z-slicing interval, consider whether you will be analyzing data as maximal projections (i.e. in 2D) or 3D volumes. If the former, a z-slice interval around the same size as the depth of field of the lens (around 1 μm) will limit imaging time while not missing any signals. However, in 3D this often causes artifacts as voxels are extremely uneven in size and 3D centers cannot be determined with great precision. As such, for 3D analyses we recommend oversampling in z by at least 3-fold (i.e. a z-slice interval around 300 nm).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not optimize imaging conditions in only one well if different probes are used in different wells as there can be considerable variability across the plate. We recommend verifying imaging conditions in at least 5–10 wells.</div>
+<ol start="35">
+<li>Program the microscope to acquire sufficient fields of view to image 1,000 cells per condition.</li>
+<li>Save and launch the routine.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>A good FISH result will have several features. Because of the high-throughput nature of this pipeline, in which a single experiment can easily result in over 1000 images per channel, visual inspection of every image is not feasible. But we strongly recommend visual inspection of a subset of the images to complement systematic quantification for quality control.</p>
+<p>Overgrown cells frequently become senescent, and cells that are too sparse frequently exhibit a stress response, both of which can alter results. Furthermore, from a purely technical perspective, cells that are too sparse will require much more time to image (<a href="#fig1">Figure 1</a>A), and cells that are too dense frequently overlap and can confound segmentation algorithms (<a href="#fig1">Figure 1</a>B). <b>Ideal density is generally around 80% confluency for adherent cells</b> (<a href="#fig1">Figure 1</a>C). (<a href="#sec7.5">troubleshooting 3</a>)</p>
+<p>Probe size and quality is probably the most important determinant of a DNA FISH experiment. We recommend running probes on a gel to determine their size. Expect probes to be between 100 bp and several thousand bp in length (<a href="#fig2">Figure 2</a>A). Precipitated probes should furthermore be brightly colored, and this can serve as a measure of the efficiency at which fluorescent nucleotides have been incorporated into the probe (<a href="#fig2">Figure 2</a>B). (<a href="#sec7.9">troubleshooting 5</a>, <a href="#sec7.11">troubleshooting 6</a>)</p>
+<p>The DAPI channel typically serves to identify individual cells during image analysis but can also be used to diagnose issues with permeabilization. Over-permeabilized cells will often show disruptions of the typical chromatin staining pattern in the DAPI channel (<a href="#sec7.15">troubleshooting 8</a>.)</p>
+<p>A “good” FISH signal is one that is easily discernible above nuclear background. We have observed that almost all segmentation pipelines – including proprietary commercial systems such as PerkinElmer’s Acapella or Columbus (<a href="#bib5">Finn et al., 2017</a>), lower-throughput hands-on methods such as ImageJ macros, and open source deep-learning based platforms such as SpotLearn (<a href="#bib6">Gudla et al., 2017</a>) -- perform well with FISH signals ∼3-fold higher than nuclear background (<a href="#fig3">Figure 3</a>B). FISH signals can be difficult to properly identify in an automated pipeline if the signal is overall very faint (<a href="#fig3">Figure 3</a>C) or if the background is generally high, especially in the nucleus (<a href="#fig3">Figure 3</a>D). Checking your signal to noise ratio in a handful of images after imaging has completed and/or at the time of imaging is recommended. Little can be done in post-processing to save a FISH with a low signal to noise ratio. (<a href="#sec7.17">troubleshooting 9</a>, <a href="#sec7.19">troubleshooting 10</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Signal-to-background ratio as a metric for a successful FISH</div>
+<p>(A) DAPI staining showing position of nuclei for following three images.</p>
+<p>(B) Relatively faint signals are easily distinguished with low background.</p>
+<p>(C) High background makes segmenting signals harder and nucleolar background or structure within the background can lead to mis-segmented spots.</p>
+<p>(D) Very low signal becomes entirely indistinguishable from background.</p>
+<p>(E) Exemplar FISH with high signal to background ratios in all three channels.</p>
+<p>Scale bars: 10 microns.</p>
+</figcaption>
+</figure>
+<p>Based on the ploidy of the cells, the number of expected signals per cell is known: for normal diploid cells, most FISH probes should stain two spots per cell. This provides a way to measure your detection efficiency after automated segmentation has been done. Good probes to single-copy genes in diploid cells should detect two spots in most of the cells (<a href="#fig4">Figures 4</a>A–4D). Probes to repetitive regions or regions which have been duplicated and translocated within a cell line will result in multiple signals in most of the cells, with the number of signals depending on the type of genomic abnormality present in the cell (<a href="#fig4">Figures 4</a>E–4H). Probes that simply failed frequently result either in a wide range of total spots detected in a cell (<a href="#fig4">Figures 4</a>I–4L) or very few spots segmented in any cell (<a href="#fig4">Figures 4</a>M–4P). (<a href="#sec7.21">troubleshooting 11</a>)</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Spots per cell as a measure for detection efficiency</div>
+<p>(A) DAPI for nuclei of well-stained FISH to a diploid locus.</p>
+<p>(B) Successful FISH to a diploid locus.</p>
+<p>(C) Overlay of (A and B).</p>
+<p>(D) Histogram of per-cell spot segmentation for this experiment, showing most cells have two segmented spots.</p>
+<p>(E–H) As (A–D), but with a probe that may be duplicated or contaminated; most cells show four spots and there is more variability.</p>
+<p>(I–L) As (A–D), but with a probe that has spotty background and a very wide range of spots segmented per cell.</p>
+<p>(M–P) As above, but with a probe that has very faint staining and very few spots segmented per cell.</p>
+<p>All scale bars are 10 microns.</p>
+</figcaption>
+</figure>
+<p>Because of random drift, uncorrected aberrations, and misalignment between the multiple cameras in the instrument, all microscopes have a distance threshold below which they cannot accurately detect co-localization or measure distances. <b>Therefore, it is critical to determine the resolution limit of your microscope with your setting experimentally, and to include these controls in every experiment.</b></p>
+<p>Determining the resolution limit experimentally ensures you do not run afoul of a detection limit when trying to measure distances. We apply two approaches: beads and a co-stained locus. Our preferred control is a single region, stained in all relevant colors (<a href="#fig5">Figures 5</a>A–5F) which is integrated into the experiment and provide markers to validate alignment on a per-experiment basis, controlling for misalignment in the microscope as well as any aberrations generated by non-uniform diffraction through the cell (<a href="#fig5">Figure 5</a>G). Fiducial beads can also be dried onto the plate during the hybridization step (see above; <a href="#fig5">Figures 5</a>H and 5I) and provide markers to validate microscope alignment on a per-experiment level (<a href="#fig5">Figure 5</a>J).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/939-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Costained controls and beads to measure misalignment</div>
+<p>(A–E) Representative image of a FISH experiment with one locus stained in two colors. (A) DAPI, (B) DY488, (C) DY549P1, (D) DY647P1, (E) Composite. Scale bar is 10 microns.</p>
+<p>(F) inset close-up of two spots to see overlap.</p>
+<p>(G) Distance distribution of all control spot pairs. Median (blue dashed line) is 97nm and 95<sup>th</sup> percentile (red dashed line) is 221nm.</p>
+<p>(H) Representative image of fiducial beads in all four colors (Tetraspeck<sup>TM</sup> 500 nm beads, Invitrogen). Scale bar is 10 microns.</p>
+<p>(I) inset close-up of one bead to see overlap.</p>
+<p>(J) Distance distributions of all beads, post-correction, showing each color combination. Note that misalignment varies by color pair.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec5.1">Image processing techniques</h3>
+<p>Proper image post-processing, segmentation, and automated analysis is a major challenge in working with large imaging datasets. Each new dataset and experiment will require some customization in its analysis. We outline below several general principles to consider in analyzing large imaging datasets, with a specific focus on measuring 2D distances between DNA loci in DNA FISH images. A more detailed description of one pipeline we have used has been previously published (<a href="#bib6">Gudla et al., 2017</a>).</p>
+<p>Our image processing pipeline generally includes the following steps:</p>
+<ol>
+<li>Calculate maximum projections of each field</li>
+<li>Segment nuclei in the maximum projection of the DAPI channel</li>
+<li>Segment all FISH spots within nuclei</li>
+<li>Calculate center of gravity for each spot</li>
+<li>Measure all distances between spots of different colors within a cell</li>
+<li>Select minimum distances on a per-spot per-channel-pair basis (i.e., minimum distance between red and green spots on a per green spot basis)</li>
+</ol>
+<p>Note that confocal images contain many other measurable parameters than 2D position. Calculating parameters such as 3D position, radial position, domain size or overlap for large regions (full area half max), and integrated intensity in any channel are straightforward analyses to add onto a pipeline such as the one described above. While we largely focus on spot-to-spot distances, simplifying imaging datasets into distance measurements loses much of the richness of the images themselves.</p>
+<p>Since these steps are performed on each image, our pipelines have significantly benefitted from parallel processing. While analyzing each image in parallel is perhaps simplest, cropping out segmented nuclei and processing instead each nucleus in parallel has also given us noticeable performance gains. However, this is most significant on datasets of thousands of images, and smaller datasets can be analyzed readily without any parallel processing.</p>
+<p>Machine learning has also increased the efficiency and quality of image processing pipelines. In particular, segmentation of nuclei that are almost touching or slightly overlapping is significantly improved using machine learning-based tools such as CellPose (<a href="#bib12">Stringer et al., 2021</a>). While machine learning can also be applied to spot segmentation (<a href="#bib6">Gudla et al., 2017</a>), we have observed that the benefit here is not as great and in general it is better to improve the quality of the FISH experiment until the signal to noise ratio is sufficient for easy segmentation using traditional methods.</p>
+<h3 id="sec5.2">Quantitative quality control</h3>
+<p>Whereas in traditional imaging with relatively small datasets, examination and quality control of each image by a trained scientist is feasible, when imaging datasets contain thousands or hundreds of thousands of images this is no longer possible. As such, since no human will actually look at all of the images analyzed, rigorous quality control based on quantitative parameters is necessary. We take several steps for this:</p>
+<ol start="7">
+<li>Examining one randomly selected field in each well visually, as a baseline.</li>
+<li>Calculating the number of spots segmented per cell on a per-well basis, and using only those wells in which a majority of cells show two spots for a diploid locus. This corresponds roughly to a 70% per-chromosome detection efficiency (<a href="#fig5">Figure 5</a>).</li>
+<li>Considering only cells in which the expected number of spots has been segmented in both relevant channels.</li>
+<li>Considering only probes which are reliably found within the neighborhood (∼ 4 um) of other probes on the same chromosome. Probes which consistently stain regions very far from others supposedly on the same chromosome are likely to be mis-mapped or translocated.</li>
+</ol>
+<h3 id="sec5.3">Statistical concerns</h3>
+<p>Special attention must be paid to statistical tests performed on distance distributions generated from large imaging datasets for two reasons: first, because distance distributions are not normal distributions, making certain common statistical tests less accurate; second, because datasets are very large, statistically significant results can be obtained for very small differences.</p>
+<p>Distance distributions calculated from FISH images visualizing two genes invariably show positive skew, as is common with biological phenomena with minima of zero (<a href="#bib7">Limpert and Stahel, 2011</a>). They are not expected to follow the same rules as a normal or gaussian distribution. As such, nonparametric tests such as a Wilcoxon Rank Sum test are preferred to a T-test for measuring differences in the center of the distribution, and a test such as the Kruskall-Wallis test rather than an F test is a better choice for measuring differences in the variance or spread of the distribution (<a href="#bib10">Ott and Longnecker, 2015</a>). Performing a log-transform on distances may also increase the accuracy of tests and modeling (<a href="#bib7">Limpert and Stahel, 2011</a>).</p>
+<p>Many statistical tests are also able to distinguish very small differences as statistically significant on very large datasets. In our datasets, differences as small as 1% are frequently highly statistically significant. There are two approaches to presenting this data. The first is to always report effect size as well as statistical significance. The second is to use methods akin to bootstrapping to multiply subsample and calculate likelihoods (p-values) or confidence intervals.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>We have found high-throughput FISH using nick translated probes and confocal microscopy, as described here, to be robust and broadly applicable. However, there are several specific situations where other techniques may be more appropriate.</p>
+<p>Nick translated probes are not optimal for targeting either very large (on the order of millions of base pairs) or very small (less than a fosmid, about 50,000 base pairs) genomic regions. Although probes can be generated by PCR-amplifying out the small target region and cloning it into a plasmid for nick translation, it will often be easier and more straightforward to use oligo-library based probes (<a href="#bib9">Mateo et al., 2019</a>). Similarly, if you intend to target hundreds or thousands of regions, it is more straightforward to design an oligo library and synthesize in a pooled manner, rather than individually purifying DNA from hundreds or thousands of bacterial artificial chromosome probes (<a href="#bib1">Beliveau et al., 2015</a>). Finally, oligo library-based probes will also be preferred when base-pair level control over the edges of your probed region is required, and BAC or fosmid probes cannot be found. In any of those cases, the hybridization steps of this protocol can be adapted to use such probes, but additional troubleshooting will likely be necessary.</p>
+<p>Furthermore, there are significant limitations built into diffraction-limited confocal microscopes, and while adapting super-resolution microscopy to high-throughput contexts is currently an area of active research (<a href="#bib8">Mahecic et al., 2020</a>), these techniques currently max out at hundreds of human cells rather than the millions of human cells imaged by our platform. We generally observe a resolution limit on the order of ∼100 nm in our images, and measuring distances between regions that are separated by less than 100 nm will thus require super-resolution imaging such as PALM (<a href="#bib11">Platzer et al., 2020</a>). While confocal microscopy can determine spot centers to sub-pixel accuracy, and while DNA FISH signals are not perfectly round/gaussian in shape, edge positions cannot be precisely determined from diffraction-limited imaging. Therefore, doing volumetric analyses or measuring edges and overlap between two regions requires super-resolution imaging (<a href="#bib14">Wang et al., 2016</a>).</p>
+<p>Finally, microfluidic approaches with multiple rounds of stripping and staining many regions in series (<a href="#bib3">Chen et al., 2015</a>) allow for much more combinatorial power to measure distances between many different probes all in the same cell. While testing hundreds of probe pairs is not unreasonable with the approach described here, each cell imaged with this approach only has three regions resolved. Doing analyses of large multi-gene clusters, or hundreds of regions all in the same cell, will require applying microfluidic approaches.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Suggestions for working with different types of probes. (Relevant to Before You Begin)</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>We have adapted this protocol to stain large contiguous regions, as well as to decrease probe size for fosmid probes (∼50 kb) or cloned plasmid probes (∼10 kb), and oligo-library based probes. Here are some of the basic guidelines we have uncovered:</p>
+<p>For directly labeled nick translated probes of varying lengths, the only thing we have had to change generally speaking is the final probe concentration in ng/μL. Probes staining longer regions need higher concentrations, and probes staining shorter regions require lower concentrations, although the difference is not as stark as might be suggested if trying to keep molarity roughly constant. When using a probe of a size very different than a BAC, we recommend a first experiment trying a few different concentrations at the resuspension step to optimize for signal-to-noise.</p>
+<p>For nick translated probes with haptens that can be resolved with a secondary label, such as biotin- and digoxygenin-labeled probes, we performed the secondary labeling step after the SSC washes and before DAPI staining.</p>
+<p>For oligo-library based probe mixes, obviously probe preparation will be entirely different and has been thoroughly described elsewhere (<a href="#bib2">Beliveau et al., 2017</a>). We have observed that these techniques are much more sensitive to the age of the cells, and using freshly fixed/permeabilized cells rather than storing for any length of time greatly improves efficiency. We have further seen improvements by amending the post-hybridization washes to three washes in 2× SSC at 42°C for 5 min and three washes in 2× SSC at 60°C for 5 min.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Modifications to cell culture and treatment protocols are often necessary for different types of cells. (Relevant to Before You Begin.)</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>We have tested this protocol on many different cell types with success. We have included a list of the modifications necessary for specific cell types below, to provide a starting point for your own troubleshooting.</p>
+<p>PANC-1 cells, HBECs, and skin fibroblasts other than HFFs can be put through exactly the same protocol, unaltered.</p>
+<p>HCT116 cells and other delicate adherent cells: Since these cells tend to be somewhat clumpy and detach more easily, we have the best results with them by plating at a higher density and performing washes with a sponge (<a href="#mmc2">Methods video S2</a>).</p>
+<p>H1 human embryonic stem cells and induced pluripotent stem cells: Several changes were useful, including plating at a lower density and growing in 384-well plates for at least two days in order to ensure colonies have time to flatten, rinsing the plate twice with PBS before fixation to remove autofluorescent cellular debris, and either plating for imaging as a monolayer of dissociated colonies (with a ROCK inhibitor to prevent spontaneous differentiation) or using a secondary control program such as Wako Automation Suite's Search First to identify colonies at a lower magnification and subsequently image them in a targetted fashion.</p>
+<p>Suspension-grown cells or patient-derived cells which cannot be grown directly on the 384-well plate: these cells ought to be spun down onto the plate immediately before fixation, at very high density. You will lose many cells during the protocol as there are many wash steps. All washes must be done with a sponge, and we recommend doing fewer washes for longer times, increasing stringency by increasing temperature or decreasing wash concentration if necessary, as described in <a href="#sec7.17">troubleshooting 9</a>. To spin dissociated cells down onto a pre-warmed poly-D-lysine coated plate, we plate 50 μL of cell suspension containing 10<sup>7</sup> cells/mL and spin at 250 <i>g</i> for 5 minutes immediately before fixing.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Cells at time of imaging are too sparse, dense, or clumpy (<a href="#fig1">Figure 1</a>). (Relevant to <a href="#before-you-begin">before you begin</a> steps 1–15)</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Doing a seeding density curve at the outset can help pinpoint an effective seeding density. However, there are several other possibilities as well, outlined below:</p>
+<p>If the problem is limited to a few wells, and some wells are optimally confluent while others are spotty, try spinning your plate for 1 min at 250 <i>g</i> immediately after plating, which will remove bubbles which might get in between the cells and the bottom of the plate.</p>
+<p>If the problem is cell clumping, and some fields are very full while others in the same well are sparse, let the plate rest for 30 min at 20°C–22°C before returning it to the incubator, to slow adhesion and allow cells to spread out.</p>
+<p>Check to make sure your incubator is humid and the tray is full of water. Even partially dry wells do not grow well. If you have a humid incubator but your wells are still visibly drying out, try filling the rest of the plate with PBS or water.</p>
+<p>Check in a dissecting scope after fixation, permeabilization, and during final wash steps to make sure you are not losing your cells during wash steps. If you are, use a utility sponge to remove liquids, as this is gentler. (<a href="#mmc2">Methods video S2</a>)</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>DNA yield too low for nick translation (Relevant to <a href="#before-you-begin">before you begin</a> steps 16–18)</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>We have observed three things that significantly help with improving DNA yields: first, growing bacterial cultures from a single colony each time, second, spinning the lysate after alkaline lysis to pellet the precipitate as well as filtering through a paper filter, and third, pre-warming elution buffer to 50°C before eluting DNA.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Nick translation reaction does not yield appropriately-sized fragments. (Relevant to steps 1–4)</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>If the problem is consistent across many BACs, consider replacing DNAse if your products are too long and replacing DNA polymerase if they are too short.</p>
+<p>If the problem is limited to a few BACs, as different DNA sequences are differently sensitive to DNAse, consider doing a few titration experiments to optimize the nick translation protocol to those probes specifically, as you would when optimizing for a new aliquot of DNAse. Additional changes that may be fruitful include increasing the DNA concentration to 130 or 260 μg/mL and making fresh nucleotide mix stock solutions.</p>
+<h3 id="sec7.11">Problem 6</h3>
+<p>Probe pellets are pale, faint, or tiny. (Relevant to steps 5–9)</p>
+<h3 id="sec7.12">Potential solution</h3>
+<p>Sometimes this happens if insufficient ethanol is added to the precipitation. In other cases, it may be a problem with the nick translation reaction, or the fluorophores.</p>
+<h3 id="sec7.13">Problem 7</h3>
+<p>Probes do not resuspend. (Relevant to step 10)</p>
+<h3 id="sec7.14">Potential solution</h3>
+<p>Since hybridization mix contains formamide, probes should resuspend quickly and easily. Some white fluffy pellet remaining is normal but most of the probe and color should have gone into solution. But if they don’t, first consider shortening the drying time and using a Kimipe<sup>TM</sup> to remove residual ethanol from the side of the tubes instead. (<a href="#mmc1">Methods video S1</a>). If they still do not go into solution, pipetting repeatedly to mix with a 200 μL micropipetter will dislodge the pellets and break them apart to help them dissolve. Finally, DNA is very soluble in pure formamide. Making 2× formamide-free hybridization mix with all ingredients except the formamide, using half volumes of pure formamide to dissolve probes, and then adding the 2× hybridization mix may solve this problem for particularly difficult probes.</p>
+<h3 id="sec7.15">Problem 8</h3>
+<p>Failed FISH combined with DAPI signal that is blurry or shows cytoplasmic background. (Relevant to steps 12 and 21)</p>
+<h3 id="sec7.16">Potential solution</h3>
+<p>This can be caused by issues with permeabilization and denaturation. Over-permeabilization or denaturing cells too hot or too long can rupture the nuclear membrane and allow the DNA to leak out, disrupting the crisp nuclear edges resolved by DAPI. On its own, this will confound automated nuclear segmentation and cause problems downstream with the analysis, but this rupture also obviously changes the location of DNA in the cell and therefore even if the FISH appears to have worked the data is no longer trustworthy. The permeabilization steps can be made gentler by shortening the length of time in the Triton/Saponin solution to ten minutes, by decreasing the concentration of the Triton/Saponin solution to 0.01% each, by permeabilizing with ethanol instead of Triton/Saponin, by reducing the denaturation temperature to 75°C, or by reducing the denaturation time to 5 minutes.</p>
+<h3 id="sec7.17">Problem 9</h3>
+<p>Signal is too faint, with low nuclear background. (Relevant to steps 1–4, 12, 21, 22, 24, and 25)</p>
+<h3 id="sec7.18">Potential solution</h3>
+<p>There are several issues that can cause faint signals and low background. If you have already optimized the nick translation and are getting well-labeled and bright probes of an appropriate length, permeabilization or hybridization may be at fault. There are several possible causes of this, and each has its own possible solutions.</p>
+<p>First, the cells could be insufficiently permeabilized. This can be resolved by lengthening the permeabilization time to 30 minutes, increasing the concentration of the Triton/Saponin solution to 1% each, or adding an enzymatic digestion step by incubating in pepsin.</p>
+<p>Second, the genomic DNA could be insufficiently denatured. Solve this by lengthening the denaturation step to 10 minutes, increasing the temperature of the denaturation step to 95°C, or increasing the time of the equilibration step to overnight or longer.</p>
+<p>Third, the hybridization time may be too short. Trying a longer hybridization step (such as 2-4 days) at a higher temperature (such as 42°C), will address this.</p>
+<p>Fourth, the washes could be too stringent. Washing in higher concentrations of SSC, such as only washing in 2× SSC or 1× SSC, washing at lower temperatures from 20°C to 37°C, or removing wash steps post-hybridization entirely could solve this problem.</p>
+<p>Replacing directly-labeled dUTP with dUTP conjugated to a hapten such as biotin or digoxygenin, and a secondary labeling step, will slightly amplify signals and may help. Note that this could also have effects on the shape and nanostructure of the DNA, and so is recommended as a last resort.</p>
+<h3 id="sec7.19">Problem 10</h3>
+<p>Background is high and masks signal. (Relevant to steps 11–17, 21, 24 and 25)</p>
+<h3 id="sec7.20">Potential solution</h3>
+<p>There are several issues that can cause high background in FISH. The most likely culprit is the probe, so the first step is to optimize the nick translation. If you have already optimized the nick translation and are getting well-labeled and bright probes of an appropriate length, fixation or hybridization may be at fault. Generally, the first step is to remake your hybridization solution. If this fails, consider where your background is coming from. High nuclear background with low cellular background is likelycaused by issues with the probe itself, while high cellular background is more likely caused by fixation or hybridization issues or native autofluorescence. In either case, there are experimental solutions.</p>
+<p>For high cytoplasmic background, consider your cell type and fixation time. Overfixation frequently causes cytoplasmic background especially in the yellow-green range. Reducing the fixation time, removing cell culture media and rinsing with PBS prior to fixation, and reducing the PFA concentration to 1% will help. There are also many commercial systems for reducing autofluorescence in tissues. We have had limited success applying these to cultured cells, and suspect that it may be cell-type specific.</p>
+<p>For high nuclear background and low cellular background, it is most likely a problem with the probe, and the first step would be to optmize the nick translation reaction as described in problem 5. However, for probes that have already been optimized, it could be a problem with the genomic DNA or the wash steps. To protect genomic DNA, use a freshly fixed plate, reduce permeabilization or acid treatment times or concentrations, or shorten the equilibration step prior to adding probes. To protect genomic DNA and probe DNA, reduce the denaturation temperature to 75°C or the denaturation time to 5 minutes. If none of these work, consider washing at higher temperatures (up to 65°C), for longer times (up to 15 minutes), or adding formamide to the washes (up to 50% formamide in 2× SSC.</p>
+<h3 id="sec7.21">Problem 11</h3>
+<p>Bright signals with improper numbers based on karyotype for the cell line used. (Relevant to Before You Begin)</p>
+<h3 id="sec7.22">Potential solution</h3>
+<p>This can be caused by a probe to repetitive/duplicated DNA (<a href="#fig4">Figures 4</a>I–4L). It could also be caused by cross-contamination during probe preparation. Often, we find that tracing the source of the issue is not worth the time, and the best thing to do is order a different BAC clone to the same, or an overlapping, genomic region.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Beliveau, B.J., Boettiger, A.N., Avendaño, M.S., Jungmann, R., McCole, R.B., Joyce, E.F., Kim-Kiselak, C., Bantignies, F., Fonseka, C.Y., Erceg, J., et al. (2015). Single-molecule super-resolution imaging of chromosomes and in situ haplotype visualization using Oligopaint FISH probes. Nat. Commun. <i>6</i>, 7147. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref1">View at publisher</a></p>
+<p id="bib2">Beliveau, B.J., Boettiger, A.N., Nir, G., Bintu, B., Yin, P., Zhuang, X., and Wu, C.T. (2017). In situ super-resolution imaging of genomic DNA with OligoSTORM and OligoDNA-PAINT. Methods Mol. Biol. <i>1663</i>, 231-252. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref2">View at publisher</a></p>
+<p id="bib3">Chen, K.H., Boettiger, A.N., Moffitt, J.R., Wang, S., and Zhuang, X. (2015). Spatially resolved, highly multiplexed RNA profiling in single cells. Science <i>1363</i>, 1360-1363. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref3">View at publisher</a></p>
+<p id="bib4">Finn, E.H., Pegoraro, G., Brandão, H.B., Valton, A.-L., Oomen, M.E., Dekker, J., Mirny, L., and Misteli, T. (2019). Extensive Heterogeneity and intrinsic variation in spatial genome organization. Cell <i>176</i>, 1502-1515.e1510. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref4">View at publisher</a></p>
+<p id="bib5">Finn, E.H., Pegoraro, G., Shachar, S., and Misteli, T. (2017). Comparative analysis of 2D and 3D distance measurements to study spatial genome organization. Methods <i>123</i>, 47-55. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref5">View at publisher</a></p>
+<p id="bib6">Gudla, P., Nakayama, K., Pegoraro, G., and Misteli, T. (2017). SpotLearn: convolutional neural network for detection of fluorescence in situ hybridization (FISH) signals in high-throughput imaging Approaches. Cold Spring Harb. Symp. Quant. Biol. <i>82</i>, 033761. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref6">View at publisher</a></p>
+<p id="bib7">Limpert, E. and Stahel, W.A. (2011). Problems with using the normal distribution – and ways to improve quality and efficiency of data analysis. PLoS One <i>6</i>, e21403. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref7">View at publisher</a></p>
+<p id="bib8">Mahecic, D., Gambarotto, D., Douglass, K.M., Fortun, D., Banterle, N., Ibrahim, K.A., Le Guennec, M., Gönczy, P., Hamel, V., Guichard, P., et al. (2020). Homogeneous multifocal excitation for high-throughput super-resolution imaging. Nat. Methods <i>17</i>, 726-733. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref8">View at publisher</a></p>
+<p id="bib9">Mateo, L.J., Murphy, S.E., Hafner, A., Cinquini, I.S., Walker, C.A., and Boettiger, A.N. (2019). Visualizing DNA folding and RNA in embryos at single-cell resolution. Nature <i>568</i>, 49-54. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref9">View at publisher</a></p>
+<p id="bib10">Ott, R.L. and Longnecker, M.T. (2015). An Introduction to Statistical Methods and Data Analysis (Cengage Learning). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref10">View at publisher</a></p>
+<p id="bib11">Platzer, R., Rossboth, B.K., Schneider, M.C., Sevcsik, E., Baumgart, F., Stockinger, H., Schütz, G.J., Huppa, J.B., and Brameshuber, M. (2020). Unscrambling fluorophore blinking for comprehensive cluster detection via photoactivated localization microscopy. Nat. Commun. <i>11</i>, 4993. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref11">View at publisher</a></p>
+<p id="bib12">Stringer, C., Wang, T., Michaelos, M., and Pachitariu, M. (2021). Cellpose: a generalist algorithm for cellular segmentation. Nat. Methods <i>18</i>, 100-106. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref12">View at publisher</a></p>
+<p id="bib13">Villalobos, D.P., Bautista, R., Cánovas, F.M., and Claros, M.G. (2004). Isolation of bacterial artificial chromosome DNA by means of improved alkaline lysis and double potassium acetate precipitation. Plant Mol. Biol. Rep. <i>22</i>, 419-425. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref13">View at publisher</a></p>
+<p id="bib14">Wang, S., Su, J.H., Beliveau, B.J., Bintu, B., Moffitt, J.R., Wu, C.T., and Zhuang, X. (2016). Spatial organization of chromatin domains and compartments in single chromosomes. Science <i>353</i>, 598-602. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00448-2/sref14">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Tom Misteli (<a href="mailto:mistelit@mail.nih.gov">mistelit@mail.nih.gov</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The published article includes all datasets and code generated or analyzed during this study. Source image data is available via the 4D Nucleome project: 4DNFI2VH2VA2</p>
+<p>The open source SpotLearn KNIME pipeline is available on GitHub at: <a href="https://github.com/CBIIT/Misteli-Lab-CCR-NCI/tree/master/Gudla_CSH_2017">https://github.com/CBIIT/Misteli-Lab-CCR-NCI/tree/master/Gudla_CSH_2017</a></p>
+<h3>Acknowledgments</h3>
+<p>We would like to thank Yasmine Mian and Joshua Carreras for assistance in recording videos, Karen Meaburn for endless conversations about the ins and outs of DNA FISH, and Andria Schibler for the original idea of using a sponge to exchange washes with delicate cells. All imaging was performed at the LRBGE High-throughput Imaging Facility (HiTIF) at NCI, NIH. This research was supported by funding from the intramural research program (1-ZIA-BC010309) of the <a href="https://doi.org/10.13039/100000002">NIH</a>, the <a href="https://doi.org/10.13039/100000054">NCI</a>, the <a href="https://doi.org/10.13039/100013415">Center for Cancer Research</a>, and the 4D Nucleome Consortium (U54 DK107980).</p>
+<h3>Author contributions</h3>
+<p>E.H.F. developed the protocol. E.H.F. and T.M. wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

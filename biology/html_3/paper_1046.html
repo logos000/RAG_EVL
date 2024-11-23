@@ -1,0 +1,1252 @@
+<article>
+<section>
+<h1 id="header">Quantifying spatial position in a branched structure in immunostained mouse tissue sections</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Silja Heilmann,<sup><a href="#aff1">1</a></sup> Henrik Semb,<sup><a href="#aff1">1</a>,<a href="#aff3">3</a></sup> and Pia Nyeng<sup><a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Novo Nordisk Foundation Center for Stem Cell Biology (Danstem), University of Copenhagen, Blegdamsvej 3B, 2200 Copenhagen N, Denmark</p>
+<p id="aff2"><sup>2</sup>Department of Science and Environment, Roskilde University, Universitetsvej 1, Postbox 260, 4000 Roskilde, Denmark</p>
+<p id="aff3"><sup>3</sup>Institute of Translational Stem Cell Research, Helmholtz Zentrum München, Deutsches Forschungszentrum für Gesundheit und Umwelt (GmbH), Ingolstädter Landstraße 1, 85764 Neuherberg, Germany</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:pnyeng@ruc.dk">pnyeng@ruc.dk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100806">10.1016/j.xpro.2021.100806</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We have developed a protocol to quantify the position of a cell in a branched structure based on two-dimensional microscopy images of tissue sections. Biological branched structures include organs such as the lungs, kidneys, and pancreas. In these organs, cell fate has been correlated with position, based on a qualitative estimate. However, a quantitative means of evaluating the cell position has been lacking. With this protocol, the correlation between cell fate and cell position was measured in mouse embryonic pancreas.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref9">Nyeng et al. (2019)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A metric to quantify the position of a cell in a branched tissue structure</li>
+<li>Low score/high score indicates proximity to the center/periphery, respectively</li>
+<li>Score enables quantitative correlative studies of cell fate and cell position</li>
+<li>Comprehensive pipeline from tissue processing instructions to image analysis code</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol outlines a comprehensive pipeline for generating and staining biological samples from mice and quantitatively analyzing the correlation between cell position and cell fate in branched tissues. For this purpose, we have developed a metric for how distant each pixel inside the tissue is from the center of a branched structure (<a href="#bib9">Nyeng et al., 2019</a>). A low score indicates proximity to the center (in the pancreas called “trunk”), while a high score indicates a location close to the periphery (in the pancreas called “tip”). We named this metric the “tip score”.</p>
+<p>If biological samples are already available in the form of tissue sections, the protocol can be followed from preparatory step 6 and protocol step 3. If stained tissue sections are already available, the protocol can be followed from preparatory step 8 and protocol step 9. For image analysis of existing images, the protocol can be followed from preparatory step 8 and protocol step 11.</p>
+<div class="note">
+<span class="note-title">Note:</span> The computational part of this protocol relies on the proprietary software MATLAB</div>
+<div class="note">
+<span class="note-title">Note:</span> While the protocol was optimized for embryonic mouse pancreas analysis and may require modification for use on other branched inner organs (lungs, liver, thyroid, etc) and will require optimization for use on other branched structures in general, the basic idea of the image analysis method should be widely applicable to any branched structure.</div>
+<h3 id="sec1.1">Prepare for collecting tissue sections from organs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<ol>
+<li>Prepare 4% formaldehyde for tissue fixation from paraformaldehyde (PFA) while working in a chemical safety cabinet
+<ol type="a">
+<li>Add 8 g of PFA to 192 mL sterile PBS in a 250 mL beaker</li>
+<li>Heat at 70°C–80°C for ca. 1 h until all the powder has dissolved. Monitor temperature closely, and never bring the solution above 80°C</li>
+<li>Cool down to 20°C–22°C</li>
+<li>Aliquot into 15 mL tubes with 10 mL/tube and store for up to one year at -20°C, unless used immediately</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Paraformaldehyde is a toxic chemical which targets the respiratory system and should be used according to the safety instructions. Use gloves and work in a chemical safety cabinet or use eye/face shield and respirator cartridge type N100 (US), type P1 (EN143) respirator filter, type P3 (EN 143) respirator cartridges.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Commercially available ampules of premade aqueous solution of 4% formaldehyde without additives. Commercially available concentrated formaldehyde aqueous solutions not in ampules should be avoided, as they often include 10% methanol or butanol as stabilizing agents (<a href="#bib4">Helander, 2000</a>; <a href="#bib2">Fox et al., 1985</a>). Our staining protocol has been optimized for tissue fixed in pure 4% formaldehyde, however other fixatives such as glutaraldehyde and methanol may also be used according to your own protocol.</div>
+<ol start="2">
+<li>Prepare 30% sucrose solution in PBS
+<ol type="a">
+<li>Add 300 g of sucrose to a 1 L glass bottle and fill with sterile PBS up to 1L</li>
+<li>Heat at 50°C for 30 min with constant stirring</li>
+<li>Store at 4°C for 4–8 weeks</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">Setup mouse mating for embryonic tissue</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 days (but needs to be set up several days in advance depending on embryonic stage needed)</div>
+<p>If in need of embryonic tissue for analysis, setup mouse breeding as follows:</p>
+<ol start="3">
+<li>Setup mating of mice. These can be wildtype (C57bl/6 was used for exemplary data) or genetically modified
+<ol type="a">
+<li>Move one male to each of 3-4 clean breeding cages (if time permits this can be done the previous evening)</li>
+<li>Add two females to each breeding cage in the afternoon</li>
+</ol>
+</li>
+<li>Check for vaginal plug the next morning
+<ol type="a">
+<li>Separate plugged females to a clean cage, and record number of plugged females</li>
+<li>Separate males and unplugged females</li>
+<li>Day of vaginal plug is recorded as embryonic day 0.5 (E0.5)</li>
+<li>Carefully record mouse ID and genotype of both male and female along with day of setup and day of plug</li>
+</ol>
+</li>
+<li>Wait the required number of days according to which embryonic stage you aim to analyze. I.e., for E14.5 tissue you need to set up breeding 16 days prior to the day you plan to start the experiment</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Make sure you have the necessary ethical and breeding permits for laboratory animal use from your local authorities</div>
+<h3 id="sec1.3">Prepare reagents for immunostaining of tissue sections</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="6">
+<li>Optional: Prepare Citrate buffer pH6 for antigen retrieval
+<ol type="a">
+<li>Add 2.94 g Tri-sodium Citrate (dihydrate) to 900 mL dH<sub>2</sub>0 in a 2 L glass bottle</li>
+<li>Stir until dissolved</li>
+<li>Set pH to 6.0 by adding citric acid powder while stirring</li>
+<li>Add dH<sub>2</sub>O to a total of 1000 mL</li>
+<li>Store at 20°C–22°C for up to 3 months</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Antigen retrieval is optional, as it depends on the antibodies used. For our test dataset we used a mild citrate buffer-based antigen retrieval method to optimize the SOX9 staining.</div>
+<ol start="7">
+<li>Prepare blocking buffer
+<ol type="a">
+<li>Prepare 1 L of 0.1 M TRIS-HCL pH 7.5
+<ol type="i">
+<li>Add 15.76 g TRIZMA-HCl to 800 mL dH<sub>2</sub>0</li>
+<li>Measure pH using a newly calibrated pH meter</li>
+<li>Adjust pH to 7.5 using HCL</li>
+<li>Add dH<sub>2</sub>0 to a make up a total of 1000 mL</li>
+<li>The Tris-HCL solution can be stored at 4°C for up to 1 year</li>
+</ol>
+</li>
+<li>To the 0.1 M TRIS-HCL solution, add NaCl to 0.15 M</li>
+<li>Heat solution to 55°C with constant stirring</li>
+<li>Add Blocking reagent to 0.5% (Akoya Biosciences) in small increments to buffer while stirring until the powder is completely dissolved (30–60 min). The solution will appear milky.</li>
+<li>Cool down to 20°C–22°C</li>
+<li>Aliquot into 50 mL tubes and freeze at -20°C, unless used immediately. The frozen stock can be stored for up to 1 year. A working solution can be stored at 4°C for 2–4 weeks.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl1">
+<caption>Blocking Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.1 M TRIS-HCL pH 7.5</td>
+<td>0.1 M</td>
+<td>1000 mL</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>0.15 M</td>
+<td>8.77 g</td>
+</tr>
+<tr>
+<td>Blocking reagent</td>
+<td>0.5%</td>
+<td>5.00 g</td>
+</tr>
+</tbody>
+</table>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Other blocking buffers such as donkey serum may also be used according to your own protocol.</div>
+<h3 id="sec1.4">Download, install, and run MATLAB and demo scripts</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h or up to 1–2 days depending on whether you have previously worked with MATLAB</div>
+<div class="timing">
+<span class="timing-title">Timing:</span> approx. 30 <b>min to 1 h depending on your computer for step 11 (optional)</b>
+</div>
+<p>We provide 4 custom written MATLAB functions:</p>
+<div class="textbox">
+<ol>
+<li><code>tipScoreIm()</code></li>
+<li><code>segmentDAPIimage()</code></li>
+<li><code>returnTableWithCellInt()</code></li>
+<li><code>returnTableWithCellPairInt()</code></li>
+</ol>
+</div>
+<p>These can be used for assigning a tip score to all regions of a branched organ (1), segmenting cell nuclei (2) and relating this tip score to the fluorescence intensity of cellular markers in either the nucleus/cytoplasm (3), or cell membrane (4). We also provide two demo scripts:</p>
+<p>Demo 1) <code>'demoScript_OneImage_ManualInput.m'</code></p>
+<p>Demo 2) <code>'demoScript_Batch_NoInput.m'</code></p>
+<p>These scripts demonstrate how our custom functions can be called/used when analyzing sample images with hand drawn outlines, from the point of loading in images all the way to final statistical comparison of groups of cells with different tip scores.</p>
+<ol start="8">
+<li>Install MATLAB version 2018a or later on your computer.
+<ol type="a">
+<li>Press here: <a href="https://se.mathworks.com/campaigns/products/trials.highResolutionDisplay.html?ef_id=CjwKCAiA5IL-BRAzEiwA0lcWYtrftnYcLqoNmyJS8wGpRnKHpl8Qz8GzTaF0mdCesoymS2J5BHNi7hoCKpMQAvD_BwE:G:s&amp;s_kwcid=AL!8664!3!252706751469!b!!g!!%2Bmatlab%20trial&amp;s_eid=ppc_2537843722&amp;q=+matlab%20trial&amp;gclid=CjwKCAiA5IL-BRAzEiwA0lcWYtrftnYcLqoNmyJS8wGpRnKHpl8Qz8GzTaF0mdCesoymS2J5BHNi7hoCKpMQAvD_BwE">MATLAB</a> to go to the MathWorks homepage.
+<div class="note">
+<span class="note-title">Note:</span> MATLAB is a commercial product, which requires a license. Also, each toolbox requires its own license. Many universities have MATLAB licenses. For users without access to a MATLAB license, MATLAB offers a 30-day free trial, which will be sufficient time to run this analysis.</div>
+</li>
+<li>Make sure to check the boxes for ‘Signal Processing Toolbox’, ‘Image Processing Toolbox’, and ‘Statistics and Machine Learning Toolbox’ during installation. Installation takes approx. one hour or less, depending on your internet connection.</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>Go to GitHub and Mendeley Data and download the functions and demo scripts or download the supplementary files <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc1.zip">Data S1</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc2.zip">S2</a>.
+<ol type="a">
+<li>Press here: <a href="https://github.com/">GitHub</a> to go to the GitHub homepage.</li>
+<li>Search for ‘TipScore’ in the upper left search box and go to <a href="https://github.com/SiljaHeilmann/TipScore">SiljaHeilmann/TipScore</a>
+</li>
+<li>Download all files by pressing the green ‘code’ button and select ‘download zip’. The folder is called ‘TipScore-main.zip’. Unzip and move the TipScore-main folder to your location of choice.</li>
+<li>Download the folders ‘raw_images_tif_files' and ‘outlines_mat_files’ (approx. 574MB), containing a small test dataset (containing 7 images) from Mendeley Data: <a href="https://doi.org/10.17632/nr9cyyk265.1">https://doi.org/10.17632/nr9cyyk265.1</a> and place them in the your TipScore-main folder.</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>Test that MATLAB works by running the script '<code>demoScript_OneImage_ManualInput.m</code>'
+<ol type="a">
+<li>First open MATLAB</li>
+<li>Check that ‘Current Folder’ (see left side) is your ‘TipScore-main’ folder and that it contains the folders ‘raw_images_tif_files' and ‘outlines_mat_files’ and all .m files downloaded from GitHub <code>(segmentDAPIimage.m, tipScoreIm.m, returnTableWithCellInt.m, returnTableWithCellPairInt.m)</code>
+</li>
+<li>Open <code>‘demoScript_OneImage_ManualInput.m’</code> in MATLAB</li>
+<li>Run script either by typing ‘demoScript_OneImage_ManualInput’ in the MATLAB command window and pressing enter, or by putting the cursor in the editor window and pressing the green Run button in the Editor tab. (You can also run sections of the code one at a time). Note that this code runs the analysis on image number 6 in the test data set. If you wish to see analysis of another test image in the set edit ‘<code>ff = 6</code>;’ in line 11 of the code to a different number, (1, 2, 3, 4, 5 or 7).</li>
+<li>A figure with the title ‘Red: Ecad. Blue: DAPI. Green: P120CTN. White: CPA… will open. A blue line tool, which measures length in pixels, is visible on the image. You can drag the ends of it and use it to measure the average length of the tip structures. If you wish to zoom in, then hover the mouse at the upper right corner of the image and controls for zoom and hand drag appear.</li>
+<li>At the MATLAB command window, you are prompted: ‘What is the average diameter/length of tip structures in pixels?... :’<br> Input your response and press enter. For this test image an appropriate answer is approx. 300. (The final tip score of a location will depend on this input, a larger number will mean that a larger portion of the structure will get a higher tip score).</li>
+<li>A figure with the title ‘Red: Ecad. Blue: DAPI. Green: P120CTN. White: CPA...’ will open. A blue line tool, which measures length in pixels, is visible on the image. You can drag the ends of it and use it to measure the average length of the tip structures. At the MATLAB command window, you are prompted: ‘What is the average diameter of nuclei in pixels? ...’. Input your response and press enter. For this test image set approx. 20 is an appropriate answer. (The final nuclei segmentation result will depend on this input; a larger number will mean a tendency to under segment and a smaller number will cause over segmentation).
+<div class="note">
+<span class="note-title">Note:</span> Image segmentation is the process of partitioning an image into multiple segments (sets of pixels, also known as image objects). Image segmentation is typically used to locate objects and boundaries. Here it is used to detect cell nuclei stained with DAPI.</div>
+</li>
+<li>You now should see 10 thresholded images. At the MATLAB command window, you are prompted: ‘What thresholded image includes all nuclei and not more? ...:’. For this test image approx. ‘4’ is an appropriate answer. See <a href="#fig1">Figure 1</a>A. Note: It is easier to judge between the images if you zoom in a bit. (The final nuclei segmentation result will depend on this input, a larger number will mean a tendency to lose cells completely, a smaller number will cause cells to clump).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Examples of output images</div>
+<p>(A) Example image number/answer for the 3rd question prompted during the run of <code>demoScript_OneImage_ManualInput.m</code>. Segmentation should cover all nuclei (but not more than that) and nuclei should not have holes in them.</p>
+<p>(B) Example image number/answer for the 4th question prompted during the run of <code>demoScript_OneImage_ManualInput.m</code>. Segmentation should cover as much of nuclei as possible while not merging them. (Very few merges are ok).</p>
+<p>(C) Example image number/answer for the 5th question prompted during the run of <code>demoScript_OneImage_ManualInput.m</code>. Segmentation should separate most nuclei while losing the least. Note: Smoother boundaries are better than nuclei separation.</p>
+<p>(D) Example image number/answer for the 6th question prompted during the run of <code>demoScript_OneImage_ManualInput.m</code>. Segmentation should optimally merge no nuclei. (Very few merges are ok).</p>
+<p>(E) Example of the final output of the <code>segmentDAPIImage()</code> image function. (Note: the output is a binary image, but different regions/connected components are here shown with different colors to emphasize the segmentation).</p>
+<p>(F) Output figure during a call of the function <code>returnTableWithCellPairInt()</code>, where <code>plot_yes_no=1</code>. White lines show the cell neighbor pairs line scans performed in the image. Inspecting this plot can help you find the appropriate value of <code>nucleiD</code>, such that many linescans are performed but not too many that connect cells which are not actual neighbors. Note: you do not need to use the same value for nucleiD as you did for <code>segmentDAPIimage()</code>. The scale bars are 10 μm.</p>
+</figcaption>
+</figure>
+</li>
+<li>You now should see 10 thresholded images. At the MATLAB command window, you are prompted: ‘What thresholded image merges no nuclei? ... :’<br> For this image approx. ‘7’ is an appropriate answer. See <a href="#fig1">Figure 1</a>B. (The final nuclei segmentation result will depend on this input, a larger number will mean a tendency to lose cells completely, a smaller number could cause cells to clump).</li>
+<li>You now should see 10 thresholded images. At the MATLAB command window, you are prompted: ‘What thresholded image looks best? I.e. separates most nuclei while losing the least?...:’<br> For this image approx. ‘6’ is an appropriate answer. See <a href="#fig1">Figure 1</a>C. (The final nuclei segmentation result will depend on this input, a larger number will mean a tendency to lose cells completely, a smaller number could cause cells to clump).</li>
+<li>You now should see 10 thresholded images. At the MATLAB command window, you are prompted: ‘What thresholded image merges no nuclei? ...:’<br> For this image approx. ‘9’ is an appropriate answer. See <a href="#fig1">Figure 1</a>D. (The final nuclei segmentation result, see <a href="#fig1">Figure 1</a>E will depend on this input, a larger number will mean a tendency to lose cells completely, a smaller number could cause cells to clump). A few nuclei merges and over segmentations are to be expected.</li>
+<li>From line 99 an onwards the script <code>demoScript_OneImage_ManualInput.m</code> uses the nucleus positions found, the tip score image and the images of nuclear/membrane marker to extract intensities from cells (nuclear) and between cell-pairs (membrane) via the <code>returnTableWithCellInt()</code> function and the <code>returnTableWithCellPairInt()</code> function, (see step 20 and step 21 below) and return them in table form. The output figure from the function <code>returnTableWithCellPairInt()</code> is shown in <a href="#fig1">Figure 1</a>F. The returned tables contains all extracted information about each cell/cell-pair (<i>‘Cell/Cell-pair ID number’, ‘ X coordinate’, ‘Y coordinate’, ‘ SOX9 intensity/p120 intensity’, ‘tip score value’, ‘normalized SOX9 intensity/normalized p120 intensity’, ‘Assigned tip score group’</i>). From line 165 and on boxplot figures are generated and non-parametric statistical tests performed to compare data points belonging to different tip score groups, see section ‘<a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>’ for more details.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Optional: Run example batch script <code>demoScript_Batch_NoInput</code>.
+<div class="note">
+<span class="note-title">Note:</span> <code>demoScript_Batch_NoInput.m</code> does the same as <code>demoScript_OneImage_ManualInput.m</code> except it performs the operations/functions of all images of a batch of 7 (stored in ‘raw_images_tif_files' folder) and it does not require manual input (it already has the appropriate manual answers stored in the script, see line 21–29). This script can be used for inspiration when you want to write your own batch script.</div>
+<ol type="a">
+<li>Open <code>demoScript_batch_NoInput.m</code> in MATLAB</li>
+<li>Run script either by typing ‘demoScript_batch_NoInput’ in the MATLAB command window and pressing enter, or by putting the cursor in the editor window and pressing the green ‘Run’ button in the Editor tab. You should see folders appear in your current directory with output files for each of the 7 images in raw_images_tif_files. Finally, after all images have been tipscored and nuclei located (this takes a while) boxplots of SOX9 and P120CTN intensity versus tipscore for individual images and all images pooled, will be generated.</li>
+</ol>
+</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Other programming languages (such as Python or Julia) can be used, if the end-user adapts the script accordingly.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Goat polyclonal anti-CPA1 (dilution 1:100)</td>
+<td>R&amp;D Systems</td>
+<td>Cat #: AF2765RRID: AB_2085841</td>
+</tr>
+<tr>
+<td>Mouse polyclonal anti-p120ctn (pp120) (dilution 1:400)</td>
+<td>BD Transduction Labs</td>
+<td>Cat #: 610134RRID: AB_397537</td>
+</tr>
+<tr>
+<td>Rabbit polyclonal anti-Sox9 (dilution 1:1000)</td>
+<td>Millipore</td>
+<td>Cat #: AB5535 RRID: AB_2239761</td>
+</tr>
+<tr>
+<td>Secondary antibody Rhodamine Red™-X (RRX) AffiniPure Goat Anti-Mouse IgG, Fcγ subclass 1 specific (min X Hu, Bov, Rb Sr Prot) (dilution 1:1000)</td>
+<td>Jackson ImmunoResearch</td>
+<td>cat# 115-295-205RRID: AB_2338769</td>
+</tr>
+<tr>
+<td>Secondary antibody Cy™5 AffiniPure Donkey Anti-Goat IgG (H+L) (dilution 1:1000)</td>
+<td>Jackson ImmunoResearch</td>
+<td>Cat #: 705-175-147RRID: AB_2340415</td>
+</tr>
+<tr>
+<td>Secondary antibody Alexa Fluor® 488 AffiniPure Fab Fragment Donkey Anti-Rabbit IgG (H+L) (dilution 1:1000)</td>
+<td>Jackson ImmunoResearch</td>
+<td>Cat #: 711-547-003RRID: AB_2340620</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>PBS tablets pH 7.4 (for 500 ML)</td>
+<td>Fisher Scientific</td>
+<td>Cat #: 11510546RRID: N/A</td>
+</tr>
+<tr>
+<td>Sterile PBS w Mg/Ca</td>
+<td>Gibco</td>
+<td>Cat#: 14040083RRID: N/A</td>
+</tr>
+<tr>
+<td>Paraformaldehyde powder</td>
+<td>VWR</td>
+<td>Cat #: 28794.295RRID: N/A</td>
+</tr>
+<tr>
+<td>DAPI molecular grade</td>
+<td>VWR</td>
+<td>Cat #: APLIA4099.0010RRID: N/A</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>Merck</td>
+<td>Cat #: 1.06404.0500RRID: N/A</td>
+</tr>
+<tr>
+<td>TRIZMA-HCl</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #:T5941RRID: N/A</td>
+</tr>
+<tr>
+<td>Triton X-1000</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #: X-100RRID: N/A</td>
+</tr>
+<tr>
+<td>Citric Acid NORMAPUR</td>
+<td>Fisher Scientific</td>
+<td>Cat #:15672880RRID: N/A</td>
+</tr>
+<tr>
+<td>Tri-sodium citrate (dihydrate)</td>
+<td>Merck</td>
+<td>Cat #: 1064481000CAS Number 6132-04-3</td>
+</tr>
+<tr>
+<td>Sucrose (Saccharose NORMAPUR analytical reagent)</td>
+<td>Fisher Scientific</td>
+<td>Cat #:10647421RRID: N/A</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Blocking Reagent</td>
+<td>Akoya Biosciences</td>
+<td>Cat #: SKU FP1012RRID: N/A</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Original image data test set</td>
+<td>This paper</td>
+<td>Heilmann, Silja; Nyeng, Pia (2021), “Pancreas_sample_images”, Mendeley Data, V1, https://doi.org/10.17632/nr9cyyk265.1</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse: C57BL/6BomTac</td>
+<td>Taconic</td>
+<td>Cat #: B6JBOM-F/MRRID: N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Fiji 2.0/ImageJ version 1.51u or more recent</td>
+<td>(<a href="#bib16">Rueden, 2017</a>) <a href="http://imagej.nih.gov/ij">http://imagej.nih.gov/ij</a>
+</td>
+<td>RRID: SCR_003070</td>
+</tr>
+<tr>
+<td>MATLAB version R2018a or laterMake sure to include “Signal Processing Toolbox”, “Image Processing Toolbox”, and “Statistics and Machine Learning Toolbox” during installation.</td>
+<td>MathWorks <a href="https://se.mathworks.com/campaigns/products/trials.html">https://se.mathworks.com/campaigns/products/trials.html</a>
+</td>
+<td>RRID: SCR_001622</td>
+</tr>
+<tr>
+<td>ZEN black edition including stitching module</td>
+<td>Zeiss</td>
+<td>RRID: SCR_018163</td>
+</tr>
+<tr>
+<td>Original custom MATLAB functions: <code>tipScoreIm(), segmentDAPIimage(), returnTableWithCellInt(), returnTableWithCellPairInt()</code>
+</td>
+<td>This paper</td>
+<td><a href="https://github.com/SiljaHeilmann/TipScore">https://github.com/SiljaHeilmann/TipScore</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Dumont #5 Forceps in Inox-Biology</td>
+<td>Fine Science Tools</td>
+<td>Cat#: #5SFRRID: N/A</td>
+</tr>
+<tr>
+<td>Stereoscope for embryo dissection</td>
+<td>Nikon</td>
+<td>Cat# SMZ1270RRID: N/A</td>
+</tr>
+<tr>
+<td>Leica Cryostat</td>
+<td>Leica</td>
+<td>Cat #:CM1950RRID: SCR_018061</td>
+</tr>
+<tr>
+<td>Tissue-Tek® O.C.T.™ Compound Cryo Embedding Medium</td>
+<td>Sakura</td>
+<td>Cat #:4583RRID: N/A</td>
+</tr>
+<tr>
+<td>Cryomold® Intermediate 15 <b>×</b> 15 <b>×</b> 5 mm</td>
+<td>Sakura</td>
+<td>Cat #:4566RRID: N/A</td>
+</tr>
+<tr>
+<td>Thermo Scientific™ SuperFrost Plus™ Adhesion Slides 75<b>×</b>25<b>×</b>1 mm</td>
+<td>Fisher Scientific <a href="https://www.fishersci.dk/shop/products/superfrost-plus-adhesion-slides-9/10149870#?keyword=10149870">https://www.fishersci.dk/shop/products/superfrost-plus-adhesion-slides-9/10149870#?keyword=10149870</a>
+</td>
+<td>Cat #:10149870RRID: N/A</td>
+</tr>
+<tr>
+<td>PAP pen (liquid blocker)</td>
+<td>Merck</td>
+<td>Cat #: Z377821-1EA</td>
+</tr>
+<tr>
+<td>High precision cover glasses 24<b>×</b>60 mm #1.5 (170 μm ± 5 μm)</td>
+<td>Marienfeld distributed by VWR</td>
+<td>Cat #: MARI0107242RRID: N/A</td>
+</tr>
+<tr>
+<td>DAKO Mounting Medium</td>
+<td>Agilent Technologies</td>
+<td>Cat #:CS70330-2RRID: N/A</td>
+</tr>
+<tr>
+<td>Humidity chamber: Simport Scientific Staintray System with black lid (20 slides). Simport™ M920-2</td>
+<td>Fisher Scientific</td>
+<td>Cat #:11610581RRID: N/A</td>
+</tr>
+<tr>
+<td>Tissue-Tek® 24-Slide Holder with Detachable Handle</td>
+<td>Sakura</td>
+<td>Cat #:4457RRID: N/A</td>
+</tr>
+<tr>
+<td>Tissue-Tek® Staining Dish White</td>
+<td>Sakura</td>
+<td>Cat #:4465RRID: N/A</td>
+</tr>
+<tr>
+<td>Micropipettes</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Zeiss LSM 780 inverted confocal scanning microscope</td>
+<td>Zeiss</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Objective: Plan Apochromat 10<b>×</b>0.45 M27 – WD 2mm</td>
+<td>Zeiss</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Objective: Plan-Apochromat 40<b>×</b>1.30 Oil DIC M27 – WD 0.21mm</td>
+<td>Zeiss</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Step 1–2: Prepare tissue sections from mouse organs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This step prepares tissue sections for the immunostaining protocol. For our exemplary data we prepared E14.5 embryonic pancreas from the mouse, but the protocol can be used for other tissues and ages depending on the biological question addressed, as long as a clear branching structure is evident, and cells/nuclei can be segmented.</p>
+<div class="note">
+<span class="note-title">Note:</span> For the purpose of minimizing biological variation caused by developmental differences, it is important that dissection is always carried out at the same time of day (i.e., at noon), and that each embryo is examined with regard to normal development and embryonic age (see step 1e). For younger embryos somites can be counted to more accurately stage embryos. Consult (<a href="#bib5">Kaufman, 1992</a>) for more information on staging.</div>
+<div class="note">
+<span class="note-title">Note:</span> For the purpose of statistical analysis of biological variation between littermates, it is advisable to dissect and analyze at least 3–4 embryos per pregnant female. In our experience there is some variation in cell differentiation between litters (this can however be minimized by careful staging of embryos as described above). If analyzing the effect of a treatment or a genetic perturbation, it is therefore important to test whether a difference is due to litter variation or the perturbation.</div>
+<ol>
+<li>Isolate your organ of interest from embryos
+<ol type="a">
+<li>Euthanize the pregnant female by cervical dislocation</li>
+<li>Dissect the uterus containing the embryos from the pregnant female</li>
+<li>Move embryos to ice-cold sterile 1<b>×</b> PBS in a Petri dish stored on wet ice</li>
+<li>Dissect the embryos one by one from the uterus and move to a clean Petri dish containing ice-cold sterile 1<b>×</b> PBS</li>
+<li>Check the developmental age of the embryo by careful examination of the front and rear paw characteristics consulting (<a href="#bib5">Kaufman, 1992</a>)
+<div class="note">
+<span class="note-title">Note:</span> Some variation of embryo development (−0.5 days) may occur within a litter, and we routinely exclude embryos in which the developmental stage does not match the gestational stage</div>
+</li>
+<li>Under a stereoscope, dissect your organ of interest from the embryos using #1 Dumont forceps or similar</li>
+<li>Transfer the tissue to 4% formaldehyde in 1<b>×</b> PBS in a 12 well plate and fix at 20–22°for 1–24 h depending on the size of the tissue.
+<div class="note">
+<span class="note-title">Note:</span> Although adequate fixation is required for good cytological preservation, over-fixation can block or prevent antibodies from binding to the protein epitope (<a href="#bib15">Wang and Matise, 2013</a>) . We routinely fix E14.5 embryonic pancreas for 16–18 h. The reaction of formaldehyde depends on the temperature, and penetration of tissue by formaldehyde is a function of the square root of the time of exposure (<a href="#bib2">Fox et al., 1985</a>). We recommend consulting (<a href="#bib2">Fox et al., 1985</a>) to determine the optimal fixation time.</div>
+</li>
+<li>Cryoprotect the tissue by transferring to 30% sucrose in 1<b>×</b> PBS solution at 4°C until the tissue falls to the bottom of the well (usually within 3–16 h depending on the size).</li>
+<li>Infiltrate tissue with OCT by incubating in 100% OCT for 1 h at 4°C</li>
+<li>Embed tissue into blocks as follows:
+<ol type="i">
+<li>Label plastic mold</li>
+<li>Place the plastic mold onto a piece of dry ice, adding enough OCT to cover bottom</li>
+<li>Wait for the bottom to freeze</li>
+<li>Place the tissue in the middle of the block and add OCT to cover. Be careful not to make any bubbles in the OCT.</li>
+<li>When all of the OCT is white, store in a sealed plastic bag at –80°C immediately.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> If needed, frozen tissue blocks can be stored at –80°C indefinitely</div>
+<ol start="2">
+<li>Section tissue on a cryostat
+<ol type="a">
+<li>Section tissue on a cryostat following manufacturer's instructions</li>
+<li>Section at 6 μm and place 2–3 sections per slide depending on the size
+<div class="note">
+<span class="note-title">Note:</span> Sections should stay within the boundaries of the + signs on the slide and should not overlap.</div>
+</li>
+<li>Mount tissue sections on labeled and numbered Superfrost PLUS glass slides</li>
+<li>Store at –80°C</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> if needed, frozen sections can be stored at –80°C for 2–3 years</div>
+<h3 id="sec2.2">Step 3–8: Immunostain tissue sections</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This step stains the tissue in preparation for imaging and image quantification. It has been optimized for embryonic mouse pancreatic tissue fixed in 4% paraformaldehyde and prepared as frozen sections as described in the previous step but can also be used for other embryonic organs.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> After step 4c the tissue should always be kept moist or submerged. Any drying during antibody incubation will increase the antibody concentration and drying out at all other steps will increase nonspecific antibody binding and therefore background fluorescence. See <a href="#sec6.1">problem 1</a>: Excessive background fluorescence</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Paraffin sections can be used instead of frozen sections. In that case, the sections should be deparaffinized and rehydrated: Incubate for 15 min in Xylene to deparaffinize and rehydrate in a descending alcohol series: 100% ethanol for 2 times 3 min, 95% ethanol for 3 min, 70% ethanol for 3 min, 50% ethanol for 3 min. After rehydration the slides are washed in running tap water and staining can proceed from step 4c below.</div>
+<ol start="3">
+<li>Select a number of slides containing tissue that adequately represents the whole 3-dimensional organ.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Exclude any sections not showing the branching structure (typically, these are at the extreme ends of the tissue). For a single E14.5 pancreas we typically get 200 6 μm sections, and stain every 30th section (excluding the extreme ends), giving a total of 4–6 sections/pancreas. Include sufficient individual biological replicates to be able to perform statistical analysis (3–5 biological replicates of each experimental condition) and have enough samples for controls (see <a href="#tbl1">Table 1</a>).</div>
+<table id="tbl1">
+<caption>Table 1. Appropriate controls for antibody staining and imaging (<a href="#bib7">Lee and Kitaoka, 2018</a>)</caption>
+<thead>
+<tr>
+<th>Control name</th>
+<th>Tissue</th>
+<th>Antibody treatment</th>
+<th>Purpose</th>
+<th>Specific handling during staining</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Negative control</td>
+<td>Same as sample</td>
+<td>-No primary and secondary antibodies</td>
+<td>To determine autofluorescence of tissue</td>
+<td>Step 6: Leave section in blocking bufferStep 8: Leave section in last PBS wash and do not add DAPI</td>
+</tr>
+<tr>
+<td>Secondary antibody only control</td>
+<td>Same as sample</td>
+<td>-No primary antibody-All secondary antibodies</td>
+<td>To control for unspecific secondary antibody binding and crossreactivity</td>
+<td>Step 6: Leave section in blocking buffer</td>
+</tr>
+<tr>
+<td>Optional: “Leave one out” controls (only when multiplexing antibodies)</td>
+<td>Same as sample</td>
+<td>-All primary antibodies except one-All corresponding secondary antibodies</td>
+<td>This control allows you to take into account how the other antibodies in your panel affect the left out antibody: You can for instance detect bleed-through into the channel were the left out antibody is acquired</td>
+<td>Step 6: Omit one primary antibody from your antibody panelStep 8: Omit the corresponding secondary antibody</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Prepare slides for antibody incubation
+<ol type="a">
+<li>Align 3–20 slides in a slide holder for staining. (See <a href="#fig2">Figure 2</a>). Always include at least one slide as a negative control and one as secondary antibody only control (see <a href="#tbl1">Table 1</a> below for more information on controls).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Methods and equipment</div>
+<p>Slide holder for washing steps, PAP pen and humidified chamber with numbered slides inside.</p>
+</figcaption>
+</figure>
+</li>
+<li>Dry sections in an oven at 37°C for 20 min</li>
+<li>Wash 3 times in 1<b>×</b> PBS for 5 min each</li>
+<li>Optional: Antigen retrieval
+<ol type="i">
+<li>Remove 1<b>×</b> PBS and leave in Citric acid antigen retrieval buffer for 1 h at 37°C</li>
+<li>Wash 3 times in 1<b>×</b> PBS for 5 min each
+<div class="note">
+<span class="note-title">Note:</span> Antigen retrieval is necessary for unmasking of some but not all antigens prior to primary antibody incubation. Detection of some antigens may even suffer from antigen retrieval. For our antibody panel, antigen retrieval by microwave treatment in citrate buffer pH6 (<a href="#bib13">Shi et al., 1993</a>) is necessary for detection of SOX9, while P120CTN detection suffers. We therefore used a milder treatment with incubation in citrate buffer pH 6 without boiling in the optional steps above.</div>
+</li>
+</ol>
+</li>
+<li>Working one slide at a time to reduce drying:
+<ol type="i">
+<li>Place slides flat in a humidified chamber</li>
+<li>Outline tissue section with a hydrophobic PAP pen (See <a href="#fig2">Figure 2</a>)</li>
+<li>Add enough blocking buffer to each slide to cover tissue</li>
+</ol>
+</li>
+<li>Incubate slides in blocking buffer for 60–120 min at 20°C–22°C</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>In the meantime, prepare antibody dilutions (see <a href="#tbl2">Table 2</a> for an example):
+<table id="tbl2">
+<caption>Table 2. Antibody panel used to generate the test image dataset</caption>
+<thead>
+<tr>
+<th>Primary antibody solution</th>
+<th>Final dilution</th>
+<th>Amount for 9 samples (1 mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOX9 antibody produced in rabbit</td>
+<td>1:1000</td>
+<td>1.0 μL</td>
+</tr>
+<tr>
+<td>CPA1 antibody produced in goat</td>
+<td>1:100</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>P120CTN antibody produced in mouse</td>
+<td>1:400</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>Blocking buffer</td>
+<td>n/a</td>
+<td>986.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1000 μL</b></td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Dilute primary antibodies for one or two antigens expressed in your cells of interest (here: SOX9 and Carboxypeptidase 1 (CPA1)), and for a marker visualizing the general shape of the organ (here: P120CTN) in blocking buffer.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Primary antibody concentration has to be carefully titrated for specific tissues to avoid non-specific binding. See <a href="#sec6.1">problem 1</a>: Excessive background fluorescence</div>
+<div class="note">
+<span class="note-title">Note:</span> Prepare enough primary antibody dilution to stain all your samples, allowing 100 μl per sample. Note that extra diluted antibody should be made to account for pipetting error (at least 10% extra volume).</div>
+<ol start="6">
+<li>Primary antibody incubation
+<ol type="a">
+<li>Working one slide at a time to reduce drying:
+<ol type="i">
+<li>Remove blocking buffer with a micropipette</li>
+<li>Add enough antibody solution (typically 100–200 μL) to each slide to cover tissue completely.</li>
+<li>Leave at least two sections with only the blocking buffer on, to serve as negative and secondary antibody only controls (see <a href="#tbl1">Table 1</a>).</li>
+<li>Leave for 16–20 h at 20°C–22°C in the humidified chamber (See <a href="#fig2">Figure 2</a>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Next morning: Prepare secondary antibody solution (See <a href="#tbl3">Table 3</a> for an example)
+<table id="tbl3">
+<caption>Table 3. Secondary antibodies used to generate the test image dataset</caption>
+<thead>
+<tr>
+<th>Secondary antibody solution 1</th>
+<th>Final dilution</th>
+<th>Amount for 9 samples (1 mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anti-Rabbit antibody produced in donkey and conjugated to Alexa-Fluor 488</td>
+<td>1:1000</td>
+<td>1.0 μL</td>
+</tr>
+<tr>
+<td>Anti-goat antibody produced in donkey and conjugated to Cy-5</td>
+<td>1:1000</td>
+<td>1.0 μL</td>
+</tr>
+<tr>
+<td>Blocking buffer</td>
+<td>n/a</td>
+<td>998μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>n/a</td>
+<td>1000 μL</td>
+</tr>
+<tr>
+<td><b>Secondary antibody solution 2</b></td>
+<td><b>Final dilution</b></td>
+<td><b>Amount for 9 samples (1 mL)</b></td>
+</tr>
+<tr>
+<td>Anti-Mouse IgG, Fcγ subclass 1 specific, polyclonal antibody produced in goat and conjugated to Rhodamine Red-X</td>
+<td>1:1000</td>
+<td>1.0 μL</td>
+</tr>
+<tr>
+<td>Blocking buffer</td>
+<td>n/a</td>
+<td>999 μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>n/a</td>
+<td>1000 μL</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Use secondary antibodies against the species in which the primary antibodies are produced.
+<div class="critical">
+<span class="critical-title">Critical:</span> Secondary antibodies produced in the same species (i.e., Donkey) are preferable to avoid cross-reaction. For our test data, we had to use a secondary antibody produced in goat, which would be bound by the anti-goat antibody used to detect CPA1, if not applied separately and in the correct order as outlined below. See also <a href="#tbl3">Table 3</a>.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The secondary antibodies must be conjugated to stable fluorescent dyes matching the configuration of your fluorescent microscope. A good combination with minimal spectral overlap is Dylight-405/DAPI, Alexa Fluor-488, Rhodamine-RedX, Alexa- Fluor 647. See <a href="#sec6.3">problem 2</a><u>: Unexpected staining patterns</u>
+</div>
+</li>
+<li>Make secondary antibody solution 1 and 2 by diluting secondary antibodies in blocking buffer at a dilution of 1:1000 as outlined in <a href="#tbl3">Table 3</a>. Leave the tubes with diluted antibodies on wet ice and protected from light.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Secondary antibodies dilutions should be optimized for specific tissues to avoid non-specific binding. See <a href="#sec6.1">problem 1</a><u>: Excessive background fluorescence</u>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Prepare enough secondary antibody dilution to stain all your samples and your secondary antibody only control, allowing 100 μl per sample. Note that extra diluted antibody should be made to account for pipetting error (at least 10% extra volume).</div>
+<ol start="8">
+<li>Secondary antibody incubation
+<ol type="a">
+<li>Remove primary antibody solution with a micropipette</li>
+<li>Wash 3 times in 1<b>×</b> PBS for 5 min each</li>
+<li>Working one slide at a time to reduce drying:
+<ol type="i">
+<li>Add enough <b>secondary antibody solution 1</b> (typically 100–200 μL) to each slide to cover tissue.</li>
+<li>Add secondary antibody to the secondary antibody only control slides. Leave the negative control slide in 1 <b>×</b> PBS.</li>
+</ol>
+</li>
+<li>Incubate for 60–120 min.</li>
+<li>Wash 3 times in 1<b>×</b> PBS for 5 min each</li>
+<li>Working one slide at a time to reduce drying:
+<ol type="i">
+<li>Add enough secondary antibody solution 2 (typically 100–200 μL) to each slide to cover tissue.</li>
+<li>Add secondary antibody solution 2 to the secondary antibody only control slides. Leave the negative control slide in 1 <b>×</b> PBS.</li>
+</ol>
+</li>
+<li>Incubate for 60–120 min.</li>
+<li>Wash 3 times in 1<b>×</b> PBS for 5 min each</li>
+<li>For blue staining of nuclei, add DAPI to the last wash at a dilution of 1:1000</li>
+<li>Mount with DAKO mounting medium or similar and #1.5 cover glass preferably with a thickness of 0.17–0.18 mm (usually marked #1.5H or “high performance”)</li>
+<li>Leave flat to dry for 10 min protected from light</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> if needed, stained sections can be stored dark at 4°C for several weeks.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Variation in staining intensity can occur from experiment to experiment, so it is critical to include all samples in the same experiment, if comparison of staining intensity is planned.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Different combinations of primary and secondary antibodies can be used as needed.</div>
+<h3 id="sec2.3">Step 9–10: Confocal microscopy of stained tissue sections</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–3 days depending on number of samples</div>
+<p>Microscopy of stained tissue sections creates the images needed for subsequent image analysis steps.</p>
+<p>Confocal imaging was performed on a Zeiss LSM780 inverted confocal microscope equipped with a 32PMT GaAsP spectral detector and two PMT’s (one for blue and one for far-red). We recommend consulting (<a href="#bib12">Shihan et al., 2021</a>) for detailed instructions on how to acquire images in Zeiss Zen software.</p>
+<ol start="9">
+<li>Mount sample in confocal microscope
+<ol type="a">
+<li>Turn confocal system on and wait for lasers to warm up</li>
+<li>Place the slide with the cover slip facing down (if using an inverted microscope) in the sample holder and find your sample using a 10<b>×</b> objective or similar</li>
+<li>Add oil immersion to a Plan-Apochromat 40<b>×</b>/1.30 oil objective or similar</li>
+<li>Find the Z position that best represents the shape of your tissue. Note down Z position for later use</li>
+</ol>
+</li>
+<li>Acquire images:
+<ol type="a">
+<li>Adjust laser and detector gain settings to maximize the dynamic range of your system and minimize spectral overlap (<a href="#bib12">Shihan et al., 2021</a>). Save/note down the settings for later use. See also critical notes below and <a href="#sec6.3">problem 2</a>: Unexpected staining patterns.</li>
+<li>Adjust the settings to 16-bit images (if possible) and at least 1024<b>×</b>1024 frame size at 1<b>×</b> zoom</li>
+<li>Set the pinhole as close to 1AU as possible but ensure that the same actual pinhole diameter is used for all channels.</li>
+<li>Acquire tiled images (Tile scan) of a single Z plane of the entire organ section with 10% overlap scanning each fluorescent dye separately (sequential acquisition), in order to avoid spectral overlap. See (<a href="#bib12">Shihan et al., 2021</a>)</li>
+<li>Save the file in the proprietary format (.czi or .lsm for a Zeiss confocal microscope)</li>
+<li>Stitch the tiled images using imaging software (such as Zen black, Imaris, Amira or the free software Image J/Fiji) and save in the proprietary format.
+<ol type="i">
+<li>Stitching in Zen black is initiated in the stitch function under the processing tab</li>
+<li>Select the image to be stitched</li>
+<li>Set a threshold for stitching. We routinely use “strict”</li>
+<li>Select apply</li>
+<li>Save the image in the proprietary format. For images acquired using Zen black this format is czi or lsm</li>
+</ol>
+</li>
+<li>Export as TIFF files to perform image analysis. See <a href="#fig3">Figure 3</a> for an example of a stitched image of a pancreas section with four channels (P120CTN, SOX9, CPA1, DAPI).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Example input image</div>
+<p>Stitched image of an entire pancreatic section for embryonic day 14.5 mouse embryo. The pancreas was stained for DAPI (nuclear marker), P120CTN (membrane marker of the epithelium), SOX9 and CPA1.</p>
+<p>(A) The merged image shows DAPI, P120CTN, SOX9 and CPA1.</p>
+<p>(B–E)(B) DAPI, (C) P120CTN, (D) SOX9 and (E) CPA1.</p>
+<p>The scale bars are 100 μm.</p>
+</figcaption>
+</figure>
+<ol type="i">
+<li>Open the proprietary file in ImageJ: File; Open</li>
+<li>Save as TIFF in ImageJ: File; Save as; Tiff</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The images included in the test dataset are TIFF stacks with all channels included. These can be analyzed directly by our code without further modification. The channels include: Channel 1: CPA1, channel 2: P120CTN, channel 3: SOX9, channel 4: DAPI</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Identical microscopy settings and Z planes must be used for all samples, if comparison of staining intensity is planned.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Detector gain and laser intensity should be optimized to maximize the dynamic range. Most systems have the option of visualizing the image with a look up table (LUT) where pixels with an intensity of 0 are blue and pixels with the highest pixel intensity are red (in Zen this option is called “Range indicator”). Use this LUT to ensure that your image has only a few maximum intensity (red) pixels (<a href="#bib12">Shihan et al., 2021</a>). Whenever possible, data for intensity quantitation should be captured as 16-bit images, as this optimizes discrimination of pixel intensities as compared to 8-bit images (<a href="#bib12">Shihan et al., 2021</a>).</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Different confocal microscope systems and non-confocal fluorescent microscopes can be used, as long as it is ensured that the images are compatible with nuclei segmentation. Please note that confocal microscopy is highly recommended, if images are to be used for other downstream applications such as intensity measurements or threshold-based area quantification.</div>
+<h3 id="sec2.4">Step 11–13: Draw outline/mask of tissue shape</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> approx. 5 min per image</div>
+<p>This is the only semi-manual step in the image analysis pipeline. It creates a mask of the tissue, which is used as an input in subsequent steps.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The image chosen as input for this step has to be an image of an antibody staining for an antigen that marks either the whole epithelium or an outline of the epithelium. For this project we used images of P120CTN.</div>
+<p>The outline of the organ can be drawn and saved as a binary image using the MATLAB app ‘ImageSegmenter’, as follows:</p>
+<ol start="11">
+<li>Open MATLAB
+<ol type="a">
+<li>Go to the ‘App’ tap in MATLAB</li>
+<li>Search for the ‘Image Segmenter’ app and open it</li>
+</ol>
+</li>
+<li>Load the image you want to annotate into the ImageSegmenter App (either from file or from the MATLAB workspace).
+<ol type="a">
+<li>Go to the ‘ADD TO MASK’ menu and select ‘Draw ROI’s</li>
+<li>Use the ‘Freehand’ or ‘Assisted Freehand’ tool to draw an organ ROI/outline</li>
+<li>Press ‘Apply’ and ‘Close ROI’ when you are done drawing.</li>
+</ol>
+</li>
+<li>Export binary outline/ROI to MATLAB workspace
+<ol type="a">
+<li>Press ‘Export’ and then ‘Export Images’</li>
+<li>Select ‘Final Segmentation’ (unselect ‘Masked Images’) and type in a name (for example ‘myBranchedMask’) for your new mask and press ok. Your new mask/ROI will now appear in the MATLAB workspace window).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Hand-drawn masks for the test dataset are supplied in supplementary data</div>
+<h3 id="sec2.5">Step 14–16: Tip score locations inside your outline/mask using <code>tipScoreIm.m</code>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> runtime for a script calling the <code>tipScoreIm()</code> function is approx. 1 min per image</div>
+<p>This step calculates a metric for how distant each pixel inside the tissue-outline is from the center of a branched structure. A low score indicates proximity to the center (in the pancreas called “trunk”), while a high score indicates a location close to the periphery (in the pancreas called “tip”). We named this the “tip score”.</p>
+<p><code>tipScoreIm()</code> is a custom MATLAB function (stored in <code>tipScoreIm.m</code>) that takes the binary mask (hereafter called BranchedMask) from step 10–12 above, and returns an image where each pixel contains a value that quantifies how 'tip like' this location is. Note that the tip score function was developed to quantify/correlate well with what a biologist judges by eye as “tip” and “trunk” in the branched structure of a pancreas, but it could potentially be used to quantify location in other branched organ structures too.</p>
+<p>The <code>tipScoreIm(BM,approxPixelWidthOfTipStructure,plot_yes_no)</code> function needs 3 inputs:</p>
+<ol>
+<li>
+<b>BM</b>: a binary mask/outline (class/type: logical, double, uint8, or uint16) of the branched structure. Has 1's everywhere inside the structure and 0's outside. This mask could be based on a hand drawn outline (see step 11–13) or based on a segmentation.</li>
+<li>
+<b>approxPixelWidthOfTipStructure</b>: the approximate length scale/width/length measured in pixels of what is judged to be a 'tip structure' in your image. This was estimated based on the CPA1 staining in our example.</li>
+<li>
+<b>plot_yes_no:</b> If set to 1, you will see a plot of the final tipscore image together with a plot of the components used to calculate it. (I.e., side branch, mid branch and convex hull images). Seeing this plot can help you fine tune the 'approxPixelWidthOfTipStructure' (see input 2) to an appropriate value for your image.</li>
+</ol>
+<p>The <code>tipScoreIm(BM,approxPixelWidthOfTipStructure,plot_yes_no)</code> function has 1 output:</p>
+<ol>
+<li>An image (of type double) where each pixel contains a value that quantifies how 'tip-like' its location is, (values &gt;0 will be in very tip-like areas). Tip score values are usually in the range [−2,1], but the numbers depend on the input value ‘approxPixelWidthOfTipStructure' and the specific structure given by 'BranchedMask'). Pixel values outside the BranchedMask are set to NaN.</li>
+</ol>
+<ol start="14">
+<li>Write a simple MATLAB script that calls the <code>tipScoreIm()</code> function:
+<ol type="a">
+<li>Study the two demo scripts <code>'demoScript_OneImage_ManualInput.m'</code> and <code>'demoScript_Batch_NoInput.m'</code> for inspiration.</li>
+<li>Make sure that the three function inputs ‘BranchedMask’, ‘approxPixelWidthOfTipStructure’, and ‘plot_yes_no’ are defined in the MATLAB Workspace.</li>
+<li>Make sure that the file <code>tipScoreIm.m</code> is stored in your current MATLAB directory, or in the folder ‘/Documents/MATLAB/Add-Ons’.</li>
+<li>Write your script in the MATLAB editor window. Here is an example code that calls <code>tipScoreIm()</code> and shows the output:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>BranchedMask = MyBranchedMask;</code></p>
+<p><code>approxPixelWidthOfTipStructure = 300,</code></p>
+<p><code>plot_yes_no = 1;</code></p>
+<p><code>MyTipSCoreIm =</code> <code>tipScoreIm(BranchedMask,approxPixelWidthOfTipStructure</code><code>,plot_yes_no);</code></p>
+<p><code>figure</code></p>
+<p><code>imshow(MyTipSCoreIm,[]);</code></p>
+</div>
+<ol start="15">
+<li>Run your script. (Press the green ‘Run’ button in the EDITOR tab).</li>
+<li>Inspect the output figure from <code>tipScoreIm()</code> that shows the subdivision of the skeletonization (<a href="#bib3">Haralick and Shapiro, 1992</a>; <a href="#bib6">Lam et al., 1992</a>) into ‘side branches’ and ‘mid branches’ and the convex hull (see <a href="#fig4">Figures 4</a>B–4D). Test different values of approxPixelWidthOfTipStructure: run the script again and see how it impacts the tip score values. Repeat until you find a value which approximates the size of the actual tip domain (as based on tip marker). NB: Use the same value for images with the same resolution.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Illustration of principle of method</div>
+<p>(A) Confocal image of E14.5 pancreas stained for P120CTN and DAPI.</p>
+<p>(B–D) Black-green color map shows local distance to convex hull/mid branch/side branches respectively. (B) White line: convex hull of epithelial outline. (C) Magenta line: Mid branch of skeletonization of epithelial outline. (D) Magenta lines: Side branches of skeletonization of epithelial outline.</p>
+<p>(E) Color map shows tip score value in different locations for the image shown in A. Figure reprinted with permission from (<a href="#bib9">Nyeng et al., 2019</a>).</p>
+<p>Scale bar in A is 30 μm.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<h3 id="sec2.6">Step 17–20: Define cell position using a DAPI channel image and <code>segmentDAPIimage.m</code>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> runtime for a script calling the <code>segmentDAPIimage()</code> function is approx. 5 min per image</div>
+<p>This step is crucial for getting a tip-score for cells, rather than pixels. It is based on analysis of images of nuclei from the DAPI channel. <code>segmentDAPIimage()</code> is a custom MATLAB function (stored in <code>segmentDAPIimage.m</code>) that takes a DAPI channel image and returns a binary mask of cell nuclei using, (<a href="#bib14">Vincent, 1993</a>)(<a href="#bib10">Otsu 1979</a>).</p>
+<p>The <code>segmentDAPIimage(IM,ROI,nucleiD,manual_input_yes_no,answers)</code> function needs 5 inputs:</p>
+<ol>
+<li>
+<b>IM</b>: a DAPI channel 2D image. Array of type double, uint8 or uint16.</li>
+<li>
+<b>ROI:</b> A binary mask (same size as IM) with ones everywhere where you want to segment nuclei. Give an empty image (all zeros) if you want nuclei segmented everywhere. Array of type logical, double, uint8 or uint16. The mask from step 10–12 can be used here.</li>
+<li>
+<b>nucleiD:</b> Integer number of type double, uint8 or uint16. The average diameter measured in number of pixels of the DAPI stained nuclei you want to segment (approx. 25 pixels for our test images).</li>
+<li>
+<b>manual_input_yes_no:</b> Integer of value 0 or 1. if set to one 1 you will be prompted 4 times during the run of the function and have to pick between images that show different threshold levels. (Eg. you will be shown a fig. and asked ‘What thresholded image includes all nuclei and not more? Note: Nuclei should not have holes in them. (Enter image number from fig. here and press enter):’).</li>
+</ol>
+<p>if ‘manual_input_yes_no’ is set to 0 the function will run without prompting the user and use the values specified in the 1<b>×</b>4 array ‘answers’ input (see below).</p>
+<ol start="5">
+<li>
+<b>answers:</b> Integer array <code>[opt_index pess_index regT_index altPess_index]</code> with 4 integer index numbers in the range [1–20], type double, uint8 or uint16. The values correspond to the manual command window answers given during a run with ‘<code>manual_input_yes_no=1</code>’. If ‘<code>manual_input_yes_no=0</code>’ the values in answers will be used as input. Use this e.g., if you want to do a batch run but want to give different answers for different images, (see e.g., in demoScript_Batch_NoInput). Note if answers are set to [0 0 0 0] the default [3 9 7 10] will be used (optimal for some of our test images).</li>
+</ol>
+<p>The <code>segmentDAPIimage(IM,ROI,nucleiD,manual_input_yes_no, answers)</code> function gives 1 output:</p>
+<ol>
+<li>A binary image/mask with 1's where there are nuclei, (see e.g., of a final nucleus segmentation result <a href="#fig1">Figure 1</a>E, colors are added to highlight different nuclei).</li>
+</ol>
+<ol start="17">
+<li>Write a simple MATLAB script that calls the <code>segmentDAPIimage()</code> function:
+<ol type="a">
+<li>Study the two demo scripts '<code>demoScript_OneImage_ManualInput.m</code>' and '<code>demoScript_Batch_NoInput.m</code>' for inspiration.</li>
+<li>You may import a .tif image into the workspace using the MATLAB function ‘<code>imread()</code>’ (write e.g.,: <code>IM = imread(‘MyTiffFileName’,xx)</code>, where xx is the number of the DAPI channel in your tif stack. If your .tif file contains only a single channel write: <code>IM = imread(‘MyTiffFileName’))</code>.</li>
+<li>Make sure that the 5 function inputs IM, ROI, nucleiD, manual_input_yes_no and answers are defined in the MATLAB Workspace.</li>
+<li>Make sure that the file <code>segmentDAPIimage.m</code> is stored in your current MATLAB directory or added to the folder ‘/Documents/MATLAB/Add-Ons’.</li>
+<li>Write your script in the MATLAB editor window. Here is a simple example code that calls <code>segmentDAPIimage()</code> and shows the output:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>IM = MyDAPIimage;</code></p>
+<p><code>ROI = MyBranchedMask;</code></p>
+<p><code>nucleiD = 30;</code></p>
+<p><code>manual_input_yes_no = 1;</code></p>
+<p><code>answers = [0 0 0 0];</code></p>
+<p><code>MyNucMask =</code> <code>segmentDAPIimage(IM,ROI,nucleiD,manual_input_yes_no,answers);</code></p>
+<p><code>figure</code></p>
+<p><code>imshow(MyNucMask,[]);</code></p>
+</div>
+<ol start="18">
+<li>Run your script. (Press the green ‘Run’ button in the EDITOR tab).</li>
+<li>Answer the 4 prompted questions asked in the command line. See the section ‘MATLAB and demo scripts’ for image examples of appropriate answers.</li>
+<li>Inspect the output figure. If there is over or under segmentation see <a href="#sec6.7">problem 4</a>: Over/under segmented nuclei.</li>
+</ol>
+<h3 id="sec2.7">Step 21: Measure pixel intensity for nuclear cell marker using <code>returnTableWithCellInt()</code>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> runtime for a script calling the <code>returnTableWithCellInt()</code> function is a few seconds per image</div>
+<p>This is an optional step designed to measure intensity of a nuclear localized antigen. As stated in section 8, special precautions need to be taken if measuring and comparing staining intensity between different images. In our example, we measured the intensity of nuclear localized SOX9.</p>
+<p>returnTableWithCellInt() is a custom MATLAB function (stored in <code>returnTableWithCellInt.m)</code> that takes a 2D image with a nuclear marker and binary mask of cell nuclei and returns a table (a <a href="https://se.mathworks.com/help/matlab/ref/table.html?searchHighlight=table&amp;s_tid=srchtitle">table</a> is a MATLAB object) that contains the image intensity found in each nucleus centroid pixel.</p>
+<p><b>The</b> <code>returnTableWithCellInt(NUCLEI_BW,IM,nucleiD)</code> <b>function needs 3 inputs:</b></p>
+<ol>
+<li>
+<b>NUCLEI_BW</b>: 2D binary mask (1's where there are nuclei and 0 s elsewhere) of type, logical, double, uint8 or uint16. Each connected component in NUCLEI_BW defines the location of a cell nucleus. From step 19 above.</li>
+<li>
+<b>IM:</b> An 2D Intensity image of type double, uint8 or uint16. Could e.g., be an immunohistochemical staining of a nuclear marker.</li>
+<li>
+<b>nucleiD:</b> Length scale/diameter of an average nucleus. Used for setting the width of the gaussian filtering of the image. (We filter/blur the image to ensure that the extracted pixel intensities are representative of the local intensities and not extreme outliers. If you do not want any gaussian filtering, then set '<code>approxPixelWidthOfCellNuclei=1</code>′).</li>
+</ol>
+<p><b>The</b> <code>returnTableWithCellInt(NUCLEI_BW,IM,nucleiD)</code> <b>function has 1 output:</b></p>
+<p>a table object with 4 columns and one row for each cell/nucleus/connected comp in NUCLEI_BW.</p>
+<p>Column 1 have index number/ ID number in labeled image</p>
+<p>Column 2 has x coordinate of nucleus centroid</p>
+<p>Column 3 has y coordinate of nucleus centroid</p>
+<p>Column 4 has intensity value in gaussian filtered image IM at nucleus centroid location</p>
+<ol start="21">
+<li>Write a simple MATLAB script that calls the <code>returnTableWithCellInt()</code> function:
+<ol type="a">
+<li>Study the two demo scripts '<code>demoScript_OneImage_ManualInput.m</code>' and '<code>demoScript_Batch_NoInput.m</code>' for inspiration.</li>
+<li>Make sure that the 3 function inputs NUCLEI_BW, IM and nucleiD are defined in the MATLAB Workspace.</li>
+<li>Make sure that the file <code>returnTableWithCellInt.m</code> is stored in your current MATLAB directory or added to the folder ‘/Documents/MATLAB/Add-Ons’.</li>
+<li>Write your script in the MATLAB editor window. Here is an example code that calls <code>returnTableWithCellInt()</code> twice using first a nuclear marker image and second a tipscore image (output of <code>tipScoreIm()</code>), merges the returned tables, shows the first three rows of the merged table Tcells in the MATLAB command window and saves the table as a .csv file in the current directory (.txt, .dat, .csv, .xls, .xlsm, or .xlsx are possible):</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>NUCLEI_BW = MyNucMask;</code></p>
+<p><code>IM = MyNucMarkerImage;</code></p>
+<p><code>TS = MyTipSCoreIm,</code></p>
+<p><code>nucleiD = 30;</code></p>
+<p><code>T1 = returnTableWithCellInt(NUCLEI_BW,IM,nucleiD);</code></p>
+<p><code>T2 = returnTableWithCellInt(NUCLEI_BW,TS,nucleiD);</code></p>
+<p><code>% rename VariableName “IMintensity” in T2 so the two tables (T1 and T2) do not have</code></p>
+<p><code>% columns with identical names (identical names will cause an error message when</code></p>
+<p><code>%</code> <code>concatenating tables later)</code></p>
+<p><code>T2.Properties.VariableNames{'IMintensity'} = 'TipScore';</code></p>
+<p><code>Tcells = [T1 , T2(:,4)]; % concatenate T1 and 4th column of T2</code></p>
+<p><code>Tcells(1:3,:) % show first 3 rows in command window</code></p>
+<p><code>writetable(Tcells,‘TableCells.csv’); % save as .csv file</code></p>
+</div>
+<h3 id="sec2.8">Step 22: Measure pixel intensity for membrane cell marker <code>returnTableWithCellPairInt()</code>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> runtime for a script calling the <code>returnTableWithCellPairInt()</code> function is a few seconds per image</div>
+<p>In this optional step we have developed a method to estimate intensity of a membrane expressed protein based on a line scan between two cell centroids. If needed, this method can be implemented by running <code>returnTableWithCellPairInt()</code> which is a custom MATLAB function (stored in <code>returnTableWithCellPairInt.m</code>) that takes a 2D image with a membrane marker and a binary mask of cell nuclei and returns a table that contains the max image intensity found along a line scan performed between the nucleus centroids of all neighbor cell pairs. See <a href="#fig6">Figure 6</a> for examples of the lines drawn between cell nuclei along which the max intensity is extracted at the cell membrane between the two cells.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Example of data plots from a larger dataset (linescans)</div>
+<p>(A) Example image of neighbor cell pair with linescan (white line) and P120CTN maximum intensity value along curve (green dot). Note that the position of the maximum intensity value coincides with the position of the double membrane between cells.</p>
+<p>(B) Example of P120CTN linescan extracted between neighbor cells shown in image in panel (A).</p>
+<p>(C) Confocal image of E14.5 pancreas stained for P120CTN and DAPI. Yellow dots: cell positions. White lines: linescans between neighboring cells.</p>
+<p>(D) P120CTN intensity between cell pairs versus tip score. Data comes from the original dataset (<a href="#bib9">Nyeng et al., 2019</a>) and contains n=4 embryos (24 images). Note that the tip score scale is different in this dataset. n= 3305–3400 cell pairs per class.</p>
+<p>The graphs in C and E show median ± confidence interval. ns=not significant. ∗∗p&lt;0.01, ∗∗∗∗p&lt;0.0001 (Wilcoxon signed-rank test). Figure reprinted with permission from (<a href="#bib9">Nyeng et al., 2019</a>). Scale bars: (A) 5 μm, (C) 20 μm.</p>
+</figcaption>
+</figure>
+<p><b>The</b> <code>returnTableWithCellPairInt(NUCLEI_BW,IM,nucleiD,plot_yes_no)</code> <b>function needs 4 inputs:</b></p>
+<ol>
+<li>
+<b>NUCLEI_BW</b>: 2D binary mask (1's where there are nuclei and 0 s elsewhere) of type, logical, double, uint8 or uint16. Each connected component in NUCLEI_BW defines the location of a cell nucleus.</li>
+<li>
+<b>IM:</b> An 2D Intensity image of type double, uint8 or uint16. Could e.g., be an immunohistochemical staining of a membrane marker.</li>
+<li>
+<b>nucleiD:</b> Length scale/diameter of an average nucleus. Used for deciding which cells are close enough to be neighbors.</li>
+<li>
+<b>plot_yes_no:</b> if set to 1 you will see a plot showing IM with white lines at the locations of all the cell neighbor pairs line scans performed in the image. Inspecting this plot can help you find the appropriate value of nucleiD. See example of output in <a href="#fig1">Figure 1</a>F. Note: you do not need to use exactly the same value for nucleiD as you did for <code>segmentDAPIimage()</code>.</li>
+</ol>
+<p><b>The</b> <code>returnTableWithCellPairInt(NUCLEI_BW,IM,nucleiD,plot_yes_no)</code> <b>function has 1 output:</b> A table object with 9 columns and one row for each neighbor cell pair in NUCLEI_BW.</p>
+<p>Column 1 has x coordinate of midpoint of line scan</p>
+<p>Column 3 has y coordinate of midpoint of line scan</p>
+<p>Column 4 ID of first cell in pair</p>
+<p>Column 5 ID of second cell in pair</p>
+<p>Column 6 array with full linescan</p>
+<p>Column 7 Length (in number of pixels) of line scan.</p>
+<p>Column 8 Maximum intensity value of mean smoothed linescan (filter size = 3).</p>
+<p>Column 9 Median intensity value of mean smoothed linescan (filter size = 3).</p>
+<ol start="22">
+<li>Write a simple MATLAB script that calls the <code>returnTableWithCellPairInt()</code> function:
+<ol type="a">
+<li>Study the two demo scripts '<code>demoScript_OneImage_ManualInput.m</code>' and '<code>demoScript_Batch_NoInput.m</code>' for inspiration.</li>
+<li>Make sure that the 3 function inputs NUCLEI_BW, IM, nucleiD and plot_yes_no are defined in the MATLAB Workspace.</li>
+<li>Make sure that the file <code>returnTableWithCellPairInt.m</code> is stored in your current MATLAB directory or added to the folder ‘/Documents/MATLAB/Add-Ons’.</li>
+<li>Write your script in the MATLAB editor window. Here is an example code that calls <code>returnTableWithCellPairInt()</code> twice using first a nuclear marker image and second a tipscore image (output of <code>tipScoreIm()</code>), merges the returned tables, shows the first three rows of the merged table TcellPairs in the MATLAB command window and saves the table as a .csv file in the current directory (.txt, .dat, .csv, .xls, .xlsm, or .xlsx are possible):</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>NUCLEI_BW = MyNucMask;</code></p>
+<p><code>IM = MyMembMarkerImage;</code></p>
+<p><code>TS = MyTipSCoreIm,</code></p>
+<p><code>nucleiD = 30;</code></p>
+<p><code>plot_yes_no = 1;</code></p>
+<p><code>T1 = returnTableWithCellPairInt(NUCLEI_BW,IM,nucleiD,plot_yes_no);</code></p>
+<p><code>T2 = returnTableWithCellPairInt(NUCLEI_BW,TS,nucleiD,0);</code></p>
+<p><code>% Change generic names to names specific for marker (xx) in table. (If this is not done</code></p>
+<p><code>%</code> <code>you will get an error when you try to concatenate table T1 and T2)</code></p>
+<p><code>T1.Properties.VariableNames{'lineScanMax'} = 'xxMaxInt';</code></p>
+<p><code>T1.Properties.VariableNames{'lineScanMed'} = 'xxMedInt';</code></p>
+<p><code>T1.Properties.VariableNames{'lineScan'} = 'xxLineScan';</code></p>
+<p><code>T2.Properties.VariableNames{'lineScanMed'} = 'tipScore'; % we only use the median for</code></p>
+<p><code>%</code> <code>the tip score of the cell pairs (column 9)</code></p>
+<p><code>TcellPairs = [T1, T2(:,9)]; % concatenate T1 and 9th column of T2</code></p>
+<p><code>TcellPairs(1:3,:) % show first 3 rows in command window</code></p>
+<p><code>writetable(TcellPairs,‘TableCellPairs.csv’); % save as .csv file</code></p>
+</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Our test images contain 4 channels: CPA1 (channel1), P120CTN (channel2), SOX9 (channel3) and DAPI (channel 4) (see <a href="#fig3">Figure 3</a>). Examples of tissue outline, convex hull, midbranch and sidebranches are shown in <a href="#fig4">Figures 4</a>A–4D. Tip score can be visualized as shown in <a href="#fig4">Figure 4</a>E.</p>
+<p>To illustrate and validate the method we stained for SOX9, a transcription factor and trunk (central) marker, and CPA1, a tip (peripheral marker). The script output data for SOX9 and P120CTN using the small subset of images in the test dataset (7 images) can be seen in <a href="#fig5">Figure 5</a>.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Data plots from test dataset (tip score, intensity, and linescans)</div>
+<p>(A) SOX9 intensity versus tip score bins. Data comes from N=3 embryos (7 images).</p>
+<p>(B) P120CTN max value between cell pairs versus tip score bins. Data comes from N=3 embryos (7 images). The graphs show median ± confidence interval as notches. ns=not significant, ∗∗∗p&lt;0.001, ∗∗∗∗p&lt;0.0001 (Wilcoxon signed-rank test). The following P-values were additionally calculated (Wilcoxon signed-rank test): For plot A: p&lt;0.0001 for group 1,2,3 (counting from the left side of the plot) compared to group 5, p&lt;0.01 for group 4 compared to group 5. Groups 1,2,3,4 were not significantly different from each other. For plot B: Group 1 compared to group 6 not significantly different. P&lt;0.05 for group 2 compared to group 6 (group 6 has very few observations as n=144 cells).</p>
+</figcaption>
+</figure>
+<p>The trunk marker SOX9 is nuclear localized (see <a href="#fig3">Figure 3</a>) and we therefore quantified expression level per cell using the nuclear stain DAPI to create a mask for demarcating the area. In the test dataset statistical differences are detected between most bins and the bin with the highest tip score (<a href="#fig5">Figure 5</a>A). Cells with high tip scores had significantly lower SOX9 intensity compared to cells with low tip score, thus verifying the method for identifying trunk cells. With the full dataset (24 images) in (<a href="#bib9">Nyeng et al., 2019</a>) a similar difference was found (results not shown here).</p>
+<p>To illustrate the method for measuring expression level of a membrane localized protein between two neighboring cells relative to tip score we stained for the protein P120-catenin (P120CTN), which is enriched on the cytoplasmic side of the cell membrane. For the test dataset statistical differences are detected between most bins and the bin with the lowest tip score. Cell pairs with a low tip score have a significantly higher expression of P120CTN than cell-pairs with a high tip score (<a href="#fig5">Figure 5</a>B).</p>
+<p>An example of a cell pair stained for P120CTN and DAPI and analyzed with the line scan method is shown in <a href="#fig6">Figures 6</a>A and 6B. <a href="#fig6">Figure 6</a>C shows an image with cell pairs indicated by lines from the larger dataset in (<a href="#bib9">Nyeng et al., 2019</a>). Quantification of this dataset showed a similar difference in p120CTN expression (see <a href="#fig6">Figure 6</a>D and note that the tip score is differently scaled in this dataset).</p>
+<p>The tip marker CPA1 is expressed in the cytosol (<a href="#fig3">Figure 3</a>E), and we were thus only able to assess via thresholding whether cells were positive or negative (method not included in this protocol but can be found in (<a href="#bib9">Nyeng et al., 2019</a>)). Comparing tip scores for CPA1 positive versus negative cells, showed a significantly higher tip score for CPA1 positive cells, thus verifying the method for assigning high tip scores to tip localized cells (<a href="#fig7">Figure 7</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Mean tip score of CPA1 positive versus CPA1 negative cells</div>
+<p>Data is from the original dataset (<a href="#bib9">Nyeng et al., 2019</a>) and contains n=4 embryos (24 images). Note that the tip score scale is different in this dataset. n= 3305–3400 cell pairs per class. The graph shows median ± confidence interval as notches. ∗∗∗∗p&lt;0.0001 (Wilcoxon signed-rank test). Figure reprinted with permission from (<a href="#bib9">Nyeng et al., 2019</a>).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Statistically test differences in cell position for various cell types</p>
+<p>After extracting intensity values from either nucleus or cell membranes and calculating tip score for the position of a cell, it can be tested if groups of cells with different tip scores have significantly different expressions.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> If you merge data from several different IHC images it is crucial that you normalize intensities appropriately.</div>
+<p><b>Normalization:</b> Finding a reasonable way to normalize intensities is notoriously hard for IHC images and should be done with great care. Normalizing using intensities from channels with other markers is not necessarily a good idea since the relative intensity difference between different channels/markers can vary for different experiments. Further normalization with ‘background’ intensity can be problematic both since the relative difference between signal and background can vary between experiments and since this means normalizing with a value far below the dynamic range of the actual marker signal. Ideally one would have a ‘reference tissue’ included in each image to determine the median intensity value with which to normalize the signal from the ROI, however this is rarely possible. The concept of tipscore is useful for the purpose of normalization since it allows you to determine the median intensity of cells within a given region that has similar tip score, within the same image channel, and use this value for normalization. This way normalization is done with an intensity value that is within the dynamic range of the signal being normalized and is from the same image channel. <b>Example:</b> If for example expression of a certain marker is different in tip and trunk regions and individual images contain different proportions of tip and trunk (e.g., one image has more tip region than another) then normalization done with the median intensity of the entire image will be skewed depending on the ratio of tip/trunk in the image, whereas normalization using the median intensity of the same subregion (with similar tip score) in all images will give an acceptable result. In <code>demoScript_Batch_NoInput.m</code> we chose to normalize with intensities measured within regions that have tip score values within the range of [−0.75; −0.25]. This tip score range was chosen to be <i>i)</i> as narrow as possible while <i>ii)</i> containing as many cells as possible for all images in the test set.</p>
+<p><b>Statistical tests:</b> After intensity values had been normalized, we further chose to bin them in groups with similar tipscore values in order to do statistical testing between different tipscore bins. Appropriate binning depends on the size of the data set. The larger the data set the smaller the bin size you may use and still have sufficient statistical power. In <code>demoScript_Batch_NoInput.m</code> we have very few measurements with very high/low tip score values and therefore chose to have constant bin size for the middle bins while the first and the last bin contain a broader range of tip score values, (number of bins is adjusted by varying the ‘factor = 3’ in line 252 of <code>demoScript_Batch_NoInput.m</code>).</p>
+<p>We compare groups of cells in bins with different tipscore ranges using the MATLAB function <a href="https://se.mathworks.com/help/stats/multcompare.html">multcompare()</a> (which corrects for multiple comparison) on the stats structure returned when you call the <a href="https://se.mathworks.com/help/stats/kruskalwallis.html">kruskalwallis()</a> function. The Kruskal-Wallis test is a nonparametric version of classical one-way ANOVA, and an extension of the Wilcoxon rank sum test to more than two groups. It compares the <i>medians</i> of the groups of data to determine if the samples come from the same population (or, equivalently, from different populations with the same distribution). We chose Kruskal-Wallis since distributions within the bins failed the Anderson-Darling (<a href="https://se.mathworks.com/help/stats/adtest.html">adtest()</a>) test for normality. If your binned data passes the AD-test you may use one analysis of variance <a href="https://se.mathworks.com/help/stats/anova1.html">anova1()</a> instead, which compares the <i>means</i> of the groups of data and holds more statistical power.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Note that the tip score is calculated using lengths in pixels, the score will therefore depend on the resolution level, and the method could give misleading results if images of varying pixel resolution are compared, without specifying the different length scales of tip structures in different images.</p>
+<p>This protocol measures an essentially three-dimensional characteristic (shape of a branching structure) from two-dimensional tissue sections. The protocol will therefore give misleading results if only few tissue sections or tissue sections only located in extreme ends are used for quantification.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Optimizing all optical parameters as described in the protocol and the following trouble-shooting sections is crucial for image analysis. Downstream analysis such as intensity measurements and/or thresholding-based methods are very sensitive to problems such as high background, inconsistent imaging parameters, saturated pixels, non-confocal images etc. Below we list a number of potential problems. Some problems have several causes, which are described in list format. The solutions suggested are listed in a corresponding fashion, such that solution number a. addresses cause letter a. and so forth.</p>
+<h3 id="sec6.1">Problem 1: Excessive background fluorescence</h3>
+<p>Minimizing excessive background fluorescence in immuno fluorescent stained tissue sections can be challenging, and the problem can have several causes:</p>
+<ol type="a">
+<li>Tissue drying, improper blocking or inadequate washing in Step 3–8: Immunostain tissue sections.</li>
+<li>Antibody nonspecific binding to endogenous immunoglobulins in the tissue.</li>
+<li>Tissue autofluorescence.</li>
+<li>Dirty coverslips or objectives in Step 9–10: Confocal microscopy of stained tissue sections.</li>
+</ol>
+<h3 id="sec6.2">Potential solution</h3>
+<ol type="a">
+<li>In Step 3–8: Immunostain tissue sections: Avoid drying of tissue by working quickly, and only processing one slide at a time when working in the humidified chamber. Ensure that tissue stays moist during longer incubation steps by using a humidified chamber. Follow blocking and washing instructions carefully.</li>
+<li>Before you begin, carefully test the correct dilution factor for your primary and secondary antibodies following the manufacturer’s instructions. If these are lacking, test a dilution series of primary antibodies ranging from 1:50, 1:100, 1:200, 1:500, 1:1000, and a dilution series of secondary antibodies ranging from 1:500, 1:1000, 1:2000. Compare with secondary antibody only control and negative control to ensure that the staining is specific for the antigen of interest. Check that the staining pattern corresponds with prior knowledge of protein localization (i.e., nuclear or membrane localization etc.) If mouse tissue is probed with a primary antibody made in mouse, the endogenous immunoglobulins should first be blocked with a monovalent Fab fragment antibody of anti-mouse IgG, or IgG specific secondary antibodies used.</li>
+<li>Always include a control slide, which is not exposed to any antibodies (negative control) to check for autofluorescence. Tissue autofluorescence is generally much lower than fluorescence from fluorophores. Make sure to compare fluorescence level with no primary control and negative control, when setting up your confocal imaging settings in Step 9–10, keeping gain and laser output below the detection limit for autofluorescence. Note that background fluorescence should be similar in all samples and controls. If this is not the case, attention should be paid to sample preparation in order to eliminate this difference before acquiring images.</li>
+<li>In Step 3–8: Immunostain tissue sections: Check that coverslips are clean before, during and after mounting. Never touch the coverslip on the horizontal surface but handle it by holding the sides. In Step 9–10: Confocal microscopy of stained tissue sections: Clean the objectives carefully before and after use and use the appropriate immersion solution for your objective.</li>
+</ol>
+<h3 id="sec6.3">Problem 2: Unexpected staining patterns</h3>
+<p>Unexpected staining patterns, not conforming to expected localization of protein can be due to:</p>
+<ol type="a">
+<li>Unspecific binding of primary or secondary antibodies to endogenous immunoglobulins in the tissue during Step 3–8: Immunostain tissue sections.</li>
+<li>Cross-reactivity of primary and/or secondary antibodies to each other during Step 3–8: Immunostain tissue sections.</li>
+<li>Overlapping fluorescence spectra of fluorophores and/or inappropriate excitation/emission filters. Avoiding all these is essential for correct interpretation of results.</li>
+</ol>
+<h3 id="sec6.4">Potential solution</h3>
+<ol type="a">
+<li>For avoiding unspecific binding see (2) in Problem 1 above.</li>
+<li>For avoiding cross-reactivity between antibodies the primary and secondary antibodies must be carefully selected before you begin: Primary antibodies should be produced in different species. If overlap in species is unavoidable, the following modification of the protocol can be employed: For two primary antibodies produced in rabbit, an extra step (requiring one more day of staining) can be added to the protocol: After blocking, the first rabbit primary antibody is incubated with samples alone, followed by a monovalent Fab fragment fluorescence conjugated secondary antibody against rabbit. This secondary antibody will in most cases block any further binding to the first rabbit primary antibody, and the protocol can be followed as normal from hereon.<br> Ideally, secondary antibodies are all produced in the same species, excluding all species used for producing the primary antibodies. Our exemplary antibody panel is an example of a protocol where one secondary antibody is produced in the same species (goat), which another secondary antibody is directed against. However, most secondary antibodies available commercially are produced in donkey, and this is a good choice if none of the primary antibodies are produced in donkey. Additionally, the use of labeled secondary antibodies which are cross-adsorbed against the species of the experimental tissue, and the species of the other primary antibodies is recommended.</li>
+<li>In a multiple labeling protocol such as this, occurrence of identical staining patterns in two different channels during imaging should always be a red flag that fluorescence spectra of fluorophores may be overlapping, and/or that inappropriate excitation/emission filters are used. Always use secondary antibodies conjugated to stable fluorescent dyes that match the configuration of your fluorescent microscope. A good combination with minimal spectral overlap is Dylight-405I, Alexa Fluor-488, Rhodamine-RedX, Alexa- Fluor 647. Use of fluorophores with broader excitation/emission spectra (such as DAPI)) can give signal in another channel (so-called bleed-through). Narrow band-pass emission filters, narrow detector detection ranges, and sequential acquisition can be used to minimize bleed-through.</li>
+</ol>
+<h3 id="sec6.5">Problem 3: No or weak fluorescent signal after staining</h3>
+<p>If fluorescence is undetectable or very low after staining it can be due to:</p>
+<ol type="a">
+<li>The primary or secondary antibody is diluted too much in Step 3–8: Immunostain tissue sections.</li>
+<li>There is insufficient antigen present in tissue or the antigen is not accessible.</li>
+<li>The antigen is not compatible with the citrate buffer antigen retrieval method in Step 3–8: Immunostain tissue sections.</li>
+<li>Tissue has not been fixed appropriately in Step 1–2: Prepare tissue sections from mouse organs.</li>
+</ol>
+<h3 id="sec6.6">Potential solution</h3>
+<ol type="a">
+<li>Before you begin, carefully test the correct dilution factor for your primary and secondary antibodies following the manufacturer’s instructions. If these are lacking, test a dilution series of primary antibody ranging from 1:50, 1:100, 1:200, 1:500, 1:1000, and a dilution series of secondary antibodies ranging from 1:500, 1:1000, 1: 2000. There is insufficient antigen present in tissue.</li>
+<li>In Step 3–8: Immunostain tissue sections: The blocking buffer recommended in this protocol does include detergent. If further permeabilization is needed, add a 10 min washing step before blocking, adding Triton X-100 or Tween 20 to PBS. Detergent concentration should be determined empirically, but typically range between 0,01 and 0,1%.</li>
+<li>In Step 3–8: Immunostain tissue sections: Omit or include the optional citrate buffer antigen retrieval step.</li>
+<li>In Step 1–2: Prepare tissue sections from mouse organs: Use fresh 4% PFA and determine the correct fixation time empirically. Store tissue at −80°C.</li>
+</ol>
+<h3 id="sec6.7">Problem 4: Over/under segmented and missed nuclei</h3>
+<ol type="a">
+<li>Over segmentation: Too many nuclei have been fragmented by <code>segmentDAPIimage()</code> in Step 17–20: Define cell position using a DAPI channel image and <code>segmentDAPIimage.m</code>.</li>
+<li>Under segmentation: Too many nuclei have been merged by <code>segmentDAPIimage()</code> in Step 17–20: Define cell position using a DAPI channel image and <code>segmentDAPIimage.m</code>.</li>
+<li>Missed nuclei: Only few nuclei have been detected () in Step 17–20: Define cell position using a DAPI channel image and <code>segmentDAPIimage.m</code>.</li>
+</ol>
+<h3 id="sec6.8">Potential solution</h3>
+<ol type="a">
+<li>Over segmentation: Test a larger value to the input ‘nucleiD’.</li>
+<li>Under segmentation: Test a smaller value to the input ‘nucleiD’.</li>
+<li>Missed nuclei: Test a smaller answer (lower number) to the third prompted question given by <code>segmentDAPIimage()</code>: 'What thresholded image looks best?. I.e., separates most nuclei while losing the least? Smoother boundaries are better than separation. (Enter image number from fig. here and press enter): '</li>
+</ol>
+<p>If the nuclei segmentation results are still over or under segmenting the nuclei, after testing different sizes of nucleiD, slightly different answers to the 4 prompted questions can be tested. Double check that your images appear roughly like the images shown in the section ‘<a href="#sec1.4">download, install, and run MATLAB and demo scripts</a>’, see <a href="#fig1">Figures 1</a>A–1D.</p>
+<p><code>segmentDAPIimage()</code> gives satisfactory results when used on confocal images comparable in quality to those provided in the test dataset. However, it does not represent the current state of the art for nucleus detection/segmentation. Please see below for a detailed explanation of the code. If your nuclei segmentation result is still not satisfactory after testing the different parameters as suggested above, then we recommend making a nuclei mask outside MATLAB with the more sophisticated machine learning tools in <a href="https://www.ilastik.org/">ilastik</a> (<a href="#bib1">Berg et al., 2019</a>) or <a href="https://github.com/mpicbg-csbd/stardist">StarDist</a>, (<a href="#bib11">Schmidt et al., 2018</a>).</p>
+<p>Alternatively, a nuclei mask can be made manually with the MATLAB app ‘ImageSegmenter’ (see section ‘<a href="#sec2.4">draw outline/mask of tissue</a>’ for instructions on how to use ‘ImageSegmenter’).</p>
+<p><code>segmentDAPIimage()</code> - point by point explanation of the code:</p>
+<p>The most important parameter is the user input 'nucleiD'. This number is used to calculate size of gauss and median filter kernels as well as morphological structuring elements.</p>
+<p>The steps of the <code>segmentDAPIimage()</code> function in pseudo-code:</p>
+<ul>
+<li>Gauss and median filter DAPI channel image (to reduce noise on a scale much smaller than a nucleus).</li>
+<li>Normalize intensities with respect to max inside region of interest (ROI)</li>
+<li>Calculate a range of Otsu threshold levels based on pixel values inside ROI.</li>
+<li>Show the user the thresholded images to make the user pick a threshold for a mask that includes everything that could be a nucleus. (We term this the ’optimist mask’).</li>
+<li>Show the user the thresholded images to make the user pick a threshold for a mask which includes only the very brightest pixels globally which should definitely be included in the final mask. (We term this the ’pessimist mask’).</li>
+<li>Show the user thresholded images done with regional thresholding in order to pick good threshold levels for including all nucleus pixels (‘regional threshold mask’) and for getting good separation of different nucleus respectively (‘regional pessimist mask’).</li>
+<li>Combine the 4 masks from above into one: First holes in 'regional threshold mask' are closed and objects smaller than 4 pixels are removed. Pixels in pessimist and regional pessimist are always included but pixels not in optimist are never included.</li>
+<li>Iterate through each connected component in the combined mask and do morphological operations on it (first opening and then smoothing of the edge). The radius of the strel disk (the morphological structuring element) for <code>imopen()</code> depends on the size of the current component/object. (A larger object is more likely to be several nucleus touching and a more aggressive morphological opening is needed to separate them).</li>
+<li>Take the distance transform of the output mask and gauss filter it and find regional max in it.</li>
+<li>Uses regional max as seeds to separate touching nuclei by seed-based watershed on the distance transform image.</li>
+<li>Remove very small objects (compared to expected nucleus size).</li>
+</ul>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Demo scripts will not run:</p>
+<ol type="a">
+<li>MATLAB gives an error message: ‘Undefined function or variable … ’ when running demo scripts in before you begin.</li>
+<li>MATLAB gives an error message like: ‘kruskallwallis requires Statistics and Machine Learning Toolbox’ when running demo scripts in before you begin.</li>
+<li>MATLAB gives an error message: ‘Undefined function or variable bwskel’ when running demo scripts in in before you begin.</li>
+</ol>
+<h3 id="sec6.10">Potential solution</h3>
+<ol type="a">
+<li>First, double check that ‘Current Folder’ (see left side of the MATLAB window) is your ‘TipScore-main’ folder downloaded from Github. Second, double check that your current folder contains the folders ‘raw_images_tif_files' and ‘outlines_mat_files’. Then, double check that your current folder contains all.m files downloaded from GitHub: <code>segmentDAPIimage.m, tipScoreIm.m, returnTableWithCellInt.m</code>, and <code>returnTableWithCellPairInt.m</code>.</li>
+<li>Type ‘ver’ and enter in the MATLAB command window and check that you have the needed toolboxes installed which are: ‘Signal Processing Toolbox’, ‘Image Processing Toolbox’, and ‘Statistics and Machine Learning Toolbox’. A free trial with all toolboxes can be ordered/used for 30 days.</li>
+<li>Type ‘ver’ and enter in the MATLAB command window and check that your MATLAB version is 2018a or later. The newest MATLAB version can be ordered as a free trial for 30 days.</li>
+</ol>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Berg, S., Kutra, D., Kroeger, T., Straehle, C.N., Kausler, B.X., Haubold, C., Schiegg, M., Ales, J., Beier, T., Rudy, M., et al. (2019). Ilastik: Interactive machine learning for (bio)image analysis. Nat. Methods <i>16</i>, 1226-1232. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref1">View at publisher</a></p>
+<p id="bib2">Fox, C.H., Johnson, F.B., Whiting, J., and Roller, P.P. (1985). Formaldehyde fixation. J. Histochem. Cytochem. <a class="external-link" href="https://doi.org/10.1177/33.8.3894502">https://doi.org/10.1177/33.8.3894502</a></p>
+<p id="bib3">Haralick, R.M. and Shapiro, L.G. (1992). Computer and Robot Vision, <i>1</i> (Addison Wesley Publishing Company). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref3">View at publisher</a></p>
+<p id="bib4">Helander, K.G. (2000). Formaldehyde prepared from paraformaldehyde is stable. Biotech. Histochem. <i>75</i>, 19-22. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref4">View at publisher</a></p>
+<p id="bib5">Kaufman, M.H. (1992). The Atlas of Mouse Development (Academic Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref5">View at publisher</a></p>
+<p id="bib6">Lam, L., Lee, S.-W., and Suen, C.Y. (1992). Thinning methodologies-a comprehensive survey. IEEE Trans. Pattern Anal. Mach. Intell. <a class="external-link" href="https://doi.org/10.1109/34.161346">https://doi.org/10.1109/34.161346</a></p>
+<p id="bib7">Lee, J.Y. and Kitaoka, M. (2018). A beginner’s guide to rigor and reproducibility in fluorescence imaging experiments. Mol. Biol. Cell. <a class="external-link" href="https://doi.org/10.1091/mbc.e17-05-0276">https://doi.org/10.1091/mbc.e17-05-0276</a></p>
+<p id="bib9">Nyeng, P., Heilmann, S., Löf-Öhlin, Z.M., Pettersson, N.F., Hermann, F.M., Reynolds, A.B., and Semb, H. (2019). P120CTN-mediated organ patterning precedes and determines pancreatic progenitor fate. Dev. Cell <i>49</i>, 31-47.e9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref9">View at publisher</a></p>
+<p id="bib10">Otsu, N. (1979). A threshold selection method from gray-level histograms. IEEE Trans. Syst. Man Cybern. <i>9</i>, 62-66. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref10">View at publisher</a></p>
+<p id="bib16">Rueden. (2017). BMC Bioinformatics. <a class="external-link" href="https://doi.org/10.1186/s12859-017-1934-z">https://doi.org/10.1186/s12859-017-1934-z</a></p>
+<p id="bib11">Schmidt, U., Weigert, M., Broaddus, C., and Myers, G. (2018). Cell detection with star-convex polygons. In Medical Image Computing and Computer Assisted Intervention – MICCAI 2018, pp. 265-273. <a class="external-link" href="https://doi.org/10.1007/978-3-030-00934-2_30">https://doi.org/10.1007/978-3-030-00934-2_30</a></p>
+<p id="bib12">Shihan, M.H., Samuel, G.N., Le Marchand, S.J., Wang, Y., and Duncan, M.K. (2021). A simple method for quantitating confocal fluorescent images. Biochem. Biophys. Rep. <i>25</i>, 100916. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref12">View at publisher</a></p>
+<p id="bib13">Shi, S.R., Chaiwun, B., Young, L., Cote, R.J., and Taylor, C.R. (1993). antigen retrieval technique utilizing citrate buffer or urea solution for immunohistochemical demonstration of androgen receptor in formalin-fixed paraffin sections. J. Histochem. Cytochem. <i>41</i>, 1599-1604. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00512-8/sref13">View at publisher</a></p>
+<p id="bib14">Vincent, L. (1993). Morphological grayscale reconstruction in image analysis: applications and efficient algorithms. IEEE Trans. Image Process. . <a class="external-link" href="https://doi.org/10.1109/83.217222">https://doi.org/10.1109/83.217222</a></p>
+<p id="bib15">Wang, H. and Matise, M.P. (2013). Immunofluorescence staining with frozen mouse or chick embryonic tissue sections. Methods Mol. Biol. <a class="external-link" href="https://doi.org/10.1007/978-1-62703-444-9_17">https://doi.org/10.1007/978-1-62703-444-9_17</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Pia Nyeng (<a href="mailto:pnyeng@ruc.dk">pnyeng@ruc.dk</a>).</p>
+<h4>Materials availability</h4>
+<p>All the materials used in this protocol are commercially available.</p>
+<h4>Data and code availability</h4>
+<ul>
+<li>This protocol includes a sample of data (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc2.zip">Data S2</a>) consisting of microscopy images obtained for a previously published study (<a href="#bib9">Nyeng et al., 2019</a>). Original data have been deposited to Mendeley Data: <a href="https://doi.org/10.17632/nr9cyyk265.1">https://doi.org/10.17632/nr9cyyk265.1</a> and are publicly available as of the date of publication. DOIs are listed in the <a href="#key-resources-table">key resources table</a>.</li>
+<li>Original code (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc1.zip">Data S1</a>) has been deposited to GitHub: <a href="https://github.com/SiljaHeilmann/TipScore">https://github.com/SiljaHeilmann/TipScore</a> and is publicly available as of the date of publication. The link is also listed in the <a href="#key-resources-table">key resources table</a>
+</li>
+<li>Any additional information required to reanalyze the data reported in this paper is available from the lead contact upon request</li>
+</ul>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc1.zip">Data S1. Original MATLAB custom functions, related to “before you begin” step 9</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1046-Mmc2.zip">Data S2. Original image data test set, related to “before you begin” step 9</a></p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000901">JDRF</a> grant 3–2011-214 and <a href="https://doi.org/10.13039/100008392">DFF</a> grant number 6110-00091B. The Novo Nordisk Foundation Center for Stem Cell Biology is supported by a <a href="https://doi.org/10.13039/501100009708">Novo Nordisk Foundation</a> grant number NNF17CC0027852. We acknowledge the DanStem Imaging Platform and the Core Facility for Integrated Microscopy, Faculty of Health and Medical Sciences, University of Copenhagen for use of microscopes.</p>
+<h3>Author contributions</h3>
+<p>This work was completed by S.H., H.S., and P.N. S.H. developed and optimized the computational methods in collaboration with PN. P.N. developed the staining and imaging methods and produced the image data for this protocol. S.H. and P.N. wrote the first draft of the manuscript. H.S. acquired funding and edited the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

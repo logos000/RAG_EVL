@@ -1,0 +1,1009 @@
+<article>
+<section>
+<h1 id="header">A quantitative medium-throughput assay to measure <i>Caenorhabditis elegans</i> development and reproduction</h1>
+<p><time datetime="2020-12-18">Published: December 18, 2020</time></p>
+<p>Paul Wittkowski,<sup><a href="#aff1">1</a></sup> Norman Violet,<sup><a href="#aff1">1</a></sup> Michael Oelgeschläger,<sup><a href="#aff1">1</a></sup> Gilbert Schönfelder,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and Silvia Vogl<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>German Federal Institute for Risk Assessment, German Centre for the Protection of Laboratory Animals (Bf3R), Berlin 10589, Germany</p>
+<p id="aff2"><sup>2</sup>Charité-Universitätsmedizin Berlin, corporate member of Freie Universität Berlin, Humboldt-Universität zu Berlin, and Berlin Institute of Health, Berlin 10117, Germany</p>
+<p id="fn1"><sup>3</sup>Technical Contact</p>
+<p id="fn2"><sup>4</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:silvia.vogl@bfr.bund.de">silvia.vogl@bfr.bund.de</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100224">10.1016/j.xpro.2020.100224</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Growth and offspring count are two commonly determined toxicological endpoints for chemical- or gene-induced developmental and reproductive effects in <i>Caenorhabditis elegans</i>. Here, we present a protocol for a 96 h, medium-throughput assay, assessing both endpoints quantitatively within an automated framework using open-source software. The assay utilizes whole 96-well fluorescence images taken with a high-content screening system. Alternatively, conventional fluorescence images can also be utilized with only a few adjustments.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib9">Wittkowski et al. (2019)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A medium-throughput assay to determine <i>C. elegans</i> growth and offspring count</li>
+<li>Applicable to high-content screening and conventional fluorescence microscopy</li>
+<li>Automated data acquisition and processing with open-source software</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">
+<i>Caenorhabditis elegans</i> maintenance</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 weeks</div>
+<ol>
+<li>Food bacteria preparation
+<ol type="a">
+<li>Prepare OP50 precultures by incubating 6 mL DYT or LB medium and 10 μL of cryopreserved OP50 in glass tubes while shaking (100 rpm) for 12–14 h at 37°C.
+<div class="note">
+<span class="note-title">Note:</span> Incubation time of precultures should not exceed 14 h.</div>
+<div class="note">
+<span class="note-title">Note:</span> Cryopreserved OP50 contains 50% OP50 in DYT medium grown for 12–14 h and 50% glycerol. It can be stored at −80°C.</div>
+<div class="note">
+<span class="note-title">Note:</span> We used DYT medium pH = 7.0 in our published study (<a href="#bib9">Wittkowski et al., 2019</a>) because it results in slightly higher yields of OP50, but using OP50 grown in LB medium in the indicated concentrations (OD) below does not alter the outcome of the experiments.</div>
+</li>
+<li>Inoculate each OP50 preculture in 200 mL DYT or LB medium using covered glass flasks and grow the cultures while shaking (100 rpm) at 37°C for 8 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Prior to purification steps, OP50 cultures can be stored at 4°C for at least one day.</div>
+</li>
+<li>Cool down M9 buffer to 4°C.</li>
+<li>Transfer OP50 cultures into 50 mL tubes and collect bacteria by centrifugation (10 min, 3,200 × <i>g</i>, 4°C) and removal of the supernatants. Refill tubes with 5 mL of M9 buffer, resuspend the pellets, and combine two tubes each. Wash the empty tubes with 10 mL M9 and combine again. Centrifuge an additional time and repeat the previous steps. Wash combined pellets a third time, discard the supernatant, and add 20 mL fresh S-Complete medium per tube. Resuspend the pellets and combine all bacteria into one batch. This way the bacteria are resuspended in the same medium (S-Complete) that is used for worm maintenance as well as for the experiments, and the final composition of the liquid medium is independent of the used bacteria concentration.
+<div class="note">
+<span class="note-title">Note:</span> Bacteria can be stored at 4°C in S-Complete for up to one month. We found no relation between the OP50 storage time within the first month and the protocol outcome. Thus, the food content can be approximated by simply measuring the OD<sub>600</sub>, which is less labor intensive than calculating cfu. Following the protocol above, we typically have an OD<sub>600</sub> outcome of ≈ 10–13 in S-Complete (i.e., after washing and 10-fold concentration of the OP50 culture) using an Ultrospec 10 cell density meter, which initially corresponds roughly to about 1.5–1.9 × 10<sup>10</sup> cfu/mL when grown in DYT. Please note that for OD<sub>600</sub> measurement we dilute the bacteria culture to an OD<sub>600</sub> &lt; 1 and &gt; 0.2. Exceeding values are calculated from the measured value multiplied with the dilution factor.</div>
+</li>
+<li>Determine the OD<sub>600</sub> of the bacteria suspension photometrically in triplicates.</li>
+<li>To facilitate the course of the experiments, it is advantageous to prepare OP50 dilutions of the same OD<sub>600</sub> for every new OP50 batch. We prepare OD<sub>600</sub> = 6.75 OP50 dilutions as stocks for further use in the experiments and for maintenance. In this manner, the same ratio of liquid medium and OP50 stock can always be used.
+<div class="note">
+<span class="note-title">Note:</span> The optical density values can vary between different photometric devices due to different optical set ups (<a href="#bib2">Eppendorf, 2015</a>). To allow you to transfer our OD<sub>600</sub> values to your photometric device, we measured the colloidal silica suspension LUDOX CL-X in an Ultrospec 10 cell density meter (<a href="#bib7">Rutten et al., 2019</a>). It shows a single point reference value of 0.07 using ddH<sub>2</sub>O as blank. To transfer the OD<sub>600</sub> values given in this protocol to any other instrument measuring OD<sub>600</sub>, a simple conversion factor can be calculated (Ultrospec 10 User Manual).</div>
+</li>
+<li>
+<b>Optional:</b> To determine cfu:
+<ol type="i">
+<li>Prepare a dilution series of the OP50 suspension in S-Complete in 1.5 mL microcentrifuge tubes (1:2, 1:4, 1:8, 1:16, 1:32, 1:64, 1:128) and measure OD<sub>600</sub> in triplicates.</li>
+<li>Further dilute the suspensions by a factor of 10<sup>6</sup> with S-Complete and spread 50 μL on three LB agar plates each.</li>
+<li>Incubate plates at least 12 h at 37°C.</li>
+<li>Count the colonies and determine a linear relationship between OD<sub>600</sub> and colony forming units (cfu). Use the graph slope to calculate the cfu/mL in the dilution series and the content in the undiluted bacteria suspension.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Maintenance on nematode growth medium
+<ol type="a">
+<li>Spread 70 μL of OP50 stock solution on NGM agar plates. Incubate at 37°C for at least 12 h.</li>
+<li>Transfer a chunk of NGM agar with worms twice a week to new plates to keep them well-fed.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Maintenance in liquid medium
+<ol type="a">
+<li>Optionally cool down M9 buffer to 4°C.
+<div class="note">
+<span class="note-title">Note:</span> Using cool M9 buffer slightly facilitates pelleting of the worms and eggs and should stop the bleaching reaction faster, however, uncooled M9 can also be used.</div>
+</li>
+<li>Wash a NGM agar plate (10 cm in diameter) full of mixed-stage worms with 5 mL M9 and transfer them into a 15 mL tube. To start a new liquid culture in a t25 cell culture flask, 4,000 eggs are needed. Therefore, the NGM agar plate should contain at least 500 adult worms.
+<div class="critical">
+<span class="critical-title">Critical:</span> Worms and eggs tend to stick to the surface of plastic equipment. Hence, we recommend to use low retention tips.</div>
+</li>
+<li>Pellet the worms (2 min, 1,300 × <i>g</i>, 4°C) and gently aspirate the supernatant. Wash pellets two times with 10 mL M9 buffer and leave 2 mL at the last washing step.</li>
+<li>Add bleach solution (420 μL 12% NaClO + 250 μL 10 N NaOH) to each sample of worms and use a tube shaker for around 8 min at 2,000 rpm (Heidolph Instruments &amp; Co.KG, SC, DE) to lyse the worms until worms are no longer visible under the microscope.</li>
+<li>Immediately add 10 mL M9 to the tubes and pellet the eggs (2 min, 1,300 × <i>g</i>, 4°C). Aspirate as much of the supernatant as possible without aspirating the eggs and wash the eggs two additional times with 10 mL M9.</li>
+<li>Resuspend the egg pellets in 3 mL S-Complete and count the egg density in the solution.
+<div class="note">
+<span class="note-title">Note:</span> As stated for counting worms in liquid cultures (<a href="#bib8">Scanlan et al., 2018</a>), counting eggs in liquid medium is equally depending on variables like shaking, priming of pipette tips, and sampling location within a tube. We transfer 100 μL egg solution from the middle of the liquid into new 1.5 mL tubes and prime low retention 10 μL pipette tips with 0.01% Triton X-100 solution. We place five dots of 5 μL each on petri dishes and count the number of eggs per dot under a stereo microscope.</div>
+</li>
+<li>Start a new 10 mL liquid culture in a t25 cell culture flask containing 4,000 eggs and sufficient OP50 to keep the worms well-fed and avoid starvation.
+<div class="note">
+<span class="note-title">Note:</span> In our liquid cultures with a density of 400 worms/mL, a final OP50 concentration of OD<sub>600</sub> = 2.7 results in a high yield of eggs after three and four days.</div>
+</li>
+<li>Twice a week, after three or four days, transfer worms into 15 mL tubes and repeat steps 3c–3g to maintain <i>C. elegans</i> liquid culture.
+<div class="note">
+<span class="note-title">Note:</span> All our cultures and experiments are kept at 20°C in cooling incubators (Binder KT 115) with a fan speed at 60%, without shaking. We found that under our conditions, i.e., 400 worms/mL and a filling height of only 4–5 mm, there are no considerable differences in development between the individual worms in one container. The exemplary evaluation of three independent experiments, in which a subset of at least 200 worms was photographed and scored for their developmental stage, showed that 98% of the worms were adult and gravid 72 h after feeding age synchronized L1 larvae.</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>
+<i>Escherichia Coli</i> OP50</td>
+<td>Caenorhabditis Genetics Center</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Agar-Agar</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 4508.2; CAS: 9002-18-0</td>
+</tr>
+<tr>
+<td>Calcium chloride ≥98%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat CN93.1; CAS: 10043-52-4</td>
+</tr>
+<tr>
+<td>Cholesterol ≥99%</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat C8667; CAS: 57-88-5</td>
+</tr>
+<tr>
+<td>Citric acid monohydrate ≥99.5%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 5110.3; CAS: 5949-29-1</td>
+</tr>
+<tr>
+<td>Copper(II) sulfate pentahydrate ≥99%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat P025.2; CAS: 7758-99-8</td>
+</tr>
+<tr>
+<td>Dimethyl sulfoxide (DMSO) ≥99.9%</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat 276855; CAS: 67-68-5</td>
+</tr>
+<tr>
+<td>Dipotassium hydrogenphosphate ≥98%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat T875.2; CAS: 7758-11-4</td>
+</tr>
+<tr>
+<td>Disodium ethylenediaminetetraacetate dihydrate</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat E5134; CAS: 6381-92-6</td>
+</tr>
+<tr>
+<td>Disodium hydrogen phosphate ≥98%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat T876.1; CAS: 7558-79-4</td>
+</tr>
+<tr>
+<td>Glycerol ≥99%</td>
+<td>MP Biomedicals, LLC, CA, US</td>
+<td>#Cat SKU 02151194-CF; CAS: 56-81-5</td>
+</tr>
+<tr>
+<td>Iron(II) sulfate heptahydrate ≥99.5%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 3722.1; CAS: 7782-63-0</td>
+</tr>
+<tr>
+<td>LB agar (Luria/Miller)</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat X969.1</td>
+</tr>
+<tr>
+<td>LUDOX CL-X colloidal silica</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat 420891</td>
+</tr>
+<tr>
+<td>Magnesium sulfate ≥99.5%</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat M7506; CAS: 7487-88-9</td>
+</tr>
+<tr>
+<td>Manganese(II) chloride tetrahydrate ≥98%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 0276.3; CAS: 13446-34-9</td>
+</tr>
+<tr>
+<td>Potassium dihydrogen phosphate ≥99%</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat P5655; CAS: 7778-77-0</td>
+</tr>
+<tr>
+<td>Potassium hydroxide ≥85%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 7986.1; CAS: 1310-58-3</td>
+</tr>
+<tr>
+<td>Prochloraz 98%</td>
+<td>BASF, LU, DE</td>
+<td>CAS: 67747-09-5</td>
+</tr>
+<tr>
+<td>Rose Bengal 95%</td>
+<td>Sigma-Aldrich, MO, USA</td>
+<td>#Cat 330000; CAS: 632-69-9</td>
+</tr>
+<tr>
+<td>Sodium chloride ≥99.5%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 3957.1; CAS: 7647-14-5</td>
+</tr>
+<tr>
+<td>Sodium hydroxide ≥98%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 6771.1; CAS: 1310-73-2</td>
+</tr>
+<tr>
+<td>Sodium hypochlorite solution 12%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 9062.3;v CAS: 7681-52-9</td>
+</tr>
+<tr>
+<td>Tri-potassium citrate monohydrate ≥99%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat X888.2; CAS: 6100-05-6</td>
+</tr>
+<tr>
+<td>Triton X-100</td>
+<td>AppliChem, DA, DE</td>
+<td>#Cat A4975; CAS: 9036-19-5</td>
+</tr>
+<tr>
+<td>Tryptone/peptone ex casein</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 6681.3; CAS: 91079-40-2</td>
+</tr>
+<tr>
+<td>Yeast extract</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 2363.3; CAS: 8013-01-2</td>
+</tr>
+<tr>
+<td>Zinc sulfate heptahydrate ≥97%</td>
+<td>Carl Roth, KA, DE</td>
+<td>#Cat 7316.3; CAS: 7446-20-0</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Test data: combinedTIFFs</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: Test_data_combinedTIFFs)</td>
+</tr>
+<tr>
+<td>Test data: CellProfiler output</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: Test_data_CellProfiler_Output)</td>
+</tr>
+<tr>
+<td>Test data: KNIME output</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: Test_data_KNIME_Output)</td>
+</tr>
+<tr>
+<td>Test data: for CombineTIFF</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: Test_data_for_CombineTIFF)</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Wild-type N2</td>
+<td>Caenorhabditis Genetics Center</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Harmony v.4.8</td>
+<td>PerkinElmer, MA, USA</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CellProfiler v3.1.9</td>
+<td>Carpenter Lab MIT, MA, USA (<a href="#bib5">Lamprecht et al., 2007</a>)</td>
+<td><a href="https://cellprofiler.org/home">https://cellprofiler.org/home</a></td>
+</tr>
+<tr>
+<td>KNIME v.4.1.3</td>
+<td>(<a href="#bib1">Berthold et al., 2008</a>)</td>
+<td><a href="https://www.knime.com">https://www.knime.com</a></td>
+</tr>
+<tr>
+<td>MATLAB Runtime v.9.2</td>
+<td>MathWorks, MA, USA</td>
+<td><a href="https://www.mathworks.com/products/compiler/matlab-runtime.html">https://www.mathworks.com/products/compiler/matlab-runtime.html</a></td>
+</tr>
+<tr>
+<td>CombineTIFF v.1.15</td>
+<td>This paper (created by Dr. Norman Violet); Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: CombineTIFF_Software_and_Code)</td>
+</tr>
+<tr>
+<td>CellProfiler pipeline</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: CellProfiler_pipeline)</td>
+</tr>
+<tr>
+<td>KNIME workflow</td>
+<td>This paper; Mendeley Data</td>
+<td>
+<a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a>(folder: KNIME_workflow)</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>CellCarrier Black 96 well plates</td>
+<td>PerkinElmer, MA, USA</td>
+<td>#Cat 6005550</td>
+</tr>
+<tr>
+<td>Cooling incubator KT115</td>
+<td>BINDER, TUT, DE</td>
+<td>#Cat 9020-0313</td>
+</tr>
+<tr>
+<td>Fluorescence microscope LSM 880 (instead of High-Content Screening System – see <a href="#sec7.7">Troubleshooting Problem 4</a>)</td>
+<td>Carl Zeiss, Oberkochen, DE</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Opera Phenix High-Content Screening System</td>
+<td>PerkinElmer, MA, USA</td>
+<td><a href="https://www.perkinelmer.com">https://www.perkinelmer.com</a></td>
+</tr>
+<tr>
+<td>Tube Shaker Multi Reax</td>
+<td>Heidolph Instruments &amp; Co.KG, SC, DE</td>
+<td>#Cat 545-10000-00<a href="https://heidolph-instruments.com/">https://heidolph-instruments.com/</a>
+</td>
+</tr>
+<tr>
+<td>Ultrospec 10</td>
+<td>Amersham Biosciences, Little Chalfont, UK</td>
+<td>#Cat 80-2116-30 <a href="https://biochromspectros.com/">https://biochromspectros.com/</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>S-Basal</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>5.85 g/L</td>
+<td>5.85 g</td>
+</tr>
+<tr>
+<td>K<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>1 g/L</td>
+<td>1 g</td>
+</tr>
+<tr>
+<td>KH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>6 g/L</td>
+<td>6 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Autoclave and store at 20°C–25°C.</div>
+<table id="undtbl2">
+<caption>Trace metal solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Na<sub>2</sub>EDTA</td>
+<td>1.86 g/L</td>
+<td>1.86 g</td>
+</tr>
+<tr>
+<td>Mn(II)Cl<sub>2</sub>·4H<sub>2</sub>O</td>
+<td>0.2 g/L</td>
+<td>0.2 g</td>
+</tr>
+<tr>
+<td>Cu(II)SO<sub>4</sub>·5H<sub>2</sub>O</td>
+<td>0.025 g/L</td>
+<td>0.025 g</td>
+</tr>
+<tr>
+<td>Fe(II)SO<sub>4</sub>·7H<sub>2</sub>O</td>
+<td>0.69 g/L</td>
+<td>0.69 g</td>
+</tr>
+<tr>
+<td>ZnSO<sub>4</sub>·7H<sub>2</sub>O</td>
+<td>0.29 g/L</td>
+<td>0.29 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Autoclave and store at 20°C–25°C in the dark.</div>
+<table id="undtbl3">
+<caption>1 M Potassium citrate pH = 6.0</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Citric acid·H<sub>2</sub>O</td>
+<td>20 g/L</td>
+<td>20 g</td>
+</tr>
+<tr>
+<td>Tri-potassium citrate·H<sub>2</sub>O</td>
+<td>293.5 g/L</td>
+<td>293.5 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Use 5 M KOH solution to set the pH to 6.0. Autoclave and store at 20°C–25°C.</div>
+<table id="undtbl4">
+<caption>S-Complete</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-Basal</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+<tr>
+<td>1 M Potassium citrate pH = 6.0</td>
+<td>10 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>Trace Metal Solution</td>
+<td>1% v/v</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>CaCl<sub>2</sub> (1 M)</td>
+<td>3 mM</td>
+<td>3 mL</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub> (1 M)</td>
+<td>3 mM</td>
+<td>3 mL</td>
+</tr>
+<tr>
+<td>Cholesterol (5 g/L in EtOH)</td>
+<td>0.013 mM</td>
+<td>1 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Sterile filter the cholesterol solution and store at −20°C.</div>
+<div class="note">
+<span class="note-title">Note:</span> Add cholesterol and other solutions to S-Basal post autoclaving after it has cooled down to 20°C–25°C. Prepare S-Complete under sterile conditions.</div>
+<table id="undtbl5">
+<caption>M9 buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>5 g/L</td>
+<td>5 g</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>6 g/L</td>
+<td>6 g</td>
+</tr>
+<tr>
+<td>KH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>3 g/L</td>
+<td>3 g</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub> (1 M)</td>
+<td>1 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Autoclave at and store at 20°C–25°C.</div>
+<table id="undtbl6">
+<caption>Potassium phosphate buffer (KPO<sub>4</sub> buffer) pH = 6.0</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>36.6 g/L</td>
+<td>36.6 g</td>
+</tr>
+<tr>
+<td>KH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>108.3 g/L</td>
+<td>108.3 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Use 5 M KOH solution to set the pH to 6.0. Autoclave and store at 20°C–25°C.</div>
+<table id="undtbl7">
+<caption>NGM agar</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>3 g/L</td>
+<td>3 g</td>
+</tr>
+<tr>
+<td>Tryptone/Peptone ex casein</td>
+<td>2.5 g/L</td>
+<td>2.5 g</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>17 g/L</td>
+<td>17 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>975 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Autoclave for 15 min and cool down to 55°C.</div>
+<table id="undtbl8">
+<thead></thead>
+<tbody>
+<tr>
+<td>CaCl<sub>2</sub> (1 M)</td>
+<td>1 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub> (1 M)</td>
+<td>1 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>KPO<sub>4</sub> buffer pH=6.0</td>
+<td>2.5% v/v</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Cholesterol (5 g/L in EtOH)</td>
+<td>0.013 mM</td>
+<td>1 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Add under sterile conditions. Then, pour 25 mL NGM agar in 10 cm petri dishes. Store plates at 4°C.</div>
+<table id="undtbl9">
+<caption>DYT medium pH 7.0</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>5 g/L</td>
+<td>5 g</td>
+</tr>
+<tr>
+<td>Tryptone/Peptone ex casein</td>
+<td>16 g/L</td>
+<td>16 g</td>
+</tr>
+<tr>
+<td>Yeast extract</td>
+<td>10 g/L</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1,000 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Use 10 M NaOH solution to set the pH to 7.0. Autoclave and store at 20°C–25°C.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>The basic principle of this assay is based on the ISO 10872 guideline (<a href="#bib4">ISO, 2010</a>, <a href="#bib3">Höss et al., 2012</a>).</p>
+<h3 id="sec3.1">L1 preparation: day 0</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Synchronous L1 larvae are isolated.</p>
+<ol>
+<li>Isolate eggs as described in step 3 of the “<a href="#before-you-begin">Before you begin</a>” section.</li>
+<li>Let eggs hatch for at least 12 h in the absence of food at 20°C in the dark while shaking gently in horizontal position to synchronize (L1 arrest).</li>
+</ol>
+<h3 id="sec3.2">L1 exposure: day 1</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>L1 larvae are exposed to chemicals of interest</p>
+<ol start="3">
+<li>Preparation of master mixes for chemical treatments
+<ol type="a">
+<li>Prepare fresh S-Complete medium.</li>
+<li>Dilute OP50 suspension with S-Complete to desired concentration to keep worms and offspring well-fed over the 96 h incubation time.
+<div class="critical">
+<span class="critical-title">Critical:</span> Since master mixes are further diluted in the test wells, master mix concentrations should be 1.25 fold higher than the final concentration.</div>
+<div class="note">
+<span class="note-title">Note:</span> We applied 10<sup>9</sup> cfu/mL as final OP50 concentration in our published experiments (<a href="#bib9">Wittkowski et al., 2019</a>). To apply OD<sub>600</sub> instead of cfu (see note under step 1d in the “<a href="#before-you-begin">Before you begin</a>” section) the protocol was adapted using a final OP50 concentration of OD<sub>600</sub> = 1.35 which in our hands gives comparable and reproducible results for growth and reproduction.</div>
+</li>
+<li>Add chemicals of interest and solvent controls to diluted OP50 suspensions (120 μL per well required). Remember to concentrate 1.25 fold higher than the desired final concentration.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Nematode growth and reproduction should be unaffected by solvent controls. Pre-test solvent controls and choose concentrations accordingly. For instance, DMSO affects <i>C. elegans</i> reproduction significantly at concentrations of ≥1% (<a href="#bib9">Wittkowski et al., 2019</a>). Hence, a lower final concentration of 0.2% DMSO was used.</div>
+<ol start="4">
+<li>Preparation of 96 well plates (<a href="#fig1">Figure 1</a>)
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. 96-well plate preparation and chemical treatment of L1 larvae</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Fill the 36 edge wells of a 96 well plate (CellCarrier 96, PerkinElmer) with 150 μL water and the 60 inner wells with 30 μL S-Complete.
+<div class="note">
+<span class="note-title">Note:</span> Edge wells are excluded since they tend to dry out quicker than inner wells.</div>
+</li>
+<li>Use a plate shaker to ensure the liquid is on the bottom of the wells.</li>
+<li>Dilute synchronized L1 larvae with S-Complete in a petri dish.</li>
+<li>Manually pick one individual L1 to each inner well of the prepared 96 well plates (see <a href="#mmc1">Methods Video S1</a>). Use a 2.5 μL pipette and a stereo microscope with darkfield illumination. For experienced staff, up to six plates per hour can be handled this way.
+<div class="critical">
+<span class="critical-title">Critical:</span> Worms tend to stick to the surface of plastic equipment. Hence, we recommend to use low retention tips.</div>
+<figure id="mmc1"><video controls="controls">
+                <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Mmc1.mp4" type="video/mp4"></source>
+                Your browser does not support HTML5 video.
+              </video>
+<figcaption>
+<div class="figcaption-title">Methods Video S1. Picking L1 larvae into 96-well plates (step 4d)</div>
+</figcaption>
+</figure>
+</li>
+<li>Using a multistep pipette, add 120 μL of the master mix per well and note the exposure starting time.</li>
+<li>Incubate plates for 96 h in a covered box at 20°C in the dark without shaking.
+<div class="critical">
+<span class="critical-title">Critical:</span> Covering the box slows down evaporation of the test wells in the incubator. As the 36 outer wells are filled with water, no additional precautions to prevent the drying of the 60 inner wells should be necessary.</div>
+<div class="note">
+<span class="note-title">Note:</span> The sample size that should be used depends on the effect size and the targeted statistical power and significance level. Within the setup of this protocol, we use 30 individual worms for the solvent control as well as for each treatment (<a href="#fig1">Figure 1</a>). Here, the 96 well treatment pattern is important for automatic data acquisition and quantification. In order to use the supplied tools without further adjustments, two treatments should be placed per plate (“Treatment 1”: wells B2–G6 and “Treatment 2”: wells B7–G11). For instructions how to adjust the supplied tools, please be referred to <a href="#sec7.9">Problem 5</a> in the <a href="#troubleshooting">Troubleshooting</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Sample preparation and image acquisition: day 5</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Worms and offspring are stained with rose bengal and food bacteria are removed prior to image acquisition.</p>
+<ol start="5">
+<li>Plate preparation for image acquisition.
+<ol type="a">
+<li>Add 15 μL rose bengal staining solution (300 mg/L in ddH<sub>2</sub>O) to each inner well of the plates and distribute by using a plate shaker.
+<div class="note">
+<span class="note-title">Note:</span> The staining with rose bengal, a fluorescein analog used to stain dead microorganisms, fulfills two purposes. Firstly, it stains heat-killed worms and offspring bright red (visible spectrum), so that it is easier to control if worms are lost during washing steps (see step 5d). Secondly, the fluorescence of rose bengal allows for the image acquisition (see step 6).</div>
+</li>
+<li>Heat the plates in an oven to 80°C for 20 min.
+<div class="note">
+<span class="note-title">Note:</span> Heat-killing is beneficial for image analyses, because the worms stretch.</div>
+</li>
+<li>Shake the plates vigorously at 900 rpm for 10 s to disperse worms, offspring, and food bacteria.
+<div class="note">
+<span class="note-title">Note:</span> Rose bengal stains worms, eggs, and bacteria. Stained bacteria need to be removed for proper image analysis.</div>
+</li>
+<li>Add 100 μL ddH<sub>2</sub>O to each inner well and let the worms settle for at least 5 min. Do not centrifuge as this will also lead to the settling of stained bacteria you want to wash away. Gently aspirate 100 μL of each well without aspirating worms and offspring using a preferably electronic 100 μL multi-channel pipette (see <a href="#mmc2">Methods Video S2</a> and <a href="#sec7.3">Troubleshooting Problem 2</a>).
+<figure id="mmc2"><video controls="controls">
+                <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Mmc2.mp4" type="video/mp4"></source>
+                Your browser does not support HTML5 video.
+              </video>
+<figcaption>
+<div class="figcaption-title">Methods Video S2. Washing 96-well plates (step 5d)</div>
+</figcaption>
+</figure>
+</li>
+<li>Repeat step 5c and d up to four times until most of the stain and bacteria has been removed.</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Record images of whole wells with the Opera Phenix High Content Screening System (PerkinElmer, MA USA). Use a 5× air objective and a fluorescence filter (emission: 570–630 nm; excitation: 561 nm, illumination time: 100 ms at 100% intensity) to generate 9 tiles per well without overlap.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Use manual fluorescence microscopy to image whole wells if no high-content device is available (see <a href="#sec7.7">Troubleshooting Problem 4</a>).</div>
+<h3 id="sec3.4">Data acquisition: day 6</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>The images are processed for the acquisition of growth and reproduction data (<a href="#fig2">Figure 2</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Overview of data acquisition and quantification steps</div>
+</figcaption>
+</figure>
+<p>The following two steps (7 and 8) are only required if using the Opera Phenix High Content Screening System (PerkinElmer, MA USA). When using another device, e.g., manual fluorescence microscopy to image whole wells please see <a href="#sec7.7">Troubleshooting Problem 4</a>.</p>
+<ol start="7">
+<li>Use the device software “Harmony” (Perkin Elmer) to export “measurements”, which include images in TIFF format and metadata in XML format. These TIFF files use a 16-bit gray color definition. Using a regular picture viewer (e.g., previewer from Windows) will show far too dark pictures.</li>
+<li>Merge image tiles without overlap for whole-well images. As a merging tool, we use “CombineTIFF”, a self-programmed MATLAB-based program specialized for our needs when processing images generated with the Opera Phenix High Content Screening System. Find the software tool (CombineTIFF.exe) and the associated code (CombineTIFF.m) in Mendeley Data (folder: CombineTIFF_Software_and_Code).
+<ol type="a">
+<li>Install v.9.2 of the MATLAB Runtime on a Windows-based operating system.</li>
+<li>Start “CombineTIFF.exe” and choose the Harmony export directory including raw images and the XML file.</li>
+<li>Optionally give images a suffix, select the channel(s) and choose to merge images without overlap.</li>
+<li>If single tiles are missing in a well, choose to skip those wells.</li>
+<li>In the input folder, CombineTIFF generates a new folder named “combinedTIFFs” in which the merged images are stored along with an info TXT file.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Raw images and the XML file of two example wells can be found in Mendeley Data (folder: Test_data_for_CombineTIFF). Merged test data images of the 60 inner wells of a 96 well plate can also be found in Mendeley Data (folder: Test_data_combinedTIFFs). Here, “Treatment 1” (wells B2–G6) represents a positive control (4 μg/mL prochloraz) and “Treatment 2” (wells B7–G11) a solvent control (0.2% DMSO).</div>
+<ol start="9">
+<li>For automatic acquisition of worm growth and offspring count, use the open-source software CellProfiler (Carpenter Lab MIT, MA, USA) and open the pipeline “C.elegans_assay.cpproj” that can be downloaded from Mendeley Data (folder: CellProfiler_pipeline). <a href="#fig3">Figure 3</a> shows a detailed description of all pipeline steps.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Description of CellProfiler pipeline steps</div>
+<p><sup>a</sup>In contrast to “Worms_4d” and “Worms_4d_small”, offspring objects are not expanded prior to object measurements to improve the separation of objects.</p>
+<p><sup>b</sup>Chemical treatment may massively affect nematode growth up to a point, at which it is not possible to discriminate small 4-day-old worms (Worms_4d_small) and offspring of unaffected worms (Offspring) by size. Hence, “Worms_4d_small” need to be identified separately. Images of “Worms_4d_small” tend to have more background signal due to an increased amount of stained food bacteria remaining in the wells. In order to avoid false “Offspring” identification, “Worms_4d_small” are defined to have no offspring during data evaluation.</p>
+<p>See CellProfiler pipeline “C.elegans_assay.cpproj” (Mendeley Data, folder: CellProfiler_pipeline).</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Import the merged images into the pipeline. When using CombineTIFF, these can be found in the “combinedTIFFs” folder (see step 8e). The “Image” module offers a filter option. Use it if you want to filter out other channel images (e.g., brightfield).</li>
+<li>Select the “ExportToSpreadsheet” module and choose an “output file location” for the excel output files. Change other settings only, if needed. Next, choose the “output file location” of the output images in the six “SaveImages” modules. Here, prefixes describe which objects are highlighted in the output images (“Worms_4d”, “Offspring” and “Worms_4d_small” of both treatments (“_1” and “_2”). We recommend to create a new folder for each set of images.</li>
+<li>Start the analysis by pressing the “Analyze Images” button.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Run one pipeline for each 96 well plate (60 images). If the well exposure pattern is chosen as shown in <a href="#fig1">Figure 1</a>, the “Metadata” and “NamesAndTypes” modules automatically group the treatments. Both treatments run the same pipeline separately and generate separate output data. “Treatment 1” is defined as wells B2–G6 and “Treatment 2” is defined as wells B7–G11. If you plan to choose a different sample size or treatment pattern, see <a href="#sec7.9">Troubleshooting Problem 5</a>.</div>
+<ol start="10">
+<li>Data processing of CellProfiler output files
+<ol type="a">
+<li>Open the CellProfiler output folder you chose in step 9b. Measured shape parameters of identified “Worms_4d” and “Worms_4d_small” are located in the respective CSV output files “Test_data_Worms_4d.csv” and “Test_data_Worms_4d_small.csv” with the suffix treatment identifier “_1” or “_2” (<a href="#fig2">Figure 2</a>). Information on the identified “Offspring” objects for both treatments are located in the “Offspring.csv” file.</li>
+<li>Open the CellProfiler CSV output files “Test_data_Worms_4d_1.csv”, “Test_data_Worms_4d_2.csv”, “Test_data_Worms_4d_small_1.csv” and “Test_data_Worms_4d_small_2” and convert the text into columns by “comma” separation.
+<div class="critical">
+<span class="critical-title">Critical:</span> Excel should use a point as decimal delimiter to avoid number alterations in the CSV files.</div>
+</li>
+<li>Create one new column in an arbitrary position per file named “Scoring”, starting with a capital letter.</li>
+<li>Now, look at each of the respective CellProfiler “Worm_4d” and “Worm_4d_small” output images (see step 9b) and check if the 4-day-old worms were identified correctly.</li>
+<li>Score objects that were correctly identified as “0” in the “Scoring” column in the respective CSV file, otherwise score them as “1”. Register one score for each object in the “Scoring” column and save the modified files as CSV files. Score objects as “1”, if objects are a) no actual 4-day-old worms (<a href="#fig4">Figure 4</a>D), b) fragmented or cut 4-day-old worms (<a href="#fig4">Figure 4</a>C) and c) major offspring appendages or multiple worms merged together (<a href="#fig4">Figure 4</a>B). 4-day-old worms with minor offspring appendages are part of the assay variability and can be scored as “0” (<a href="#fig4">Figure 4</a>A).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Manual scoring of “Worms_4d”</div>
+<p>(A) Example images: 4-day-old worms with minor offspring appendage (Scoring = 0).</p>
+<p>(B) Example images: 4-day-old worms with major appendage (Scoring = 1).</p>
+<p>(C) Example images: Cut or fragmented 4-day-old worms (Scoring = 1).</p>
+<p>(D) Example images: No actual 4-day-old worms (Scoring = 1).</p>
+<p>(E) Test data: identification of "Worms_4d_2" (image numbers 17, 19, 29 f.l.t.r.). All test data output images and data CSV files can be downloaded from Mendeley Data (folder: Test_data_CellProfiler_Output).</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Each row describes an identified object in an image. Images with no identified objects are not represented in extra rows. Compare the suffix numbers of the images with the “ImageNumber” column in the excel files to identify the matching row for each image. If two or more objects are identified in the same image, compare the outlined worm area on the images with the values in the “AreaShape_Area” column.</div>
+<div class="note">
+<span class="note-title">Note:</span> Include the new “Scoring” column also in empty “Test_data_Worms_4d_small.csv” files.</div>
+<div class="note">
+<span class="note-title">Note:</span> As an example, one full set of CellProfiler output CSV files and images of one 96 well plate (“Treatment 1” = 0.2% DMSO, “Treatment 2” = 4 μg/mL prochloraz) can be downloaded from Mendeley Data (folder: Test_data_CellProfiler_Output). Here, “Worms_4d” images of solvent control wells (“Treatment 2”) were all scored “0” except for the offspring clusters in image numbers 17 and 19 (<a href="#fig4">Figure 4</a>E). In “Treatment 2” wells, there are no “Worms_4d_small”, thus, objects can be scored as “1” here. “Worms_4d” of positive control wells (“Treatment 1”) were all identified correctly and scored as “0” accordingly. Image number 11 of “Treatment 1” contains one correctly identified “Worm_4d_small”, which is scored as “0” while all other objects are scored as “1” in the respective CSV file.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> During data evaluation, all wells will be excluded that do not contain exactly one “Worm_4d” or one “Worm_4d_small”, if no “Worm_4d” can be found in the well. According to that, automatic data evaluation excludes all wells not containing exactly one score “0” object. Thus, make sure that only wells with exactly one “Worm_4d” or “Worm_4d_small” have exactly one score “0” object. For instance, if two “Worm_4d” are visible in the same well (compare test data “Treatment 2”: image number 29, <a href="#fig4">Figure 4</a>E), always score both of them equally as “1” or “0” in order to exclude this well from evaluation.</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>After 96 h incubation time at 20°C, control wells usually contain one adult worm (<a href="#fig5">Figure 5</a>B) and on average around 100 offspring (<a href="#fig5">Figure 5</a>C). Chemical treatment may lead to a developmental retardation, decreasing worm growth and offspring count (<a href="#fig5">Figure 5</a>D).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Expected outcome of CellProfiler image analysis</div>
+<p>(A) Raw gray-scale image of a control well, recorded with the Opera Phenix high content screening system and merged using CombineTIFF software. Images are analyzed by open-source software CellProfiler.</p>
+<p>(B) Identification of the “Worm_4d” in a solvent control well (0.2% DMSO). Red number indicates worm area in pixel.</p>
+<p>(C) Identification of offspring (eggs + larvae) in a solvent control well (0.2% DMSO). Red numbers indicate the offspring count.</p>
+<p>(D) Example of a 4 μg/mL prochloraz treatment well containing a “Worm_4d_small”. Red number indicates worm area in pixel.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Data quantification and selected statistical analyses can be performed fully automated with a workflow (C.elegans_assay.knwf) constructed in the open-source software KNIME (<a href="#bib1">Berthold et al., 2008</a>). This workflow can be downloaded from Mendeley Data (folder: KNIME_workflow). An example dataset of merged raw images (folder: Test_data_combinedTIFFs), CellProfiler output images and related CSV files (folder: Test_data_CellProfiler_Output) are also included. Objects are already scored as described in step 10e.</p>
+<ol>
+<li>Import the workflow “C.elegans_assay.knwf” in KNIME and open it.</li>
+<li>The example CSV files are already integrated and executed in the workflow, the input files can be found in the subfolder “data” of the “C.elegans_assay” folder in the KNIME workspace. The output files can be downloaded from Mendeley Data (folder: Test_data_KNIME_Output). For analyzing your own data, import the five respective CellProfiler CSV output files in the “CSV Reader” nodes by configuring the node and changing the “Input location”. Execute the nodes afterwards.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For further information on the function and configuration of specific KNIME nodes, check out the integrated KNIME help-function available for each node. Additionally, KNIME Quickstart Guides are offered on the KNIME homepage (<a href="https://www.knime.com/">https://www.knime.com/</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> All nodes that need to be checked before the workflow execution are highlighted in red.</div>
+<ol start="3">
+<li>Check whether the texts in the CSV files were correctly converted into columns by viewing the “CSV Reader” node file tables. Otherwise, configure the column delimiter in the reader options of the node configurations accordingly.</li>
+<li>Configure the “Excel Writer (XLS)” node in the last segment of the workflow. Change the “Output Location” by selecting a “Local File System” and browse toward an output directory of your choice. Enter a new file name, if necessary. If you choose a “Local File System” output directory, you need to configure all “Excel Sheet Appender (XLS)” nodes to “Local File System” as well. The output excel file contains one tab with the processed output data and one tab with the descriptive statistics for each treatment, respectively.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Configurations of nodes result in a reset of all subsequent nodes.</div>
+<ol start="5">
+<li>Also change the output directory and file name of the two “Image Writer (Port)” nodes, which create box plots for the worm area and offspring count.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We focus on those two output parameters, because they offer higher robustness and sensitivity compared to the other parameters.</div>
+<ol start="6">
+<li>Execute all nodes to obtain output data, statistics, and data visualization.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The KNIME workspace is the default output location for all export nodes which are overwriting existing files by default. Be cautious not to overwrite previous data unintentionally.</div>
+<div class="note">
+<span class="note-title">Note:</span> The KNIME workflow combines multiple data progression steps using defined nodes (<a href="#fig2">Figure 2</a>). CellProfiler offers a total of nine different parameters describing the shape of the worms (Area, MajorAxisLength, MaxFeretDiameter, MaximumRadius, MeanRadius, MedianRadius, MinFeretDiameter, MinorAxisLength, Perimeter) and three parameters describing the worm offspring (Count_Offspring, Area_Offspring, Perimeter_Offspring). All these data are combined into one table for each of the two treatments on one plate. Within this process, “Worms_4d_small” are defined to have no offspring, as mentioned in the <a href="#fig3">Figure 3</a> description. Next, all wells not containing exactly one object scored as “0” are excluded from the data tables. Focusing on the net worm growth, the median values of L1 larvae are subtracted for each of the nine shape parameters (e.g., Area<sub>NET</sub> = Area − 429 pixels). Thus, a worm area value of zero actually represents no worm growth after 96 h. L1 shape parameters were determined by measuring &gt; 2,000 freshly hatched L1 larvae in CellProfiler as described above (typical diameter: 7–30 pixels, expanded for 2 pixels). Since L1 size and form may vary between different strains and cultures, you may also determine your own L1 parameters and integrate them into the KNIME workflow (metanodes highlighted in blue). Finally, processed data of both treatments on one plate are joined in one exportable table (default name: “plate1_results.xlsx”). Descriptive statistics summarizing the data are generated as well as Box Plots for data visualization.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> KNIME also provides nodes for statistical analyses. We integrated two optional nodes (highlighted in blue), comparing the worm area and the offspring count of the two treatments on one plate in a single sample t test (p ≤ 0.05). To activate the single sample t test, connect the last “Joiner” node with both “Single sample t test” nodes and execute. This generates new tabs in the output excel file.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Parts of the automatic data acquisition and analysis in this protocol are designed for a defined sample size and treatment pattern. Thus, minor manual adjustments may be necessary for experimental changes. Additionally, the applicability of this protocol is limited to the solubility of test chemicals in the aqueous test medium. Organic solvents may act as solubilizing agents, but they need to be tested for solvent control effects appropriately. We already demonstrated that <i>C. elegans</i> development and reproduction are influenced by higher concentrations of the organic solvent DMSO in this assay (<a href="#bib9">Wittkowski et al., 2019</a>). Importantly, most toxicological effects depend on the chemical’s internal concentration in the target organs. We showed that even for structural similar chemicals, nominal concentrations in the medium do not necessarily reflect comparable internal concentrations in the worm tissues (<a href="#bib9">Wittkowski et al., 2019</a>). In our case, analytical quantification of five structurally similar azole fungicides in worms revealed up to twelve-fold deviations of internal concentrations revealing toxicokinetic differences. Furthermore, the exposure of a living organism and living food bacteria, both equipped with a noticeable biotransformation system, may bias the estimation of substance effects due to possible substance degradation processes within the 96 h incubation time. Previous attempts to use UV-killed as well as heat-killed OP50 in this assay were unsuccessful because feeding dead bacteria resulted in a strong developmental delay of the worms.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Control worm development deviates between experiments.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>The reproducibility of this protocol depends on many factors in worm maintenance. Try to standardize as many factors as possible to exclude potential confounders. For example, to adapt worms to liquid cultures when transferred from agar plates, we keep worms in liquid culture for at least three generations before experimental testing. Interestingly, among others, <i>C. elegans</i> developmental speed, growth rate and fecundity are strongly dependent on maternal age (<a href="#bib6">Perez et al., 2017</a>). The timing of egg preparation may thus have an impact on larval development, leading to inter-day deviations. Try to follow a consistent schedule for <i>C. elegans</i> maintenance to e.g., use eggs derived from mothers of the same age in addition to the L1 arrest described in the protocol. Fluctuations in the amount of applied food bacteria may also lead to reproducibility issues. Try to adhere to a strict bacteria preparation protocol.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Offspring are aspirated during manual plate washing.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Check if offspring have settled before aspiration. Do not aspirate from the bottom of the wells. Place the tips just underneath the surface of the well contents and move them slowly downwards simultaneously with the dropping liquid level (see <a href="#mmc2">Methods Video S2</a>). Choose the aspiration speed of the pipette as low as reasonable to prevent loss of offspring. Optionally, transfer aspirated liquid into new 96 well plates and check well contents microscopically for offspring.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>CellProfiler does not identify worms or offspring correctly.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Due to automatic camera flat field correction, the brightness of images may vary considerably, especially if comparing images of different experiments or devices. Hence, it may be necessary to adjust the threshold value individually for each experiment. For this purpose, start the CellProfiler Test Mode. Adjust the lower and upper threshold bounds or the threshold correction factor until worms and offspring are highlighted adequately. Raise the threshold range to darken the objects and lower the threshold range to brighten the objects (<a href="#fig3">Figure 3</a>).</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>No high-content screening system is available for image acquisition.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Use manual fluorescence microscopy to generate whole-well images. Since the well bottoms are sometimes not plain enough to record worms entirely on a single plane, especially after heating, it may be necessary to record a z-stack and use maximum intensity projection to outline worms and offspring properly. Before importing images into CellProfiler, renaming of the images according to the well identifier plus suffix (e.g., “<b>B02</b>_p01_ch1sk1” for well B2) will automatically group the images as described in step 9 of the “<a href="#step-by-step-method-details">Step-by-step method details</a>” section. Use the CellProfiler Test Mode to adjust threshold values in the “Threshold” modules and disk sizes in the “Erosion” modules until the background signals are minimal and “Worms_4d” and “Offspring” are highlighted. Run the CellProfiler pipeline and KNIME workflow as usual to obtain results as described. As proof-of-principle, we recorded wells manually using a LSM 880 microscope equipped with a motorized stage (10× objective, 570–630 nm filter, 36 tiles with 5% overlap). Background signals were higher, thus threshold values were adjusted to 1.8E-6 in the “Threshold” modules and disk sizes were adjusted to 3 in the “Erosion” modules. “Worms_4d” and “Offspring” could be identified successfully this way (<a href="#fig6">Figure 6</a>).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Example of CellProfiler image analyses using manually recorded fluorescence images</div>
+<p>Images of whole wells were recorded with a LSM 880 microscope equipped with a motorized stage (10× objective, 570–630 nm filter).</p>
+<p>(A) Identification of the “Worm_4d” in a solvent control well (0.2% DMSO). Red number indicates worm area in pixel.</p>
+<p>(B) Identification of “Offspring” (eggs + larvae) in a solvent control well (0.2% DMSO). Red numbers indicate the offspring count.</p>
+<p>(C) Identification of the “Worm_4d” in a 4 μg/mL prochloraz treatment well. Red number indicates worm area in pixel.</p>
+<p>(D) Identification of “Offspring” (eggs + larvae) in a 4 μg/mL prochloraz treatment well. Red numbers indicate the offspring count.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.9">Problem 5</h3>
+<p>A different sample size is chosen.</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>The experimental setup as well as the software automating the data acquisition and analysis is configured for a sample size of 30 per treatment. When using a different sample size or treatment pattern than that showed in <a href="#fig1">Figure 1</a>, the automation steps of this protocol utilizing CellProfiler and KNIME is no longer working. If a smaller sample size than 30 is chosen for each treatment, the easiest way is to stick with the treatment pattern and fill the missing wells with 150 μL water. If a larger sample size is used, you may use a multiple of 30 and combine the data in the process. Otherwise, the CellProfiler pipeline and the KNIME workflow need to be adapted. A general solution is to remove the automatic grouping function to gain joint output files for further analyses in a software of your choice. To remove the automatic grouping function in the CellProfiler pipeline, reset the “Metadata”, “NamesAndTypes” and “Groups” modules. This way, all images will be analyzed simultaneously creating joint output files. Next, change the input image of the first “RescaleIntensity” module to “RawData” and remove the duplicate “RescaleIntensity” module. Furthermore, deselect all other duplicate modules of “Treatment 2” (<a href="#fig7">Figure 7</a>A). They can be recognized by the suffix “_2” in the module output names. Also remove the respective objects of “Treatment 2” in the “MeasureObjectSizeShape” and “MeasureObjectSizeShape” modules and the export of the datasets “Expand_Worms_4d_2” and “Expand_Worms_4d_small_2” in the “ExportToSpreadsheet” module. Images can now be analyzed, creating only “Worms_4d_1.csv”, “Worms_4d_small_1.csv” and “Offspring.csv” files. After scoring the objects, import those files into the respective KNIME “CSV Reader” nodes and delete the two “CSV Reader” nodes for the “Treatment 2” files (<a href="#fig7">Figure 7</a>B). Delete the connection between the last “Treatment 1” metanode, and the Joiner node (<a href="#fig7">Figure 7</a>C) and execute the workflow.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/331-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Adaption of open-source routines: removal of the automatic grouping function</div>
+<p>(A) CellProfiler pipeline (B and C) KNIME workflow (red circle: “Treatment 1” metanode). Find open-source routines “C.elegans_assay.cpproj” and “C.elegans_assay.knwf” in Mendeley Data (folders: “CellProfiler_pipeline” and “KNIME_workflow”).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Berthold, M.R., Cebron, N., Dill, F., Gabriel, T.R., Kötter, T., Meinl, T., Ohl, P., Sieb, C., Thiel, K., and Wiswedlel, B. (2008). KNIME: The Konstanz information miner. 319-326.</p>
+<p id="bib2">Eppendorf. (2015). OD600 Measurements Using Different Photometers. White Paper No. 28.</p>
+<p id="bib3">Höss, S., Ahlf, W., Bergtold, M., Bluebaum-Gronau, E., Brinke, M., Donnevert, G., Menzel, R., Möhlenkamp, C., Ratte, H.T., Traunspurger, W., et al. (2012). Interlaboratory comparison of a standardized toxicity test using the nematode <i>Caenorhabditis elegans</i> (ISO 10872). Environ. Toxicol. Chem. <i>31</i>, 1525-1535.</p>
+<p id="bib4">ISO: International Organization for Standardization. (2010). ISO 10872:2010 Water quality – Determination of the toxic effect of sediment and soil samples on growth, fertility and reproduction of <i>Caenorhabditis elegans</i> (Nematoda).</p>
+<p id="bib5">Lamprecht, M.R., Sabatini, D.M., and Carpenter, A.E. (2007). CellProfiler: free, versatile software for automated biological image analysis. Biotechniques <i>42</i>, 71-75.</p>
+<p id="bib6">Perez, M.F., Francesconi, M., Hidalgo-Carcedo, C., and Lehner, B. (2017). Maternal age generates phenotypic variation in <i>Caenorhabditis elegans</i>. Nature <i>552</i>, 106-109.</p>
+<p id="bib7">Rutten, P., Tennant, R., Beal, J., Haddock-Angelli, T., Farny, N., Baldwin, G., Storch, M., and Dwijayanti, A. (2019). Calibration Protocol - OD600 inter-equipment conversion with LUDOX V.4.</p>
+<p id="bib8">Scanlan, L.D., Lund, S.P., Coskun, S.H., Hanna, S.K., Johnson, M.E., et al. (2018). Counting <i>Caenorhabditis elegans</i>: protocol optimization and applications for population growth and toxicity studies in liquid medium. Sci. Rep. <i>8</i>, 904.</p>
+<p id="bib9">Wittkowski, P., Marx-Stoelting, P., Violet, N., Fetz, V., Schwarz, F., Oelgeschläger, M., Schönfelder, G., and Vogl, S. (2019). <i>Caenorhabditis elegans</i> as a promising alternative model for environmental chemical mixture effect assessment — a comparative study. Environ. Sci. Technol. <i>53</i>, 12725-12733.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Dr. Silvia Vogl (<a href="mailto:silvia.vogl@bfr.bund.de">silvia.vogl@bfr.bund.de</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate any unique datasets. All software code and algorithms generated during this study together with datasets that can be used to test the different tools are available in Mendeley Data: <a href="https://dx.doi.org/10.17632/63z344cc8g.1">https://dx.doi.org/10.17632/63z344cc8g.1</a></p>
+<h3>Acknowledgments</h3>
+<p>We acknowledge L. Valentin for his support concerning KNIME. We thank M. Mette-Thaben, M. Kotulla, and S. Meissner for their support in the lab. For providing the strains, we thank the CGC which is funded by NIH Office of Research Infrastructure Programs (P40 OD010440). Financial support via intramural funding of the <a href="https://doi.org/10.13039/501100008751">German Federal Institute for Risk Assessment</a> (BfR) was provided (SFP no. 1322-588).</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, S.V.; Methodology, P.W.; Software, N.V.; Investigation, P.W.; Writing – Original Draft, P.W.; Writing – Review &amp; Editing, P.W., S.V., N.V., M.O., and G.S.; Visualization, P.W., and N.V.; Supervision, G.S., M.O., and S.V.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

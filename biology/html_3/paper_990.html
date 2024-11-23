@@ -1,0 +1,793 @@
+<article>
+<section>
+<h1 id="header">Protocol for multicolor three-dimensional dSTORM data analysis using MATLAB-based script package Grafeo</h1>
+<p><time datetime="2021-09-10">Published: September 10, 2021</time></p>
+<p>Kalina Tamara Haas<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup> and Alexis Peaucelle<sup><a href="#aff1">1</a></sup></p>
+<p id="aff1"><sup>1</sup>Institut Jean-Pierre Bourgin, INRAE, AgroParisTech, Université Paris-Saclay, 78000 Versailles, France</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:kalina.haas@inrae.fr">kalina.haas@inrae.fr</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100808">10.1016/j.xpro.2021.100808</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol describes the step-by-step analysis of the multicolor (one-, two-, or three-color) two- and three-dimensional dSTORM (direct STochastic Optical Reconstruction Microscopy) data using MATLAB-based script package Grafeo. Grafeo primarily uses pointillist data visualization and analysis frameworks, including the nearest neighbors, approach, Voronoi tessellation, Delaunay triangulation, Ripley’s (K, L) and two-point correlation functions, and graph-based clustering.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2020.101862">Peaucelle et al. (2020)</a>, <a class="external-link" href="https://doi.org/10.1093/nar/gkx1303">Haas et al., 2018</a>, <a class="external-link" href="https://doi.org/10.1126/science.aaz5103">Haas et al. (2020b)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Multicolor 3D dSTORM data visualization using scatter plots and Voronoi Diagrams</li>
+<li>Procedure for data filtering</li>
+<li>Spatial statistics, cluster, and colocalization analysis</li>
+<li>Graph-based cluster analysis with Delaunay triangulation</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol is presented using the data obtained on the Nikon N-STORM microscope. You can download the example data and the analysis steps from Mendeley database (see the <a href="#key-resources-table">key resources table</a>). However, we have also used this protocol for the data acquired with other dSTORM microscopes such as Vutara 350 (Bruker), Zeiss Elyra (Zeiss), and Abbelight, and the data analyzed with ThunderStorm Fiji plugin (<a href="#bib8">Ovesný et al., 2014</a>).</p>
+<h3 id="sec1.1">Computing setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<ol>
+<li>Downloading and installation of Grafeo package:
+<ol type="a">
+<li>Download the latest Grafeo script package (see <a href="#key-resources-table">key resources table</a>)<br> The current version of the Grafeo is 3 (v3).</li>
+<li>Extract the Grafeo package and copy all files to the desired folder on your computer, e.g., “C:∖Users∖Documents∖Programs∖Matlab∖Grafeo_v3”.
+<div class="note">
+<span class="note-title">Note:</span> This protocol uses a Matlab desktop environment, which requires a license. You have to install Matlab before going to step c). To run Grafeo v3, you need to install the following Matlab toolboxes: Curve Fitting Toolbox, Image Processing Toolbox, Statistics and Machine Learning Toolbox, Signal Processing, and Optimization Toolbox.</div>
+Grafeo can also use a third-party function InPolygon that can be downloaded from Matlab file exchange (see the <a href="#key-resources-table">key resources table</a>). For large polygons, InPolygon can perform faster than a build-in Matlab function inpolygon. However, the installation of InPolygon requires Matlab C compiler to compile mex files, and it does not work on the Windows 32 bits. In the absence of the InPolygon function, Grafeo uses Matlab built-in inpolygon function.</li>
+<li>Open your Matlab desktop.</li>
+<li>In the Matlab “Command Window” type: addpath(“<i>fullpathToGrafeoFolder”</i>), using the example above, addpath(“C:∖Users∖Documents∖Programs∖Matlab∖Grafeo_v3”), and press “enter”.<br> Opening Grafeo in Matlab.</li>
+<li>In the Matlab “Command Window” type in grafeo_v3, and press "enter". This will open the Grafeo graphical user interface (GUI) (<a href="#fig1">Figure 1</a>). grafeo_v3 is the name of the main Grafeo function. If you rename it or the version changes, use the update name, e.g., grafeo_v4, for the Grafeo version 4.
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. The Grafeo GUI window</div>
+<p>Different sections discussed in the protocol are highlighted with red boxes. The main menu bar permits, among others, importing the raw single-molecule data in the different formats (here, only Nikon NSTORM 'txt' format is discussed). The raw dSTORM data is converted to Matlab ".mat" file format that can be loaded as a single color file and combined to a multicolor file (see "Load data" red box). The single-molecule data can be filtered by applying the threshold to photon number (PN), localization precision (LP), and the Voronoi diagram density (VD) (see "Filtering parameters" red box). Multicolor data can be aligned automatically (see the main menu bar, "2–3 color Voronoi") or manually (see "Channel alignment" red box). The data can be visualized using still, or animated scatter plots (see "Data visualization" box), Voronoi diagrams, and Delaunay triangulation (see "Data clustering" red box). Data visualization and analysis require prior creation of a region of interest (ROI) in the main axes. The different types of ROI can be drawn: polygonal or polygonal freehand ROI (No. 1, 2, 5), square ROI (No. 3), and twin ROI (Twin poly roi, No. 4, not used for the data visualization). The data can be analyzed using Ripley's K and L functions, point correlation function (PCF), and using Delaunay triangulation (graph-based segmentation) (see "Data clustering" red box).</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Installing ‘InPolygon’ third party function.</b> First, check if you have a C language compiler compatible with Matlab installed on your machine. For this type mex –setup c in the Matlab command window. If you have, e.g., a free C compiler installed for Matlab (MinGW), the following message will appear: “MEX configured to use 'MinGW64 Compiler (C)' for C language compilation”, where 64 stands for the Windows 64 bits. If no C compiler is installed, an error message will be displayed: “No supported compiler was found”. Download MinGW compiler from the Matlab website (<a href="https://fr.mathworks.com/support/requirements/supported-compilers.html">https://fr.mathworks.com/support/requirements/supported-compilers.html</a>) and follow the installation instruction. Once the installation of C compiler is completed, copy the downloaded InPolygon folder to the desired location on your computer and change the Matlab current directory (cd) by typing in the command window cd("InPolygonDirectory"), where “InPolygonDirectory” is a full path on your computer, e.g., “C:∖Documents∖matlab∖InPolygon”. Next, in the Matlab command window type mex InPolygon.c. Once the InPolygon is installed, the following message will appear: “Building with 'MinGW64 Compiler (C)'. MEX completed successfully.”
+<div class="note">
+<span class="note-title">Note:</span> <i>S</i>tep d has to be performed anytime a new Matlab session is started. Alternatively, in the Matlab “Home” tab, section “Environment”, press "Set Path", select "Add folder," and browse to the Grafeo package folder. Press “Save”. This way, Matlab will locate the Grafeo package automatically any time you start a new Matlab session. A simplified Grafeo manual is posted with each new package release (see <a href="#key-resources-table">key resources table</a>). The extensive knowledge of MATLAB is not necessary to use Grafeo and to follow this protocol. However, we strongly recommend familiarizing oneself with the basic Matlab functionalities using online Matlab tutorials. Grafeo version 3 was developed and tested through Matlab 2019a to Matlab 2021a on both Mac and Windows 64-bit operating systems. The majority of Grafeo functionalities will work on Matlab 2017–2018. However, few functions used previously were replaced with new functions in the 2019 release (some examples are provided in the following sections). For better performance, Grafeo requires a computer with sufficient processor power and RAM. However, it was tested on a portable computer with an i5 1.70 GHz processor and 8 Gb of RAM. Higher specifications will increase the analysis time and speed up the visualization. Grafeo will run on any processor compatible with Matlab (<a href="https://fr.mathworks.com/support/requirements/matlab-system-requirements.html">https://fr.mathworks.com/support/requirements/matlab-system-requirements.html</a> ), including dual core (I3). However, its performance will depend on the generation of the processor. The minimum of 8 Gb of RAM is recommended.</div>
+Grafeo is under constant development; please consult the GitHub repository regularly to download the latest version.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Multicolor 3D dSTORM sample data sets</td>
+<td>(<a href="#bib9">Peaucelle et al., 2020</a>)</td>
+<td><a href="https://data.mendeley.com/datasets/mj4hdpwyb8/1">https://data.mendeley.com/datasets/mj4hdpwyb8/1</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td><i>Arabidopsis thaliana</i></td>
+<td>Na</td>
+<td>Na</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>InPolygon third-party MATLAB function</td>
+<td>Guillaume Jaquenot</td>
+<td><a href="https://uk.mathworks.com/matlabcentral/fileexchange/20754-fast-inpolygon-detection-mex">https://uk.mathworks.com/matlabcentral/fileexchange/20754-fast-inpolygon-detection-mex</a></td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td>MathWorks</td>
+<td><a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a></td>
+</tr>
+<tr>
+<td>Grafeo MATLAB script package</td>
+<td>(<a href="#bib9">Peaucelle et al., 2020</a>)(<a href="#bib2">Haas et al., 2018</a>)(<a href="#bib4">Haas et al., 2020b</a>)(<a href="#bib3">Haas et al., 2020a</a>)</td>
+<td><a href="https://github.com/inatamara/Grafeo-dSTORM-analysis-">https://github.com/inatamara/Grafeo-dSTORM-analysis-</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Spatial statistics</h3>
+<p>The dSTORM data can be considered as a spatial point pattern that consists of sets of coordinates of different types (colors/tags/epitopes). This allows the implementation of a multiscale spatial statistics functions to estimate the proximity, colocalization and spatial correlation for a multicolor dSTORM data sets, and domain or cluster size for each ‘color’ in the data set. The most commonly used spatial statistics functions are Ripley’s K function (and its derivatives) and Point Correlation Function (PCF), <a href="#fig9">Figure 9</a>. Both K and PCF are functions of the inter point distance <i>d</i> and can be calculated for the univariate (single color) or bivariate (two color) point patterns. The univariate Ripley’s K function probes whether points are distributed randomly, are dispersed or cluster at a given scale in the studied area (ROI). The bivariate Ripley’s K function determines whether two sets of points are distributed independently, segregate or aggregate at a given scale in the studied area (ROI).</p>
+<p>For a distance <i>d</i> univariate (bivariate) Ripley’s K function is calculated as a number of points of type 1 at the distance d or smaller from the point of type 1 (2), summed over all points (<a href="#fig9">Figure 9</a>A, top row). Thus, Ripley’s K is a cumulative sum of the number of points in a circle with a radius <i>d</i> for 2D analysis, and in concentric spheres of a radius <i>d</i> for 3D analysis. Grafeo is using the following estimator for the univariate (single color) K function for a point pattern of type <i>l</i> (<a href="#bib1">Dixon, 2014</a>):</p>
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <msub> <mi>K</mi> <mi>l</mi> </msub> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> <mo>=</mo> <msup> <mrow> <mo>(</mo> <mtext>N</mtext> <msub> <mtext>λ</mtext> <mi>l</mi> </msub> <mo>)</mo> </mrow> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> <msubsup> <mo>∑</mo> <mi>i</mi> <mi>n</mi> </msubsup> <mrow> <msubsup> <mo>∑</mo> <mrow> <mi>j</mi> <mo>≠</mo> <mi>i</mi> </mrow> <mi>n</mi> </msubsup> <mrow> <mi>w</mi> <mrow> <mo>(</mo> <mrow> <msub> <mtext>l</mtext> <mtext>i</mtext> </msub> <mo>,</mo> <msub> <mtext>l</mtext> <mtext>j</mtext> </msub> </mrow> <mo>)</mo> </mrow> <mi>I</mi> <mrow> <mo>(</mo> <mrow> <msub> <mi>d</mi> <mrow> <mi>i</mi> <mi>j</mi> </mrow> </msub> <mo>&lt;</mo> <mi>d</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Where <math> <mrow> <mtext>I</mtext> <mrow> <mo>(</mo> <mrow> <msub> <mi>d</mi> <mrow> <mi>i</mi> <mi>j</mi> </mrow> </msub> <mo>&lt;</mo> <mtext>d</mtext> </mrow> <mo>)</mo> </mrow> </mrow> </math> is unity if d<sub>ij</sub>, a distance between ith and jth point, is smaller than d, otherwise it is 0. λ<sub>l</sub> = N/A for 2D and λ<sub>l</sub> = N/V for 3D is a point density, <i>n</i> = N is a number of points in a point pattern <i>l</i> and A (V) is an area (volume) of the boundary B enclosing the data points. Here B corresponds to a ROI, which in 2D is a polygon and in 3D a polyhedron (a polygonal ROI with a thickness h), and w<sub>ij</sub> is an edge correction factor. In 2D (3D), w<sub>ij</sub> is calculated as an inverse of a fraction of a circle (sphere) with a radius d<sub>ij</sub>, centered at a point i, which lies inside region <i>B.</i></p>
+<p>Grafeo is using the following estimator for the bivariate K function calculated for a point patterns of type <i>l</i> and <i>k</i> (<a href="#bib1">Dixon, 2014</a>):</p>
+<p id="fd2a" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2a)</mtext></mtd> <mtd> <mrow> <msub> <mi>K</mi> <mrow> <mi>k</mi> <mi>l</mi> </mrow> </msub> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> <mo>=</mo> <mspace></mspace> <msup> <mrow> <mo>(</mo> <msub> <mi>λ</mi> <mi>k</mi> </msub> <msub> <mi>λ</mi> <mi>l</mi> </msub> <mi>V</mi> <mo>)</mo> </mrow> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> <mspace></mspace> <msubsup> <mo>∑</mo> <mi>k</mi> <mi>m</mi> </msubsup> <mrow> <msubsup> <mo>∑</mo> <mi>l</mi> <mi>n</mi> </msubsup> <mrow> <mi>w</mi> <mrow> <mo>(</mo> <mrow> <msub> <mi>k</mi> <mi>i</mi> </msub> <mspace></mspace> <mo>,</mo> <msub> <mi>l</mi> <mi>j</mi> </msub> <mspace></mspace> </mrow> <mo>)</mo> </mrow> <mi>I</mi> <mrow> <mo>(</mo> <mrow> <msub> <mi>d</mi> <mrow> <msub> <mi>k</mi> <mi>i</mi> </msub> <msub> <mi>l</mi> <mi>j</mi> </msub> </mrow> </msub> <mo>&lt;</mo> <mi>d</mi> </mrow> <mo>)</mo> </mrow> </mrow> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Where l and k denote difierent point patterns (colors or molecules tagged), λ<sub>l</sub> and, λ<sub>k</sub> is a point density for pattern l and k respectively, <math> <mrow> <msub> <mi>d</mi> <mrow> <msub> <mi>k</mi> <mi>i</mi> </msub> <msub> <mi>l</mi> <mi>j</mi> </msub> </mrow> </msub> </mrow> </math> is a distance between ith point of type k to the jth point of the type l, <i>n</i> and <i>m</i> is a number of points in a point pattern <i>l</i> and <i>k</i>, respectively. The edge correction factor <math> <mrow> <mtext>w</mtext> <mrow> <mo>(</mo> <mrow> <mtext>ki </mtext> <mo>,</mo> <mtext>lj </mtext> </mrow> <mo>)</mo> </mrow> <mspace></mspace> </mrow> </math>is as defined above. Since K<sub>kl</sub>(d) is typically different from K<sub>lk</sub>(d), Grafeo is also calculating the following bivariate estimator:</p>
+<p id="fd2b" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2b)</mtext></mtd> <mtd> <mrow> <msub> <mi>K</mi> <mrow> <mo>(</mo> <mi>k</mi> <mi>l</mi> <mo>,</mo> <mi>l</mi> <mi>k</mi> <mo>)</mo> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> <mo>=</mo> <mrow> <mrow> <mo>(</mo> <mrow> <msub> <mtext>λ</mtext> <mi>k</mi> </msub> <msub> <mi>K</mi> <mrow> <mi>l</mi> <mi>k</mi> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> <mo>+</mo> <mspace></mspace> <msub> <mtext>λ</mtext> <mi>l</mi> </msub> <msub> <mi>K</mi> <mrow> <mi>k</mi> <mi>l</mi> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mo>/</mo> <mrow> <mo>(</mo> <msub> <mtext>λ</mtext> <mi>k</mi> </msub> <mo>+</mo> <mspace></mspace> <msub> <mtext>λ</mtext> <mi>l</mi> </msub> <mo>)</mo> </mrow> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>The observed Ripley’s function is typically compared to what is expected if the points were distributed randomly (independently for bivariate distribution). Under the random distribution (univariate pattern) and independent distributions (bivariate pattern) the expected value of K(d) = πd<sup>2</sup> (area of a circle with a radius d) in 2D and K(d) = 4πd<sup>3</sup>/3 (volume of a sphere with a radius d) in 3D. Thus, in practice, it is easier to interpret a transformed Ripley’s K function, which for the univariate pattern in two dimensions (a) and the bivariate pattern in three dimensions (b, c) goes as follows:</p>
+<p id="fd3a" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 3a)</mtext></mtd> <mtd> <mrow> <msub> <mi>L</mi> <mi>l</mi> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> <mo>=</mo> <msqrt> <mfrac> <mrow> <msub> <mi>K</mi> <mi>l</mi> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> </mrow> <mi>π</mi> </mfrac> </msqrt> <mo>−</mo> <mi>d</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd3b" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 3b)</mtext></mtd> <mtd> <mrow> <msub> <mi>L</mi> <mrow> <mi>k</mi> <mi>l</mi> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> <mo>=</mo> <mroot> <mfrac> <mrow> <mn>3</mn> <msub> <mi>K</mi> <mrow> <mi>k</mi> <mi>l</mi> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> </mrow> <mrow> <mn>4</mn> <mi>π</mi> </mrow> </mfrac> <mn>3</mn> </mroot> <mo>−</mo> <mi>d</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd3c" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 3c)</mtext></mtd> <mtd> <mrow> <msub> <mi>L</mi> <mrow> <mo>(</mo> <mi>k</mi> <mi>l</mi> <mo>,</mo> <mi>l</mi> <mi>k</mi> <mo>)</mo> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> <mo>=</mo> <mroot> <mfrac> <mrow> <mn>3</mn> <msub> <mi>K</mi> <mrow> <mo>(</mo> <mi>k</mi> <mi>l</mi> <mo>,</mo> <mi>l</mi> <mi>k</mi> <mo>)</mo> </mrow> </msub> <mrow> <mo>(</mo> <mtext>d</mtext> <mo>)</mo> </mrow> </mrow> <mrow> <mn>4</mn> <mi>π</mi> </mrow> </mfrac> <mn>3</mn> </mroot> <mo>−</mo> <mi>d</mi> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>If at the distance d points are distributed randomly (independently), L<sub>l</sub>(d) (L<sub>kl</sub>(d), L<sub>(kl,lk)</sub>(d))) is ∼0. If the points cluster (aggregate) L<sub>l</sub>(d) (L<sub>kl</sub>(d), L<sub>(kl,lk)</sub>(d)) &gt; 0, and when points tend to disperse (segregate) L<sub>l</sub>(d), (L<sub>kl</sub>(d), L<sub>(kl,lk)</sub>(d)) &lt; 0. If points cluster (aggregate) only at certain distances, L<sub>l</sub>(d) (L<sub>kl</sub>(d), L<sub>(kl,lk)</sub>(d) presents a peak corresponding to the clustering (aggregation) domain size. To test the departure from the random (independent) distribution Grafeo performs repetitive randomization steps of the experimental points to calculate a random (independent) distribution envelops. If L<sub>l</sub>(d) (L<sub>kl</sub>(d), L<sub>(kl,lk)</sub>(d)) lie within the randomization envelopes, the pattern is random (independent). If L<sub>l</sub> (L<sub>kl</sub>, L<sub>(kl,lk)</sub>(d)) is greater/smaller then envelopes the patterns display clustering (aggregation)/dispersion (segregation) (<a href="#fig9">Figure 9</a>C, top row), see also <a href="#tbl1">Table 1</a>.</p>
+<table id="tbl1">
+<caption>Table 1. Expected values for the univariate (bivariate) Ripley’s K and L functions, and PCF for 2D and 3D data sets</caption>
+<thead>
+<tr>
+<th>UnivariateBivariate</th>
+<th>RandomIndependent</th>
+<th>DispersedSegregated</th>
+<th>ClusteredAggregated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K<sup>2D</sup>
+</td>
+<td>πd<sup>2</sup>
+</td>
+<td>&lt; πd<sup>2</sup>
+</td>
+<td>&gt; πd<sup>2</sup>
+</td>
+</tr>
+<tr>
+<td>K<sup>3D</sup>
+</td>
+<td>4 πd<sup>3</sup>/3</td>
+<td>&lt; 4 πd<sup>3</sup>/3</td>
+<td>&gt;4 πd<sup>3</sup>/3</td>
+</tr>
+<tr>
+<td>L<sup>2D</sup>
+</td>
+<td>0</td>
+<td>&lt; 0</td>
+<td>&gt;0</td>
+</tr>
+<tr>
+<td>L<sup>3D</sup>
+</td>
+<td>0</td>
+<td>&lt; 0</td>
+<td>&gt;0</td>
+</tr>
+<tr>
+<td>PCF<sup>2D</sup>
+</td>
+<td>1</td>
+<td>&lt; 1</td>
+<td>&gt;1</td>
+</tr>
+<tr>
+<td>PCF<sup>3D</sup>
+</td>
+<td>1</td>
+<td>&lt; 1</td>
+<td>&gt;1</td>
+</tr>
+</tbody>
+</table>
+<p>The PCF function is a derivative of Ripley's K function. Grafeo estimates PCF as a difference between Ripleys’ K function at distances d and d + dr, normalized by the difference in an area (volume) of a ring (spherical shell) with radius d and the thickness dr for 2D (3D) analysis (<a href="#fig9">Figure 9</a>A, bottom row):</p>
+<p id="fd4a" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 4a)</mtext></mtd> <mtd> <mrow> <mi>P</mi> <mi>C</mi> <mi>F</mi> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> <mo>=</mo> <mfrac> <mrow> <mi>K</mi> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mo>+</mo> <mi>d</mi> <mi>r</mi> </mrow> <mo>)</mo> </mrow> <mo>−</mo> <mi>K</mi> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> </mrow> <mrow> <mi>π</mi> <mo>(</mo> <msup> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mo>+</mo> <mi>d</mi> <mi>r</mi> </mrow> <mo>)</mo> </mrow> <mn>2</mn> </msup> <mo>−</mo> <msup> <mi>d</mi> <mn>2</mn> </msup> <mo>)</mo> </mrow> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd4b" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 4b)</mtext></mtd> <mtd> <mrow> <mi>P</mi> <mi>C</mi> <mi>F</mi> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> <mo>=</mo> <mfrac> <mrow> <mi>K</mi> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mo>+</mo> <mi>d</mi> <mi>r</mi> </mrow> <mo>)</mo> </mrow> <mo>−</mo> <mi>K</mi> <mrow> <mo>(</mo> <mi>d</mi> <mo>)</mo> </mrow> </mrow> <mrow> <mn>4</mn> <mo>/</mo> <mrow> <mn>3</mn> <mi>π</mi> <mrow> <mo>(</mo> <mrow> <msup> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mo>+</mo> <mi>d</mi> <mi>r</mi> </mrow> <mo>)</mo> </mrow> <mn>3</mn> </msup> <mo>−</mo> <msup> <mi>d</mi> <mn>3</mn> </msup> </mrow> <mo>)</mo> </mrow> </mrow> </mrow> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Where <a href="#fd2a">Equation 2a</a> (<a href="#fd2b">2b</a>) corresponds to a 2D (3D) point pattern and can be applied to both univariate and bivariate point patterns. The univariate (autocorrelation function)/bivariate PCF estimate the increase in probability of finding molecule of the same/different type at a distance d to d + dr as compared to the random/independent distribution (PCF = 1) (<a href="#fig9">Figure 9</a>C, bottom row). In contrast, K and L function are cumulative functions of the distance d, so the characteristics at the different spatial scales are combined.</p>
+<h3 id="sec2.2">Model fitting to ACF and PCF</h3>
+<h4 id="sec2.2.1">Fitting the model to univariate PCF (ACF)</h4>
+<p>Grafeo permits fitting a model to the univariate PCF (autocorrelation function, ACF) that accounts for the over-counting of the same molecule and the final localization precision as described previously (<a href="#bib16">Veatch et al., 2012</a>, <a href="#bib12">Sengupta et al., 2011</a>, <a href="#bib13">Sengupta et al., 2013</a>):</p>
+<p id="fd5" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 5)</mtext></mtd> <mtd> <mrow> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>t</mi> <mi>o</mi> <mi>t</mi> </mrow> </msub> <mo>=</mo> <mrow> <mo>(</mo> <mrow> <mfrac> <mrow> <mi>δ</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> </mrow> <mi>ρ</mi> </mfrac> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>+</mo> <mi>A</mi> <msup> <mi>e</mi> <mrow> <mo>−</mo> <mfrac> <mi>r</mi> <mi>d</mi> </mfrac> </mrow> </msup> </mrow> <mo>)</mo> </mrow> </mrow> <mo>)</mo> </mrow> <mo>⊗</mo> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>P</mi> <mi>S</mi> <mi>F</mi> </mrow> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>The first term quantifies the correlation due to the multiple detection of the same fluorescent molecule, where<math> <mrow> <mspace></mspace> <mi>δ</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> </mrow> </math> is a Dirac delta, and <math> <mrow> <mi>ρ</mi> </mrow> </math> the average density of molecules. The second term models the spatial organization of the molecule of interest (e.g., a protein) where d is a correlation length that estimates the cluster size and A is correlation amplitude that is proportional to molecules’ density within a cluster. The <math> <mrow> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>P</mi> <mi>S</mi> <mi>F</mi> </mrow> </msub> </mrow> </math> is an autocorrelation function of the point spread function (PSF) describing the uncertainty in localizing the fluorescence molecule, and <math> <mrow> <mo>⊗</mo> </mrow> </math> is a convolution operator. The convolution of <math> <mrow> <mi>δ</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> </mrow> </math> with <math> <mrow> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>P</mi> <mi>S</mi> <mi>F</mi> </mrow> </msub> </mrow> </math> quantifies the cluster-like appearance of a single fluorescence molecule, i.e., the spread from a single point (r = 0) to an area defined by the localization precision. Grafeo models PSF as a Gaussian function <math> <mrow> <mi>P</mi> <mi>S</mi> <mi>F</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mo>=</mo> <msup> <mrow> <mo>(</mo> <mrow> <mi>σ</mi> <msqrt> <mrow> <mn>2</mn> <mi>π</mi> </mrow> </msqrt> </mrow> <mo>)</mo> </mrow> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> <msup> <mi>e</mi> <mrow> <mo>−</mo> <mfrac> <msup> <mi>r</mi> <mn>2</mn> </msup> <mrow> <mn>2</mn> <msup> <mi>σ</mi> <mn>2</mn> </msup> </mrow> </mfrac> </mrow> </msup> </mrow> </math>, so its autocorrelation function is also a Gaussian function with a sigma of √2σ, <math> <mrow> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>P</mi> <mi>S</mi> <mi>F</mi> </mrow> </msub> <mo>=</mo> <mspace></mspace> <mfrac> <mn>1</mn> <mrow> <mn>4</mn> <mi>π</mi> <msup> <mi>σ</mi> <mn>2</mn> </msup> </mrow> </mfrac> <msup> <mi>e</mi> <mrow> <mrow> <mo>−</mo> <msup> <mi>r</mi> <mn>2</mn> </msup> </mrow> <mo>/</mo> <mrow> <mo>(</mo> <mn>4</mn> <msup> <mi>σ</mi> <mn>2</mn> </msup> <mo>)</mo> </mrow> </mrow> </msup> </mrow> </math>. Thus, the first term in the <a href="#fd5">(Equation 5)</a> is given by:</p>
+<p id="fd6" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 6)</mtext></mtd> <mtd> <mrow> <mi>A</mi> <mi>C</mi> <mi>F</mi> <msub> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mrow> <mi>s</mi> <mi>i</mi> <mi>n</mi> <mi>g</mi> <mi>l</mi> <mi>e</mi> </mrow> </msub> <mo>=</mo> <mspace></mspace> <mfrac> <mn>1</mn> <mrow> <mn>4</mn> <mi>π</mi> <mi>ρ</mi> <msup> <mi>σ</mi> <mn>2</mn> </msup> </mrow> </mfrac> <msup> <mi>e</mi> <mrow> <mo>−</mo> <msup> <mi>r</mi> <mn>2</mn> </msup> <mo>/</mo> <mrow> <mo>(</mo> <mn>4</mn> <msup> <mi>σ</mi> <mn>2</mn> </msup> <mo>)</mo> </mrow> </mrow> </msup> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p><u>Parameter estimation</u>. The fit to <a href="#fd5">(Equation 5)</a> recovers the correlation length (domain size) d, and amplitude A. The two variable input parameters: (1) the average density of molecules ρ and (2) the average uncertainty in a single molecule localization σ should be estimated beforehand. The σ can be estimated as a mean of the localization precision. Alternatively, you can image the isolated secondary antibodies on the glass coverslip in the same imaging condition as your experiment. Calculate the univariate PCF (ACF) and fit (<a href="#fd6">Equation 6</a>) to recover σ, given the ρ. To estimate ρ, divide the mean (or median) Voronoi diagram density by the average number of detection within a cluster formed by the isolated secondary anybody. To do so, segment clusters as described in the section “<a href="#sec3.4">graph-based cluster analysis</a>” and calculate the mean density of clusters. For detailed estimation of σ and ρ for PALM (Photo Activation Localization Microscopy), refer to <a href="#bib13">Sengupta et al. 2013</a> (<a href="#bib13">Sengupta et al., 2013</a>). The average number of molecules in the domain of a size d is calculated as follows: <math> <mrow> <mi>N</mi> <mo>=</mo> <mn>2</mn> <mi>π</mi> <mi>A</mi> <msup> <mi>d</mi> <mn>2</mn> </msup> <mi>ρ</mi> </mrow> </math>. Note that most of the secondary antibodies have more than one fluorescence molecule attached. To improve the model fitting, use the secondary antibodies tagged with only one fluorescence molecule.</p>
+<h4 id="sec2.2.2">Fitting the model to bivariate PCF</h4>
+<p>The bivariate PCF is not influenced by the single molecule over-counting. Grafeo permits fitting the following model of the bivariate PSF (<a href="#bib13">Sengupta, Jovanovic-Talisman and Lippincott-Schwartz, 2013</a>):</p>
+<p id="fd7" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 7)</mtext></mtd> <mtd> <mrow> <mi>P</mi> <mi>C</mi> <mi>F</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> <mo>=</mo> <mrow> <mo>(</mo> <mrow> <mn>1</mn> <mo>+</mo> <mi>A</mi> <msup> <mi>e</mi> <mrow> <mo>−</mo> <mfrac> <mi>r</mi> <mi>d</mi> </mfrac> </mrow> </msup> </mrow> <mo>)</mo> </mrow> <mo>⊗</mo> <mi>C</mi> <mrow> <mo>(</mo> <mi>r</mi> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>Where C(r) is a cross-correlation of the two point spread functions corresponding to two imaging channels and is given by the Gaussian function with the sigma <math> <mrow> <msub> <mi>σ</mi> <mi>c</mi> </msub> <mo>=</mo> <mspace></mspace> <msqrt> <mrow> <msubsup> <mi>σ</mi> <mn>1</mn> <mn>2</mn> </msubsup> <mo>+</mo> <msubsup> <mi>σ</mi> <mn>2</mn> <mn>2</mn> </msubsup> </mrow> </msqrt> </mrow> </math>, where 1, 2 correspond to imaging channels. The fit to (<a href="#fd7">Equation 7</a>) recovers the correlation domain d and amplitude A.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Loading “.txt” dSTORM molecular lists to grafeo</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable time, several to tens of minutes</div>
+<p>This step describes how to upload a molecular lists (ML) file containing the single-molecule localization data. This is demonstrated on the ML in “.txt” format obtained from the Nikon NSTORM microscope. Nikon NSTORM outputs a “.txt” localization data file containing coordinates (x, y, z) for each localized molecule, along with other attributes used in the later steps, notably the localization precision (LP), the number of photons (PN), and frame index at which given molecule was detected. In this step Grafeo converts the data to Matlab ".mat" data file format that contains single-molecule features used for the subsequent data analysis and visualization. Next, we show how to combine individual channel ".mat" files to reconstruct a multicolor data file.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Step 1</div>
+<ol>
+<li>
+<b>Importing the molecular list to Grafeo.</b>
+<ol type="a">
+<li>In the main Grafeo menu bar press “File” -&gt; “3D” or “2D” -&gt; “single file” or “batch” -&gt; “Import single Nikon txt molecular list”, <a href="#fig2">Figure 2</a>A.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Data importation and filtering</div>
+<p>(A) Importing a single file (A(i)) or multiple files in a batch processing mode (A(ii)).</p>
+<p>(B) The data importation input parameters. From the top to bottom: (1) the total number of columns in a molecular list file, (2–3) the column numbers for the X (2) and Y (3) coordinate, (4) photon count, (5) localization precision, (6) frame index at which the molecule was detected, (7) column index with the channel tag (in the Nikon NIS elements software, the name for each channel can be set, e.g., 488, then the same name will be used in the molecular list file), (8) trace length (the number of subsequent image frames the single molecule appeared), (9) Z coordinate column, (10) a flag for the molecules for which Z position fit failed (in the Nikon file it is ‘Z Rejected’, and this tag replaces the channel tag), (11) a binary tag specifying whether to import all the data (set to 0) or only the molecules with a successful Z position fit (set to 1), (12) the two element vector specifying the minimum number of photons and the maximum localization precision (the molecules with fewer number of photons or greater localization precision will be discarded from the subsequent analyses), (13) the number of header lines preceding the column data, and finally (14) the file space delimiter (for Tab use ‘∖t’).</p>
+<p>(C) Once the data is imported to the Matlab format, it can be loaded to the Grafeo memory. C(i) Chanel selection dropdown menu, C(ii) “Re-threshold” push button applies a new filtering parameters, “Save ML” saves the updated molecular list file.</p>
+<p>(D) Data filtering panel using a minimum photon number (PN), a maximum localization precision (LP), and a minimum Voronoi diagram density (VD). The last four rows correspond to a minimum, maximum, mean, and median of the Voronoi diagram density for each channel and are populated automatically whenever the filtering parameters are changed or a new file is loaded.</p>
+</figcaption>
+</figure>
+</li>
+<li>A pop-up window will be displayed where you should provide input parameters, such as a column index for the listed ML parameters (e.g., LP and PN), and the minimum PN and the LP, <a href="#fig2">Figure 2</a>B.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Once the data import and processing are finished, the output “.mat” file is automatically saved; its name is suffixed with “_Xwc_Ywc_pn_f_lp_Zc_l_zr.mat” that indicates variables stored in the file: y, x coordinates after wrap (w) transformation and chromatic corrections (c), photon number (pn), frame index (f), z coordinate after chromatic shift correction (Zc), trace length, that is the number of successive frames the molecule has appeared (l), and Z rejected binary tag (zr). See <a href="#sec6.3">troubleshooting 2</a>.</div>
+<div class="note">
+<span class="note-title">Note:</span> You can upload all “.txt” files in a given folder at once, including first-level subfolders, by choosing the “batch processing” option, <a href="#fig2">Figure 2</a>A(i). After the data is uploaded to Matlab, the corresponding Voronoi Diagram is calculated to link each localized molecule to a Voronoi polygon (VP). The local molecule density is estimated as an inverse of VP size and can be used to efficiently filter the data (see step 3)<b>.</b> The zr value is 1 if the Z coordinate fit (refer to Nikon manual) was successful given the calibration and the constraints on fit parameters. Usually, molecules with zr = 0 have a fixed value (e.g., -400 for each of them) and should be rejected from further analysis. However, for a too strict parameter selection or incorrect calibration, a molecule may be tagged 0, while the Z position is appropriate. This could result in suppressing too many valid points.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Step 2</div>
+<ol start="2">
+<li>
+<b>Combining multicolor molecular list.</b> This step shows how to combine single-channel “.mat” files generated in the step 1 into two/three-channel multicolor “.mat” files.
+<ol type="a">
+<li>In the channel dropdown menu, select the option “<i>Chanel 1</i>”, then press the “<i>Load raw</i>” pushbutton below, <a href="#fig2">Figure 2</a>C(i). You will be prompted to select a first (that you chose to be your channel 1, here A647 prefixed file) “.mat” file that was generated in the step 1.</li>
+<li>Repeat the same steps by selecting the "Chanel 2/3” option in the selection box and loading channel 2 and 3 “.mat” files (CF568 and A488).</li>
+<li>Once all three single-channel files are loaded to the Grafeo memory, select “<i>Chanel 1+2+3</i>” in the dropdown menu and then press “<i>Save ML”</i> to save a combined multicolor molecular list to a file with the desired name (here Corralign_647_568_488_2.mat), <a href="#fig2">Figure 2</a>C(ii). The single-channel files can be loaded in any order; here, we follow the acquisition sequence (i.e., 647, 568, 488).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> At this step no data filtering is applied, and filtering parameters (see step 3) that are saved to the file correspond to those chosen in the step 1 (PN, LP), and the minimum VD. Optionally, save a file only after the step 3 that is once the data is appropriately filtered. When using “<i>Load raw</i>” pushbutton, the data is added to the previous plot. If you want to clear the main axes, check the “Clear axes” checkbox located above the main axes in the right corner. Uncheck it once you load the first data file.</div>
+<ol start="3">
+<li>
+<b>Single-molecule data filtering with Voronoi tessellation, photon counts, and localization precision.</b> In this step, we show how to filter the data by adjusting localization precision LP, photon number PN, and the Voronoi diagram density (VD, an inverse of VP size) in a “Voronoi Tesselation Panel”, <a href="#fig1">Figures 1</a> and <a href="#fig2">2</a>D. The lower the LP, the more precisely single-molecule is localized. By decreasing LP and increasing PN and VD, more molecules are filtered out. A large VPs (small VD) usually corresponds to a noise. For the 3D dSTORM data filtering, start with the VD ∼10<sup>−8</sup> (default), increase (decrease) the threshold to discard (include) more molecules. A good starting value for PN is ∼1000–1500, and for LP is ∼25–50 nm. Once the parameters are set up, press <i>“re-threshold</i>” to filter the data, <a href="#fig2">Figure 2</a>C(iii). Save the filtered data using the “<i>Save ML</i>” pushbutton, <a href="#fig2">Figure 2</a>C(ii).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The LP and PN values displayed in the “Voronoi Tessellation panel” are automatically changed whenever a new multicolor file is loaded (“Load multicolor” pushbutton). The LP and PN correspond to the minimum PN and the maximum LP found in the data after any filtering step, <a href="#fig2">Figure 2</a>D.</div>
+<ol start="4">
+<li>
+<b>Multicolor channel registration.</b> In this step, we show how to perform the automatic channel alignment.
+<ol type="a">
+<li>Before the alignment, it is recommended to apply a stringent threshold for the filtering parameters in the “Voronoi tessellation panel” (see step 3). The exact values depend on the experiment; we recommend a minimum photon number PN &gt; 3000, maximum localization precision LP &lt; 20 nm, and the Voronoi density VD &gt; 10<sup>−7</sup>.</li>
+<li>After filtering, save the file using “Save ML” pushbuttons with the appropriate name, e.g., “Corralign_647_568_488_2_filtered.mat”. You will need to load this file in the following steps.</li>
+<li>To perform automatic alignment of the three-channel data, select “2–3 color Voronoi” -&gt; 3D/2D -&gt; “Single file” -&gt; “Align three channels” in the main Grafeo menu bar, <a href="#fig3">Figure 3</a>A. The pop-up window will appear where you have to provide the input parameters: a prefix of a filtered file name that you will be asked to select (here “Corralign_”), and the replacement prefix for the output file (here “Realigned_”), <a href="#fig3">Figure 3</a>B. You should also specify whether to exclude “Z-rejected” points from the alignment analysis (recommended) for each channel separately (1 – do not use “Z rejected”). Press “ok”.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Automatic multicolor data alignment</div>
+<p>(A) Selecting the option to align the three-channel data.</p>
+<p>(B) The input parameter window for the data alignment, from top to bottom: (1) a prefix (or the first few letters) of the file that will be loaded and used for the alignment, (2) A prefix for the output file containing the results of alignment. The prefix from (2) will replace prefix from (1), and the remaining file name will be the same.</p>
+<p>(C) The optimality plot displaying the alignment optimization steps.</p>
+<p>(D) The Grafeo panel permitting setting up the optimization parameters.</p>
+<p>(E) The Grafeo manual alignment panel. It also permits loading the alignment results ('Load aligned' pushbutton) and applying it to the currently opened data ('Apply aligned' pushbutton).</p>
+</figcaption>
+</figure>
+</li>
+<li>Next, you will be prompted to select the file that you want to align (here “Corralign_647_568_488_2_filtered.mat”). The automatic alignment will start.</li>
+</ol>
+</li>
+</ol>
+<p>The optimization progress is displayed both in the Matlab “Command Window” and as the first order optimality plot. The alignment procedure for a three-color dSTORM data consists of two steps: first, channel 1 is aligned to channel 2; in the second step, channel 3 is aligned to channel 2. For each step, a separate optimality plot will appear. The fit parameters can be adjusted in the “Fit Parameters” panel, <a href="#fig3">Figure 3</a>D (see also <a href="#fig1">Figure 1</a>). For better optimization results, it is recommended to use stringent values for TolFun, TolX, StepTol, i.e., a minimum of ∼10<sup>−10</sup>. At the end of each optimization step, a message box will appear confirming the termination of the alignment procedure. The output aligned file is automatically saved (using a chosen prefix name, here “Realigned_”).</p>
+<div class="note">
+<span class="note-title">Note:</span> The alignment algorithm uses Matlab build-in function fminunc and minimizes the distance between two sets of points (channel 1 to channel 2, and then channel 3 to channel 2). To learn more, please refer to Matlab documentation on fminunc and the optimization parameters (optimset, TolX, StepTol, FunTol). The alignment can also be done on the fiducial markers or the subpart of the data (see the last parameter in <a href="#fig3">Figure 3</a>B), which substantially speeds up the alignment process. For this, either plot ROI (Region of Interest) around a fiducial marker (see next section to learn how to draw ROI in the main Grafeo axes), or filter the data by setting very stringent parameters, e.g., VD ∼0.01, so that almost all the data except the fiducial markers are filtered out. Use the "Poly roi draw” pushbutton in the "Create ROI” panel (see below) to plot a polygonal ROI that would include mostly the fiducial markers or relevant data. In the current Grafeo version, only the latest drawn ROI is used. Thus, draw the ROI that contains several fiducial markers but avoiding the remaining data as much as possible. Future Grafeo releases should include multi ROI alignment. You can also place one rectangular ROI around one fiducial marker, but the fit will not consider the spatial inhomogeneity due to the optical aberrations. The alignment performed on an unfiltered data set can be lengthy. We recommend using ROI either around fiducials or around a subpart of the data. The ROI option is not available for the alignment in the batch mode.</div>
+<ol start="5">
+<li>
+<b>Apply alignment results to the currently opened data file.</b> At the end of step 4, the alignment results are saved automatically in a file with a prefix specified by the user (see above). This file contains a highly filtered data (“Realigned_647_568_488_2_filtered.mat”).
+<ol type="a">
+<li>Before applying the alignment to the currently loaded dataset, first adjust the filtering parameters, <a href="#fig2">Figure 2</a>D.</li>
+<li>To load and apply the alignment on the currently open file in Grafeo, go to the “Manual alignment panel”, press “Load align" and selected the file with the results of alignment, and then press “Apply align” <a href="#fig3">Figure 3</a>E. To refresh the plot, press “Scatter” in the panel above the main Grafeo axes.</li>
+</ol>
+</li>
+<li>
+<b>Manual alignment.</b> If the automatic alignment results are not satisfactory (or if you do not have Matlab optimization toolbox), you can perform the manual alignment. In the “Manual alignment” panel, select the step size (in nm), <a href="#fig3">Figure 3</a>E. As in the automatic alignment, during the manual alignment, channel 2 stays unchanged. You can align channel 1 to channel 2 (column 1), and channel 3 to channel 2 (column 2), by pressing “Step UP”, “Step DOWN”, “Step LEFT”, “Step RIGHT”, “Z up”, “Z down”. Use the press button “Toggle Zoom” in the panel above the main axes to zoom on the data and evaluate XY's alignment. For the manual alignment in the Z dimension, you have first to draw a ROI (see below). When you press "Z up" or "Z down", a 3D scatter plot will appear, displaying the data in ROI.</li>
+</ol>
+<h3 id="sec3.2">Data visualization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable, ∼several minutes</div>
+<p>This section describes how to draw different regions of interest and how to generate 2D/3D still and animated scatter plots using the data from the small ROI.</p>
+<ol start="7">
+<li>
+<b>Drawing polygonal ROI.</b> To draw a polygonal ROI, press “Poly ROI draw” in the "Create ROI” panel, <a href="#fig4">Figure 4</a>A. You will be prompted to select one of two options: polygonal ROI (0) or freehand ROI (1), <a href="#fig4">Figure 4</a>B. Double click to draw the last vertex. For more details on how to draw polygonal and freehand ROI, consult Matlab documentation pages for the Matlab build-in functions “drawfreehand” and “drawpolygon”. Only the latest drawn ROI is active. You can load a previously saved polygonal using “Load ROI”. To display the loaded ROI press “Disp. Poly roi”.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Creating the region of interest (ROIs)</div>
+<p>(A) ROI panel permitting (1) to create ('Poly roi create' pushbutton), save ('Save ROI′ pushbutton), load ('Load roi' pushbutton), and display ('Disp. Poly roi' pushbutton) polygonal ROI; (2) to create a rectangular ROI ('Rect. roi' pushbutton); (3) to create a twin polygonal ROI ('Twin poly roi', pushbutton), plot ('Plot twin poly roi', pushbutton), delate ('Delate twin poly roi', pushbutton), and save ('Save twin roi', pushbutton). For more details on the ROIs, see <a href="#fig1">Figure 1</a> and the text.</p>
+<p>(B) This window appears when you press ‘Poly roi draw’ and permits selecting between a freehand ROI and polygonal ROI (see text for more information).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> “Poly ROI draw” uses “drawpolygon” and “drawfreehand” that replaced the former Matlab functions (polygonal ROI, freehand ROI) and require at least Matlab 2019a version. If you have a previous Matlab version, use a rectangular ROI only.</div>
+<ol start="8">
+<li>
+<b>Drawing a rectangular ROI.</b> To draw rectangular ROI press “rect. ROI” located in the “Create ROI” panel. To adjust the initial rectangular ROI size and position, change the edit box parameters located next to the "rect. roi” button ([left position, bottom position, width, height]). Rectangular ROI is resizable and draggable.</li>
+<li>
+<b>Drawing a twin polygonal ROI.</b> Twin polygonal ROI is composed of the two mirror-image polygonal ROIs. It permits analyzing the number of points in the two adjacent polygonal ROI, e.g., on the two sides of a cell wall or cell membrane.
+<ol type="a">
+<li>First, zoom in to the plot area where you want to draw a ROI using “toggle zoom” pushbutton.</li>
+<li>To plot twin polygonal ROI, press "Twin poly roi" and draw a line separating two regions. Double click to finish drawing a line. Mind the direction of the line drawing; it will define which ROI is tagged as the first. You can plot several twin poly roi. Each time you finish drawing a line, you will be asked if you want to draw a new line (press "Yes" to draw another line) or finish drawing the ROIs (press "No").</li>
+<li>To visualize the drawn ROIs, press "Plot twin poly roi". To remove drawn ROIs, provide the ROI number (fill the edit box) and press "Delete twin poly roi". To check if a correct ROI was removed, refresh the main axes by pressing the "Scatter" pushbutton, and then press "Plot twin poly roi”. Each time the twin polygonal ROI is displayed, the number of points in the two rectangular ROIs is calculated for each twin polygonal ROI. The width of the rectangular ROI can be adjusted (without need to draw a new roi) using the edit box next to the "Plot twin poly roi" push button (the number is provided in nanometers).</li>
+<li>To save a twin polygonal ROI and the analyzed data, press "Save twin poly roi". You can load a previously saved twin polygonal ROI using “Load twin poly roi”.</li>
+</ol>
+</li>
+<li>
+<b>Visualizing the data in the polygonal and rectangular ROI.</b> To visualize the data in the polygonal or rectangular ROI using a scatter plot press the "3d scatter” pushbutton in the “ROI plot” panel <a href="#fig5">Figure 5</a>A(i). For the 3D data, you can rotate the plot manually or change the view by taping view(az, el) in the Matlab command window, where <i>az</i> is an azimuth angle (0&lt;az&lt;180) and <i>el</i> is elevation angle (0&lt;el&lt;360).</li>
+<li>
+<b>Generating 3D animated scatter plot.</b> To animate your scatter plot, press “3D animate“ in the “ROI plot” panel, <a href="#fig5">Figure 5</a>A(ii). You will be prompted to provide several input parameters, including initial and final azimuth and elevation angles, the number of rotation steps, and the output file format (“.gif” or “.avi” are recommended), <a href="#fig5">Figure 5</a>B.</li>
+<li>
+<b>Adjusting figure properties.</b> To limit the data Z-axis range display, check the “Z filter box” checkbox and populate the “Z range” edit box that is located at the top of the “Plot ROI” panel, e.g., [−450,450], <a href="#fig5">Figure 5</a>A(iii). You can adjust the marker color by changing the edit boxes located above the main Grafeo axes (Color 1, Color 2, Color 3). Use the numbers between 0 and 255 for the red, blue, green (RGB), e.g., for green color type [0, 255, 0]/255, <a href="#fig2">Figure 2</a>C. Additionally, you can use a colormap to represent the position of a fluorophore along the Z-axis. For this, in the “ROI plot” panel, first select the channel you want to map by typing 1, 2, or 3 in the “Z map channel” edit box ( set to 0 for no mapping), and chose a predefined color map from a dropdown menu, or select “custom”, to create your color map, <a href="#fig5">Figure 5</a>A(iv). You can also adjust the different figure display parameters: figure and axes background color (the default is white [255,255,255]/255), the axes color (the default is black [0,0,0]/255), marker size and transparency for each channel, line width (for Voronoi diagrams and Delaunay graphs plot), face transparency (for Voronoi diagram plots), and font size, <a href="#fig5">Figure 5</a>A(v).</li>
+</ol>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Displaying the data inside the region of interest (ROIs)</div>
+<p>(A) The data inside ROI can be visualized as a still (A(i), "3d scatter") or animated (A(ii), "3d animate") scatter plot. A(iii) The Z-axis range of the displayed data can be adjusted. A(iv) For one of the channels (colors), a colormap to encode the Z position of a molecule can be applied. Select channel (1, 2, or 3) and the colormap. A(v) Setting up the figure properties, such as marker color, transparency, and size, axes color, the figure, and axes background color.</p>
+<p>(B) The input parameters window for the animated scatter plot. You have to provide the following parameters, from top to bottom: (1) the azimuth and (2) the elevation angle range (initial and final angles), the number of rotation steps for the (3) azimuth, and (4) elevation angle, (5) the zoom factor, (6) the final video file name, (7) the video frame rate (for '.avi', and '.mp4′ formats), (8) the zoom frequency, and (9) the number of steps to achieve the zoom factor, (10) The final azimuth and elevation angle, (11) the output file format, (12) the delay time ('.gif' format only, equivalent to the frame rate).</p>
+<p>(C) A still scatter plot of a three-color data; C(i) a top (X, Y) 2D view, and C(ii) side (X,Y,Z) 3D view (see also <a href="#mmc1">Methods video S1</a>).</p>
+<p>(D) The marker transparency can be used to enhance the clustering. D(i) Scatter plot with transparency 1 (completely opaque points), and D(ii) with the transparency set to 0.6.</p>
+</figcaption>
+</figure>
+<figure id="mmc1"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Mmc1.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. Animated scatter plot of the data shown in Figure 5C, related to step 11</div>
+</figcaption>
+</figure>
+<h3 id="sec3.3">Spatial statistics on the multicolor 2D/3D dSTORM data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable time, few to tens of minutes</div>
+<p>This section describes the spatial statistics functions, such as Ripley’s (K, L) and Pair Correlation Functions (PCF) that permit evaluating spatial distribution and spatial correlation between biomolecules. These functions are commonly used to analyses spatial point patterns, such as 2D or 3D dSTORM datasets, composed of the point types (colors) and their coordinates (<a href="#bib12">Sengupta et al., 2011</a>; <a href="#bib16">Veatch et al., 2012</a>; <a href="#bib13">Sengupta, Jovanovic-Talisman and Lippincott-Schwartz, 2013</a>; <a href="#bib14">Shivanandan et al., 2014</a>; <a href="#bib15">Shivanandan, Unnikrishnan and Radenovic, 2016</a>; <a href="#bib7">Nicovich, Owen and Gaus, 2017</a>; <a href="#bib10">Peters et al., 2017</a>, <a href="#bib11">Peters et al., 2018</a>). For the three-color data set, these functions are computed pairwise.</p>
+<ol start="13">
+<li>Ripley/PCF cluster analyses and colocalization.
+<ol type="a">
+<li>First, draw a polygonal ROI as described in the “<a href="#sec3.2">data visualization</a> section<i>”.</i> The ROI should be a convex polygon. To test your ROI, press the “Test roi” pushbutton, <a href="#fig6">Figure 6</a>A. If the blue points lie outside the red polygon, then the polygon is not convex (compare <a href="#fig6">Figure 6</a>C, a concave polygon, randomized data fall outside of the ROI) with <a href="#fig6">Figure 6</a>D (a convex polygon, the randomized data fall inside the ROI). The polygonal ROI can be adjusted by dragging and repositioning its vertices. This can be applied only to the latest drawn polygonal ROI.
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Data clustering, colocalization, and spatial point pattern analysis</div>
+<p>(A) The data in the cluster analysis selection panel.</p>
+<p>(B) The input parameters window for Ripley's analysis ('Ripley' pushbutton in A), from top to bottom: (1) the number of randomization steps, (2) a distance-vector to evaluate Ripley's and PCF functions (see Matlab manual for the vector notation), (3) a flag to plot (set to 1) or not (set to 0) the data for each randomization step, (4) A dimension for the Ripley's and PCF functions calculations (2 or 3), (5) a flag to apply (set to 1) or not (set to 0) boundary conditions to Ripley's and PCF functions calculation, (6) this parameter will be discontinued in the subsequent releases, (7) the Z range of the data to calculate the Ripley's and PCF functions, (8) The fold increase in the number of elements in a position vector from which randomized positions will be drawn (with respect to the number of data points).</p>
+<p>(C and D) The randomized data plot for concave (C) and a convex (D) polygonal ROI.</p>
+<p>(E) A zoom in on the Grafeo main menu bar and the selection to plot Ripley's and PCF functions.</p>
+<p>(F) The input parameters for the Ripley's and PCF function plots, from top to bottom: (1) The X-axis label, (2) The X-axis tick position. (3, 4) A flag to constrained the plot (set to 1) or not (set to 0) to the minimum and maximum data value for the X-axis (3) and Y-axis (4), (5) A polynomial degree to remove the polynomial trend from the data (detrending) Ripley's and PCF function (typically 2 and 3), this affects only the data display.</p>
+</figcaption>
+</figure>
+</li>
+<li>Press “Ripleys” in the “Voronoi, Ripley, Graph in ROI” panel. You will be prompted to provide several input parameters, as described in <a href="#fig6">Figure 6</a>B.</li>
+<li>When the operation is finished, you will be prompted to save the data to a file.<br> See <a href="#sec6.5">troubleshooting 3</a>.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Ripley’s analysis can be lengthy for a large dataset and many randomization steps. To reduce the computation time, you can: (1) select a small ROI that contain only the meaningful data (i.e., the data you want to analyze), (2) filter the data by adjusting photon counts (PN), localization precision (LP), and Voronoi density (VD) thresholds in the “Voronoi Tessellation parameters” panel. Before running longer randomization, first, simulate with ∼5 randomization steps, and verify the K, L, and PCF plots. By default, Grafeo performs randomization, since the spatial statistics functions are meaningless without appropriate comparison to a null hypothesis (here, the randomized data that represent independent (bivariate functions) or random (univariate functions) distributions).</div>
+<ol start="14">
+<li>
+<b>Visualizing the spatial statistics functions.</b> To visualize the output Ripley's K, L, or PCF functions, go to the main Grafeo menu bar and select “Ripley’s analysis”-&gt; “Plot randomized”, and choose the variable that you wish to plot (univariate/bivariate Ripley’s K, L, or PCF), press “ok” and then select the figure display parameters, <a href="#fig6">Figures 6</a>E and 6F. The plot shows experimental (observed) function (e.g., L, K, PCF) as a solid violet line overlaid on the 5% and 95% randomization envelopes (blue shaded area) and the average function overall randomization steps (blue line), <a href="#fig8">Figures 8</a>B–8E, 8H, and 8J.<br> See <a href="#sec6.7">troubleshooting 4</a>
+</li>
+<li>
+<b>Fitting the model to the univariate and bivariate PCF functions.</b> The current version of Grafeo (v3.1) permits fitting the model functions to univariate (PCF<sub>x</sub> or an autocorrelation function ACF) and bivariate (PCF<sub>xy</sub>) point correlation function (<a href="#bib12">Sengupta et al., 2011</a>; <a href="#bib16">Veatch et al., 2012</a>; <a href="#bib13">Sengupta, Jovanovic-Talisman and Lippincott-Schwartz, 2013</a>). To perform the fit, press “Fit PCF” push button located in the “Voronoi, Ripley, Graph in ROI” panel.
+<ol type="a">
+<li>
+<b>Selecting the model.</b> You will be prompted to choose a variable that you want to fit a model to, <a href="#fig7">Figure 7</a>A. To fit ACF chose “1 Gauss + 1 exGauss” option and to fit PCF<sub>xy</sub> chose “1 exGauss”, <a href="#fig7">Figure 7</a>B.
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Fitting a model to PCF functions</div>
+<p>(A) A selection panel for the PCF model fitting.</p>
+<p>(B) A selection panel for the fit type, select '1 Gauss + 1 exGuss' and '1 exGauss' for univariate and bivariate PCF, respectively.</p>
+<p>(C) The input parameters for PCF model fitting, from top to bottom: (1) the X range of fit in the form of element vector (1 – the first, 50 - the fifties element of the distance vector at which the PCF was calculated). (2–4) The lower (2) and upper (3) bonds and (4) initial fit parameters. To see the fit equations, press the 'PCF equation' pushbutton. (5) The estimated localization uncertainty. For the univariate PCF, only the first element is used. (6) The X-axis label. (7–8) The Y (7) and X-axis (8) ticks. The first and the last element are also applied as the axes limits. (9) Polynomial degree for the polynomial detrending of PCF/K/L functions, typically 2 or 3.</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Estimating the variable input parameters.</b> The localization uncertainty (σ) and the average molecule density (ρ) should be estimated prior to fitting (see “<a href="#sec2.2">model fitting to ACF and PCF</a>” in the “<a href="#materials-and-equipment">materials and equipment</a>” section). The uncertainty σ can be estimated from the localization precision. However we recommend to perform the fit (see step 15b,i below).
+<ol type="i">
+<li>
+<b>Fitting the ACF model to Point Spread Function (PSF).</b> Grafeo permits fitting the model to recover σ. This requires dataset where the molecule of interest is distributed randomly and does not form any clusters with more than one molecule. We recommend imaging the secondary antibodies on the cover glass in the same imaging conditions as your experiment. First, calculate the PCF as described in the step 13 or load the previously obtained data (“Ripley’s analysis” -&gt; ‘Load randomized”). To fit the model press “Fit PSF” pushbutton located in the “Voronoi, Ripley, Graph in ROI” panel. Note, if you fit the model on the isolated secondary antibodies, the fit parameter ρ will correspond to the average density of your antibodies and not of your molecule of interest. To estimate ρ for your molecule of interest, divide the mean VD for your molecule of interest by the average number of detection within a cluster formed by the isolated secondary anybody. To recover the mean detections per antibody, segment clusters generated by isolated antibodies as described in the section “<a href="#sec3.4">graph-based cluster analysis</a>”. Use the mean VD over all image or in the small ROI (see “<a href="#sec3.4">graph-based cluster analysis</a>” step 16 for more details).</li>
+</ol>
+</li>
+<li>
+<b>Providing the initial values.</b> A pop-up window will be displayed, and you will have to provide the input parameters, such as the initial value for the fit parameters (x<sub>0</sub>), and their upper (UB), and lower bonds (LB), <a href="#fig7">Figure 7</a>C. Grafeo fits three parameters: the average molecule density – ρ, correlation amplitude - A, and the correlation length – d. However, it is strongly recommended to fit only second (A) and third (d) parameter (second and third element of the UP, LB, and x<sub>0</sub> parameters) and to constrain the first parameter (ρ) by setting UP, LB, and x<sub>0</sub> to the estimated density of molecules (see step above).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The quality of the fit can be susceptible to x<sub>0</sub>, UB, and LB. Test different initial parameters. After the fit is completed, you will be prompted to save the data. The figure showing fit results will be displayed automatically, <a href="#fig8">Figures 8</a>F, 8G, 8I, and 8K, where the fitted function is displayed as a solid red line.</div>
+<div class="note">
+<span class="note-title">Note:</span> For detailed information about model fitting and the description of parameters, please refer to (<a href="#bib9">Peaucelle, Wightman and Haas, 2020</a>). To check the equations for “1 Gauss + 1 exGauss” and “1 exGauss”, press “PCF equation” pushbutton.</div>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Plotting the Ripley’s and PCF function</div>
+<p>(A) A 3D scatter plot of the data for which the subsequent plots were generated. Channel 1 – violet (CBM3), channel 2 – green (Callose), channel 3 – orange (Hetero-mannans) (see also <a href="#mmc2">Methods video S2</a>).</p>
+<p>(B) The univariate transformed Ripley's function (L) for the third channel.</p>
+<p>(C) The bivariate transformed Ripley’s function (L) calculated between the first and the third channel.</p>
+<p>(D) The univariate PCF function for the third channel.</p>
+<p>(E) The bivariate PCF function is calculated between the first and the third channel.</p>
+<p>(F and G) The same as (D-E) but displaying the fit to PCF (red line).</p>
+<p>(H) The univariate PCF function for the first channel.</p>
+<p>(I) The same as (H) but displaying the fit to PCF (red line).</p>
+<p>(J) The univariate PCF function for the second channel.</p>
+<p>(K) The same as (I) but displaying the fit to PCF (red line).</p>
+</figcaption>
+</figure>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Ripley’s and PCF functions</div>
+<p>(A) A cartoon representation of the Ripley’s K (top) and PCF (bottom) functions calculation. Ripley’s K is calculated as an estimated number of points in a neighborhood of a randomly selected point located at a distance not grater than d. PCF is a derivative of K, and is estimated as a number of points in a neighborhood of a randomly selected point located at a distance smaller than d+dr and larger than d. B is a boundary (ROI) enclosing the data set; for large distances d, the circle/sphere overhangs the boundary B introducing a bias in the calculation of K. This can be corrected by the appropriate boundary correction factor (see the text).</p>
+<p>(B) A schematic representation of the three classes of bivariate (univariate) point patterns that can be detected with K and PCF analysis.</p>
+<p>(C) Schematic representation of PCF and transformed Ripley’s L function for the three classes of point patterns showed in B). Schematic plots are the same for univariate and bivariate L/PCF functions.</p>
+</figcaption>
+</figure>
+<figure id="mmc2"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Mmc2.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. Animated scatter plot of the data shown in Figure 8A, related to step 11</div>
+</figcaption>
+</figure>
+<h3 id="sec3.4">Graph-based cluster analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable time, few seconds to tens of minutes</div>
+<p>This section describes undirected graph-based cluster analysis on the data in the active ROI, <a href="#fig10">Figure 10</a> (<a href="#bib14">Shivanandan et al., 2014</a>; <a href="#bib6">Levet et al., 2015</a>; <a href="#bib5">Khater, Nabi and Hamarneh, 2020</a>). The graph is computed using 2D or 3D Delaunay triangulation converted to an undirected graph consisting of nodes (data points) connected by undirected edges (Delaunay triangulation DT edges) (<a href="#bib17">Yang and Cui, 2010</a>). The graph-based analysis permits segmenting objects (clusters) by tresholding the maximum inter point distance (ipd, or graph edge length), the minimum number of points in a cluster (area, or the number of detections/points), and a node degree (the number of connections with other points). These functions are located in the panel “Voronoi, Ripley, Graph in ROI”, and can be applied to a 2D or 3D dataset. For three colors, the functions are computed pairwise.</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Voronoi diagrams and Delaunay triangulation</div>
+<p>(A–C) (A and C) Voronoi diagram (violet) and (A and B) Delaunay triangulation (green) calculated for a set of points (orange). In (C) a red arrowhead indicates a point associated with a large Voronoi polygon (dispersed data, noise) and black arrow shows a point associated with a small Voronoi polygon (dense, clustered data). This propriety is implemented to efficiently filter the data based on the Voronoi polygon size and permits separating dense clustered data from the noise or dispersed points.</p>
+<p>(D and E) The results of graph segmentation in lateral xy view – (D), and in 3D view – (E).</p>
+</figcaption>
+</figure>
+<ol start="16">
+<li>Segmenting the clusters.
+<ol type="a">
+<li>First, draw an ROI as described in the “<a href="#sec3.2">data visualization</a><i>”</i> section.</li>
+<li>Then press “Graph”. You will be prompted to provide several input parameters, <a href="#fig11">Figure 11</a>, notably, a minimum number of points in a final segmented graph, a maximum inter point distance, ipd (a maximum DT edge length), and the nodes degree (a minimum number of connections with other points). For a dense cluster (high VD), the node's degree is typically high. Good starting values are minimum 3–5 detections, nd∼2–3, ipd ∼50 nm. Graph-based analysis can be calculated using 2D or 3D Delaunay triangulation. The maximum colocalization distance (valid only for multicolor data) is a maximum distance separating segmented clusters from two channels. If a segmented graph (cluster) has no neighbor at this distance or smaller, it is removed from the analysis. Thus, choose a high colocalization distance to retain all the segmented clusters. Graph-based data analysis is performed on two channels at a time. Thus, the analysis has to be performed pairwise. For three-color data, select the channels you want to run the analysis for (the last parameter in <a href="#fig11">Figure 11</a>).
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Performing the graph-based segmentation</div>
+<p>The input parameters for the graph-based object segmentation. From top to bottom: (1) The minimum number of points for the final segmented graph. (2) The maximum edge length (the same as interpoint distance, ipd). (3) A node degree, i.e., a minimum number of connections with other points (nodes) in a final segmented graph. (4) The dimension for Delaunay triangulation calculation, 2 or 3 (only for the 3D data). (5) The maximum distance between a segmented graph of the first color and the nearest segmented graph of the second color. (6) Select the mean or median to calculate the cluster density (by default it is median). (7) The number of the nearest neighbors for the colocalization analysis. (8) The channel selection for the analysis; type [1,2], [1,3], or [2,3].</p>
+</figcaption>
+</figure>
+</li>
+<li>Once the segmentation is completed, you will be prompted to save the results to a file. If no clusters were segmented in at least one channel, the file would not be saved, and you will have to adjust the segmentation parameters.<br> See <a href="#sec6.11">troubleshooting 6</a> and <a href="#sec6.13">7</a>.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Cluster analysis can be lengthy for large data sets. Before running the analysis, try first testing small ROI to adjust the segmentation parameters.</div>
+<ol start="17">
+<li>
+<b>Graph visualization.</b> To visualize the segmented graphs, press “Plot graph roi” pushbutton located in the “Voronoi, Ripley, Graph in ROI”, <a href="#fig6">Figures 6</a> and <a href="#fig12">12</a>. If the data is 3D and the graph segmentation was performed in 3D, you can rotate the Matlab plot. You can control the figure display by adjusting parameters in the "ROI plot", e.g., marker color and transparency, edge/line width and transparency.
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. Visualizing the segmented clusters</div>
+<p>(A) (left) A 3D scatter plot of the data subject to data clustering. Channel 1 – violet (CBM3), channel 2 – green (Callose), channel 3 – orange (Hetero-mannans). (right) The close up on the data enclosed by the white rectangle.</p>
+<p>(B and C) The result of the graph-based cluster segmentation for B) channels 2 and 3, and C) channels 1 and 3. The data is displayed as the 3D graphs (3D disconnected Delaunay triangulation). (right) The close up on the data enclosed by the white rectangle.</p>
+<p>(D) The data displayed as the 3D Voronoi polygons. The Voronoi diagram was disconnected by applying the upper and lower bounds for the VD Voronoi diagram density (see also <a href="#fig13">Figure 13</a>).</p>
+</figcaption>
+</figure>
+See <a href="#sec6.15">troubleshooting 8</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> You can load previously analyzed graph data using the "Load graph" pushbutton. It will also load ROI that was used for the graph segmentation.</div>
+<ol start="18">
+<li>
+<b>Voronoi Tessellation visualization.</b> To plot 2D or 3D Voronoi diagrams from the data in a small ROI, press “3d Voronoi”. This function is not performing a full cluster segmentation. Thus, the Voronoi diagram may be continues. However, it lets you adjust the minimum/maximum displayed VD to suppress the large/small VPs and to disconnect the clusters, <a href="#fig13">Figure 13</a>. When using “3d Voronoi” function, the average VD in a ROI will be displayed in the Matlab command window both before and after suppressing the large/small VPs. The last input parameter permits the control of the individual VP plot, as either calculated VP or the convex hull of a VP (the smallest convex polygon/polyhedron in 2D/3D that enclose the vertices defining a Voronoi Polygon). The pushbutton “2d Voronoi” displays the 2D VP (works only for 2D data) using the colormap and transparency scaled by the VD.
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. The input parameters for the Voronoi polygon (VP) visualization</div>
+<p>From top to bottom: the minimum and the maximum Voronoi diagram density. The last option permits displaying the individual 3D Voronoi polygons as a convex hull.</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Object properties and colocalization visualization.</b> To visualize the graph and colocalization data, press the "Plot graph data" pushbutton. You will be prompted to select a variable you want to visualize (see below for the variable description), <a href="#fig14">Figure 14</a>A. Next, you will be prompted to provide the input parameters for a histogram plot, <a href="#fig14">Figure 14</a>B. Insert '[]' (empty vector) in the two first rows if you do not know the parameter range (i.e., a minimum and a maximum value). Press “ok”; a figure will display showing mean and median values of the chosen variable. The x-axis specifies the chosen variable name.
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/990-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Displaying the results of the graph-based segmentation and the colocalization analysis</div>
+<p>(A) A variable selection panel. PN – photon number, Det – the number of detection (points or nodes) in a graph, ext – the graph extension, MedShortPath – the median shortest path spanning the graph, Ani – the graph anisotropy, P2P – point-to-point distance (12, 21 corresponds to the first and second channel selected for the graph-based analysis; channel 1 can be 1 or 2, and the channel 2 can be 2 or 3, see also <a href="#fig11">Figure 11</a>), CW1toCW2 – the centroid to centroid distance between each segmented graph of the first color to its nearest neighboring segmented graph in the second color (12, 21 corresponds to the first and second channel selected for the graph-based analysis; channel 1 can be 1 or 2, and the channel 2 can be 2 or 3, see also <a href="#tbl2">Tables 2</a> and <a href="#tbl3">3</a>.</p>
+<p>(B) The input parameters for the histogram plot of a variable selected in (A). From top to bottom: (1) a vector of the histogram bins (for more details, see the Matlab vector notation and the help page for the Matlab histogram function). (2) Y-axis limits, (3) the histogram normalization method, pdf – probability density function (for more details, see the help page for the Matlab histogram function).</p>
+</figcaption>
+</figure>
+</li>
+<li>
+<b>Exporting the data to excel file.</b>
+<ol type="a">
+<li>
+<b>Exporting the cluster (graph) properties.</b> To export the data to excel file press “Export excel” pushbutton located in the “Voronoi, Ripley, Graph in ROI” panel, <a href="#fig6">Figure 6</a>A. You will be prompted to select whether you want to save only the cluster properties data, the colocalization analysis or both. The segmented clusters properties that are saved to an excel file are listed in <a href="#tbl2">Table 2</a>. The data for each channel is saved to a separate excel sheet. The name of output file has the following structure: ‘filename_dim_nd_ROIgraph_ij.xls”, where the filename is the name of the ‘.mat’ file currently loaded in the Grafeo memory, nd is the Delaunay triangulation dimension (2 or 3), and i, j are two channel tags (i, j = 1, 2, or 3). For one channel analysis only, i = 1, 2, or 3.
+<table id="tbl2">
+<caption>Table 2. Segmented graphs data description</caption>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Internal grafeo variable name</th>
+<th>Variable description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AniMed1</td>
+<td>AniMed1</td>
+<td rowspan="3">The median distance between the centroid of a graph and all the points/nodes belonging to the same graph.</td>
+</tr>
+<tr>
+<td>AniMed2</td>
+<td>AniMed2</td>
+</tr>
+<tr>
+<td>AniMed3</td>
+<td>AniMed3</td>
+</tr>
+<tr>
+<td>Det1</td>
+<td>Det1</td>
+<td rowspan="3">The number of points (detection) in a segmented graph.</td>
+</tr>
+<tr>
+<td>Det2</td>
+<td>Det2</td>
+</tr>
+<tr>
+<td>Det3</td>
+<td>Det3</td>
+</tr>
+<tr>
+<td>Ext1</td>
+<td>Extention1</td>
+<td rowspan="3">A vector of graphs’ extension is defined as the maximum shortest path spanning the graph calculated for all the inter point distances (ipd). The shortest path is calculated using a Matlab function “distances” applied to a graph object.</td>
+</tr>
+<tr>
+<td>Ext2</td>
+<td>Extention2</td>
+</tr>
+<tr>
+<td>Ext3</td>
+<td>Extention3</td>
+</tr>
+<tr>
+<td>MedShortPath1</td>
+<td>MedShortPath1</td>
+<td rowspan="3">A vector of the median shortest paths spanning the graph.</td>
+</tr>
+<tr>
+<td>MedShortPath2</td>
+<td>MedShortPath2</td>
+</tr>
+<tr>
+<td>MedShortPath3</td>
+<td>MedShortPath3</td>
+</tr>
+<tr>
+<td>Vol1</td>
+<td>Vol1</td>
+<td rowspan="3">A vector of the total area (volume) of graphs given in nm<sup>2</sup>/(nm<sup>3</sup>) for 2D (3D) data.</td>
+</tr>
+<tr>
+<td>Vol2</td>
+<td>Vol2</td>
+</tr>
+<tr>
+<td>Vol3</td>
+<td>Vol3</td>
+</tr>
+<tr>
+<td>VDmean1</td>
+<td>DpGsubMed1</td>
+<td rowspan="3">Mean or median (option selected by the user) Voronoi density (VD) within a segmented cluster.</td>
+</tr>
+<tr>
+<td>VDmean2</td>
+<td>DpGsubMed2</td>
+</tr>
+<tr>
+<td>VDmean3</td>
+<td>DpGsubMed3</td>
+</tr>
+<tr>
+<td>PN1</td>
+<td>Pnum1</td>
+<td rowspan="3">The total number of photons detected per cluster.</td>
+</tr>
+<tr>
+<td>PN2</td>
+<td>Pnum2</td>
+</tr>
+<tr>
+<td>PN3</td>
+<td>Pnum3</td>
+</tr>
+<tr>
+<td>Len1</td>
+<td>Len1</td>
+<td rowspan="3">The number of points (detection) in a segmented graph taking into account multiple single molecule counting.</td>
+</tr>
+<tr>
+<td>Len2</td>
+<td>Len2</td>
+</tr>
+<tr>
+<td>Len3</td>
+<td>Len3</td>
+</tr>
+<tr>
+<td>ratio1</td>
+<td>ratio1</td>
+<td rowspan="3">The ratio between the maximum to the minimum percentage of the total variance explained by each principal component.</td>
+</tr>
+<tr>
+<td>ratio2</td>
+<td>ratio2</td>
+</tr>
+<tr>
+<td>ratio3</td>
+<td>ratio3</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<b>Exporting the colocalization analysis.</b> To export the colocalization analysis data to excel file press “Export excel” push button and chose second or third option. The colocalization analysis data saved to an excel file is listed in <a href="#tbl3">Table 3</a>. Each data structure/matrix is saved to a separate excel file. The nearest neighbor point to point distance matrix and centroid to centroid distance matrix are save to a file with the following structure: ‘filename_dim_nd_ROIgraph_P2P_ij.xls”, and ‘filename_dim_nd_ROIgraph_C2C_ij.xls”respectively, where nd, i, j is as above.
+<table id="tbl3">
+<caption>Table 3. Colocalization data description</caption>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Internal grafeo variable name</th>
+<th>Variable description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CW1-CW2</td>
+<td>CW1toCW2sort</td>
+<td rowspan="3">A sorted distance matrix between weighted centroids of a graph of the first type/color to the weighted centroid of a graph of the second type/color. This matrix contains all the nearest neighbor distances from graph set 1 to graph set 2 sorted in ascending order. The “Plot graph data” function plots the histogram of distances to the first nearest neighbor.</td>
+</tr>
+<tr>
+<td>CW1-CW3</td>
+<td>CW1toCW3sort</td>
+</tr>
+<tr>
+<td>CW2-CW3</td>
+<td>CW2toCW3sort</td>
+</tr>
+<tr>
+<td>Median P2P ij</td>
+<td>dist1nn(:,1)</td>
+<td rowspan="2">A median of the point to point (P2P) distances for every point (node) in a graph from a set i (j) to the n<sup>th</sup> nearest neighbor point/node in a nearest graph from a set j (i), where (i,j) can take the following values (1,2) (1,3), or (2,3). The nearest graph is evaluated on centroid to centroid distance from the set i to the set j. n, the number of nearest neighbors taken into consideration is an input parameter defined by the user, see <a href="#fig6">Figure 6</a>.The Median is calculated over all the calculated nearest neighbors n.</td>
+</tr>
+<tr>
+<td>Median P2P ji</td>
+<td>dist1nn(:,2))</td>
+</tr>
+<tr>
+<td>Mean P2P ij</td>
+<td>dist1nn(:,3)</td>
+<td rowspan="2">As above, but here the mean is calculated</td>
+</tr>
+<tr>
+<td>Mean P2P ji</td>
+<td>dist1nn(:,4))</td>
+</tr>
+<tr>
+<td>Std P2P ij</td>
+<td>dist1nn(:,5)</td>
+<td rowspan="2">As above, but here the standard deviation is calculated</td>
+</tr>
+<tr>
+<td>Std P2P ji</td>
+<td>dist1nn(:,6))</td>
+</tr>
+<tr>
+<td>SE P2P ij</td>
+<td>dist1nn(:,7)</td>
+<td rowspan="2">As above, but here the standard error of the mean is calculated</td>
+</tr>
+<tr>
+<td>SE P2P ji</td>
+<td>dist1nn(:,8))</td>
+</tr>
+<tr>
+<td>Minimum P2P ij</td>
+<td>dist1nn(:,9)</td>
+<td rowspan="2">As above, but here the minimum P2P is calculated</td>
+</tr>
+<tr>
+<td>Minimum P2P ji</td>
+<td>dist1nn(:,10))</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This function lets displaying only selected input variables, see <a href="#tbl2">Tables 2</a> and <a href="#tbl3">3</a>. Not all the calculated variables can be displayed; for a more comprehensive variable description, please refer to the Grafeo manual that can be downloaded from the GitHub page (see <a href="#key-resources-table">key resources table</a>).</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The expected outcomes of this protocol are combined multicolor data files, visualization using still or animated plots, cluster and colocalization analysis including Ripley’s function, Pair correlation function, and Delaunay triangulation. The analysis results can be exported to an excel file and be subjected to further analysis.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol uses Matlab based script package. Matlab programing environment is not free. Matlab-based programs can be slower than programs written in other languages e.g., C. Grafeo does not performed single molecule localization, chromatic aberration correction, and drift correction.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The analysis and display of the large data sets can be lengthy. Matlab can crush or suspend (freeze) its activity for a too large data set (Step 1).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>We recommend filtering the data and using a relatively small ROI for the visualization and analysis.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Data importation takes too much time. Cause: Large data set (step 1).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Increase the minimum PN and the maximum LP to reject noise and badly localized molecules. However, no molecules with greater LP and smaller PN will be imported. The PN and LP can be adjusted later (see step 3), so it is recommended not to use too stringent values at this step. The good starting values are PN ∼500 and LP ∼50 nm.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Randomization takes too much time (Step 13).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Decrease ROI size, decrease the number of randomization steps, filter the data.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The randomization curve for L and PCF deviates from the straight line (Step 14).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>The detrend polynomial degree may be incorrect. The polynomial degree is usually 2 or 3, try both values, and if necessery the higher degree polynomials.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The PCF fit is incorrect (Step 15).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Cause 1: Wrong initial values (x<sub>0</sub>) and/or upper (UB) and lower bonds (LB) for the fit parameters. Potential solution: First, try different values of x<sub>0</sub>, then try to restrict UB and LB. Cause 2. The variable input parameters (σ and ρ) are wrongly estimated. Potential solution: Try first changing parameters slightly to see if the fit is improved; in parallel, change x<sub>0</sub>, UB, and LB. Re-estimate the parameters. Cause 3. The fitting function cannot accurately model the data.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>No clusters were segmented (Step 16).</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>One or more input parameters are too stringent. Increase the minimum number of detections, nd, and ipd parameters.</p>
+<h3 id="sec6.13">Problem 7</h3>
+<p>Clusters are connected or ‘hairy’ (Step 16).</p>
+<h3 id="sec6.14">Potential solution</h3>
+<p>One or more input parameters are too low. Decrease the minimum number of detection, nd, and ipd parameters.</p>
+<h3 id="sec6.15">Problem 8</h3>
+<p>No clusters are displayed in the plot (Step 17).</p>
+<h3 id="sec6.16">Potential solution</h3>
+<p>Cause 1: No clusters were segmented. Solution: change the segmentation parameters. Cause 2: No cluster data exist in the Grafeo memory. Solution: Perform cluster segmentation or load the previously segmented data.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Dixon, P.M. (2014). Ripley’s K function. In Wiley StatsRef: Statistics Reference Online, N. Balakrishnan, T. Colton, B. Everitt, W. Piegorsch, F. Ruggeri, and J.L. Teugels, eds. (Wiley). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00514-1/sref1">View at publisher</a></p>
+<p id="bib2">Haas, K.T., Lee, M.Y., Esposito, A., and Venkitaraman, A.R. (2018). Single-molecule localization microscopy reveals molecular transactions during RAD51 filament assembly at cellular DNA damage sites. Nucleic Acids Res. <i>46</i>, 2398-2416. <a class="external-link" href="https://doi.org/10.1093/nar/gkx1303">https://doi.org/10.1093/nar/gkx1303</a></p>
+<p id="bib3">Haas, K.T., Rivière, M., Wightman, R., and Peaucelle, A. (2020a). multitarget immunohistochemistry for confocal and super-resolution imaging of plant cell wall polysaccharides. Bio Protoc. <i>10</i>, e3783. <a class="external-link" href="https://doi.org/10.21769/BioProtoc.3783">https://doi.org/10.21769/BioProtoc.3783</a></p>
+<p id="bib4">Haas, K.T., Wightman, R., Meyerowitz, E.M., and Peaucelle, A. (2020b). Pectin homogalacturonan nanofilament expansion drives morphogenesis in plant epidermal cells. Science <i>367</i>, 1003-1007. <a class="external-link" href="https://doi.org/10.1126/science.aaz5103">https://doi.org/10.1126/science.aaz5103</a></p>
+<p id="bib5">Khater, I.M., Nabi, I.R., and Hamarneh, G. (2020). A Review of Super-Resolution Single-Molecule Localization Microscopy Cluster Analysis and Quantification Methods. Patterns <i>1</i>, 100038. <a class="external-link" href="https://doi.org/10.1016/j.patter.2020.100038">https://doi.org/10.1016/j.patter.2020.100038</a></p>
+<p id="bib6">Levet, F., Hosy, E., Kechkar, A., Butler, C., Beghin, A., Choquet, D., and Sibarita, J.B. (2015). SR-Tesseler: A method to segment and quantify localization-based super-resolution microscopy data. Nat. Methods <i>12</i>, 1065-1071. <a class="external-link" href="https://doi.org/10.1038/nmeth.3579">https://doi.org/10.1038/nmeth.3579</a></p>
+<p id="bib7">Nicovich, P.R., Owen, D.M., and Gaus, K. (2017). Turning single-molecule localization microscopy into a quantitative bioanalytical tool. Nat. Protoc. <i>12</i>, 453-461. <a class="external-link" href="https://doi.org/10.1038/nprot.2016.166">https://doi.org/10.1038/nprot.2016.166</a></p>
+<p id="bib8">Ovesný, M., Křížek, P., Borkovec, J., Švindrych, Z., and Hagen, G.M. (2014). ThunderSTORM: A comprehensive ImageJ plug-in for PALM and STORM data analysis and super-resolution imaging. Bioinformatics <i>30</i>, 2389-2390. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btu202">https://doi.org/10.1093/bioinformatics/btu202</a></p>
+<p id="bib9">Peaucelle, A., Wightman, R., and Haas, K.T. (2020). ‘Multicolor 3D-dSTORM reveals native-state ultrastructure of polysaccharides’ network during plant cell wall assembly’. iScience <i>23</i>, 101862. <a class="external-link" href="https://doi.org/10.1016/j.isci.2020.101862">https://doi.org/10.1016/j.isci.2020.101862</a></p>
+<p id="bib10">Peters, R., Benthem Muñiz, M., Griffié, J., Williamson, D.J., Ashdown, G.W., Lorenz, C.D., and Owen, D.M. (2017). Quantification of fibrous spatial point patterns from single-molecule localization microscopy (SMLM) data. Bioinformatics <i>33</i>, 1703-1711. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btx026">https://doi.org/10.1093/bioinformatics/btx026</a></p>
+<p id="bib11">Peters, R., Griffié, J., Burn, G.L., Williamson, D.J., and Owen, D.M. (2018). Quantitative fibre analysis of single-molecule localization microscopy data. Sci. Rep. <i>8</i>, 1-8. <a class="external-link" href="https://doi.org/10.1038/s41598-018-28691-5">https://doi.org/10.1038/s41598-018-28691-5</a></p>
+<p id="bib13">Sengupta, P., Jovanovic-Talisman, T., and Lippincott-Schwartz, J. (2013). Quantifying spatial organization in point-localization superresolution images using pair correlation analysis. Nat. Protoc. <i>8</i>, 345-354. <a class="external-link" href="https://doi.org/10.1038/nprot.2013.005">https://doi.org/10.1038/nprot.2013.005</a></p>
+<p id="bib12">Sengupta, P., Jovanovic-Talisman, T., Skoko, D., Renz, M., Veatch, S.L., and Lippincott-Schwartz, J. (2011). Probing protein heterogeneity in the plasma membrane using PALM and pair correlation analysis. Nat. Methods <i>8</i>, 969-975. <a class="external-link" href="https://doi.org/10.1038/nmeth.1704">https://doi.org/10.1038/nmeth.1704</a></p>
+<p id="bib14">Shivanandan, A., Deschout, H., Scarselli, M., and Radenovic, A. (2014). Challenges in quantitative single molecule localization microscopy. FEBS Lett. <i>588</i>, 3595-3602. <a class="external-link" href="https://doi.org/10.1016/j.febslet.2014.06.014">https://doi.org/10.1016/j.febslet.2014.06.014</a></p>
+<p id="bib15">Shivanandan, A., Unnikrishnan, J., and Radenovic, A. (2016). On characterizing protein spatial clusters with correlation approaches. Sci. Rep. <i>6</i>, 1-12. <a class="external-link" href="https://doi.org/10.1038/srep31164">https://doi.org/10.1038/srep31164</a></p>
+<p id="bib16">Veatch, S.L., Machta, B.B., Shelby, S.A., Chiang, E.N., Holowka, D.A., and Baird, B.A. (2012). Correlation functions quantify super-resolution images and estimate apparent clustering due to over-counting. PLoS One <i>7</i>. <a class="external-link" href="https://doi.org/10.1371/journal.pone.0031457">https://doi.org/10.1371/journal.pone.0031457</a></p>
+<p id="bib17">Yang, X. and Cui, W. (2010). A novel spatial clustering algorithm based on delaunay triangulation. J. Softw. Eng. Appl. <i>03</i>, 141-149. <a class="external-link" href="https://doi.org/10.4236/jsea.2010.32018">https://doi.org/10.4236/jsea.2010.32018</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, [Kalina Tamara Haas] (<a href="mailto:kalina.haas@inrae.fr">kalina.haas@inrae.fr</a>).</p>
+<h4>Materials availability</h4>
+<p>This protocol did not generate/use any new materials.</p>
+<h4>Data and code availability</h4>
+<p>The Grafeo script package is freely accessible through a GitHub page (<a href="https://github.com/inatamara/Grafeo-dSTORM-analysis-">https://github.com/inatamara/Grafeo-dSTORM-analysis-</a>). Original data containing example raw and analyzed multicolor 3D dSTORM data have been deposited to Mendeley Data: <a href="https://doi.org/10.17632/mj4hdpwyb8.1">https://doi.org/10.17632/mj4hdpwyb8.1</a><i>.</i></p>
+<h3>Acknowledgments</h3>
+<p>A.P. has received the support of the <a href="https://doi.org/10.13039/501100001665">French National Research Agency</a> (ANR) GoodVibration ANR-17-CE13-0007 and of the EU in the framework of the <a href="https://doi.org/10.13039/100011264">Marie-Curie FP7 COFUND People Program</a>, through the award of an AgreenSkills+ fellowship (under grant agreement n° 201310). The IJPB benefits from the support of <a href="https://doi.org/10.13039/501100007241">Saclay Plant Sciences</a>-SPS (ANR-17-EUR-0007).</p>
+<h3>Author contributions</h3>
+<p>A.P. prepared the samples, K.T.H. and A.P. performed the experiments, K.T.H. analyzed the data, and K.T.H. and A.P. wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

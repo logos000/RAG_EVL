@@ -1,0 +1,528 @@
+<article>
+<section>
+<h1 id="header">Computational generation of proteins with predetermined three-dimensional shapes using ProteinSolver</h1>
+<p><time datetime="2021-11-05">Published: November 5, 2021</time></p>
+<p>Alexey Strokach,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> David Becerra,<sup><a href="#aff2">2</a></sup> Carles Corbi-Verge,<sup><a href="#aff2">2</a></sup> Albert Perez-Riba,<sup><a href="#aff2">2</a></sup> and Philip M. Kim<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Computer Science, University of Toronto, Toronto, ON M5S 3E1, Canada</p>
+<p id="aff2"><sup>2</sup>Donnelly Centre for Cellular and Biomolecular Research, University of Toronto, Toronto, ON M5S 3E1, Canada</p>
+<p id="aff3"><sup>3</sup>Department of Molecular Genetics, University of Toronto, Toronto, ON M5S 3E1, Canada</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:alex.strokach@utoronto.ca">alex.strokach@utoronto.ca</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:pi@kimlab.org">pi@kimlab.org</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100505">10.1016/j.xpro.2021.100505</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Computational generation of new proteins with a predetermined three-dimensional shape and computational optimization of existing proteins while maintaining their shape are challenging problems in structural biology. Here, we present a protocol that uses ProteinSolver, a pre-trained graph convolutional neural network, to quickly generate thousands of sequences matching a specific protein topology. We describe computational approaches that can be used to evaluate the generated sequences, and we show how select sequences can be validated experimentally.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref21">Strokach et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>ProteinSolver can generate amino acid sequences of proteins with specific shapes</li>
+<li>We describe how to validate and rank generated sequences using computational approaches</li>
+<li>We describe how to express, purify, and validate generated proteins using CD</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1151-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Confirm that ProteinSolver is the best tool for your task</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<p>ProteinSolver is a graph neural network capable of generating novel amino acid sequences that fold into proteins with predetermined topologies. ProteinSolver was trained using millions of amino acid sequences and corresponding distance matrices, and its predictions have been validated both computationally and experimentally (<a href="#bib21">Strokach et al., 2020</a>).</p>
+<p>Some applications where ProteinSolver could be especially useful include:</p>
+<ol>
+<li>Generating libraries of amino acid sequences that fold into proteins with specific topologies. Such libraries would have a much higher probability of containing stable proteins with desired properties than libraries generated using traditional approaches such as random mutagenesis.</li>
+<li>Designing proteins that meet specific objectives, such as having low sequence identity but the same fold or having high sequence identity but different folds.</li>
+<li>Finding positions and residues that are most important for maintaining a given protein fold.</li>
+</ol>
+<p>However, ProteinSolver may not be the best tool for all problems in protein design. In particular:</p>
+<ol start="4">
+<li>ProteinSolver is not designed for protein structure prediction. If your goal is to predict the structure corresponding to a given protein sequence or distance matrix, tools such as Modeller (<a href="#bib25">Webb and Sali, 2002</a>) and trRosetta (<a href="#bib27">Yang et al., 2020</a>) may be more appropriate.</li>
+<li>ProteinSolver is not designed for finding <i>existing</i> protein sequences with high sequence similarity to a query protein. If your goal is sequence similarity search, tools as BLAST+ (<a href="#bib4">Camacho et al., 2009</a>), hhsearch (<a href="#bib19">Steinegger et al., 2019</a>), and mmseqs2 (<a href="#bib20">Steinegger and Söding, 2017</a>) may be more appropriate.</li>
+<li>ProteinSolver is not designed for finding <i>existing</i> protein structures with high structural similarity to a query protein or topology. If your goal is structure similarity search, tools such as CLICK (<a href="#bib15">Nguyen et al., 2011</a>) or VAST+ (<a href="#bib11">Madej et al., 2014</a>) may be more appropriate.</li>
+</ol>
+<h3 id="sec1.2">Obtain a distance matrix or a protein structure with the target protein geometry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol start="7">
+<li>In order to use ProteinSolver, you need a distance matrix, or a protein structure, corresponding to the target protein geometry. If there already exists a structure of a protein with the target geometry in the PDB, it is best to simply provide that structure as input. If the target geometry is novel, you need to create a file listing the shortest distances between all pairs of residues within 12 Angstrom of each other (see <a href="#materials-and-equipment">materials and equipment</a>).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> ProteinSolver was trained using distance matrices extracted from structural templates in the PDB. While ProteinSolver should be robust to minor errors and gaps in the provided distance matrix, using a distance matrix that does not correspond to an actual protein topology, or is missing many edges, may lead to undefined behavior.</div>
+<h3 id="sec1.3">Install software</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>ProteinSolver is accessible through a web server, and no additional dependencies need to be installed in order to generate sequences for a particular protein topology. However, it may be advisable to analyze the generated sequences using several external tools and rank them by their stability or physicochemical properties. In steps 8–14 of this protocol, we detail the use of external tools to validate the generated sequences. Those tools can be installed on Linux and Windows Subsystem for Linux 2 (WSL2), and most can also be installed on MacOS.</p>
+<ol start="8">
+<li>We recommend using the conda package manager to install all dependencies that are available as conda packages.
+<ol type="a">
+<li>Download and install miniconda by following instructions on the miniconda downloads page: <a href="https://docs.conda.io/en/latest/miniconda.html">https://docs.conda.io/en/latest/miniconda.html</a>.</li>
+<li>In order to be able to create homology models, you will need to obtain a MODELLER license key by following instructions on the MODELLER website: <a href="https://salilab.org/modeller/registration.html">https://salilab.org/modeller/registration.html</a>. Set the KEY_MODELLER environment variable to the license key that you obtain before installing the modeller conda package.</li>
+<li>Use the following system command to create a “proteinsolver” conda environment containing most of the software packages that are used in this protocol.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p>System command that installs all packages available through conda</p>
+<code>
+    export KEY_MODELLER=XXXXX<br>
+    conda create –n proteinsolver –c ostrokach-forge –c salilab –c conda-forge –c defaults \<br>
+      proteinsolver \<br>
+      biopython \<br>
+      psipred \<br>
+      mdtraj \<br>
+      modeller
+  </code>
+</div>
+<ol start="9">
+<li>If you wish to use Rosetta to evaluate the stability of generated proteins, you need to download the precompiled Rosetta binaries from the Rosetta Commons website: <a href="https://www.rosettacommons.org/software/academic/">https://www.rosettacommons.org/software/academic/</a>. A Rosetta license can be obtained free of charge for academic use.</li>
+<li>In order to perform molecular dynamics simulations, you will need to obtain a license key and download Amber by following instructions on the Amber website: <a href="https://ambermd.org/">https://ambermd.org/</a>.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>
+<i>E. coli</i> OverExpress C41(DE3) (Green cap)</td>
+<td>Lucigen</td>
+<td>Cat#60442-2</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Pierce BCA Protein Assay Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat#23227</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Protein Data Bank (PDB)</td>
+<td>(<a href="#bib3">Berman et al., 2000</a>)</td>
+<td><a href="http://ftp//ftp.wwpdb.org/pub/pdb/data/structures/divided/">ftp://ftp.wwpdb.org/pub/pdb/data/structures/divided/</a></td>
+</tr>
+<tr>
+<td>UniParc</td>
+<td>(<a href="#bib23">UniProt Consortium, 2019</a>)</td>
+<td><a href="http://www.uniprot.org/downloads">http://www.uniprot.org/downloads</a></td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>Plasmid: pRSET-A</td>
+<td>Thermo Fisher</td>
+<td>Cat#V35120</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>PyTorch</td>
+<td>(<a href="#bib16">Paszke et al., 2017</a>)</td>
+<td><a href="https://github.com/pytorch/pytorch">https://github.com/pytorch/pytorch</a></td>
+</tr>
+<tr>
+<td>PyTorch Geometric</td>
+<td>(<a href="#bib7">Fey and Lenssen, 2019</a>)</td>
+<td><a href="https://github.com/rusty1s/pytorch_geometric">https://github.com/rusty1s/pytorch_geometric</a></td>
+</tr>
+<tr>
+<td>MDTraj</td>
+<td>(<a href="#bib13">McGibbon et al., 2015</a>)</td>
+<td><a href="https://github.com/mdtraj/mdtraj">https://github.com/mdtraj/mdtraj</a></td>
+</tr>
+<tr>
+<td>SciPy</td>
+<td>(<a href="#bib24">Virtanen et al., 2020</a>)</td>
+<td><a href="https://github.com/scipy/scipy">https://github.com/scipy/scipy</a></td>
+</tr>
+<tr>
+<td>Biotite</td>
+<td>(<a href="#bib10">Kunzmann and Hamacher, 2018</a>)</td>
+<td><a href="https://github.com/biotite-dev/biotite">https://github.com/biotite-dev/biotite</a></td>
+</tr>
+<tr>
+<td>Amber 16</td>
+<td>(<a href="#bib5">Case et al., 2005</a>)</td>
+<td><a href="https://ambermd.org/">https://ambermd.org/</a></td>
+</tr>
+<tr>
+<td>PSIPRED</td>
+<td>(<a href="#bib9">Jones, 1999</a>)</td>
+<td><a href="http://bioinf.cs.ucl.ac.uk/psipred/">http://bioinf.cs.ucl.ac.uk/psipred/</a></td>
+</tr>
+<tr>
+<td>MODELLER</td>
+<td>(<a href="#bib25">Webb and Sali, 2002</a>)</td>
+<td><a href="https://salilab.org/modeller/">https://salilab.org/modeller/</a></td>
+</tr>
+<tr>
+<td>Rosetta</td>
+<td>(<a href="#bib1">Alford et al., 2017</a>)</td>
+<td><a href="https://www.rosettacommons.org/software/">https://www.rosettacommons.org/software/</a></td>
+</tr>
+<tr>
+<td>I-TASSER</td>
+<td>(<a href="#bib28">Yang et al., 2015</a>)</td>
+<td><a href="https://zhanglab.ccmb.med.umich.edu/I-TASSER/">https://zhanglab.ccmb.med.umich.edu/I-TASSER/</a></td>
+</tr>
+<tr>
+<td>Quark</td>
+<td>(<a href="#bib26">Xu and Zhang, 2012</a>)</td>
+<td><a href="https://zhanglab.ccmb.med.umich.edu/QUARK/">https://zhanglab.ccmb.med.umich.edu/QUARK/</a></td>
+</tr>
+<tr>
+<td>BeStSel</td>
+<td>(<a href="#bib14">Micsonai et al., 2015</a>)</td>
+<td><a href="http://bestsel.elte.hu/index.php">http://bestsel.elte.hu/index.php</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> In this protocol, we provide as input to ProteinSolver a PDB file containing the structure of a protein with the target protein topology. Alternatively, we could provide a TXT file listing the distances between all pairs of residues that are within 12 Ångström of each other, as show in the table below. In this TXT file, the first line in the file should start with “N: ” followed by the number of residues in the target protein, while all subsequent lines should provide the index of the first interacting residue (starting from 0), the index of the second interacting residue (starting from 0), and the shortest distance between the residues (in Ångström). Lines that start with a “#” are treated as comments and are ignored.</div>
+<div class="textbox">
+<p>Text file describing the target protein topology</p>
+<code>
+    # Number of residues in sequence<br>
+    N: 92<br>
+    .<br>
+    # Index of residue 1, Index of residue 2, Distance between residues (in A)<br>
+    0, 1, 1.3283<br>
+    0, 2, 3.5510<br>
+    0, 3, 7.1788<br>
+    0, 4, 9.1295<br>
+    0, 5, 7.0669<br>
+    1, 2, 1.3257<br>
+    1, 3, 4.5414<br>
+    1, 4, 5.3692<br>
+    1, 5, 3.6796<br>
+    …
+  </code>
+</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> In this protocol, we refer to the ProteinSolver web server available at <a href="https://design.proteinsolver.org">https://design.proteinsolver.org</a>. If you prefer to self-host the web server, for example due to privacy or compliance reasons, we also provide a Docker image containing ProteinSolver and all components required to run the web server (see <a href="https://gitlab.com/ostrokach/proteinsolver/container_registry">https://gitlab.com/ostrokach/proteinsolver/container_registry</a>). First, you need to download and install Docker (see the official installation guide here: <a href="https://docs.docker.com/get-docker/">https://docs.docker.com/get-docker/</a>). Next, you need to download and start the ProteinSolver Docker image. On Linux and Windows Subsystem for Linux 2 (WSL2), this can be accomplished running the following system commands. Once the ProteinSolver Docker image is running, the web server would be accessible at: <a href="http://localhost:8080">http://localhost:8080</a>.</div>
+<div class="textbox">
+<p>System command required to start the ProteinSolver web server locally</p>
+<code>
+    $ export PORT=8080<br>
+    $ export NOTEBOOK_PATH=proteinsolver/notebooks/30_design_dashboard.ipynb<br>
+    $ docker run \<br>
+      --publish ${PORT}:${PORT} \<br>
+      --env=PORT=${PORT} --env=NOTEBOOK_PATH=${NOTEBOOK_PATH} \<br>
+      --gpus all \<br>
+    registry.gitlab.com/ostrokach/proteinsolver:v0.1.24
+  </code>
+</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We use Invitrogen’s GeneArt platform to perform codon optimization and order synthetic gene constructs (see step 15). However, many other companies provide gene synthesis services, including GeneScript, GENEWIZ, IDT, Synbio Technologies, and Twist bioscience.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We use the BugBuster Master Mix (Millipore) in order to extract protein expressed by E. coli cells (see step 16). However, one could use another commercial lysis buffer, such as the B-PER Complete Bacterial Protein Extraction Reagent (ThermoFisher), or the more traditional mechanical lysis methods, such as sonication and the French pressure cell press.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We use dialysis to resuspend the eluted protein in a PBS buffer (see step 17). However, desalting columns are a viable alternative and could be used to purify and resuspend the eluted protein quicker and using less buffer, although with a slightly lower yield.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Generation of amino acid sequences using ProteinSolver</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>ProteinSolver (<a href="#bib21">Strokach et al., 2020</a>) is a graph convolutional neural network capable of generating amino acid sequences that fold into proteins with pre-determined geometric shapes. ProteinSolver takes as input a reference structure or a sparse distance matrix, listing distances between pairs of residues that are within 12 Å of one another, and a protein sequence, where one or more residues to be optimized are masked. The outputs of ProteinSolver are filled sequences, where masked residues are replaced with amino acids deemed to be best suited for their respective positions in the protein. ProteinSolver can be used for computational generation of new proteins with a predetermined three-dimensional shape as well as for computational optimization of existing proteins that maintains their shape.</p>
+<ol>
+<li>Navigate to the ProteinSolver web server, accessible at <a href="https://design.proteinsolver.org">https://design.proteinsolver.org</a>. In some cases, the web server may take up to several minutes to load, as system resources are provisioned in proportion to demand.</li>
+<li>Click the “Load structure” button to load the structure of a protein with the reference topology (<a href="#fig1">Figure 1</a>A). Alternatively, click the “Load distance matrix” button to load the distance matrix describing the reference topology (<a href="#fig1">Figure 1</a>B).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1151-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Screenshot of the ProteinSolver design web server (<a href="http://design.proteinsolver.org">http://design.proteinsolver.org</a>)</div>
+<p>(A) The user can upload the structure of a reference protein whose geometry will be used to restrain the space of generated amino acid sequences. The user can also select one of four example proteins.</p>
+<p>(B) Alternatively, the user can upload a sparse distance matrix describing the topology of the target protein (see <a href="#materials-and-equipment">materials and equipment</a>).</p>
+<p>(C) The structure preview panel shows the structure of the reference protein uploaded by the user.</p>
+<p>(D) The topology preview panel shows the distance matrix of the target topology specified by the user.</p>
+<p>(E) The user can explicitly fix one or more amino acids in the generated sequences to specific residues.</p>
+<p>(F) The user can control the number of sequences generated in each run by changing the value in the “Number of sequences:” field.</p>
+<p>(G) The user can control the temperature factor used to generate sequences by changing the value in the “Temperature factor:” field.</p>
+<p>(H–L) (H) When the user clicks the “Run ProteinSolver” button, a background ProteinSolver process starts generating sequences matching the specified geometric and amino acid constraints. The progress of the ProteinSolver process can be monitored by looking at the progress bar and the sequence logo displayed to the right of the “Run ProteinSolver” button (I), while GPU utilization can be monitored by looking at the status bars displayed below the “Run ProteinSolver” button (J). Once a sufficient number of sequences have been generated, the user can click the “Generate download link” button (K), at which point a download link will appear (L), allowing the user to download the generated designs.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>A valid distance matrix, corresponding to CATH domain: 1n5uA03, is provided as an example above the “Load distance matrix” button.</li>
+<li>If you provide the structure of a reference protein by clicking the “Load structure” button, that structure should appear in the structure preview panel (<a href="#fig1">Figure 1</a>C).</li>
+<li>The distance matrix corresponding to the target topology should appear in the distance matrix preview panel (<a href="#fig1">Figure 1</a>D).</li>
+</ol>
+</li>
+<li>If you want to pre-assign certain amino acids to certain positions in the target protein, click the “Target residue picker” button (<a href="#fig1">Figure 1</a>E). Then, use the drop-down menus for each position that you want to constrain to select the desired amino acid. Your changes should be reflected in the “Target sequence:” panel above the “Target residue picker”. This feature is especially useful in cases where you know <i>a priori</i> that certain residues are essential for a specific protein function, such as catalytic activity and binding to other molecules, that you wish to preserve.</li>
+<li>Select the number of sequences that you would like ProteinSolver to generate (<a href="#fig1">Figure 1</a>F). We recommend generating between 100 and 5000 sequences per round. If more sequences are required, you can run ProteinSolver multiple times, as different random seeds are used for each run.</li>
+<li>Select the “temperature factor” that you would like to use when generating sequences (<a href="#fig1">Figure 1</a>G). The temperature factor controls how likely ProteinSolver is to sample low-probability sequences relative to high probability sequences. With a temperature factor of 1, ProteinSolver will use probabilities that achieved the lowest loss during training. With a higher temperature factor, ProteinSolver will be relatively more likely to select low-probability amino acids, while with lower temperature factor, ProteinSolver will be relatively less likely to select lower probability amino acids. We recommend using a temperature factor of 0.01 when you aim to generate a small number of high confidence sequences, and a temperature factor of 0.1 to 1 when you aim to generate a large number of sequences that will be filtered and refined in subsequent steps.</li>
+<li>Click “Run ProteinSolver!” (<a href="#fig1">Figure 1</a>H) to start generating sequences. The panel on the right (<a href="#fig1">Figure 1</a>I) should show a live preview of the sequences that are generated and their corresponding sequence logo. The GPU monitoring panel (<a href="#fig1">Figure 1</a>J) should show increased GPU usage.</li>
+<li>Once ProteinSolver stops running, click “Generate download link” button (<a href="#fig1">Figure 1</a>K) to generate a “Download sequences” link (<a href="#fig1">Figure 1</a>L) that will allow you to download a FASTA file listing generated sequences.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The header of every entry in the FASTA file has the following format: &gt;{sequence_index}|{unique_name}|{sequence_identity}|{avg_logprobability}. The sequence_index field is a monotonically increasing index of the sequence in the FASTA file. The unique_name field is a unique name assigned to each sequence in the FASTA file. The sequence_identity field lists the sequence identity between the generated sequence and the sequence of the reference protein, if provided. The avg_logprobability field lists the average log-probability assigned by ProteinSolver to amino acids in the generated sequence.</div>
+<div class="textbox">
+<p>Example FASTA file produced by the ProteinSolver web server</p>
+<code>
+    &gt;0|gen-00001|0.28875115513801575|-1.845043659210205<br>
+    FFGYDFLREDAHAFLANRFPYASQAHIAKITACETECCNCCNERDLKSCTDCKNTLAQEICKNRERFSEEIGNCCENPPH<br>
+    IIAECLAQVKHR<br>
+    &gt;1|gen-00002|0.29804882407188416|-1.976570963859558<br>
+    FAGLKDDLKKALERLRNRFPSAAKDEVDELTNMEATVVKCCTDDDTSECISCELALAEYVCSNEYLLADELGACCKQPGE<br>
+    EYTSCLKRLSTK<br>
+    ...
+  </code>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The quality of the sequences generated by ProteinSolver will ultimately depend on the quality of the reference protein structure or distance matrix that you provide. If the generated sequences do not match your expectations, double check the provided structure or distance matrix for irregularities or typos.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> It may be advisable to try setting different values for the “temperature factor” and, based on the logos of the generated sequences, to select the temperature factor that produces sequences with the desired level of diversity. Conceptually, the temperature factor is analogous to the temperature term in a Boltzmann distribution and controls the probability that a system (in our case, a protein) will occupy a given state (in our case, the assignment of amino acids) given the energy of that state (in our case, the predictions of the ProteinSolver neural network). More concretely, the final layer of the ProteinSolver neural network is a softmax function which converts raw output values (<i>z</i>) into probabilities (<i>p</i>) of each amino acid being present at each position in the protein, and the temperature factor (<i>T</i>) scales the raw output values (<i>z</i>), thereby modifying the resulting probability distributions over the amino acids (i.e., <i>p</i><sub><i>i</i></sub> <i>= exp(z</i><sub><i>i</i></sub> <i>/ T) / Σ</i><sub><i>j</i></sub> <i>exp(z</i><sub><i>j</i></sub> <i>/ T)</i>). A large temperature factor will make the resulting distributions more flat, increasing the likelihood that residues with relatively low output values (<i>z</i>) will be selected, while a small temperature factor will make the resulting distributions more narrow, decreasing the probability that residues with relatively low output values (<i>z</i>) will be selected.</div>
+<h3 id="sec3.2">Computational validation of the generated amino acid sequences using sequence-based tools</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>In this step, we discuss sequence-based approaches for validating and filtering sequences generated using ProteinSolver. These approaches do not require structural models of the proteins and are especially useful in cases where it is difficult to generate a protein structure corresponding to the target topology.</p>
+<ol start="8">
+<li>Use PSIPRED (<a href="#bib9">Jones, 1999</a>) to predict the secondary structure of the generated sequences.
+<ol type="a">
+<li>PSIPRED can be accessed through a web server (<a href="http://bioinf.cs.ucl.ac.uk/psipred/">http://bioinf.cs.ucl.ac.uk/psipred/</a>) or by installing locally (see <a href="#materials-and-equipment">materials and equipment</a>).</li>
+<li>Remove sequences where the predicted secondary structure does not match the secondary structure of the target protein.</li>
+</ol>
+</li>
+<li>Use ProtParam (<a href="#bib8">Gasteiger et al., 2005</a>) to predict physicochemical properties of the generated sequences.
+<ol type="a">
+<li>ProtParam can be accessed through a web server (<a href="https://web.expasy.org/protparam/">https://web.expasy.org/protparam/</a>) or using the Bio.SeqUtils.ProtParam module in BioPython (see <a href="#materials-and-equipment">materials and equipment</a>).</li>
+<li>Viable protein sequences that do not aggregate under experimental conditions would generally have an Instability Index (II) less than 40 and a GRAVY coefficient between –0.5 and 0.5.</li>
+</ol>
+</li>
+<li>Use external protein structure prediction tools, such as I-TASSER (<a href="#bib28">Yang et al., 2015</a>) and QUARK (<a href="#bib26">Xu and Zhang, 2012</a>) to predict structures (with and without protein templates) of generated sequences.
+<ol type="a">
+<li>Use the I-TASSER web server (<a href="https://zhanglab.ccmb.med.umich.edu/I-TASSER/">https://zhanglab.ccmb.med.umich.edu/I-TASSER/</a>) to create homology models for several sequences with the highest ProteinSolver log-probability value.</li>
+<li>Use the QUARK web server (<a href="https://zhanglab.ccmb.med.umich.edu/QUARK/">https://zhanglab.ccmb.med.umich.edu/QUARK/</a>) to create ab-initio models for several sequences with the highest ProteinSolver log-probability value.</li>
+<li>We recommend predicting structures for only several of the highest-scoring designs, since structure prediction tools are computationally expensive.</li>
+<li>The distance matrix that was provided as input to ProteinSolver can, optionally, also be provided as input to I-TASSER. This can improve the quality of the generated structures, especially in the case of de novo design.</li>
+<li>Structural models that are produced should have distance matrices that match the distance matrix of the target topology that was provided as input to ProteinSolver.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Computational validation of the generated amino acid sequences using structure-based tools</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>In this step, we discuss structure-based approaches for validating and filtering the generated sequences. In order to use these approaches, we need the structure of a reference protein with the target topology, as this structure is used to construct homology models of all generated sequences. Those homology models are then evaluated using various measures of protein stability.</p>
+<ol start="11">
+<li>Create and evaluate homology models of the generated sequences using MODELLER (<a href="#bib25">Webb and Sali, 2002</a>).
+<ol type="a">
+<li>Generate alignment files in PIR file format mapping the generated sequences to the sequence of the reference protein.</li>
+<li>Create homology models of the generated sequences following MODELLER’s basic modeling tutorial: <a href="https://salilab.org/modeller/tutorial/basic.html">https://salilab.org/modeller/tutorial/basic.html</a>.</li>
+<li>Obtain assessment scores for those homology models, including the GA341, DOPE, DOPE-HR and normalized DOPE scores.</li>
+</ol>
+</li>
+<li>Evaluate the stability of homology models using Rosetta (<a href="#bib1">Alford et al., 2017</a>).
+<ol type="a">
+<li>Relax the structures using Rosetta protocol FastRelax, as described on the Relax application page: <a href="https://www.rosettacommons.org/docs/latest/application_documentation/structure_prediction/relax">https://www.rosettacommons.org/docs/latest/application_documentation/structure_prediction/relax</a>.</li>
+<li>Obtain a Rosetta Energy Unit score for each structure using the ref2015 scoring function.</li>
+</ol>
+</li>
+<li>Use the obtained scores to prioritize generated sequences for more in-depth computational and experimental validation.
+<ol type="a">
+<li>Select one or more sequences that score best according to each of the metrics.</li>
+<li>Select one or more sequences that score best according to an average of all metrics. In order to give equal weight to each metric, before calculating the average, the scores should be normalized to have a mean of 0 and a standard deviation of 1.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Computational validation of select amino acid sequences using molecular dynamics</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 days</div>
+<p>Molecular dynamics (MD) is arguably the least biased computational approach that can be used to evaluate the stability of <i>de novo</i> designed proteins. We suggest using MD to probe the stability of a handful of selected sequences before proceeding to experimental validation</p>
+<ol start="14">
+<li>Run molecular dynamics simulations using homology models constructed for to the best-scoring designs.
+<ol type="a">
+<li>Remove all water and ion atoms from the homology models.</li>
+<li>Solvate the structures by adding a 12 nm<sup>3</sup> box of explicit water molecules, TIP3P, using the solvatebox program in AMBER16 (<a href="#bib5">Case et al., 2005</a>).</li>
+<li>Add Na+ and Cl- counter-ions to neutralize the overall system net charge using the solvatebox command in AMBER16.</li>
+<li>Generate coordinate and topology files using the tleap command (<a href="#bib5">Case et al., 2005</a>). We recommend specifying the AMBER ff14SB force field (<a href="#bib12">Maier et al., 2015</a>) when running tleap.</li>
+<li>Apply periodic boundary conditions using the sander command.</li>
+<li>Minimize, equilibrate, and heat the structures over 800 ps to 300 K, while progressively removing the positional restraints.</li>
+<li>Run the molecular dynamics simulations. We recommend using a 2 fs timestep, constraining hydrogen bonds using SHAKE (<a href="#bib18">Ryckaert, Ciccotti and Berendsen, 1977</a>), and treating long-range interactions using the particle mesh Ewald algorithm (<a href="#bib22">Toukmaji et al., 2000</a>). The simulations should be carried out for at least 30 ns and preferably more than 100 ns.</li>
+<li>Structures of the designed proteins should maintain their general topology throughout the simulations. Proteins that begin to unfold or show large per-residue RMSD values are not likely to be stable under experimental conditions.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> While we use Amber16 in this protocol, other molecular dynamics packages can be used in its stead, including Gromacs and OpenMM.</div>
+<h3 id="sec3.5">Experimental validation of select amino acid using circular dichroism</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 to 9 days</div>
+<p>The ultimate test for the stability and activity of the generated sequences is experimental validation. Here, we describe how to obtain circular dichroism (CD) spectra for a handful of selected designs.</p>
+<ol start="15">
+<li>Generate a DNA sequence and clone it into an His-tagged expression vector for E. coli purification.
+<ol type="a">
+<li>Reverse translate the selected amino acid sequences into DNA sequences. Make sure that the codons are optimized for E. coli and that a stop codon is added.</li>
+<li>Add restriction sites at the 5’ and 3’ ends of the reverse translated sequence for downstream cloning.</li>
+<li>Obtain the sequences commercially synthetized as a dsDNA fragment. At least 100 ng of dsDNA can be expected for each sequence. Resuspend the dsDNA to a final concertation of 10–20 μg/μl.</li>
+<li>Insert the dsDNA fragments into a His-tag expression vector by standard ligation.</li>
+</ol>
+</li>
+<li>Express the proteins. Transform the vectors containing the selected amino acid sequences into a chemically competent E. coli cells for protein expression.
+<ol type="a">
+<li>Plate the transformed cells into LB plates containing the appropriate antibiotic for selection.</li>
+<li>For each protein, inoculate a small spread of colonies into 15 mL of 2xYT media containing the appropriate antibiotic at 37°C, 220 rpm until the optical density (O.D.) is 0.6–0.8.</li>
+<li>Induce the cell cultures with IPTG (0.5 mM) for 3 h at 37°C.</li>
+</ol>
+</li>
+<li>Extract the soluble protein with BugBuster Master Mix (Millipore) and purify the soluble protein with Ni-NTA agarose beads (<a href="#bib17">Perez-Riba and Itzhaki, 2017</a>).
+<ol type="a">
+<li>Pellet the cells by centrifugation at 3000 × <i>g</i> (4°C, 10 min). Resuspend the pellets in 1 mL of BugBuster Master Mix (Millipore).</li>
+<li>Incubate the lysate mixtures for 20 min in a rotating shaker.</li>
+<li>Separate the soluble fraction by centrifugation at 16000 × <i>g</i> at 4°C for 1 min.</li>
+<li>Prepare 200 μL of Ni-NTA Agarose beads by pre-washing it in Phosphate-buffered saline (PBS) to remove the storage Ethanol.</li>
+<li>Mix the lysate supernatant with the washed beads into a 1.5 mL tube. Incubate the mixture for 20 min at 4 C in a tube rotator.</li>
+<li>Spin down the beads at 600 × <i>g</i> to remove the unbound fraction. Wash the beads with 1 mL of PBS 30 mM Imidazole.</li>
+<li>Repeat the washing step twice.</li>
+<li>After removal of the last washing step, elute the samples by addition of 1 mL of PBS, 300 mM Imidazole. Spin down at 600 × <i>g</i> to pellet the beads and keep the supernatant with the eluted protein.</li>
+<li>Dialyze the eluted sample against 5 L of fresh PBS buffer for 16 h at 4°C.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 1 mL of BugBuster Master Mix in our hands homogenizes a 15 mL culture of untransformed E. coli cells into a transparent solution. After centrifugation, some proteins may be present in both the soluble and insoluble fractions, and any white precipitate should be the recombinant protein in inclusion bodies. These inclusion bodies can be resuspended in Gdm HCl 6 M and further purified by Ni-NTA affinity (<a href="#bib17">Perez-Riba and Itzhaki, 2017</a>).</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Cell pellets obtained by centrifugation (step 17a) can be stored at –20°C for several weeks. Alternatively, purified protein may be stored at –80°C. Different proteins may require different storage conditions to preserve fold and activity.</div>
+<ol start="18">
+<li>Validate the purified protein sample.
+<ol type="a">
+<li>Calculate the protein concentration using the Pierce BCA Protein Assay Kit (ThermoFisher), Bradford assay or Tryptophan absorbance at 280 nm.</li>
+<li>Estimate sample purity by SDS-PAGE.</li>
+<li>Validate that the eluted protein matches the theoretical MW of the selected amino acid sequence by Mass Spectrometry (ESI).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If the protein has at least one Tryptophan, we recommend calculating protein concentration using absorbance at 280 nm. Otherwise, colorimetric assays (BCA and Bradford) are good alternatives for proteins lacking Trp residues, but the colorimetric signal is sometimes dependent on the protein chemistry. We have noticed that the same protein sample may give different concentration estimates depending on the assay used. Finally, absorbance at 205 nm can be an alternative for proteins with very low solubility (<a href="#bib2">Anthis and Clore, 2013</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Small scale purifications are cleaner in our hands than large scale ones. However, if other bands besides the recombinant protein are present in the polyacrylamide gel, other purification steps, such as gel filtrations, are required.</div>
+<ol start="19">
+<li>Obtain the circular dichroism spectra to estimate the secondary structure content on a CD spectrometer.
+<ol type="a">
+<li>Aim to have 10–20 μM of purified protein to perform CD measurements and obtain the measurements in triplicates. Using 300 μl for a 1 mm quartz cuvette is recommended.</li>
+<li>The CD spectra should be transformed to Molar ellipticity for a direct comparison between the spectra of selected amino acid sequences.</li>
+<li>Input the spectra into the BeStSel webserver (<a href="#bib14">Micsonai et al., 2015</a>) in mean residue ellipticity units to obtain predicted composition of secondary structure elements.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If protein dilution is required, prepare three dilution replicates and measure the protein concentration of each dilution in triplicate.</div>
+<div class="note">
+<span class="note-title">Note:</span> The Molar ellipticity is sensitive to errors in protein concentration estimation. Calculate the concentration of all the CD samples in triplicate.</div>
+<div class="note">
+<span class="note-title">Note:</span> If the concentration is below 5 uM, using a 10 mm path cuvette can improve signal, but a low salt buffer may be required to reduce the noise level.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>When provided with a well-defined topology, sequences generated by ProteinSolver should show a clear preference for certain amino acids at certain positions (<a href="#fig2">Figure 2</a>A). Positions that were constrained to specific amino acids (see step 3) should be assigned only those amino acids, and the remaining positions should be filled such that the constrained amino acids are accommodated. Computational validation of the generated sequences should show that they have secondary structures that are consistent with the expected secondary structures (see step 8), physicochemical properties that are within the range observed for native sequences (see step 9), and structures that are consistent with the desired protein topology (see step 10). Computational validation of homology models obtained for the generated sequences should show that they have comparable stability to the reference structure based on a variety of metrics (see steps 11–13) and stay folded in molecular dynamics simulations (see step 14). Finally, experimental validation of the selected designs should show that the new proteins have circular dichroism spectra that are consistent with their expected secondary structures and are similar to the circular dichroism spectra obtained for a reference protein, if available (see steps 15–19).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1151-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Logos comprising sequences generated to match well-defined and poorly defined topologies</div>
+<p>(A) Sequence logos comprising sequences generated to match a well-defined topology corresponding to the serum albumin protein (PDB ID: 1N5U).</p>
+<p>(B) Sequence logos comprising sequences generated to match a poorly defined topology without pairwise residue interactions.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<ol>
+<li>We recommend using MDTraj (<a href="#bib13">McGibbon et al., 2015</a>) for protein structure analysis, including the calculation of protein solvent-accessible surface area and secondary structure.</li>
+<li>We recommend using Biotite (<a href="#bib10">Kunzmann and Hamacher, 2018</a>) for depicting pairwise alignments and secondary structure components.</li>
+<li>The bootstrap method (<a href="#bib6">Efron and Tibshirani, 1993</a>) can be used to evaluate the statistical significance of measurements without assumptions regarding the underlying distribution of the data.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The ProteinSolver model has been validated extensively only when generating sequences for existing protein folds. In the case of de novo design, it may be difficult to come up with a distance matrix that accurately describes the topology of the target protein.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Generated sequences are too diverse. The sequence logo for the generated sequences lacks consensus (<a href="#fig2">Figure 2</a>B).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Using the default temperature factor of 1 (<a href="#fig1">Figure 1</a>G), ProteinSolver will generate sequences of moderate diversity for most target topologies. In cases when only those sequences that are assigned the highest probability by the network are required, or when the target protein topology is loosely defined, it may be beneficial to decrease the temperature factor, typically 10- to 100-fold. With a lower temperature factor, ProteinSolver will sample less frequently amino acids that are assigned a lower probability by the network.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Generated sequences lack diversity.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>In cases where the target protein geometry is exceptionally well-constrained, the sequences generated by ProteinSolver may lack diversity. One approach to increase diversity of the generated sequences is to use a higher temperature factor (<a href="#fig1">Figure 1</a>G). With a higher temperature factor, ProteinSolver will sample more frequently amino acids that are assigned a lower probability by the network. Another approach to increase diversity of the generated sequences is to first generate more sequences than are ultimately required and then cluster those sequences using some metric of sequence diversity. For example, you can use a tool such as CD-HIT or MMSeqs2 to assign sequences into clusters based on sequence identity and keep only a single sequence from each cluster.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Sequences are being generated too slowly. The GPU monitoring panel shows the following error.</p>
+<p><code>GPU monitoring not available ((&lt;class 'pynvml.nvml.NVMLError_LibraryNotFound'&gt;-</code></p>
+<p><code>NVML Shared Library Not Found).</code></p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>ProteinSolver can leverage a GPU in order to increase the speed with which it generates sequences. If you are running the ProteinSolver web server locally, make sure to start the Docker container with the `--gpus all` arguments, as this is required to expose available GPUs to processes running inside the container (see <a href="#materials-and-equipment">materials and equipment</a>). The GPU utilization indicator on the ProteinSolver web interface (<a href="#fig1">Figure 1</a>J) should show moderate GPU utilization when ProteinSolver is generating sequences, and GPU utilization should decrease when ProteinSolver stops. If GPU utilization is consistently at zero, it is likely that either the system is not correctly configured to use a GPU, or the version of the available GPU is not supported.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Alford, R.F., Leaver-Fay, A., Jeliazkov, J.R., O’Meara, M.J., DiMaio, F.P., Park, H., Shapovalov, M.V., Renfrew, P.D., Mulligan, V.K., Kappel, K., et al. (2017). The Rosetta all-atom energy function for macromolecular modeling and design. J. Chem. Theory Comput <i>13</i>, 3031-3048. <a class="external-link" href="https://doi.org/10.1021/acs.jctc.7b00125">https://doi.org/10.1021/acs.jctc.7b00125</a></p>
+<p id="bib2">Anthis, N.J. and Clore, G.M. (2013). Sequence-specific determination of protein and peptide concentrations by absorbance at 205 nm. Protein Sci <i>22</i>, 851-858. <a class="external-link" href="https://doi.org/10.1002/pro.2253">https://doi.org/10.1002/pro.2253</a></p>
+<p id="bib3">Berman, H.M., Westbrook, J., Feng, Z., Gilliland, G., Bhat, T.N., Weissig, H., Shindyalov, I.N., and Bourne, P.E. (2000). The Protein Data Bank. Nucleic Acids Res <i>28</i>, 235-242. <a class="external-link" href="https://doi.org/10.1093/nar/28.1.235">https://doi.org/10.1093/nar/28.1.235</a></p>
+<p id="bib4">Camacho, C., Coulouris, G., Avagyan, V., Ma, N., Papadopoulos, J., Bealer, K., and Madden, T.L. (2009). BLAST+: architecture and applications. BMC Bioinformatics <i>10</i>, 421. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref4">View at publisher</a></p>
+<p id="bib5">Case, D.A., Cheatham, T.E., Darden, T., Gohlke, H., Luo, R., Merz, K.M., Onufriev, A., Simmerling, C., Wang, B., and Woods, R.J. (2005). The Amber biomolecular simulation programs. J. Comput. Chem <i>26</i>, 1668-1688. <a class="external-link" href="https://doi.org/10.1002/jcc.20290">https://doi.org/10.1002/jcc.20290</a></p>
+<p id="bib6">Efron, B. and Tibshirani, R.J. (1993). An Introduction to the Bootstrap, 1st edition (Chapman and Hall/CRC). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref6">View at publisher</a></p>
+<p id="bib7">Fey, M. and Lenssen, J.E. (2019). Fast graph representation learning with PyTorch geometric. arXiv. 1903.02428. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref7">View at publisher</a></p>
+<p id="bib8">Gasteiger, E., Hoogland, C., Gattiker, A., Duvaud, S., Wilkins, M.R., Appel, R.D., and Bairoch, A. (2005). Protein Identification and Analysis Tools on the ExPASy Server (Humana Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref8">View at publisher</a></p>
+<p id="bib9">Jones, D.T. (1999). Protein secondary structure prediction based on position-specific scoring matrices. J. Mol. Biol <i>292</i>, 195-202. <a class="external-link" href="https://doi.org/10.1006/jmbi.1999.3091">https://doi.org/10.1006/jmbi.1999.3091</a></p>
+<p id="bib10">Kunzmann, P. and Hamacher, K. (2018). Biotite: a unifying open source computational biology framework in Python. BMC Bioinformatics <i>19</i>, 346. <a class="external-link" href="https://doi.org/10.1186/s12859-018-2367-z">https://doi.org/10.1186/s12859-018-2367-z</a></p>
+<p id="bib11">Madej, T., Lanczycki, C.J., Zhang, D., Thiessen, P.A., Geer, R.C., Marchler-Bauer, A., and Bryant, S.H. (2014). MMDB and VAST+: tracking structural similarities between macromolecular complexes. Nucleic Acids Res <i>42</i>, D297-D303. <a class="external-link" href="https://doi.org/10.1093/nar/gkt1208">https://doi.org/10.1093/nar/gkt1208</a></p>
+<p id="bib12">Maier, J.A., Martinez, C., Kasavajhala, K., Wickstrom, L., Hauser, K.E., and Simmerling, C. (2015). ff14SB: improving the accuracy of protein side chain and backbone parameters from ff99SB. J. Chem. Theory Comput <i>11</i>, 3696-3713. <a class="external-link" href="https://doi.org/10.1021/acs.jctc.5b00255">https://doi.org/10.1021/acs.jctc.5b00255</a></p>
+<p id="bib13">McGibbon, R.T., Beauchamp, K.A., Harrigan, M.P., Klein, C., Swails, J.M., Hernández, C.X., Schwantes, C.R., Wang, L., Lane, T.J., and Pande, V.S. (2015). MDTraj: a modern open library for the analysis of molecular dynamics trajectories. Biophys. J <i>109</i>, 1528-1532. <a class="external-link" href="https://doi.org/10.1016/j.bpj.2015.08.015">https://doi.org/10.1016/j.bpj.2015.08.015</a></p>
+<p id="bib14">Micsonai, A., Wien, F., Kernya, L., Lee, Y., Goto, Y., Réfrégiers, M., and Kardos, J. (2015). Accurate secondary structure prediction and fold recognition for circular dichroism spectroscopy. Proc. Natl. Acad. Sci. U S A <i>112</i>, E3095-E3103. <a class="external-link" href="https://doi.org/10.1073/pnas.1500851112">https://doi.org/10.1073/pnas.1500851112</a></p>
+<p id="bib15">Nguyen, M.N., Tan, K.P., and Madhusudhan, M.S. (2011). CLICK—topology-independent comparison of biomolecular 3D structures. Nucleic Acids Res <i>39</i>, W24-W28. <a class="external-link" href="https://doi.org/10.1093/nar/gkr393">https://doi.org/10.1093/nar/gkr393</a></p>
+<p id="bib16">Paszke, A., Gross, S., Chintala, S., Chanan, G., Yang, E., DeVito, Z., Lin, Z., Desmaison, A., Antiga, L., and Lerer, A. (2017). Automatic differentiation in PyTorch (Curran Associates, Inc). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref16">View at publisher</a></p>
+<p id="bib17">Perez-Riba, A. and Itzhaki, L.S. (2017). A method for rapid high-throughput biophysical analysis of proteins. Sci. Rep <i>7</i>, 9071. <a class="external-link" href="https://doi.org/10.1038/s41598-017-08664-w">https://doi.org/10.1038/s41598-017-08664-w</a></p>
+<p id="bib18">Ryckaert, J., Ciccotti, G., and Berendsen, H.J.C. (1977). Numerical integration of the cartesian equations of motion of a system with constraints: molecular dynamics of n-alkanes. J. Comput. Phys <i>23</i>, 327-341. <a class="external-link" href="https://doi.org/10.1016/0021-9991(77)90098-5">https://doi.org/10.1016/0021-9991(77)90098-5</a></p>
+<p id="bib19">Steinegger, M., Meier, M., Mirdita, M., Vöhringer, H., Haunsberger, S.J., and Söding, J. (2019). HH-suite3 for fast remote homology detection and deep protein annotation. BMC Bioinformatics <i>20</i>, 473. <a class="external-link" href="https://doi.org/10.1186/s12859-019-3019-7">https://doi.org/10.1186/s12859-019-3019-7</a></p>
+<p id="bib20">Steinegger, M. and Söding, J. (2017). MMseqs2 enables sensitive protein sequence searching for the analysis of massive data sets. Nat. Biotechnol <i>35</i>, 1026-1028. <a class="external-link" href="https://doi.org/10.1038/nbt.3988">https://doi.org/10.1038/nbt.3988</a></p>
+<p id="bib21">Strokach, A., Becerra, D., Corbi-Verge, C., Perez-Riba, A., and Kim, P.M. (2020). Fast and flexible protein design using deep graph neural networks. Cell Syst <i>11</i>, 402-411.e4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref21">View at publisher</a></p>
+<p id="bib22">Toukmaji, A., Sagui, C., Board, J., and Darden, T. (2000). Efficient particle-mesh Ewald based approach to fixed and induced dipolar interactions. J. Chem. Phys <i>113</i>, 10913-10927. <a class="external-link" href="https://doi.org/10.1063/1.1324708">https://doi.org/10.1063/1.1324708</a></p>
+<p id="bib23">UniProt Consortium, T. (2019). UniProt: a worldwide hub of protein knowledge. Nucleic Acids Res <i>47</i>, D506-D515. <a class="external-link" href="https://doi.org/10.1093/nar/gky1049">https://doi.org/10.1093/nar/gky1049</a></p>
+<p id="bib24">Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., et al. (2020). SciPy 1.0: fundamental algorithms for scientific computing in Python. Nat. Methods <i>17</i>, 261-272. <a class="external-link" href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a></p>
+<p id="bib25">Webb, B. and Sali, A. (2002). Comparative Protein Structure Modeling Using MODELLER (John Wiley &amp; Sons, Inc.). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00212-4/sref25">View at publisher</a></p>
+<p id="bib26">Xu, D. and Zhang, Y. (2012). Ab initio protein structure assembly using continuous structure fragments and optimized knowledge-based force field. Proteins <i>80</i>, 1715-1735. <a class="external-link" href="https://doi.org/10.1002/prot.24065">https://doi.org/10.1002/prot.24065</a></p>
+<p id="bib27">Yang, J., Anishchenko, I., Park, H., Peng, Z., Ovchinnikov, S., and Baker, D. (2020). Improved protein structure prediction using predicted interresidue orientations. PNAS <i>117</i>, 1496-1503. <a class="external-link" href="https://doi.org/10.1073/pnas.1914677117">https://doi.org/10.1073/pnas.1914677117</a></p>
+<p id="bib28">Yang, J., Yan, R., Roy, A., Xu, D., Poisson, J., and Zhang, Y. (2015). The I-TASSER Suite: protein structure and function prediction. Nat. Methods <i>12</i>, 7-8. <a class="external-link" href="https://doi.org/10.1038/nmeth.3213">https://doi.org/10.1038/nmeth.3213</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Dr. Philip M. Kim (<a href="mailto:pi@kimlab.org">pi@kimlab.org</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The code generated during this study is hosted on GitLab: <a href="https://gitlab.com/ostrokach/proteinsolver/">https://gitlab.com/ostrokach/proteinsolver/</a>. The datasets generated during this study are available at the following URL: <a href="http://deep-protein-gen.data.proteinsolver.org/">http://deep-protein-gen.data.proteinsolver.org/</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank Quaid Morris for valuable discussions. A.S. acknowledges support from an NSERC PGS-D graduate scholarship and the Google Cloud Research Credits Program. D.B. acknowledges support from the <a href="https://doi.org/10.13039/501100003151">Fonds de recherche du Québec - Nature et technologies</a> (FRQNT) - Bourses de recherche postdoctorale. P.M.K. acknowledges support from an <a href="https://doi.org/10.13039/501100000038">NSERC</a> Discovery grant (RGPIN-2017-064) and a <a href="https://doi.org/10.13039/501100000024">CIHR</a> Project grant (PJT-166008). We also acknowledge HPC support from a Compute Canada Resource Allocation and the <a href="https://doi.org/10.13039/100007065">NVIDIA</a> academic GPU grant program.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, A.S. and P.M.K.; data curation, A.S. and D.B.; formal analysis and methodology, A.S.; software, A.S. and D.B.; resources, A.S., D.B., C.C., A.P.R., and P.M.K.; validation, A.S., C.C., D.B., and A.P.R.; writing, A.S., D.B., C.C., A.P.R., and P.M.K.; project administration, P.M.K.; supervision, P.M.K.; funding acquisition, P.M.K.</p>
+<h3>Declaration of interests</h3>
+<p>The authors are in the process of obtaining a patent on the described technology. P.M.K. is a cofounder of Resolute Bio Inc. and serves on the scientific advisory board of ProteinQure.</p>
+</section>
+</article>

@@ -1,0 +1,519 @@
+<article>
+<section>
+<h1 id="header">Modulating organelle distribution using light-inducible heterodimerization in <i>C. elegans</i>
+</h1>
+<p><time datetime="2021-01-15">Published: January 15, 2021</time></p>
+<p>Tobias B. Dansen<sup><a href="#aff1">1</a></sup> and Sasha De Henau<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Center for Molecular Medicine, Molecular Cancer Research, University Medical Center Utrecht, Universiteitsweg 100, 3584 CG Utrecht, the Netherlands</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:sasha.dehenau@gmail.com">sasha.dehenau@gmail.com</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100273">10.1016/j.xpro.2020.100273</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The relative positioning of organelles underlies fundamental cellular processes, including signaling, polarization, and cellular growth. Here, we describe the usage of a light-dependent heterodimerization system, LOVpep-ePDZ, to alter organelle positioning locally and reversibly in order to study the functional consequences of organelle positioning. The protocol gives details on how to accomplish expression of fusion proteins encoding this system, describes the imaging parameters to achieve subcellular activation in <i>C. elegans</i>, and may be adapted for use in other model systems.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib5">De Henau et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Design guidelines for constructs for LOVpep-ePDZ-based organelle translocation</li>
+<li>Generation of constructs for stable integration in <i>C. elegans</i>
+</li>
+<li>Optimization of conditions for light-induced activation of the LOVpep-ePDZ system</li>
+<li>Troubleshooting of the most common pitfalls associated with the above procedures</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Manipulation of subcellular organelle positioning can be achieved using the light-dependent heterodimerization system LOVpep-ePDZ, an example of an optogenetic approach, in which a photosensitive LOVpep domain binds an engineered PDZ domain (ePDZ) after exposure to blue light (&lt;500 nm) (<a href="#bib28">Strickland et al., 2012</a>). In the following, we describe how to implement and use this system. While we focus on the application of this system in the <i>Caenorhabditis elegans</i> zygote, most principles described here are likely adaptable to any transparent biological model system or organism.</p>
+<p>To set up this system, plasmids encoding LOVpep and ePDZ need to be generated, where one is fused to an organelle targeting sequence and the other to a protein domain that localizes to the desired site for organelle relocation (<a href="#fig1">Figure 1</a>). Subsequent stable integration of these constructs is preferred: this allows the relative concentrations between dimerizing proteins to be more consistent, which improves the efficiency of light-induced activation (<a href="#bib20">Krishnamurthy et al., 2016</a>). Stable integration is also essential for expression in the <i>C. elegans</i> germline and early embryo. However, transient expression can be useful for rapid screening of functional constructs. In the following, we describe how to design and generate the constructs encoding the LOVpep-ePDZ system.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Design of light-inducible LOVpep-ePDZ heterodimerization modules</div>
+<p>(A) Scheme for the induced recruitment of ePDZ::mCherry to membrane bound PH::eGFP::LOV and underlying construct design.</p>
+<p>(B) Scheme for the induced trapping of mitochondria with TOMM20::HALO::ePDZ to membrane EGFR-TM::mTagBFP2::LOV and underlying construct design.</p>
+<p>(C) Scheme for the induced transport of mitochondria with TOMM20::HALO::LOVpep via dynein heavy chain fused to ePDZ and mCherry, together with underlying construct design.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Besides LOVpep-ePDZ, a number of other light-inducible protein dimerization techniques have been developed. The binding affinity and activation and reversion kinetics of these light-inducible protein dimerization systems are important parameters to consider: systems with a tighter affinity are more suited to induce a fast functional response. However, it also makes them more sensitive to residual dark-state binding. For multiday experiments, minimal dark-state binding seems crucial to avoid unwanted background activation and perturbation of the system. The activation and reversion kinetics in turn determine how frequently the system needs to be exposed to maintain dimerization, and faster kinetics allow for more temporal resolution (<a href="#bib17">Hallett et al., 2016</a>; <a href="#bib26">Pathak et al., 2014</a>; <a href="#bib28">Strickland et al., 2012</a>).</div>
+<p>The LOVpep-ePDZ (also referred to as TULIP) used here has a reported in vitro affinity of 72 μM in the dark and 12 μM under blue light, for a 6-fold change (<a href="#bib17">Hallett et al., 2016</a>). However, while ePDZ can be labeled N- and C-terminal, LOVpep does not tolerate C-terminal fusions.</p>
+<p>iLID-SspB is mechanistically related to LOVpep-ePDZ, is also activated by blue light, and comes in three variations: nano (4.7 μM dark/ 0.13 μM blue light), micro (47 μM dark/ 0.8 μM blue light) and milli (125 μM dark/ 3 μM blue light), for at least a 25-fold change in all three pairs (<a href="#bib16">Guntas et al., 2015</a>; <a href="#bib31">Zimmerman et al., 2016</a>). However, the tighter affinity of the iLID-SspB pairs compared to LOVpep-ePDZ appear to make it more susceptible to dark-state binding. Both iLID and SspB tolerate N- and C-terminal fusions. LOVpep-ePDZ and iLID-SspB show comparable activation and reversion kinetics.</p>
+<p>A third example of a blue-light-inducible dimer is the CRY2-CIB1 pair. Rather than an intrinsic change in affinity upon blue light stimulation, it appears it is the light-induced homo-oligomerization of CRY2 that drives colocalization with CIB1 (<a href="#bib4">Bugaj et al., 2013</a>; <a href="#bib17">Hallett et al., 2016</a>; <a href="#bib19">Kennedy et al., 2010</a>; <a href="#bib21">Lee et al., 2014</a>). Because of this, orientation-specific tagging effects of either component need to be considered when implementing this system. Compared with the previous two methods, CRY2-CIB1 shows slower activation and reversion kinetics (<a href="#bib17">Hallett et al., 2016</a>).</p>
+<p>A final example of a light-sensitive heterodimerization system is the Phy/Pif pair, which uses a different light spectrum than the three previous methods: this pair forms under red light and dissociates in darkness or under far-red illumination. Compared to the previous systems, it shows higher fold levels of activation and low background binding. This method is limited in that it requires the external addition of the cofactor phycocyanobilin, which is not always straightforward (<a href="#bib1">Adrian et al., 2017</a>; <a href="#bib22">Levskaya et al., 2009</a>; <a href="#bib26">Pathak et al., 2014</a>).</p>
+<p>A direct comparison of these systems, which allows for a better understanding of their unique advantages and limitations, can for example be found in <a href="#bib17">Hallett et al. (2016)</a> and <a href="#bib26">Pathak et al. (2014)</a>. We advise the reader to carefully assess the requirements of their own light-dependent heterodimerization experiments before deciding on which system to use.</p>
+<h3 id="sec1.1">Design the plasmids containing the LOVpep and ePDZ constructs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–4 h</div>
+<ol>
+<li>Choose sequences encoding proteins or protein domains that connect LOVpep and ePDZ to the organelle of interest and to the protein that will be used to relocalize the organelle to the desired site respectively (<a href="#fig1">Figure 1</a>). To achieve local activation, it is critical that diffusion of activated LOVpep outside of the activated region is limited as much as possible. To this end, LOVpep is tagged to the least dynamic structure of the two. For example, to transport mitochondria along microtubules we fused LOVpep to the relatively immobile mitochondria using TOMM-20 and fused dynein heavy chain DHC-1 to ePDZ (<a href="#fig1">Figure 1</a>C) (<a href="#bib7">Fan et al., 2019</a>). On the other hand, to trap mitochondria at the cell membrane we fused LOVpep to a transmembrane domain to localize it to the plasma membrane, while ePDZ was now fused to the relatively more mobile mitochondria using TOMM-20 (<a href="#fig1">Figure 1</a>B) (<a href="#bib5">De Henau et al., 2020</a>).</li>
+<li>ePDZ can be placed either N- or C-terminal of the protein (domain) of choice in the final construct. On the other hand, LOVpep can only be placed at the C terminus of the final construct. LOVpep interacts with ePDZ via a C-terminal Jα-helix, which needs to remain free to maintain its functionality (<a href="#bib17">Hallett et al., 2016</a>; <a href="#bib28">Strickland et al., 2012</a>).</li>
+<li>Ideally, label both constructs with fluorophores to ensure proper expression and localization. Keep in mind here that LOVpep is traditionally activated using 470–500 nm light (<a href="#bib18">Harper et al., 2003</a>; <a href="#bib28">Strickland et al., 2012</a>) but is also significantly activated by shorter and slightly longer wavelengths. For example, we observed light-induced LOVpep-ePDZ heterodimerization using an excitation power of 4.8 μW 405 nm laser light, 0.002 μW 458 nm laser light and 0.005 μW 514 nm laser light (all 5 iterations and pixel dwell time of 8 μs, exposure every 2 s). These settings are considerably lower than what we normally use to excite blue, green, and yellow fluorophores. Therefore, in case the LOVpep or ePDZ constructs need to be visualized and followed during light-activation experiments, one cannot use fluorophores that require excitation with wavelengths between 400 and 520 nm, such as mTAGBFP2, eGFP and Venus (<a href="#bib17">Hallett et al., 2016</a>). Excitation of fluorophores with an excitation spectrum that is distinct from the excitation wavelength of the LOVpep domain, such as mCherry, mScarlet and HaloTag combined with the JF<sub>646</sub> HaloTag ligand (<a href="#bib15">Grimm et al., 2015</a>), do not induce LOVpep-ePDZ dimerization. When it is not required to visualize LOVpep or ePDZ during light-activation experiments, you can tag them with mTAGBFP2 or eGFP to ensure proper expression. This way, higher wavelengths remain free for visualization of other proteins or biological processes.</li>
+<li>It is recommended to use suitable linkers (such as GGSGGSGGS or GAGAGAGAGAGA) between the LOVpep, ePDZ, and the protein domains of choice to allow for proper protein folding.</li>
+<li>LOVpep-ePDZ is sensitive to differences in expression levels because it is restricted to a 6-fold increase in dimerization affinity upon illumination. It is therefore recommended to use identical or comparably strong regulatory regions (promoter, 3′UTR) to drive expression. When going for single-copy integration techniques, aim for regulatory regions that cause moderate-strong protein expression, in order to achieve LOVpep and ePDZ levels that are sufficiently high to permit light-depending LOVpep-ePDZ interactions. We successfully used <i>mex-5</i> promoter or <i>fbf-1</i> promoter in combination with <i>tbb-2</i> 3′UTR (sequences and expression patterns detailed in <a href="#bib23">Merritt et al. (2008)</a>) to achieve LOVpep and ePDZ germline expression that is compatible with light-depending activation (<a href="#bib5">De Henau et al., 2020</a>; <a href="#bib7">Fan et al., 2019</a>).</li>
+<li>Once the transgene is designed, codon optimization for expression in <i>C. elegans</i> (<a href="#bib27">Redemann et al., 2011</a>), or the model organism of choice, is advised. To specifically increase expression in the <i>C. elegans</i> germline and avoid germline silencing, germline-specific codon optimization is available and highly recommended (<a href="#bib9">Fielmich et al., 2018</a>). Additional approaches to avoid germline silencing are the removal of homology to piRNAs (<a href="#bib2">Batista et al., 2008</a>) and introduction of PATC introns (<a href="#bib13">Frokjaer-Jensen et al., 2016</a>).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the final ePDZ and LOV constructs show an overlapping subcellular expression pattern, so that upon light activation LOVpep is capable of binding ePDZ. When using motor proteins, make sure that they are active in the cell of interest. Alternatively, use constitutively active or inducible active motor proteins (<a href="#bib25">Nijenhuis et al., 2020</a>). Also make sure the cell of interest has the cytoskeletal structures that are required for the motor proteins to relocate the organelle of interest.</div>
+<h3 id="sec1.2">Assemble and integrate the plasmids carrying LOVpep and ePDZ constructs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 weeks</div>
+<p>Assembling the LOVpep and ePDZ constructs requires combining multiple genetic elements. Modular cloning techniques such as Gateway (<a href="#bib30">Walhout et al., 2000</a>), Gibson (<a href="#bib14">Gibson et al., 2009</a>) and Golden Gate (<a href="#bib6">Engler et al., 2009</a>) are preferred, given that they are faster and hence more favorable for screening for functional constructs. New constructs for photo-inducible heterodimerization do not always result in the expected organelle manipulation and might for example suffer from high levels of dark-state heterodimerization or low efficiency light-induced heterodimerization. It might therefore be necessary to test alternative organelle adaptors, relocalization proteins, mutants of LOV-ePDZ with different affinity properties (<a href="#bib28">Strickland et al., 2012</a>) or even different light-inducible heterodimerization systems (<a href="#bib1">Adrian et al., 2017</a>; <a href="#bib17">Hallett et al., 2016</a>; <a href="#bib25">Nijenhuis et al., 2020</a>) before the desired experimental setup is achieved.</p>
+<p>To stably introduce transgenes in <i>C. elegans</i>, we recommend generating plasmids that are compatible with the Mos1-mediated Single-Copy Insertion (MosSCI) method (<a href="#bib10">Frokjaer-Jensen et al., 2012</a>; <a href="#bib11">Frokjaer-Jensen et al., 2008</a>; <a href="#bib12">Frokjaer-Jensen et al., 2014</a>). This method creates single-copy transgenes at defined positions within the genome, which facilitates subsequent crossing of the transgenes into a single line, generates comparable expression levels of the transgenes and decreases the probability of germline silencing. Alternatively, CRISPR/Cas9 mediated gene editing (<a href="#bib24">Nance and Frokjaer-Jensen, 2019</a>) can be used when endogenous proteins need to be tagged.</p>
+<p>With the above in mind, we recommend the recently developed Golden Gate cloning technique SapTrap to assemble <i>C. elegans</i> MosSCI transgene vectors (<a href="#bib7">Fan et al., 2019</a>) carrying LOVpep and ePDZ constructs in a fast, efficient, inexpensive, and scar-free manner (<a href="#fig2">Figure 2</a>). The MosSCI backbone and donor plasmids carrying LOVpep and ePDZ that are compatible with this method are available at Addgene (<a href="#bib7">Fan et al., 2019</a>). In the following we detail how MosSCI transgene vectors using the SapTrap method can be generated.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. The modular Golden Gate cloning technique SapTrap to assemble <i>C. elegans</i> MosSCI transgene vectors</div>
+<p>(A) Gene fragments are cloned into the pCR-Blunt II-TOPO Vector to create donor cassette plasmids. Note that gene fragments are flanked by a SapI recognition site (red) and homology sequences (blue) that define the position in the final MosSCI transgene vector.</p>
+<p>(B) Modular assembly of the MosSCI transgene vector. Individual gene fragments are liberated from the donor cassettes by SapI digestion, while the 5′-homology sequences define the position of the gene fragments in the final MosSCI transgene vector. Note that the SapI recognition sites are oriented such that upon digestion they are removed from the individual gene fragments and vector backbone.</p>
+<p>(C) Overview of primer design for SapTrap, for the 4 cassette or 5 cassette system.</p>
+</figcaption>
+</figure>
+<ol start="7">
+<li>Find templates encoding the parts you want to combine and order primers to produce gene fragments flanked by SapI restriction sites. Key in the SapTrap method is that SapI cuts DNA at defined positions adjacent to its recognition sequence to generate three-base 5′ overhangs (<a href="#fig2">Figure 2</a>, red sequence/bars=recognition site, blue sequence/bars= three-base 5′ overhangs). By designing SapI restriction fragments with complementary overhangs, multiple fragments can be assembled together in a defined order in a single digestion and ligation reaction (<a href="#fig2">Figure 2</a>B, the defined order is illustrated by the fragments ranging from light gray to dark gray). Primer design and examples of primers can be found in <a href="#fig2">Figure 2</a>C and in the study by <a href="#bib7">Fan et al. (2019)</a>. If templates are not available, codon-optimized sequences can be ordered. We order sequences as gBlocks (Integrated DNA Technologies).</li>
+<li>When you amplify your gene fragments with your primers and template DNA, use a high-fidelity PCR kit as per the manufacturer’s instructions.</li>
+<li>Generate donor plasmids by cloning the PCR products or gBlocks into the pCR BluntII vector backbone using the Zero Blunt Topo system (Thermo Fisher Scientific), as per the manufacturer’s instructions (<a href="#fig2">Figure 2</a>A).</li>
+<li>Transform the Zero Blunt Topo assembly reaction into chemically competent cells: Thaw 50 μL competent cells on ice. Still on ice, add 5 μL of assembly reaction to the cells and incubate for 20–30 min. Heat shock the cells at 42°C for 30 s. After transformation and before plating, add 0.2 mL of 18°C–24°C SOC Medium and shake at 225 rpm 37°C for 1 h. Spread the cells onto pre-warmed kanamycin-selective plates and incubate 16–20 h at 37°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Bacterial colonies can be stored at 4°C for up to 2–3 weeks.</div>
+<ol start="11">
+<li>Pick colonies, grow 16–20 h at 37°C and extract the plasmid DNA using a miniprep kit, as per the manufacturer’s instructions. Carry out diagnostic restriction enzyme digests followed by sequencing to confirm that the donor plasmid has the correct, mutation-free insert.</li>
+<li>Adjust the volume of donor plasmids to bring to a final concentration of 50 nM.</li>
+<li>MosSCI targeting vectors are assembled using the SapTrap method in a single tube (<a href="#fig2">Figure 2</a>B) using the following protocol: add 1 μL 50 nM pXF87 (MosSCI backbone, available at Addgene), 1 μL 50 nM of each donor cassette plasmid, 5 μL 10× NEB cutsmart buffer, 5 μL 10 mM ATP (not dATP), 1 μL SapI enzyme (10 units), 1 μL T4 DNA ligase (400 units) and ddH<sub>2</sub>O to a final volume of 50 μL. Incubate this reaction mixture 5 min at 37°C (=SapI digestion) and 5 min at 16°C (ligation), repeating this for a total of 35 cycles. This is followed by a final SapI digestion step of at least 1 h and up to 16 h at 37°C to cut any remaining, unligated pXF87 backbone. After this final step, put immediately on ice and use 5 μL for transformation into chemically competent cells as described above. Spread the cells onto pre-warmed ampicillin-selective plates and incubate 16–20 h at 37°C (<a href="#sec6.1">Troubleshooting 1</a>, <a href="#sec6.3">Troubleshooting 2</a>).</li>
+<li>Isolate plasmid DNA and screen for correct assembly using diagnostic restriction and sequencing. In our hands, between 10%–90% of colonies have the correctly assembled plasmids.</li>
+<li>Once the MosSCI transgene vectors are made, these can be integrated at defined landing sites in the chromosome of choice by injecting the vectors into universal MosSCI strains (<a href="#bib12">Frokjaer-Jensen et al., 2014</a>). We co-inject the MosSCI transgene vector (50 ng/μL) together with a helper plasmid encoding the Mos1 transposase (50 ng/μL pCFJ601), and with three negative selection markers to select against extrachromosomal array-bearing transgenic animals (10 ng/μL pMA122, 2.5 ng/μL pCFJ90 and 5 ng/μL pCFJ104) (<a href="#bib12">Frokjaer-Jensen et al., 2014</a>). For a detailed protocol describing the microinjection procedure, please refer to <a href="#bib3">Berkowitz et al. (2008)</a>.</li>
+<li>Injection of 20–30 animals is in general sufficient to obtain at least one stable transgenic line. Place 3–4 injected animals per NGM plates with OP50 <i>E. coli</i> and keep them at 25°C until they are starved (7–10 days).</li>
+<li>Heat-shock animals for 2 h at 34°C to activate the peel-1 toxin (encoded by pMA122) and selectively kill animals that carry extrachromosomal arrays. Using an air incubator with a fan and spreading out plates evenly ensures that plates warm up relatively fast to 34°C to efficiently induce the heat shock.</li>
+<li>4–24 h following the heat shock, screen for plates that contain animals that are alive, move well, and lack the fluorescent co-injection markers. Chunk positive plates to new seeded NGM plates. Two days later, transfer a single adult animal to a new seeded NGM plates. If possible, screen for expression of the inserted transgene (germline expression, for example) before picking a worm to set up a clonal culture.</li>
+<li>In the isolated lines, verify that the transgene is expressed and localizes to the expected location. For germline expression, note that it can take 1–3 generations before germline silencing of the transgene disappears and the transgene becomes expressed (<a href="#sec6.5">Troubleshooting 3</a>).</li>
+<li>Verify that the transgene has been correctly inserted at the chromosome of choice using the oligos described on <a href="http://www.wormbuilder.org">www.wormbuilder.org</a> (under “universal insert verification”) (<a href="#bib12">Frokjaer-Jensen et al., 2014</a>).</li>
+<li>Once stable lines carrying the individual transgenes have been made, they can be crossed to generate a single strain expressing both the LOVpep and ePDZ transgenes. A detailed protocol for setting up crosses can be found in <a href="#bib8">Fay (2006)</a>.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>
+<i>E.coli</i> HST08 - Stellar Competent Cells</td>
+<td>Clontech</td>
+<td>Cat#636763</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Janelia Fluor 646</td>
+<td>Tocris</td>
+<td>Cat#6590</td>
+</tr>
+<tr>
+<td>Zero Blunt TOPO PCR Cloning Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#450245</td>
+</tr>
+<tr>
+<td>SapI &amp; Cutsmart buffer</td>
+<td>NEB</td>
+<td>Cat#R0569</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>NEB</td>
+<td>Cat#M0202</td>
+</tr>
+<tr>
+<td>ATP</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#A2383</td>
+</tr>
+<tr>
+<td>SOC medium</td>
+<td>Clontech</td>
+<td>Cat#636763</td>
+</tr>
+<tr>
+<td>Kanamycin sulfate</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#11815032</td>
+</tr>
+<tr>
+<td>Ampicillin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#A9518</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>ttTi5605(he314[Ppie-1::glo-epdz::mcherry(smu-1)::tbb-2(3′UTR)]) II; cxTi10816(he259[Peft-3::ph::co-egfp::co-lov::tbb-2(3′UTR)]) IV</td>
+<td>(<a href="#bib9">Fielmich et al., 2018</a>)</td>
+<td>SV2061</td>
+</tr>
+<tr>
+<td>dhc-1(he255[epdz::mcherry::dhc-1]) I; utdSi51(mex-5p::tomm-20(aa 1–55)::halotag::lov::tbb-2 3′UTR + unc119(+)) II</td>
+<td>(<a href="#bib7">Fan et al., 2019</a>)</td>
+<td>TBD307</td>
+</tr>
+<tr>
+<td>he314[Ppie-1::glo-epdz::mcherry(smu-1)::tbb-2(3′UTR)] II; unc-119(ed3) III; utdSi45[mex-5p::glo-egfr-tm::glo-mtagbfp2::co-lov::tbb-2(3′UTR)] V</td>
+<td>(<a href="#bib5">De Henau et al., 2020</a>)</td>
+<td>TBD321</td>
+</tr>
+<tr>
+<td>cp13[nmy-2::gfp + LoxP] I; utdSi44 [mex-5p::tomm-20::glo-epdz::glo-halo::tbb-2(3′UTR)] II; it315[mCherry::par-2]) III; utdSi45[mex-5p::glo-egfr-tm::glo-mtagbfp2::co-lov::tbb-2(3′UTR)] V</td>
+<td>(<a href="#bib5">De Henau et al., 2020</a>)</td>
+<td>TBD322</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pXF–7 - MosSCI backbone</td>
+<td>Addgene</td>
+<td>Cat#139027</td>
+</tr>
+<tr>
+<td>pXF2–6 - LOVpep domain</td>
+<td>Addgene</td>
+<td>Cat#139048</td>
+</tr>
+<tr>
+<td>pSDH52 – ePDZ domain</td>
+<td>Addgene</td>
+<td>Cat#139049</td>
+</tr>
+<tr>
+<td>pSDH52 – ePDZ domain</td>
+<td>Addgene</td>
+<td>Cat#139033</td>
+</tr>
+<tr>
+<td>pXF87- mex-5p::tomm-20::glo-epdz::glo-halo::tbb-2(3′UTR)</td>
+<td>(<a href="#bib5">De Henau et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pXF87- mex-5p::PH::glo-mtagbfp2::co-lov::tbb-2(3′UTR)</td>
+<td>(<a href="#bib5">De Henau et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pXF87- mex-5p::glo-egfr-tm::glo-mtagbfp2::co-lov::tbb-2(3′UTR)</td>
+<td>(<a href="#bib5">De Henau et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pXF87- mex-5p::tomm-20(aa 1–55)::halotag::lov::tbb-2 3′UTR + unc119(+)) II</td>
+<td>(<a href="#bib7">Fan et al., 2019</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>ZEN version 14.0.7.201</td>
+<td>Carl Zeiss Microscopy</td>
+<td><a href="https://www.zeiss.com/microscopy/int/products/microscope-software/zen.html">https://www.zeiss.com/microscopy/int/products/microscope-software/zen.html</a></td>
+</tr>
+<tr>
+<td>FiJi ImageJ Version 2.0.0-rc-63/1.51s</td>
+<td>(<a href="#bib32">Schneider et al., 2012</a>)</td>
+<td><a href="https://imagej.net/Fiji">https://imagej.net/Fiji</a></td>
+</tr>
+<tr>
+<td>PRISM version</td>
+<td>GraphPad</td>
+<td><a href="https://www.graphpad.com/scientific-software/prism/">https://www.graphpad.com/scientific-software/prism/</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Equipment</h3>
+<h4 id="sec2.1.1">Confocal microscope</h4>
+<p>Images were captured using an Axioskop2 LSM880 scanning confocal microscope (Carl Zeiss) with a 40× oil objective (Plan Apochromat; numerical aperture [NA] 1.4) using Zen image acquisition software 2.3 SP1 FP3 (black) 64 bit. Power of the Argon laser (458, 488, 514 nm) was set to 488 nm 0.001%–0.01% when used for light-activation experiments, which corresponds to 0.01–0.1 μW, and to 0.5%–2% when used for eGFP imaging, which corresponds to 10–40 μW. Power of the DPSS 561-10 and HeNe633 was set between 0.5% and 3%, corresponding to 23–130 μW and 8–45 μW respectively.</p>
+<h3 id="sec2.2">Alternates</h3>
+<p>Other microscopes are compatible as long as they can apply 488 nm laser light, and in a defined region of interest if localized light-induced activation is needed.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Prepare imaging setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Very low levels of blue light are sufficient to activate LOVpep, so all environmental blue light that could reach the animals during culturing and sample preparation needs to be eliminated as much as practically feasible.</div>
+<ol>
+<li>Store the animals in a box that blocks environmental light, e.g., by wrapping the box in aluminum foil.</li>
+<li>If the room used for sample preparation and imaging needs to be illuminated, use a light source filtered for blue light. If necessary, aluminum foil can be used to cover the microscope setup and blue light of monitors can be omitted by adjusting the hardware display settings.</li>
+<li>Insert optical (orange) filters in the light paths of the dissection scope and of the imaging microscope to remove LOVpep-activating wavelengths from the transmitted light used to handle samples.</li>
+</ol>
+<h3 id="sec3.2">Prepare microscope settings for global and local light-induced heterodimerization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 h</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The conditions used for light-induced activation need to be thoroughly optimized to ensure minimal activation before the experiment or outside the region of interest, especially since LOVpep activation requires very low light exposure.</div>
+<ol start="4">
+<li>To setup the microscope, use a strain in which heterodimerization is straightforward to score and where ePDZ is tagged with a red or far-red fluorophore so its distribution can be visualized without activating LOVpep.
+<ol type="a">
+<li>For example, a strain expressing cytosolic ePDZ combined with a membrane anchored LOVpep allows for easy scoring of membrane recruitment of ePDZ-mCherry (<a href="#bib5">De Henau et al., 2020</a>; <a href="#bib9">Fielmich et al., 2018</a>) (<a href="#fig3">Figure 3</a>A, <a href="#mmc1">Methods videos S1</a> and <a href="#mmc2">S2</a>). A cytosolic ePDZ combined with an organelle anchored LOVpep works equally well (<a href="#bib17">Hallett et al., 2016</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Quantification of light-induced relocalization</div>
+<p>(A) Scheme for the induced recruitment of ePDZ::mCherry to membrane-bound PH::eGFP::LOV.</p>
+<p>(B) Time-lapse images of a <i>C. elegans</i> zygote with membrane-bound PH::eGFP::LOV (not shown) and cytosolic ePDZ::mCherry, with local LOVpep activation (box). Arrow points to membrane recruitment of ePDZ::mCherry, asterisks indicate LOVpep activation outside the ROI in a neighboring embryo, likely due to light scattering. Calculating the ratio of fluorescence intensity in the activated membrane ROI and a cytosolic ROI of equal (or comparable) size allows to determine the maximum intensity ratio and activation half-life. LOVpep was activated using a 488 nm laser line with laser intensity at 0.01% and pixel dwell time of 8 ms, started at 0 s and was applied in between each time point (2 s interval). Anterior side of the zygote is to the left. Scale bar, 10 μm. Data are mean ± SEM (n = 4).</p>
+</figcaption>
+</figure>
+<figure id="mmc1"><video controls="controls">
+                <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Mmc1.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+              </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. Representative time-lapse video of an embryo expressing membrane-bound PH::GFP::LOV (not shown) and cytosolic ePDZ::mCherry (white), related to Step-by-step method details point 4</div>
+<p>The embryo is going through cytokinesis and is exposed to alternating dark and global activating (+488 nm light) conditions. “+488 nm” indicates that LOVpep was activated using a 488 nm laser line, with laser intensity at 0.001% (0.01 μW) and pixel dwell time of 8 ms, applied in between each time point (5 s interval). Frame rate video 15 fps, anterior to the left.</p>
+</figcaption>
+</figure>
+<figure id="mmc2"><video controls="controls">
+                <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Mmc2.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+              </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. Representative time-lapse video of two zygotes expressing EGFR-TM::mTagBFP2::LOV (not shown) and ePDZ::mCherry (white), related to Step-by-step method details point 4</div>
+<p>(A) a zygote without and (B) a zygote with continuous anterior local LOV activation (box), as shown in Figure 6. Both zygotes are staged at the end of meiosis II, which can be seen by the local deformation at the anterior side (anaphase of meiosis II, and formation of the polar body) and subsequent membrane ruffling. LOVpep was continuously activated using a 488 nm laser line, with laser intensity at 0.01% (0.1 μW) and pixel dwell time of 8 ms, applied in between each time point (2 s interval). Frame rate video 20 fps, anterior to the left.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+<li>Assess for unintended light-induced heterodimerization during sample preparation (<a href="#fig4">Figure 4</a>).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Schematics of the steps to assess for unintended light-induced heterodimerization during sample preparation</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Prepare the sample for imaging, while preventing exposure to environmental blue light as described above.</li>
+<li>Locate the sample of interest using transmitted light that has been filtered for blue light and acquire a snapshot of the ePDZ fusion protein.</li>
+<li>Excite the entire field of view with 488 nm laser light (similar to the acquisition of an eGFP image) to induce global light-induced heterodimerization and <i>immediately</i> acquire a second snapshot of the ePDZ fusion protein.</li>
+<li>To obtain a dark-state, non-activated condition, leave the sample on the microscope for approximately 5 min, shielding it from all environmental light. Afterwards, acquire a third snapshot of the mobile ePDZ fusion protein.</li>
+<li>Compare the snapshots to determine if unintended light-induced heterodimerization occurs during sample preparation. If needed, quantify the signal intensities of the ePDZ fusion protein outside and inside the area where the LOVpep fusion protein is localized (also see next point for how to quantify) (<a href="#sec6.7">Troubleshooting 4</a>).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Global light-induced heterodimerization refers to applying 488 nm light to the entire cell/ field of view to activate all LOVpep within the sample, whereas local light-induced heterodimerization refers to applying 488 nm light to a defined region of interest (ROI) within the cell to activate LOVpep with subcellular resolution.</div>
+<ol start="6">
+<li>Determine 488 nm laser settings for light-induced heterodimerization
+<div class="critical">
+<span class="critical-title">Critical:</span> Since LOVpep activation requires very low light exposure, the minimal amount of laser power required for LOVpep activation should be used during experiments. This is especially important for local photoactivation experiments, since excessive laser power combined with light scattering can cause significant activation outside the region of interest. In our hands, an excitation power of 2 iterations of 0.1–0.01 μW 488 nm laser light with a pixel dwell time of 8 μs every 2–5 s (i.e., in between every image acquisition) is sufficient to recruit ePDZ-mCherry to membrane-bound PH-LOV. This amount of excitation power is much lower than what is generally needed to excite and observe eGFP using confocal microscopy. The amount of power needed to maintain activation might increase upon longer time intervals (<a href="#bib17">Hallett et al., 2016</a>).</div>
+<ol type="a">
+<li>Starting with a dark-state, non-activated sample, set up a time-lapse experiment for <i>local</i> light-induced heterodimerization: excite a ROI with the 488 nm laser in between every acquisition of snapshots of the mobile ePDZ fusion protein. Because the reversion half-life of LOVpep-ePDZ is relatively fast (approximately 50 s) (<a href="#bib9">Fielmich et al., 2018</a>; <a href="#bib17">Hallett et al., 2016</a>), try to keep the time interval in between every 488 nm excitation as short as possible.</li>
+<li>Repeat this using different intensities, pixel dwell time, iterations, and time intervals for the 488 nm laser. Since high-intensity blue light may be cytotoxic and causes off-target activation, aim for lower power settings and shorter pixel dwell time and rather increase the number of iterations to achieve light activation. Try to find the lowest/shortest settings for these parameters for which you can still see ePDZ relocation and which are compatible with your experiments.</li>
+<li>Take along a negative control that only expresses the ePDZ fusion construct. No relocation or phenotype (e.g., light-induced toxicity) should be observable using the settings from (b).
+<div class="optional">
+<span class="optional-title">Optional:</span> After acquisition, process the time-lapse images to reduce background noise and segment activated organelle/structure if needed for signal quantification.</div>
+</li>
+<li>Calculate the ratio of fluorescence intensity inside the activated ROI to the intensity in a ROI of similar size outside the area of activation. This analysis produces a maximum intensity ratio as well as the activation half-life (<a href="#bib17">Hallett et al., 2016</a>) (<a href="#fig3">Figure 3</a>B).</li>
+<li>With the results from the previous step, determine the minimal amount of power needed to achieve light-induced activation.
+<div class="optional">
+<span class="optional-title">Optional:</span> Determine how much light-induced heterodimerization occurs surrounding/outside the area of activation and how this would affect your experiment. For example, light-induced activation outside the area of activation can be observed in a neighboring embryo in <a href="#fig3">Figure 3</a>B (bottom image, asterisks), despite using very low levels of 488 nm laser light to activate a defined small area (<a href="#sec6.9">Troubleshooting 5</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Because of variation in laser power over time, steps (a)–(g) should be repeated periodically using a reference strain to calibrate the amount of laser power required for local activation of LOVpep prior to experiments.</div>
+</li>
+<li>Using the minimal amount of power for light-induced activation, repeat this procedure with the LOVpep and ePDZ fusion constructs you will use in your experiments.</li>
+<li>Determine if continuous, transient, or pulsed light-induced activation is needed for the desired effect on organelle translocation. For example, we used continuous light activation to trap mitochondria at the cell membrane (<a href="#bib5">De Henau et al., 2020</a>) (<a href="#fig5">Figure 5</a>), while Nijenhuis et al. used pulsed activation to explore how organelles recover from light-induced mislocalization (<a href="#bib25">Nijenhuis et al., 2020</a>).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Determining the effect of LOVpep activation on organelle distribution</div>
+<p>(A) Scheme for the induced recruitment of mitochondria with TOMM20::HALO::ePDZ to membrane EGFR-TM::mTagBFP2::LOV.</p>
+<p>(B) Representative time-lapse images of <i>C. elegans</i> zygotes with membrane EGFR-TM::mTagBFP2::LOV (not shown) and mitochondria with TOMM20::HALO::ePDZ without or with (box) local LOVpep activation.</p>
+<p>(C) Particle tracking analysis in C. elegans zygotes without or with LOV activation, with tracking performed in the same area as where activating light was used (zygotes with activation) or in a comparable region (zygotes without activation). Solid line is the mean of all tracked particles (n = 4 zygotes each). LOVpep was activated using a 488 nm laser line, with laser intensity at 0.01% and pixel dwell time of 8 ms, started at 0 s and was applied in between each time point (2 s interval). Zygotes were imaged following completion of meiosis II and treated with <i>spd-2</i> RNAi to prevent mitochondrial streaming toward the future posterior side. Anterior side of the zygote is to the left. Scale bar, 10 μm. Figure reprinted with permission from <a href="#bib5">De Henau et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> The sensitivity and activation and reversion kinetics of LOVpep-ePDZ dimerization following light illumination are important parameters to consider. They determine how often the proteins need to be exposed to blue light in order to induce, maintain, and turn off dimerization to get the desired experimental conditions. Light-induced dimerization of LOVpep-ePDZ occurs with a half-life of approximately 40 s and will revert to its original state in the dark with a reversion half-life of approximately 50 s (<a href="#bib9">Fielmich et al., 2018</a>; <a href="#bib17">Hallett et al., 2016</a>) (<a href="#fig3">Figure 3</a>B). This is relatively fast and in practice means that photoactivation is carried out in between every image acquisition to maintain dimerization.</div>
+</li>
+<li>Also here, take along a negative control that only expresses the ePDZ fusion construct. No relocation should be observable using the settings used in (g).
+<div class="critical">
+<span class="critical-title">Critical:</span> When designing and interpreting experiments keep in mind that also in the dark-state ePDZ will bind to LOVpep, although with an approximately 6-fold lower affinity compared to the photo-activated state (<a href="#bib17">Hallett et al., 2016</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> Fusing LOVpep to different protein domains might influence activation efficiency or prevent ePDZ binding altogether (<a href="#bib17">Hallett et al., 2016</a>). For example, we needed approximately 10 times more energy to activate LOVpep anchored to the membrane using a transmembrane region (<a href="#fig6">Figure 6</a>), compared to when anchoring it using a pleckstrin homology domain (<a href="#fig3">Figure 3</a>B) (<a href="#bib5">De Henau et al., 2020</a>).</div>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Representative time-lapse images of <i>C. elegans</i> zygotes with membrane EGFR-TM::mTagBFP2::LOV (not shown) and cytosolic ePDZ::mCherry without or with LOVpep activation</div>
+<p>The zygote not exposed to blue light (left column) does not display membrane recruitment of ePDZ::mCherry. The zygote with local LOV activation (right column, box) shows successful local membrane recruitment of ePDZ::mCherry (arrow). LOVpep was activated using a 488 nm laser line, with laser intensity at 0.01% and pixel dwell time of 8 ms, started at 0 s and was applied in between each time point (2 s interval). Anterior side of the zygote is to the left. Scale bar, 10 μm. Figure reprinted with permission from <a href="#bib5">De Henau et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Perform light-induced heterodimerization experiments
+<ol type="a">
+<li>Using the settings for 488 nm light-induced activation determined in step 6, set up your imaging parameters.</li>
+<li>Locate the sample of interest using transmitted light that has been filtered for blue light.</li>
+<li>As noted above, global light-induced heterodimerization can be achieved similar to acquiring GFP images, while local light-induced heterodimerization is achieved by exposing only the region of interest (ROI) with a 488 nm laser.</li>
+<li>Afterwards, determine if the light-induced heterodimerization of LOVpep and ePDZ has the desired effect on organelle relocation. For example, to determine if local activation of membrane LOVpep effectively trapped mitochondria labeled with ePDZ in the activated area, we used particle tracking analysis of the mitochondrial signal (<a href="#fig5">Figure 5</a>C) (<a href="#bib5">De Henau et al., 2020</a>). Alternatively, organelle redistribution dynamics can be quantified by comparing changes in total intensity in the activated and non-activated area (<a href="#bib25">Nijenhuis et al., 2020</a>) (<a href="#sec6.11">Troubleshooting 6</a>).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Trapping of an organelle, for example trapping of mitochondria near the cell membrane (<a href="#fig5">Figure 5</a>) (<a href="#bib5">De Henau et al., 2020</a>), will most likely result in only moderate organelle enrichment at the site of interest. Trapping also requires the organelle of interest to occasionally be present at the site of interest in order for LOV and ePDZ dimerization to be able to occur upon light activation. We therefore prefer to refer to this method as local trapping of an organelle rather than relocation.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Using a strain in which heterodimerization is straightforward to score, such as cytosolic ePDZ and membrane anchored LOVpep, there will be no to minimal dimerization observable in dark state (<a href="#fig6">Figure 6</a>). In such a strain, global light activation will cause a clear and fast dimerization of ePDZ and LOVpep (<a href="#mmc1">Methods video S1</a>). Local light activation will cause clear ePDZ-LOVpep dimerization in the activated region, with an expected 2- to 6-fold increase in relative fluorescence intensity of ePDZ in the subcellular location of LOVpep, with lower levels of dimerization observable in the surrounding region (<a href="#mmc2">Methods video S2</a>, <a href="#fig3">Figures 3</a> and <a href="#fig6">6</a>). Exposure to laser light of 561 nm or above will not cause dimerization, nor exposure to transmitted light passed through an orange optical filter. LOVpep and ePDZ fusion constructs that are expressed individually will not change subcellular distribution upon light activation.</p>
+<p>Using LOVpep-ePDZ for organelle relocation will cause moderate to strong redistribution of the tagged organelle, depending on the cellular machinery that is used (and available) for relocation (<a href="#fig7">Figure 7</a>, compare panel C and E, <a href="#mmc3">Methods videos S3</a>, <a href="#mmc4">S4</a>, and <a href="#mmc5">S5</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Relocalization of mitochondria fused to LOVpep, with dynein heavy chain fused to ePDZ</div>
+<p>(A) Scheme for the induced transport of mitochondria with TOMM20::HALO::LOVpep via dynein heavy chain fused to ePDZ and mCherry.</p>
+<p>(B) Graphical representation of the developmental stages imaged in (C)–(E). Note the development of microtubules during mitosis and cytokinesis. Upon heterodimerization of LOVpep-ePDZ, dynein is expected to transport mitochondria along these microtubules in retrograde direction, toward the centrosomes and (pro)nuclei.</p>
+<p>(C–E) (C) Mitochondrial dynamics in WT embryos that do not express LOVpep and ePDZ, and (D–E) in embryos that express dynein heavy chain fused to ePDZ (epdz::mcherry::dhc-1) and mitochondria labeled with LOVpep. Embryos in (C) and (E) were exposed to 488 nm laser light, with laser intensity at 0.001% and pixel dwell time of 8 ms, applied in between each time point (5 s interval). The embryo in (D) was imaged under the same conditions but with the 488nm laser shut off and shielded from all environmental blue light. Note that mitochondria relocate toward the center of the cell (= toward the (pro)nuclei), in a moderate manner in (D) and an even more pronounced manner in (E). Anterior side of the embryos is to the left, t(0) = contact between maternal and paternal pronuclei. Mitochondria were visualized using Mitotracker Deep Red FM (Thermo Fisher Scientific).</p>
+</figcaption>
+</figure>
+<figure id="mmc3"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Mmc3.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S3. Representative time-lapse video showing mitochondrial dynamics in a wild-type embryo (i.e., not expressing ePDZ or LOVpep), corresponding to Figure 7C, and related to Expected outcomes</div>
+<p>Mitochondria were visualized using Mitotracker Deep Red FM (Thermo Fisher Scientific). The embryo was exposed to 0.001% 488 nm laser light (0.01 μW) and pixel dwell time of 8 ms, applied in between each time point (5 s interval). Frame rate video 30 fps, anterior to the left, t(0) = contact between maternal and paternal pronuclei.</p>
+</figcaption>
+</figure>
+<figure id="mmc4"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Mmc4.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S4. Representative time-lapse video showing mitochondrial dynamics in an embryo expressing dynein heavy chain fused to ePDZ (epdz::mcherry::dhc-1) and mitochondria labeled with LOVpep, corresponding to Figure 7D, and related to Expected outcomes</div>
+<p>Mitochondria were visualized using Mitotracker Deep Red FM (Thermo Fisher Scientific). The embryo was shielded from all environmental blue light during imaging. Frame rate video 30 fps, anterior to the left, t(0) = contact between maternal and paternal pronuclei.</p>
+</figcaption>
+</figure>
+<figure id="mmc5"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/373-Mmc5.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S5. Representative time-lapse video showing mitochondrial dynamics in an embryo expressing dynein heavy chain fused to ePDZ (epdz::mcherry::dhc-1) and mitochondria labeled with LOVpep, corresponding to Figure 7E, and related to Expected outcomes</div>
+<p>Mitochondria were visualized using Mitotracker Deep Red FM (Thermo Fisher Scientific). The embryo was exposed to 0.001% 488 nm laser light (0.01 μW) and pixel dwell time of 8 ms, applied in between each time point (5 s interval). Frame rate video 30 fps, anterior to the left, t(0) = contact between maternal and paternal pronuclei.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Blue-light-induced LOVpep-ePDZ dimerization is a powerful technique that allows to address the importance of protein and organelle positioning. This technique is applicable to many organisms, and the single wavelength of light necessary to manipulate their dimerization makes for a simple experimental setup. However, newly designed constructs for photo-inducible heterodimerization do not always result in the desired organelle manipulation and/or can show unwanted dark-state binding, and it is likely that alternative organelle adaptors, proteins used for relocalization, LOV-ePDZ variants with altered affinity (<a href="#bib28">Strickland et al., 2012</a>) or even other light-inducible heterodimerization systems need to be tested. In addition, LOVpep does not tolerate C-terminal fusions, posing a problem to directly label a number of organelle adaptors(<a href="#bib29">van Bergeijk et al., 2015</a>). It is therefore recommended to combine the technique of light-inducible heterodimerization with an efficient and fast cloning approach to be able to rapidly test alternative fusion constructs.</p>
+<p>Given the high sensitivity of the LOVpep-ePDZ system, preventing unwanted activation by environmental light or light scattering during culturing and during imaging can be difficult (see for example <a href="#fig3">Figure 3</a>B, asterisks). Activation is also caused by imaging fluorescent proteins that have spectral overlap with the LOVpep domain, such as mTagBFP2 and Venus. Combining the LOVpep-ePDZ system with multiple fluorescent proteins can therefore become challenging and requires careful controls for aberrant activation. In addition, also in the dark-state ePDZ will bind to LOVpep, and while this is with an approximately 6-fold lower affinity compared to the photo-activated state (<a href="#bib17">Hallett et al., 2016</a>), this binding might be sufficient to cause unwanted organelle translocation and severely affect experimental analysis. Dark-state activation is for example observed in <a href="#fig7">Figure 7</a>, in which a combination of mitochondrial targeted LOVpep combined with ePDZ fused to dynein heavy chain DHC-1 causes considerable mitochondrial translocation toward the (pro)nuclei even in dark-state conditions, likely due to constitutive recruitment of ePDZ to LOVpep (compare <a href="#fig7">Figures 7</a>C–7E) (<a href="#sec6.13">Troubleshooting 7</a>).</p>
+<p>LOVpep-ePDZ dimerization following light illumination has a relatively high activation and reversion half-life. While these properties allow to control organelle position with high spatial and temporal resolution, they also impose that the system needs to be continuously illuminated with blue light if stable activation is desired. This could be technically challenging to combine with fast live imaging and might potentially induce phototoxicity in long-term imaging sessions.</p>
+<p>Finally, as discussed earlier, several light-inducible protein dimerization techniques have been developed, each with their own sensitivity and dynamic range. The choice of system to use will ultimately depend on the requirements for speed of activation, reversibility, and depth of tissue to be accessed. It is therefore recommended to understand the advantages of each system before deciding which one to use (<a href="#bib17">Hallett et al., 2016</a>; <a href="#bib25">Nijenhuis et al., 2020</a>; <a href="#bib29">van Bergeijk et al., 2015</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>No colonies after transformation of the SapTrap assembly</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Make sure all the SapI cleavage sites are compatible. Make sure to resuspend SapI before pipetting, SapI is prone to precipitation. Make sure to use ATP and not dATP.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Many colonies with no insert after transformation of the SapTrap assembly</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Make sure the last 37°C cutting step is at least 1 h. In addition, place the reaction tube immediately on ice after the SapTrap assembly protocol is finished. Leaving it at room temperature (18°C–25°C) allows re-ligation of the cut empty pXF87 backbone.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>No expression of a transgene construct designed for germline expression</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Verify that the construct has no internal stop codons or design flaws, for example by expressing it in non-germline tissues. If the construct is properly expressed in non-germline tissues, it likely suffers from germline silencing when targeted to the germline. To circumvent silencing, optimize the sequence for germline expression (<a href="#bib9">Fielmich et al., 2018</a>), remove homology to piRNAs (<a href="#bib2">Batista et al., 2008</a>) and/or introduce PATC introns (<a href="#bib13">Frokjaer-Jensen et al., 2016</a>).</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Significant unintended light-induced heterodimerization during sample preparation</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Make sure to work in a closed room so all environmental light that might reach the sample can be controlled. Ideally, perform sample preparation and imaging in the same room to avoid light exposure in between these two steps.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Significant light-induced heterodimerization outside the activated ROI</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Lower the exposure to the activating 488 nm laser to reduce light scattering. In addition, consider if the mobility of the tags used to anchor LOVpep might explain diffusion of activated heterodimers outside the ROI and potentially replace these with tags with lower mobility.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>No light-induced heterodimerization or organelle translocation</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>Analyze if LOVpep and ePDZ in the fusion constructs are still functional, by combining them with characterized and suitable complementary constructs. For example, to know if an organelle targeted LOVPEP fusion construct is functional, combine it with a cytoplasmic ePDZ and determine if ePDZ relocates to the organelle after light activation.</p>
+<p>If both constructs are functional but no organelle translocation is observed, make sure that the constructs effectively overlap in subcellular location and are able to interact. When motor proteins are used, make sure that they are active at the time of light activation and that the cytoskeletal network that is needed for translocation is available.</p>
+<h3 id="sec6.13">Problem 7</h3>
+<p>Heterodimerization or organelle translocation is observed in dark-state conditions.</p>
+<h3 id="sec6.14">Potential solution</h3>
+<p>Firstly, make sure that the dark-state condition lacks all forms of blue light, by using filters that block blue light in the dissection scope and microscope, illuminating the working room with red light instead of white light, turning off blue light emission from computer monitors, etc.</p>
+<p>Secondly, the binding affinity of LOVpep and ePDZ in dark-state can be sufficient to cause constitutive and unwanted organelle translocation even in the absence of all forms of blue light. As mentioned above, we observed a clear example of dark-state mitochondrial translocation when using a combination of mitochondrial ePDZ and LOVpep fused to dynein heavy chain DHC-1 (<a href="#fig7">Figure 7</a>D).</p>
+<p>Reducing dark-state activation might be achieved by lowering expression levels of both constructs or of the LOVpep containing construct in case overexpression constructs are used (<a href="#bib25">Nijenhuis et al., 2020</a>). Fusing alternative motor proteins to LOVpep could also help to reduce dark-state activation. A noteworthy example here is the development of a photosensitive kinesin that is activated upon blue light. This adds a second layer of light-sensitive control and effectively reduced dark-state activation(<a href="#bib25">Nijenhuis et al., 2020</a>).</p>
+<p>Finally, mutants of LOVpep or ePDZ with lower dark-state binding affinity (<a href="#bib28">Strickland et al., 2012</a>), or other light-inducible heterodimerization systems with lower dark-state binding affinity, such as the milli variant of the iLID-SspB system(<a href="#bib31">Zimmerman et al., 2016</a>), could help reduce dark-state organelle translocation.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Adrian, M., Nijenhuis, W., Hoogstraaten, R.I., Willems, J., and Kapitein, L.C. (2017). A phytochrome-derived photoswitch for intracellular transport. ACS Synth. Biol. <i>6</i>, 1248-1256.</p>
+<p id="bib2">Batista, P.J., Ruby, J.G., Claycomb, J.M., Chiang, R., Fahlgren, N., Kasschau, K.D., Chaves, D.A., Gu, W., Vasale, J.J., Duan, S., et al. (2008). PRG-1 and 21U-RNAs interact to form the piRNA complex required for fertility in <i>C. elegans</i>. Mol. Cell <i>31</i>, 67-78.</p>
+<p id="bib3">Berkowitz, L.A., Knight, A.L., Caldwell, G.A., and Caldwell, K.A. (2008). Generation of stable transgenic <i>C. elegans</i> using microinjection. J. Vis. Exp. 833.</p>
+<p id="bib4">Bugaj, L.J., Choksi, A.T., Mesuda, C.K., Kane, R.S., and Schaffer, D.V. (2013). Optogenetic protein clustering and signaling activation in mammalian cells. Nat. Methods <i>10</i>, 249-252.</p>
+<p id="bib5">De Henau, S., Pages-Gallego, M., Pannekoek, W.J., and Dansen, T.B. (2020). Mitochondria-derived H<sub>2</sub>O<sub>2</sub> promotes symmetry breaking of the <i>C. elegans</i> zygote. Dev. Cell <i>53</i>, 263-271.e6.</p>
+<p id="bib6">Engler, C., Gruetzner, R., Kandzia, R., and Marillonnet, S. (2009). Golden gate shuffling: a one-pot DNA shuffling method based on type IIs restriction enzymes. PLoS One <i>4</i>, e5553.</p>
+<p id="bib7">Fan, X., Henau, S., Feinstein, J., Miller, S.I., Han, B., Frokjaer-Jensen, C., and Griffin, E.E. (2019). SapTrap assembly of <i>Caenorhabditis elegans</i> MosSCI transgene vectors. G3 (Bethesda) <i>10</i>, 635-644.</p>
+<p id="bib8">Fay, D. (2006). Genetic mapping and manipulation: chapter 1--Introduction and basics. In WormBook (The C. elegans Research Community, WormBook), pp. 1-12.</p>
+<p id="bib9">Fielmich, L.E., Schmidt, R., Dickinson, D.J., Goldstein, B., Akhmanova, A., and van den Heuvel, S. (2018). Optogenetic dissection of mitotic spindle positioning in vivo. eLife <i>7</i>.</p>
+<p id="bib10">Frokjaer-Jensen, C., Davis, M.W., Ailion, M., and Jorgensen, E.M. (2012). Improved Mos1-mediated transgenesis in <i>C. elegans</i>. Nat. Methods <i>9</i>, 117-118.</p>
+<p id="bib11">Frokjaer-Jensen, C., Davis, M.W., Hopkins, C.E., Newman, B.J., Thummel, J.M., Olesen, S.P., Grunnet, M., and Jorgensen, E.M. (2008). Single-copy insertion of transgenes in <i>Caenorhabditis elegans</i>. Nat. Genet. <i>40</i>, 1375-1383.</p>
+<p id="bib12">Frokjaer-Jensen, C., Davis, M.W., Sarov, M., Taylor, J., Flibotte, S., LaBella, M., Pozniakovsky, A., Moerman, D.G., and Jorgensen, E.M. (2014). Random and targeted transgene insertion in <i>Caenorhabditis elegans</i> using a modified Mos1 transposon. Nat. Methods <i>11</i>, 529-534.</p>
+<p id="bib13">Frokjaer-Jensen, C., Jain, N., Hansen, L., Davis, M.W., Li, Y., Zhao, D., Rebora, K., Millet, J.R.M., Liu, X., Kim, S.K., et al. (2016). An abundant class of non-coding DNA can prevent stochastic gene silencing in the <i>C. elegans</i> germline. Cell <i>166</i>, 343-357.</p>
+<p id="bib14">Gibson, D.G., Young, L., Chuang, R.Y., Venter, J.C., Hutchison, C.A., and Smith, H.O. (2009). Enzymatic assembly of DNA molecules up to several hundred kilobases. Nat. Methods <i>6</i>, 343-345.</p>
+<p id="bib15">Grimm, J.B., English, B.P., Chen, J., Slaughter, J.P., Zhang, Z., Revyakin, A., Patel, R., Macklin, J.J., Normanno, D., Singer, R.H., et al. (2015). A general method to improve fluorophores for live-cell and single-molecule microscopy. Nat. Methods <i>12</i>, 244-250.</p>
+<p id="bib16">Guntas, G., Hallett, R.A., Zimmerman, S.P., Williams, T., Yumerefendi, H., Bear, J.E., and Kuhlman, B. (2015). Engineering an improved light-induced dimer (iLID) for controlling the localization and activity of signaling proteins. Proc. Natl. Acad. Sci. U S A <i>112</i>, 112-117.</p>
+<p id="bib17">Hallett, R.A., Zimmerman, S.P., Yumerefendi, H., Bear, J.E., and Kuhlman, B. (2016). Correlating in vitro and in vivo activities of light-inducible dimers: a cellular optogenetics guide. ACS Synth. Biol. <i>5</i>, 53-64.</p>
+<p id="bib18">Harper, S.M., Neil, L.C., and Gardner, K.H. (2003). Structural basis of a phototropin light switch. Science <i>301</i>, 1541-1544.</p>
+<p id="bib19">Kennedy, M.J., Hughes, R.M., Peteya, L.A., Schwartz, J.W., Ehlers, M.D., and Tucker, C.L. (2010). Rapid blue-light-mediated induction of protein interactions in living cells. Nat. Methods <i>7</i>, 973-975.</p>
+<p id="bib20">Krishnamurthy, V.V., Khamo, J.S., Mei, W., Turgeon, A.J., Ashraf, H.M., Mondal, P., Patel, D.B., Risner, N., Cho, E.E., Yang, J., et al. (2016). Reversible optogenetic control of kinase activity during differentiation and embryonic development. Development <i>143</i>, 4085-4094.</p>
+<p id="bib21">Lee, S., Park, H., Kyung, T., Kim, N.Y., Kim, S., Kim, J., and Heo, W.D. (2014). Reversible protein inactivation by optogenetic trapping in cells. Nat. Methods <i>11</i>, 633-636.</p>
+<p id="bib22">Levskaya, A., Weiner, O.D., Lim, W.A., and Voigt, C.A. (2009). Spatiotemporal control of cell signalling using a light-switchable protein interaction. Nature <i>461</i>, 997-1001.</p>
+<p id="bib23">Merritt, C., Rasoloson, D., Ko, D., and Seydoux, G. (2008). 3′ UTRs are the primary regulators of gene expression in the <i>C. elegans</i> germline. Curr. Biol. <i>18</i>, 1476-1482.</p>
+<p id="bib24">Nance, J. and Frokjaer-Jensen, C. (2019). The <i>Caenorhabditis elegans</i> transgenic toolbox. Genetics <i>212</i>, 959-990.</p>
+<p id="bib25">Nijenhuis, W., van Grinsven, M.M.P., and Kapitein, L.C. (2020). An optimized toolbox for the optogenetic control of intracellular transport. J. Cell Biol. <i>219</i>.</p>
+<p id="bib26">Pathak, G.P., Strickland, D., Vrana, J.D., and Tucker, C.L. (2014). Benchmarking of optical dimerizer systems. ACS Synth. Biol. <i>3</i>, 832-838.</p>
+<p id="bib27">Redemann, S., Schloissnig, S., Ernst, S., Pozniakowsky, A., Ayloo, S., Hyman, A.A., and Bringmann, H. (2011). Codon adaptation-based control of protein expression in <i>C. elegans</i>. Nat. Methods <i>8</i>, 250-252.</p>
+<p id="bib32">Schneider, C.A., Rasband, W.S., and Eliceiri, K.W. (2012). NIH Image to ImageJ: 25 years of image analysis. Nat. Methods <i>9</i>, 671-675.</p>
+<p id="bib28">Strickland, D., Lin, Y., Wagner, E., Hope, C.M., Zayner, J., Antoniou, C., Sosnick, T.R., Weiss, E.L., and Glotzer, M. (2012). TULIPs: tunable, light-controlled interacting protein tags for cell biology. Nat. Methods <i>9</i>, 379-384.</p>
+<p id="bib29">van Bergeijk, P., Adrian, M., Hoogenraad, C.C., and Kapitein, L.C. (2015). Optogenetic control of organelle transport and positioning. Nature <i>518</i>, 111-114.</p>
+<p id="bib30">Walhout, A.J., Temple, G.F., Brasch, M.A., Hartley, J.L., Lorson, M.A., van den Heuvel, S., and Vidal, M. (2000). GATEWAY recombinational cloning: application to the cloning of large numbers of open reading frames or ORFeomes. Methods Enzymol. <i>328</i>, 575-592.</p>
+<p id="bib31">Zimmerman, S.P., Hallett, R.A., Bourke, A.M., Bear, J.E., Kennedy, M.J., and Kuhlman, B. (2016). Tuning the binding affinities and reversion kinetics of a light inducible dimer allows control of transmembrane protein localization. Biochemistry <i>55</i>, 5264-5271.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Sasha De Henau (<a href="mailto:sasha.dehenau@gmail.com">sasha.dehenau@gmail.com</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any unique materials or reagents.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate any unique datasets or code.</p>
+<h3>Acknowledgments</h3>
+<p>We thank our Molecular Cancer Research lab members for helpful discussions. We are grateful to Sander van den Heuvel, Mike Boxem, Lars Eric Fielmich, Ruben Schmidt, Vincent Portegijs, Martin Harterink, and Wilco Nijenhuis (Utrecht University); Erik Griffin and Xintao Fan (Dartmouth College); and Daniel Dickinson (UT Austin) for strains, reagents, and expertise. This work is part of the NWO Talent Programme with project number 016.Veni.181.051 (to S.D.H.), which is financed by the <a href="https://doi.org/10.13039/501100003246">Dutch Research Council</a> (NWO). T.B.D. is supported by grant UU 2014-6902 from <a href="https://doi.org/10.13039/501100004622">The Dutch Cancer Society</a> (KWF). Some strains were provided by the CGC, which is funded by <a href="https://doi.org/10.13039/100000002">NIH</a> Office of Research Infrastructure Programs (P40 OD010440).</p>
+<h3>Author Contributions</h3>
+<p>S.D.H. and T.B.D. designed the experiments. S.D.H. conducted the experiments and analyzed the data. S.D.H. wrote and T.B.D. proofread the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

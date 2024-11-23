@@ -1,0 +1,2369 @@
+<article>
+<section>
+<h1 id="header">Optimized workflow for human PBMC multiomic immunosurveillance studies</h1>
+<p><time datetime="2021-11-12">Published: November 12, 2021</time></p>
+<p>Palak C. Genge,<sup><a href="#aff1">1</a></sup> Charles R. Roll,<sup><a href="#aff1">1</a></sup> Alexander T. Heubeck,<sup><a href="#aff1">1</a></sup> Elliott Swanson,<sup><a href="#aff1">1</a></sup> Nina Kondza,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a></sup> Cara Lord,<sup><a href="#aff1">1</a>,<a href="#fn2">3</a></sup> Morgan Weiss,<sup><a href="#aff1">1</a></sup> Veronica Hernandez,<sup><a href="#aff1">1</a></sup> Cole Phalen,<sup><a href="#aff1">1</a></sup> Zachary Thomson,<sup><a href="#aff1">1</a></sup> Troy R. Torgerson,<sup><a href="#aff1">1</a></sup> Peter J. Skene,<sup><a href="#aff1">1</a>,<a href="#fn3">4</a>,<a href="#cor2">**</a></sup> Thomas F. Bumol,<sup><a href="#aff1">1</a></sup> and Julian Reading<sup><a href="#aff1">1</a>,<a href="#fn4">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Allen Institute for Immunology, 615 Westlake Avenue N, Seattle, WA 98109, USA</p>
+<p id="fn1"><sup>2</sup>Present address: Zymeworks Biopharmaceuticals Inc., Seattle, WA 98161, USA</p>
+<p id="fn2"><sup>3</sup>Present address: GlaxoSmithKline, Collegeville, PA 19426, USA</p>
+<p id="fn3"><sup>4</sup>Technical contact</p>
+<p id="fn4"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:julian.reading@allenininstitute.org">julian.reading@allenininstitute.org</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:peter.skene@alleninstitute.org">peter.skene@alleninstitute.org</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100900">10.1016/j.xpro.2021.100900</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Deep immune profiling is essential for understanding the human immune system in health and disease. Successful biological interpretation of this data requires consistent laboratory processing with minimal batch-to-batch variation. Here, we detail a robust pipeline for the profiling of human peripheral blood mononuclear cells by both high-dimensional flow cytometry and single-cell RNA-seq. These protocols reduce batch effects, generate reproducible data, and increase throughput.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102404">Savage et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Details a robust pipeline for the profiling of human PBMC</li>
+<li>Outline a cell thaw protocol compatible with flow cytometry and single cell RNA-seq</li>
+<li>Focus on batch effect reduction with a bridging cell control and commercial buffers</li>
+<li>Increased throughput with automated liquid handling and cell counting</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Prepare workspace</h3>
+<p>This protocol should be performed in a Biosafety level 2 laboratory. All cell processing including 10x Genomics GEM Generation should be performed in a Class II Biological Safety Cabinet (BSC) with a vacuum connection for aspirating media. The vacuum line must be connected to a vacuum trap containing bleach. Ensure that the BSC, pipettes, and additional equipment to be used in the BSC such as the Integra VIAFLO 96 and 10<b>×</b> Chromium Controllers are either sterile or have been cleaned with 70% Reagent Alcohol prior to use. Turn on centrifuges and chill to 4C. After the 10x GEM-generation step has been completed, the protocol can continue in a PCR-Free working area to avoid potential contamination from unrelated amplicons. After the cDNA amplification step has been completed, libraries can be prepared in a “post-amplification” working area.</p>
+<h3 id="sec1.2">Regulatory compliance for use of primary human material</h3>
+<p>Peripheral blood mononuclear cells (PBMC) used in this study were collected with written informed consent under the supervision of an appropriate Institutional Review Board (IRB) Protocol. Human samples were de-identified and assigned bar code labels linking to metadata such as subject number, blood draw type etc.</p>
+<h3 id="sec1.3">Batch control PBMC for process quality control and batch correction</h3>
+<p>For longitudinal studies where multiple assay batches will be run and compared, a consistent PBMC batch control sample should be included to assess the quality of each assay run and to provide a consistent control for batch-to-batch correction of data. In our case, a single donor leukopak, comprising 400 vials of 25 million cryopreserved PBMC per vial was used as a process quality control reference sample and for batch correction of flow cytometry and 10<b>×</b> scRNA-seq data for the duration of the longitudinal study. The batch control PBMC viable cell count and viability (%) were consistent over one year with a standard error less than 1% .</p>
+<h3 id="sec1.4">Batch size and design principles</h3>
+<p>The following protocol is primarily designed to run up to 24 total samples, comprising 23 on-study samples and 1 batch control. Where possible, longitudinal samples from a single subject are processed within the same batch. However, that is not always logistically feasible. A batch will contain PBMC from both healthy subjects and those from disease cohorts. Cells from each vial of 5 million PBMC are processed for flow cytometry (4 panels) and scRNA-seq. The batch control PBMC serves as a process QC control and is used for batch correction. To this end, the high rigor of this protocol minimizes batch variance. For example, cell hashing in scRNA-seq mitigates well and chip variance, resulting in a low 0.1% batch variance based on measurements of technical reproducibility of the batch control (<a href="#bib4">Talla et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0251 anti-human Hashtag 1 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394601, RRID:AB_2750015</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0252 anti-human Hashtag 2 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394603, RRID:AB_2750016</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0253 anti-human Hashtag 3 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394605, RRID:AB_2750017</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0254 anti-human Hashtag 4 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394607, RRID:AB_2750018</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0255 anti-human Hashtag 5 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394609, RRID:AB_2750019</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0256 anti-human Hashtag 6 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394611, RRID:AB_2750020</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0257 anti-human Hashtag 7 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394613, RRID:AB_2750021</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0258 anti-human Hashtag 8 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394615, RRID:AB_2750022</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0259 anti-human Hashtag 9 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394617, RRID:AB_2750023</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0260 anti-human Hashtag 10 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394619, RRID:AB_2750024</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0262 anti-human Hashtag 12 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394623, RRID:AB_2750025</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0263 anti-human Hashtag 13 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394625, RRID:AB_2750026</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0264 anti-human Hashtag 14 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394627, RRID:AB_2750027</td>
+</tr>
+<tr>
+<td>TotalSeq™-A0265 anti-human Hashtag 15 Antibody</td>
+<td>BioLegend</td>
+<td>Cat # 394629, RRID:AB_2750028</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD3/BUV395 (UCHT1)</td>
+<td>BD Biosciences</td>
+<td>Cat # 563546, RRID:AB_2744387</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD45/BUV496 (HI30)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624283, RRID:AB_2868405</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD15/BUV563 (W6D3)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624284, RRID:AB_2868406</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD45RA/BUV615 (HI100)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624297, RRID:AB_2875550</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD14/BUV661 (MφP9)</td>
+<td>BD Biosciences</td>
+<td>Cat # 741684, RRID:AB_2868407</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD8/BUV737 (RPA-T8)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624286, RRID:AB_2868408</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD11c/BUV805 (B-ly6)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624287, RRID:AB_2868409</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD25/BV421 (M-A251)</td>
+<td>BD Biosciences</td>
+<td>Cat # 562442, RRID:AB_11154578</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD4/BV480 (SK3)</td>
+<td>BD Biosciences</td>
+<td>Cat # 566104, RRID:AB_2739506</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD16/BV605 (3G8)</td>
+<td>BD Biosciences</td>
+<td>Cat # 563172, RRID:AB_2744297</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD123/BV650 (6H6)</td>
+<td>BioLegend</td>
+<td>Cat # 306020, RRID:AB_2563827</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD127/BV711 (A019D5)</td>
+<td>BioLegend</td>
+<td>Cat # 351328, RRID:AB_2562908</td>
+</tr>
+<tr>
+<td>Mouse anti-human IgD/BV750 (IA6-2)</td>
+<td>BD Biosciences</td>
+<td>Cat # 747484, RRID:AB_2868411</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD304/BV786 (U21-1283)</td>
+<td>BD Biosciences</td>
+<td>Cat # 743132, RRID:AB_27412</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD141/BB515 (1A4)</td>
+<td>BD Biosciences</td>
+<td>Cat # 565084, RRID:AB_2739058</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD11b/PerCP-Cy5.5 (M1/70)</td>
+<td>BD Biosciences</td>
+<td>Cat # 561114, RRID:AB_2033995</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD19/BB790 (HIB19)</td>
+<td>BD Biosciences</td>
+<td>Cat # 624296</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD27/PE (O323)</td>
+<td>BioLegend</td>
+<td>Cat # 302808, RRID:AB_314300</td>
+</tr>
+<tr>
+<td>Mouse anti-human TCRαß/PE-Dazzle594 (IP26)</td>
+<td>BioLegend</td>
+<td>Cat # 306726, RRID:AB_2566599</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD34/PE-Cy5 (581)</td>
+<td>BD Biosciences</td>
+<td>Cat # 555823, RRID:AB_396152</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD197/PE-Cy7 (G043H7)</td>
+<td>BioLegend</td>
+<td>Cat # 353226, RRID:AB_11126145</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD38/APC (HB-7)</td>
+<td>BioLegend</td>
+<td>Cat # 356606, RRID:AB_2561902</td>
+</tr>
+<tr>
+<td>Mouse anti-human CD56/APC-R700 (NCAM16.2)</td>
+<td>BD Biosciences</td>
+<td>Cat # 565139, RRID:AB_2744429</td>
+</tr>
+<tr>
+<td>Mouse anti-human HLA-DR/APC-Cy7 (L243)</td>
+<td>BioLegend</td>
+<td>Cat # 307618, RRID:AB_493586</td>
+</tr>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Cryopreserved human PBMC (longitudinal batch control)</td>
+<td>BIOIVT</td>
+<td>Cat # HUMAN-PBMC-U-190715</td>
+</tr>
+<tr>
+<td>Cryopreserved human PBMC</td>
+<td>Clinical partners</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>AIM V medium</td>
+<td>GIBCO</td>
+<td>Cat # 12055-091</td>
+</tr>
+<tr>
+<td>DPBS w/o Ca/Mg (DPBS)</td>
+<td>COSTAR</td>
+<td>Cat # 21-031-CM</td>
+</tr>
+<tr>
+<td>Clorox germicidal bleach</td>
+<td>VWR</td>
+<td>Cat # 8901-620</td>
+</tr>
+<tr>
+<td>Reagent alcohol 70% (v/v)</td>
+<td>Ricca</td>
+<td>Cat # 3546.70–5</td>
+</tr>
+<tr>
+<td>Molecular Biology Grade Water (MBGW)</td>
+<td>Hyclone</td>
+<td>Cat # SH3053802</td>
+</tr>
+<tr>
+<td>SPRISelect</td>
+<td>Beckman Coulter</td>
+<td>Cat # B23319</td>
+</tr>
+<tr>
+<td>Dynabeads™ MyOne™ SILANE</td>
+<td>10x Genomics</td>
+<td>Cat # PN-2000048</td>
+</tr>
+<tr>
+<td>DNA Suspension Buffer (“Low TE”)</td>
+<td>TEKnova</td>
+<td>Cat # T0220</td>
+</tr>
+<tr>
+<td>10% Tween 20 solution</td>
+<td>Bio-Rad</td>
+<td>Cat # 1610781</td>
+</tr>
+<tr>
+<td>50% Glycerol</td>
+<td>TEKnova</td>
+<td>Cat # G1798</td>
+</tr>
+<tr>
+<td>Buffer EB</td>
+<td>QIAGEN</td>
+<td>Cat # 19086</td>
+</tr>
+<tr>
+<td>Ethanol, 200 proof</td>
+<td>Pharmco</td>
+<td>Cat # 111000200CSPP</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumin (BSA)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat # A2934-100G</td>
+</tr>
+<tr>
+<td>NxGen RNAse Inhibitor (40U/ul)</td>
+<td>Lucigen</td>
+<td>Cat # 30281-2</td>
+</tr>
+<tr>
+<td>KAPA HiFi HotStart ReadyMix</td>
+<td>Roche</td>
+<td>Cat # 7958935001</td>
+</tr>
+<tr>
+<td>PhiX control library</td>
+<td>Illumina</td>
+<td>Cat # FC-110-3001</td>
+</tr>
+<tr>
+<td>Human TruStain FcX</td>
+<td>BioLegend</td>
+<td>Cat # 422302</td>
+</tr>
+<tr>
+<td>DMSO (anhydrous)</td>
+<td>Invitrogen</td>
+<td>Cat # D12345</td>
+</tr>
+<tr>
+<td>Cell Staining Buffer</td>
+<td>BioLegend</td>
+<td>Cat # 420201</td>
+</tr>
+<tr>
+<td>Brilliant Stain Buffer Plus</td>
+<td>BD Horizon</td>
+<td>Cat # 566385</td>
+</tr>
+<tr>
+<td>FluoroFix Buffer (contains 4% p-formaldehyde)</td>
+<td>BioLegend</td>
+<td>Cat # 15713</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>ViaStain AOPI Staining Solution</td>
+<td>Nexcelom Bioscience</td>
+<td>Cat # C52-0106-25mL</td>
+</tr>
+<tr>
+<td>BD FVS510 Live Dead Stain</td>
+<td>BD Horizon</td>
+<td>Cat # 564406</td>
+</tr>
+<tr>
+<td>Chromium Next GEM Single Cell 3′ GEM, Library &amp; Gel Bead Kit v3.1</td>
+<td>10X Genomics</td>
+<td>Cat # PN-1000121</td>
+</tr>
+<tr>
+<td>Chromium Next GEM Chip G Single Cell Kit</td>
+<td>10X Genomics</td>
+<td>Cat # PN-1000120</td>
+</tr>
+<tr>
+<td>HS NGS Fragment Kit (1 -6000bp)</td>
+<td>Agilent</td>
+<td>Cat # DNF-474-0500</td>
+</tr>
+<tr>
+<td>Quant-iT™ PicoGreen™ dsDNA Assay Kit</td>
+<td>Invitrogen</td>
+<td>Cat # P7589</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>HTO-cDNA Custom Primer5′ GTG ACT GGA GTT CAG ACG TGT GCT C</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SI PCR Custom Primer 5′ AAT GAT ACG GCG ACC ACC GAG ATC TAC ACT CTT TCC CTA CAC GAC GCT C</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Single Index Kit T Set A</td>
+<td>10X Genomics</td>
+<td>Cat # PN-1000213</td>
+</tr>
+<tr>
+<td>HTO i7 Sample Index Plate, custom</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>FlowJo</td>
+<td>BD Biosciences</td>
+<td>v 10.7</td>
+</tr>
+<tr>
+<td>SpectroFlo</td>
+<td>Cytek</td>
+<td>v 2.2.0.4</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>50 mL polypropylene Falcon conical tube</td>
+<td>COSTAR</td>
+<td>Cat # 352098</td>
+</tr>
+<tr>
+<td>Serological pipettes (5, 25, 50mL)</td>
+<td>VWR</td>
+<td>Cat # 89130-896, 900, 902</td>
+</tr>
+<tr>
+<td>Aspirating pipettes (2 mL)</td>
+<td>VWR</td>
+<td>Cat # 414004-265</td>
+</tr>
+<tr>
+<td>Pipette Tips RT LTS 1000μL wide-orifice, filter</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 30389218</td>
+</tr>
+<tr>
+<td>Pipette Tips RT LTS 1000μL, filter</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 30389213</td>
+</tr>
+<tr>
+<td>Pipette Tips RT LTS 200μL, filter</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 30389240</td>
+</tr>
+<tr>
+<td>Pipette Tips RT LTS 20μL, filter</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 30389226</td>
+</tr>
+<tr>
+<td>PCR 8 -tube strips (0.2mL)</td>
+<td>USA Scientific</td>
+<td>Cat # 1402–4700</td>
+</tr>
+<tr>
+<td>Eppendorf Safe-Lock tubes (1.5 mL)</td>
+<td>Eppendorf</td>
+<td>Cat # 022363204</td>
+</tr>
+<tr>
+<td>Eppendorf snap cap tubes (5 mL)</td>
+<td>Eppendorf</td>
+<td>Cat # 0030119487</td>
+</tr>
+<tr>
+<td>96 well 0.8 mL polypropylene deep well storage plate</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat # AB0765</td>
+</tr>
+<tr>
+<td>Cellaca MX cell counter plates</td>
+<td>Nexcelom Bioscience</td>
+<td>Cat # CHM24-A100-020</td>
+</tr>
+<tr>
+<td>Cellometer SD100 Cell-Counting slides</td>
+<td>Nexcelom Bioscience</td>
+<td>Cat # CHT4-SD100-002</td>
+</tr>
+<tr>
+<td>Microseal B plate seal</td>
+<td>Bio-Rad</td>
+<td>Cat # AB0765</td>
+</tr>
+<tr>
+<td>96-well skirted Eppendorf plate</td>
+<td>Eppendorf</td>
+<td>Cat # 951020401</td>
+</tr>
+<tr>
+<td>96-well semi skirted Eppendorf plate</td>
+<td>Eppendorf</td>
+<td>Cat # 0030129326</td>
+</tr>
+<tr>
+<td>5 mL polystyrene tubes</td>
+<td>Falcon/VWR</td>
+<td>Cat # 60819-820</td>
+</tr>
+<tr>
+<td>300 mL Clear Advantage™ Reservoirs (Polypropylene)</td>
+<td>Integra</td>
+<td>Cat # 6348</td>
+</tr>
+<tr>
+<td>Heavy Duty Aluminum 18in by 500ft</td>
+<td>Foilman</td>
+<td>Cat # B07BR29XV7</td>
+</tr>
+<tr>
+<td>Griptips, Low Retention Tips in Racks, 300 μL, Green</td>
+<td>Integra Biosciences</td>
+<td>Cat # 6535</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ LTS Pipette L-1000XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17014382</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ LTS Pipette L-200XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17014391</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ LTS Pipette L-20XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17014392</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ LTS Pipette L-2XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17014393</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ Multi Pipette L8-200XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17013805</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ Multi Pipette L8-20XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17013803</td>
+</tr>
+<tr>
+<td>Pipet-Lite™ Multi Pipette L8-10XLS+</td>
+<td>Mettler-Toledo Rainin</td>
+<td>Cat # 17013802</td>
+</tr>
+<tr>
+<td>Beckman Avanti J-15R Centrifuge</td>
+<td>Beckman Coulter</td>
+<td>Cat # B99517</td>
+</tr>
+<tr>
+<td>Beckman JS-4.750 Swinging-Bucket Rotor &amp; Buckets</td>
+<td>Beckman Coulter</td>
+<td>Cat # B77580</td>
+</tr>
+<tr>
+<td>Beckman JS-4.750 Swinging-Bucket Rotor Microplate Carriers</td>
+<td>Beckman Coulter</td>
+<td>Cat # B83980</td>
+</tr>
+<tr>
+<td>Beckman centrifuge tube bucket covers</td>
+<td>Beckman Coulter</td>
+<td>Cat # 392805</td>
+</tr>
+<tr>
+<td>Beckman centrifuge microplate carrier covers</td>
+<td>Beckman Coulter</td>
+<td>Cat # 393070</td>
+</tr>
+<tr>
+<td>Beckman 30 mm conical tube adapter</td>
+<td>Beckman Coulter</td>
+<td>Cat # 393267</td>
+</tr>
+<tr>
+<td>Eppendorf Centrifuge 5430</td>
+<td>Eppendorf</td>
+<td>Cat # 5430</td>
+</tr>
+<tr>
+<td>Serological Pipette Controller</td>
+<td>Thermo Scientific</td>
+<td>Cat # 9511</td>
+</tr>
+<tr>
+<td>Mini-Centrifuge</td>
+<td>Southwest Science</td>
+<td>Cat # SC1012</td>
+</tr>
+<tr>
+<td>Vortex Mixer</td>
+<td>Southwest Science</td>
+<td>Cat # SBV1000</td>
+</tr>
+<tr>
+<td>Cold Block for 1.5 mL tubes</td>
+<td>Corning</td>
+<td>Cat # 432038, 432036</td>
+</tr>
+<tr>
+<td>Cold Block for 96-well skirted/semi-skirted plates</td>
+<td>Integra</td>
+<td>Cat # 6250</td>
+</tr>
+<tr>
+<td>DynaMag-96 Side Skirted magnetic plate stand</td>
+<td>Invitrogen</td>
+<td>Cat # 12027</td>
+</tr>
+<tr>
+<td>Plate Heat Sealer</td>
+<td>4titude</td>
+<td>Cat # 4ti-0665</td>
+</tr>
+<tr>
+<td>Chromium Controller</td>
+<td>10x Genomics</td>
+<td>Cat # 1000202, 1000204</td>
+</tr>
+<tr>
+<td>Fragment Analyzer</td>
+<td>Agilent</td>
+<td>Cat # M5311AA</td>
+</tr>
+<tr>
+<td>Spectramax iD3</td>
+<td>Molecular Devices</td>
+<td>ID3-STD</td>
+</tr>
+<tr>
+<td>Thermal Cycler</td>
+<td>Bio-Rad</td>
+<td>Cat # 1851196</td>
+</tr>
+<tr>
+<td>Cellaca MX high-throughput automated cell counter</td>
+<td>Nexcelom Bioscience</td>
+<td>Cat # Cellaca MX</td>
+</tr>
+<tr>
+<td>Cellometer Spectrum Image Cytometry System</td>
+<td>Nexcelom Bioscience</td>
+<td>Cat # Cellometer Spectrum</td>
+</tr>
+<tr>
+<td>Integra VIAFLO 96 handheld electronic 96 channel pipette</td>
+<td>Integra Biosciences</td>
+<td>Cat # VIAFLO 96</td>
+</tr>
+<tr>
+<td>PCR 96 well Cooling block</td>
+<td>Integra Biosciences</td>
+<td>Cat # 6250</td>
+</tr>
+<tr>
+<td>Milli-Q IQ 7000</td>
+<td>Milli-Q</td>
+<td>Cat # ZIQ7000T0</td>
+</tr>
+<tr>
+<td>Cytek Aurora spectral flow cytometer</td>
+<td>Cytek Biosciences</td>
+<td>Cat # Aurora</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Preparation of materials</h3>
+<table id="undtbl1">
+<caption>RNA-seq FcX Staining Buffer: 10% BSA</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MBGW</td>
+<td>N/A</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>BSA</td>
+<td>10%</td>
+<td>5 g</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 2°C–8°C for up to 1 week.</p>
+<table id="undtbl2">
+<caption>RNA-seq Human TruStain FcX Master Mix (FcX MM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Human TruStain FcX</td>
+<td>26.7%</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>10% BSA</td>
+<td>73.3%</td>
+<td>13.7 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>18.7 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 2°C–8°C for up to 1 week.</p>
+<table id="undtbl3">
+<caption>RNA-seq Staining Buffer: DPBS 1<b>×</b> + 2% BSA</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DPBS (1<b>×</b>)</td>
+<td>0.9 X</td>
+<td>500 mL</td>
+</tr>
+<tr>
+<td>BSA</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 2°C–8°C for up to 1 week.</p>
+<table id="undtbl4">
+<caption>GEM-Reverse Transcription Master Mix (GEM-RT MM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RT Reagent B</td>
+<td>58.2%</td>
+<td>18.8 μL</td>
+</tr>
+<tr>
+<td>Template Switch Oligo</td>
+<td>7.4%</td>
+<td>2.4 μL</td>
+</tr>
+<tr>
+<td>Reducing Agent B</td>
+<td>6.2%</td>
+<td>2.0 μL</td>
+</tr>
+<tr>
+<td>RT Enzyme C</td>
+<td>26.9%</td>
+<td>8.7 μL</td>
+</tr>
+<tr>
+<td>NxGen RNAse Inhibitor (40U/μL)</td>
+<td>16U, 1.2%</td>
+<td>0.4 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>32.3 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Reducing Agent B – irritant and toxicity. Dispose of any residual material in a defined hazardous liquid waste stream.</div>
+<table id="undtbl5">
+<caption>Dynabeads Cleanup Mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cleanup Buffer</td>
+<td>91%</td>
+<td>182 μL</td>
+</tr>
+<tr>
+<td>Dynabeads MyOne SILANE</td>
+<td>4%</td>
+<td>8 μL</td>
+</tr>
+<tr>
+<td>Reducing Agent B</td>
+<td>2.5%</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free Water</td>
+<td>N/A</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>200 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 20°C–25°C for up to 1 day.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Cleanup Buffer – acute toxicity. Dispose of any residual material in a defined hazardous liquid waste stream.</div>
+<table id="undtbl6">
+<caption>Elution Solution 1</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qiagen Buffer EB</td>
+<td>98%</td>
+<td>98 μL</td>
+</tr>
+<tr>
+<td>10% Tween 20</td>
+<td>1%</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Reducing Agent B</td>
+<td>1%</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>100 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 20°C–25°C for up to 1 day.</p>
+<table id="undtbl7">
+<caption>80% ethanol solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-free Water</td>
+<td>N/A</td>
+<td>8 mL</td>
+</tr>
+<tr>
+<td>200 proof Ethanol</td>
+<td>80%</td>
+<td>32 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>40 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 20°C–25°C for up to 1 week</p>
+<table id="undtbl8">
+<caption>cDNA amplification reaction mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Amp Mix</td>
+<td>75.8%</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>cDNA Primers</td>
+<td>22.7%</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>HTO cDNA Additive Primer (0.2 μM)</td>
+<td>3 nM, 1.5%</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>66 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Amp Mix – irritant. Dispose of any residual material in a defined hazardous liquid waste stream.</div>
+<table id="undtbl9">
+<caption>HTO Amp Master Mix (MM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2<b>×</b> KAPA HiFi PCR MM</td>
+<td>95.2%</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>SI PCR Oligo (10 μM)</td>
+<td>480 nM, 4.8%</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>52.5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> 2<b>×</b> KAPA HiFi PCR MM – acute toxicity. Dispose of any residual material in a defined hazardous liquid waste stream.</div>
+<table id="undtbl10">
+<caption>HTO index plate</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTO Index Plate</td>
+<td>10 μM</td>
+<td>40 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at −20C for up to 3 months.</p>
+<table id="undtbl11">
+<caption>Fragmentation mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fragmentation Buffer</td>
+<td>33.3%</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>Fragmentation Enzyme</td>
+<td>66.7%</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>15 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Fragmentation Buffer – acute toxicity and skin sensitization. Dispose of any residual material in a defined hazardous liquid waste stream.</div>
+<table id="undtbl12">
+<caption>Ligation mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ligation Buffer</td>
+<td>40%</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>DNA Ligase</td>
+<td>20%</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Adapter Oligos</td>
+<td>40%</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>50 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<table id="undtbl13">
+<caption>Index PCR mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Amp Mix</td>
+<td>83.3%</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>SI Primer (0.2 μM)</td>
+<td>0.1 μM, 17.7%</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>60 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store on ice for up to 1 h.</p>
+<table id="undtbl14">
+<caption>Single Index Kit T Set A Plate</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single Index Kit T Set A</td>
+<td>N/A</td>
+<td>10 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at −20C for up to 3 months.</p>
+<table id="undtbl15">
+<caption>Fixable viability dye stock</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FVS510 dye powder</td>
+<td>385 μg/mL</td>
+<td>100 μg</td>
+</tr>
+<tr>
+<td>DMSO</td>
+<td>N/A</td>
+<td>260 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>260 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at −20C for up to 3 months.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Cell thaw</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>In this section, the procedure for thawing human PBMC for subsequent High Dimensional Flow Cytometry and 10x Genomics v3.1 scRNA-seq (single-cell RNA-sequencing) with antibody-based cell hashing workflows is described. Typically, a batch of 23 PBMC samples and one bridging control leukopak sample are processed for downstream assays. Adding thawed PBMC directly to pre-warmed media streamlines the first step of the thaw, and the use of AIM V media eliminates serum (a potential source of activating compounds as well as lot-to-lot variability).</p>
+<div class="note">
+<span class="note-title">Note:</span> If working with fresh or cultured cells, proceed to “<a href="#sec3.2">cell count and normalization</a>”.</div>
+<ol>
+<li>Prepare cell thawing media
+<ol type="a">
+<li>Transfer 30 mL of AIM V media into one 50 mL conical tube for each sample to be processed. Place on ice until ready to thaw cells.</li>
+<li>Transfer 40 mL of AIM V media into one 50 mL conical tube for each sample to be processed. 30 min prior to cell thawing, place the 40 mL AIM V tubes into a 37°C water bath.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Other serum-free media may be used in place of AIM V.</div>
+<ol start="2">
+<li>Thaw Cells
+<ol type="a">
+<li>Thaw PBMC vials rapidly by swirling in the water of a 37°C water bath.</li>
+<li>Observe the thawing contents and remove from the water bath when only a small pellet of ice is visible (approximately two minutes).</li>
+</ol>
+</li>
+<li>Transfer Cells
+<ol type="a">
+<li>Using a wide-bore P-1000 tip, transfer the contents of the PBMC vial to a 50 mL conical tube containing 40 mL of pre-warmed (37°C) AIM V.</li>
+<li>Take up 1 mL of AIM V from the conical tube and use it to wash out any remaining cells in the PBMC vial.</li>
+<li>Transfer the 1 mL back to the conical tube.</li>
+<li>Repeat steps 2a -2c for each PBMC sample.</li>
+</ol>
+</li>
+<li>Centrifuge Cells
+<ol type="a">
+<li>Transfer the conical tubes to the centrifuge.</li>
+<li>Attach the aerosol containment caps to the buckets.</li>
+<li>Centrifuge the cells for 400 <i>g</i> for 10 min at 4°C.</li>
+</ol>
+</li>
+<li>Resuspend Cells
+<ol type="a">
+<li>Use a 2 mL aspirating pipette connected to the vacuum line of the BSC to carefully aspirate the supernatant.</li>
+<li>Finger vortex or flick the tubes to disrupt the cell pellet.</li>
+<li>Using a 5 mL serological pipette, transfer 5 mL of AIM V from a 50 mL conical tube containing 30 mL ice cold AIM V to the conical tube containing the cells.</li>
+<li>Pipette mix to resuspend the cells.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">Cell count and normalization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>The purpose of this step is to quantify the cell concentration of each sample, to resuspend each sample at the appropriate concentration for downstream assays. The Nexcelom Cellaca MX high-throughput cell counter performs 24 cell counts in three minutes. The fluorescent AOPI (Acridine orange/Propidium iodide) method quantifies viable nucleated cells (AO-positive green cells) and dead nucleated cells (PI-positive red cells). As PI quenches AO, a viable cell count and dead cell count are generated. As only nucleated cells are counted, contaminating red blood cells are excluded from the count, eliminating the need for red blood cell lysis. The thawed PBMC samples, normalized to 10 million viable cells per mL in ice cold DPBS, are compatible with both our 10x Genomics scRNA-seq and high dimensional flow cytometry workflows.</p>
+<div class="note">
+<span class="note-title">Note:</span> Alternative cell counting methods such as Trypan Blue dye exclusion plus red blood cell lysis may be used in place of high-throughput AOPI cell counting. For small batches of samples, a manual hemacytometer may also be suitable.</div>
+<ol start="6">
+<li>Load Cellaca MX cell counter plate (<a href="#fig1">Figure 1</a>)
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Nexcelom cell counting plate</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Using a P-200 pipette, transfer 30 μL of each cell suspension to a PCR strip tube containing 30 μL of ViaStain AOPI solution. Mix thoroughly.</li>
+<li>Using a multi-channel P-200 pipette, mix and transfer 50 μL of the AOPI-stained cells to the counting wells of a Nexcelom cell counting plate. Use Row C for samples 1–12 and Row G for samples 13–24, if applicable.</li>
+<li>Go to the Setup menu on the Cellaca MX. Name the plate and select the assay type.
+<div class="note">
+<span class="note-title">Note:</span> The default assay “MX04.0_AOPI_LiveDead” (Fluorescence exposure settings F1-100msec and F2-300 msec) is used for standard cell counts.</div>
+</li>
+<li>Go to the Load Plate menu. Import or enter the sample names for each well.</li>
+<li>Select Eject Plate: the plate loader will open.</li>
+<li>Place the plate in the loader and select Load Plate. The plate will be drawn into the counter.</li>
+<li>Go to the Preview &amp; Count menu. Preview BR1 and FL1 to confirm that the cells are present with bright green fluorescence. See <a href="#troubleshooting">troubleshooting</a> section <a href="#sec7.1">problem 1</a> for focusing errors.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Count Cells (<a href="#fig2">Figure 2</a>)
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Load plate in the Nexcelom plate loader</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Select Count to initiate cell counting. Counting 24 wells takes approximately three minutes.</li>
+<li>Once counting is finished, a results sheet will be generated listing the viable cell count, dead cell count, and viability as a percentage. Use the total viable cell counts to calculate resuspension volumes for a target concentration of 10 million viable cells/mL for RNA-seq processing.</li>
+<li>Go to the Load Plate menu and select Eject Plate. Dispose of the plate in a proper biohazardous waste container.</li>
+<li>Select Load Plate to return the empty plate loader into the Cellaca.</li>
+</ol>
+</li>
+<li>Centrifuge Cells
+<ol type="a">
+<li>Pour the remaining 25 mL of cold AIM V into each 50 mL conical tube, for a total volume of 30 mL in each.</li>
+<li>Place the tubes in the centrifuge.</li>
+<li>Attach the aerosol containment caps to the buckets.</li>
+<li>Centrifuge the cells for 400 <i>g</i> for 10 min at 2°C–8°C.</li>
+</ol>
+</li>
+<li>Resuspend Cells
+<ol type="a">
+<li>Use a 2 mL aspirating pipette connected to the vacuum line of the BSC to carefully aspirate the supernatant.</li>
+<li>Finger vortex or flick the tubes to disrupt the cell pellet.</li>
+<li>Add cold (2°C–8°C) DPBS to adjust the cell concentration to 10 million viable cells per mL (based on the Nexcelom Cellaca MX viable cell count).</li>
+<li>Transfer normalized samples to a deep well Masterplate on ice and use a Microseal B plate seal to cover.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">High-throughput 10x single-cell RNA-Seq with cell hashing, GEM generation, and reverse transcription</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>In this section, samples undergo “Cell Hashing” as described by <a href="#bib2">Stoeckius et al. (2018)</a> via staining with TotalSeq™-A anti-human Hashtag Oligo (HTO) conjugated antibodies on the 10x Chromium Next GEM Single Cell 3ʹ assay platform (v3.1). Excess, unbound antibody is removed via robotic washes and samples are then normalized and pooled with a limit of 12 samples per pool. Pooled samples are loaded onto the 10x Chromium Controller Chip G in replicate to achieve ∼20K singlets per sample at a concentration of 64,000 cells per well. This generates Gel Bead-In Emulsions (GEMs). GEMs then undergo reverse transcription (GEM-RT) after which can be stored at 2°C–8°C for up to 72 h or −20°C for up to a week.</p>
+<ol start="10">
+<li>Cell Hashing
+<ol type="a">
+<li>Make Human TruStain FcX and 10% BSA Master Mix for the appropriate number of reactions.</li>
+<li>Transfer 500,000 Human PBMCs in 50 μL DPBS from the deep well masterplate (see <a href="#sec3.2">Cell count and normalization</a> section) to sample plate.</li>
+<li>Add 18.7 μL of the Human TruStain FcX and 10% BSA Master Mix to each sample.</li>
+<li>Set multi-channel pipette to 60 μL and slowly pipette-mix 5 times.</li>
+<li>Apply Microseal 'B' adhesive seal and incubate on ice for 10 min.</li>
+<li>Prepare a master mix of 1 μL (0.5 μg) of each unique TotalSeq™-A anti-human Hashtag Antibody and 31.3 μL 2% BSA/DPBS (RNA-seq Staining Buffer) for each sample. Include a 20% overage or slop volume.</li>
+<li>Set multi-channel pipette to 80 μL and slowly pipette-mix 5 times.</li>
+<li>Apply adhesive seal and incubate plate on ice for 20 min.</li>
+<li>During the incubation step turn on Integra VIAFLO 96 and click “RUN” to home instrument. Follow prompt on screen for further set-up.</li>
+<li>Prepare Integra platform, pipette tips (7 per sample), reservoirs, reservoir tray, and Integra cold block (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Integra VIAFLO 96 initial set up</div>
+<p>Integra VIAFLO 96 in a BSC with tips seated in the left position (“A”), a reservoir seated in the middle position (“AB”), and a cold block with a 96-well plate seated in the right position (“B”).</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Set up Integra platform and save operation programs in VIAFLO 96 before starting.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> When running the Integra VIAFLO 96 programs ensure that the platform is set such that the plate in “B” aligns with the “B” position on the instrument and the black adjustment lever is in the middle/straight position to ensure that the tips, reservoir, and plate align during the automated wash steps.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Use new pipette tips for every removal and resuspension step (7 tips per sample).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> During the following “Wash” thaw 10x GEM Generation reagents as described in step 3a.</div>
+</li>
+<li>Add 60 mL of 2% BSA/DPBS to an Integra reservoir and hold on ice when not in use.</li>
+<li>Set the reservoir containing 60 mL of 2% BSA/DPBS tray and place it in the “AB” position on the Integra VIAFLO 96 stage.</li>
+<li>Remove the seal from the sample plate and place the sample plate in an Integra cold block on the instrument in the “B” position.</li>
+<li>Run the 'RNA-Seq Wash 1′ program to add 150 μL 2% BSA/DPBS solution to each sample and mix 5 times.</li>
+<li>Transfer the plate in a cold-block to a stable surface. Seal plate with a Micro-Optical qPCR adhesive seal, and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C (ensure centrifuge is pre-cooled). During each centrifugation step, hold the cold block on ice.</li>
+<li>Carefully transfer the pelleted sample plate to the cold block and back to the “B” position on the Integra VIAFLO 96. Remove the seal.</li>
+<li>Replace the buffer reservoir with a new empty reservoir and label it “Waste.”</li>
+<li>Run the 'RNA-Seq Remove' program on Integra to remove 200 μL of the clear supernatant from each well, leaving 50 μL above the pellet.</li>
+<li>With the buffer reservoir in place, run the 'RNA-Seq Wash 2′ program on the Integra.</li>
+<li>Transfer plate in cold block to a stable surface, seal plate with a Micro-Optical qPCR adhesive seal, and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C (ensure centrifuge is pre-cooled).</li>
+<li>Carefully transfer the pelleted sample plate to the cold block and back to the “B” position on the Integra VIAFLO 96. Remove the seal.</li>
+<li>With the waste reservoir in place, run the 'RNA-Seq Remove' program on Integra.</li>
+<li>With the buffer reservoir in place, run the 'RNA-Seq Wash 2′ program.</li>
+<li>Transfer plate to a stable surface, seal plate with a Micro-Optical qPCR adhesive seal, and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C (ensure centrifuge is pre-cooled).</li>
+<li>With the waste reservoir in place, run the 'RNA-Seq Remove' program on Integra.</li>
+<li>With the buffer reservoir in place, run the 'RNA-Seq Final' program on the Integra to resuspend the cell pellet. Total volume is now 200 μL.</li>
+<li>Transfer the plate to ice and proceed immediately to the next step.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Cell Count and Pooling
+<ol type="a">
+<li>Refer to “<a href="#sec3.2">Cell count and normalization</a>” section to count samples on the Cellaca MX cell counter. Use 27.5 μL of sample and 27.5 μL of AOPI dye to conserve sample volume.
+<div class="critical">
+<span class="critical-title">Critical:</span> Due to high background noise from oligo-conjugated, cell hashing antibodies use the <b>MX04.0_AOPI_scRNA-Pipeline Assay</b> custom program (Fluorescence exposure settings F1, 300 msec and F2, 350 msec).</div>
+</li>
+<li>Use the live cell concentration to normalize pools such that each sample is pooled at an equal fraction and will be sufficient to overload at up to 64K cells per well during 10x GEM generation.
+<div class="critical">
+<span class="critical-title">Critical:</span> A cell viability cut-off of 70% is recommended to ensure the quality of the data, however differences in samples due to a patient’s disease profile should be considered. In past preparations, cell viabilities as low as 50% have been processed due to patient disease profile. See <a href="#troubleshooting">troubleshooting</a> section <a href="#sec7.3">problem 2</a> for potential solution if cell viability is low.</div>
+</li>
+<li>Based on the number of 10<b>×</b> wells to be run, calculate the amount of batch control to spike into each pool (should be 1/5th of the amount of a sample i.e., for 12 samples pooled at 100K cells/sample, pool 20K cells of the bridging control).</li>
+<li>Pass the pool through a labeled 35 μM cell strainer cap securely held in place on top of a 1.5 mL screw-top centrifuge tube.</li>
+<li>Take a cell count of the pool using the Nexcelom Cellometer. Mix 12.5 μL of AOPI + 12.5 μL sample pool, pipette-mix, remove plastic from Cellometer slide and place on a clean surface, load 20 μL of AOPI stained sample pool to the slide chamber. Record the total cells/mL and viability.</li>
+<li>Dilute the sample pool in DPBS for 10<b>×</b> GEM Generation. Use the following equation to determine volume (μL) of the sample pool must be diluted in DPBS for 10<b>×</b> GEM Generation:<br> Volume of Cells = [Number of Cells per Well ×Number of 10x Wells ×1.2] ÷Number of Cells per μL</li>
+<li>Use the following equation to calculate how much (μL) DPBS to add for the sample pool dilution calculated above:<br> Volume of DPBS = [43.3 μL of Sample Pool Diln ×Number of 10x Wells ×1.2] -Volume of Cells</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>GEM Generation &amp; RT
+<ol type="a">
+<li>Allow RT reagent, resuspended Template Switch Oligo (see following step), Reducing Agent B and Gel beads to equilibrate to 20°C–25°C for at least 30 min.
+<div class="critical">
+<span class="critical-title">Critical:</span> If opening a new kit, add 80 μL Low TE to the TSO, vortex 15 seconds and incubate at 20°C–25°C for at least 30 min.</div>
+</li>
+<li>Make up the GEM Reverse Transcription Master Mix (GEM RT MM).</li>
+<li>Add 31.8 μL of the GEM RT MM to each strip tube well equal to the number of 10x-wells to be loaded.</li>
+<li>Add 43.3 μL of cells from each sample dilution to each well corresponding to the number of 10x Chip G wells.</li>
+<li>Keep strip tubes on ice while preparing each chip.</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Chip Preparation (<a href="#fig4">Figure 4</a>)
+<ol type="a">
+<li>Load a chip into the holder without touching the top of the wells.</li>
+<li>Dispense 50% glycerol into any unused chip wells if processing less than 8 samples on a chip:
+<div class="critical">
+<span class="critical-title">Critical:</span> DO NOT add glycerol solution to the bottom, 'NO FILL′ row.</div>
+</li>
+<li>Set pipet to 70 μL and mix RT Master Mix + Sample by slowly pipetting up and down 5 times then dispense 70 μL of the sample + Master Mix into row 1 without introducing bubbles.</li>
+<li>Vortex the Gel Beads for 30 s, remove strip tube from holder and briefly centrifuge, and return to holder.</li>
+<li>Slowly aspirate 50 μL Gel Beads. Dispense into row 2 without introducing bubbles. Wait 30 s before moving to the next step.</li>
+<li>Dispense 45 μL Partitioning Oil into row 3 wells.</li>
+<li>Attach the 10x Gasket and ensure the gasket holes are aligned with the wells. Avoid touching the smooth surface (<a href="#fig5">Figure 5</a>).</li>
+<li>Load the chip into the 10x Chromium controller and press play. Avoid tilting the chip in the process. (∼18 min run time) (<a href="#fig6">Figure 6</a>).</li>
+<li>IMMEDIATELY unload the chip, discard the gasket, and fold the lid back until the holder clicks into place so the chip is sitting at a 45 degree angle (<a href="#fig7">Figure 7</a>).</li>
+<li>Slowly aspirate 100 μL GEMs from the lowest point of row 3 slowly rotating the pipette away to ensure that the tips stay at the lowest point (Don't allow a seal to form between the tips and the well) (<a href="#fig8">Figure 8</a>).</li>
+<li>Taking ∼20 s, dispense GEMs into a semi-skirted 96-well PCR plate on ice, keeping pipette tips against the sidewalls of the wells at a 45 degree angle.</li>
+<li>Repeat for each additional chip as needed. Keep GEMs on ice no longer than an hour.</li>
+<li>Load the plate onto a Thermal Cycler and run the 'GEM RT′ program with the following cycling conditions
+<table id="undtbl16">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GEM-RT</td>
+<td>53°C</td>
+<td>45 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Enzyme Degradation</td>
+<td>85°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> store at 2°C–8°C for up to 72 h or −20°C for up to one week.</div>
+</li>
+</ol>
+</li>
+</ol>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. 10x chip G well loading</div>
+</figcaption>
+</figure>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. 10x chip G with gasket</div>
+</figcaption>
+</figure>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Load the 10x Chromium controller</div>
+</figcaption>
+</figure>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Unload the 10x chip</div>
+</figcaption>
+</figure>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Slowly aspirate GEMs</div>
+</figcaption>
+</figure>
+<h3 id="sec3.4">GEM recovery, cDNA amplification, HTO library preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<p>In this section, GEMs are broken, recovered cDNA and HTO fragments are amplified. Gene expression cDNA libraries and HTO libraries are separated and size-selected via SPRI-Select bead-based cleanup. HTO libraries are amplified and recovered before storing both sets of libraries at 2°C–8°C for up to 72 h or −20°C for up to one week.</p>
+<ol start="14">
+<li>Post GEM-RT Cleanup and Gene Expression/HTO Amplification
+<ol type="a">
+<li>Allow Reducing Agent B, cDNA Primers, &amp; Dynabeads to come to 20°C–25°C 30 min.</li>
+<li>Place Amp Mix and Additive HTO Primer (0.2 μM) on ice.</li>
+<li>Thaw Cleanup Buffer for 10 min (or more) at 65°C ensuring there is no precipitate.</li>
+<li>Make the Dynabead Cleanup Mix and Elution Solution 1, mix and store at 20°C–25°C until use.</li>
+<li>Add 125 μL Recovery Agent to each sample. Do not mix. Incubate 2 min at 20°C–25°C and wait for the biphasic mixture to fully separate.
+<ol type="i">
+<li>If biphasic separation is incomplete, securely seal the plate with a Micro-Optical qPCR adhesive seal, invert 5 times and briefly centrifuge.</li>
+</ol>
+</li>
+<li>Pipetting from the bottom of the well, slowly remove and discard 125 μL of recovery agent (pink) without removing any clear or opaque sample (<a href="#fig9">Figure 9</a>).</li>
+<li>Vortex the Cleanup Mix well and add 200 μL to each sample. Heat-seal the plate and invert 10<b>×</b> to mix.</li>
+<li>Incubate for 10 min at 20°C–25°C.</li>
+<li>At the 5-min mark, invert 10<b>×</b> to mix again.</li>
+<li>Place the plate on a DynaMag-96 magnsetic plate stand for 3+ minutes, remove and discard only the clear supernatant.
+<div class="critical">
+<span class="critical-title">Critical:</span> Take care to avoid removing beads not bound to the magnet. Beads may bind to the walls of the well. If beads are aspirated, they can be pipetted back into the well to rebind the magnet.</div>
+</li>
+<li>Add 300 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Add 200 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Centrifuge briefly, place plate back on magnetic plate stand and remove the remaining EtOH; let air dry on magnetic plate stand for 30 s.</li>
+<li>Resuspend beads in 35.5 μL Elution Solution 1. Pipette-mix without introducing bubbles. Incubate at 20°C–25°C for 2 min.
+<div class="optional">
+<span class="optional-title">Optional:</span> Seal and briefly centrifuge when incubation is complete.</div>
+</li>
+<li>Place the plate on a magnetic plate stand, once the solution clears, transfer 35 μL of sample to a new plate.</li>
+<li>Make up the cDNA Amplification Reaction Mix.</li>
+<li>Add 65 μL cDNA Amplification Reaction Mix to each 35 μL sample well.</li>
+<li>Heat seal, cool immediately, invert 5x and centrifuge.</li>
+<li>Run the following “cDNA Amplification” program with 11 cycles of amplification
+<table id="undtbl17">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>15 s</td>
+<td rowspan="3">11 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> store at 4°C for up to 72 h or −20°C for up to one week.</div>
+</li>
+<li>Add 60 μL SPRI beads to each sample well, incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand to pellet beads for 10 min. Transfer 155 μL of the clear supernatant to a new semi-skirted 96-well PCR plate.</li>
+<li>Heat seal the “HTO” plate and store it on ice while you complete the following steps on the gene expression libraries.</li>
+<li>Add 200 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat steps z and aa for a total of 2 washes.</li>
+<li>Centrifuge plate briefly and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s. Resuspend in 40.5 μL Elution Buffer and incubate for 2 min.</li>
+<li>Place on a magnetic plate stand until the solution clears and transfer 40 μL of clear supernatant to a new plate.</li>
+<li>Make a 1:10 dilution using 45 μL Elution Buffer + 5 μL of Gene Expression Library.</li>
+</ol>
+</li>
+</ol>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Remove recovery agent</div>
+</figcaption>
+</figure>
+<ol start="15">
+<li>HTO Library Amplification and Cleanup.
+<ol type="a">
+<li>Remove the semi-skirted plate that was stored on ice and bring it to 20°C–25°C.</li>
+<li>Add 140 μL SPRI-Select beads, heat seal, and vortex to mix. Incubate for 10 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and discard the clear supernatant.</li>
+<li>Add 200 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat steps d and e for a total of 2 washes.</li>
+<li>Centrifuge plate briefly, place on magnet and remove remaining EtOH. Air dry on magnet for 30 s.</li>
+<li>Resuspend the beads in 50 μL MBGW.</li>
+<li>Add 100 μL SPRI beads directly to the resuspended beads. Incubate for 10 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand for 10 min and discard the clear supernatant.</li>
+<li>Add 200 μL 80% EtOH to the pellet. Wait 30 s.</li>
+<li>Remove and discard EtOH, being careful to not touch the beads.</li>
+<li>Repeat steps k and l for a total of 2 washes.</li>
+<li>Centrifuge briefly and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s.</li>
+<li>Resuspend the beads in 45 μL Elution Buffer, incubate for 5 min at 20°C–25°C.</li>
+<li>Place on magnetic plate stand and transfer the clear supernatant into a new labeled 96-well semi-skirted plate.</li>
+<li>Make HTO Amplification Master Mix.</li>
+<li>Add 52.5 μL HTO Amplification Master Mix to each sample well.</li>
+<li>Add 2.5 μL of a unique HTO Index to each sample from the HTO index plate.</li>
+<li>Run the following “HTO Index Amplification” PCR program, with 10 cycles of amplification
+<table id="undtbl18">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>20 s</td>
+<td rowspan="3">10 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>64°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> store at 4°C for up to 72 h or −20°C for up to one week.</div>
+</li>
+<li>Add 160 μL SPRI beads, heat seal, vortex to mix. Incubate at 20°C–25°C for 5 min.</li>
+<li>Place on magnetic plate stand and discard the clear supernatant</li>
+<li>Add 200 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat for a total of 2 washes.</li>
+<li>Centrifuge briefly and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s.</li>
+<li>Resuspend the beads in 30 μL Elution Buffer, incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and transfer 30 μL of sample to a new plate.</li>
+<li>Make 1:10 dilution (45 μL Elution Buffer + 5 μL HTO Final Libraries) and record the barcode and well location.</li>
+<li>QC HTO Libraries alongside the RNA once library prep is complete.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>Gene Expression Library Intermediate QC
+<ol type="a">
+<li>Run 1 μL of the 1:10 diluted Gene Expression Library prior to continuing library preparation on an Agilent Bioanalyzer or Fragment Analyzer to report cDNA quality and yield.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.5">Gene expression library preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3.5 h</div>
+<p>This section outlines preparation of 25% of the recovered gene expression cDNA libraries for sequencing. The remaining 75% may be stored at −20C for up to 3 months for future use if needed. Fragmented and A-tailed recovered libraries are size-selected for via SPRI-select, bead-based cleanup. Adapters are ligated, recovered libraries are then indexed and amplified before proceeding to QC.</p>
+<ol start="17">
+<li>Gene Expression Library Prep
+<ol type="a">
+<li>Thaw Fragmentation Buffer, Adapter Oligos, Ligation Buffer, SI Primer, and Chromium i7 Index plate (PN-220103).</li>
+<li>Remove Fragmentation Enzyme, DNA Ligase, and Amp Mix from -20°C storage only when needed.</li>
+<li>Make the Fragmentation Master Mix.</li>
+<li>Transfer 10 μL of purified cDNA sample to a new library prep plate, retaining the well position.</li>
+<li>Add 25 μL Elution Buffer and 15 μL Fragmentation Mix to each sample and mix.</li>
+<li>Transfer to a pre-cooled thermal cycler and run the following “Fragmentation and A-Tail” program.
+<table id="undtbl19">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre-cool block</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+<tr>
+<td>Fragmentation</td>
+<td>32°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>End Repair and A-tailing</td>
+<td>65°C</td>
+<td>30 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 30 μL SPRI beads to each sample well, heat seal, cool, and vortex. Incubate for 5 min at 20°C–25°C.</li>
+<li>Place the plate on a magnetic plate stand for at least 3 min and transfer 75 μL of clear supernatant to a new set of columns in the plate.</li>
+<li>Add 10 μL SPRI beads to each sample heat seal, cool, and vortex. Incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and discard the clear supernatant.</li>
+<li>Add 125 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat steps k and l for a total of 2 washes.</li>
+<li>Centrifuge briefly, place plate back on the magnet and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s.</li>
+<li>Resuspend the beads in 50.5 μL Elution Buffer, heat seal, cool, and vortex. Incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and transfer 50 μL of sample to a new 96-well skirted PCR plate.</li>
+<li>Make the Ligation Master Mix.</li>
+<li>Add 50 μL Adaptor Ligation Mix to 50 μL of sample.</li>
+<li>Place the plate on the pre-warmed thermal cycler and run the following “Ligation” program:
+<table id="undtbl20">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre-warm block</td>
+<td>20°C</td>
+<td colspan="2">Forever (skip to next step to run)</td>
+</tr>
+<tr>
+<td>Ligation</td>
+<td>20°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 80 μL SPRI beads to each sample well and incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and discard the clear supernatant.</li>
+<li>Add 200 μL 80% EtOH to each well avoiding the pellet, wait 30 s.</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat for a total of 2 washes.</li>
+<li>Centrifuge briefly and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s.</li>
+<li>Resuspend the beads in 30.5 μL Elution Buffer, incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and transfer 30 μL of sample to a new plate</li>
+<li>Make Index PCR Master Mix.</li>
+<li>Add 60 μL Index PCR Mix to each 30 μL sample.</li>
+<li>Add 10 μL of an individual i7 sample index from the Single Index Kit T Set A to each well and record the well ID.</li>
+<li>Run the “Library Index Amplification” PCR program on a thermal cycler:
+<table id="undtbl21">
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>45 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>20 s</td>
+<td rowspan="3">13 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>54°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> store 2°C–8°C up to 72 h or −20°C for one week.</div>
+</li>
+<li>Add 60 μL SPRI beads to each sample well, heat seal, cool, and vortex. Incubate for 5 min at 20°C–25°C.</li>
+<li>Place the plate on a magnetic plate stand and wait until the solution has cleared, transfer 150 μL of the clear supernatant to a new set of columns in the plate.</li>
+<li>Add 20 μL SPRI beads to each sample and incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and discard 165 μL of the clear supernatant.</li>
+<li>Add 180 μL 80% EtOH to the pellet. Wait 30 s</li>
+<li>Remove and discard EtOH.</li>
+<li>Repeat steps kk and ll for a total of 2 washes</li>
+<li>Centrifuge briefly and remove remaining EtOH. Air dry on a magnetic plate stand for 30 s.</li>
+<li>Resuspend the beads in 35.5 μL Elution Buffer, incubate for 5 min at 20°C–25°C.</li>
+<li>Place on a magnetic plate stand and transfer 35 μL of sample to a new plate once the solution has cleared.</li>
+<li>Make 1:10 dilution (45 μL Elution Buffer + 5 μL HTO Final Libraries) and record the barcode and well location.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.6">Library QC and sequencing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>This section details fragment size analysis via Agilent Fragment Analyzer and quantification of libraries via PicoGreen DNA Quantitation and pooling libraries for Illumina Next Generation Sequencing. High quality libraries were generated .</p>
+<ol start="18">
+<li>Library QC and Sequencing
+<ol type="a">
+<li>Determine each library’s average fragment size with a Fragment Analyzer.</li>
+<li>Determine each library's concentration using the Quant-iT™ PicoGreen™ dsDNA Assay or Kapa SYBR Fast qPCR Complete Assay for BioRad® iCycler. See <a href="#troubleshooting">troubleshooting</a> section <a href="#sec7.5">problem 3</a> for potential solution to low library concentration.</li>
+<li>Based on the recommendations of the quantification assay used, calculate size-adjusted molarity (nM) based on the average base pair size obtained via QC for each library.</li>
+<li>Determine the targeted number of reads per each library, we recommend:
+<ol type="i">
+<li>45K reads per cell for each Gene Expression Library.</li>
+<li>3K reads per cell for each HTO library.</li>
+</ol>
+</li>
+<li>Using each well’s size-adjusted molarity (nM) and targeted number of reads, pool a normalized concentration of each Gene Expression and HTO Library into a 1.5 mL low-retention, screw-cap tube.</li>
+<li>Dilute pool to desired concentration and volume for sequencing with Qiagen Buffer EB or similar Tris low EDTA buffer.
+<ol type="i">
+<li>Typically, 10 nM with a total volume of 150 μL.</li>
+</ol>
+</li>
+<li>Determine the appropriate Illumina sequencing platform and flow cell size to sequence the pooled RNA and HTO library pools together with the following sequencing parameters:
+<ol type="i">
+<li>Paired-end, Single-Index</li>
+<li>Read lengths:
+<ul>
+<li>R1: 28</li>
+<li>R2: 91</li>
+<li>i7 Index: 8</li>
+</ul>
+</li>
+<li>Include 1% PhiX control spike-in.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Storage and Freezing
+<ol type="a">
+<li>Using reagent guidelines provided on kit boxes and containers, place all reagents in the appropriate freezers. Store custom oligo stocks at 2°C–8°C for up to 1 month. Store the custom HTO i7 stock plate at −80°C for up to 3 months. Store the custom oligo working dilutions and working HTO i7 index plate at −20°C for up to 3 months.</li>
+<li>In the event the operator is no longer able to continue this protocol at any step where a safe stopping point and storage of libraries is not explicitly referenced, refer to 10x Genomics support for sample storage guidance.</li>
+<li>Store all the sequencing-ready libraries at −20°C for up to 1 year.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.7">High-dimensional flow cytometry sample preparation</h3>
+<p>This section describes the flow cytometry procedure for staining and data acquisition of human peripheral blood mononuclear cells (PBMCs) with high dimensional immunophenotyping panels. This protocol has been optimized for longitudinal studies by incorporating features such as a bridging control sample in each batch for normalization, and commercial reagents for staining, washing, and fixation to reduce batch variation. Automated pipetting with the Integra VIAFLO 96 electronic pipette reduced processing time while maintaining high cell viability and retention. The Integra mixing operation programs were optimized to ensure sample pellets were fully resuspended to avoid variable staining due to clumping outlined in troubleshooting <a href="#sec7.7">problem 4</a>. The data displayed in this protocol is from a 25-color immune survey panel acquired on the Cytek Aurora five laser spectral cytometer but this method can be adopted for any flow cytometry experiment and instrumentation.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> All incubations prior to sample fixation are at 2°C–8°C protected from light and sealed with a Microseal B adhesive seal.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> All sample plate centrifuge steps are at 750g for 5 min at 2°C–8°C with swinging centrifuge buckets and aerosol containment covers.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> DPBS and Cell Staining Buffer should be chilled to 2°C–8°C and kept on ice when not in use.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Store the Integra cold block on ice when not in use.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Set up Integra platform and save custom Flow Cytometry operation programs in VIAFLO 96 before starting.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Use new pipette tips for every removal and resuspension step (18 tips per sample).</div>
+<div class="note">
+<span class="note-title">Note:</span> The Integra VIAFLO 96 steps may be substituted with manual washing/aspiration using the same volumes noted in the protocol.</div>
+<h3 id="sec3.8">Flow cytometry cell staining</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3.5 h</div>
+<p>This section details how to aliquot and stain samples to allow robust longitudinal flow cytometry analysis.</p>
+<ol start="20">
+<li>Aliquot Samples and Controls to Staining Plate
+<ol type="a">
+<li>Adjust the volume of each sample to 10 million viable per mL with DPBS. If the final volume is less than 120 μL, add DPBS so that there is at least 120 μL in the well.
+<div class="note">
+<span class="note-title">Note:</span> Less than 120 μL can be used, as the samples will be centrifuged, and the supernatant aspirated before the first staining step. Ensure that each well receives the desired number of cells.</div>
+</li>
+<li>Add 100 μL (equivalent to 1 million viable cells) of each sample to the corresponding labeled wells of the 96-well semi-skirted Eppendorf sample plate. Insert the sample plate into a precooled Integra PCR 96 well cooling block (2°C–8°C).</li>
+<li>Add 50 μL (equivalent to 0.5 million cells) of extra batch control cells to empty wells of the sample plate, or an additional plate, for staining single color controls. Make sure to include a negative control.
+<div class="note">
+<span class="note-title">Note:</span> If single color controls have previously been recorded as Library Reference Controls in the SpectroFlo software, they do not need to be recorded again. The normalized reference controls will work for future batches of the same panel.</div>
+<div class="note">
+<span class="note-title">Note:</span> If single color controls are on a separate plate, repeat all steps for both the sample and control plates.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> If extra batch control samples are not available, other PBMC samples can be used for single color controls. If cells are not available, compensation beads can also be used, but must be optimized before running the experiment.</div>
+</li>
+<li>Move the plate and cold block into the right most Integra position. Place a reservoir with 50 mL of cold DPBS into the middle Integra position.</li>
+<li>Run the Integra program “FLOW_DILUTE” to add 150 μL of DPBS to each sample well.</li>
+<li>Seal the plate with an adhesive seal and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="21">
+<li>Prepare and apply Viability and Fc Blocking Solution
+<ol type="a">
+<li>Prepare the Viability and Fc Blocking solution in a 5 mL Eppendorf tube and store on ice protected from light for up to 15 min.
+<table id="undtbl22">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume per sample (μL)<sup>a</sup>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FVS510 Fixable Viability Dye</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>FcX</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>DPBS</td>
+<td>117.3</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend"><sup>a</sup> Includes 20% overage</p>
+</li>
+<li>Aliquot 100 μL of Viability and Fc Blocking solution to the wells corresponding to samples and Viability single color control in an Eppendorf 96-well full skirt plate. Store in the dark at 2°C–8°C.
+<div class="note">
+<span class="note-title">Note:</span> Do not add the Viability and Fc Blocking Solution to all control wells, only the single color control for the Viability stain.</div>
+</li>
+<li>Remove the sample plate from the centrifuge. Insert the plate into the cold block, and transfer to the right most Integra position. Remove the adhesive seal.</li>
+<li>Label a new reagent reservoir as biohazardous waste and place it in the middle position of the Integra deck. Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+<li>Place the 96-well full-skirt plate containing the Viability and Fc Blocking solution in the middle position on the Integra.</li>
+<li>Run the Integra program “FLOW_RSP_MM” to add 90 μL of Viability and Fc Blocking solution to each sample and mix ten times.</li>
+<li>Incubate for 30 min at 2°C–8°C protected from light.</li>
+<li>Label a new reagent reservoir as Cell Staining Buffer and place it in the middle position of the Integra deck. Add 50 mL of Cell Staining Buffer to the reservoir. Insert the sample plate on the cold block, remove the seal and place on the right of the stage on the Integra.</li>
+<li>Run the Integra program “FLOW_DILUTE” to add 150 μL of Cell Staining Buffer to each sample well.</li>
+<li>Seal the plate and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="22">
+<li>Generate Master Mix and Stain Cells
+<div class="critical">
+<span class="critical-title">Critical:</span> Centrifuge antibody storage vials at 10,000g for 10 min prior to adding to mastermix to reduce antibody aggregates outlined in troubleshooting <a href="#sec7.9">problem 5</a> .</div>
+<ol type="a">
+<li>Record the lot number of each antibody vial and note lot changes between batches.</li>
+<li>Keep antibodies protected from light at 2°C–8°C until needed.</li>
+<li>Prepare the antibody master mix solution in a 5 mL Eppendorf tube (<a href="#tbl1">Table 1</a>) and place on ice, protected from light for up to 1 h.
+<table id="tbl1">
+<caption>Table 1. Flow cytometry antibody master mix solution</caption>
+<thead>
+<tr>
+<th>Conjugate</th>
+<th>Target</th>
+<th>Clone</th>
+<th>Volume per sample (μL)<sup><a href="#tblfn1">a</a></sup>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell Staining Buffer</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>57.6</td>
+</tr>
+<tr>
+<td>Brilliant Stain Buffer Plus</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>12</td>
+</tr>
+<tr>
+<td>BUV395</td>
+<td>CD3</td>
+<td>UCHT1</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BUV496</td>
+<td>CD45</td>
+<td>HI30</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BUV563</td>
+<td>CD15</td>
+<td>W6D3</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>BUV615</td>
+<td>CD45RA</td>
+<td>HI100</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>BUV661</td>
+<td>CD14</td>
+<td>MφP9</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BUV737</td>
+<td>CD8</td>
+<td>RPA-T8</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>BUV805</td>
+<td>CD11c</td>
+<td>B-ly6</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td>BV421</td>
+<td>CD25 (IL2Rα)</td>
+<td>M-A251</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BV480</td>
+<td>CD4</td>
+<td>RPA-T4</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>BV605</td>
+<td>CD16</td>
+<td>3G8</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BV650</td>
+<td>CD123 (IL3Rα)</td>
+<td>6H6</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BV711</td>
+<td>CD127 (IL7Rα)</td>
+<td>A0195D5</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BV750</td>
+<td>IgD</td>
+<td>IA6-2</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>BV786</td>
+<td>CD304</td>
+<td>U21-1283</td>
+<td>2.4</td>
+</tr>
+<tr>
+<td>BB515</td>
+<td>CD141</td>
+<td>1A4</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td>PerCp-Cy5.5</td>
+<td>CD11b</td>
+<td>M1/70</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>BB790</td>
+<td>CD19</td>
+<td>HIB19</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>PE</td>
+<td>CD27</td>
+<td>O323</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>PE/Dazzle594</td>
+<td>TCRαß</td>
+<td>IP26</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td>PE-Cy5</td>
+<td>CD34</td>
+<td>581</td>
+<td>6</td>
+</tr>
+<tr>
+<td>PE/Cy7</td>
+<td>CD197 (CCR7)</td>
+<td>G043H7</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td>APC</td>
+<td>CD38</td>
+<td>HB-7</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>APC-R700</td>
+<td>CD56</td>
+<td>NCAM16.2</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>APC/Cy7</td>
+<td>HLA-DR</td>
+<td>L243</td>
+<td>1.2</td>
+</tr>
+</tbody>
+</table>
+<p id="tblfn1" class="table-footnote"><sup>a</sup>Includes 20% overage.</p>
+</li>
+<li>Vortex the antibody master mix tubes for 10 s. Centrifuge the tubes at 3000 <i>g</i>, 2°C–8°C for 2 min.</li>
+<li>Transfer 90 μL master mix into corresponding wells of a 96-well full-skirt plate. Keep the master mix solution plate at 2°C–8°C protected from light for up to 1 h until staining.</li>
+<li>Insert the sample plate on the cold block and remove the adhesive seal. Place the biohazardous waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+<li>Place the 96-well full-skirt plate containing 100 μL of antibody master mix in each well needed in the middle position on the Integra.</li>
+<li>Run the Integra program “FLOW_RSP_MM” to add 90 μL of antibody master mix to the sample wells and mix ten times.</li>
+<li>Add the corresponding antibody volume to each single color control well.
+<div class="note">
+<span class="note-title">Note:</span> The volume of each antibody added to single color controls should be the same as the volume for a single sample, including the 20% overage.</div>
+</li>
+<li>Seal the plate and incubate for 30 min at 2°C–8°C protected from light.</li>
+<li>Insert the sample plate on the cold block and remove the adhesive seal. Place the reagent reservoir containing Cell Staining Buffer in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_DILUTE” to add 150 μL of Cell Staining Buffer to each sample well.</li>
+<li>Seal the plate and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.</li>
+<li>Insert the plate into the cold block and remove the adhesive seal. Place the waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells. Remove the waste reservoir from the middle integra position and discard the supernatant in a waste bottle with 10% bleach solution.</li>
+<li>Place the reagent reservoir containing 50 mL Cell Staining Buffer in the middle position of the Integra deck.</li>
+<li>Run the Integra Program “FLOW_WASH” to add 250 μL of Cell Staining Buffer to each sample well and mix ten times.</li>
+<li>Seal the plate and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.</li>
+<li>Place the sample plate on the cold block, remove the seal and place it on the right of the stage on the Integra. Place the waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+<li>Place the reagent reservoir containing 50 mL Cell Staining Buffer in the middle position of the Integra deck.</li>
+<li>Run the Integra Program “FLOW_WASH” to add 250 μL of Cell Staining Buffer to each sample well and mix ten times.</li>
+<li>Seal the plate and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.
+<div class="note">
+<span class="note-title">Note:</span> Two full washes are needed after antibody master mix staining to ensure no excess antibody is in the solution when the cells are fixed as this could lead to non-specific attachment of antibody to the cell surface.</div>
+</li>
+<li>Insert the plate on the cold block and remove the adhesive seal. Place the waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of the supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="23">
+<li>Fix Stained Cells
+<ol type="a">
+<li>Remove the waste reservoir from Integra stage and place a 96-well full-skirt plate containing 110 μL of 20°C–25°C FluoroFix Buffer in each well in the middle position on the Integra.
+<div class="critical">
+<span class="critical-title">Critical:</span> FluoroFix – BioLegend: 4% p-formaldehyde - acute toxicity.</div>
+<div class="note">
+<span class="note-title">Note:</span> Other 4% p-formaldehyde fixation buffers may be used in place of FluoroFix Buffer.</div>
+</li>
+<li>Run the Integra program “FLOW_FIX” transfer 100 μL of FluoroFix Buffer from the fixation plate to the sample plate and mix ten times.</li>
+<li>Incubate for 30 min protected from light at 20°C–25°C.</li>
+<li>Insert the sample plate on the cold block and remove the adhesive seal. Place the reagent reservoir containing Cell Staining Buffer in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_DILUTE” to add 150 μL of Cell Staining Buffer to each sample well.</li>
+<li>Seal the plate with an adhesive seal and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.</li>
+<li>Place the plate on the cold block and remove the adhesive seal. Place the waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+<li>Place the reagent reservoir containing 50 mL Cell Staining Buffer in the middle position of the Integra deck.</li>
+<li>Perform a post-fixation wash by running the Integra Program “FLOW_WASH” to add 250 μL of Cell Staining Buffer to each sample well and mix ten times.</li>
+<li>Seal the plate with a Microseal B adhesive seal and centrifuge at 750 <i>g</i> for 5 min at 2°C–8°C.
+<div class="note">
+<span class="note-title">Note:</span> Only one wash is needed because the fixative has been diluted beyond efficacy.</div>
+</li>
+<li>Place the sample plate on the cold block, remove the seal and place on the right of the stage on the Integra. Place the waste reservoir in the middle position of the Integra deck.</li>
+<li>Run the Integra program “FLOW_REMOVE” to remove 250 μL of supernatant from sample wells.
+<div class="note">
+<span class="note-title">Note:</span> Once the Integra aspiration step completes, immediately remove the waste reservoir from the middle integra position and discard the fluid in a waste bottle with 10% bleach solution.</div>
+</li>
+<li>Place the reagent reservoir containing 50 mL Cell Staining Buffer in the middle position of the Integra deck. Run the Integra program “FLOW_FINAL” to add 100 μL of Cell Staining Buffer and mix ten times to resuspend the cells.</li>
+<li>Seal the plate with an adhesive seal and cover with aluminum foil and store at 2°C–8°C.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Cells are fixed at this stage and may be stored at 2°C–8°C for up to 18–24 h before data acquisition.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.9">Flow cytometry data acquisition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h (for a full 96 well plate)</div>
+<p>This section includes information on settings used to acquire processed samples on a five laser Cytek Aurora.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Acquire data within 24 h of staining and fixing cells.</div>
+<ol start="24">
+<li>Prepare sample plate
+<ol type="a">
+<li>Remove the seal from the sample staining plate. Mix the wells 10 times to resuspend the samples.</li>
+<li>Transfer the 100 μL of sample volume from each well to a 96 well U bottom plate.</li>
+<li>Add 160 μL of Cell Stain Buffer to the original sample staining plate and mix 10 times. Transfer 160 μL of the wash volume to the 96 well U bottom plate for acquisition.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The total volume in the 96 well U bottom plate should be 260 μL per well.</div>
+<ol start="25">
+<li>Set up Cytek Aurora cytometer
+<ol type="a">
+<li>Startup and QC instrument according to manufacturer’s recommendations in plate mode.
+<div class="note">
+<span class="note-title">Note:</span> Using the same QC bead lot throughout the course of a longitudinal study will improve consistency. It is recommended that you purchase enough of the same bead lot for the duration of your study.</div>
+</li>
+<li>Set the instrument to acquire 200 μL of sample from each well, mix each well before acquisition, and backflush the sample probe 2 times after every well.
+<div class="note">
+<span class="note-title">Note:</span> These settings will allow for ∼50 μL of dead volume per well and acquire samples at a rate of 5000 events/sec or less. This should prevent any bubbles from entering the stream and causing artifacts in the data.</div>
+</li>
+<li>Load the 96 well U bottom sample plate onto the instrument.</li>
+</ol>
+</li>
+</ol>
+<ol start="26">
+<li>Record Reference Controls
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> You can skip this step if reference controls have been previously recorded for this panel.</div>
+<ol type="a">
+<li>In the QC &amp; Set-up tab of the SpectroFlo software, select Reference Controls.</li>
+<li>Add the single stain control fluorophores for the panel to be recorded. Label the controls with the corresponding marker and lot number information.</li>
+<li>Record 50000 events of the stained controls as Library Reference Controls.</li>
+</ol>
+</li>
+</ol>
+<ol start="27">
+<li>Acquire data and controls on Cytek Aurora cytometer
+<ol type="a">
+<li>Set up a new experiment and label the appropriate experiment details.</li>
+<li>If acquiring PBMCs for the first time, adjust the FSC-A and SSC-A voltages so that the cells can be discriminated from debris in the lower left portion of the FSC vs. SSC plot. Otherwise, use the same acquisition settings as previous batches.</li>
+<li>Acquire and record samples from the plate.
+<div class="note">
+<span class="note-title">Note:</span> Data collection should take approximately 4 h for a full 96 well plate.</div>
+</li>
+<li>Unmix collected data with corresponding Reference Controls saved in the SpectroFlo Library.</li>
+<li>Export FCS data files as FCS 3.1 format</li>
+<li>The acquired data can be analyzed with FlowJo or other commonly used software such as Cytobank, FlowCore, CATALYST etc., using linear scales for FSC-A, SSC-A and FCS-H, and biexponential scales for the other markers.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Use of the outlined cell thawing and counting protocol showed consistent cell recovery and viability values for the batch control leukopak PBMC sample over a period of 1 year composed of 42 batches (<a href="#fig10">Figure 10</a>).</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Batch control PBMC</div>
+<p>Viable cell count and viability (%) were consistent over one year Between May 2020 and May 2021, the batch control PBMC sample was run in 42 batches. The total cell count mean was 24,436,905 (SEM ± 238,032 or 1%) while the viability (%) mean was 88.2% (SEM ± 0.2%).</p>
+</figcaption>
+</figure>
+<p>For typical fragment analyzer traces showing expected intermediate gene expression cDNA library, final gene expression library and final hashtag oligo (HTO) library see <a href="#fig11">Figures 11</a>, <a href="#fig12">12</a>, and <a href="#fig13">13</a>.</p>
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Intermediate gene expression cDNA library</div>
+<p>A 1:10 dilution of the intermediate gene Expression library is run as a quality control step on Fragment Analyzer or Bioanalyzer. Above is an example of an expected trace from the Fragment Analyzer. LM and UM indicate a 35 bp Lower Marker reference and a 10,380 bp Upper Marker reference, respectively.</p>
+</figcaption>
+</figure>
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. Final gene expression library, ready for sequencing</div>
+<p>A 1:10 dilution of the final, sequencing ready gene expression library is analyzed to determine the average size of the library. Above is an example of an expected, 440–460bp, trace from the Fragment Analyzer. LM and UM indicate a 35 bp Lower Marker reference and a 10,380 bp Upper Marker reference, respectively.</p>
+</figcaption>
+</figure>
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. Final hashtag oligo (HTO) library, ready for sequencing</div>
+<p>A 1:10 dilution of the final HTO library is run on the Fragment Analyzer. Above is an example of an expected, 200-210 bp, trace from the Fragment Analyzer. This is the corresponding HTO library to both intermediate and final gene expression libraries shown above. LM and UM indicate a 35 bp Lower Marker reference and a 10,380 bp Upper Marker reference, respectively.</p>
+</figcaption>
+</figure>
+<p>The expected output of this protocol is high quality longitudinal flow cytometry data over multiple batches. With a starting input of one million cells, the typical recorded number of cells from the cytometer is ∼400,000 cells. Recording a high number of cells improves the counts and statistical significance of rare cell types (<a href="#fig14">Figures 14</a> and <a href="#fig15">15</a>).</p>
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Hierarchical Gating of 25 Marker immunophenotyping panel</div>
+<p>Example gating from the 25 marker immune survey panel demonstrated in this protocol. This panel provides protein expression for classifying markers and identifies over 30 different immune subsets including T cell, B cells, NK cells, dendritic cells, and monocytes. APCs = Antigen Presenting Cells, CM = Central Memory T cells, DC = Dendritic Cells, DN T = Double Negative T cells, DP T = Double Positive T cells, EM = Effector Memory T cells, gd T = Gamma Delta T cells, NK = Natural Killer, TEMRA = T Effector Memory cells Re-expressing CD45RA, Treg = Regulatory T cells.</p>
+</figcaption>
+</figure>
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. Longitudinal consistency across batches</div>
+<p>This protocol provides high quality flow cytometry data over time. The figures above show data from 10 batches spread out across 6 months of pipelines run. Gated events use the same gating strategy shown in <a href="#fig1">Figure 1</a>.</p>
+<p>(A) Cell proportions of major cell types from the bridging control sample in each batch.</p>
+<p>(B) Median fluorescence intensity (MFI) of the same major cell types across batches.</p>
+<p>(C) Bivariate plots of CD45+ cells expressing CD3 versus CD19, demonstrating visual consistency of data over time.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Flow cytometry data was gated manually with FlowJo 10.7 using the gating strategy shown in <a href="#fig14">Figure 14</a>, based on prior knowledge of flow cytometry gating for immune populations.</p>
+<p>Data analysis for the scRNA-seq and integration of data sets are not encompassed within this protocol but are described in <a href="#bib1">Savage et al. (2021)</a>, <a href="#bib3">Swanson et al. (2021)</a> and <a href="#bib4">Talla et al. (2021)</a>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol provides a method for generating high quality longitudinal flow cytometry data from fixed human PBMCs. This method may be adapted for other tissue types, but development is needed to ensure the same quality of data over time.</p>
+<p>This protocol has been optimized for scRNAseq data generation from human PBMC with cell viability greater than 70%.</p>
+<p>The number of samples for each pool is limited to the number of unique HTOs and HTO i7 indexes available.</p>
+<p>The number of samples per each pool is also limited by sequencing capacity on a NovaSeq S4 flowcell which is only able to sequence 12 GEX libraries and 12 corresponding HTO libraries at the appropriate depth.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Cellaca MX cell counter.</p>
+<p>Cells appear out of focus, or the Green Fluorescence signal FS1 is dull when viewing loaded cell counter plate (<a href="#sec3.2">cell count and normalization</a> step 6g), shown in <a href="#fig16">Figure 16</a>.</p>
+<figure id="fig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig16.jpg" alt="Fig16.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 16. If dark field focus or Fluorescence signal FS1 (Green Acridine Orange nuclear stain) are suboptimal, cell count values will be underestimated</div>
+</figcaption>
+</figure>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Stop the preview and select Auto-Focus. Preview BR1 and FL1 again to confirm the cells are in focus. If necessary, adjust the focus further using the fine and coarse focus adjustments.</p>
+<div class="note">
+<span class="note-title">Note:</span> The focus can only be adjusted when the preview has been stopped. A new preview must be done each time the focus is adjusted.</div>
+<h3 id="sec7.3">Problem 2</h3>
+<p>scRNA-seq low cell viability.</p>
+<p>If a sample’s cell viability is too low (usually below 50%) when reviewing cell viability results (<a href="#sec3.3">cell hashing, gem generation, and reverse transcription</a> step 11b) it is recommended not including that sample in the pool for GEM generation. Adjust the pooling calculation for the batch control accordingly. Dropping a sample with low viability ensures the correct number of cells are loaded per sample and maintaining high quality single-cell data.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>If a second aliquot of this sample is available, thaw, count and replace. If this sample also has low viability, consider sequencing this sample separately through standard 10X 3′ scRNA seq without cell hashing.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>scRNA-seq low HTO product, high TSO product.</p>
+<p>It can be difficult to separate the amplified HTO libraries from excess TSO if the product concentration is low when reviewing library concentration (<a href="#sec3.6">library QC and sequencing</a> step 18b).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>If an HTO library shows low amplified product and high TSO product, an additional amplification can be run with illumina P7 and P5 adapter primers at a final concentration of 0.1 μM with 3–5 cycles of amplification.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>High dimensional flow cytometry, poor quality fluorescence data.</p>
+<p>Suboptimal resuspension of cell pellets in the antibody mastermix may lead to streaking of fluorescent signals observed when reviewing acquired flow cytometry data (high dimensional flow cytometry step 27f), shown in <a href="#fig17">Figure 17</a>.</p>
+<figure id="fig17"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig17.jpg" alt="Fig17.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 17. Effect of poor mixing during antibody staining on CD3 and CD45 signals in fixed PBMCs</div>
+<p>Some samples are more affected than others.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.8">Potential solution</h3>
+<p>After centrifuging the PBMC samples, cell pellets will not break up completely without proper mixing. If pellets are not well dispersed, some cells are not fully stained, resulting in a signal that streaks towards zero on the axis. This mixing effect is related to how well each pellet is resuspended in the well, so it may appear to occur in random samples. Increasing the number of mixes in each step, particularly during the antibody staining step and using standard width pipette tips instead of Wide Bore tips, will help prevent this mixing effect from impacting data quality. The Integra mixing operation programs were optimized (Flow Cytometry Cell Staining steps 1–4) to ensure sample pellets were fully resuspended to avoid variable staining due to clumping.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>High dimensional flow cytometry presence of antibody aggregates.</p>
+<p>High signal artifacts appear above fully stained populations, sometimes appearing with new antibody lots, when reviewing acquired flow cytometry data (high-dimensional flow cytometry step 27f), shown in <a href="#fig18">Figure 18</a>, resolved in <a href="#fig19">Figure 19</a>. This issue is most likely to happen with BD Brilliant Ultra Violet (BUV) fluorophores.</p>
+<figure id="fig18"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig18.jpg" alt="Fig18.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 18. BUV805 CD11c staining across 6 batches over time</div>
+<p>After the first 3 batches, a new antibody lot was used that introduced high signal artifacts to the data.</p>
+</figcaption>
+</figure>
+<figure id="fig19"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1158-Fig19.jpg" alt="Fig19.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 19. Centrifuging antibody storage vials at 10000 <i>g</i> for 10 min prior to preparation of master mixes reduced antibody aggregate artifacts in Brilliant Ultra Violet fluorophores</div>
+</figcaption>
+</figure>
+<h3 id="sec7.10">Potential solution</h3>
+<p>High signal artifacts are typically from antibody aggregates in the storage vial. Spinning down the vials at 10,000 <i>g</i> for 10 min at 2°C–8°C before aliquoting from them can help prevent aggregates from staining the sample. The vials were originally centrifuged in a small table top centrifuge at 2,000 <i>g</i> for 30 s, but this was insufficient to remove aggregates whereas 10,000 <i>g</i> for 10 min removed most of the aggregates as reflected in samples stained with various Brilliant Ultra Violet (BUV) dyes (<a href="#fig19">Figure 19</a>). To ensure that antibody aggregates are minimized, this centrifugation step was included in Flow Cytometry Cell Staining step 22.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Savage, A.K., Gutschow, M.V., Chiang, T., Henderson, K., Green, R., Chaudhari, M., Swanson, E., Heubeck, A.T., Kondza, N., Burley, K.C., et al. (2021). Multimodal analysis for human ex vivo studies shows extensive molecular changes from delays in blood processing. iScience <i>24</i>, 102404. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102404">https://doi.org/10.1016/j.isci.2021.102404</a></p>
+<p id="bib2">Stoeckius, M., Zheng, S., Houck-Loomis, B., Hao, S., Yeung, B.Z., Mauck, W.M., Smibert, P., and Satija, R. (2018). Cell Hashing with barcoded antibodies enables multiplexing and doublet detection for single cell genomics. Genome Biol. <i>19</i>, 224. <a class="external-link" href="https://doi.org/10.1186/s13059-018-1603-1">https://doi.org/10.1186/s13059-018-1603-1</a></p>
+<p id="bib3">Swanson, E., Lord, C., Reading, J., Heubeck, A.T., Genge, P.C., Thomson, Z., Weiss, M.D.A., Li, X.J., Savage, A.K., Green, R.R., et al. (2021). Simultaneous trimodal single-cell measurement of transcripts, epitopes, and chromatin accessibility using TEA-seq. eLife <i>10</i>, e63632. <a class="external-link" href="https://doi.org/10.7554/eLife.63632">https://doi.org/10.7554/eLife.63632</a></p>
+<p id="bib4">Talla, A., Vasaikar, S.V., Lemos, M.P., Moodie, Z., Lee Pebworth, M.P., Henderson, K.E., Cohen, K.W., Czartoski, J.L., Lai, L., Suthar, M.S., et al. (2021). Longitudinal immune dynamics of mild COVID-19 define signatures of recovery and persistence. bioRxiv. . <a class="external-link" href="https://doi.org/10.1101/2021.05.26.442666">https://doi.org/10.1101/2021.05.26.442666</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Julian Reading (<a href="mailto:julian.reading@alleninstitute.org">julian.reading@alleninstitute.org</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The published article includes all data sets/code generated or analyzed during this study. Any additional information required to reanalyze the data reported in this paper is available from the lead contact upon request.</p>
+<h3>Acknowledgments</h3>
+<p>The protocol Graphical Abstract was created using <a href="http://BioRender.com">BioRender.com</a>. The authors thank Leila Shiraiwa and Ernie Coffey for operational support. We are grateful to the Allen Institute for Immunology for funding the development of this protocol. The authors also wish to thank the Allen Institute founder, Paul G. Allen, for his vision, encouragement, and support.</p>
+<h3>Author contributions</h3>
+<p>A.T.H., N.K., C.R.R., V.L.H., and J.R. optimized cell thaw, VIAFLO 96, and flow cytometry protocol. P.C.G., M.D.A.W., E.S., C.L., Z.T., and C.G.P. optimized scRNA-seq protocol. T.F.B. led the Allen Institute for Immunology. P.J.S. led the AIFI Molecular Biology group. T.R.T. led the AIFI Experimental Immunology group. J.R., N.K., P.C.G., M.D.A.W., C.R.R., and V.L.H. wrote and reviewed the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

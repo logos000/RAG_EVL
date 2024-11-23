@@ -1,0 +1,587 @@
+<article>
+<section>
+<h1 id="header">Computational workflow for functional characterization of COVID-19 through secondary data analysis</h1>
+<p><time datetime="2021-10-29">Published: October 29, 2021</time></p>
+<p>Sudhir Ghandikota,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> Mihika Sharma,<sup><a href="#aff1">1</a></sup> and Anil G. Jegga<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Division of Biomedical Informatics, Cincinnati Children’s Hospital Medical Center, Cincinnati, OH, USA</p>
+<p id="aff2"><sup>2</sup>Department of Computer Science, University of Cincinnati College of Engineering, Cincinnati, OH, USA</p>
+<p id="aff3"><sup>3</sup>Department of Pediatrics, University of Cincinnati College of Medicine, Cincinnati, OH, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:ghandisv@mail.uc.edu">ghandisv@mail.uc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:anil.jegga@cchmc.org">anil.jegga@cchmc.org</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100873">10.1016/j.xpro.2021.100873</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Standard transcriptomic analyses cannot fully capture the molecular mechanisms underlying disease pathophysiology and outcomes. We present a computational heterogeneous data integration and mining protocol that combines transcriptional signatures from multiple model systems, protein-protein interactions, single-cell RNA-seq markers, and phenotype-genotype associations to identify functional feature complexes. These feature modules represent a higher order multifeatured machines collectively working toward common pathophysiological goals. We apply this protocol for functional characterization of COVID-19, but it could be applied to many other diseases.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref22">Ghandikota et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Steps for meta-analysis of multiple transcriptomic studies and protein interactions</li>
+<li>Network analysis-based workflow to identify gene and functional modules</li>
+<li>Data-driven higher-order functional features provide a basis for characterizing disease</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1124-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Transcriptomic study selection</h3>
+<ol>
+<li>Transcriptomic studies associated with a given disease or phenotype need to be selected. At least two gene expression studies are required in our meta-analysis approach for identifying consensus DEGs.</li>
+<li>We used the NCBI Gene Expression Omnibus (GEO) repository (<a href="#bib3">Barrett et al., 2013</a>) (<a href="https://www.ncbi.nlm.nih.gov/geo/info/">https://www.ncbi.nlm.nih.gov/geo/info/</a>). Conversely, other public repositories such as the ArrayExpress (<a href="#bib2">Athar et al., 2019</a>) can be used in this step.</li>
+<li>In the SARS-CoV-2 case study, we used transcriptomic data from two <i>in vitro</i> (Calu-3 and Vero E6 cells) models and one <i>in vivo</i> (Ad5-hACE2-sensitized mice) model of SARS-CoV-2 infection. The Calu-3 model (GSE147507) (<a href="#bib5">Blanco-Melo et al., 2020</a>) is based on six samples with three each of SARS-CoV-2 infected or mock treated samples. The second <i>in vitro</i> model is based on mRNA profiles of 24h post-SARS-CoV-2-infection (USA-WA1/2020, multiplicity of infection = 0.3) in Vero E6 cells (kidney epithelial cells extracted from an African green monkey (GEO: GSE153940)) (<a href="#bib49">Riva et al., 2020</a>). The third transcriptomic dataset is from a mouse model of Ad5-hACE2-sensitized mice (GSE150847) (<a href="#bib55">Sun et al., 2020</a>) that develop pneumonia after infection with SARS-CoV-2.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> An optional step is to use disease-specific protein-protein interaction (PPI) data. In our SARS-CoV-2 protocol, we used the SARS-CoV-2-human virus-host interactome data (<a href="#bib24">Gordon et al., 2020</a>), consisting of 332 proteins, to construct an integrated virus-host interactome.</div>
+<h3 id="sec1.2">Human lung cell markers and genome-wide associations</h3>
+<ol start="4">
+<li>Besides the transcriptomic signature and the optional PPI data, our meta-analysis approach also uses several non-disease data elements that can be considered based on the type of disease/phenotype investigated.</li>
+<li>In this protocol, for characterizing SARS-CoV-2 infection, we use single-cell RNA-seq (scRNA-seq) markers from three human lung studies (<a href="#bib1">Adams et al., 2020</a>; <a href="#bib25">Habermann et al., 2020</a>; <a href="#bib57">Travaglini et al., 2020</a>) and genome-wide association study (GWAS) data from both PheGenI (<a href="#bib45">Ramos et al., 2014</a>) and GWAS Catalog (<a href="#bib10">Buniello et al., 2019</a>).</li>
+<li>In case of lung single cell markers, only significant gene markers (FDR p-value ≤ 0.05; logFC ≥ 0.5) are used for enrichment analysis. On the other hand, GWA trait associations are limited to vulnerability loci with an association p-value ≤10<sup>-5</sup>.</li>
+</ol>
+<h3 id="sec1.3">Sample processing</h3>
+<ol start="7">
+<li>After selecting the relevant gene expression data sets, raw data needs to be downloaded and processed to generate raw counts and normalized transcript per million (TPM) for all samples. Our SARS-CoV-2 protocol used the CSBB-v3.0 toolkit for both sample processing and DE analysis as shown below:</li>
+</ol>
+<div class="textbox">
+<p><code>perl CSBB-v3.0_MacOS.pl (or) CSBB-v3.0_Linux.pl ProcessPublicData</code></p>
+<p><code>    Path_to_SRA-DATA_Table</code></p>
+<p><code>    Path_to_Folder_to_write_results</code></p>
+</div>
+<ol start="8">
+<li>Instructions for installing the toolkit are available on the project GitHub page at <a href="https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists">https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists</a>. The .sra files associated with each individual sample are downloaded using the Prefetch utility of the NCBI SRA Toolkit (<a href="https://github.com/ncbi/sra-tools">https://github.com/ncbi/sra-tools</a>). To download all the samples simultaneously, an SRA data table is required and can be created based on the format shown here <a href="https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists/blob/master/Test_Files/SRA_DATA_TABLE.txt">https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists/blob/master/Test_Files/SRA_DATA_TABLE.txt</a>.</li>
+<li>Next, the .sra files are converted to FASTQ format using fastq-dump utility of the SRA toolkit. The final step involves mapping to a transcriptome assembly of interest using bowtie2 (<a href="#bib31">Langmead and Salzberg, 2012</a>) and quantifying the mapped reads using the RSEM package (<a href="#bib32">Li and Dewey, 2011</a>). Alternatively, other methods like kallisto (Pseudo-aligner) (<a href="#bib7">Bray et al., 2016</a>) and Salmon ( Pseudo-aligner) (<a href="#bib43">Patro et al., 2017</a>) can be used for quantifying transcript abundance. Similarly, for the transcript mapping step, other aligner softwares such as STAR (<a href="#bib15">Dobin et al., 2013</a>) can be used.</li>
+<li>In this protocol, we implemented the above sample processing steps to generate raw sample counts in human Calu-3 model (GSE147507). For the other two studies, we downloaded the raw counts provided by the authors in the respective GEO repositories. The following path in our protocol GitHub repository <a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/Count%20Data">https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/Count%20Data</a> contains the raw counts from all the three studies. These raw counts can then directly be used in the DE analysis step (explained below).</li>
+</ol>
+<h3 id="sec1.4">Differential expression analysis</h3>
+<ol start="11">
+<li>The final pre-processing step involves performing differential expression (DE) analysis, individually in each of the transcriptomic datasets. The following script can used in this step:
+<div class="textbox">
+<p><code>perl CSBB-v3.0_MacOS.pl (or) CSBB-v3.0_Linux.pl</code></p>
+<p><code>    DifferentialExpression</code></p>
+<p><code>    Path_To_Counts_File No_of_Control_Samples</code></p>
+<p><code>    No_of_Treatment_Samples</code></p>
+<p><code>    Counts_Threshold_Filtering No_of_samples_to_filter_per_Gene</code></p>
+<p><code>    Normalization_Type</code></p>
+</div>
+Command-line parameters accepted for the DE module are:
+<ol type="a">
+<li>Path_To_Counts_File: Raw counts file from the previous step.</li>
+<li>No_of_Control_Samples and No_of_Treatment_Samples: Number of controls and treatment samples respectively.</li>
+<li>Counts_Threshold_Filtering: Minimum raw count threshold (for filtering samples).</li>
+<li>No_of_samples_to_filter_per_Gene: Minimum number of samples in which a gene must be expressed (for filtering genes). In our SARS-CoV-2-specific implementations, we have set Counts_Threshold = 10 and No_of_samples = 3.</li>
+<li>Normalization_Type: Type of normalization (“UpperQuantile” or “UpperQuantile+Empirical”).</li>
+<li>Further descriptions about these parameters can be found at <a href="https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists">https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists</a>.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Prior to DE analysis, upper-quartile normalization (<a href="#bib9">Bullard et al., 2010</a>) is applied on the raw RNA-seq counts by using EDASeq (<a href="#bib46">Risso et al., 2011</a>) R package (<a href="http://bioconductor.org/packages/release/bioc/html/EDASeq.html">http://bioconductor.org/packages/release/bioc/html/EDASeq.html</a>) and any unwanted variation from the raw data is removed using RUVSeq (<a href="#bib47">Risso et al., 2014</a>) package (<a href="https://bioconductor.org/packages/release/bioc/html/RUVSeq.html">https://bioconductor.org/packages/release/bioc/html/RUVSeq.html</a> ).</li>
+<li>Then, edgeR (<a href="#bib50">Robinson et al., 2010</a>) package is used to obtain DE transcripts using generalized linear models. Alternatively, other packages such as DESeq2 1.30.1 (<a href="#bib34">Love et al., 2014</a>) or limma 3.46.0 (<a href="#bib48">Ritchie et al., 2015</a>) can also be used to normalize the raw counts and perform the DE analysis. The final script used in our SARS-CoV-2 protocol is given below:</li>
+</ol>
+<div class="textbox">
+<p><code>perl CSBB-v3.0_MacOS.pl DifferentialExpression</code></p>
+<p><code>    /Path_to_Local_Git/input_data/Count Data/GSE147507/Series7.txt</code></p>
+<p><code>    3 3 10 3 UpperQuantile</code></p>
+</div>
+<ol start="14">
+<li>The results from DE analysis module are written to a “temporaryfile.txt” file (tab-delimited) where the statistical p-values are adjusted for multiple-testing using the Benjamini-Hochberg procedure.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Human - Calu-3 cell lines</td>
+<td>(<a href="#bib5">Blanco-Melo et al., 2020</a>)</td>
+<td>GEO: GSE147507</td>
+</tr>
+<tr>
+<td>African green monkey - Vero E6 cells</td>
+<td>(<a href="#bib49">Riva et al., 2020</a>)</td>
+<td>GEO: GSE153940</td>
+</tr>
+<tr>
+<td>Ad5-hACE2-sensitized mice</td>
+<td>(<a href="#bib55">Sun et al., 2020</a>)</td>
+<td>GEO: GSE150847</td>
+</tr>
+<tr>
+<td>SARS-CoV-2-human virus-host PPI data</td>
+<td>(<a href="#bib24">Gordon et al., 2020</a>)</td>
+<td> </td>
+</tr>
+<tr>
+<td>Human PPIs (STRING v11)</td>
+<td>(<a href="#bib56">Szklarczyk et al., 2019</a>)</td>
+<td><a href="https://string-db.org/">https://string-db.org/</a></td>
+</tr>
+<tr>
+<td>Human lung scRNA-seq markers</td>
+<td>(<a href="#bib25">Habermann et al., 2020</a>)(<a href="#bib1">Adams et al., 2020</a>)(<a href="#bib57">Travaglini et al., 2020</a>)</td>
+<td>GEO: GSE135893GEO: GSE136831<a href="https://www.synapse.org/">https://www.synapse.org/#!Synapse:syn21041850/</a>
+</td>
+</tr>
+<tr>
+<td>Human genome-wide phenotype associations (<i>PheGen</i>I)</td>
+<td>(<a href="#bib45">Ramos et al., 2014</a>)</td>
+<td><a href="https://www.ncbi.nlm.nih.gov/gap/phegeni">https://www.ncbi.nlm.nih.gov/gap/phegeni</a></td>
+</tr>
+<tr>
+<td>Human genome-wide phenotype associations (<i>GWAS Catalog</i>)</td>
+<td>(<a href="#bib10">Buniello et al., 2019</a>)</td>
+<td><a href="https://www.ebi.ac.uk/gwas/docs/file-downloads">https://www.ebi.ac.uk/gwas/docs/file-downloads</a></td>
+</tr>
+<tr>
+<td>Experimental factor ontology (EFO)</td>
+<td>(<a href="#bib36">Malone et al., 2010</a>)</td>
+<td><a href="https://www.ebi.ac.uk/efo/efo.obo">https://www.ebi.ac.uk/efo/efo.obo</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Proposed method</td>
+<td>(<a href="#bib22">Ghandikota et al., 2021</a>)</td>
+<td><a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis">https://github.com/SudhirGhandikota/COVID19_secondary_analysis</a></td>
+</tr>
+<tr>
+<td>CSBB-v3.0</td>
+<td>N/A</td>
+<td><a href="https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists">https://github.com/praneet1988/Computational-Suite-For-Bioinformaticians-and-Biologists</a></td>
+</tr>
+<tr>
+<td>R (4.0.3)</td>
+<td>(<a href="#bib44">R Core Team, 2020</a>)</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>optparse (1.6.6)</td>
+<td>(<a href="#bib14">Davis, 2020</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/optparse/index.html">https://cran.r-project.org/web/packages/optparse/index.html</a></td>
+</tr>
+<tr>
+<td>BiocManager (1.30.10)</td>
+<td>(<a href="#bib38">Morgan, 2019</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/BiocManager/index.html">https://cran.r-project.org/web/packages/BiocManager/index.html</a></td>
+</tr>
+<tr>
+<td>biomaRt (2.46.3)</td>
+<td>(<a href="#bib16">Durinck et al., 2009</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/biomaRt.html">https://bioconductor.org/packages/release/bioc/html/biomaRt.html</a></td>
+</tr>
+<tr>
+<td>dplyr (1.0.6)</td>
+<td>(<a href="#bib64">Wickham et al., 2021</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/dplyr/index.html">https://cran.r-project.org/web/packages/dplyr/index.html</a></td>
+</tr>
+<tr>
+<td>curl (4.3)</td>
+<td>(<a href="#bib41">Ooms, 2019</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/curl/index.html">https://cran.r-project.org/web/packages/curl/index.html</a></td>
+</tr>
+<tr>
+<td>httr (1.4.2)</td>
+<td>(<a href="#bib62">Wickham, 2020</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/httr/index.html">https://cran.r-project.org/web/packages/httr/index.html</a></td>
+</tr>
+<tr>
+<td>EDASeq (2.24.0)</td>
+<td>(<a href="#bib46">Risso et al., 2011</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/EDASeq.html">https://bioconductor.org/packages/release/bioc/html/EDASeq.html</a></td>
+</tr>
+<tr>
+<td>edgeR (3.32.0)</td>
+<td>(<a href="#bib50">Robinson et al., 2010</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">https://bioconductor.org/packages/release/bioc/html/edgeR.html</a></td>
+</tr>
+<tr>
+<td>RUVSeq (1.24.0)</td>
+<td>(<a href="#bib47">Risso et al., 2014</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/RUVSeq.html">https://bioconductor.org/packages/release/bioc/html/RUVSeq.html</a></td>
+</tr>
+<tr>
+<td>withr (2.3.0)</td>
+<td>(<a href="#bib27">Hester et al., 2020</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/withr/index.html">https://cran.r-project.org/web/packages/withr/index.html</a></td>
+</tr>
+<tr>
+<td>devtools (2.3.2)</td>
+<td>(<a href="#bib63">Wickham et al., 2020</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/devtools/index.html">https://cran.r-project.org/web/packages/devtools/index.html</a></td>
+</tr>
+<tr>
+<td>igraph (1.2.6)</td>
+<td>(<a href="#bib13">Csardi and Nepusz, 2006</a>)</td>
+<td><a href="https://igraph.org/r/">https://igraph.org/r/</a></td>
+</tr>
+<tr>
+<td>MCL (1.0)</td>
+<td>(<a href="#bib28">Jäger, 2015</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/MCL/">https://cran.r-project.org/web/packages/MCL/</a></td>
+</tr>
+<tr>
+<td>jsonlite (1.7.2)</td>
+<td>(<a href="#bib40">Ooms, 2014</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/jsonlite/index.html">https://cran.r-project.org/web/packages/jsonlite/index.html</a></td>
+</tr>
+<tr>
+<td>doParallel (1.0.16)</td>
+<td>(<a href="#bib60">Weston, 2020</a>)</td>
+<td><a href="https://cran.r-project.org/web/packages/doParallel/index.html">https://cran.r-project.org/web/packages/doParallel/index.html</a></td>
+</tr>
+<tr>
+<td>stringi (1.5.3)</td>
+<td>(<a href="#bib20">Gagolewski, 2020</a>)</td>
+<td><a href="http://www.gagolewski.com/software/stringi/">http://www.gagolewski.com/software/stringi/</a></td>
+</tr>
+<tr>
+<td>Python (3.6.10)</td>
+<td>(<a href="#bib51">van Rossum and Fred, 2009</a>)</td>
+<td><a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></td>
+</tr>
+<tr>
+<td>NumPy</td>
+<td>(<a href="#bib26">Harris et al., 2020</a>)</td>
+<td><a href="https://numpy.org/doc/stable/index.html">https://numpy.org/doc/stable/index.html</a></td>
+</tr>
+<tr>
+<td>SciPy (1.4.1)</td>
+<td>(<a href="#bib58">Virtanen et al., 2020</a>)</td>
+<td><a href="https://www.scipy.org/">https://www.scipy.org/</a></td>
+</tr>
+<tr>
+<td>Cytoscape visualization tool 3.8.0</td>
+<td>(<a href="#bib53">Shannon et al., 2003</a>)</td>
+<td><a href="https://cytoscape.org/index.html">https://cytoscape.org/index.html</a></td>
+</tr>
+<tr>
+<td>clusterMaker2 plugin</td>
+<td>(<a href="#bib39">Morris et al., 2011</a>)</td>
+<td><a href="http://www.cgl.ucsf.edu/cytoscape/clusterMaker2/clusterMaker2.shtml">http://www.cgl.ucsf.edu/cytoscape/clusterMaker2/clusterMaker2.shtml</a></td>
+</tr>
+<tr>
+<td>Gephi visualization tool (0.9.2)</td>
+<td>(<a href="#bib4">Bastian et al., 2009</a>)</td>
+<td><a href="https://gephi.org/">https://gephi.org</a></td>
+</tr>
+<tr>
+<td>Enrichment analysis tool (ToppGene Suite)</td>
+<td>(<a href="#bib11">Chen et al., 2009</a>)</td>
+<td><a href="https://toppgene.cchmc.org/">https://toppgene.cchmc.org/</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Step 1: Obtain a consensus signature</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼5 min</div>
+<p>In this step, a consensus transcriptomic signature will be obtained by combining DEGs from each individual study. <a href="#fig1">Figure 1</a> shows the overall workflow of DE analysis and consensus signature identification steps.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1124-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Differential expression analysis and generating a consensus transcriptomic signature</div>
+<p>First, raw transcriptomic data associated with each sample from the input studies are downloaded and processed to obtain raw transcript counts. These raw counts are then used in the differential expression step to identify the DEGs, independently within each input study. Finally, a consensus gene signature is generated from the individual gene sets (up- or down-regulated in at least 2 studies).</p>
+</figcaption>
+</figure>
+<ol>
+<li>Using the individual DEG sets (see <a href="#before-you-begin">before you begin</a>), the following R script can be used to filter and obtain the consensus signature:
+<div class="textbox">
+<p><code>Rscript GetConsensus.R</code></p>
+<p><code>  -–files “DE_results1.txt,DE_results2.txt”</code></p>
+<p><code>  --org_assemblies GRCh38.p13,GRCm39</code></p>
+<p><code>  --logFC 0.6 --pvalue 0.05 --k 2 --outpath 'outdir/’</code></p>
+</div>
+The available command-line options include:
+<ol type="a">
+<li>--files: comma-separated list of result files from the differential expression analysis (see <a href="#before-you-begin">before you begin</a>), one for each study.</li>
+<li>--org_assemblies <i>(optional)</i>: comma-separated list of Ensembl assembly IDs, one for each study. Used to identify and map the human ortholog gene symbols for studies with non-human samples. Supported assembly IDs can be found at: <a href="https://uswest.ensembl.org/info/about/species.html">https://uswest.ensembl.org/info/about/species.html</a>. If not provided, all gene symbols are assumed to belong to the same organism.</li>
+<li>--logFC: log<sub>2</sub>fc threshold value for filtering significant DEGs (default value = 0.6)</li>
+<li>--pvalue: P-value (FDR corrected) threshold (default value = 0.05)</li>
+<li>--k: DEGs in k or more studies to be part of the consensus signature (default value = 2)</li>
+<li>--outpath: Path to the output directory where the consensus DEGs are written to.</li>
+</ol>
+</li>
+</ol>
+<p>The final conserved signature is saved in two separate files (upregulated and downregulated).</p>
+<ol start="2">
+<li>Firstly, filter the significant DEGs in each individual study by applying a fold change and a p-value threshold. By default, a 1.5-fold change threshold (i.e., log<sub>2</sub>FC ≥ 0.6 or log<sub>2</sub>FC ≤ −0.6) and a p-value (FDR) threshold of &lt;0.05 is applied. Users are free to choose a different threshold value of their choice.</li>
+<li>For studies involving other organisms, the corresponding human orthologs of the filtered DEGs are obtained using the biomaRt (2.46.3) R package (<a href="#bib16">Durinck et al., 2009</a>). Conversely, they can also be downloaded manually from NCBI Homologene (<a href="https://www.ncbi.nlm.nih.gov/homologene">https://www.ncbi.nlm.nih.gov/homologene</a>) database.</li>
+<li>Next, identify consensus transcriptomic signature containing genes that are up- or down-regulated in two or more studies. Alternatively, there are several well-established meta-analysis techniques that can be used for combining data from independent studies. Fisher’s method (combined probability test) (<a href="#bib19">Fisher, 1925</a>) can be used to combine k independent statistical tests and their associated p-values to obtain one combined p-value. Similarly, Stouffer’s method and its variants (<a href="#bib54">Stouffer et al., 1949</a>; <a href="#bib33">Lipták, 1958</a>; <a href="#bib61">Whitlock, 2005</a>; <a href="#bib66">Zaykin, 2011</a>) use the inverse normal distribution to obtain a combined p-value while allowing different weights for the individual tests. But, due to the low sample counts involved in our SARS-CoV-2 specific studies, we use the above criteria for identifying the consensus DEGs.</li>
+<li>Input files required to identify and reproduce the consensus signature in SARS-CoV-2 can be found in the protocol GitHub repository at <a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data">COVID19_secondary_analysis/input_data/</a>. From the three SARS-CoV-2 infection models (two <i>in vitro</i> and one <i>in vivo</i>), we observed a total of 1,467 genes (833 upregulated and 634 downregulated) that are differentially expressed in the same direction in two or more models.</li>
+</ol>
+<h3 id="sec2.2">Step 2: Building consensus interactome and identifying protein modules</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼5–10 min</div>
+<p>In this step a consensus interactome will be built and analyzed to identify candidate protein modules. <a href="#fig2">Figure 2</a> indicates the different steps involved in building the integrated interactome and protein module detection.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1124-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Network clustering of consensus DEG-PPI interactome to identify modules of perturbed genes</div>
+<p>The consensus transcriptomic signature is combined with curated human protein-protein interactions to build an integrated interactome. Markov clustering (MCL) is then applied on this combined interactome to identify gene/protein modules of potentially perturbed genes.</p>
+</figcaption>
+</figure>
+<ol start="6">
+<li>The consensus transcriptomic signature from <a href="#sec2.1">step 1</a> is used for building a consensus interactome of DEGs. In our SARS-CoV-2 experiments, we combine the consensus transcriptomic signature with SARS-CoV-2-proteome interacting human proteins (<a href="#bib24">Gordon et al., 2020</a>) to build a combined gene set.</li>
+<li>Next, significant human PPIs (<a href="#bib56">Szklarczyk et al., 2019</a>) from within the combined gene set are identified to build an integrated DEG-PPI network. While there are other curated PPI resources like BioGRID (4.4.199) (<a href="#bib42">Oughtred et al., 2021</a>), HuRI (<a href="#bib35">Luck et al., 2020</a>) and PINA v1.0 (<a href="#bib65">Wu et al., 2009</a>) available in the literature, we used STRING (v11) because of its extensive coverage and the ability to filter the interactions based on the source information (experimental, text-mining etc.,)
+<ol type="a">
+<li>This can be achieved by manually uploading the list of proteins to <a href="https://string-db.org/">https://string-db.org/</a> and exporting all the PPIs using the <i>Exports</i> option (TSV) from the result screen. The resultant output file contains all edges among the uploaded proteins.</li>
+<li>However, the web-interface is not designed to handle more than 2000 proteins as input, in which case it is better to download the full PPI data and filter the interactions manually. We provide a script (described below) as part of this protocol which takes in the full set of PPIs and applies a filtering criterion of choice.</li>
+<li>The STRING-based human PPI network data is known to suffer from noise and incompleteness. To overcome these issues, only likely interactions (true positives) are used in this protocol by filtering the edges based on combined_score ≥ 0.9 (column 13) or experimental_score ≥ 0.7 (column 10). Users can select a different threshold to filter the final set of interactions.</li>
+<li>Our GitHub repository includes a filtered set of PPIs (<a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/other%20data/filtered_PPI.txt">https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/other%20data/filtered_PPI.txt</a>) from STRING (v11) that we used in our SARS-CoV-2-specific analysis.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Eventually, network modules from this joint interactome are identified using the Markov clustering (MCL) algorithm (<a href="#bib18">Enright et al., 2002</a>).
+<ol type="a">
+<li>To do this, import the filtered interactome into the Cytoscape (<a href="#bib53">Shannon et al., 2003</a>) visualization tool (3.8.0) and analyze it using MCL algorithm in the clusterMaker2 (<a href="#bib39">Morris et al., 2011</a>) plugin. MCL works by simulating multiple random walks within the input network combined with alternative steps of inflation and expansion (<a href="#bib52">Saelens et al., 2018</a>).</li>
+<li>The inflation factor parameter of the MCL algorithm (<a href="https://micans.org/mcl/man/mcl.html">https://micans.org/mcl/man/mcl.html</a>) determines the tightness of the identified clusters. Increasing its value leads to higher granularity (smaller clusters) and vice-versa. The default inflation value of 2.5 is used in this protocol. Results from clustering analysis, including the membership information, can be downloaded directly from the Cytoscape tool.</li>
+<li>Optionally, we also provide an R Script which implements the MCL analysis step using the following syntax:
+<div class="textbox">
+<p><code>Rscript MCL_Clustering.R</code></p>
+<p><code>  --deg_file ‘../input_data/SARS-CoV2_DEGS/DEGs+PPI.txt’</code></p>
+<p><code>  --PPI_file ‘../input_data/other\ data/filtered_PPI.txt’</code></p>
+<p><code>  --filter 'combined_score &gt;= 900'</code></p>
+<p><code>  --inflation_value 2.5 --max_iter 100</code></p>
+<p><code>  --outpath ‘../input_data/other\ data/’</code></p>
+</div>
+The command-line parameters to the script include:
+<ol type="i">
+<li>--deg_file: A file containing the consensus DEGs and the virus-host interactome, if used (one gene per each line).</li>
+<li>--PPI_file: (Optional) A tab-delimited file containing the set of human PPIs. The latest version of STRING human PPIs can be downloaded from the following link <a href="https://string-db.org/cgi/download?species_text=Homo+sapiens">https://string-db.org/cgi/download?species_text=Homo+sapiens</a>. Conversely, interactions from other sources such as HuRI or BioGRID can also be provided (minus the --filter parameter). By default, the script uses the filtered STRING PPIs used in the protocol, which could be found at <a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/other%20data">https://github.com/SudhirGhandikota/COVID19_secondary_analysis/tree/main/input_data/other%20data</a> on the project GitHub page.</li>
+<li>--filter: A condition to filter the PPI links (STRING only) prior to running the clustering algorithm. In our protocol, we only retained the edges with a <i>combined_score ≥ 0.9</i> or <i>experimental_score ≥ 0.7.</i>
+</li>
+<li>--inflation_value: Inflation parameter in MCL algorithm. It determines granularity of the identified clusters. High inflation values would result in increased granularity (smaller clusters) and vice-versa (default value = 2.5).</li>
+<li>--max_iter: Maximum number of iterations for the MCL algorithm (default value = 100).</li>
+<li>--outpath: Path to the output directory where the file containing the final MCL cluster memberships are written to.</li>
+</ol>
+</li>
+<li>While there are several other clustering algorithms to choose from, MCL is ideal for identifying dense gene modules (<a href="#bib23">Ghiassian et al., 2015</a>) with more intramodular (within the same module) interactions than intermodular (other modules). These modules have been found to reveal the functional effects from within the gene expression networks (<a href="#bib52">Saelens et al., 2018</a>). Additionally, for unweighted PPI networks, the MCL procedure has been found to be robust and tolerant to any input noise (<a href="#bib59">Vlasblom and Wodak, 2009</a>; <a href="#bib8">Brohee and van Helden, 2006</a>).</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.3">Step 3: Identify high-level feature complexes by constructing an enriched feature network</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 35–40 min</div>
+<p>As a precursor to this step, candidate modules from <a href="#sec2.2">step 2</a> are filtered based on the number of genes within them and functional enrichment analyses is conducted to identify the enriched cell types, phenotypic traits, and functional terms. Using a selection criterion of &gt;= 5 genes, a total of 35 candidate modules were identified from the integrated SARS-CoV-2 interactome map. The overall workflow of this step can be seen in <a href="#fig3">Figure 3</a>.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1124-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Joint analysis of enriched annotations from candidate gene modules to obtain feature complexes</div>
+<p>Candidate gene modules (&gt;= 5 genes) are first tested for enrichments of functional features (biological processes and pathways), scRNA-seq markers and phenotype associations (from GWAS Catalog and PheGenI). An enriched feature network is then constructed using the enriched terms among all the candidate modules. Finally, a community detection methodology (Louvain method) is applied to identify functional complexes of enriched features.</p>
+</figcaption>
+</figure>
+<ol start="9">
+<li>Compute functional enrichments of Gene Ontology-Biological processes, Reactome pathways and mouse phenotypes among the candidate gene modules coming out of the MCL algorithm. We used ToppCluster application (<a href="#bib30">Kaimal et al., 2010</a>) (<a href="https://toppcluster.cchmc.org/upload.jsp">https://toppcluster.cchmc.org</a>) of the ToppGene suite (<a href="#bib11">Chen et al., 2009</a>) in this protocol to compute the enrichments within each cluster.</li>
+<li>Top enriched terms from each category (for each module) are used towards building the feature network. While there are several enrichment analyses tools available (<a href="#bib12">Chen et al., 2013</a>; <a href="#bib17">Eden et al., 2009</a>; <a href="#bib21">Ghandikota et al., 2018</a>; <a href="#bib29">Jiao et al., 2012</a>; <a href="#bib37">Mi et al., 2018</a>), ToppCluster allows us to simultaneously identify enriched terms from multiple gene lists representing the different clusters. Similarly, Metascape (<a href="#bib67">Zhou et al., 2019</a>) is another useful tool that can be used to analyze multiple clusters and generate functional feature complexes from them. Further, researchers can select different sets of annotation categories and functional terms depending on the research questions.</li>
+</ol>
+<ol start="11">
+<li>Next, evaluate the modules for enrichments of single-cell marker gene lists. For filtered SARS-CoV-2 gene modules we computed enrichment analysis against three different lung scRNA-seq studies (<a href="#bib1">Adams et al., 2020</a>; <a href="#bib25">Habermann et al., 2020</a>; <a href="#bib57">Travaglini et al., 2020</a>). Using marker gene lists published in each of these studies, we identified all the enriched cell types (FDR p-value ≤ 0.05) within each candidate module. The RScript <b><i>Marker_enrichments.R</i></b>, present in the project GitHub page, can be used to perform the cell-type marker enrichments with the syntax shown below:
+<div class="textbox">
+<p><code>Rscript Marker_enrichments.R</code></p>
+<p><code>  --marker_file ../input_data/Lung_Markers/lung_markers_test.txt</code></p>
+<p><code>  --p_value 0.05 --logFC 0.5</code></p>
+<p><code>  --cluster_file ../input_data/SARS-CoV-2-Cons_MCL_Clusters.txt</code></p>
+<p><code>  --outpath outdir</code></p>
+</div>
+<ol type="a">
+<li>--marker_file: Text file containing the cell type marker genes. This file should contain 4 mandatory columns corresponding to the cell type (“cell”), gene marker (“gene”), fold change (“logFC”) and the adjusted p-value (“pval_adj”).</li>
+<li>--p_value and --logFC: The p-value (multiple-testing adjusted) and fold change thresholds to filter the marker genes.</li>
+<li>--cluster_file:A two column, tab-delimited file containing genes (column 1) and their corresponding MCL cluster memberships (column 2)</li>
+<li>--min_genes: Minimum number of genes needed to be in a candidate cluster (default value = 5).</li>
+<li>--outpath: Path to the output directory where the marker enrichment results need to be stored.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Thereafter, test the filtered gene modules for enrichments of phenotypic traits using compiled genotype-phenotype associations from the NCBI PheGenI (<a href="#bib45">Ramos et al., 2014</a>) and the NHGRI-EBI GWAS Catalog (<a href="#bib10">Buniello et al., 2019</a>) databases.
+<ol type="a">
+<li>In case of GWAS Catalog associations, child terms for each trait are parsed from the experimental factor ontology (EFO) hierarchy (<a href="#bib36">Malone et al., 2010</a>) and used in the enrichment step while the PheGenI traits are used as it is.</li>
+<li>We provide a python script <b><i>GWAS_enrichments.py</i></b> which first parses the EFO tree to obtain the child terms for each GWAS Catalog trait and then computes their enrichments among the SARS-CoV-2-specific candidate modules.
+<div class="textbox">
+<p><code>python GWAS_enrichments.py</code></p>
+<p><code>--obo_file ../input_data/other\ data/efo.obo.txt</code></p>
+<p><code>--cluster_file ../input_data/SARS-CoV-2-Cons_MCL_Clusters.txt</code></p>
+<p><code>--assoc_file ../input_data/other\ data/gwas_catalog_v1.0.2-</code></p>
+<p><code>associations_e100_r2020-07-14.tsv --outpath outdir</code></p>
+</div>
+The EFO open biomedical ontology (OBO) file (<a href="https://www.ebi.ac.uk/efo/efo.obo">https://www.ebi.ac.uk/efo/efo.obo</a>) and a tab separated file containing the GWAS Catalog associations (<a href="https://www.ebi.ac.uk/gwas/docs/file-downloads">https://www.ebi.ac.uk/gwas/docs/file-downloads</a>) used in our work are also included in the GitHub repository.</li>
+<li>Similarly, we also include an R Script <b><i>PheGenI_enrichments.R</i></b> to compute enrichments among the PheGenI traits using the below syntax:
+<div class="textbox">
+<p><code>Rscript PheGenI_enrichments.R</code></p>
+<p><code>--assoc_file ../input_data/other\data/PheGenI_Associations.txt</code></p>
+<p><code>--cluster_file ../input_data/SARS-CoV-2-Cons_MCL_Clusters.txt</code></p>
+<p><code>--remove_intergenic --p_value 0.00001 --outpath outdir</code></p>
+</div>
+</li>
+<li>Both these scripts support the following set of command-line parameters:
+<ol type="i">
+<li>--obo_file (for GWAS script only): Path to the EFO OBO file (.txt) which can be found at <a href="https://www.ebi.ac.uk/efo/efo.obo">https://www.ebi.ac.uk/efo/efo.obo</a>.</li>
+<li>--assoc_file: A Tab-delimited file containing phenotype-genotype associations from NCBI PheGenI (<a href="https://www.ncbi.nlm.nih.gov/gap/phegeni">https://www.ncbi.nlm.nih.gov/gap/phegeni</a>) or GWAS Catalog associations (<a href="https://www.ebi.ac.uk/gwas/docs/file-downloads">https://www.ebi.ac.uk/gwas/docs/file-downloads</a>).</li>
+<li>--cluster_file: A two column, tab-delimited file containing genes (column 1) and their corresponding MCL cluster memberships (column 2).</li>
+<li>--min_genes: Minimum number of genes needed to be in a candidate cluster (default value = 5).</li>
+<li>--p_value (for PheGenI associations only): To specify a p-value threshold for filtering associations (default value = 1e-05).</li>
+<li>--remove_intergenic: A Boolean flag to indicate the removal of intergenic associations. In our SARS-CoV-2-specific protocol, all intergenic associations from both PheGenI and GWAS Catalog were ignored.</li>
+<li>--outpath: Path to the output directory where the enrichment results need to be stored.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Finally, construct a term-term network using the enriched features (pathways, biological processes, cell types, phenotypic traits) from the candidate gene modules. Only a subset of enriched functional terms (top ten GO-BP, pathways and mouse phenotypes based on negative log p-values) are considered to reduce the complexity and manage the density of the final feature network. This filtering step however is optional, especially if the candidate cluster counts and/or the enriched terms are smaller in number. Two feature nodes are connected by an edge if they share one or more of the module candidates.</li>
+<li>This functional network is visualized and analyzed using Gephi (<a href="#bib4">Bastian et al., 2009</a>), an open-source visualization tool (<a href="https://gephi.org/">https://gephi.org</a>). The input to the Gephi tool (version 0.9.2) is a tab-delimited file containing the source and destination enriched terms. Using the Louvain clustering (<a href="#bib6">Blondel et al., 2008</a>) method, community membership modules are estimated from the enriched feature network.</li>
+<li>These functional modules or higher-order functional complexes are hypothesized to be involved in similar biological mechanisms underlying a disease pathophysiology. Louvain clustering algorithm is selected for this step because it is computationally efficient and suitable for large, dense, and modular networks, commonly seen in feature networks such as this. Gephi provides a resolution parameter that maintains the balance between the module count and individual cluster tightness with lower values leading to smaller, more tightly connected clusters and vice-versa. With a resolution set to 0.25, we found 31 communities of highly connected functional terms from the SARS-CoV-2-specific feature network.</li>
+<li>The identified gene modules (<a href="#sec2.2">step 2</a>) and the higher-order feature-level complexes from this meta-analysis approach can be manually analyzed or curated for either knowledge extraction or to formulate testable hypotheses to understand or characterize a disease or phenotype.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<h3 id="sec3.1">Consensus gene signature</h3>
+<p>One of the first outcomes from our protocol include the consensus gene signature from all the input transcriptomic studies (<a href="#sec2.1">step 1</a>). In total, we found 1467 genes (833 upregulated and 634 downregulated) that are differentially expressed in at least two out of the three SARS-CoV-2 infection model systems. Among these, 147 genes are either upregulated (106 genes) or downregulated (41 genes) in all the three studies, representing a potential “core” transcriptomic signature. Figure 2 in (<a href="#bib22">Ghandikota et al., 2021</a>) indicates the transcriptomic concordance among the input models in addition to the different enriched biological processes and pathways in the core signature.</p>
+<h3 id="sec3.2">Disease-targeted human protein modules</h3>
+<p>Another outcome from our protocol is the list of protein modules identified from an integrated interactome consisting of consensus DEGs (<a href="#sec2.2">step 2</a>). From the three distinct SARS-COV-2 infection models, we identified 35 candidate modules (at least 5 or more genes) from a combined network of 1,467 consensus DEGs and SARS-CoV-2-human virus-host interactome (336 genes). Among these, 29 modules have at least one gene encoding SARS-CoV-2-host interactant protein. Figure 3C in (<a href="#bib22">Ghandikota et al., 2021</a>) shows example gene modules from the consensus DEG and SARS-CoV-2-host integrated interactome identified using the current protocol. These modules potentially represent the different perturbed states within a disease and are further characterized by computing enrichments of different functional terms, cell types, and phenotypic traits.</p>
+<h3 id="sec3.3">Higher-order multifeature complexes</h3>
+<p>The final outcome from our protocol includes functional complexes identified through a meta-analysis of enriched features from candidate protein modules (<a href="#sec2.3">step 3</a>). These higher-order feature networks could help in identifying interpretable biological mechanisms underlying a disease pathophysiology. The semantic concordance observed among the subunits (e.g., pathways, cell types, biological processes, and phenotypes) of these functional complexes suggests a common biological goal. In total, 31 communities of strongly connected functional features were estimated from a dense feature network (1,198 nodes and 31,065 edges) based on 35 selected gene modules in SARS-CoV-2 infection. Figure 5 in (<a href="#bib22">Ghandikota et al., 2021</a>) represents a network visualization from the meta-analysis of different functional annotations and features from SARS-CoV-2 candidate modules.</p>
+<h3 id="sec3.4">Intermediate and final results</h3>
+<p>“Consensus_up.txt” and “Consensus_down.txt” – Text files containing the lists of genes (one gene per line) corresponding to upregulated and downregulated consensus signatures, respectively. By default, these files consist of genes differentially expressed (log<sub>2</sub>FC ≥ 0.6 or log<sub>2</sub>FC ≤ −0.6; p-value (FDR) &lt;0.05) in 2 or more input studies.</p>
+<p>“MCL_Clusters.txt” – A tab-delimited text file containing the results from the MCL clustering step. Each row contains a gene and the corresponding cluster membership i.e., the cluster ID that it belongs to. The result file might also include genes which do not belong to any of the identified clusters, in which case, the cluster membership value will be empty.</p>
+<p>“module_PheGenI_enrichments.txt” and “module_GWAS_enrichments.txt” – Output files having results from the enrichment tests computed between all the candidate modules and phenotypic traits from both PheGenI and GWAS Catalog respectively. Apart from the enrichment test statistics (overlap size, both adjusted and raw p-values, negative log p-value), these files also include a column with comma-separated list of genes that are in common between the given module and a phenotypic trait. In case of the GWAS Catalog traits, gene associations of the corresponding child traits (from EFO hierarchy) are also used in the enrichment tests. The counts of mapped child traits are also specified in the output file.</p>
+<p>“module_marker_enrichments.txt” – A tab-delimited output file containing cell type marker genes enriched among the candidate modules. The overlapping marker genes are included in a separate column, as a comma-separated list.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The outcomes (consensus DEGs, protein modules and functional complexes) in our protocol are dependent on certain assumptions and choices made during the analysis steps. Firstly, the composition of the protein modules is dependent on the consensus transcriptomic signature and the PPIs identified among them. Any noise or heterogeneity in the model systems or the transcriptomic data can impact the transcriptomic concordance between the different model systems and the consensus signature (<a href="#sec2.1">step 1</a>) used to build the interactome. Additionally, smaller sample sizes in the individual disease models can impact the final set of consensus DEGs. Similarly, PPI from STRING, as is the case with most large-scale compiled annotation resources, may be prone to noise and incompleteness in the data. Although used to reduce the noise, selection of a high STRING cutoff score can impact the compositions of the gene modules from the DEG and PPI integrated interactome used in <a href="#sec2.2">step 2</a>.</p>
+<p>The final module composition (gene/protein assignment to the modules) also depends on the choice of clustering algorithms and the parameter values used to generate them. For instance, increasing the inflation factor parameter value of the MCL algorithm would lead to smaller-sized clusters or modules and vice-versa (<a href="#sec2.2">step 2</a>). Although, we used the default inflation factor parameter value (=2.5) in the clustering step, it would be prudent to review the results using different inflation factor values. Similarly, modifying the resolution parameter of Louvain clustering can affect the composition of the final functional complexes identified in our protocol (<a href="#sec2.3">step 3</a>).</p>
+<p>Finally, the functional complexes are based on the set of functional terms or annotations used in the enrichment step, which in turn, is dependent on the disease or phenotype being studied. Any errors or redundancy within the annotation sources (e.g., biological processes, single cell markers, phenotype associations, etc.) can affect the composition of the functional complexes identified.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Error message “<i>Error in getopt(spec = spec, opt = args) : long flag XXXX is invalid</i>” while using any of the R Scripts.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>This error message commonly occurs when a wrong command-line parameter option flag (e.g., <i>--files</i>) is used to run an R script. The specified option flag needs to be fixed before proceeding with the execution of the corresponding R Script.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Error message “<i>Number of species assemblies do not match the number of input files provided</i>” while running the script “<i>GetConsensus.R</i>”.</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>This error occurs when the number of Ensembl assembly IDs (comma-separated), provided explicitly using the <i>--org_assemblies</i> option, does not match the study count (comma-separated list of files using the <i>–files</i> option) in protocol <a href="#sec2.1">step 1</a>. In this case, the species Ensembl assembly IDs should be explicitly provided for each input study. Otherwise, the option can be skipped altogether if all the studies involve human samples.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Warning message “<i>Unable to recognize the provided Ensembl assembly</i>” while running the script “<i>GetConsensus.R</i>”.</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>This message indicates that the provided assembly ID(s) (in <a href="#sec2.1">step 1</a>) is unrecognizable by Ensembl (<a href="#bib16">Durinck et al., 2009</a>). In this case, the original gene inputs will be directly used (skipping the ortholog mapping step). The list of valid species assembly IDs can be found at the following URL: <a href="https://uswest.ensembl.org/info/about/species.html">https://uswest.ensembl.org/info/about/species.html</a>.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Error message “<i>Error in mcl_results$Cluster : $ operator is invalid for atomic vectors</i>” while implementing the MCL step using the RScript “<i>MCL_Clustering.R</i>”.</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>This message potentially occurs if the number of iterations of the MCL algorithm (<a href="#sec2.2">step 2</a>) were not sufficient to identify the clusters within the combined interactome. Increasing the maximum number of iterations using the <i>“--max_iter</i>" command-line parameter could help prevent this error message.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Error message “<i>Error: Small inflation coefficient prevents that an equilibrium state matrix is reached within XXX iterations</i>” while using the R Script “<i>MCL_Clustering.R</i>”.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>This message indicates that the given combination of inflation coefficient parameter and the number of MCL iterations are not sufficient for the modularity objective to converge during <a href="#sec2.2">Step 2</a>. This could be prevented by using a higher inflation parameter value using the <i>--inflation_value</i> command line option or by increasing the maximum of iterations using the <i>--max_iter</i> command-line parameter.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Adams, T.S., Schupp, J.C., Poli, S., Ayaub, E.A., Neumark, N., Ahangari, F., Chu, S.G., Raby, B.A., Deiuliis, G., Januszyk, M., et al. (2020). Single-cell RNA-seq reveals ectopic and aberrant lung-resident cell populations in idiopathic pulmonary fibrossis. Sci. Adv. <i>6</i>, eaba1983. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref1">View at publisher</a></p>
+<p id="bib2">Athar, A., Füllgrabe, A., George, N., Iqbal, H., Huerta, L., Ali, A., Snow, C., Fonseca, N.A., Petryszak, R., Papatheodorou, I., et al. (2019). ArrayExpress update - from bulk to single-cell expression data. Nucleic Acids Res. <i>47</i>, D711-D715. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref2">View at publisher</a></p>
+<p id="bib3">Barrett, T., Wilhite, S.E., Ledoux, P., Evangelista, C., Kim, I.F., Tomashevsky, M., Marshall, K.A., Phillippy, K.H., Sherman, P.M., Holko, M., et al. (2013). NCBI GEO: archive for functional genomics data sets—update. Nucleic Acids Res. <i>41</i>, D991-D995. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref3">View at publisher</a></p>
+<p id="bib4">Bastian, M., Heymann, S., and Jacomy, M. (2009). Gephi: An Open Source Software for Exploring and Manipulating Networks (San Jose, CA: AAAI Publications). <a class="external-link" href="http://gephi.org/publications/gephi-bastian-feb09.pdf">http://gephi.org/publications/gephi-bastian-feb09.pdf</a></p>
+<p id="bib5">Blanco-Melo, D., Nilsson-Payant, B.E., Liu, W.C., Uhl, S., Hoagland, D., Moller, R., Jordan, T.X., Oishi, K., Panis, M., Sachs, D., et al. (2020). Imbalanced host response to SARS-CoV-2 drives development of COVID-19. Cell <i>181</i>, 1036-1045 e9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref5">View at publisher</a></p>
+<p id="bib6">Blondel, V.D., Guillaume, J.-L., Lambiotte, R., and Lefebvre, E. (2008). Fast unfolding of communities in large networks. J. Stat. Mech. Theor. Exp. <i>2008</i>, P10008. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref6">View at publisher</a></p>
+<p id="bib7">Bray, N.L., Pimentel, H., Melsted, P., and Pachter, L. (2016). Near-optimal probabilistic RNA-seq quantification. Nat. Biotechnol. <i>34</i>, 525-527. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref7">View at publisher</a></p>
+<p id="bib8">Brohee, S. and van Helden, J. (2006). Evaluation of clustering algorithms for protein-protein interaction networks. BMC Bioinformatics <i>7</i>, 488. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref8">View at publisher</a></p>
+<p id="bib9">Bullard, J.H., Purdom, E., Hansen, K.D., and Dudoit, S. (2010). Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments. BMC Bioinformatics <i>11</i>, 94. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref9">View at publisher</a></p>
+<p id="bib10">Buniello, A., Macarthur, J.A.L., Cerezo, M., Harris, L.W., Hayhurst, J., Malangone, C., Mcmahon, A., Morales, J., Mountjoy, E., Sollis, E., et al. (2019). The NHGRI-EBI GWAS Catalog of published genome-wide association studies, targeted arrays and summary statistics 2019. Nucleic Acids Res. <i>47</i>, D1005-D1012. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref10">View at publisher</a></p>
+<p id="bib11">Chen, J., Bardes, E.E., Aronow, B.J., and Jegga, A.G. (2009). ToppGene Suite for gene list enrichment analysis and candidate gene prioritization. Nucleic Acids Res. <i>37</i>, W305-W311. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref11">View at publisher</a></p>
+<p id="bib12">Chen, E.Y., Tan, C.M., Kou, Y., Duan, Q., Wang, Z., Meirelles, G.V., Clark, N.R., and Ma'ayan, A. (2013). Enrichr: interactive and collaborative HTML5 gene list enrichment analysis tool. BMC Bioinformatics <i>14</i>, 128. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref12">View at publisher</a></p>
+<p id="bib13">Csardi, G. and Nepusz, T. (2006). The Igraph software package for complex network research. Int. J. Complex Syst. <i>1695</i>, 1-9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref13">View at publisher</a></p>
+<p id="bib14">Davis, T.L. (2020). Optparse: Command Line Option Parser (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/optparse/index.html">https://cran.r-project.org/web/packages/optparse/index.html</a></p>
+<p id="bib15">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref15">View at publisher</a></p>
+<p id="bib16">Durinck, S., Spellman, P.T., Birney, E., and Huber, W. (2009). Mapping identifiers for the integration of genomic datasets with the R/Bioconductor package biomaRt. Nat. Protoc. <i>4</i>, 1184-1191. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref16">View at publisher</a></p>
+<p id="bib17">Eden, E., Navon, R., Steinfeld, I., Lipson, D., and Yakhini, Z. (2009). GOrilla: a tool for discovery and visualization of enriched GO terms in ranked gene lists. BMC Bioinformatics <i>10</i>, 48. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref17">View at publisher</a></p>
+<p id="bib18">Enright, A.J., Van Dongen, S., and Ouzounis, C.A. (2002). An efficient algorithm for large-scale detection of protein families. Nucleic Acids Res. <i>30</i>, 1575-1584. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref18">View at publisher</a></p>
+<p id="bib19">Fisher, R.A. (1925). Statistical Methods for Research Workers, Eleventh Edition (Oliver and Boyd). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref19">View at publisher</a></p>
+<p id="bib20">Gagolewski, M. (2020). R Package Stringi: Character String Processing Facilities (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/stringi/index.html">https://cran.r-project.org/web/packages/stringi/index.html</a></p>
+<p id="bib21">Ghandikota, S., Hershey, G.K.K., and Mersha, T.B. (2018). GENEASE: real time bioinformatics tool for multi-omics and disease ontology exploration, analysis and visualization. Bioinformatics <i>34</i>, 3160-3168. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref21">View at publisher</a></p>
+<p id="bib22">Ghandikota, S., Sharma, M., and Jegga, A.G. (2021). Secondary analysis of transcriptomes of SARS-CoV-2 infection models to characterize COVID-19. Patterns <i>2</i>, 100247. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref22">View at publisher</a></p>
+<p id="bib23">Ghiassian, S.D., Menche, J., and Barabási, A.-L. (2015). A DIseAse MOdule detection (DIAMOnD) algorithm derived from a Systematic analysis of Connectivity patterns of disease proteins in the human interactome. PLoS Comput. Biol. <i>11</i>, e1004120. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref23">View at publisher</a></p>
+<p id="bib24">Gordon, D.E., Jang, G.M., Bouhaddou, M., Xu, J., Obernier, K., White, K.M., O'meara, M.J., Rezelj, V.V., Guo, J.Z., Swaney, D.L., et al. (2020). A SARS-CoV-2 protein interaction map reveals targets for drug repurposing. Nature <i>583</i>, 459-468. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref24">View at publisher</a></p>
+<p id="bib25">Habermann, A.C., Gutierrez, A.J., Bui, L.T., Yahn, S.L., Winters, N.I., Calvi, C.L., Peter, L., Chung, M.-I., Taylor, C.J., Jetter, C., et al. (2020). Single-cell RNA sequencing reveals profibrotic roles of distinct epithelial and mesenchymal lineages in pulmonary fibrosis. Sci. Adv. <i>6</i>, eaba1972. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref25">View at publisher</a></p>
+<p id="bib26">Harris, C.R., Millman, K.J., Van Der Walt, S.J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N.J., et al. (2020). Array programming with NumPy. Nature <i>585</i>, 357-362. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref26">View at publisher</a></p>
+<p id="bib27">Hester, J., Kirill, M., Ushey, K., Wickham, H., and Chang, W. (2020). Withr: Run Code ‘With’ Temporarily Modified Global State (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/withr/index.html">https://cran.r-project.org/web/packages/withr/index.html</a></p>
+<p id="bib28">Jäger, M.L. (2015). MCL: Markov Cluster Algorithm (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/MCL/index.html">https://cran.r-project.org/web/packages/MCL/index.html</a></p>
+<p id="bib29">Jiao, X., Sherman, B.T., Huang Da, W., Stephens, R., Baseler, M.W., Lane, H.C., and Lempicki, R.A. (2012). DAVID-WS: a stateful web service to facilitate gene/protein list analysis. Bioinformatics <i>28</i>, 1805-1806. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref29">View at publisher</a></p>
+<p id="bib30">Kaimal, V., Bardes, E.E., Tabar, S.C., Jegga, A.G., and Aronow, B.J. (2010). ToppCluster: a multiple gene list feature analyzer for comparative enrichment clustering and network-based dissection of biological systems. Nucleic Acids Res. <i>38</i>, W96-W102. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref30">View at publisher</a></p>
+<p id="bib31">Langmead, B. and Salzberg, S.L. (2012). Fast gapped-read alignment with Bowtie 2. Nat. Methods <i>9</i>, 357-359. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref31">View at publisher</a></p>
+<p id="bib32">Li, B. and Dewey, C.N. (2011). RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome. BMC Bioinformatics <i>12</i>, 323. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref32">View at publisher</a></p>
+<p id="bib33">Lipták, T. (1958). On the combination of independent tests. Magyar Tud. Akad. Mat. Kutato Int. Közl. <i>3</i>, 171-196. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref33">View at publisher</a></p>
+<p id="bib34">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. <i>15</i>, 550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref34">View at publisher</a></p>
+<p id="bib35">Luck, K., Kim, D.-K., Lambourne, L., Spirohn, K., Begg, B.E., Bian, W., Brignall, R., Cafarelli, T., Campos-Laborie, F.J., Charloteaux, B., et al. (2020). A reference map of the human binary protein interactome. Nature <i>580</i>, 402-408. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref35">View at publisher</a></p>
+<p id="bib36">Malone, J., Holloway, E., Adamusiak, T., Kapushesky, M., Zheng, J., Kolesnikov, N., Zhukova, A., Brazma, A., and Parkinson, H. (2010). Modeling sample variables with an experimental factor ontology. Bioinformatics <i>26</i>, 1112-1118. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref36">View at publisher</a></p>
+<p id="bib37">Mi, H., Muruganujan, A., Ebert, D., Huang, X., and Thomas, P.D. (2018). PANTHER version 14: more genomes, a new PANTHER GO-slim and improvements in enrichment analysis tools. Nucleic Acids Res. <i>47</i>, D419-D426. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref37">View at publisher</a></p>
+<p id="bib38">Morgan, M. (2019). BiocManager: Access the Bioconductor Project Package Repository (Comprehensive R Archive Network). <a class="external-link" href="https://cran.r-project.org/web/packages/BiocManager/index.html">https://cran.r-project.org/web/packages/BiocManager/index.html</a></p>
+<p id="bib39">Morris, J.H., Apeltsin, L., Newman, A.M., Baumbach, J., Wittkop, T., Su, G., Bader, G.D., and Ferrin, T.E. (2011). clusterMaker: a multi-algorithm clustering plugin for Cytoscape. BMC Bioinformatics <i>12</i>, 436. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref39">View at publisher</a></p>
+<p id="bib40">Ooms, J. (2014). The jsonlite package: a practical and consistent mapping between JSON data and R objects. arXiv. <a class="external-link" href="https://arxiv.org/abs/1403.2805">https://arxiv.org/abs/1403.2805</a></p>
+<p id="bib41">Ooms, J. (2019). Curl: A Modern and Flexible Web Client for R (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/curl/index.html">https://cran.r-project.org/web/packages/curl/index.html</a></p>
+<p id="bib42">Oughtred, R., Rust, J., Chang, C., Breitkreutz, B.J., Stark, C., Willems, A., Boucher, L., Leung, G., Kolas, N., Zhang, F., et al. (2021). The BioGRID database: a comprehensive biomedical resource of curated protein, genetic, and chemical interactions. Protein Sci. <i>30</i>, 187-200. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref42">View at publisher</a></p>
+<p id="bib43">Patro, R., Duggal, G., Love, M.I., Irizarry, R.A., and Kingsford, C. (2017). Salmon provides fast and bias-aware quantification of transcript expression. Nat. Methods <i>14</i>, 417-419. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref43">View at publisher</a></p>
+<p id="bib44">R Core Team (2020). R: A Language and Environment for Statistical Computing (R Foundation for Statistical Computing). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref44">View at publisher</a></p>
+<p id="bib45">Ramos, E.M., Hoffman, D., Junkins, H.A., Maglott, D., Phan, L., Sherry, S.T., Feolo, M., and Hindorff, L.A. (2014). Phenotype-Genotype Integrator (PheGenI): synthesizing genome-wide association study (GWAS) data with existing genomic resources. Eur. J. Hum. Genet. <i>22</i>, 144-147. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref45">View at publisher</a></p>
+<p id="bib46">Risso, D., Schwartz, K., Sherlock, G., and Dudoit, S. (2011). GC-content normalization for RNA-seq data. BMC Bioinformatics <i>12</i>, 480. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref46">View at publisher</a></p>
+<p id="bib47">Risso, D., Ngai, J., Speed, T.P., and Dudoit, S. (2014). Normalization of RNA-seq data using factor analysis of control genes or samples. Nat. Biotechnol. <i>32</i>, 896-902. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref47">View at publisher</a></p>
+<p id="bib48">Ritchie, M.E., Phipson, B., Wu, D., Hu, Y., Law, C.W., Shi, W., and Smyth, G.K. (2015). Limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. <i>43</i>, e47. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref48">View at publisher</a></p>
+<p id="bib49">Riva, L., Yuan, S., Yin, X., Martin-Sancho, L., Matsunaga, N., Pache, L., Burgstaller-Muehlbacher, S., De Jesus, P.D., Teriete, P., Hull, M.V., et al. (2020). Discovery of SARS-CoV-2 antiviral drugs through large-scale compound repurposing. Nature <i>586</i>, 113-119. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref49">View at publisher</a></p>
+<p id="bib50">Robinson, M.D., Mccarthy, D.J., and Smyth, G.K. (2010). edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics <i>26</i>, 139-140. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref50">View at publisher</a></p>
+<p id="bib51">van Rossum, G.D. and Fred, L. (2009). Python 3 Reference Manual (CreateSpace). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref51">View at publisher</a></p>
+<p id="bib52">Saelens, W., Cannoodt, R., and Saeys, Y. (2018). A comprehensive evaluation of module detection methods for gene expression data. Nat. Commun. <i>9</i>, 1090. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref52">View at publisher</a></p>
+<p id="bib53">Shannon, P., Markiel, A., Ozier, O., Baliga, N.S., Wang, J.T., Ramage, D., Amin, N., Schwikowski, B., and Ideker, T. (2003). Cytoscape: a software environment for integrated models of biomolecular interaction networks. Genome Res. <i>13</i>, 2498-2504. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref53">View at publisher</a></p>
+<p id="bib54">Stouffer, S.A., Suchman, E.A., Devinney, L.C., Star, S.A., and Williams, R.M. (1949). The American Soldier: Adjustment during Army Life. (Studies in Social Psychology in World War II), <i>1</i> (Princeton Univ. Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref54">View at publisher</a></p>
+<p id="bib55">Sun, J., Zhuang, Z., Zheng, J., Li, K., Wong, R.L., Liu, D., Huang, J., He, J., Zhu, A., ZhaO, J., et al. (2020). Generation of a broadly useful model for COVID-19 pathogenesis, vaccination, and treatment. Cell <i>182</i>, 734-743 e5. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref55">View at publisher</a></p>
+<p id="bib56">Szklarczyk, D., Gable, A.L., Lyon, D., Junge, A., Wyder, S., Huerta-Cepas, J., Simonovic, M., Doncheva, N.T., Morris, J.H., Bork, P., et al. (2019). STRING v11: protein–protein association networks with increased coverage, supporting functional discovery in genome-wide experimental datasets. Nucleic Acids Res. <i>47</i>, D607-D613. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref56">View at publisher</a></p>
+<p id="bib57">Travaglini, K.J., Nabhan, A.N., Penland, L., Sinha, R., Gillich, A., Sit, R.V., Chang, S., Conley, S.D., Mori, Y., Seita, J., et al. (2020). A molecular cell atlas of the human lung from single-cell RNA sequencing. Nature <i>587</i>, 619-625. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref57">View at publisher</a></p>
+<p id="bib58">Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., et al. (2020). SciPy 1.0: fundamental algorithms for scientific computing in Python. Nat. Methods <i>17</i>, 261-272. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref58">View at publisher</a></p>
+<p id="bib59">Vlasblom, J. and Wodak, S.J. (2009). Markov clustering versus affinity propagation for the partitioning of protein interaction graphs. BMC Bioinformatics <i>10</i>, 99. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref59">View at publisher</a></p>
+<p id="bib60">Weston, S.; Microsoft Corporation (2020). doParallel: foreach parallel adaptor for the ‘parallel’ package (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/package=doParallel">https://cran.r-project.org/package=doParallel</a></p>
+<p id="bib61">Whitlock, M.C. (2005). Combining probability from independent tests: the weighted Z-method is superior to Fisher's approach. J. Evol. Biol. <i>18</i>, 1368-1373. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref61">View at publisher</a></p>
+<p id="bib62">Wickham, H. (2020). Httr: Tools for Working with URLs and HTTP (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/httr/index.html">https://cran.r-project.org/web/packages/httr/index.html</a></p>
+<p id="bib63">Wickham, H., Jim, H., and Chang, W. (2020). Devtools: Tools to Make Developing R Packages Easier (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/devtools/index.html">https://cran.r-project.org/web/packages/devtools/index.html</a></p>
+<p id="bib64">Wickham, H., Romain, F., Henry, L., and Müller, K. (2021). Dplyr: A Grammar of Data Manipulation (Comprehensive R Archive Network (CRAN)). <a class="external-link" href="https://cran.r-project.org/web/packages/dplyr/index.html">https://cran.r-project.org/web/packages/dplyr/index.html</a></p>
+<p id="bib65">Wu, J., Vallenius, T., Ovaska, K., Westermarck, J., Mäkelä, T.P., and Hautaniemi, S. (2009). Integrated network analysis platform for protein-protein interactions. Nat. Methods <i>6</i>, 75-77. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref65">View at publisher</a></p>
+<p id="bib66">Zaykin, D.V. (2011). Optimally weighted Z-test is a powerful method for combining probabilities in meta-analysis. J. Evol. Biol. <i>24</i>, 1836-1841. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref66">View at publisher</a></p>
+<p id="bib67">Zhou, Y., Zhou, B., Pache, L., Chang, M., Khodabakhshi, A.H., Tanaseichuk, O., Benner, C., and Chanda, S.K. (2019). Metascape provides a biologist-oriented resource for the analysis of systems-level datasets. Nat. Commun. <i>10</i>, 1523. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00579-7/sref67">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests should be directed to and will be fulfilled by the lead contact, Anil G. Jegga (<a href="mailto:anil.jegga@cchmc.org">anil.jegga@cchmc.org</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The scripts to implement the proposed protocol are accessible publicly at <a href="https://github.com/SudhirGhandikota/COVID19_secondary_analysis">https://github.com/SudhirGhandikota/COVID19_secondary_analysis</a>. It also includes a Dockerfile that can be used to build and run a docker container which has all the tools, packages, and their dependencies installed. The repository also contains the results from our analysis of SARS-CoV-2 infection models.</p>
+<h3>Acknowledgments</h3>
+<p>This study was supported in part by <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> grant 1UG3TR002612 and by the <a href="https://doi.org/10.13039/100007172">Cincinnati Children's Hospital Medical Center</a></p>
+<h3>Author contributions</h3>
+<p>S.G. and A.G.J. conceived and initiated this study. S.G., M.S., and A.G.J. collected and analyzed data. S.G., M.S., and A.G.J. edited the manuscript. S.G. and A.G.J. wrote the first draft.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

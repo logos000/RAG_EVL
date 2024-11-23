@@ -1,0 +1,528 @@
+<article>
+<section>
+<h1 id="header">Quantitative neuronal morphometry by supervised and unsupervised learning</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Kayvan Bijari,<sup><a href="#aff1">1</a></sup> Gema Valera,<sup><a href="#aff2">2</a></sup> Hernán López-Schier,<sup><a href="#aff2">2</a></sup> and Giorgio A. Ascoli<sup><a href="#aff1">1</a>,<a href="#aff3">3</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Center for Neural Informatics, Structures, &amp; Plasticity and Neuroscience Program, Krasnow Institute for Advanced Study, George Mason University, Fairfax, VA 22030, USA</p>
+<p id="aff2"><sup>2</sup>Sensory Biology and Organogenesis, Helmholtz Zentrum Munich, 85764 Neuherberg, Germany</p>
+<p id="aff3"><sup>3</sup>Bioengineering Department, Volgenau School of Engineering, George Mason University, Fairfax, VA 22032, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:ascoli@gmu.edu">ascoli@gmu.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100867">10.1016/j.xpro.2021.100867</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We present a protocol to characterize the morphological properties of individual neurons reconstructed from microscopic imaging. We first describe a simple procedure to extract relevant morphological features from digital tracings of neural arbors. Then, we provide detailed steps on classification, clustering, and statistical analysis of the traced cells based on morphological features. We illustrate the pipeline design using specific examples from zebrafish anatomy. Our approach can be readily applied and generalized to the characterization of axonal, dendritic, or glial geometry.</p>
+<p>For complete context and scientific motivation for the studies and datasets used here, refer to <a class="external-link" href="https://doi.org/10.1016/j.cub.2021.01.045">Valera et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Quantification of microscopic neural tracings stored in SWC format</li>
+<li>Unsupervised and supervised analysis of quantified features of neural morphologies</li>
+<li>Identification of morphological signatures differentiating groups of neural arbors</li>
+<li>Open-source software that can be modified, expanded, and applied to diverse problems</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Technical details of data acquisition, imaging modalities and neuronal tracing are discussed in depth in the original publication (<a href="#bib18">Valera et al., 2021</a>). Continuous advances in both microscopy and computational power are making the semi-automated reconstructions of neuronal arbors progressively more practical (<a href="#bib13">Peng et al., 2017</a>). This protocol describes how to quantify digitized neurons into descriptive morphological features and then apply unsupervised, supervised, and statistical analysis on quantifiable morphological attributes, see also (<a href="#bib14">Polavaram et al., 2014</a>). The software setup described here was deployed on Ubuntu 20.04 LTS Linux distribution. However, all referred tools and packages function properly across different platforms, including Windows 10.</p>
+<h3 id="sec1.1">Installation of analysis tools and downloading datasets and custom codes</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol>
+<li>Install L-Measure v5.3 or v5.2 software (depending on the available version for your operating system).
+<ol type="a">
+<li>Download the version relevant to your platform. More information in this regard is available on the L-Measure website (see <a href="#key-resources-table">key resources table</a> for the research resource identifier (<a href="#bib5">Bandrowski et al., 2016</a>)).</li>
+</ol>
+</li>
+<li>Install Python 3.8 on your computer system (see <a href="#key-resources-table">key resources table</a> for link) or on a virtual environment (see Note below).
+<ol type="a">
+<li>Install the following packages on your installed python:
+<ol type="i">
+<li>matplotlib version 3.3.4</li>
+<li>NumPy version 1.20.1</li>
+<li>Pandas version 1.2.2</li>
+<li>scikit-learn version 0.24.1</li>
+<li>SciPy version 1.6.0</li>
+</ol>
+</li>
+<li>Alternative 1: After activating your virtual environment from the ‘scripts’ directory, use ‘pip install -r requirements.txt’ to automatically install all required packages.</li>
+<li>Alternative 2: We have provided ‘.yaml’ file located in the ‘scripts’ directory to install both python environment and the required packages. To do so, open your ‘conda’ terminal and run ‘conda env create --name star-protocol -f star-protocol.yaml’. This will create the python environment named ‘star-protocol’ along with the right packages. For more information about ‘conda’ and its installation, please visit: <a href="https://conda.io/projects/conda/en/latest/user-guide/index.html">https://conda.io/projects/conda/en/latest/user-guide/index.html</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> After installing Python, all scripts can be run either via command line using ‘<b>python [name-of-script].py [input parameters]</b>’ or through any preferred python environment interface providing optimized utilities for code modifications.</div>
+<ol start="3">
+<li>Download from the GitLab repository all python scripts and representative data pertaining to this protocol and associated use case scenario.
+<ol type="a">
+<li>URL: <a href="https://gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol">https://gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol</a>
+</li>
+</ol>
+</li>
+<li>For simplicity purposes, all reconstruction files used in the examples illustrated here are also available in this GitLab repository. The reconstruction files from this and thousands of additional datasets can also be obtained from <a href="http://NeuroMorpho.Org">NeuroMorpho.Org</a> (<a href="#bib2">Ascoli et al., 2007</a>).</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Neuronal reconstructions</td>
+<td>NeuroMorpho.Org</td>
+<td>RRID:SCR_002145</td>
+</tr>
+<tr>
+<td>Source code</td>
+<td><a href="https://gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol">gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol</a></td>
+<td>RRID:SCR_021638</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Python 3.8</td>
+<td>python.org/downloads/</td>
+<td>RRID:SCR_008394</td>
+</tr>
+<tr>
+<td>L-Measure</td>
+<td>cng.gmu.edu:8080/Lm</td>
+<td>RRID:SCR_003487</td>
+</tr>
+<tr>
+<td>SciPy 1.6.0</td>
+<td>scipy.org</td>
+<td>RRID:SCR_008058</td>
+</tr>
+<tr>
+<td>scikit-learn 0.24.1</td>
+<td>scikit-learn.org</td>
+<td>RRID:SCR_002577</td>
+</tr>
+<tr>
+<td>Pandas 1.2.2</td>
+<td>pandas.pydata.org</td>
+<td>RRID:SCR_018214</td>
+</tr>
+<tr>
+<td>NumPy 1.20.1</td>
+<td>numpy.org</td>
+<td>RRID:SCR_008633</td>
+</tr>
+<tr>
+<td>matplotlib 3.3.4</td>
+<td>matplotlib.org</td>
+<td>RRID:SCR_008624</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>We begin by illustrating how to extract quantitative morphological attributes from digital reconstructions of neurons represented in the standard SWC file format (<a href="#bib12">Nanda et al., 2018</a>). Then, we demonstrate the procedure to run unsupervised, supervised, and statistical analysis on these attributes.</p>
+<h3 id="sec2.1">Data quantification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>These steps describe how to process and quantify neural morphologies stored in the SWC file format (<a href="#fig1">Figure 1</a>). These are most typically representing neurons and glia (<a href="#bib1">Abdellah et al., 2018</a>; <a href="#bib3">Ascoli et al., 2017</a>) but have also been used for vascular reconstructions (<a href="#bib19">Wright et al., 2013</a>). The output is a set of quantitative morphological attributes for every neuron, which could be used for supervised, unsupervised, or any other quantitative analysis.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Sample visualized neuron from the zebrafish data along with the corresponding rows of its SWC file</div>
+</figcaption>
+</figure>
+<ol>
+<li>Run L-Measure in your operating system.
+<ol type="a">
+<li>In Linux you need to run <b>java -jar Lm.jar</b> in the command line from the folder where the L-Measure executable scripts are located.</li>
+<li>Check the <a href="#troubleshooting">troubleshooting</a> section of the L-Measure website if you run into errors.</li>
+<li>
+<a href="#fig2">Figure 2</a> shows the main view of L-Measure software being executed and related sample output.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Neuronal quantification</div>
+<p>(A) Graphical User Interface of the L-Measure software (open on the default ‘specificity’ tab).</p>
+<p>(B) Sample output file produced by L-Measure.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+<li>In the ‘<i>function</i>’ tab select the morphological attributes that you wish to extract from the SWC files. The selected morphological attributes utilized here (referred to henceforth as “core metric functions”) are: 'N_bifs', 'N_branch', 'Width', 'Height', 'Depth', 'Length', 'EucDistance', 'PathDistance', 'Branch_Order', 'Contraction', 'Fragmentation', 'Partition_asymmetry', 'Bif_ampl_local', 'Bif_ampl_remote', 'Fractal_Dim' (see also Note below).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The ‘included’ and ‘excluded’ points in step 6 are not user-defined, but rather automatically determined by L-Measure and displayed for information only. Specifically, these values refer to the number of rows in the SWC file used to calculate the desired morphometric. For instance, the functions measuring the bifurcation angles (Bif_ampl_local and Bif_ampl_remote) only operate on the arbor bifurcation points, and not on the stems, continuations, and terminations. Thus, the included points would be in this example the counts of bifurcations and the excluded points would be the rest of the arbor tracing points. For exact definitions and more information about core metric functions and the measurements extracted in Step 2, visit the L-Measure website (<a href="http://cng.gmu.edu:8080/Lm/help/index.htm">http://cng.gmu.edu:8080/Lm/help/index.htm</a>).</div>
+<ol start="3">
+<li>In the ‘<i>input</i>’ tab select the SWC files corresponding to one or more neurons from the local drive.</li>
+<li>In the ‘<i>output</i>’ tab specify a file name and the location where you wish to store the extracted values.</li>
+<li>Finally, in the ‘<i>go</i>’ tab press ‘go’ for L-Measure to run the analysis and calculate the numerical attributes for each SWC file.</li>
+<li>In the output file, L-Measure produces neuron name, name of the core metric function, total sum of the function over all tracing points (Total_Sum), number of points included in the analysis (Count_considered_compartments), number of points excluded (Count_discarded_compartments), minimum value (Min), average (Ave), maximum (Max), and standard deviation (S.D.) of each metric function (<a href="#bib16">Scorcioni et al., 2008</a>).</li>
+<li>Edit these quantifications by removing irrelevant or redundant statistics in each row and save the resultant file in comma separated value (CSV) format (see Note below for more details). Every line in this CSV file should represent a single neuron. File ‘neuron_features.csv’ in the scripts/data folder was obtained in that way from the output of L-Measure for this experimental dataset. Alternatively, you can run ‘python convert.py -i /location/of/input-file -o /location/to/save/output-file.csv’; this script reads the results yielded fromL-Measure from the user’s specified location and creates a CSV file (output-file.csv) that can be used for both the supervised and unsupervised subsequent steps.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Step 7 is required because not all elements of the L-Measure default statistical summary are appropriate for every feature. Therefore, selecting the most suitable statistic for the analysis is important. For more information on the used parameters and their relevance see <a href="#tbl1">Table 1</a> below. It is important to mention that L-Measure does not calculate median values and mean-based statistics may not be appropriate if the data is not normally distributed. A detailed description of the values L-Measure can extract from the SWC files and their applications is provided by the reference paper (<a href="#bib16">Scorcioni et al., 2008</a>).</div>
+<table id="tbl1">
+<caption>Table 1. Description of L-Measure outputs</caption>
+<thead>
+<tr>
+<th>Core function (brief description)</th>
+<th>Relevant statistics to consider</th>
+<th>Reasoning behind the chosen statistic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N_bifs (number of bifurcations)</td>
+<td>Total_sum</td>
+<td>Returns the total number of bifurcations</td>
+</tr>
+<tr>
+<td>N_branch (number of branches)</td>
+<td>Total_sum</td>
+<td>Returns the total number of branches</td>
+</tr>
+<tr>
+<td>Width (neuronal width)</td>
+<td>L-Measure returns the same value for Min, Max, and Ave</td>
+<td>Horizontal extent (x-coordinate) containing 95% of all tracing points</td>
+</tr>
+<tr>
+<td>Height (neuronal height)</td>
+<td>L-Measure returns the same value for Min, Max, and Ave</td>
+<td>Vertical extent (y-coordinate) containing 95% of all tracing points</td>
+</tr>
+<tr>
+<td>Depth (neuronal depth)</td>
+<td>L-Measure returns the same value for Min, Max, and Ave</td>
+<td>Depth (z-coordinate) containing 95% of all tracing points</td>
+</tr>
+<tr>
+<td>Length (total arborization length)</td>
+<td>Total_sum</td>
+<td>Returns the total length summed across all compartments</td>
+</tr>
+<tr>
+<td>EucDistance (maximum Euclidean distance from soma to the tips)</td>
+<td>Ave and max are relevant, we used Max</td>
+<td>Maximum straight distance encompassing the whole neuron</td>
+</tr>
+<tr>
+<td>PathDistance (path distance of a compartment)</td>
+<td>Ave and max are relevant, we used Max</td>
+<td>Maximum geodesic distance from soma to tips</td>
+</tr>
+<tr>
+<td>Branch_Order (order of the branch with respect to the soma)</td>
+<td>Ave and max are relevant, we used Max</td>
+<td>Maximum number of bifurcations from soma to tips</td>
+</tr>
+<tr>
+<td>Contraction (ratio between Euclidean distance of a branch and its path length)</td>
+<td>Ave</td>
+<td>Average tortuosity across all branches</td>
+</tr>
+<tr>
+<td>Fragmentation (total number of compartments that constitute a branch between two bifurcation points)</td>
+<td>All are relevant, we used Total_sum</td>
+<td>Total number of compartments from all of the branches</td>
+</tr>
+<tr>
+<td>Partition_asymmetry (average over all bifurcations of sub-trees)</td>
+<td>Ave</td>
+<td>Topological tree asymmetry measured from all bifurcation points</td>
+</tr>
+<tr>
+<td>Bif_ampl_local (angle between the first two bifurcation compartments)</td>
+<td>All are relevant, we used Ave</td>
+<td>Average over all bifurcations of the angle between the first two daughter compartments</td>
+</tr>
+<tr>
+<td>Bif_ampl_remote (angle between, current plane of bifurcation and previous plane of bifurcation)</td>
+<td>All are relevant, we used Ave</td>
+<td>Average over all bifurcations of the angle between the following bifurcations or tips</td>
+</tr>
+<tr>
+<td>Fractal_Dim (slope of linear fit of regression line obtained from the plot of path vs. Euclidean distances)</td>
+<td>All are relevant, we used Ave</td>
+<td>Average space occupancy measured from all branches</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.2">Unsupervised clustering</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>The following steps describe the unsupervised analysis, a process that groups neurons based on their morphological features independent of any <i>a priori</i> knowledge about the cells. We start with the fundamental K-means algorithm for data clustering and then use graphical mixture models to find innate distributions within the dataset.</p>
+<ol start="8">
+<li>From your Python environment or command line, run ‘python unsupervised-elbow-curve.py -i ./Data/neuron_features.csv’.
+<ol type="a">
+<li>This script reads the neuronal data from the data folder and normalizes them.</li>
+<li>Then it plots the elbow curve, which shows the trade-off between residual variance and the number of clusters (<a href="#fig3">Figure 3</a>A).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. K-means clustering results</div>
+<p>(A) Elbow curve to determine the optimal number of clusters.</p>
+<p>(B) Scatter plot of the neurons based on their first two principal components (PC1 and PC2) and color-coded clusters (each color represents a cluster).</p>
+<p>(C) Distribution of different cluster assignments found by K-means algorithm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Elbow curve is used to determine the optimal number of clusters. This heuristic method calculates the sum of squared distances of all points from the center of their respective cluster as a function of the number of clusters. The point(s) of maximum inflection (visible bends) are appropriate choices for the number of clusters. In this case, the curve has two high-inflection points (3 and 5) and we selected 3 as the number of clusters for our analysis.</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘python unsupervised-kmeans.py -i ./Data/neuron_features -k 3’.
+<ol type="a">
+<li>This script reads the neuronal data from the data folder and groups them into 3 clusters utilizing the K-means algorithm.</li>
+<li>The script prints the cluster label for each neuron as well as the centers of the three clusters.</li>
+<li>The program also performs a principal component analysis to optimize the spatial display of the feature distribution along the main directions of their variance.</li>
+<li>The program then plots (i) a scattered visualization of the data based on the first two principal components and (ii) a bar plot depicting the count of neurons in each cluster (<a href="#fig3">Figures 3</a>B and 3C).</li>
+<li>You can alter the number of clusters by changing the input parameter “k” before running the script.</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘<b>python unsupervised-BIC-curve.py -i ./Data/neuron_features.csv</b>’.
+<ol type="a">
+<li>This script reads the neuronal data from the data folder and normalizes them.</li>
+<li>Then it plots the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) curves, which quantify the grouping distinctiveness as a function of the number of clusters (<a href="#fig4">Figure 4</a>A).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Gaussian Mixture Model (GMM) clustering results</div>
+<p>(A) Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) scores to determine the optimal number of clusters.</p>
+<p>(B) Scatter plot of the neurons based on their first two principal components (PC1 and PC2) and color-coded clusters (each color represents a cluster).</p>
+<p>(C) Distribution of different cluster assignments found by GMM.</p>
+</figcaption>
+</figure>
+</li>
+<li>Bayesian Information Criterion (BIC) is a likelihood-based method for model selection among a finite set of possibilities. This is a heuristic score to determine the optimal number of clusters.</li>
+<li>Akaike Information Criterion (AIC) measures the relative amount of information lost by a given model for a certain number of clusters.</li>
+<li>Generally, lower values of AIC and BIC are more desirable. For our analysis, we selected 3, where both curves have relatively low value compared to neighboring points.</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘python unsupervised-GMM.py -i ./Data/neuron_features.csv -k 3’.
+<ol type="a">
+<li>This script reads the neuronal data from the data folder and groups them into 3 clusters using Gaussian mixture distributions.</li>
+<li>The script prints the group label for each neuron.</li>
+<li>The program also performs a principal component analysis to optimize the spatial display of the feature distribution along the main directions of their variance.</li>
+<li>The program then plots (i) a scattered visualization of the data based on the first two principal components and (ii) a bar plot depicting the label distribution (<a href="#fig4">Figures 4</a>B and 4C).</li>
+<li>You can alter the number of clusters by changing the input parameter “k” before running the script.</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Scikit-learn includes various algorithms to perform grouping and clustering datasets. Based on the nature and inherent characteristics of the data, different clustering models might achieve more interpretable outcomes (<a href="#bib6">Bijari et al., 2018</a>). To explore different clustering techniques please visit <a href="https://scikit-learn.org/stable/modules/clustering.html">https://scikit-learn.org/stable/modules/clustering.html</a> for an overview of suitable alternatives and code snippets to execute them.</div>
+<h3 id="sec2.3">Supervised clustering</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>Many datasets of interest, including the examples employed here, have specific labels assigned to each neuron, representing knowledge that the researcher has about these cells that is in principle unrelated to the arbor morphology. Examples of such labels (often referred to as “true classes”) include electrophysiological characteristics, anatomical location of the soma, expression of particular genes, functional specificity, and many more (<a href="#bib4">Ascoli and Wheeler, 2016</a>). Having the data labels in hand, the next series of steps describes the process of supervised analysis. This process assesses the morphological features that best separate among the chosen labels. We begin with visualizing the dataset to gain a spatial perception of the different data points based on their principal components. Then we add the labels to the results of the previous <i>unsupervised</i> methods to check whether the intrinsic morphological characteristics of the cells, as discovered by unsupervised learning, correspond to any independent functional property (distinct ground truth classes) and ascertain how adequately the supervised algorithms perform relative to the known information. At the end, we train and test a battery of <i>supervised</i> classification methods on the labeled data to quantify how accurately the morphological features can discern among the labels.</p>
+<ol start="12">
+<li>For this step, neural data should have explicit class labels. There are typically no limits to the number of these labels (ground truth information) and they are typically determined by the experimentalist while preparing the dataset based on biologically relevant knowledge. To prepare your labels, please create or format your data labels as described below.
+<ol type="a">
+<li>Use ‘labels (template).xlsx’ in the ‘Scripts’ folder and label each neuron with the proper label based on your experiment.</li>
+<li>If you have more than one class, use additional columns.</li>
+<li>Save the template file for your records. Also, export a CSV file to provide input for the next steps in the analysis.</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘python supervised-visualize.py -i ./Data/neuron_features.csv -l ./Data/neuron_labels.csv’.
+<ol type="a">
+<li>This script reads the neuronal data and their corresponding labels from the data folder.</li>
+<li>The program next performs a principal component analysis to optimize the spatial display of the feature distribution along the main directions of their variance.</li>
+<li>The program then outputs a series of scatter plots, one for each set of labels, with each neuron data point associated with its label symbol (<a href="#fig5">Figure 5</a>).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Distribution of the neurons based on their principal components (PC1 and PC2) and their ground truth labels</div>
+<p>(A) Scatter plot based on different neuromast labels (A: anterior, L: lateral, T: trunk, D: dorsal; numbers associated with the labels indicate closeness of the neuron to the head of the animal, with 1 being the closest and 6 being furthest).</p>
+<p>(B) Scatter plot based on different tuning labels (u: unknown, r: rostral, c: caudal).</p>
+<p>(C) Scatter plot based on different region labels (trunk, tail, posterior lateral line, dorsal lateral line, and anterior lateral line).</p>
+<p>(D) Scatter plot based on different hemisphere labels (right and left).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘python labeled-kmeans.py -i ./Data/neuron_features.csv -l ./Data/neuron_labels.csv -k 3’.
+<ol type="a">
+<li>This script reads the neuronal data and groups them into 3 clusters.</li>
+<li>The program then outputs the homogeneity score and a series of scatter plots, each displaying the color-coded K-means clusters with symbols (shapes) corresponding to the true class labels in each label category (<a href="#fig6">Figure 6</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Visualization of the neurons based on K-means results (color-coded clusters) and their ground truth labels (shapes)</div>
+<p>For label meanings, see <a href="#fig5">Figure 5</a> legend.</p>
+</figcaption>
+</figure>
+</li>
+<li>Homogeneity is a clustering metric based on the ground truth labels. It checks if clusters contain only samples belonging to a single class. A clustering result satisfies homogeneity if all of its clusters contain only data points that are members of their ground truth class. This metric is bounded between 0 and 1, with lower values indicating low homogeneity (<a href="#bib15">Rosenberg and Hirschberg, 2007</a>).</li>
+<li>You can alter the input parameters before running the python script.</li>
+</ol>
+</li>
+<li>From your Python environment or command line, run ‘python labeled-GMM.py -i ./Data/neuron_features.csv -l ./Data/neuron_labels.csv -k 3’.
+<ol type="a">
+<li>This script reads the neuronal data and groups them into 3 clusters, just as in steps 9a-d above.</li>
+<li>The program then outputs the homogeneity score (as described in 14.c) and a series of scatter plots, each displaying the color-coded distributions with symbols (shapes) corresponding to the true class labels in each label category (<a href="#fig7">Figure 7</a>).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Visualization of the neurons based on GMM results (color-coded groups) and their ground truth labels (shapes)</div>
+<p>For label meanings, see <a href="#fig5">Figure 5</a> legend.</p>
+</figcaption>
+</figure>
+</li>
+<li>You can alter the input parameters before running the python script.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>From your Python environment or command line, run ‘<b>python supervised-classification.py -i ./Data/neuron_features.csv -l ./Data/neuron_labels.csv’</b> and follow the command line instructions.
+<ol type="a">
+<li>This script reads and pre-processes the neuronal data and their corresponding labels from the data folder.</li>
+<li>The script asks which class label you want to select for the task of classification. This could vary based on your choice of dataset.</li>
+<li>The program then calculates the feature importance using the ‘ExtraTreesClassifier’ algorithm (see Note below) and plots those values in a bar graph.
+<div class="note">
+<span class="note-title">Note:</span> The ExtraTreesClassifier algorithm used in step 16 is an approach to feature selection based on the Random Forest method. Random Forest creates several tree-based models using the features and attempts to classify the data via those decision trees. The importance of the features depends on the number of times that feature is used to split a node and on the number of samples it splits. Specifically, this algorithm weighs the total decrease in “node impurity” by the proportion of samples reaching that node. A Mean Decrease in Impurity (MDI) is then calculated as the average of this measure over all trees of the ensemble. In other words, the fewer splits a feature needs to classify the data, and the larger the proportion it classifies, the “purer”, hence more important, it is (<a href="#bib8">Geurts et al., 2006</a>).</div>
+</li>
+<li>Next, the program trains four distinct machine learning algorithms on the labeled data: ‘logistic regression’, ‘decision tree’, ‘k-nearest-neighbors’, and ‘multilayer perceptron’.</li>
+<li>The program then calculates and plots the accuracy of each of those four algorithms in two different scenarios: if considering all morphological attributes of the neurons; and if only considering the most important attribute.</li>
+<li>Here we show a representative classification example for the class label ‘region’ (<a href="#fig8">Figure 8</a>). To obtain the results for other dimensions, follow command line instructions and change ‘class label’ when the command prompt asks for the class label.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Supervised analysis results</div>
+<p>(A) Feature importance of the data.</p>
+<p>(B) Classification accuracy of logistic regression, decision tree, K-nearest-neighbor (K-NN), and multilayer perceptron (MLP) using all features and just the top feature. For more information on the morphological features see step 7 and for details on feature importance see step 16.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>From your Python environment or command line, run ‘<b>python supervised-density.py -i ./Data/neuron_features.csv -l ./Data/neuron_labels.csv’</b> and follow the command line instructions.fakn
+<ol type="a">
+<li>This script reads and pre-processes the neuronal data and their corresponding labels from the data folder.</li>
+<li>The script then asks which feature and which class label you want to select for the density analysis. This varies based on your choice of dataset.</li>
+<li>In this example, we have selected the morphological features ‘Contraction’ and ‘EucDistance’ to run density analysis. Nevertheless, the analysis could be repeated on any other dimension of the data. To do so, follow the command line instructions.</li>
+<li>Afterward, from the command line instructions we select ‘lateral line (LL)’ class labels to perform density analysis within this class for different class labels, namely, ‘ALL’ and ‘PLL’ for anterior and posterior LL, respectively..</li>
+<li>The program plots the density curve for the ‘Contraction’ and ‘EucDistance’ data considering different ‘lateral line’ class labels (<a href="#fig9">Figure 9</a>).
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Density analysis</div>
+<p>Density plot for features ‘Contraction’ (branch tortuosity) (A) and ‘EucDistance’ (maximum straight distance from soma to tips) (B) in the entire dataset as well as in selected sub-class labels (ALL and PLL).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>From your Python environment or command line, run ‘<b>python supervised-pdv-comparison.py -p ./Data/PDVs -l ./Data/neuron_labels.csv’</b> and follow the command line instructions.
+<ol type="a">
+<li>This script reads the persistent diagram vectors and the data labels from the data folder (see Note below).
+<div class="note">
+<span class="note-title">Note:</span> The persistence diagram vectors (PDVs) utilized in step 18 are based on the concept of topological persistence in the field of computational topology (<a href="#bib9">Kanari et al., 2018</a>). PDVs are derived from a simplified representation of the neural arbor that only considers the stems, bifurcations, and terminations while ignoring all continuation points along the branches. In other words, this process creates a straight segment between any two topological nodes of the tree representing the Euclidean length of each branch. The descriptor function is the total length of the unique path (i.e., the sum of all branch lengths) from the tree stem to any point in the tree. The stem is the tree root, typically corresponding to its point of emergence from the soma (<a href="#bib10">Li et al., 2017</a>). Starting from this simplified representation, persistence analysis sweeps the neuron tree in decreasing function values, i.e., beginning from the farthest terminal tip, while tracking the appearance (end point) and disappearance (start point) of each neurite branch. The persistence diagram summarizes all resulting appearances and disappearances into a set of 2D points whose (x, y) coordinates represent the distance from the soma of the end and start points of each branch. Mathematically, the set of points in the persistence diagram captures a nested branch decomposition of the neuron tree with respect to the simplified Euclidean branch length description. Finally, the persistence diagram summary is converted into a 100-dimensional vector representing the function values at 100 positions sampled uniformly between the minimum and maximum values, corresponding respectively to the beginning of the tree and the farthest terminal tip. Intuitively, persistence diagram vectors capture the morphological information similar to that represented in Sholl diagrams (<a href="#bib7">Garcia-Segura and Perez-Marquez, 2014</a>; <a href="#bib17">Sholl, 1953</a>). The advantage of this approach, however, is that it produces a proper metric space which allows quantitative applications such as those illustrated in this protocol. PDVs for the data used in this analysis are available on <a href="http://NeuroMorpho.Org">NeuroMorpho.Org</a>. For instructions to generate PDVs from SWC files or additional information on their interpretation, refer respectively to the corresponding GitHub page <a href="https://github.com/Nevermore520/NeuronTools">https://github.com/Nevermore520/NeuronTools</a> or to the Frequently Asked Question entry of <a href="http://NeuroMorpho.Org">NeuroMorpho.Org</a> <a href="http://neuromorpho.org/myfaq.jsp?id=qr11">http://neuromorpho.org/myfaq.jsp?id=qr11</a>
+</div>
+</li>
+<li>The script then asks which feature, class label, and values you want to select for the density analysis. This varies based on your choice of dataset.</li>
+<li>In this example, we illustrated the statistical analysis on lateral line (LL) to compare class labels ‘ALL’ and ‘PLL’. Nevertheless, the comparison could be repeated for any other class labels. To do so, follow the command line instructions and provide your desired input values.</li>
+<li>The program calculates pairwise arccosine distances of different vectors based on their labels and groups them in ‘within’ or ‘across’ populations for same labels (ALL/ALL or PLL/PLL) and different labels (ALL/PLL), respectively.</li>
+<li>Afterward, the software runs student’s t-test and displays a statement indicating whether the two groups (‘within’ vs ‘across’) are statistically different based on the resulting p-value.</li>
+<li>The program also outputs a bar plot of the average value of ‘within’ and ‘across’ populations with error bars indicating S.D. (<a href="#fig10">Figure 10</a>).
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1053-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Statistical analysis of persistence diagram vectors (PDVs) relative to lateral lines (LL)</div>
+<p>The script first calculates the pairwise arccosine distances between PDVs of ‘within’ and ‘across’ populations with respect to class labels (ALL and PLL), and then performs their statistical comparison. Bar plot shows the average of ‘within’ and ‘across’ distances with error bars indicating standard deviations.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Model-specific parameters (e.g., number of clusters) will be inserted by the user through the command prompt and users will be guided with appropriate help messages from the command prompt in the clustering and classification algorithms. Furthermore, users should be advised that we have accepted the default python package parameters (e.g., number of iterations, penalties, and learning rates) offered by the Scikit-learn toolkit. Please refer to the Scikit-learn package manuals to check if the default settings are suitable for your data.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> To disregard some of the data points from the visualization or analysis based on their class or relevance, simply remove the corresponding entries from both the ‘neuron_features.csv’ and ‘neuron_labels.csv’ files. Save a copy of the original files prior to any modifications.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>In this protocol, neuronal reconstructions are quantified into measurable attributes expressed as numerical values. Moreover, the digitally reconstructed neurons are compared through unsupervised and supervised analysis, manifesting the most distinguishing features conducive to neuronal classification.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The protocol only includes morphological attributes of the neural reconstructions into account. Future variations could consider additional features in the analysis, such as genetic expression or time-lapse dynamics (<a href="#bib11">Nanda et al., 2020</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Use specified version of the tools or packages for proper functioning. Re-install tools if errors persist.</p>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Different Python packages overlap causing code to malfunction.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Install Python in a virtual environment and install a fresh copy of the mentioned packages. For further details on how to install a virtual environment for different operating systems please visit <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/</a> (Step 2 in <a href="#before-you-begin">before you begin</a>)</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>L-Measure does not produce the desired outputs (Step 1).</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Make sure the software is executable and has appropriate privileges. In Linux, for example, this is achieved using the “chmod u+x Lm.∗” command.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Depending on your data, during the classification phase you might receive a warning that some of the algorithms did not converge yet. For example, after running the supervised_classification.py script you might see a warning like: <i>(ConvergenceWarning: Stochastic Optimizer: Maximum iterations (90) reached and the optimization hasn't converged yet. warnings.warn) (Step 16)</i></p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>In such cases, you need to increase the number of iterations for that algorithm. For example, in the case above, in the multi-layer-perceptron algorithm, increase the ‘max_iter’ parameter on line 143 of the supervised_classification.py script with a text editor of your choice.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Issue running python scripts while providing input parameters (any step).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>All python scripts are enhanced with help command inside. Run ‘python [Script].py -h’ to see more information about the input parameters of the script.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Python runs into error while reading files from the provided paths (any step)</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>Check path names and file names to make sure they exist in the appropriate location and their name does not include any special characters.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Abdellah, M., Hernando, J., Eilemann, S., Lapere, S., Antille, N., Markram, H., and Schürmann, F. (2018). NeuroMorphoVis: a collaborative framework for analysis and visualization of neuronal morphology skeletons reconstructed from microscopy stacks. Bioinformatics <i>34</i>, i574-i582. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bty231">https://doi.org/10.1093/bioinformatics/bty231</a></p>
+<p id="bib2">Ascoli, G.A., Donohue, D.E., and Halavi, M. (2007). NeuroMorpho.Org: a central resource for neuronal morphologies. J. Neurosci. <i>27</i>, 9247-9251. <a class="external-link" href="https://doi.org/10.1523/JNEUROSCI.2055-07.2007">https://doi.org/10.1523/JNEUROSCI.2055-07.2007</a></p>
+<p id="bib3">Ascoli, G.A., Maraver, P., Nanda, S., Polavaram, S., and Armañanzas, R. (2017). Win-win data sharing in neuroscience. Nat. Methods <i>14</i>, 112-116. <a class="external-link" href="https://doi.org/10.1038/nmeth.4152">https://doi.org/10.1038/nmeth.4152</a></p>
+<p id="bib4">Ascoli, G.A. and Wheeler, D.W. (2016). In search of a periodic table of the neurons: axonal-dendritic circuitry as the organizing principle. BioEssays <i>38</i>, 969-976. <a class="external-link" href="https://doi.org/10.1002/bies.201600067">https://doi.org/10.1002/bies.201600067</a></p>
+<p id="bib5">Bandrowski, A., Brush, M., Grethe, J.S., Haendel, M.A., Kennedy, D.N., Hill, S., Hof, P.R., Martone, M.E., Pols, M., Tan, S.S., et al. (2016). The Resource Identification Initiative: a cultural shift in publishing. Neuroinformatics <i>14</i>, 169-182. <a class="external-link" href="https://doi.org/10.1007/s12021-015-9284-3">https://doi.org/10.1007/s12021-015-9284-3</a></p>
+<p id="bib6">Bijari, K., Zare, H., Veisi, H., and Bobarshad, H. (2018). Memory-enriched big bang–big crunch optimization algorithm for data clustering. Neural Comput. Appl. <i>29</i>, 111-121. <a class="external-link" href="https://doi.org/10.1007/s00521-016-2528-9">https://doi.org/10.1007/s00521-016-2528-9</a></p>
+<p id="bib7">Garcia-Segura, L.M. and Perez-Marquez, J. (2014). A new mathematical function to evaluate neuronal morphology using the Sholl analysis. J. Neurosci. Methods <i>226</i>, 103-109. <a class="external-link" href="https://doi.org/10.1016/j.jneumeth.2014.01.016">https://doi.org/10.1016/j.jneumeth.2014.01.016</a></p>
+<p id="bib8">Geurts, P., Ernst, D., and Wehenkel, L. (2006). Extremely randomized trees. Mach Learn. <i>63</i>, 3-42. <a class="external-link" href="https://doi.org/10.1007/s10994-006-6226-1">https://doi.org/10.1007/s10994-006-6226-1</a></p>
+<p id="bib9">Kanari, L., Dłotko, P., Scolamiero, M., Levi, R., Shillcock, J., Hess, K., and Markram, H. (2018). A topological representation of branching neuronal morphologies. Neuroinformatics <i>16</i>, 3-13. <a class="external-link" href="https://doi.org/10.1007/s12021-017-9341-1">https://doi.org/10.1007/s12021-017-9341-1</a></p>
+<p id="bib10">Li, Y., Wang, D., Ascoli, G.A., Mitra, P., and Wang, Y. (2017). Metrics for comparing neuronal tree shapes based on persistent homology. PLoS One <i>12</i>, e0182184. <a class="external-link" href="https://doi.org/10.1371/journal.pone.0182184">https://doi.org/10.1371/journal.pone.0182184</a></p>
+<p id="bib11">Nanda, S., Bhattacharjee, S., Cox, D.N., and Ascoli, G.A. (2020). Distinct relations of microtubules and actin filaments with dendritic architecture. iScience <i>23</i>, 101865. <a class="external-link" href="https://doi.org/10.1016/j.isci.2020.101865">https://doi.org/10.1016/j.isci.2020.101865</a></p>
+<p id="bib12">Nanda, S., Chen, H., Das, R., Bhattacharjee, S., Cuntz, H., Torben-Nielsen, B., Peng, H., Cox, D.N., De Schutter, E., and Ascoli, G.A. (2018). Design and implementation of multi-signal and time-varying neural reconstructions. Sci. Data <i>5</i>, 170207. <a class="external-link" href="https://doi.org/10.1038/sdata.2017.207">https://doi.org/10.1038/sdata.2017.207</a></p>
+<p id="bib13">Peng, H., Zhou, Z., Meijering, E., Zhao, T., Ascoli, G.A., and Hawrylycz, M. (2017). Automatic tracing of ultra-volumes of neuronal images. Nat. Methods <i>14</i>, 332-333. <a class="external-link" href="https://doi.org/10.1038/nmeth.4233">https://doi.org/10.1038/nmeth.4233</a></p>
+<p id="bib14">Polavaram, S., Gillette, T.A., Parekh, R., and Ascoli, G.A. (2014). Statistical analysis and data mining of digital reconstructions of dendritic morphologies. Front. Neuroanat. <i>8</i>. . <a class="external-link" href="https://doi.org/10.3389/fnana.2014.00138">https://doi.org/10.3389/fnana.2014.00138</a></p>
+<p id="bib15">Rosenberg, A. and Hirschberg, J. (2007). V-measure: a conditional entropy-based external cluster evaluation measure. In Proceedings of the 2007 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning (EMNLP-CoNLL). Presented at the CoNLL-EMNLP 2007 (Association for Computational Linguistics), pp. 410-420. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00573-6/sref15">View at publisher</a></p>
+<p id="bib16">Scorcioni, R., Polavaram, S., and Ascoli, G.A. (2008). L-Measure: a web-accessible tool for the analysis, comparison and search of digital reconstructions of neuronal morphologies. Nat. Protoc. <i>3</i>, 866-876. <a class="external-link" href="https://doi.org/10.1038/nprot.2008.51">https://doi.org/10.1038/nprot.2008.51</a></p>
+<p id="bib17">Sholl, D.A. (1953). Dendritic organization in the neurons of the visual and motor cortices of the cat. J. Anat. <i>87</i>, 387-406. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00573-6/sref17">View at publisher</a></p>
+<p id="bib18">Valera, G., Markov, D.A., Bijari, K., Randlett, O., Asgharsharghi, A., Baudoin, J.-P., Ascoli, G.A., Portugues, R., and López-Schier, H. (2021). A neuronal blueprint for directional mechanosensation in larval zebrafish. Curr. Biol. <i>0</i>. . <a class="external-link" href="https://doi.org/10.1016/j.cub.2021.01.045">https://doi.org/10.1016/j.cub.2021.01.045</a></p>
+<p id="bib19">Wright, S.N., Kochunov, P., Mut, F., Bergamino, M., Brown, K.M., Mazziotta, J.C., Toga, A.W., Cebral, J.R., and Ascoli, G.A. (2013). Digital reconstruction and morphometric analysis of human brain arterial vasculature from magnetic resonance angiography. Neuroimage <i>82</i>, 170-181. <a class="external-link" href="https://doi.org/10.1016/j.neuroimage.2013.05.089">https://doi.org/10.1016/j.neuroimage.2013.05.089</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources should be directed to and will be fulfilled by the lead contact, Giorgio A. Ascoli (<a href="mailto:ascoli@gmu.edu">ascoli@gmu.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate any reagents.</p>
+<h4>Data and code availability</h4>
+<p>All image stacks, data, and scripts of this protocol are publicly available on GitLab at <a href="https://gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol/tree/master/">https://gitlab.orc.gmu.edu/kbijari/zebrafish-analysis-protocol/tree/master/</a>. Neuronal reconstructions are available at <a href="http://NeuroMorpho.Org">NeuroMorpho.Org</a> (Lopez-Schier archive)</p>
+<h3>Acknowledgments</h3>
+<p>This work is supported by <a href="https://doi.org/10.13039/100000002">NIH</a> R01NS39600, U01MH114829, and R01NS86082 grants to G.A.A. and <a href="https://doi.org/10.13039/100000002">NIH</a> U19NS104653 and <a href="https://doi.org/10.13039/501100002347">BMBF</a> 01GQ1904 grants to H.L.-S.</p>
+<h3>Author contributions</h3>
+<p>K.B. and G.A.A. designed the specifications of the protocol. G.V. and H.L.-S. conducted all wet lab experiments and neuronal tracings. K.B. and G.A.A quantified the neuronal morphologies and ran the analysis. K.B. wrote the Python scripts. K.B. and G.A.A. wrote the manuscript with feedback from G.V. and H.L.-S. G.A.A. was responsible for funding acquisitions and project management.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

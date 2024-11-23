@@ -1,0 +1,491 @@
+<article>
+<section>
+<h1 id="header">An optimized protocol for acquiring and processing cryo-EM data of human 26S proteasome with M1-Ub<sub>6</sub>
+</h1>
+<p><time datetime="2021-01-22">Published: January 22, 2021</time></p>
+<p>Xiang Chen,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Dan Shi,<sup><a href="#aff2">2</a></sup> Ping Zhang,<sup><a href="#aff3">3</a></sup> and Kylie J. Walters<sup><a href="#aff1">1</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Protein Processing Section, Center for Structural Biology, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Frederick, MD 21702, USA</p>
+<p id="aff2"><sup>2</sup>Center for Structural Biology, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Frederick, MD 21702, USA</p>
+<p id="aff3"><sup>3</sup>Kinase Complexes Section, Center for Structural Biology, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Frederick, MD 21702, USA</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:kylie.walters@nih.gov">kylie.walters@nih.gov</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100278">10.1016/j.xpro.2020.100278</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The 26S proteasome is specialized for regulated protein degradation. It is formed by a regulatory particle (RP) that recognizes ubiquitinated substrates and caps a hollow cylindrical core particle (CP) where substrates are proteolyzed. Structural heterogeneity caused by dynamics makes it challenging to observe ubiquitin chains at the RP by cryogenic electron microscopy (cryo-EM). Here, we present a cryo-EM-based protocol we applied to study the human 26S proteasome with ubiquitin chains by using non-cleavable M1-linked hexaubiquitin (M1-Ub<sub>6</sub>) unanchored to a substrate.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib5">Chen et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Method to study the human 26S proteasome with ubiquitin chains by cryo-EM</li>
+<li>Step-by-step protocol from sample preparation to grid making by Vitrobot</li>
+<li>RELION use to process data and analyze proteasome structural heterogeneity</li>
+<li>Use of Coot and Phenix to build and refine atomic models</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/415-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Describe what needs to be set up or prepared before a researcher begins the protocol.</p>
+<h3 id="sec1.1">Order protein samples and grids</h3>
+<p>Human 26S proteasome (Enzo Life Sciences, BML-PW9310)</p>
+<p>Non-cleavable M1-Ub<sub>6</sub> (UBPBio, D4400)</p>
+<p>E6AP (UBPBio, K1411)</p>
+<p>200-mesh Quantifoil R 1.2/1.3 holey carbon copper grids (Original supplier: Quantifoil Micro Tools GmbH; Vendor: Electron Microscopy Sciences, Q2100-CR1.3) that contain ∼1.2 μm circular holes with a spacing of ∼1.3 μm between the holes.</p>
+<h3 id="sec1.2">Prepare the buffer</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>Prepare 50 mL of buffer 1 (50 mM Tris [pH 7.5], 50 mM NaCl, 5 mM MgCl<sub>2</sub>, 10 μM zinc sulfate), filter with 0.22 μm filter. This buffer can be stored at 4 ºC for 1–2 weeks.</p>
+<h3 id="sec1.3">Download PDB and EMDB</h3>
+<p>From the Protein Data Bank (PDB, <a href="http://www.rcsb.org">www.rcsb.org</a>) or Electron Microscopy Data Bank (EMDB, <a href="http://www.ebi.ac.uk">www.ebi.ac.uk</a>) download the published atomic structures and density maps for different conformational states of the 26S proteasome in substrate-free forms or with substrate (<a href="#key-resources-table">Key resources table</a>).</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>ATP-γ-S</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# A1388</td>
+</tr>
+<tr>
+<td>26S proteasome (human)</td>
+<td>Enzo Life Sciences</td>
+<td>Cat# BML-PW9310</td>
+</tr>
+<tr>
+<td>Non-cleavable M1-Ub<sub>6</sub>
+</td>
+<td>UBPBio</td>
+<td>Cat# D4400</td>
+</tr>
+<tr>
+<td>E6AP/UBE3A</td>
+<td>UBPBio</td>
+<td>Cat# K1411</td>
+</tr>
+<tr>
+<td>Zeba micro spin desalting columns (7k MWCO)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 89883</td>
+</tr>
+<tr>
+<td>NuPAGE 4%–12% bis-Tris gel</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# NP0322BOX</td>
+</tr>
+<tr>
+<td>200-mesh Quantifoil R 1.2/1.3 holey carbon copper grids</td>
+<td>Original: Quantifoil Micro ToolsVendor: Electron Microscopy Sciences</td>
+<td>Cat# Q2100-CR1.3</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>S<sub>A</sub>-like map of human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP</td>
+<td>(<a href="#bib5">Chen et al., 2020</a>)</td>
+<td>EMDB: EMD-21691EMPIAR: EMPIAR-10401</td>
+</tr>
+<tr>
+<td>S<sub>A</sub>-like structure of human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP</td>
+<td>(<a href="#bib5">Chen et al., 2020</a>)</td>
+<td>PDB: 6WJD</td>
+</tr>
+<tr>
+<td>S<sub>D</sub>-like map of human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP</td>
+<td>(<a href="#bib5">Chen et al., 2020</a>)</td>
+<td>EMDB: EMD-21696EMPIAR: EMPIAR-10401</td>
+</tr>
+<tr>
+<td>S<sub>D</sub>-like structure of human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP</td>
+<td>(<a href="#bib5">Chen et al., 2020</a>)</td>
+<td>PDB: 6WJN</td>
+</tr>
+<tr>
+<td>S<sub>A</sub> map of human 26S proteasome</td>
+<td>(<a href="#bib17">Zhu et al., 2018</a>)</td>
+<td>EMDB: EMD-8666</td>
+</tr>
+<tr>
+<td>S<sub>A</sub> structure of human 26S proteasome</td>
+<td>(<a href="#bib17">Zhu et al., 2018</a>)</td>
+<td>PDB: 5VFS</td>
+</tr>
+<tr>
+<td>S<sub>D</sub> map of human 26S proteasome</td>
+<td>(<a href="#bib4">Chen et al., 2016</a>)</td>
+<td>EMDB: EMD-8337</td>
+</tr>
+<tr>
+<td>S<sub>D</sub> structure of human 26S proteasome</td>
+<td>(<a href="#bib4">Chen et al., 2016</a>)</td>
+<td>PDB: 5T0J</td>
+</tr>
+<tr>
+<td>S<sub>D3</sub> map of human 26S proteasome</td>
+<td>(<a href="#bib17">Zhu et al., 2018</a>)</td>
+<td>EMDB: EMD-8665</td>
+</tr>
+<tr>
+<td>S<sub>D3</sub> structure of human 26S proteasome</td>
+<td>(<a href="#bib17">Zhu et al., 2018</a>)</td>
+<td>PDB: 5VFR</td>
+</tr>
+<tr>
+<td>E<sub>A2</sub> map of human 26S proteasome with K63-ubiquitinated Sic1<sup>PY</sup>
+</td>
+<td>(<a href="#bib7">Dong et al., 2019</a>)</td>
+<td>EMDB: EMD-9217</td>
+</tr>
+<tr>
+<td>E<sub>A2</sub> structure of human 26S proteasome with K63-ubiquitinated Sic1<sup>PY</sup>
+</td>
+<td>(<a href="#bib7">Dong et al., 2019</a>)</td>
+<td>PDB: 6MSD</td>
+</tr>
+<tr>
+<td>s4 structure (4D) of yeast 26S proteasome with K63-ubiquitinated substrate</td>
+<td>(<a href="#bib6">de la Peña et al., 2018</a>)</td>
+<td>EMDB: EMD-9045</td>
+</tr>
+<tr>
+<td>s4 structure (4D) of yeast 26S proteasome with K63-ubiquitinated substrate</td>
+<td>(<a href="#bib6">de la Peña et al., 2018</a>)</td>
+<td>PDB: 6EF3</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>SerialEM (version 3.7.14)</td>
+<td>(<a href="#bib10">Mastronarde, 2005</a>)</td>
+<td><a href="https://bio3d.colorado.edu/SerialEM/">https://bio3d.colorado.edu/SerialEM/</a></td>
+</tr>
+<tr>
+<td>RELION (version 3.0.8)</td>
+<td>(<a href="#bib13">Scheres, 2012</a>; <a href="#bib18">Zivanov et al., 2018</a>)</td>
+<td><a href="https://www3.mrc-lmb.cam.ac.uk/relion/index.php/Main_Page">https://www3.mrc-lmb.cam.ac.uk/relion/index.php/Main_Page</a></td>
+</tr>
+<tr>
+<td>MotionCor2</td>
+<td>(<a href="#bib16">Zheng et al., 2017</a>)</td>
+<td><a href="https://emcore.ucsf.edu/ucsf-motioncor2">https://emcore.ucsf.edu/ucsf-motioncor2</a></td>
+</tr>
+<tr>
+<td>CTFFIND4</td>
+<td>(<a href="#bib12">Rohou and Grigorieff, 2015</a>)</td>
+<td><a href="https://grigoriefflab.umassmed.edu/ctffind4">https://grigoriefflab.umassmed.edu/ctffind4</a></td>
+</tr>
+<tr>
+<td>UCSF Chimera</td>
+<td>(<a href="#bib11">Pettersen et al., 2004</a>)</td>
+<td><a href="https://www.cgl.ucsf.edu/chimera/">https://www.cgl.ucsf.edu/chimera/</a></td>
+</tr>
+<tr>
+<td>Coot</td>
+<td>(<a href="#bib8">Emsley et al., 2010</a>)</td>
+<td><a href="https://strucbio.biologie.unikonstanz.de/ccp4wiki/index.php/Coot">https://strucbio.biologie.unikonstanz.de/ccp4wiki/index.php/Coot</a></td>
+</tr>
+<tr>
+<td>Phenix suite</td>
+<td>(<a href="#bib1">Adams et al., 2010</a>)</td>
+<td><a href="https://www.phenix-online.org">https://www.phenix-online.org</a></td>
+</tr>
+<tr>
+<td>EMAN2</td>
+<td>(<a href="#bib15">Tang et al., 2007</a>)</td>
+<td><a href="https://blake.bcm.edu/emanwiki/EMAN2">https://blake.bcm.edu/emanwiki/EMAN2</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<ul>
+<li>Vitrobot Mark IV (Thermo Fisher Scientific)</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> EM GP2 automatic plunge freezer (Leica Microsystems)</div>
+<ul>
+<li>PELCO easiGLOW Glow Discharge Cleaning System (Ted Pella)</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> SOLARUS model 950 advanced plasma cleaning system (Gatan)</div>
+<ul>
+<li>Titan Krios microscope (Thermo Fisher Scientific FEI) operated at 300 kV and equipped with a K2 Summit direct electron detector (Gatan).</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Talos Arctica microscope (Thermo Fisher Scientific FEI) operated at 200 kV and equipped with a K3 direct electron detector (Gatan).</div>
+<p>Beside the Thermo Fisher Scientific FEI microscopes, JEOL also makes 300 kV and 200 kV microscopes that can be used for cryo-EM data collection.</p>
+<ul>
+<li>Computational resources for image data processing and required software are listed in the <a href="#key-resources-table">Key resources table</a>.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> We utilized the computational resources of the High-Performance Computing Biowulf cluster of the NIH (<a href="http://hpc.nih.gov">http://hpc.nih.gov</a>) for data processing. Maximum capacity of RELION is 6272 CPUs or 56 GPUs.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> RELION can also be run on an independent workstation such as fitted with the following hardware: CPU (Intel Xeon Gold 6140 2.2 up to 3.9 GHz 18-Core Processor), CPU Memory (64 GB Quad Channel Registered ECC DDR4 at 2,666 MHz), Storage (1 TB NVMe SSD; 7.68 TB NVMe SSD; 40 TB HDD), GPU (4 × 12 GB Titan V with 5120 CUDA Cores-Blower).</div>
+<div class="note">
+<span class="note-title">Note:</span> Computer hardware recommendations for running RELION can be found in the “Benchmarks &amp; computer hardware” section of the RELION website (<a href="https://www3.mrc-lmb.cam.ac.uk/relion/index.php/Main_Page">https://www3.mrc-lmb.cam.ac.uk/relion/index.php/Main_Page</a>).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Sample preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼90 min</div>
+<p>Commercial protein samples contain 10% glycerol which needs to be removed by using a desalting column.</p>
+<ol>
+<li>Thaw the protein samples, namely human 26S proteasome (100 μg, 1 μg/μL), non-cleavable M1-Ub<sub>6</sub> (100 μg, 1 μg/μL), and E6AP (100 μg, 1.1 μg/μL), on ice for 30–60 min prior to sample preparation.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> These reagents were always stored at −80°C following receipt to avoid freeze-thaw cycles.</div>
+<ol start="2">
+<li>Add 4.1 mg ATP-γ-S and 1.5 mg DTT to 5 mL of buffer 1 to make 5 mL of buffer 2 (50 mM Tris [pH 7.5], 50 mM NaCl, 1.5 mM ATP-γ-S, 5 mM MgCl<sub>2</sub>, 2 mM DTT, and 10 μM zinc sulfate).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Always use freshly prepared buffer 2.</div>
+<ol start="3">
+<li>Pre-cool a bench-top microcentrifuge and 2 mL microcentrifuge tubes to 4°C</li>
+<li>Obtain a Zeba Micro Spin Desalting Column (7k MWCO, Thermo Fisher 89883) and remove the column’s bottom closure, and loosen the cap.</li>
+<li>Place the column into the pre-cooled 2 mL microcentrifuge tube and spin at 1,500 × <i>g</i> and 4°C for 1 min to remove the storage solution.</li>
+<li>Discard the flow-through and add 300 μL buffer 2 to the top of the column resin. Spin at 1,500 × <i>g</i> and 4°C for 1 min and discard the flow-through. Repeat this step twice.</li>
+<li>Transfer the column to a new pre-cooled 2 mL microcentrifuge tube and add human 26S proteasome to the top of the column resin.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Add at least 70 μL of sample volume to ensure maximum sample recovery.</div>
+<ol start="8">
+<li>Spin the sample-loaded column at 1,500 × <i>g</i> and 4°C for 2 min. Collect the flow-through which contains human 26S proteasome.</li>
+<li>Repeat steps 3–8 to buffer exchange the samples containing non-cleavable M1-Ub<sub>6</sub> and E6AP.</li>
+<li>Use SDS-PAGE with a NuPAGE 4%–12% Bis-Tris gel (Thermo Fisher Scientific, NP0322Box) to check the purity and presence of each protein sample. (<a href="#sec7.1">Troubleshooting 1</a>)</li>
+<li>Mix human 26S proteasome, non-cleavable M1-Ub<sub>6</sub>, and E6AP at a molar ratio of 1:10:5 respectively. Incubate the protein mixture for 30–40 min.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It will take 30–40 min to prepare the Vitrobot instrument, make liquid ethane, and glow-discharge the grids. While incubating the protein mixture, we immediately start the following steps.</div>
+<h3 id="sec3.2">Cryo-EM grid preparation by using a Vitrobot Mark IV</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 h</div>
+<p>Cryo-EM grids were prepared with a Vitrobot Mark IV</p>
+<ol start="12">
+<li>Turn on the Vitrobot and fill the humidifier with distilled H<sub>2</sub>O.</li>
+<li>Setup the Vitrobot climate chamber to be equilibrated to 18°C and 100% relative humidity.</li>
+<li>Put new filter paper (grade 595, 55/20 mm diameter, Ted Pella) on the Vitrobot blotting pad.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We replace the filter paper generally after freezing four grids as it will become saturated in the chamber with 100% relative humidity.</div>
+<ol start="15">
+<li>Cool the liquid nitrogen and liquid ethane container by using liquid nitrogen and fill the copper cup with liquid ethane. The ethane gas that we used is research grade purity of 99.999% (Matheson).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Liquid ethane can cause severe burns if it is spilled on the skin. Ethane is also extremely flammable and explosive.</div>
+<div class="note">
+<span class="note-title">Note:</span> A detailed video for filling the ethane cup can be found in the Unit 2 Sample Preparation lecture (video #17 Plunge freezing with a Vitrobot: Filling the ethane cup) by Dr. Grant Jensen, Professor of Biology, Caltech; the website for this course is <a href="http://cryo-em-course.caltech.edu">http://cryo-em-course.caltech.edu</a>.</div>
+<ol start="16">
+<li>Glow-discharge 200-mesh Quantifoil R 1.2/1.3 holey carbon copper grids by using the PELCO easiGLOW Glow Discharge Cleaning System (Ted Pella). Carefully transfer each grid onto a grid holder with the carbon film side facing up. Place the loaded grid holder into the cleaning chamber. Cover the chamber with the bell jar and make sure that it is well sealed. Check the “Auto Run” settings, adjust to 30 s at 20 mA and start glow-discharge. After the glow-discharge process has completed and the system vented, remove the bell jar, and bring the grid holder out. Carefully flip each grid over to make the other side of grid facing up and glow-discharge for 30 s at 20 mA. After this procedure, transfer the grids from the grid holder to a clean glass petri dish. (See <a href="#sec7.3">Troubleshooting 2</a>)</li>
+<li>Pick up a glow-discharged grid by using a pair of Vitrobot tweezers and load it into the Vitrobot. Raise the tweezers and ethane pot into the plunge freezing position.</li>
+<li>Apply 2.0 μL of protein sample onto the carbon film side of the grid first, then apply 2.0 μL sample onto the other side of the grid.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> When adding liquid droplets to the grid, be sure not to touch the grid surface with the pipet tip.</div>
+<ol start="19">
+<li>Blot the grid for 1.0 s with a blotting force set to 0.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Blotting condition will vary from Vitrobot to Vitrobot. For the Vitrobot Mark IV instrument that we used, we started from blot times ranging from 0.5 to 2.0 s and protein sample volumes of 1.8–3.0 μL. After several rounds of grid preparation and screening by electron microscopy, we found an optimized conditions of 1.0 s blot time and 2.0 μL of protein sample applied to each side of the grid.</div>
+<ol start="20">
+<li>Plunge the grid into the liquid ethane.</li>
+<li>Transfer the frozen grid to a grid box while keeping it submerged in liquid nitrogen.</li>
+<li>Repeat steps 17–21 to make multiple grids with various blotting force ranging from 0 to 14 to identify best conditions for optimized ice coverage.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be careful not to bend the grids and discard any grids that are bent.</div>
+<ol start="23">
+<li>Store the grid box with frozen grids in liquid nitrogen until data screening and collection. (<a href="#sec7.5">Troubleshooting 3</a> and <a href="#sec7.7">4</a>)</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A detailed tutorial for cryo-EM grid preparation by Vitrobot and for clipping grids and transferring them to an autoloader cassette can be found in the Unit 2 Sample Preparation lecture by Dr. Grant Jensen, Professor of Biology, Caltech; the website for this course is <a href="http://cryo-em-course.caltech.edu">http://cryo-em-course.caltech.edu</a>.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The grid box with frozen grids can be stored in a large liquid nitrogen Dewar for at least several months.</div>
+<h3 id="sec3.3">Image data collection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–5 days</div>
+<ol start="24">
+<li>Prepare each frozen grid for the microscope autoloader in a transfer station pre-cooled in liquid nitrogen by clipping each individually with a clip ring and C-clip; these processed grids are referred to as AutoGrids.</li>
+<li>Transfer the AutoGrids to an autoloader cassette pre-cooled in liquid nitrogen.</li>
+<li>Load the cassette into the autoloader of the Titan Krios microscope (Thermo Fisher Scientific FEI) operating at 300 kV and equipped with a K2 Summit direct electron detector (Gatan).</li>
+<li>Scan individual grids by using SerialEM to find one suitable for data collection, as assessed by sufficient quantity of dispersed particles and thin layer of vitreous ice. (<a href="#sec7.9">Troubleshooting 5</a>)</li>
+<li>Fine tune the microscope direct alignment prior to data collection. Use SerialEM software (<a href="#bib10">Mastronarde, 2005</a>) to perform the automated data collection.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> We used the single-shot setting during this data collection. But the multi-shot setting can be very useful for speeding up the data collection. For example, we can use multi-shot (beam tilt) per stage movement on the Quantifoil R 0.6/1.0 grid to acquire 128 movies per hour with 4 shots per marked spot.</div>
+<div class="note">
+<span class="note-title">Note:</span> Our cryo-EM data of human 26S proteasome incubated with 10-fold molar excess non-cleavable M1-Ub<sub>6</sub> and 5-fold molar excess E6AP was acquired on a Titan Krios microscope (300 kV) equipped with a K2 Summit direct electron detector (Gatan). A total of 6,216 movies were recorded in the super-resolution mode at a magnification of 18,000× with pixel size of 0.682 Å/pixel. The dose rate was at 4.58 e<sup>−</sup>/Å<sup>2</sup>/s. We set the data movie length at 8.0 s and dose fractionation at 0.2 s per frame. Each movie has 40 frames for an accumulated dose of 36.64 e<sup>−</sup>/Å<sup>2</sup>. Defocus values that range from −0.8 to −2.0 μm with an increment step size of 0.2 μm were used. The dark reference subtracted raw movies were saved in compressed tiff format. The calibrated physical pixel size is 1.365 Å/pixel.</div>
+<h3 id="sec3.4">Image data processing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–5 weeks</div>
+<div class="note">
+<span class="note-title">Note:</span> All cryo-EM data analyses can be done by using the software RELION 3.0.8 (<a href="#bib18">Zivanov et al., 2018</a>), applying the camera defect map and the gain reference file to the raw data. The steps that follow are also highlighted in the RELION-3.0 tutorial “Single-particle process in RELION-3.0” (Sjors H.W. Scheres, ftp://ftp.mrc-lmb.cam.ac.uk/pub/scheres/relion30_tutorial.pdf)</div>
+<ol start="29">
+<li>Copy the raw movies in a compressed form from the detector workstation to the workstation where the data will be processed with RELION installed. Uncompress the raw movies and apply the gain reference correction.</li>
+<li>In RELION, run the “Import” job function to import all movies.</li>
+<li>Run the “Motion correction” job. Align movies to compensate for sample movement and drift induced by the beam. Use the MotionCor2 algorithm (<a href="#bib16">Zheng et al., 2017</a>) or RELION’s own implementation to yield drift-corrected micrographs.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When running the “Motion correction” job for the first time in RELION, it is worth first testing a small set of movies (5–10) to trouble shoot various parameters, such as location of the MOTIONCOR2 executable, how many GPU to use, how much memory per thread to set, the number of MPI (message passing interface) nodes and shared-memory threads to set. Insufficient memory or inappropriate RELION options can kill the job. Check the run.out, run.err files and the output logfile.pdf and corrected_micrographs.star to make sure that the job runs smoothly.</div>
+<ol start="32">
+<li>Run the “CTF estimation” job to perform the contrast transfer function (CTF) estimation by CTFFIND4 (<a href="#bib12">Rohou and Grigorieff, 2015</a>).</li>
+<li>Visualize and examine the CTF estimated micrographs and discard those with poor Thon rings.</li>
+<li>Manually pick an initial set of particles (2,000–3,000 particles).</li>
+<li>Run the “Particle extraction” job to extract the manually picked particles.</li>
+<li>Run the “2D classification” job to generate 2D classes of manually picked particles. The number of classes can be set to 10 and number of iterations to 25.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For running the “2D classification” job of manually picked particles, the number of classes can be set to 10–50. For running the “2D classification” job of auto-picked particles as described below, the number of classes can be set to 100–150. We normally keep the number of iterations to 25 as suggested in the RELION-3.0 tutorial.</div>
+<ol start="37">
+<li>After the 2D classification job has finished, launch the “Subset selection” job and read the run_it025_model.star file. From the 2D classes generated in step 36, select suitable 2D classes with various orientations of appropriately looking proteasome particles to generate templates for auto-picking. Here we selected 4 class averages to generate templates.</li>
+<li>Run the “Auto-picking” job to automatically pick particles based on the 2D class templates generated above.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Before running the auto-picking on all micrographs, a few micrographs can be selected to optimize the main parameters of the auto-picking job. Please check the RELION-3.0 tutorial for detailed instructions.</div>
+<ol start="39">
+<li>Run the “Particle extraction” job to extract the automatically picked particles.</li>
+<li>Manually inspect the micrographs with the particles auto-picked in step 39 to add particles missed by the auto-picking. We picked missed particles following the template created in step 37. For the cryo-EM sample of human 26S proteasome with non-cleavable M1-Ub<sub>6</sub> and E6AP included, a total of 1,050,369 particles were picked and extracted by using a box size of 450 pixels.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For 26S proteasome, the particle size is 180 Å by 440 Å making manual inspection helpful and enabling particles missed by auto-picking to be visualized and added. This manual inspection step is a labor-intensive step and took a long time (roughly 80 images per hour). It is an optional step as it may be tough for user to manually inspect over 10,000 micrographs. Also, manual inspection is less useful for smaller protein complexes, which are hard to visualize.</div>
+<ol start="41">
+<li>Run the “2D classification” job to do reference-free 2D class averaging. The number of classes can be set to 150 and number of iterations to 25.</li>
+<li>After the 2D classification job finishes, launch the “Subset selection” job and read the run_it025_model.star file. Select and save all classes with various orientations of appropriately looking proteasome particles and discard the relatively small number of classes that show inappropriate 2D class averages resulting from contamination.</li>
+<li>Perform three rounds of 2D classification (Regularization parameter T=2) to identify and discard false positives or other apparent contamination. Following 2D classification, we obtained 593,942 particles to yield 65 suitable 2D classes with various proteasome orientations that were selected, re-centered, and re-extracted.</li>
+<li>These particles were subjected to one round of unsupervised 3D classification (T=4) by running the “3D classification” job. We set the number of classes to 6 and number of iterations to 50. The EMAN2 command e2pdb2mrc.py was applied to a reference map from a human proteasome model (PDB: 5VFP) (<a href="#bib17">Zhu et al., 2018</a>).</li>
+<li>In our case, the particles were classified into six 3D classes. One class with 134,217 particles showed single capped proteasome (RP-CP) while another with 30,570 particles showed double capped proteasome (2PR-CP). Auto-refinement was performed with a pixel size of 1.365 Å for each of these two classes by running the “Refine3D” job separately.</li>
+<li>2RP-CP particles were then converted to pseudo RP-CP particles to perform particle symmetry expansion in RELION by running the command “relion_particle_symmetry_expand.”</li>
+<li>The combined RP-CP and pseudo RP-CP particles were subjected to another round of auto-refinement by running a “Refine3D” job.</li>
+<li>To investigate the conformational states of the RP, we subtracted CP signal from the particles and conducted masked 3D classifications (T=10) with 8 classes focusing on the RP, as described in previous studies (<a href="#bib2">Bai et al., 2015</a>; <a href="#bib14">Scheres, 2016</a>). 3 classes of RP-CP particles (contributing 39.3%) fit well to the free human proteasome S<sub>D</sub> state map (EMDB: EMD-8337) (<a href="#bib4">Chen et al., 2016</a>) and showed extra density. These classes were combined for a further auto-refinement job “Refine3D.”</li>
+<li>2 classes of RP-CP particles (contributing 18.9%) fit well to the free human proteasome S<sub>A</sub> state map (EMDB: EMD-8666) (<a href="#bib4">Chen et al., 2016</a>) and showed extra density, as did one additional class of pseudo RP-CP particles (contributing 20.5%). These classes were combined for an auto-refinement job “Refine3D.”</li>
+<li>After performing 3D auto-refinement, the map is sharpened. First a mask is created by the “Mask creation” job with the output map from the 3D auto-refinement. Then the map is sharpened by running the “Post-processing” job.</li>
+<li>By running “CTF refinement” and “Bayesian polishing” jobs in RELION, per-particle CTF refinements and Bayesian polishing are applied and the per-particle defocus and beam tilt estimation added to an output shiny.star file.</li>
+<li>Running a new “Refine3D” and a corresponding “Post-processing” job with the shiny particles improve the resolution of the reconstruction. The final maps in our case were sharpened using a B-factor of −76 Å<sup>2</sup> (combined RP-CP and pseudo RP-CP), −104 Å<sup>2</sup> (S<sub>A</sub>-like state), or −133 Å<sup>2</sup> (S<sub>D</sub>-like state).</li>
+<li>All resolutions are estimated by applying a soft mask around the protein density and 0.143 Fourier Shell Correlation (FSC) value. The combined RP-CP, the S<sub>A</sub> state, or the S<sub>D</sub> state map was refined to 4.1, 4.8 or 5.7 Å resolution respectively and local resolutions for the density maps calculated by running the “Local resolution” job in RELION (<a href="#bib9">Kucukelbir et al., 2014</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> UCSF Chimera (<a href="#bib11">Pettersen et al., 2004</a>) can be used to calculate density map correlations and to make segmentation maps.</div>
+<h3 id="sec3.5">Atomic model building and refinement</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 weeks</div>
+<ol start="54">
+<li>To build the initial atomic model of the S<sub>A</sub>-like state for ATP-γ-S-bound human 26S proteasome with non-cleavable M1-Ub<sub>6</sub> and E6AP a previously published ATP-γ-S-bound human 26S proteasome with K63-ubiquitinated Sic1<sup>PY</sup> E<sub>A2</sub> state structure (PDB: 6MSD) was used.</li>
+<li>In UCSF Chimera (<a href="#bib11">Pettersen et al., 2004</a>), PDB 6MSD was fitted as a rigid body into the S<sub>A</sub>-like state density map and the coordinates of the structure was saved.</li>
+<li>These coordinates were further adjusted manually to improve the mainchain and sidechain fitting, and to avoid clashes in Coot (<a href="#bib8">Emsley et al., 2010</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The Coot user manual and tutorial can be found at the Coot official web page (<a href="https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/">https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/</a>).</div>
+<ol start="57">
+<li>The structural model was further refined by using the “Real-space refinement” module in the Phenix suite (<a href="#bib1">Adams et al., 2010</a>), with NCS, secondary structure, rotamer, and Ramachandran restraints. After each round of “Real-space refinement,” open Coot in the Phenix suite to show the atomic model and map. Examine the validation report to check for warning messages or problems highlighted and manually correct the model as needed to improve the density fitting. If the model required changes, another round of refinement can be run in Phenix, followed by examining the validation report and correcting the model again as needed in Coot. This cycle is repeated until the atomic model with the best model-to-map fitting and geometric quality is obtained.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The Phenix Real Space Refinement tutorial can be found at the Phenix web page (<a href="https://www.phenix-online.org/documentation/index.html">https://www.phenix-online.org/documentation/index.html</a>).</div>
+<ol start="58">
+<li>To build the initial atomic model of the S<sub>D</sub>-like state for ATP-γ-S-bound human 26S proteasome with non-cleavable M1-Ub<sub>6</sub> and E6AP, a previously published ATP-γ-S-bound human 26S proteasome S<sub>D3</sub> state structure (PDB: 5VFR) was used. The coordinates were further adjusted manually in Coot and refined in Phenix as described in steps 56 and 57.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In the E<sub>D</sub> states of the 26S proteasome bound to K63-ubiquitin conjugated to Sic1<sup>PY</sup> ubiquitin density was not observed (<a href="#bib7">Dong et al., 2019</a>); however, in the s4 state of yeast 26S proteasome with K63-ubiquitinated substrate, ubiquitin was observed near Rpn11 (EMDB: EMD-9045; PDB: 6EF3). This finding corresponds well with the extra density of the S<sub>D</sub>-like state in our study, validating the assignment of this extra density to ubiquitin.</div>
+<ol start="59">
+<li>Use the stand-alone wwwPDB Validation Service (<a href="https://validat.wwpdb.org">https://validat.wwpdb.org</a>) to check the atomic model and map prior to deposition. Use wwPDB OneDep System (<a href="https://deposit-2.wwpdb.org/deposition/">https://deposit-2.wwpdb.org/deposition/</a>) to deposit the atomic model and map. Use the EMPIAR deposition system (<a href="https://www.ebi.ac.uk/pdbe/emdb/empiar/">https://www.ebi.ac.uk/pdbe/emdb/empiar/</a>) to deposit the raw cryo-EM data.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The “Comprehensive validation” module in the Phenix suite can be used to validate the map, atomic model, and model-to-map fit.</div>
+<div class="note">
+<span class="note-title">Note:</span> UCSF Chimera (<a href="#bib11">Pettersen et al., 2004</a>) can be used to calculate density map correlations, make segmentation maps, and visualize the map and model. EMAN2 (<a href="#bib15">Tang et al., 2007</a>) can be used to generate a low-pass filter map.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>In this cryo-EM-based protocol, we have described how to use commercially available protein samples to study the structure of human 26S proteasome with non-cleavable M1-linked hexaubiquitin (M1-Ub<sub>6</sub>) unanchored to a substrate. By using RELION software to analyze the data, two conformational states of the human 26S proteasome in complex with non-cleavable M1-linked Ub<sub>6</sub> can be observed; specifically, the ground (S<sub>A</sub>) state and substrate-processing (S<sub>D</sub>) state of the proteasome (Figure 1 in (<a href="#bib5">Chen et al., 2020</a>)). In both states, ubiquitin density can be found at human Rpn11 of the proteasome, despite the absence of conjugated substrate (Figure 2 and 3 in (<a href="#bib5">Chen et al., 2020</a>)).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>All cryo-EM data sets were processed by using RELION 3.0.8 (<a href="#bib18">Zivanov et al., 2018</a>), with resolution reported based on FSC criterion of 0.143. FSC curves were calculated using soft spherical masks and high-resolution noise substitution was used to correct for convolution effects of the masks on the FSC curves (<a href="#bib3">Chen et al., 2013</a>). Refined atomic models were evaluated based on MolProbity scores and Ramachandran plots.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol uses commercially available products; therefore, protein or grid quality may vary from batch to batch. SDS-PAGE analysis is required to check the protein quality before making cryo-EM grids. If contamination or damage are consistently observed on the grids, it is recommended to try a different batch or type of Quantifoil grids, or grids from a different company (e.g., C-flat grids from Protochips). The environmental humidity can also affect ice contamination of the grid, as we observed less ice contamination in winter compared to summer. Fine alignment and tuning of the microscope prior to data collection is very important for data quality and will thus influence the final resolution of the cryo-EM map.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>SDS-PAGE shows lower molecular weight bands characteristic of sample degradation.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Always keep protein samples stored at −80°C following receipt and avoid freeze-thaw cycles. Avoid using old buffers, even when stored at 4°C. Add protease inhibitors such as Pefabloc to the buffer to help prevent proteolysis.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>After glow-discharging, the static charge causes the grids to fly off of the holder or to stick to any surface (such as the tweezers) during transfer of the grid.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Use glass petri dishes instead of plastic ones for grid storage; transfer grids without wearing gloves; touch a metal surface to release the static charge before handling grids.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Ice contamination on the grid.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>There are many ways to reduce ice contamination: always use dry liquid nitrogen; use a dry liquid nitrogen Dewar or container; use humidity control to keep the environment humidity low when freezing grids; wear a mask when handling cryo-grids; avoid talking or breathing toward the cryo-grid when transferring it or when air exposed; keep the copper cup (for liquid ethane), Vitrobot tweezers, transfer station, autoloader cassette, and any other handling tools that may touch the cryo-grids dry.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Crystalline ice formed on the grid.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Avoid warming up the cryo-grid after plunging. Always keep cryo-grids in liquid nitrogen. Reduce the time cryo-grids are exposed to the air when transferring them between containers. Pre-cool handling tweezers sufficiently before use.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Few proteasome particles are observed in the hole of the grid.</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>During vitrification, the ice layer is too thin and proteasome is excluded from the hole. If this happens, check the holes with thicker ice to see whether proteasome particles can be observed. It will be necessary to optimize the blotting condition (blot time and blot force) to adjust ice thickness, but it is important to ensure the ice is only slightly thicker than the particle diameter to maximize contrast.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Adams, P.D., Afonine, P.V., Bunkoczi, G., Chen, V.B., Davis, I.W., Echols, N., Headd, J.J., Hung, L.W., Kapral, G.J., Grosse-Kunstleve, R.W., et al. (2010). PHENIX: a comprehensive Python-based system for macromolecular structure solution. Acta Crystallogr. D Biol. Crystallogr. <i>66</i>, 213-221. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref1">View at publisher</a></p>
+<p id="bib2">Bai, X.C., Rajendra, E., Yang, G., Shi, Y., and Scheres, S.H. (2015). Sampling the conformational space of the catalytic subunit of human gamma-secretase. eLife <i>4</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref2">View at publisher</a></p>
+<p id="bib3">Chen, S., McMullan, G., Faruqi, A.R., Murshudov, G.N., Short, J.M., Scheres, S.H., and Henderson, R. (2013). High-resolution noise substitution to measure overfitting and validate resolution in 3D structure determination by single particle electron cryomicroscopy. Ultramicroscopy <i>135</i>, 24-35. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref3">View at publisher</a></p>
+<p id="bib4">Chen, S., Wu, J., Lu, Y., Ma, Y.B., Lee, B.H., Yu, Z., Ouyang, Q., Finley, D.J., Kirschner, M.W., and Mao, Y. (2016). Structural basis for dynamic regulation of the human 26S proteasome. Proc. Natl. Acad. Sci. U S A <i>113</i>, 12991-12996. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref4">View at publisher</a></p>
+<p id="bib5">Chen, X., Dorris, Z., Shi, D., Huang, R.K., Khant, H., Fox, T., de Val, N., Williams, D., Zhang, P., and Walters, K.J. (2020). Cryo-EM reveals unanchored M1-ubiquitin chain binding at hRpn11 of the 26S proteasome. Structure <i>28</i>, 1206-1217.e4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref5">View at publisher</a></p>
+<p id="bib6">de la Peña, A.H., Goodall, E.A., Gates, S.N., Lander, G.C., and Martin, A. (2018). Substrate-engaged 26S proteasome structures reveal mechanisms for ATP-hydrolysis-driven translocation. Science <i>362</i>, eaav0725. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref6">View at publisher</a></p>
+<p id="bib7">Dong, Y., Zhang, S., Wu, Z., Li, X., Wang, W.L., Zhu, Y., Stoilova-McPhie, S., Lu, Y., Finley, D., and Mao, Y. (2019). Cryo-EM structures and dynamics of substrate-engaged human 26S proteasome. Nature <i>565</i>, 49-55. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref7">View at publisher</a></p>
+<p id="bib8">Emsley, P., Lohkamp, B., Scott, W.G., and Cowtan, K. (2010). Features and development of Coot. Acta Crystallogr. D Biol. Crystallogr. <i>66</i>, 486-501. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref8">View at publisher</a></p>
+<p id="bib9">Kucukelbir, A., Sigworth, F.J., and Tagare, H.D. (2014). Quantifying the local resolution of cryo-EM density maps. Nat. Methods <i>11</i>, 63-65. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref9">View at publisher</a></p>
+<p id="bib10">Mastronarde, D.N. (2005). Automated electron microscope tomography using robust prediction of specimen movements. J. Struct. Biol. <i>152</i>, 36-51. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref10">View at publisher</a></p>
+<p id="bib11">Pettersen, E.F., Goddard, T.D., Huang, C.C., Couch, G.S., Greenblatt, D.M., Meng, E.C., and Ferrin, T.E. (2004). UCSF Chimera--a visualization system for exploratory research and analysis. J. Comput. Chem. <i>25</i>, 1605-1612. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref11">View at publisher</a></p>
+<p id="bib12">Rohou, A. and Grigorieff, N. (2015). CTFFIND4: Fast and accurate defocus estimation from electron micrographs. J. Struct. Biol. <i>192</i>, 216-221. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref12">View at publisher</a></p>
+<p id="bib13">Scheres, S.H. (2012). RELION: implementation of a Bayesian approach to cryo-EM structure determination. J. Struct. Biol. <i>180</i>, 519-530. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref13">View at publisher</a></p>
+<p id="bib14">Scheres, S.H. (2016). Processing of structurally heterogeneous cryo-EM data in RELION. Methods Enzymol. <i>579</i>, 125-157. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref14">View at publisher</a></p>
+<p id="bib15">Tang, G., Peng, L., Baldwin, P.R., Mann, D.S., Jiang, W., Rees, I., and Ludtke, S.J. (2007). EMAN2: an extensible image processing suite for electron microscopy. J. Struct. Biol. <i>157</i>, 38-46. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref15">View at publisher</a></p>
+<p id="bib16">Zheng, S.Q., Palovcak, E., Armache, J.P., Verba, K.A., Cheng, Y., and Agard, D.A. (2017). MotionCor2: anisotropic correction of beam-induced motion for improved cryo-electron microscopy. Nat. Methods <i>14</i>, 331-332. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref16">View at publisher</a></p>
+<p id="bib17">Zhu, Y., Wang, W.L., Yu, D., Ouyang, Q., Lu, Y., and Mao, Y. (2018). Structural mechanism for nucleotide-driven remodeling of the AAA-ATPase unfoldase in the activated human 26S proteasome. Nat. Commun. <i>9</i>, 1360. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref17">View at publisher</a></p>
+<p id="bib18">Zivanov, J., Nakane, T., Forsberg, B.O., Kimanius, D., Hagen, W.J., Lindahl, E., and Scheres, S.H. (2018). New tools for automated high-resolution cryo-EM structure determination in RELION-3. eLife <i>7</i>, e42166. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(20)30265-3/sref18">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Kylie J. Walters (<a href="mailto:kylie.walters@nih.gov">kylie.walters@nih.gov</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and Code Availability</h4>
+<p>The cryo-EM reconstructions generated by this study have been deposited into the Electron Microscopy Data Bank with accession numbers 21691 (S<sub>A</sub>-like) and 21696 (S<sub>D</sub>-like) for the sample of human 26S proteasome mixed with non-cleavable M1-Ub<sub>6</sub> and E6AP. The docked coordinates referred to in this paper were deposited into the Protein Data Bank with accession codes PDB: 6WJD (S<sub>A</sub>-like) and 6WJN (S<sub>D</sub>-like) for human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP. The raw micrographs and particle data were deposited in the Electron Microscopy Pilot Image Archive with accession numbers EMPIAR-10401 (sample of human 26S proteasome mixed non-cleavable M1-Ub<sub>6</sub> and E6AP). Other data are available from the corresponding author upon reasonable request.</p>
+<h3>Acknowledgments</h3>
+<p>This research was supported by the Intramural Research Program through the <a href="https://doi.org/10.13039/100009705">CCR</a>, <a href="https://doi.org/10.13039/100000054">NCI</a>, <a href="https://doi.org/10.13039/100000002">NIH</a> (1 ZIA BC011490). Purchase of the Titan Krios in the Eyring Materials Center at Arizona State University was funded by the <a href="https://doi.org/10.13039/100000001">NSF</a> <a href="https://doi.org/10.13039/100011612">MRI</a> grant 1531991. We would like to thank Dr. Rick Huang for help with cryo-EM data collection. This work utilized the NCI/NICE Cryo-EM Facility. The EM work performed at the Center for Molecular Microscopy was funded by <a href="https://doi.org/10.13039/100012728">FNLCR</a> contract HHSN261200800001E. This study utilized the computational resources of the High-Performance Computing Biowulf cluster of the NIH (<a href="http://hpc.nih.gov">http://hpc.nih.gov</a>).</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, X.C. and K.J.W.; methodology, X.C., D.S., P.Z., and K.J.W.; investigation, X.C. and K.J.W.; writing – original draft, X.C. and K.J.W.; writing – review &amp; editing, X.C., D.S., P.Z., and K.J.W.; funding acquisition, K.J.W.; supervision, K.J.W.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

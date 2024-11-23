@@ -1,0 +1,1145 @@
+<article>
+<section>
+<h1 id="header">Multiplexed imaging and effluent analysis to monitor cancer cell intravasation using a colorectal cancer-on-chip</h1>
+<p><time datetime="2021-12-03">Published: December 3, 2021</time></p>
+<p>Carly Strelez,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> Kimya Ghaffarian,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a></sup> and Shannon M. Mumenthaler<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Lawrence J. Ellison Institute for Transformative Medicine of University of Southern California, Los Angeles, CA 90064, USA</p>
+<p id="aff2"><sup>2</sup>Division of Medical Oncology, Norris Comprehensive Cancer Center, Keck School of Medicine, University of Southern California, Los Angeles, CA 90033, USA</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical contact</p>
+<p id="fn3"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:strelez@usc.edu">strelez@usc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:smumenth@usc.edu">smumenth@usc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100984">10.1016/j.xpro.2021.100984</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Despite colorectal cancer’s (CRC) prevalence, its progression is not well understood. The microfluidic organ-on-chip (OOC) model described herein recreates the epithelial-endothelial tissue-tissue interface, fluid flow, and mechanical forces that exist <i>in vivo</i><i>,</i> making it an attractive model to understand and ultimately disrupt CRC intravasation. This protocol provides step-by-step details for tumor cell seeding to create a CRC-on-chip model, chip effluent collection and analysis, and on-chip imaging to monitor tumor cell invasion within a more physiologically relevant microenvironment.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102509">Strelez et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Organ-on-chip mimics tissue-tissue interface and mechanical forces of CRC</li>
+<li>Development of a CRC-on-chip to model tumor cell intravasation</li>
+<li>Live cell imaging and effluent analysis provides insight into CRC progression</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Background</h3>
+<p>Organs-on-chips (OOCs) have been developed to model the intestine (<a href="#bib1">Bein et al., 2018</a>). The commercially available Emulate OOC platform can be used to recreate human-relevant tissue structures and mechanical forces to mimic <i>in vivo</i> intestinal biology (<a href="#fig1">Figure 1</a>; <a href="#tbl1">Table 1</a>). A previously described Intestine-chip, with Caco2 C2BBe1 cells intended to model non-diseased gut epithelium located in the top epithelial channel and human umbilical vein endothelial cells (HUVECs) in the bottom endothelial channel, includes fluid flow through the channels and cyclic, mechanical stretching motions to recreate peristalsis present in the gut (<a href="#bib2">Jalili-Firoozinezhad et al., 2018</a>; <a href="#bib3">Kim et al., 2012</a>, <a href="#bib4">2016</a>). Here, we expand upon this model to create a colorectal cancer (CRC) on chip (CRC-on-chip) by integrating CRC cell lines into an environment that more closely emulates human CRC (<a href="#fig1">Figure 1</a>) (<a href="#bib5">Strelez et al., 2021</a>). We describe a multiplexed analysis of chip effluent and on-chip imaging to assess tumor cell behavior, with a primary focus on invasion and early metastatic spread. The protocol below details the use of HCT116 H2B-GFP cells to create a CRC-on-chip and to perform the subsequent characterization; however, we have optimized this protocol to include other tumor cell lines (e.g., HT29), primary tumor cells (e.g., organoids), or cell types (e.g., cancer-associated fibroblasts).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Organ-on-chip illustration</div>
+<p>The organ-on-chip (image courtesy of Emulate, Inc.) consists of a top epithelial channel (1) comprised of Caco2 C2BBe1 cells and HCT116 H2B-GFP cancer cells (2) as well as a bottom endothelial channel (3) comprised of RFP-HUVECs (4). The two channels are separated by a porous membrane (5).</p>
+</figcaption>
+</figure>
+<table id="tbl1">
+<caption>Table 1. Organ-on-chip terminology</caption>
+<thead>
+<tr>
+<th>Term</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chip</td>
+<td>House cells to recreate human tissue structures</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Interface between Zoë and chip containing 4 distinct reservoirs for inlet and outlet media storage and collection</td>
+</tr>
+<tr>
+<td>Zoë + Orb</td>
+<td>Instruments that house chips/pods and control fluid flow and cyclic stretching</td>
+</tr>
+<tr>
+<td>Fluid flow</td>
+<td>Continuously flow channel-specific media through both channelsFlow rates of both channels are set to 30 μL/h</td>
+</tr>
+<tr>
+<td>Cyclic stretching</td>
+<td>Mimic peristalsis that exists in the gutZoë instruments are set to 10% deformation and 0.2 Hz</td>
+</tr>
+<tr>
+<td>Regulate</td>
+<td>Eliminate any bubbles within a channel by subjecting chips to increased pressure and higher rates of fluid flow for 2 h</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec1.2">Culture cell lines</h3>
+<h4 id="sec1.2.1">Media preparation</h4>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15 min</div>
+<ol>
+<li>Prepare appropriate cell culture media (detailed recipes are available in the <a href="#materials-and-equipment">materials and equipment</a> section).
+<ol type="a">
+<li>Prepare McCoy’s 5A media (Gibco, #16600-082) containing 10% fetal bovine serum (FBS) and 1% Penicillin-Streptomycin (Pen-Strep).</li>
+<li>Prepare DMEM (Corning, #10-050-CV) containing 10% FBS and 1% Pen-Strep.</li>
+</ol>
+</li>
+</ol>
+<h4 id="sec1.2.2">Cell culture expansion</h4>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 days</div>
+<ol start="2">
+<li>Thaw HCT116 H2B-GFP cells in Complete McCoy’s Cell Culture Media.
+<ol type="a">
+<li>Thaw the vial by placing it in a 37°C water bath for approximately 1 min.</li>
+<li>Transfer the content of the vial into a 15 mL Falcon tube containing 10 mL of warm Complete McCoy’s Cell Culture Media.</li>
+<li>Centrifuge the tube at 200 × <i>g</i> for 5 min at room temperature (20°C–22°C).</li>
+<li>Discard the supernatant and resuspend the cell pellet in 10 mL warm Complete McCoy’s Cell Culture Media.</li>
+<li>Transfer the contents into a 10 cm plate and incubate at 37°C overnight (roughly 12–16 h).</li>
+<li>Aspirate out media from the 10 cm plate and refresh with 10 mL warm Complete McCoy’s Cell Culture Media the following day.</li>
+</ol>
+</li>
+<li>Maintain cultures and allow cells to grow until 70% confluency is reached.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Recovery and doubling time will vary by cell line and should be optimized for the users’ specific needs.</div>
+<div class="note">
+<span class="note-title">Note:</span> HCT116 H2B-GFP cells reach confluency 2–3 days post thaw. One 10 cm plate at 70% confluency will seed an excess of 12 chips.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>LentiBrite Histone-H2B-GFP Lentiviral Biosensor</td>
+<td>Merck Millipore</td>
+<td>Cat#17-10229</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>DMEM</td>
+<td>Gibco</td>
+<td>Cat#10569-010</td>
+</tr>
+<tr>
+<td>McCoy’s 5A (Modified) Media</td>
+<td>Gibco</td>
+<td>Cat#16600-082</td>
+</tr>
+<tr>
+<td>0.40% Trypan Blue</td>
+<td>Bio-Rad Laboratories</td>
+<td>Cat#1450013</td>
+</tr>
+<tr>
+<td>Trypsin:EDTA Solution - 0.05%</td>
+<td>Gemini Bio Products</td>
+<td>Cat#400-150</td>
+</tr>
+<tr>
+<td>DPBS (1×)</td>
+<td>Gibco</td>
+<td>Cat#14190-144</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin</td>
+<td>Gemini Bio Products</td>
+<td>Cat#400109</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum</td>
+<td>Gemini Bio Products</td>
+<td>Cat#100-500</td>
+</tr>
+<tr>
+<td>Rat Tail Collagen Type I</td>
+<td>Corning</td>
+<td>Cat#354249</td>
+</tr>
+<tr>
+<td>Matrigel</td>
+<td>Corning</td>
+<td>Cat#356231</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Organ on Chip</td>
+<td>Emulate, Inc</td>
+<td>Basic Research Kit</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Cell lines</td>
+</tr>
+<tr>
+<td>Human: RFP expressing Human umbilical vein endothelial cells</td>
+<td>ANGIO-PROTEOMIE</td>
+<td>Cat# cAP-0001RFP</td>
+</tr>
+<tr>
+<td>Human: Caco2 C2BBe1</td>
+<td>ATCC</td>
+<td>Cat# CRL-2102</td>
+</tr>
+<tr>
+<td>Human: HCT116</td>
+<td>ATCC</td>
+<td>Cat# CCL-247</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Harmony High-Content Imaging and Analysis Software</td>
+<td>PerkinElmer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Imaris image analysis</td>
+<td>Imaris</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>GraphPad Prism 8</td>
+<td>GraphPad Software, Inc.</td>
+<td><a href="https://www.graphpad.com/">https://www.graphpad.com/</a></td>
+</tr>
+<tr>
+<td>Biorender</td>
+<td>BioRender</td>
+<td><a href="https://biorender.com/">https://biorender.com/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Zoë Culture Module</td>
+<td>Emulate, Inc.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Orb Hub Module</td>
+<td>Emulate, Inc.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Perkin Elmer Operetta High Content Screening (HCS) platform</td>
+<td>PerkinElmer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Olympus FV3000</td>
+<td>OLYMPUS</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>TC20 Automated Cell Counter</td>
+<td>Bio-Rad Laboratories</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>McCoy’s Cell Culture Media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>McCoy’s 5A (Modified) Media</td>
+<td>n/a</td>
+<td>445 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Pen-Strep</td>
+<td>1%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Complete McCoy’s Cell Culture Media can be stored at 4°C for 1 month.</div>
+<table id="undtbl2">
+<caption>DMEM Cell Culture Media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td>n/a</td>
+<td>445 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Pen-Strep</td>
+<td>1%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Complete DMEM Cell Culture Media can be stored at 4°C for 1 month.</div>
+<table id="undtbl3">
+<caption>Extracellular Matrix Coating (ECM)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1× DPBS</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Rat Tail Collagen Type I</td>
+<td>100 μg/mL</td>
+</tr>
+<tr>
+<td>Matrigel</td>
+<td>30 μg /mL</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td>2 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> ECM should be prepared on ice and made fresh for each use.</div>
+<div class="note">
+<span class="note-title">Note:</span> The stock concentrations of the Collagen Type I and Matrigel vary by lot. Two mL of ECM solution will seed at least 12 chips.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>The protocol below describes (1) HCT116 H2B-GFP tumor cell seeding to create a CRC-on-chip model, (2) effluent media collection and analysis, and (3) on-chip live imaging to monitor tumor cell invasion.</p>
+<h3 id="sec3.1">Organ chip preparation and cell seeding</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 days (plus 7 days maintenance)</div>
+<p>This section describes the seeding of HCT116 H2B-GFP cells onto Caco2 C2BBe1 Intestine-chips to create a CRC-on-chip model. CRC cell seeding is performed 40–48 h after the Intestine-chips have been connected to flow (<a href="#fig2">Figure 2</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Experimental timeline</div>
+<p>Detailed overview of key steps on critical days of chip preparation, on-chip imaging, and effluent collection.</p>
+</figcaption>
+</figure>
+<ol>
+<li>Prepare Intestine-chip with appropriate extracellular matrix (ECM) (details are available in the <a href="#materials-and-equipment">materials and equipment</a> section), intestinal epithelial cells (Caco2 C2BBe1) and HUVECs as detailed in (<a href="#bib3">Kim et al., 2012</a>; <a href="#bib5">Strelez et al., 2021</a>). An abbreviated protocol is included below. Please refer to the aforementioned references for further information.
+<ol type="a">
+<li>Activate and apply the ECM to both channels of the chip on Day -4. Incubate the chips at 4°C overnight (roughly 12–16 h).</li>
+<li>On Day -3, seed HUVECs in the bottom endothelial channel at a density of 6 × 10<sup>6</sup> cells/mL (120,000 cells/chip) in 20 μL/chip. Invert the chips and incubate at 37°C for 2 h. <a href="#sec7.1">Troubleshooting 1</a>.</li>
+<li>Seed Caco2 C2BBe1 cells in the top epithelial channel at a density of 1.25 × 10<sup>6</sup> cells/mL (62,500 cells/chip) in 50 μL/chip. Incubate at 37°C for 2 h.</li>
+<li>Remove any apparent bubbles within the chip (<a href="#sec7.3">troubleshooting 2</a>), connect chips to pods and initiate a regulate cycle. Normal flow will begin after the regulate cycle has completed.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The flow rate should be set to 30 μL/h. The percent deformation and frequency fields on the Zoë instrument should be set to zero at this time.</div>
+<div class="note">
+<span class="note-title">Note:</span> Intestine-chips are cultured with flow for approximately 40–48 h to allow the HUVECs and Caco2 C2BBe1 cells to become confluent and form a functional barrier.</div>
+<ol start="2">
+<li>Harvest and then seed HCT116 H2B-GFP cells in the top epithelial channel on Day -1.
+<ol type="a">
+<li>Aspirate out media from the 10 cm plate.</li>
+<li>Wash cells with 1× DPBS and fully aspirate it from the plate.</li>
+<li>Add 2–3 mL of 0.05% Trypsin-EDTA to the plate.</li>
+<li>Incubate at 37°C for 5 min.
+<div class="note">
+<span class="note-title">Note:</span> Inspect the plate under a microscope to ensure the successful detachment of cells from the plate.</div>
+</li>
+<li>Collect the detached cells using a P1000 and place in a 15 mL Falcon tube.</li>
+<li>Add Complete DMEM Cell Culture Media to the 15 mL Falcon tube containing the HCT116 H2B-GFP cell suspension to bring the total volume to 15 mL.
+<div class="note">
+<span class="note-title">Note:</span> Complete DMEM Cell Culture Media is used on-chip to maintain the top epithelial channel throughout the course of the experiment, therefore Complete DMEM Cell Culture Media should be used upon HCT116 H2B-GFP cell seeding.</div>
+<div class="note">
+<span class="note-title">Note:</span> Media should be warmed for 1 h prior to use to ensure optimal cell viability for cell seeding.</div>
+</li>
+<li>Centrifuge the cells at 200 × <i>g</i> for 5 min at room temperature (20°C–22°C).</li>
+<li>Discard the supernatant and resuspend the cells in a small volume of Complete DMEM Cell Culture Media.</li>
+<li>Count cells using an automated cell counter.
+<div class="note">
+<span class="note-title">Note:</span> Here, a TC20 automated cell counter was used.</div>
+</li>
+<li>Prepare appropriate cell suspension of 400,000 cells/mL (20,000 cells/chip) in 50 μL/chip.</li>
+<li>Remove the pods from the Zoë and place them in the biosafety cabinet (BSC).</li>
+<li>Disconnect chips from pods.</li>
+<li>Seed 35–50 μL of the HCT116 H2B-GFP cell suspension into the top epithelial channel of one chip utilizing the same cell seeding technique described by Emulate (<a href="https://www.emulatebio.com/">https://www.emulatebio.com/</a>).
+<div class="note">
+<span class="note-title">Note:</span> After seeding 1 chip, check the seeding density and distribution of the cells under a microscope to ensure even cell seeding across the length of the channel (<a href="#fig3">Figure 3</a>). <a href="#sec7.1">Troubleshooting 1</a>.</div>
+</li>
+<li>Proceed with seeding HCT116 H2B-GFP cells in the top epithelial channel of the remaining chips.</li>
+<li>Incubate for 2 h at 37°C.</li>
+<li>Re-prime pods and reconnect chips to pods as described by Emulate (<a href="https://www.emulatebio.com/">https://www.emulatebio.com/</a>).
+<div class="note">
+<span class="note-title">Note:</span> Ensure there is a liquid-liquid interface when reconnecting chips to pods to prevent the formation of bubbles that may obstruct fluid flow (<a href="#fig4">Figure 4</a>). <a href="#sec7.5">Troubleshooting 3</a>.</div>
+</li>
+<li>Return pods to the Zoë and resume flow.
+<div class="note">
+<span class="note-title">Note:</span> If chips and pods are disconnected users may choose to initiate a regulate cycle (defined in <a href="#tbl1">Table 1</a>) upon reconnection to ensure proper fluid flow.</div>
+</li>
+</ol>
+</li>
+</ol>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. HCT116 seeding distribution on chip</div>
+<p>Even (left) and uneven (right) seeding of HCT116 H2B-GFP (green) cells in the top epithelial channel on D0. Scale bars represent 100 μm.</p>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Media flow in pods</div>
+<p>(A) Pods contain reservoirs to hold top (red, right) and bottom (left, pink) channel effluent media. Equal media in both outlet reservoirs indicates proper fluid flow (A).</p>
+<p>(B) Irregular fluid flow (B) is indicated by the difference in effluent media heights (white arrow) suggesting an obstruction in the channel.</p>
+</figcaption>
+</figure>
+<ol start="3">
+<li>Maintain chips for 7 days replenishing media every 3 days and aspirating the outflows to ensure the pods do not overflow.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Channel specific media should be warmed at 37°C for 1 h prior to addition to the appropriate pod reservoirs.</div>
+<div class="note">
+<span class="note-title">Note:</span> Here, chips are maintained for 7 days but can be maintained for up to 14 days depending on the user’s needs.</div>
+<div class="note">
+<span class="note-title">Note:</span> Experimental conditions including the introduction of cyclic stretching are initiated after D0 imaging has been completed. To mimic peristalsis Zoë instruments are set to 10% deformation at 0.2 Hz upon the conclusion of D0 imaging.</div>
+<h3 id="sec3.2">Effluent media assay</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>This step describes the collection of effluent media from pod reservoirs. Media can be collected, and the supernatant (A) stored for future downstream analysis (mass spectrometry-based metabolomics, ELISA, etc.) (<a href="#fig5">Figure 5</a>A). In addition, any circulating tumor cells (B) found in the endothelial effluent can be replated (<a href="#fig5">Figure 5</a>B). Here, we describe how to quantitate the circulating tumor cells. The cells can be cultured for further characterization if desired (qPCR, etc.).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Effluent media collection</div>
+<p>Media is collected from the endothelial channel effluent and centrifuged.</p>
+<p>(A and B) The supernatant (A) is placed in an appropriately labeled microcentrifuge tube and can be used for downstream analyses while any cells (B) are resuspended and plated to be counted.</p>
+</figcaption>
+</figure>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Here, media collection is performed 12–16 h post CRC cell seeding on day 0 (D0) and 6 days later, day 6 (D6). Alternate collection timepoints may be incorporated depending on the user’s needs. <a href="#sec7.7">Troubleshooting 4</a>.</div>
+<ol start="4">
+<li>Aspirate bottom and top channel outflow reservoirs 2 days prior to desired date of media collection.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Here, outlet reservoirs are aspirated on D4.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> When aspirating outflows or collecting media ensure there is sufficient media remaining over the pod vias to avoid introducing bubbles at this stage.</div>
+<ol start="5">
+<li>Collect 100–200 μL inlet media from the top and bottom pod inlet reservoirs of all chips of the same condition and place into appropriately labeled 1.5 mL microcentrifuge tubes.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Channel specific inlet media can be combined across multiple chips to collect the desired 1 mL media.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Collect effluent media prior to disconnecting chips from their accompanying pods.</div>
+<ol start="6">
+<li>Collect 1 mL outlet media from the top and bottom pod outlet reservoirs of each chip and place into appropriately labeled 1.5 mL microcentrifuge tubes for effluent media collection and cell resuspension.
+<div class="note">
+<span class="note-title">Note:</span> Ensure there is sufficient media remaining to cover the via to avoid introducing bubbles at this stage.</div>
+<ol type="a">
+<li>Centrifuge the microcentrifuge tubes at 200 × <i>g</i> for 5 min.</li>
+<li>Collect the supernatant and place into a freshly labeled 1.5 mL microcentrifuge tube leaving about 100 μL for cell resuspension.
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure not to disrupt any visible or non-visible pellet while collecting the supernatant.</div>
+<div class="note">
+<span class="note-title">Note:</span> The collected supernatant can be frozen and kept at −80°C. These samples can be later thawed and used for mass spectrometry and other similar assays.</div>
+</li>
+<li>Resuspend any cells present in the microcentrifuge tube with the remaining 100 μL and plate onto a 96-well plate.</li>
+<li>Incubate at 37°C until the cells have settled and adhered to the plate (roughly 2–3 h).</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Image the 96-well plate utilizing the Operetta High Content Screening platform. Imaging at a wavelength of 488 nm will capture the HCT116 H2B-GFP cells.</li>
+<li>Input images into the Perkin Elmer Harmony image analysis software.
+<ol type="a">
+<li>GFP+ cells are segmented based on morphological and intensity properties and GFP+ cell counts can be obtained for the replated cells.</li>
+</ol>
+</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol is optimized for imaging on the Perkin Elmer Operetta High Content Screening platform however, it is amenable for use with other imaging platforms and analysis software.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> After overnight incubation (roughly 12–16 h), exhausted media can be aspirated from the well and replenished with 100 μL of media. Wells can be maintained for as long as desired following standard tissue culture practices.</div>
+<div class="note">
+<span class="note-title">Note:</span> Any tumor cells that may have been in the effluent can be expanded and later collected for future RNA extraction, qPCR analysis or similar assays.</div>
+<div class="note">
+<span class="note-title">Note:</span> Effluent media was collected prior to imaging to minimize the amount of time chips are disconnected from flow.</div>
+<h3 id="sec3.3">Live imaging</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>This section describes on-chip live imaging and quantifying tumor cells intravasating from the top, epithelial channel to the bottom, endothelial channel. Chips are imaged approximately 12–16 h after HCT116 seeding (D0) and can be imaged at various timepoints throughout an experiment, here six days later (D6). Any experimental conditions including the initiation of cyclic stretching (10% deformation, 0.2 Hz) are introduced following the completion of D0 imaging.</p>
+<ol start="9">
+<li>Stop flow and transfer pods from the Zoës to the BSC. Working 1 chip at a time, detach chip from pod and place on the stage of the Olympus FV3000 laser scanning confocal microscope. <a href="#sec7.9">Troubleshooting 5</a>.</li>
+</ol>
+<ol start="10">
+<li>Image 6 regions across the span of the chip where the top and bottom channels overlap (top and bottom inlet and outlet regions are excluded from invasion imaging) (<a href="#fig6">Figure 6</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Live cell imaging and analysis</div>
+<p>Six regions of the CRC-on-chip consisting of Caco2 C2BBe1 cells (unlabeled) and HCT116 H2B-GFP cells (green) in the top epithelial channel and RFP-HUVECs (red) in the bottom endothelial channel separated by a porous membrane (dashed white line) were imaged via confocal microscopy. The number of GFP+ cells in each channel were identified using image analysis software and an invasion ratio was produced by comparing the number of GFP+ cells in the bottom channel relative to the top channel at each time point. Invasion ratios were normalized to D0 counts. Scale bars represent 300 μm.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Create and use a saved template with preset areas of the chip to ensure the same regions are imaged for each chip and across different timepoints.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Imaging with the 488 nm and 561 nm lasers will capture the HCT116 H2B-GFP cells and the RFP-HUVECs, respectively. Transmitted light microscopy will allow for the identification of the unlabeled Caco2 C2BBe1 cells in the epithelial channel.</div>
+<ol type="a">
+<li>Image from the bottom layer of the endothelial channel up through the epithelial channel (about 400 μm Z-height) at 5 μm intervals.
+<div class="note">
+<span class="note-title">Note:</span> Work quickly and image a minimal number of chips at a time in order to reduce the risk of contamination and reduce the amount of time the chips are disconnected from environmental factors such as controlled temperature, C0<sub>2</sub>, fluid flow, and stretching conditions.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>After completion of imaging, return chip to the BSC, and reconnect chip to pod and resume normal fluid flow.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Ensure there is a liquid-liquid interface between the chip and the pod and re-prime the pods as necessary per Emulate’s protocols (<a href="https://www.emulatebio.com/">https://www.emulatebio.com/</a>).</div>
+<ol start="12">
+<li>Input images into Imaris imaging software.
+<ol type="a">
+<li>Use the Imaris cell detection algorithm (“spot detection” function) to find the number of GFP+ cells in each region (<a href="#tbl2">Table 2</a>).
+<div class="note">
+<span class="note-title">Note:</span> The cell detection algorithm enables segmenting a particular region of interest, which allows for dividing images into “top” and “bottom” channel, above and below the membrane, respectively.</div>
+<div class="note">
+<span class="note-title">Note:</span> The spot detection algorithm should be set to identify cells with a xy diameter of 8 μm and should include background subtraction.</div>
+</li>
+<li>Record the number of GFP+ tumor cells and calculate invasion ratio for each time point.
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol is optimized for imaging on the Olympus FV3000 confocal microscope; however, it is amenable for use with other imaging platforms and analysis software.</div>
+</li>
+</ol>
+</li>
+</ol>
+<table id="tbl2" class="dense-table">
+<caption>Table 2. Example of raw GFP+ tumor cell counts used to calculate invasion ratio</caption>
+<thead>
+<tr>
+<th>Day</th>
+<th>Chip</th>
+<th>Condition</th>
+<th>Area of chip</th>
+<th>GFP + cells in bottom channel (counts)</th>
+<th>GFP + cells in top channel (counts)</th>
+<th>Ratio bottom/top</th>
+<th>Ratio chip</th>
+<th>Normalized to D0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="36">D0</td>
+<td rowspan="6">Chip 1</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>483.00000</td>
+<td>0.00207</td>
+<td rowspan="6">0.00185</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>516.00000</td>
+<td>0.00194</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>542.00000</td>
+<td>0.00185</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>611.00000</td>
+<td>0.00164</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>574.00000</td>
+<td>0.00174</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>520.00000</td>
+<td>0.00192</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 2</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>535.00000</td>
+<td>0.00187</td>
+<td rowspan="6">0.00193</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>467.00000</td>
+<td>0.00214</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>562.00000</td>
+<td>0.00178</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>553.00000</td>
+<td>0.00181</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>471.00000</td>
+<td>0.00212</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>526.00000</td>
+<td>0.00190</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 3</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>675.00000</td>
+<td>0.00148</td>
+<td rowspan="6">0.00159</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>642.00000</td>
+<td>0.00156</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>654.00000</td>
+<td>0.00153</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>590.00000</td>
+<td>0.00169</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>595.00000</td>
+<td>0.00168</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>608.00000</td>
+<td>0.00164</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 4</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>542.00000</td>
+<td>0.00185</td>
+<td rowspan="6">0.00198</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>526.00000</td>
+<td>0.00190</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>511.00000</td>
+<td>0.00196</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>475.00000</td>
+<td>0.00211</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>480.00000</td>
+<td>0.00208</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>499.00000</td>
+<td>0.00200</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 5</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>733.00000</td>
+<td>0.00136</td>
+<td rowspan="6">0.00129</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>798.00000</td>
+<td>0.00125</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>772.00000</td>
+<td>0.00130</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>715.00000</td>
+<td>0.00140</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>857.00000</td>
+<td>0.00117</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>764.00000</td>
+<td>0.00131</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 6</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>1.00000</td>
+<td>759.00000</td>
+<td>0.00132</td>
+<td rowspan="6">0.00138</td>
+<td rowspan="6">1.00000</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>1.00000</td>
+<td>739.00000</td>
+<td>0.00135</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>1.00000</td>
+<td>727.00000</td>
+<td>0.00138</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>1.00000</td>
+<td>777.00000</td>
+<td>0.00129</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>1.00000</td>
+<td>741.00000</td>
+<td>0.00135</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>1.00000</td>
+<td>620.00000</td>
+<td>0.00161</td>
+</tr>
+<tr>
+<td rowspan="36">D6</td>
+<td rowspan="6">Chip 1</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>7.00000</td>
+<td>3699.00000</td>
+<td>0.00232</td>
+<td rowspan="6">0.00625</td>
+<td rowspan="6">3.38191</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>76.00000</td>
+<td>5893.00000</td>
+<td>0.00202</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>10.00000</td>
+<td>2424.00000</td>
+<td>0.00221</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>5.00000</td>
+<td>2801.00000</td>
+<td>0.00182</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>25.00000</td>
+<td>4096.00000</td>
+<td>0.00190</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>5.00000</td>
+<td>1563.00000</td>
+<td>0.00169</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 2</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>91.00000</td>
+<td>2532.00000</td>
+<td>0.00170</td>
+<td rowspan="6">0.01088</td>
+<td rowspan="6">5.64719</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>56.00000</td>
+<td>4743.00000</td>
+<td>0.00175</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>66.00000</td>
+<td>4292.00000</td>
+<td>0.00167</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>30.00000</td>
+<td>5522.00000</td>
+<td>0.00180</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>18.00000</td>
+<td>4639.00000</td>
+<td>0.00164</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>10.00000</td>
+<td>3178.00000</td>
+<td>0.00191</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 3</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>91.00000</td>
+<td>2455.00000</td>
+<td>0.00232</td>
+<td rowspan="6">0.01187</td>
+<td rowspan="6">7.44741</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>123.00000</td>
+<td>5594.00000</td>
+<td>0.00202</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>57.00000</td>
+<td>6407.00000</td>
+<td>0.00221</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>14.00000</td>
+<td>3121.00000</td>
+<td>0.00182</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>16.00000</td>
+<td>4664.00000</td>
+<td>0.00190</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>18.00000</td>
+<td>4630.00000</td>
+<td>0.00169</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 4</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>3.00000</td>
+<td>2738.00000</td>
+<td>0.00170</td>
+<td rowspan="6">0.00820</td>
+<td rowspan="6">4.14344</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>49.00000</td>
+<td>4631.00000</td>
+<td>0.00175</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>75.00000</td>
+<td>5932.00000</td>
+<td>0.00167</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>20.00000</td>
+<td>2420.00000</td>
+<td>0.00180</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>30.00000</td>
+<td>4402.00000</td>
+<td>0.00164</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>15.00000</td>
+<td>3301.00000</td>
+<td>0.00191</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 5</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>8.00000</td>
+<td>3571.00000</td>
+<td>0.00232</td>
+<td rowspan="6">0.00789</td>
+<td rowspan="6">6.09854</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>5.00000</td>
+<td>3688.00000</td>
+<td>0.00202</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>98.00000</td>
+<td>3223.00000</td>
+<td>0.00221</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>13.00000</td>
+<td>3852.00000</td>
+<td>0.00182</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>27.00000</td>
+<td>3689.00000</td>
+<td>0.00190</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>21.00000</td>
+<td>3783.00000</td>
+<td>0.00169</td>
+</tr>
+<tr>
+<td rowspan="6">Chip 6</td>
+<td rowspan="6">Caco2 + HCT116</td>
+<td>Region 1</td>
+<td>10.00000</td>
+<td>3929.00000</td>
+<td>0.00170</td>
+<td rowspan="6">0.00783</td>
+<td rowspan="6">5.69683</td>
+</tr>
+<tr>
+<td>Region 2</td>
+<td>39.00000</td>
+<td>3437.00000</td>
+<td>0.00175</td>
+</tr>
+<tr>
+<td>Region 3</td>
+<td>9.00000</td>
+<td>3541.00000</td>
+<td>0.00167</td>
+</tr>
+<tr>
+<td>Region 4</td>
+<td>28.00000</td>
+<td>3159.00000</td>
+<td>0.00180</td>
+</tr>
+<tr>
+<td>Region 5</td>
+<td>18.00000</td>
+<td>3540.00000</td>
+<td>0.00164</td>
+</tr>
+<tr>
+<td>Region 6</td>
+<td>59.00000</td>
+<td>3200.00000</td>
+<td>0.00191</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>At the time of HCT116 tumor cell seeding, HUVECs should be confluent and have formed a tube spanning the length of the bottom endothelial channel (<a href="#fig7">Figure 7</a>A). Caco2 C2BBe1 cells should be a confluent layer and have started to form 3-D structures in the top epithelial channel (<a href="#fig1">Figure 1</a>). HCT116 H2B-GFP cells should be seeded as single cells in a uniform manner throughout the length of the epithelial channel (<a href="#fig7">Figure 7</a>B, left). Over time, HCT116 H2B-GFP cells should form clusters atop the Caco2 layer (<a href="#fig7">Figure 7</a>B, right). HCT116 tumor cells should invade into the endothelial channel throughout the course of the experiment as seen in <a href="#fig7">Figure 7</a>A (images) and quantitated in <a href="#fig7">Figure 7</a>C.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. CRC-on-chip structure and invasion</div>
+<p>(A) Representative images of one of the six imaged regions of the chip on D0 and D6 depicting a worms-eye-view of each channel. The top epithelial channel consists of Caco2 C2BBe1 cells (unlabeled) and HCT116 H2B-GFP cells (green) while the bottom endothelial channel consists of RFP-HUVECs (red). The two channels are separated by a porous membrane (dashed white line). White arrows depict invaded CRC cells. Scale bars represent 100 μm.</p>
+<p>(B) Representative images of one of the six imaged regions of the chip on D0 and D6 depicting a birds-eye-view looking from the top epithelial channel containing unlabeled Caco2 C2BBe1 cells and HCT116 H2B-GFP cells (green) down onto the bottom endothelial channel containing RFP labeled HUVECs (red). Scale bars represent 100 μm.</p>
+<p>(C) Invasion ratio of HCT116 H2B-GFP cells on D6 (n = 6 chips) normalized to D0. Error bars represent ± standard error of the mean.</p>
+</figcaption>
+</figure>
+<p>There should be a small number of circulating tumor cells collected from the chip effluent that can be replated and imaged (<a href="#fig8">Figure 8</a>). Maintenance of these cells should produce clusters of tumor cells dispersed throughout the well.</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1207-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Replated HCT116 H2B-GFP cells collected from endothelial channel effluent</div>
+<p>(A) Cells are collected from the bottom channel effluent, centrifuged, replated and counted.</p>
+<p>(B) Representative images of replated HCT116 H2B-GFP cells collected from the bottom channel effluent on D6. Scale bars represents 1 mm (left) and 200 μm (right).</p>
+<p>(C) Expected counts of HCT116 H2B-GFP cells collected from bottom channel effluent on D0 and D6 (n = 9 chips).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p><b>Tumor Cell Invasion</b> - Numbers of GFP+ CRC tumor cells in the top epithelial channel and bottom endothelial channel for each imaged region are quantified using the Imaris Image Analysis software. Minimal invasion should be seen on D0 and cell counts should be consistent along the length of the epithelial channel and across chips of the same condition. By D6, HCT116 tumor cells invade from the top, epithelial channel through the porous membrane and adhere to the bottom, endothelial channel (<a href="#fig7">Figure 7</a>A). An invasion ratio is calculated per chip as the sum of the number of GFP+ cells in the bottom channel across 6 imaged regions/the sum of the number of GFP+ cells in the top channel across 6 imaged regions (<a href="#tbl2">Table 2</a>). Invasion ratios on D6 are normalized to D0 ratios in order to account for any cell seeding variability between chips or D0 invasion (<a href="#tbl2">Table 2</a>; <a href="#fig7">Figure 7</a>C). Chips with any uneven flow should be excluded from studies. Experiments should be performed with two or three chips per condition and experiments should be replicated two or three times.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<h3 id="sec6.1">Chip preparation</h3>
+<p>We acknowledge that the use of cell lines, specifically the Caco2 C2BBe1 clone, is a limitation of this protocol. While this cell line is intended to model the normal colon human epithelium, we hope to integrate patient derived normal colon human epithelial cells to better model <i>in vivo</i> tissue structures.</p>
+<p>Tests were conducted to ensure the formation of an intact barrier of the Intestine-chips and the CRC-chips (<a href="#bib5">Strelez et al., 2021</a>) but transepithelial/transendothelial electrical resistance (TEER) measurements were not taken.</p>
+<h3 id="sec6.2">Effluent analysis</h3>
+<p>The plating and expansion of collected circulating tumor cells on plastic presents another limitation to this protocol. Since such small numbers of cells are collected from the effluent, the cells must be expanded for future use in downstream assays unless single cell sequencing or analysis approaches are available. This delay may result in alterations to the gene expression and other characteristics of these cells.</p>
+<h3 id="sec6.3">Live imaging</h3>
+<p>While the live cell imaging described above provides valuable insight into CRC intravasation and early metastasis, the current model is limited in that the chips must be disconnected from fluid flow and peristalsis-like stretching in order to be imaged. While steps are taken to minimize the time chips are outside of the BSC and disconnected from fluid flow, this is nonetheless a limitation of the current model. We hope that in the future tools will become available to allow for live, dynamic imaging of the chips while they are still subject to fluid flow and cyclic stretching.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Uneven or variable cell seeding density on chip.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>If an uneven or a higher or lower seeding density than desired is observed under the microscope when seeding the RFP-HUVECs in the bottom channel or the Caco2 C2BBe1 and HCT116 H2B-GFP cells in the top channel, quickly return to the BSC. Gently wash the appropriate channel with 200 μL of its channel specific media two times while simultaneously aspirating the droplet that forms near the outlet. Inspect the chip under the microscope to ensure adequate cell removal. Adjust the seeding density as needed by either increasing or decreasing the volume in which the cells are resuspended. Re-seed the channel as described in the above protocol and inspect under a microscope to ensure even cell distribution and desired seeding density. When seeding any cell type, inspect the chip under a microscope after seeding one chip to confirm desired seeding density and distribution before seeding the remaining chips.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Bubbles present within channel prior to pod connection.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Using a P200 pipette, push a small volume of the appropriate channel specific media through the channel forcing the bubble out on the other side. If the bubble persists, press down on the plunger of a P200 and insert the pipette tip into the channel containing the bubble. Gently pull up on the plunger, pulling the media back within the channel until it is just behind the bubble. Then gently push the media back through the channel forcing the bubble out of the channel. If a bubble is lodged in the channel port, insert a P200 tip into the channel just below the bubble and move in a circular motion moving upwards until the bubble is dislodged.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Irregularities or uneven flow observed in pods.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Remove bubbles per protocols optimized by Emulate, Inc. (<a href="https://www.emulatebio.com/">https://www.emulatebio.com/</a>). Increase the flow rate for each channel to 600 μL/h for 5 min. Alternatively, working in a BSC, place a P1000 tip filled with the appropriate channel specific media in the corresponding pod inlet via. Gently push media through the channel until the bubble is removed. Manually disconnect the pipette tip from the P1000 and gently remove the tip from the via taking care to avoid introducing any bubbles. If any obstructions observed in the channel remain, initiate a regulate cycle. If the problem persists, disconnect the chip from the pod and remove any observed bubble. Reconnect the chip to its pod following the protocol described above and begin another regulate cycle.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Media leaking from pod outlet reservoirs after chip disconnection.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Collect desired media from outlet reservoirs prior to disconnecting chips from pods. Be sure to leave enough media, roughly 200 μL to cover the pod via to avoid introducing bubbles at this stage.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Exposing chips to a non-sterile environment and media evaporation during live chip imaging.</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>Only disconnect and image chips one at a time. This in effect limits the time chips are disconnected from their pods and outside of the BSC, minimizing opportunity for contamination. If a small volume of media has evaporated from the chip channels during imaging, introduce the appropriate channel specific media into the channel and ensure no bubbles are present prior to reconnecting chips to their accompanying pods.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bein, A., Shin, W., Jalili-Firoozinezhad, S., Park, M.H., Sontheimer-Phelps, A., Tovaglieri, A., Chalkiadaki, A., Kim, H.J., and Ingber, D.E. (2018). Microfluidic organ-on-a-chip models of human intestine. Cell Mol. Gastroenterol. Hepatol. <i>5</i>, 659-668. <a class="external-link" href="https://doi.org/10.1016/j.jcmgh.2017.12.010">https://doi.org/10.1016/j.jcmgh.2017.12.010</a></p>
+<p id="bib2">Jalili-Firoozinezhad, S., Prantil-Baun, R., Jiang, A., Potla, R., Mammoto, T., Weaver, J.C., Ferrante, T.C., Kim, H.J., Cabral, J.M.S., Levy, O., and Ingber, D.E. (2018). Modeling radiation injury-induced cell death and countermeasure drug responses in a human Gut-on-a-Chip. Cell Death Dis. <i>9</i>, 223. <a class="external-link" href="https://doi.org/10.1038/s41419-018-0304-8">https://doi.org/10.1038/s41419-018-0304-8</a></p>
+<p id="bib3">Kim, H.J., Huh, D., Hamilton, G., and Ingber, D.E. (2012). Human gut-on-a-chip inhabited by microbial flora that experiences intestinal peristalsis-like motions and flow. Lab Chip <i>12</i>, 2165-2174. <a class="external-link" href="https://doi.org/10.1039/c2lc40074j">https://doi.org/10.1039/c2lc40074j</a></p>
+<p id="bib4">Kim, H.J., Li, H., Collins, J.J., and Ingber, D.E. (2016). Contributions of microbiome and mechanical deformation to intestinal bacterial overgrowth and inflammation in a human gut-on-a-chip. Proc. Natl. Acad. Sci. U S A <i>113</i>, E7-E15. <a class="external-link" href="https://doi.org/10.1073/pnas.1522193112">https://doi.org/10.1073/pnas.1522193112</a></p>
+<p id="bib5">Strelez, C., Chilakala, S., Ghaffarian, K., Lau, R., Spiller, E., Ung, N., Hixon, D., Yoon, A.Y., Sun, R.X., Lenz, H.J., et al. (2021). Human colorectal cancer-on-chip model to study the microenvironmental influence on early metastatic spread. iScience <i>24</i>, 102509. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102509">https://doi.org/10.1016/j.isci.2021.102509</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Shannon M. Mumenthaler (<a href="mailto:smumenth@usc.edu">smumenth@usc.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The datasets generated during this study are available from the lead contact upon request.</p>
+<h3>Acknowledgments</h3>
+<p>This project was supported by the NCI Tissue Engineering Consortium R01 CA241137-01A1 grant (S.M.M.), a <a href="https://doi.org/10.13039/100001880">Stop Cancer</a> Grant (S.M.M.), and the USC Norris Comprehensive Cancer Center Core Grant P30CA014089 (H.J.L., S.M.M.). We would like to thank our philanthropic supporters, particularly the Stephenson family, Emmet, Toni, and Tessa, for their donation of the Operetta HCS platform and the funding support as part of the Stephenson Family Personalized Medicine Center. We are grateful for the expertise, guidance, and support from Emulate, Inc. We would also like to thank C. Shah for review of and comments on the manuscript.</p>
+<h3>Author contributions</h3>
+<p>C.S. designed, performed, analyzed, and interpreted the experiments; compiled the data for figures in the manuscript; and helped write the manuscript. K.G. performed experiments, compiled data for figures in the manuscript, and wrote the manuscript. S.M.M. was responsible for study concept and design, interpretation of data, supervision of the study, and editing and revision of the manuscript. There was no outside writing assistance. All authors had access to the study data and reviewed, edited, and approved the final manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

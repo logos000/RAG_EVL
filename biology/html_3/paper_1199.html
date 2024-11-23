@@ -1,0 +1,487 @@
+<article>
+<section>
+<h1 id="header">Analyzing causal relationships in proteomic profiles using CausalPath</h1>
+<p><time datetime="2021-11-26">Published: November 26, 2021</time></p>
+<p>Augustin Luna,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">11</a>,<a href="#cor1">*</a></sup> Metin Can Siper,<sup><a href="#aff4">4</a></sup> Anil Korkut,<sup><a href="#aff5">5</a></sup> Funda Durupinar,<sup><a href="#aff6">6</a></sup> Ugur Dogrusoz,<sup><a href="#aff7">7</a></sup> Joseph E. Aslan,<sup><a href="#aff8">8</a></sup> Chris Sander,<sup><a href="#aff1">1</a></sup> Emek Demir,<sup><a href="#aff4">4</a>,<a href="#aff9">9</a>,<a href="#aff10">10</a></sup> and Ozgun Babur<sup><a href="#aff6">6</a>,<a href="#fn2">12</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Cell Biology, Harvard Medical School, Boston, MA 02115, USA</p>
+<p id="aff2"><sup>2</sup>Department of Data Science, Dana-Farber Cancer Institute, Boston, MA 02215, USA</p>
+<p id="aff3"><sup>3</sup>Broad Institute of Harvard and MIT, Cambridge, MA 02142, USA</p>
+<p id="aff4"><sup>4</sup>Computational Biology Program, Oregon Health and Science University, 3181 SW Sam Jackson Park Rd, Portland, OR 97239, USA</p>
+<p id="aff5"><sup>5</sup>Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, TX 77030, USA</p>
+<p id="aff6"><sup>6</sup>Computer Science Department, University of Massachusetts Boston, 100 William T. Morrissey Blvd, Boston, MA 02125, USA</p>
+<p id="aff7"><sup>7</sup>Computer Engineering Department, Bilkent University, Ankara 06800, Turkey</p>
+<p id="aff8"><sup>8</sup>Knight Cardiovascular Institute, Oregon Health and Science University, 3181 SW Sam Jackson Park Rd, Portland, OR 97239, USA</p>
+<p id="aff9"><sup>9</sup>Department of Molecular and Medical Genetics, Oregon Health and Science University, 3181 SW Sam Jackson Park Rd, Portland, OR 97239, USA</p>
+<p id="aff10"><sup>10</sup>Pacific Northwest National Laboratories, 902 Battelle Blvd, Richland, WA 99354, USA</p>
+<p id="fn1"><sup>11</sup>Technical contact</p>
+<p id="fn2"><sup>12</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:aluna@jimmy.harvard.edu">aluna@jimmy.harvard.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:ozgun.babur@umb.edu">ozgun.babur@umb.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100955">10.1016/j.xpro.2021.100955</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>CausalPath (<a href="http://causalpath.org">causalpath.org</a>) evaluates proteomic measurements against prior knowledge of biological pathways and infers causality between changes in measured features, such as global protein and phospho-protein levels. It uses pathway resources to determine potential causality between observable omic features, which are called prior relations. The subset of the prior relations that are supported by the proteomic profiles are reported and evaluated for statistical significance. The end result is a network model of signaling that explains the patterns observed in the experimental dataset.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref5">Babur et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A free open-source tool for exploration of proteomic data</li>
+<li>Analysis focuses on causal relationships revealed by proteomic changes</li>
+<li>Network visualization and publication-quality figures of CausalPath results</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1199-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Overview</h3>
+<p>CausalPath maps proteomic and other molecular profiles to pathway information from the Pathway Commons database (<a href="#bib10">Rodchenkov et al., 2020</a>; <a href="#bib5">Babur et al., 2021</a>; <a href="#bib7">Barsi and Szalai, 2021</a>) and other resources, focusing on causality among correlated measurements. This mapping generates a model of molecular signal flow that is consistent with both the profiling data and the published literature. Results are presented as a network model with links to information found in the Pathway Commons database. This analysis mimics aspects of the “manual” exploration of the scientific literature that researchers perform when they review their experimental data. CausalPath allows the systematic exploration of hundreds of thousands of curated mechanisms, which would be infeasible to do manually.</p>
+<p>The protocol below describes the specific steps for the CausalPath analysis of a proteomics study that quantified changes in &gt;3000 phosphopeptide levels using mass spectrometry, related to the initialization and progression of platelet GPVI signaling (<a href="#bib4">Babur et al., 2020</a>; <a href="#bib1">Aslan, 2021</a>). We have also used similar protocols for the analysis of high-throughput mass spectrometry and reverse-phase protein array (RPPA) screens from National Cancer Institute's Clinical Proteomic Tumor Analysis Consortium (CPTAC) and The Cancer Genome Atlas (TCGA) programs, respectively (<a href="#bib5">Babur et al., 2021</a>).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> A prerequisite to following this protocol is basic knowledge for 1) exploring a computer file system and 2) running commands through a command-line terminal.</div>
+<h3 id="sec1.2">Download and install Java, CausalPath, and ChiBE</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;<b>1 h</b>
+</div>
+<p>CausalPath can be either run through its web server (<a href="http://causalpath.org">causalpath.org</a>), or locally from its JAR file. While the former option does not require local installation of any special software, the latter option provides more capability and is therefore included in this protocol. A local run of CausalPath requires the Java software environment, which is freely available. CausalPath is available as a Java Archive (.jar) for download on GitHub; this tutorial presents instructions for CausalPath 1.2.0. Additionally, users interested in ChiBE (Chisio BioPAX Editor) for visualization can go to the ChiBE website for software download (<a href="#bib2">Babur et al., 2010</a>, <a href="#bib3">Babur et al., 2014</a>).</p>
+<ol>
+<li>Download and install the Java 8 installation package from Oracle (<a href="http://oracle.com/java">oracle.com/java</a>) or OpenJDK (<a href="http://adoptopenjdk.net">adoptopenjdk.net</a>); installers are provided for Windows, Linux, and MacOS. CausalPath has been tested with both Java 8 and 11 from Oracle or OpenJDK; it has been tested more thoroughly with Oracle Java 8.</li>
+<li>Download the causalpath.jar file (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/releases">github.com/PathwayAndDataAnalysis/causalpath/releases</a>); version 1.2.0 is used for this protocol.</li>
+<li>(Optional) Download and install the ChiBE software (Chisio BioPAX Editor; <a href="http://github.com/PathwayCommons/chibe">github.com/PathwayCommons/chibe</a>) for the visualization of results. Supported onLinux and Windows platforms.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Visualization of results can be done using the CausalPath website (<a href="http://causalpath.org">causalpath.org</a>), and the Newt tool (<a href="http://web.newteditor.org">http://web.newteditor.org</a>); no download or installation is required in either case.</div>
+<div class="note">
+<span class="note-title">Note:</span> This protocol provides instructions for visualization with the CausalPath website and Newt.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> CausalPath can be considered installed and ready to run once 1) the input files and the casualpath.jar are located on the user's computer as detailed in the section "Run CausalPath" and 2) Java has been installed.</div>
+<h3 id="sec1.3">Download and install the R environment and readxl/stringr packages (to reformat source data if needed)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;<b>1 h</b>
+</div>
+<p>This step installs the R environment and readxl/stringr packages to extract and reformat example data from Excel spreadsheets.</p>
+<ol start="4">
+<li>R is a free software environment for statistical computing and graphics. It runs on Linux, Windows and MacOS. Download from (<a href="http://r-project.org">r-project.org</a>). The current protocol was tested using R version 3.6.2.</li>
+<li>Install the “readxl” R package with the command:</li>
+</ol>
+<div class="textbox">
+<p><code>install.packages("readxl")</code></p>
+<p><code>install.packages("stringr")</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> This step is not necessary if your data is already in the necessary input format for CausalPath.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>CausalPath</td>
+<td>
+<a href="#bib5">Babur et al., 2021</a>; <a href="https://github.com/PathwayAndDataAnalysis/causalpath/releases">https://github.com/PathwayAndDataAnalysis/causalpath/releases</a>
+</td>
+<td>1.2.0</td>
+</tr>
+<tr>
+<td>ChiBE (Chisio BioPAX Editor)</td>
+<td>
+<a href="#bib2">Babur et al., 2010</a>; <a href="https://github.com/PathwayCommons/chibe">https://github.com/PathwayCommons/chibe</a>
+</td>
+<td>2.1</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a></td>
+<td>11</td>
+</tr>
+<tr>
+<td>R</td>
+<td><a href="https://cran.r-project.org/">https://cran.r-project.org/</a></td>
+<td>3.6.2</td>
+</tr>
+<tr>
+<td>Readxl</td>
+<td><a href="https://cran.r-project.org/web/packages/readxl/index.html">https://cran.r-project.org/web/packages/readxl/index.html</a></td>
+<td>1.3.1</td>
+</tr>
+<tr>
+<td>Stringr</td>
+<td><a href="https://cran.r-project.org/web/packages/stringr/index.html">https://cran.r-project.org/web/packages/stringr/index.html</a></td>
+<td>1.4.0</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Software</h3>
+<p>CausalPath is a freely available open-source project hosted on GitHub. The software is written in Java. This protocol uses the R (3.6.2) as well as the readxl (1.3.1), and stringr (1.4.0) packages to reformat example data from an Excel spreadsheet into the necessary plain-text, tab-delimited, tabular input format. A list of software used is in the Key Resources Table.</p>
+<h3 id="sec2.2">Data format</h3>
+<p>The example input data consists of phosphoproteomic abundance measurements collected from a TMT-SPS-MS3 proteomics study that quantified &gt;3000 phosphopeptides related to the initialization and progression of platelet GPVI signaling (<a href="#bib4">Babur et al., 2020</a>).</p>
+<p>The required columns of the input file are labeled with the following names: “ID”, “Symbols”, “Sites”, “Effect”, and “Value”. Column names may differ from their default labels; the configuration file (i.e., parameters.txt) specifies the column names. Below is a description of the contents of each column for a given row.</p>
+<p><i>ID</i><b>:</b> A unique text identifier for each row in the dataset. Ideally, the ID contains the gene symbols and modification sites if applicable. These IDs will be used within the visualization software. Recommended format SYMBOL_SITE (e.g., G6PD_Y401).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> IDs should not contain the characters “|” and “@”. Otherwise, it may interfere with ChiBE visualization.</div>
+<p><i>Symbols:</i> The HGNC symbol for the related gene. If there is more than one gene symbol related to a given row, then there should be a single space between each symbol.</p>
+<p><i>Sites:</i> If the row contains a phosphoprotein measurement, this column should indicate protein sites that are affected. The format for the site is the one letter capital amino acid abbreviation followed by an integer for the location on the UniProt canonical sequence (e.g., Y401, or S439). In the case of multiple sites, the sites should be separated with a pipe character “|” (e.g., S151|T153); termed a site group. If a row is related to more than one gene symbol, then there should exist a site group for each symbol that is separated with a single space. See “Sites” column for MAPK11/MAPK12 or the EHBP1 entries in the Example Input below.</p>
+<p><i>Effect:</i> If the row is a phosphoprotein measurement, this column can contain the effect of the related phosphorylation on the protein activity. Use “a” for activating and “i” for inhibiting phosphorylations. If the effect cannot be classified as activating or inhibiting, then it should be left as blank (preferred) or “c” for “complex effect”. If “c” is used then the row will be removed from possible causes, as these “complex effects” cannot be currently evaluated. If this column is blank for a row, then CausalPath will use data compiled from various resources such as PhosphoSitePlus, Signor, and limited, manual in-house curation (<a href="#bib8">Hornbeck et al., 2019</a>; <a href="#bib9">Licata et al., 2020</a>).</p>
+<p><i>Value (named “SignedP” in protocol example data):</i> A numeric value for the row. There can be multiple value columns (with distinct column names) depending on how the measurements are presented. A numeric value may encode various types of information depending on the analysis. Values may represent normalized protein reads, control and test columns, a change in expression levels (e.g., fold change), or p-values that are generated by statistical tests. The type of information stored in value columns is specified in the configuration file (i.e., parameters.txt). In this protocol example, we have a single value column, named “SignedP” that stores signed p-values where the sign indicates the change direction and the value is the multiple-testing-adjusted p-value from a moderated t-test; both are provided in the original dataset.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> When a “fold change” is used in the value column, the “value-transformation” parameter should be set to “arithmetic-mean”, and the threshold value should be provided using the “threshold-for-data-significance” parameter.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The column names can be different from those specified here; the configuration file (i.e., parameters.txt) is used to specify the column names. Files for this protocol use the column name “SignedP” as an example of “Value”.</div>
+<table id="undtbl1">
+<caption>Example input</caption>
+<thead>
+<tr>
+<th>ID</th>
+<th>Symbols</th>
+<th>Sites</th>
+<th>Effect</th>
+<th>SignedP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G6PD_Y401</td>
+<td>G6PD</td>
+<td>Y401</td>
+<td>A</td>
+<td>-0.0012</td>
+</tr>
+<tr>
+<td>MAP3K7_S439</td>
+<td>MP3K7</td>
+<td>S439</td>
+<td> </td>
+<td>-4.6e-5</td>
+</tr>
+<tr>
+<td>FRY_S1955</td>
+<td>FRY</td>
+<td>S1955</td>
+<td>I</td>
+<td>7.1e-3</td>
+</tr>
+<tr>
+<td>MAPK11_T180_Y182_MAPK12_T183_Y185</td>
+<td>MAPK11 MAPK12</td>
+<td>T180|Y182 T183|Y185</td>
+<td>a</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>EHBP1_S426_S432_S436</td>
+<td>EHBP1</td>
+<td>S426|S432|S436</td>
+<td> </td>
+<td>-4.39e-5</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> (<a href="#bib5">Babur et al., 2021</a>) describes many additional use cases for CausalPath along with input data files available on Zenodo (<a href="http://zenodo.org/record/4477801">zenodo.org/record/4477801</a>).</div>
+<h3 id="sec2.3">Available configuration options and format</h3>
+<p>A configuration file contains the parameters for a CausalPath analysis. Each parameter in this file should be given in a separate line, in the format “parameter-name = parameter-value”. This protocol will use the following subset of parameters. A complete list of parameters along with additional descriptions is available on the project website (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/InputFormat.md">github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/InputFormat.md</a>).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The file containing these parameters must have the exact name “parameters.txt”.</div>
+<ul>
+<li>proteomics-values-file: A relative path to the proteomics data file (e.g., “data_causalpath.txt”)</li>
+<li>id-column: Name of the column with IDs (e.g., “ID”)</li>
+<li>symbols-column: Name of the column with gene symbols (e.g., “Symbols”)</li>
+<li>sites-column: Name of the column with sites (e.g., “Sites”)</li>
+<li>effect-column: Name of the column with effects (e.g., “Effect”)</li>
+<li>value-column: Name of the column with values; use only when a single set of values is being considered (e.g., “SignedP”)</li>
+<li>value-transformation: A transformation applied to the values in the value-column. Use of “signed-p-values” denotes p-value for each row has been pre-calculated and that negative p-values indicate a downregulation and vice versa. (e.g., “signed-p-values”)</li>
+<li>threshold-for-data-significance: A threshold value for selecting significant data; format “thr-val data-type” (e.g., “0.1 phosphoprotein”)</li>
+<li>color-saturation-value: In the network visualization, this parameter determines which value maps to the most intense upregulation and downregulation colors. When p-values are used in the analysis, this parameter applies to −log(p-value) (e.g., “10”)</li>
+<li>calculate-network-significance: If value is "true", a p-value for activation and inhibition of proteins in the prior network will be calculated through permutation testing.</li>
+<li>permutations-for-significance: Number of iterations to use in permutation testing. (e.g., “10,000”)</li>
+<li>fdr-threshold-for-network-significance: The false discovery rate for network significance calculations for the downstream activity detection. (e.g., “0.1”)</li>
+<li>use-network-significance-for-causal-reasoning: After calculation of network significances, setting this value to “true” makes CausalPath use the inferred activities in causal reasoning.</li>
+<li>show-all-genes-with-proteomic-data: Whether to include disconnected genes in the results. If the value is “true”, any protein that is represented among causal priors and has significant value change will be represented on the result network, even if they are disconnected.</li>
+<li>gene-activity: Assign a specific activity or inactivity to a gene; format: gene name and one letter code for activity (“a”) or inactivity (“i”). (e.g., “BRAF a”)</li>
+</ul>
+<h3 id="sec2.4">Data reformatting code</h3>
+<p>The following R code will extract data for use with CausalPath from the Supplementary File 2 from the recent publication on GPVI signaling (<a href="#bib4">Babur et al., 2020</a>). This code should be saved as “phospho_mass_spec_data_extract.R” to be used as part of this protocol.</p>
+<div class="textbox">
+<p><code>library(readxl)</code></p>
+<p><code>library(stringr)</code></p>
+<p><code># READ DATA ----</code></p>
+<p><code># Supplementary File 2 from</code></p>
+<p><code>https://www.sciencedirect.com/science/article/pii/S0006497120799349</code></p>
+<p><code>dat &lt;- read_excel("1-s2.0-S0006497120799349-mmc2.xlsx",</code></p>
+<p><code>        sheet="Cond #2 TiO2 Brief", skip=11)</code></p>
+<p><code># INITIALIZE RESULTS DATA.FRAME ----</code></p>
+<p><code>reformatted_dat &lt;- data.frame(ID=character(0), Symbols=character(0),</code></p>
+<p><code>              Sites=character(0), Effect=character(0),</code></p>
+<p><code>              SignedP=numeric(0), stringsAsFactors=FALSE)</code></p>
+<p><code># EXTRACT VALUES ----</code></p>
+<p><code>pb &lt;- txtProgressBar(min=1, max=nrow(dat), style=3)</code></p>
+<p><code>for(i in 1:nrow(dat)) {</code></p>
+<p><code>  setTxtProgressBar(pb, i)</code></p>
+<p><code>  gene_symbol &lt;- dat$`UniProt Gene Name`[i]</code></p>
+<p><code>  # Format as 1-letter amino acid abbreviation and site number (e.g., Y7)</code></p>
+<p><code>  position &lt;- dat$`Site List`[i]</code></p>
+<p><code>  positions &lt;- str_split(position, "; ")[[1]]</code></p>
+<p><code>  sites &lt;- paste(positions, collapse="|")</code></p>
+<p><code>  sites_id &lt;- paste(positions, collapse="_")</code></p>
+<p><code>  id &lt;- paste0(gene_symbol, "_", sites_id)</code></p>
+<p><code>  t1 &lt;- data.frame(ID=id, Symbols=gene_symbol,</code></p>
+<p><code>          Sites=sites, Effect="",</code></p>
+<p><code>          SignedP=sign(dat$logFC[i])∗dat$FDR[i],</code></p>
+<p><code>          stringsAsFactors=FALSE)</code></p>
+<p><code>  reformatted_dat &lt;- rbind(reformatted_dat, t1)</code></p>
+<p><code>}</code></p>
+<p><code># The original and reformatted data should have the same row count</code></p>
+<p><code>stopifnot(nrow(dat) == nrow(reformatted_dat))</code></p>
+<p><code># SAVE RESULTS ----</code></p>
+<p><code>write.table(reformatted_dat, "data_causalpath.txt", sep="\t",</code></p>
+<p><code>      row.names=FALSE, quote=FALSE)</code></p>
+</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Format data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>The code below will run quickly (&lt; 1 min). Modification of the R code for particular user datasets is likely to be more time-consuming.</p>
+<ol>
+<li>The code can be run in R with the command:</li>
+</ol>
+<div class="textbox">
+<p><code>source("phospho_mass_spec_data_extract.R")</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The purpose of this step is to produce input files in the format as described in the “Data Format” section. Users are free to choose alternative methods for conducting this step; see “Alternatives.” This step is not necessary if your source data is already formatted for CausalPath.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The data reformatting step can be done in many different ways. This protocol uses the R environment as an example. Users are encouraged to format source data in the CausalPath input format in the manner they are most comfortable whether it be through the use of any programming language or an alternative file editing method they prefer.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The R code and input Excel spreadsheet must be in the same directory.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Reformatted data will be produced in the file “data_causalpath.txt”. Modifications to the code should result in a data file with a data format as described above.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The provided R code converts one of the sheets (named “Cond #2 TiO2 Brief") in the original xlsx file. An alternative is to include multiple sheets in the same conversion for more complete analysis.</div>
+<h3 id="sec3.2">Adjust parameters</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;<b>15 min</b>
+</div>
+<p>Make modifications to the “parameters.txt” as necessary</p>
+<ol start="2">
+<li>Modify, add, or remove parameters in the “parameters.txt” file while keeping the format of each line as “parameter-name = parameter-value”</li>
+</ol>
+<div class="textbox">
+<p><code>proteomics-values-file = data_causalpath.txt</code></p>
+<p><code>id-column = ID</code></p>
+<p><code>symbols-column = Symbols</code></p>
+<p><code>sites-column = Sites</code></p>
+<p><code>effect-column = Effect</code></p>
+<p><code>value-transformation = signed-p-values</code></p>
+<p><code>value-column = SignedP</code></p>
+<p><code>threshold-for-data-significance = 0.1 phosphoprotein</code></p>
+<p><code>color-saturation-value = 10</code></p>
+<p><code>calculate-network-significance = true</code></p>
+<p><code>permutations-for-significance = 10000</code></p>
+<p><code>fdr-threshold-for-network-significance = 0.1</code></p>
+<p><code>use-network-significance-for-causal-reasoning = true</code></p>
+<p><code>show-all-genes-with-proteomic-data = false</code></p>
+<p><code>gene-activity = GP6 a</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Users reproducing this protocol do not need to make modifications to the parameters.txt above.</div>
+<div class="note">
+<span class="note-title">Note:</span> Pre-formatted data and configuration files, as well as result files, are at this link (<a href="http://zenodo.org/record/5311589">zenodo.org/record/5311589</a>).</div>
+<h3 id="sec3.3">Run CausalPath</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>Run the CausalPath algorithm</p>
+<ol start="3">
+<li>Ensure that the "causalpath.jar", "data_causalpath.txt", and "parameters.txt" files are organized in the directory structure as shown below.</li>
+</ol>
+<div class="textbox"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1199-Fx4.jpg" alt="Fx4.jpg"></div>
+<div class="note">
+<span class="note-title">Note:</span> For a single analysis, both the input files data file (e.g., “data_causalpath.txt”) and configuration file (i.e., “parameters.txt”) can be put in a directory by themselves, as shown above. For multiple analyses of the same data, the data can be placed in the parent directory and reused for the different analyses.</div>
+<div class="note">
+<span class="note-title">Note:</span> Results will be produced in the same directory as the “parameters.txt” file.</div>
+<ol start="4">
+<li>Run the CausalPath analysis from a command line terminal
+<div class="textbox">
+<p><code>java -jar causalpath.jar gpvi_mass_spec</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Results will be produced in the same directory as the input files. The directory structure of a successful CausalPath run will appear as follows:</div>
+<div class="textbox"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1199-Fx5.jpg" alt="Fx5.jpg"></div>
+Description of all possible output files is available on the project site (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/OutputFiles.md">github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/OutputFiles.md</a>). The principal files are as follows:
+<ol type="a">
+<li>causative.sif: A Simple Interaction Format (SIF) network representation for identified causal relations is visualized. Used by Newt and ChiBE visualization.</li>
+<li>causative.format: This file complements causative.sif and provides styling (e.g., color information) for the SIF. Used by Newt and ChiBE visualization.</li>
+<li>causative.json: Result network in JSON format, used by the webserver for visualization.</li>
+<li>results.txt: Details of each inference made by the algorithm. This file is useful when further computation is planned on the CausalPath results.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Visualize phosphoproteomic network using causalpath.org</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;<b>15 min</b>
+</div>
+<p>CausalPath results can be visualized and explored using the project website (<a href="http://causalpath.org">causalpath.org</a>).</p>
+<ol start="5">
+<li>On <a href="http://causalpath.org">causalpath.org</a>, click “Visualize results from previous analysis”</li>
+<li>Select the folder containing the result files (see the “Run CausalPath” section for details) or a parent folder that contains multiple result folders. <a href="#fig1">Figure 1</a> visualizes the output of CausalPath.
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1199-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. CausalPath output</div>
+<p>(A) Resulting causal network.</p>
+<p>(B) Legend for graph notation for causal explanations; see (<a href="#bib5">Babur et al., 2021</a>) for a detailed explanation.</p>
+<p>(C) Render comparison of CausalPath output using alternative tools.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> A folder must be selected and not individual files</div>
+<ol start="7">
+<li>Accept the browser request to upload files if prompted</li>
+<li>Once the upload completes and the visualization page loads, the next step is to double-click the folder name from the left-hand sidebar</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Users can click the “Show legend” button for a guide to the visualization.</div>
+<div class="note">
+<span class="note-title">Note:</span> Users can drag nodes to reposition them and click on phosphorylation sites to learn their positions.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The complexity of large networks is managed (i.e., simplified) through the “Topology grouping” feature. “Topology grouping” groups nodes that have the same graph topology. This feature can be turned off by clicking the “Topology grouping” checkbox.</div>
+<h3 id="sec3.5">(Alternative) visualize results using the Newt pathway editor</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt;<b>15 min</b>
+</div>
+<p>CausalPath results can alternatively be visualized and explored using the Newt Pathway Viewer &amp; Editor (<a href="http://web.newteditor.org">web.newteditor.org</a>) (<a href="#bib6">Balci et al., 2020</a>).</p>
+<ol start="9">
+<li>Click File → Import → SIF then select the “causative.sif” to import the network</li>
+</ol>
+<ol start="10">
+<li>Click File → Import → SIF Style the select the “causative.format” to import the network colorization
+<div class="optional">
+<span class="optional-title">Optional:</span> “Topology grouping” can be turned on to simplify large networks. This is done by clicking the “Map” tab on the right-hand sidebar then clicking the “Enable Topology Grouping of SIF Nodes” checkbox.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Users can also use ChiBE as a visualization tool and instructions are provided on the ChiBE project page (<a href="http://github.com/PathwayCommons/chibe">github.com/PathwayCommons/chibe</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> The text here summarized the three options for visualization of results; <a href="#fig1">Figure 1</a>C shows a render comparison between the tools. The comments below may guide user decisions in selecting the best tool for their needs.</div>
+<ol type="a">
+<li>The CausalPath site
+<ol type="i">
+<li>Provides a legend to help explore the networks</li>
+<li>Does not provide an image export feature; take a screenshot if needed</li>
+<li>Visualization is done as a client-side browser operation that does not require sending files to the server</li>
+</ol>
+</li>
+<li>Newt/ChiBE
+<ol type="i">
+<li>Exports high-resolution vector graphics useful for publication-quality images</li>
+<li>Only requires the upload of resulting networks.</li>
+</ol>
+</li>
+<li>ChiBE
+<ol type="i">
+<li>Can be run locally</li>
+<li>Runs on Linux and Windows.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The set of 1) resulting output files and 2) the network graphs both as images and interactive graphs (via the visualization tools) are outputs of the protocol.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Currently, CausalPath cannot analyze phosphorylation sites that have complex effects. This can occur in situations where the current understanding in the literature points to both an activating and inhibiting function for a particular site.</p>
+<p>Separately, for this protocol example, we have provided R code to extract and reformat input data into the CausalPath format. Often data suitable for CausalPath is found in <i>ad hoc</i> formats in spreadsheets, and within a single protocol, it is not possible to account for all possible variations in which this data may be found.</p>
+<p>CausalPath uses several information resources to help infer the resulting network and results are limited to the contents of these resources (<a href="#bib5">Babur et al., 2021</a>). Two specific limitations that result from the pathway databases we utilize include: 1) that this project is solely to examine datasets from human cells and 2) there are no interactions for protein isoforms in these resources, currently.</p>
+<p>With version 1.2.0 presented in this protocol, users can only analyze phosphorylation post-translational modifications (PTMs).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The following error during <u>Run CausalPath</u> can be caused by a data formatting issue.</p>
+<div class="textbox">
+<p><code>Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index</code></p>
+<p><code>4 out of bounds for length 3</code></p>
+<p><code>    at</code></p>
+<p><code>org.panda.causalpath.resource.ProteomicsFileReader.readVals(ProteomicsFile</code></p>
+<p><code>Reader.java:136)</code></p>
+<p><code>    …</code></p>
+</div>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Ensure that your input data format matches the description in this protocol. In addition, ensure that the column names used in “parameters.txt” match those in the input data file. Missing data can be represented as “NaN” entries.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>The following error during <u>Run CausalPath</u> can be caused by a misspelling in the “parameters.txt”:</p>
+<div class="textbox">
+<p><code>Exception in thread "main" java.lang.IllegalArgumentException: No enum</code></p>
+<p><code>constant org.panda.causalpath.data.DataType.PHOSPHOPRTEIN</code></p>
+<p><code>    at java.base/java.lang.Enum.valueOf(Enum.java:240)</code></p>
+<p><code>    at org.panda.causalpath.data.DataType.valueOf(DataType.java:8)</code></p>
+<p><code>    …</code></p>
+</div>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Ensure that the assigned values in “parameters.txt” entries match the available options that are described at the wiki page (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/InputFormat.md">github.com/PathwayAndDataAnalysis/causalpath/blob/master/wiki/InputFormat.md</a>) and spelled correctly.</p>
+<h3 id="sec6.5">Other problems</h3>
+<p>We have thoroughly tested the CausalPath software, but other problems may occur.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>For other technical problems or identified bugs, users can post their questions on the GitHub repository (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/issues/new">github.com/PathwayAndDataAnalysis/causalpath/issues/new</a>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Aslan, J.E. (2021). Platelet proteomes, pathways, and phenotypes as informants of vascular wellness and disease. Arteriosclerosis, Thromb. Vasc. Biol. <i>41</i>, 999-1011. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref1">View at publisher</a></p>
+<p id="bib3">Babur, Ö., Dogrusoz, U., Çakır, M., Aksoy, B.A., Schultz, N., Sander, C., and Demir, E. (2014). Integrating biological pathways and genomic profiles with ChiBE 2. BMC Genom. <i>15</i>, 642. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref3">View at publisher</a></p>
+<p id="bib2">Babur, O., Dogrusoz, U., Demir, E., and Sander, C. (2010). ChiBE: interactive visualization and manipulation of BioPAX pathway models. Bioinformatics <i>26</i>, 429-431. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref2">View at publisher</a></p>
+<p id="bib5">Babur, Ö., Luna, A., Korkut, A., Durupinar, F., Siper, M.C., Dogrusoz, U., Jacome, A.S.V., Peckner, R., Christianson, K.E., Jaffe, J.D., et al. (2021). Causal interactions from proteomic profiles: molecular data meet pathway knowledge. Patterns (New York, N.Y.) <i>2</i>, 100257. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref5">View at publisher</a></p>
+<p id="bib4">Babur, Ö., Melrose, A.R., Cunliffe, J.M., Klimek, J., Pang, J., Sepp, A.-L.I., Zilberman-Rudenko, J., Tassi Yunga, S., Zheng, T., Parra-Izquierdo, I., et al. (2020). Phosphoproteomic quantitation and causal analysis reveal pathways in GPVI/ITAM-mediated platelet activation programs. Blood <i>136</i>, 2346-2358. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref4">View at publisher</a></p>
+<p id="bib6">Balci, H., Siper, M.C., Saleh, N., Safarli, I., Roy, L., Kilicarslan, M., Ozaydin, R., Mazein, A., Auffray, C., Babur, O., et al. (2020). Newt: a comprehensive web-based tool for viewing, constructing and analyzing biological maps. Bioinformatics <i>37</i>, 1475-1477. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref6">View at publisher</a></p>
+<p id="bib7">Barsi, S. and Szalai, B. (2021). Modeling in systems biology: causal understanding before prediction?. Patterns <i>2</i>, 100280. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref7">View at publisher</a></p>
+<p id="bib8">Hornbeck, P.V., Kornhauser, J.M., Latham, V., Murray, B., Nandhikonda, V., Nord, A., Skrzypek, E., Wheeler, T., Zhang, B., and Gnad, F. (2019). 15 years of PhosphoSitePlus®: integrating post-translationally modified sites, disease variants and isoforms. Nucl. Acids Res. <i>47</i>, D433-D441. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref8">View at publisher</a></p>
+<p id="bib9">Licata, L., Lo Surdo, P., Iannuccelli, M., Palma, A., Micarelli, E., Perfetto, L., Peluso, D., Calderone, A., Castagnoli, L., and Cesareni, G. (2020). SIGNOR 2.0, the SIGnaling network open resource 2.0: 2019 update. Nucl. Acids Res. <i>48</i>, D504-D510. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref9">View at publisher</a></p>
+<p id="bib10">Rodchenkov, I., Babur, O., Luna, A., Aksoy, B.A., Wong, J.V., Fong, D., Franz, M., Siper, M.C., Cheung, M., Wrana, M., et al. (2020). Pathway commons 2019 update: integration, analysis and exploration of pathway data. Nucl. Acids Res. <i>48</i>, D489-D497. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00661-4/sref10">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources should be directed to and will be fulfilled by the lead contact, Özgun Babur (<a href="mailto:ozgun.babur@umb.edu">ozgun.babur@umb.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>All necessary data and source code for this protocol is freely and publicly available on GitHub. The CausalPath Java Archive (.jar) can be downloaded from: (<a href="http://github.com/PathwayAndDataAnalysis/causalpath/releases">github.com/PathwayAndDataAnalysis/causalpath/releases</a>). Pre-formatted data, configuration, and R code files are at the following link (<a href="http://zenodo.org/record/5311589">zenodo.org/record/5311589</a>)</p>
+<h3>Acknowledgments</h3>
+<p>This work was sponsored by DARPA under the Big Mechanism Program (contract W911NF-14-C-0119) and the U.S. Army Research Office (contract ACC-APG_RTP W911NF), and by NIH grants R01HL146549 (to J.E.A.), U41HG006623 (Pathway Commons), and P41GM103504 (National Resource for Network Biology). A.L. is supported by the Ruth L. Kirschstein National Research Service Award (F32 CA192901). A.K. is supported by MD Anderson Cancer Center support grant P30 CA016672 (Bioinformatics Shared Resource) and by an OCRA collaborative research grant. U.D. is supported by the Scientific and Technological Research Council of Turkey (grant 118E131).</p>
+<h3>Author contributions</h3>
+<p>A.L. and O.B. created the protocol example and wrote the manuscript. M.C.S. helped address reviewer comments on web server features. M.C.S., A.K., F.D., U.D., J.E.A., C.S., and E.D. provided feedback and/or edited the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

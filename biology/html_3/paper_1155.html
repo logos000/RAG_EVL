@@ -1,0 +1,882 @@
+<article>
+<section>
+<h1 id="header">Simulating coxsackievirus B3 infection with an accessible computational model of its complete kinetics</h1>
+<p><time datetime="2021-11-12">Published: November 12, 2021</time></p>
+<p>Cameron D. Griffiths,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> Andrew J. Sweatt,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a></sup> and Kevin A. Janes<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biomedical Engineering, University of Virginia, Charlottesville, VA 22908, USA</p>
+<p id="aff2"><sup>2</sup>Department of Biochemistry &amp; Molecular Genetics, University of Virginia, Charlottesville, VA 22908, USA</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical contact</p>
+<p id="fn3"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:cg3gh@virginia.edu">cg3gh@virginia.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:kjanes@virginia.edu">kjanes@virginia.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100940">10.1016/j.xpro.2021.100940</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We describe how to use a publicly available computational model for coxsackievirus B3 (CVB3) infection that we recast as a graphical user interface (GUI). The GUI-based implementation enables non-computationalists to incorporate systems-biology modeling into their research and teaching. The model simulates the full life cycle of CVB3, including the host antiviral response, and includes 44 alterable parameters. The model simplifies some viral life cycle processes to improve interpretability and utility when performing <i>in silico</i> experiments.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.cels.2021.02.004">Lopacinski et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Tool for simulating coxsackievirus B3 infections with a graphical user interface</li>
+<li>Extensive functionality for parameter changes, data display, and export</li>
+<li>Installations available for Windows, MacOS, or Linux</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Background and implementation</h3>
+<p>Computational models are essential tools for hypothesis generation and testing in systems biology (<a href="#bib3">Bruggeman and Westerhoff, 2007</a>). However, most computational models have limited documentation and require knowledge of structured programming to operate. To overcome this barrier for non-computationalists, we developed a graphical user interface (GUI) version of a publicly available model of coxsackievirus B3 (CVB3) infection (<a href="#bib14">Lopacinski et al., 2021</a>). CVB3 is a member of the Picornavirus family of non-enveloped, positive-strand RNA viruses. Picornaviruses are a well-studied group of viruses, with fully delineated life cycles from viral docking and entry to cell lysis (<a href="#bib18">Racaniello, 2013</a>). After entry into the cytoplasm, the compact picornaviral genome is rapidly translated as a single polypeptide, yielding an equal proportion of viral proteins. From a computational modeling perspective, the abundance of quantitative information and one-to-one protein stoichiometry make it plausible to define a complete kinetic model of CVB3 infection. Complete kinetic models maintain stoichiometric constraints and seek to explain how reactants are converted to products from start to finish (<a href="#bib14">Lopacinski et al., 2021</a>). The GUI maintains the predictive and explanatory power of the CVB3 complete kinetic model and adds user-friendliness for non-computationalists.</p>
+<p>The model encodes the entire CVB3 lifecycle as a system of 54 differential equations (<a href="#bib14">Lopacinski et al., 2021</a>). To understand many of the input parameters and the model output, it is important to be familiar with the CVB3 life cycle. The model breaks down the viral life cycle into three main modules: delivery, replication, and encapsidation. The modules are overlaid with a set of negative feedbacks that capture the effects of several interferon-stimulated genes (ISGs) that approximate the innate immune response of the host cell.</p>
+<h4 id="sec1.1.1">Delivery module</h4>
+<p>CVB3 uses a multi-step process to enter a host cell. The virus first binds to decay-accelerating factor (DAF), a protein receptor on the cell surface (<a href="#bib21">Shafren et al., 1995</a>). Then, CVB3 translocates to tight junctions and binds to a second receptor called coxsackievirus and adenovirus receptor (CAR) (<a href="#bib2">Bergelson et al., 1997</a>). After binding CAR, CVB3 is internalized via endocytosis, and the positive-sense RNA genome of the virus is delivered into the cytoplasm (<a href="#bib4">Coyne and Bergelson, 2006</a>). In addition to live particles, stock preparations of CVB3 also contain many defective RNA-filled particles that are unable to replicate. For CVB3, the live-to-defective particle ratio is approximately 1:800, depending on the viral stock (<a href="#bib14">Lopacinski et al., 2021</a>). In the model, defective particles follow a delivery process similar to live particles, but the defective RNA is not translated or replicated.</p>
+<h4 id="sec1.1.2">Replication module</h4>
+<p>Once in the cytoplasm, the CVB3 genome is translated by host ribosomes into a single polyprotein in a cap-independent manner (<a href="#bib18">Racaniello, 2013</a>). The CVB3 genome is simultaneously bound by multiple ribosomes (polysome), forming a translation complex (<a href="#bib13">Kempf and Barton, 2008</a>). After translation, the polyprotein matures through a series of cleavage events into individual viral proteins, including the viral RNA-dependent RNA-polymerase (3D<sup>pol</sup>), two proteases (2A<sup>pro</sup> and 3C<sup>pro</sup>), an ATPase (2C<sup>ATPase</sup>), and structural capsid proteins (VP1–4) (<a href="#bib18">Racaniello, 2013</a>). In parallel, the positive-sense CVB3 genome is replicated into full-length negative-sense genomes by the viral 3D<sup>pol</sup>. The negative-sense genomes are subsequently replicated by 3D<sup>pol</sup> to generate more positive-sense genomes (<a href="#bib18">Racaniello, 2013</a>). During replication, CVB3 hydrophobic proteins (including 2C<sup>ATPase</sup>) recruit intracellular membranes to form viral replication organelles (VROs) (<a href="#bib15">Melia et al., 2019</a>; <a href="#bib16">Miller and Krijnse-Locker, 2008</a>). The VROs serve as a platform for replication, concentrating viral proteins and accelerating replication.</p>
+<h4 id="sec1.1.3">Encapsidation module</h4>
+<p>To create new viral particles, CVB3 capsid proteins self-assemble with positive-sense viral RNA. First, three capsid proteins (VP0 [the precursor for VP2 and VP4], VP1, and VP3) bind to form a capsid protomer (<a href="#bib10">Jiang et al., 2014</a>). In the model, a protomer contributes immediately to one fifth of a self-assembled pentamer. Twelve pentamers are assumed to bind sequentially to form a mature viral particle. During pentamer recruitment, a positive-sense viral RNA strand may or may not be bound to a pentamer. If viral RNA is bound when the twelfth pentamer is added in the model, a filled (infectious) virion is formed. Otherwise, an empty (non-infectious) virion is formed. At any point during capsid formation, pentamers or viral RNA may unbind, but once fully assembled, the model assumes that mature virions do not disassemble into individual pentamers.</p>
+<h4 id="sec1.1.4">Feedbacks involving the innate immune response</h4>
+<p>Host cells have mechanisms to detect infecting viruses and mount an antiviral response through a series of events that shut down transcription and translation. Reciprocally, viruses encode countermeasures to block the antiviral response. For CVB3, melanoma differentiation-associated protein 5 (MDA5) recognizes double-stranded RNA formed during CVB3 replication (<a href="#bib1">Andrejeva et al., 2004</a>; <a href="#bib11">Kang et al., 2002</a>). MDA5 bound to double-stranded RNA signals through mitochondrial antiviral-signaling protein (MAVS) to stimulate type I interferon (IFN) production (<a href="#bib12">Kawai et al., 2005</a>; <a href="#bib20">Seth et al., 2005</a>). Type I IFN is then secreted, stimulating the infected cell (as well as nearby cells) to induce ISG expression (<a href="#bib19">Sadler and Williams, 2008</a>). CVB3 proteases 2A<sup>pro</sup> and 3C<sup>pro</sup> antagonize the innate immune response by cleaving host-cell proteins, including MAVS (<a href="#bib8">Feng et al., 2014</a>; <a href="#bib17">Mukherjee et al., 2011</a>). Furthermore, 2A<sup>pro</sup> cleaves eukaryotic translation initiation factor 4G (eIF4G) (<a href="#bib7">Etchison et al., 1982</a>), which prevents translation of host mRNAs but does not affect translation of the CVB3 genome.</p>
+<p>The model encodes the innate immune response as negative feedbacks that inhibit translation, inactivate proteases, and accelerates RNA degradation. Viral antagonism is encoded as a counteracting negative feedback that decreases the host-cell ability to initiate an immune response.</p>
+<h4 id="sec1.1.5">Modeling implementation</h4>
+<p>The published model is publicly available as a MATLAB package at <a href="https://github.com/JanesLab/CompleteKinetics-CVB3">https://github.com/JanesLab/CompleteKinetics-CVB3</a>. To address the drawback that the published model requires structured programming knowledge and commercial software, we built a standalone, open-source version of the model that runs simulations behind a GUI. The protocol below describes the installation and use of the CVB3 complete kinetics GUI; more-advanced users are referred to the original research publication describing the MATLAB package (<a href="#bib14">Lopacinski et al., 2021</a>).</p>
+<h3 id="sec1.2">Install the graphical user interface (GUI)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–30 min</div>
+<p>The CVB3 complete kinetics GUI requires installation of MATLAB Runtime version 9.10 (R2021a; 724 MB download size). The CVB3 GUI and MATLAB Runtime software can be installed automatically or manually on Windows or MacOS operating systems. The automatic installation uses an installation wizard to install both MATLAB Runtime (if needed) and the GUI. The manual installation is provided as an alternative, where MATLAB Runtime is separately installed and the GUI is run directly from the .exe (Windows) or .app (MacOS) file. The files for the following download steps can be found on the JanesLab Github site (see <a href="#key-resources-table">key resources table</a>).</p>
+<div class="note">
+<span class="note-title">Note:</span> For Linux users, we compiled the GUI on a Centos distribution and made the compiled application available on the JanesLab Github site (see <a href="#key-resources-table">key resources table</a>). Installing and running the GUI on Linux requires knowledge of command line-based scripting, which is beyond the scope of this protocol. The instructions for installing and running the GUI can be found in the readme file provided in the Linux folder on the JanesLab Github site.</div>
+<ol>
+<li>Windows Automatic Installation Instructions
+<ol type="a">
+<li>Download CVB3_AppInstaller_web.exe, and then double click to run the program.</li>
+<li>Click “Yes” to allow this app from an unknown publisher to make changes to your device.</li>
+<li>Click “Next &gt;” to advance past the installation start page.</li>
+<li>If desired, check “Add a shortcut to the desktop”.</li>
+<li>Click “Next &gt;” to confirm the CVB3 GUI installation folder selection.</li>
+<li>At this point, the installer checks if MATLAB Runtime is installed. If not, perform the following steps:
+<ol type="i">
+<li>Click “Next &gt;” to confirm the MATLAB Runtime installation folder selection.</li>
+<li>Check “Yes” then click “Next &gt;” to agree to the MATLAB Runtime user agreement.</li>
+</ol>
+</li>
+<li>Click “Install &gt;” to install MATLAB Runtime (if needed) and the CVB3 GUI.</li>
+<li>Click “Finish” to close the installer.</li>
+<li>Run the CVB3 GUI like any other program.</li>
+</ol>
+</li>
+<li>Windows Manual Installation Instructions
+<ol type="a">
+<li>Verify that version 9.10 (R2021a) of MATLAB Runtime is installed. If installed, MATLAB Runtime can be found in the “Add or remove programs” list, which can be found by searching for “Add or remove programs” in the computer’s search bar.
+<ol type="i">
+<li>If MATLAB Runtime is not installed, we advise following the “Windows Automatic Installation Instructions” to download MATLAB Runtime and the GUI simultaneously. Otherwise, download and install the appropriate version of MATLAB Runtime for R2021a from the following link on the MathWorks website: <a href="https://www.mathworks.com/products/compiler/mcr/index.html">https://www.mathworks.com/products/compiler/mcr/index.html</a>.</li>
+</ol>
+</li>
+<li>Download the CVB3_GUI_Manual_Install folder to a desired location on the hard drive.</li>
+<li>Run the CVB3 GUI by double-clicking the CVB3_GUI.exe icon.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>MacOS Automatic Installation Instructions
+<ol type="a">
+<li>Download CVB3_AppInstaller_web.app.zip.</li>
+<li>Right click on the file and select “Open” to open the installer.
+<ol type="i">
+<li>The following message may appear: “macOS cannot verify the developer of “CVB3_AppInstaller_web” Are you sure you want to open it?”. Click “Open” to proceed with the installation.</li>
+<li>If needed, enter the administrator User Name and Password and click “OK”.</li>
+</ol>
+</li>
+<li>Click “Next &gt;” to advance past the installation start page.</li>
+<li>Choose an installation folder and click “Next &gt;” to confirm the CVB3 GUI installation folder selection.</li>
+<li>At this point, the installer checks if MATLAB Runtime is installed. If not, perform the following steps:
+<ol type="i">
+<li>Choose an installation folder for MATLAB Runtime and click “Next &gt;” to confirm the MATLAB Runtime installation folder selection.
+<div class="note">
+<span class="note-title">Note:</span> MATLAB Runtime must be installed in a folder named “MATLAB” in the Applications directory (<a href="#fig1">Figure 1</a>). If the application is installed in another directory, copy it to the Applications directory.</div>
+</li>
+<li>Check “Yes” then click “Next &gt;” to agree to the MATLAB Runtime user agreement.</li>
+</ol>
+</li>
+<li>Click “Install &gt;” to install MATLAB Runtime (if needed) and the CVB3 GUI.</li>
+<li>Click “Finish” to close the installer.</li>
+<li>Open the Janes_Lab folder (in the install location from step d—usually “Applications”).</li>
+<li>Open the CVB3_GUI folder.</li>
+<li>Open the application folder.</li>
+<li>If desired, make an alias of CVB3_GUI.app for easier access.</li>
+<li>Run the CVB3 GUI by double-clicking the CVB3_GUI.app icon.</li>
+</ol>
+</li>
+</ol>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. MacOS folder setup for MATLAB runtime</div>
+<p>For the CVB3 model to run correctly on MacOS, MATLAB Runtime must be installed in the MATLAB folder within the Applications directory. The v910 folder within “MATLAB Runtime” is set up automatically when installing MATLAB Runtime.</p>
+</figcaption>
+</figure>
+<ol start="4">
+<li>MacOS Manual Installation Instructions
+<ol type="a">
+<li>Verify that version 9.10 (R2021a) of MATLAB Runtime is installed. If installed, MATLAB Runtime can be found in the Applications directory.
+<ol type="i">
+<li>If MATLAB Runtime is not installed, we advise following the “MacOS Automatic Installation Instructions” to download MATLAB Runtime and the GUI simultaneously. Otherwise, download and install the appropriate version of MATLAB Runtime for R2021a from the following link on the MathWorks website: <a href="https://www.mathworks.com/products/compiler/mcr/index.html">https://www.mathworks.com/products/compiler/mcr/index.html</a>.
+<div class="note">
+<span class="note-title">Note:</span> MATLAB Runtime must be installed in a folder named “MATLAB” in the Applications directory (<a href="#fig1">Figure 1</a>). If the application is installed in another directory, copy it to the Applications directory.</div>
+</li>
+</ol>
+</li>
+<li>Download the CVB3_GUI_Manual_Install folder to a desired location on the hard drive.</li>
+<li>Open the CVB3_GUI_Manual_Install folder.</li>
+<li>Double click on the CVB3_GUI.app.zip icon.</li>
+<li>Run the CVB3 GUI by right clicking the CVB3_GUI icon and selecting “Open”.
+<ol type="i">
+<li>The following message may appear: “macOS cannot verify the developer of “CVB3_AppInstaller_web”. Are you sure you want to open it?”. Click “Open” to proceed with running the CVB3 GUI.</li>
+<li>If needed, enter the administrator User Name and Password and click “OK”.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>CVB3 complete kinetics computational model</td>
+<td><a href="#bib14">Lopacinski et al. (2021)</a></td>
+<td><a href="https://github.com/JanesLab/CompleteKinetics-CVB3">https://github.com/JanesLab/CompleteKinetics-CVB3</a></td>
+</tr>
+<tr>
+<td>CVB3 complete kinetics GUI</td>
+<td>This paper</td>
+<td><a href="https://github.com/JanesLab/CompleteKinetics-CVB3-GUI">https://github.com/JanesLab/CompleteKinetics-CVB3-GUI</a></td>
+</tr>
+<tr>
+<td>MATLAB R2021a</td>
+<td>MathWorks</td>
+<td><a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a></td>
+</tr>
+<tr>
+<td>MATLAB Runtime version 9.10 (R2021a)</td>
+<td>MathWorks</td>
+<td><a href="https://www.mathworks.com/products/compiler/matlab-runtime.html">https://www.mathworks.com/products/compiler/matlab-runtime.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Basic operations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 min per simulation</div>
+<p>(Simulation time may vary with computer processing speed and non-default parameter sets.)</p>
+<p>This protocol describes the basic model functions to provide a starting point for further simulations. The program runs simulations behind the GUI and stores the concentration of 59 output species as a function of time (e.g., virions, total single-stranded RNA, positive-sense RNA, viral protein, and interferon stimulated proteins). The user selects one species to be plotted on the main GUI figure. When multiple simulations are run sequentially, the data from previous simulations are saved until one of three things occurs: 1) the Clear Data/Plot button (General tab) is pressed, 2) the simulation mode is switched (Options tab), or 3) a sensitivity analysis is enabled or disabled (Options tab). All simulations that have not been cleared are referred to as active simulations.</p>
+<p>To demonstrate basic operations, this protocol begins with a default infection for 16 h at a multiplicity of infection (MOI) of 10, with all parameters set to literature or experimental estimates (<a href="#bib14">Lopacinski et al., 2021</a>). At the end of this outline, the reader should be able to simulate infections, change key parameters, and export results. Descriptions of all buttons on the main GUI page are found in <a href="#tbl1">Table 1</a>.</p>
+<table id="tbl1">
+<caption>Table 1. General tab input options</caption>
+<thead>
+<tr>
+<th>Input name</th>
+<th>Default value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOI</td>
+<td>10</td>
+<td>Multiplicity of infection.</td>
+</tr>
+<tr>
+<td>Time (h)</td>
+<td>16</td>
+<td>Timepoint (in hours) to end the simulation.</td>
+</tr>
+<tr>
+<td>Antiviral Response</td>
+<td>On</td>
+<td>Enables/disables the interferon (IFN) response.</td>
+</tr>
+<tr>
+<td>Viral Antagonism</td>
+<td>On</td>
+<td>Enables/disables viral antagonism of the host IFN response.</td>
+</tr>
+<tr>
+<td>IFN Stimulation</td>
+<td>Off</td>
+<td>Enables/disables exogenous IFN stimulation.</td>
+</tr>
+<tr>
+<td>Stimulation Time</td>
+<td>0</td>
+<td>Time of exogenous IFN stimulation. A negative value indicates pre-treatment with IFN.</td>
+</tr>
+<tr>
+<td>Results to Plot</td>
+<td>Virions</td>
+<td>Changes the parameter plotted on the GUI plot.All active simulations will automatically be plotted by changing this.</td>
+</tr>
+<tr>
+<td>Other Output</td>
+<td> </td>
+<td>Other output options for Results to Plot.</td>
+</tr>
+<tr>
+<td>Start</td>
+<td>N/A</td>
+<td>Performs the simulation.</td>
+</tr>
+<tr>
+<td>Update Plot</td>
+<td>N/A</td>
+<td>Refreshes the GUI plot.Updates plot with new Other Output.</td>
+</tr>
+<tr>
+<td>Log Scale Y</td>
+<td>1 (on)</td>
+<td>Sets the GUI plot Y axis to logarithmic scale.</td>
+</tr>
+<tr>
+<td>Show Quantile Lines</td>
+<td>1 (on)</td>
+<td>Shows/hides upper and lower quantile lines.</td>
+</tr>
+<tr>
+<td>Show All Plots</td>
+<td>N/A</td>
+<td>Opens 7 figures per active simulation with plots that show all output species.</td>
+</tr>
+<tr>
+<td>Clear Data/Plot</td>
+<td>N/A</td>
+<td>Deletes all active simulations and clears the GUI plot.</td>
+</tr>
+<tr>
+<td>Export Plot</td>
+<td>N/A</td>
+<td>Saves the GUI plot to file.</td>
+</tr>
+<tr>
+<td>Export Results</td>
+<td>N/A</td>
+<td>For each active simulation, the following tables are saved to file: Parameter Output, Median Results, Upper Quantile, Lower Quantile, Mean Results, and Sensitivity Analysis (if applicable).</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>To begin the default simulation, click Start. The median virion concentration over time is automatically plotted along with the upper quantile (default: 95%) and lower quantile (default: 5%) (<a href="#fig2">Figure 2</a>A).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Demonstration of a single simulation and sequential simulations</div>
+<p>(A) The graphical output is the result of running the model with default settings.</p>
+<p>(B) The graphical output of a second simulation (blue) using MOI 5 is overlaid on the first simulation (red). The blue box highlights changes made for the simulation. The solid lines show the median number of virions over time, and the dotted lines show the upper (95%) and lower (5%) quantiles.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The upper and lower quantiles are plotted because the CVB3 complete kinetics GUI performs multiple runs—determined by Number of runs (Options tab)—with slightly different parameter sets for a single simulation. See the <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a> section for details on the variation between runs.</div>
+<ol start="2">
+<li>To infect with half as much virus, change the number in the MOI box to 5 and click Start. The new simulation is overlaid on the previous simulation in a new color (<a href="#fig2">Figure 2</a>B, blue).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Ten unique colors are pre-loaded, and the colors will repeat if more simulations are overlaid.</div>
+<ol start="3">
+<li>To examine the effect of the host antiviral response, toggle the Antiviral Response switch off and click Start. For simulations at an MOI of 5, the median virion concentration is increased by toggling off the antiviral response (<a href="#fig3">Figure 3</a>A, green compared to blue). Next, change the Results to Plot dropdown to Interferon Stimulated Proteins and uncheck the Log Scale Y button. The lack of interferon stimulated proteins confirms that the antiviral response is disabled (<a href="#fig3">Figure 3</a>B, green).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Turning off the antiviral response and plotting a different species</div>
+<p>The graphical output is the result of running a third simulation (green) after the simulations shown in <a href="#fig2">Figure 2</a> (red and blue). The third simulation was run at an MOI of 5 with the cellular antiviral response turned off.</p>
+<p>(A) Virion production increases without an antiviral response.</p>
+<p>(B) No interferon stimulated proteins are produced when the antiviral response is turned off. The green box highlights changes made for the simulation. The solid lines show the median number of virions over time, and the dotted lines show the upper (95%) and lower (5%) quantiles.</p>
+</figcaption>
+</figure>
+</li>
+<li>The model can also simulate the effect of adding exogenous IFN. To perform a simulation with exogenous IFN added 6 h after infection, toggle the IFN Stimulation switch on, and enter “6” in the Stimulation Time field. Next, toggle the Antiviral Response switch back on and click Start. To plot +ssRNA instead of virion concentration, change the Results to Plot dropdown to Total +ssRNA and check the Log Scale Y button. Uncheck the Show Quantile Lines button to reduce crowding and make the plot easier to interpret (<a href="#fig4">Figure 4</a>, cyan compared to blue).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Adding exogenous IFN stimulation</div>
+<p>The graphical output is the result of running a fourth simulation (cyan) after the simulation shown in <a href="#fig3">Figure 3</a>. The fourth simulation was run at an MOI of 5 with exogenous IFN stimulation starting at 6 h post infection and the host antiviral response on. The plot shows total positive-sense single-stranded RNA (+ssRNA) on a logscale y-axis with the quantile lines turned off. The cyan boxes highlight changes made for the simulation. The solid lines show the median number of virions over time.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Entering a negative value in the Stimulation Time field simulates IFN pretreatment of cells prior to infection.</div>
+<div class="note">
+<span class="note-title">Note:</span> The Antiviral Response switch must be turned on for the exogenous IFN to stimulate an antiviral response. Otherwise, the model does not incorporate the exogenous IFN. The model simulation is the same with and without exogenous IFN if the Antiviral Response is off.</div>
+<ol start="5">
+<li>To save the main figure plot as it is currently displayed, press the Export Plot button. To export another plot with a different species-of-interest, change the Results to Plot dropdown then press the Export Plot button again. Press the Export Results button to save all of the underlying data. Export Results saves 5 tables per active simulation (Median, Mean, Upper Quantile, Lower Quantile, and Run Parameters).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The Run Parameters table is used as a reference for the settings that went into each simulation.</div>
+<div class="note">
+<span class="note-title">Note:</span> To view many species without changing Results to Plot, press the Show All Plots button. Show All Plots will plot all 59 output species grouped into 7 windows per simulation rather than overlaying the data from multiple simulations. For example, clicking Show All Plots after two simulations will result in 14 windows. These plots can also be saved.</div>
+<ol start="6">
+<li>In addition to the parameters modified in the above steps, all other parameters in the General tab (<a href="#tbl1">Table 1</a>), Options tab (<a href="#tbl2">Table 2</a>), or Advanced Options tab (<a href="#tbl3">Table 3</a>) can also be edited. Descriptions of all fields and their default values are listed in <a href="#tbl1">Tables 1</a>, <a href="#tbl2">2</a>, and <a href="#tbl3">3</a>.
+<table id="tbl2">
+<caption>Table 2. Options tab input options</caption>
+<thead>
+<tr>
+<th>Input name</th>
+<th>Default value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISG concentration for RNA degradation</td>
+<td>5</td>
+<td>EC50_RNAdeg—the half-effective concentration in nM of interferon-stimulated genes for viral RNA degradation.</td>
+</tr>
+<tr>
+<td>Viral protease concentration for viral detector degradation</td>
+<td>0.001</td>
+<td>EC50_DetectorDeg—the half-effective concentration in nM of viral protease for viral detector degradation.</td>
+</tr>
+<tr>
+<td>ISG concentration for viral protease degradation</td>
+<td>20</td>
+<td>EC50_Protease—the half-effective concentration in nM of interferon-stimulated genes for viral protease degradation.</td>
+</tr>
+<tr>
+<td>ISG concentration for inhibition of viral translation</td>
+<td>10</td>
+<td>EC50_Translate—the half-effective concentration in nM of interferon-stimulated genes for viral translation inhibition.</td>
+</tr>
+<tr>
+<td>Simulation Mode</td>
+<td>Single Cell</td>
+<td>Toggles between a Poisson distribution (population) or using a single integer (single cell) for MOI. Quantile lines are disabled in population mode.Toggling this switch deletes all active simulations and clears the GUI plot.</td>
+</tr>
+<tr>
+<td>Sensitivity Analysis</td>
+<td>0 (off)</td>
+<td>Indicates if a sensitivity analysis should be simulated. During a sensitivity analysis the run count is set to one and quantile lines are disabled.Toggling this switch deletes all active simulations and clears the GUI plot.</td>
+</tr>
+<tr>
+<td>Output species</td>
+<td>Plus RNA</td>
+<td>Changes Sensitivity Analysis output.</td>
+</tr>
+<tr>
+<td>Other output</td>
+<td> </td>
+<td>Other output options for Sensitivity Analysis. Multiple species may be entered (separated by commas, with no spaces) and the output will be the sum of the entered species.</td>
+</tr>
+<tr>
+<td>Scaling factor</td>
+<td>10</td>
+<td>Factor to scale parameters by during sensitivity analysis.</td>
+</tr>
+<tr>
+<td>Max orders of magnitude to scale</td>
+<td>2</td>
+<td>Orders of magnitude to scale (in both directions) during sensitivity analysis.</td>
+</tr>
+<tr>
+<td>Number of runs</td>
+<td>100</td>
+<td>Indicates the number of runs in a simulation. Runs are not identical, as parameters are stochastically sampled from independent log-normal distributions.</td>
+</tr>
+<tr>
+<td>Upper quantile</td>
+<td>0.95</td>
+<td>The upper quantile of run values to be plotted for indicated output species.</td>
+</tr>
+<tr>
+<td>Lower quantile</td>
+<td>0.05</td>
+<td>The lower quantile of run values to be plotted for indicated output species.</td>
+</tr>
+<tr>
+<td>Coefficient of variation</td>
+<td>0.05</td>
+<td>The coefficient of variation (CV) of the log-normal distribution from which the parameters are stochastically determined. A larger value indicates greater parameter variability between runs. Higher CV values can cause model instability and increase the likelihood of errors. When set at the CV maximum (0.2), approximately one error will occur every 700–800 runs.</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl3">
+<caption>Table 3. Advanced options tab input options</caption>
+<thead>
+<tr>
+<th>Input name</th>
+<th>Default value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DAF</td>
+<td>4.4e+04</td>
+<td>Initial number of unbound cell surface DAF molecules.</td>
+</tr>
+<tr>
+<td>CAR</td>
+<td>5.5e+06</td>
+<td>Initial number of unbound cell surface CAR molecules.</td>
+</tr>
+<tr>
+<td>Ribosomes</td>
+<td>1e+05</td>
+<td>Initial number of host cell ribosomes.</td>
+</tr>
+<tr>
+<td>Cell volume</td>
+<td>3700</td>
+<td>Total volume of the cell in μm<sup>3</sup>. This must be greater than nucleus volume.</td>
+</tr>
+<tr>
+<td>Nucleus volume</td>
+<td>960</td>
+<td>Total volume of the cell nucleus in μm<sup>3</sup>.</td>
+</tr>
+<tr>
+<td>Cell surface area</td>
+<td>2200</td>
+<td>Total outer cell surface area in μm<sup>2</sup>.</td>
+</tr>
+<tr>
+<td>VRO surface area</td>
+<td>120</td>
+<td>Surface area of the average viral replication organelle (VRO) in μm<sup>2</sup>.</td>
+</tr>
+<tr>
+<td>CVB3 translocation to tight junction</td>
+<td>60</td>
+<td>k_transloc—the rate of DAF translocation into and out of the tight junction in h<sup>−1</sup>. This rate determines the speed at which CVB3 is delivered by DAF to bind CAR in the tight junction. The default is set at maximum delivery to CAR in ∼15 min.</td>
+</tr>
+<tr>
+<td>CVB3 internalization</td>
+<td>0.5</td>
+<td>k_internal—the rate of internalization of the CVB3 bound to CAR<sup>−1</sup>. This also results in downregulation of CAR at the cell surface. The default is set to achieve maximum internalization within ∼20 min.</td>
+</tr>
+<tr>
+<td>Endosome escape</td>
+<td>420</td>
+<td>k_endo_escape—the rate of CVB3 +ssRNA release from internalized endosomes into the cytoplasm in h<sup>−1</sup>. Default is set at ∼70 particles released per 10 min.</td>
+</tr>
+<tr>
+<td>Viral polymerase rate</td>
+<td>180</td>
+<td>Rate of transcription by the viral polymerase for production of + and –ssRNA, in kilobase pairs per hour (kb/h).</td>
+</tr>
+<tr>
+<td>Host polymerase rate for ISGs</td>
+<td>170</td>
+<td>k_transcribeISG—the rate of transcription for host ISGs after viral detection or interferon stimulation, in kilobase pairs per hour (kb/h).</td>
+</tr>
+<tr>
+<td>3Dpol molecules required to form VRO</td>
+<td>25</td>
+<td>Number of 3D<sup>pol</sup> molecules required to form a membrane-bound VRO and accelerate viral replication.</td>
+</tr>
+<tr>
+<td>Replication complex formation rate: +RNA</td>
+<td>0.36</td>
+<td>k_R_Ip_Form—the rate of viral +ssRNA binding to 3D<sup>pol</sup> in a VRO to form a replication complex in nM<sup>−1</sup> h<sup>−1</sup>.</td>
+</tr>
+<tr>
+<td>Replication complex formation rate: -RNA</td>
+<td>0.36</td>
+<td>k_R_In_Form—the rate of viral –ssRNA binding to 3D<sup>pol</sup> in a VRO to form a replication complex in nM<sup>−1</sup> h<sup>−1</sup>.</td>
+</tr>
+<tr>
+<td>Translation rate</td>
+<td>3.5</td>
+<td>The translation rate of CVB3 +ssRNA into viral polyprotein, in codon/s.</td>
+</tr>
+<tr>
+<td>Host ribosome cleavage rate</td>
+<td>1158</td>
+<td>kcat_cleave—the rate of host ribosome (EIF4G) cleavage by viral proteases in h<sup>−1</sup>. The cleavage reaction shifts host ribosomes to viral ribosomes.</td>
+</tr>
+<tr>
+<td>Protease Km for host ribosomes</td>
+<td>960e+03</td>
+<td>Km_cleave—the Km value, indicating the affinity of viral protease for host ribosome (EIF4G) in nM. The cleavage reaction shifts host ribosomes to viral ribosomes.</td>
+</tr>
+<tr>
+<td>Translation complex formation rate</td>
+<td>25/Polysome size</td>
+<td>k_T_c_Form—the rate of viral +ssRNA binding to ribosomes to form translation complexes in nM<sup>−1</sup> h<sup>−1</sup>. Polysome size is set at 2.5.</td>
+</tr>
+<tr>
+<td>Pentamer assembly rate</td>
+<td>3.6</td>
+<td>The capsid:capsid (with or without viral RNA) and capsid:RNA rate of association in nM<sup>−1</sup> h<sup>−1</sup>. This parameter simultaneously changes k1f_cap, k2f_cap, and kRNACapBind.</td>
+</tr>
+<tr>
+<td>Pentamer disassembly rate</td>
+<td>3600</td>
+<td>The capsid:capsid (with or without viral RNA) and capsid:RNA rate of dissociation in h<sup>−1</sup>. This parameter simultaneously changes k1b_cap, k2b_cap, and kRNACapUnbind.</td>
+</tr>
+<tr>
+<td>+ssRNA degradation rate</td>
+<td>0.23</td>
+<td>The basal rate of positive-strand viral RNA degradation in h<sup>−1</sup>. This parameter simultaneously changes u_P_cyt and u_P_VRO.</td>
+</tr>
+<tr>
+<td>-ssRNA degradation rate</td>
+<td>0.23</td>
+<td>The basal rate of negative-strand viral RNA degradation in h<sup>−1</sup>. This parameter simultaneously changes u_N_cyt and u_N_VRO.</td>
+</tr>
+<tr>
+<td>Translation complex degradation rate</td>
+<td>0</td>
+<td>u_T_c—the degradation rate for +ssRNA in translation complexes in h<sup>−1</sup>. The default is set to zero under the assumption that Poly(rC) binding proteins protect the viral RNA during polysome formation.</td>
+</tr>
+<tr>
+<td>Viral protein degradation rate</td>
+<td>0.05</td>
+<td>The basal rate of viral 3D<sup>pol</sup>, protease, and capsid degradation in h<sup>−1</sup>. This parameter simultaneously changes u_VirProt_cyt, u_VirProt_VRO, u_cap_cyt, and u_cap_VRO.</td>
+</tr>
+<tr>
+<td>ISG degradation rate</td>
+<td>0.1</td>
+<td>u_ISG—the rate of ISG protein degradation by the host cell in h<sup>−1</sup>.</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> All parameters can be reset to defaults values by clicking the Reset all Parameters to Default Values button in the Advanced Options tab. Resetting to default values does not clear the plot, remove active simulations, change simulation mode, or enable/disable sensitivity analysis.</div>
+<div class="note">
+<span class="note-title">Note:</span> Simulations that result in a median virion concentration greater than 326 nM will be truncated at the time point that 326 nM is reached. See the <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a> for the rationale and calculation of the threshold.</div>
+<h3 id="sec2.2">Population mode</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 min per simulation</div>
+<p>(Simulation time may vary with computer processing speed and non-default parameter sets.)</p>
+<p>The default simulation mode is to model the infection of a single cell with the number of virions specified in the MOI box. The model is also able to simulate infection of an entire population of cells with the discrete number of virions for each run taken from a Poisson distribution around a mean specified by the MOI, as occurs in an actual infection (<a href="#bib6">Ellis and Delbrück, 1939</a>). In population mode, each run involves a different number of virions; the mean and median for output species are plotted as the population-wide average without quantile lines.</p>
+<ol start="7">
+<li>Click Reset all Parameters to Default Values under the Advanced Options tab to undo all changes made thus far and reset the model. Under the Options tab, turn the Simulation Mode knob from Single Cell to Population, which will clear all active simulations. Under the General tab, click Start. Both the median and the mean virion concentration are plotted without quantile lines (<a href="#fig5">Figure 5</a>).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. A simulation in population mode</div>
+<p>The graphical output is the result of running a simulation in Population mode instead of Single Cell mode. In Population mode, the number of viral particles in each run is randomly selected from a Poisson distribution with the mean set at the input MOI. The plot shows the mean (dotted line) and the median (solid line) virions over time.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Quantile lines are disabled in population mode. No other GUI functionality is lost. Like in single cell mode, all other model parameters can be modified, and results can be exported.</div>
+<h3 id="sec2.3">Sensitivity analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 min</div>
+<p>(Simulation time may vary with computer processing speed and non-default parameter sets.)</p>
+<p>The CVB3 computational model can run a sensitivity analysis. The sensitivity analysis shows changes in a user-defined output species when parameters are individually scaled up or down. Each parameter is scaled by the value in the Scaling factor box to a maximum/minimum set by the Max orders of magnitude to scale box. The coefficient of variation among runs is set to 0 so that the parameter being scaled is the only change between iterations. As a result, quantile lines are also disabled. The sensitivity analysis output is displayed as a heatmap showing the fold change in the output species-of-interest at the simulation endpoint.</p>
+<ol start="8">
+<li>Click Reset all Parameters to Default Values under the Advanced Options tab to reset the model. Under the Options tab, check the Sensitivity analysis box, which will clear all active simulations. Under the General tab, click Start. The default sensitivity analysis shows changes in positive-sense CVB3 RNA (+ssRNA) (<a href="#fig6">Figure 6</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Performing a single-parameter sensitivity analysis</div>
+<p>The graphical output is the result of running a sensitivity analysis for positive-strand RNA concentration at 16 h post infection. On the x-axis are parameters that were individually scaled up or down by the indicated multiplication factor on the y-axis relative to the base parameter set. The Hill constant was varied multiplicatively below one and additively above one, where 2 = base Hill coefficient + 1. Orange rectangles indicate parameter values that increased positive-strand RNA concentration compared to default, whereas blue rectangles indicate decreased positive-strand RNA concentration. The sensitivity analysis plot was processed in Adobe Illustrator.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A sensitivity analysis can be run in either single cell mode (as in <a href="#fig6">Figure 6</a>) or population mode.</div>
+<div class="note">
+<span class="note-title">Note:</span> The sensitivity analysis output can either be a single species or the sum of any number of output species. Multiple species can be selected by selecting Other in the Output species dropdown menu and entering the output species to sum in the Other output box, separated by commas (no spaces).</div>
+<div class="note">
+<span class="note-title">Note:</span> Similar to running the model with the sensitivity analysis disabled, any model parameter can be modified, and the results can be exported. An additional table containing the results of the sensitivity analysis will also be exported.</div>
+<div class="note">
+<span class="note-title">Note:</span> In contrast to running the model with the sensitivity analysis disabled, virion concentrations exceeding 326 nM will not be truncated.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The CVB3 complete kinetics computational model reproduces the entire life cycle of CVB3. Specific viral life cycle events can be observed by examining different model output species. To illustrate, a simulation was run using default parameters, with the time set to 6 h (<a href="#fig7">Figure 7</a>). CVB3 binding occurs within the first hour, as reflected by the disappearance of unbound CVB3 (<a href="#fig7">Figure 7</a>A). However, full viral entry does not finish until shortly after 3 h post infection, when +ssRNA is no longer present in endosomes (<a href="#fig7">Figure 7</a>B). Next, the viral replication organelle (VRO) forms (<a href="#fig7">Figure 7</a>C, arrow), which concentrates viral proteins and viral RNA. The concentrating effect rapidly accelerates the formation of ribosome-bound +ssRNA viral translation complexes (<a href="#fig7">Figure 7</a>D), viral protein (<a href="#fig7">Figure 7</a>E), and +ssRNA (<a href="#fig7">Figure 7</a>F) (<a href="#bib14">Lopacinski et al., 2021</a>). The accumulation of viral proteins initiates the self-assembly of virions. During CVB3 self-assembly, capsid pentamers come together sequentially, along with +ssRNA. When the twelfth pentamer joins, the capsid closes, forming an intact virion. Accordingly, two pentamers bound to +ssRNA is observed before five pentamers bound to +ssRNA, which occurs before full virions are produced (<a href="#fig7">Figures 7</a>G–7I).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Model GUI outputs for the selected species during a viral life cycle</div>
+<p>The simulation was performed for 6 h with all other parameters set to their default values.</p>
+<p>(A and B) Species from the delivery module decrease early in the viral life cycle. The concentration of Endosomal +ssRNA (B) is low due to the transient nature of the species.</p>
+<p>(C–F) Species from the replication module increase over the course of viral infection. Once VROs are formed (<b>C, arrow</b>), the number of translation complexes rapidly increases (D), which causes an explosive increase in viral proteins (E) that can then replicate the viral genome (F).</p>
+<p>(G–I) Species from the encapsidation module appear in a time-dependent manner. Early RNA–pentamer species (G) appear before intermediate RNA–pentamer species (H), which appear earlier than filled virions (I). +ssRNA: positive-sense single-stranded viral RNA. VRO: viral replication organelle. +ssRNA-nxPentamer: one +ssRNA bound to n associated pentamers. The simulations were run in the CVB3 model GUI, and the plots were collected using the Export Plot button then processed in Adobe Illustrator. The solid lines show the median number of virions over time, and the dotted lines show the upper (95%) and lower (5%) quantiles.</p>
+</figcaption>
+</figure>
+<p>The CVB3 complete kinetics GUI may be used to perform experiments <i>in silico</i>. For example, the model can simulate the effects of decreasing the viral polymerase rate, which is analogous to adding a non-nucleoside analog polymerase inhibitor or introducing a mutation in 3D<sup>pol</sup> (<a href="#bib22">van der Linden et al., 2015</a>; <a href="#bib23">Wang et al., 2020</a>). To model polymerase inhibition, four simulations were run with iterative threefold decreases in the viral polymerase rate (180–6.67 kb/h). As expected, decreasing the polymerase rate did not affect the rate of viral entry, indicated by the level of endosomal +ssRNA (<a href="#fig8">Figure 8</a>A). However, there was a threshold effect for the +ssRNA and viral protein, with substantial decreases observed at the lowest polymerase rates (<a href="#fig8">Figures 8</a>B and 8C). The decreased protein abundances arise from less +ssRNA template available for translation, rather than a decrease in the translation rate itself. Similarly, the number of live virions was dramatically decreased at the lower polymerase rates (<a href="#fig8">Figure 8</a>D).</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Model GUI outputs for selected species identify a threshold viral polymerase rate for productive infection</div>
+<p>Four simulations were performed with iterative threefold decreases in the viral polymerase rate (180–6.67 kb/h). All other simulation parameters were set to default.</p>
+<p>(A) Viral entry—measured by endosomal positive-sense single-strand viral RNA (+ssRNA)—is unaffected by the viral polymerase rate. The concentration of Endosomal +ssRNA is low due to the transient nature of the species.</p>
+<p>(B and C) Species in the replication module are sensitive to the viral polymerase rate. The decrease in Total +ssRNA (B) decreases the amount of available template for translation of viral proteins (C).</p>
+<p>(D) A threshold viral polymerase rate for productive infection. No virion production is observed for the lowest viral polymerase rate (6.67 kb/h), presumably due to the lack of +ssRNA (B) and capsid protein (C). The simulations were run in the CVB3 model GUI, and the plots were collected using the Export Plot button then processed in Adobe Illustrator. The solid lines show the median number of virions over time, and the dotted lines show the upper (95%) and lower (5%) quantiles.</p>
+</figcaption>
+</figure>
+<p>In some instances, it may be more appropriate to perform simulations in population mode rather than single cell mode. One such scenario is at a low MOI. See the <a href="#sec2.2">population mode</a> section for additional information on the differences in the MOI between single cell mode and population mode. To demonstrate, a simulation was run in both single cell mode and population mode at an MOI of 2. In single cell mode, two virions are not sufficient to cause a productive infection for the given time frame (<a href="#fig9">Figure 9</a>A). In population mode, the median agrees with the single cell median, as expected, because the population median represents a single run at an MOI approximately equal to the MOI used in single cell mode (<a href="#fig9">Figure 9</a>B). However, some runs in population mode simulate infection for more than two virions since the number of virions in each run is pulled from a Poisson distribution. Therefore, some runs yield a productive infection that is quantifiable when looking at the population-wide average (<a href="#fig9">Figure 9</a>B). When using the CVB3 model to conduct experiments, it can be worthwhile to compare single cell mode and population mode to determine if run-to-run variation in MOI affects the experimental outcome.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Model GUI outputs comparing single cell mode to population mode at a low MOI</div>
+<p>The simulation was performed for 16 h with MOI set at 2 in either Single Cell mode (A) or Population mode (B) with all other parameters set to their default values.</p>
+<p>(A) At a low MOI, a single cell does not yield a productive infection (solid blue).</p>
+<p>(B) In a population of cells, the median response is the same as in a single cell (solid red), while the mean virion production of the entire population yields a quantifiable response (dotted red). The simulations were run in the CVB3 model GUI, and the plots were collected using the Export Plot button then processed in Adobe Illustrator.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>The CVB3 complete kinetics computational model performs repeated runs for a simulation (default: Number of runs = 100). For each run in a simulation, parameter values are drawn from a log-normal distribution. Each log-normal distribution is parameter-specific and centered about the user-defined value of the parameter. The default values are derived from the literature or experiments. The spread of each log-normal distribution is determined by a user-defined coefficient of variation (default: 5%). Drawing from log-normal distributions causes run-to-run variability in output species. Therefore, the data are summarized as the median value ± confidence interval (default: 90%; determined by the 5<sup>th</sup> and 95<sup>th</sup> percentiles of the runs for a simulation). As a result, changing the run count, coefficient of variation, or quantile values will all change the output graphs. For instance, increasing the coefficient of variation will increase the spread of log-normally drawn parameter values and increase the range of output species. In the model GUI, the coefficient of variation is limited to a maximum of 20%, as the model becomes unstable at higher values. Due to differences in the pseudorandom number generation seed, performing the same simulation twice may yield slightly different results. We have found that there is moderate variability between simulations with a per-simulation run count of 10 (<a href="#fig10">Figure 10</a>A). By contrast, a run count of 100 is sufficient to limit simulation-to-simulation variability (<a href="#fig10">Figure 10</a>B). However, some simulation conditions may be intrinsically more variable and require an increased run count to obtain stable predictions.</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1155-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Model GUI outputs comparing serial simulations with different run counts</div>
+<p>All other parameters were set to their default values.</p>
+<p>(A) Five simulations with Number of runs set to 10.</p>
+<p>(B) Five simulations with Number of runs set to 100. The simulations were run in the CVB3 model GUI, and the plots were collected using the Export Plot button then processed in Adobe Illustrator. The solid lines show the median number of virions over time, and the dotted lines show the upper (95%) and lower (5%) quantiles.</p>
+</figcaption>
+</figure>
+<p>Understanding how the model generates uncertainty is also important to draw parallels between model outputs and biology. In the model, it is assumed that every parameter varies a relatively small amount between runs, with all parameters varying to a similar degree. However, in biology these assumptions are not necessarily true, where some features between cells may vary to a great degree (such as protein abundances), while others presumably change very little (such as protein-protein binding rates). Population mode accounts for biological uncertainty in how many live virions infect a cell, but it cannot account for all cell-to-cell variability. As a result, the uncertainty generated by the model should be used to evaluate the variation in model runs and not be interpreted as biological variation.</p>
+<p>At the end of the replication cycle, enterovirus virions are released through host-cell bursting. Cell bursting is not encoded in the command-line version of the model, so viral species increase to unrealistic concentrations in some simulation conditions (e.g., over long periods of time). To increase user-friendliness in the GUI, we hardcoded a threshold for the maximum virion concentration based on estimates of the maximum plaque-forming units (PFU) produced by poliovirus in a cell of similar volume to the “cell volume” parameter in the GUI (<a href="#bib5">Dunnebacke and Reaume, 1958</a>). We converted from PFU to the number of particles using the reported particle-to-PFU ratio (<a href="#bib14">Lopacinski et al., 2021</a>). Then, we converted the number of particles to a concentration using Equation <a href="#fd1">1</a>:</p>
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <mi>c</mi> <mi>o</mi> <mi>n</mi> <mi>c</mi> <mi>e</mi> <mi>n</mi> <mi>t</mi> <mi>r</mi> <mi>a</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mspace></mspace> <mrow> <mo>(</mo> <mrow> <mi>n</mi> <mi>M</mi> </mrow> <mo>)</mo> </mrow> <mo>=</mo> <mspace></mspace> <mfrac> <mrow> <mi>x</mi> <mspace></mspace> </mrow> <msub> <mi>N</mi> <mi>A</mi> </msub> </mfrac> <mo>×</mo> <mfrac> <mn>1</mn> <msub> <mi>V</mi> <mrow> <mi>c</mi> <mi>y</mi> <mi>t</mi> <mi>o</mi> </mrow> </msub> </mfrac> <mo>×</mo> <msup> <mn>10</mn> <mn>24</mn> </msup> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>where x = the number of particles; N<sub>A</sub> = Avogadro’s number, 6.022 x 10<sup>23</sup> mol<sup>−1</sup>; V<sub>cyto</sub> = cytoplasm volume in μm<sup>3</sup>, found by subtracting the nuclear volume from the cell volume; and 10<sup>24</sup> is the conversion factor to obtain concentration in nanomolar (nM).</p>
+<p>The calculated maximum virion concentration for the default cytoplasmic volume in the GUI is 326 nM. Beyond the threshold, cell lysis is assumed, and the output data is truncated. Further, we calculated the virion concentration at which cell lysis would be likely to occur based on the median PFU produced by poliovirus (<a href="#bib5">Dunnebacke and Reaume, 1958</a>). The median concentration is 88 nM. Simulated virion outputs greater than 88 nM trigger a warning message that reminds the user that concentrations beyond 88 nM are likely to cause cell lysis.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>All computational models require assumptions and simplifications, and the CVB3 complete kinetics model is no exception. Assumptions are a necessary trade-off between model accuracy and functionality. Overly complex models often have reduced functionality—increased computational expense and difficult interpretability—and obtain only a marginal increase in molecular detail. Simpler models can be more useful.</p>
+<p>One frequently used simplification is lumping a group of reactions or species into a single parameter. For the CVB3 model, three portions of the life cycle were lumped. First, several CVB3 proteins were lumped together. CVB3 encodes two different proteases (2A and 3C), which each have different host cell substrates. In the complete kinetics model, 2A<sup>pro</sup> and 3C<sup>pro</sup> are lumped into a single species. Similarly, 3D<sup>pol</sup> was grouped with the 3AB protein since they strongly interact (<a href="#bib24">Xiang et al., 1998</a>), and three capsid subunits (VP0, VP1, and VP3) were grouped into a single capsid protomer. The remaining hydrophobic proteins were lumped into a single protein (2C<sup>ATPase</sup>). Second, capsid formation was greatly simplified. Biologically, the binding affinity for subsequent pentamers increases as more capsid pentamers associate and more contact points are available for the next pentamer. Rather than model every possible capsid-forming configuration and its associated binding affinity, the CVB3 computational model neglects geometry and uses the median affinity for every step of capsid formation. Third, the innate immune response is collapsed into a single equation. The full cellular antiviral response to CVB3 consists of a sensor (MDA5) transducing a signal through MAVS and Interferon Regulatory Factor 3 (IRF3) to induce the expression of IFN. IFN is secreted and stimulates the infected cell in an autocrine fashion through the IFN α/β receptor and JAK/STAT pathway to induce the expression of ISGs (<a href="#bib19">Sadler and Williams, 2008</a>). In the CVB3 model, the entire innate immunity pathway is simplified into a Hill equation, which is fit to ISG expression data from a cardiomyocyte cell line. Despite the simplifications, the complete kinetics model quantitatively captures crucial pieces of the CVB3 life cycle in molecular detail.</p>
+<p>The CVB3 complete kinetics model uses mass action to simulate the concentrations of different species in the cell over time. As a result, all output values for measurable species are reported as nanomolar concentrations. Interpreting concentration is difficult for some species, such as virions, which are typically measured in plaque-forming units per milliliter (PFU/mL). The number of PFUs in a viral stock is not reflective of the total number of virions in the stock. In a viral stock, some virions may lack RNA (empty), and others may be incapable of forming plaques (defective). The model generates empty virions, but it does not capture the generation of defective virions. Furthermore, host-cell variations determine whether a live virion will form a plaque in culture (<a href="#bib9">Goh et al., 2016</a>). Therefore, model outputs and experimental results involving virions are separate from one another: 1) The complete kinetics model does not account for defective particles, meaning it overestimates the concentration of virions capable of forming a plaque; and 2) Experiments yielding data in PFU/mL do not give any information on the total number of assembled virions. Furthermore, the output virion concentration from the model is the intracellular concentration, since there is no cell lysis component encoded. Instead of a lysis component, a maximum intracellular virion concentration is set in the model, and data beyond the maximum is truncated. Taken together, virion outputs from the model should be treated in relative terms, where the relative change between treatments is more informative than the absolute numbers.</p>
+<p>Parameter values in the CVB3 model are set to literature- or experimentally-derived estimates. However, some parameter values are unavailable in the CVB3 literature but are available for closely related viruses; therefore, some default values were derived from literature on other enteroviruses, such as poliovirus. Using parameters derived from other viruses introduces a degree of uncertainty to the model. However, the viral proteins encoded in the model are shared among enteroviruses, and their viral replication cycles are highly conserved. Thus, the parameters likely deviate very little from the actual CVB3 values, lending confidence to the real-world utility of the model.</p>
+<p>The CVB3 complete kinetics model GUI functions identically to the command line-based version of the model and contains many adjustable parameters. However, the GUI has some limitations compared to the command line-based CVB3 model. Specifically, 26 parameters are editable using the command line but not in the GUI. These parameters and the rationale for not including them in the GUI are listed in <a href="#tbl4">Table 4</a>. Additionally, the underlying equations behind the model are rigidly set in the GUI version but can be customized in the command line-based model. This limitation balances user-friendliness and customizability. The GUI version of the model was created to enable any user to run simulations without needing MATLAB installed or knowledge of how to code in MATLAB. If users require the greater range of functions associated with the command line-based model, it is available for download (<a href="https://github.com/JanesLab/CompleteKinetics-CVB3">https://github.com/JanesLab/CompleteKinetics-CVB3</a>).</p>
+<table id="tbl4">
+<caption>Table 4. Parameters from the complete kinetic model that are excluded from the CVB3 model GUI</caption>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RibAvail</td>
+<td>Initial concentration of ribosomes available to the virus and not host.</td>
+<td>This parameter is dependent on the total number of ribosomes.</td>
+</tr>
+<tr>
+<td>RibUnavail</td>
+<td>Initial concentration of ribosomes available to the host and not virus.</td>
+<td>This parameter is dependent on the total number of ribosomes.</td>
+</tr>
+<tr>
+<td>CVB3diameter</td>
+<td>Diameter of a CVB3 virion.</td>
+<td> </td>
+</tr>
+<tr>
+<td>Pol3DLength</td>
+<td>Length of the CVB3 3D polymerase.</td>
+<td> </td>
+</tr>
+<tr>
+<td>ISGbpLength</td>
+<td>Length of ISG15 in kilobase pairs, which is used to determine the rate of ISG formation.</td>
+<td>Changing the host polymerase rate for ISGs would have a similar effect as changing this parameter.</td>
+</tr>
+<tr>
+<td>RiboActive</td>
+<td>Proportion of all ribosomes that are currently active in the cell.</td>
+<td>Changing the total number of ribosomes would have a similar effect as changing this parameter.</td>
+</tr>
+<tr>
+<td>PolysomeSize</td>
+<td>Average number of ribosomes bound to a single mRNA during translation.</td>
+<td> </td>
+</tr>
+<tr>
+<td>CVB3genomelength</td>
+<td>Length of the CVB3 genome in nucleotides.</td>
+<td> </td>
+</tr>
+<tr>
+<td>CVB3polyprolength</td>
+<td>Length of the CVB3 polyprotein in amino acids.</td>
+<td> </td>
+</tr>
+<tr>
+<td>VROVolConv</td>
+<td>Volume conversion to model the concentrating effect of VROs.</td>
+<td>Parameter is dependent on cell volume, nucleus volume, and VRO surface area.</td>
+</tr>
+<tr>
+<td>k_on_DAF</td>
+<td>Association rate between CVB3 and DAF.</td>
+<td>Changing the DAF concentration would have a similar effect as changing this parameter.</td>
+</tr>
+<tr>
+<td>k_off_DAF</td>
+<td>Dissociation rate between CVB3 and DAF.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_on_CAR</td>
+<td>Association rate between CVB3 and CAR.</td>
+<td>Changing the CAR concentration would have a similar effect as changing this parameter.</td>
+</tr>
+<tr>
+<td>k_off_CAR</td>
+<td>Dissociation rate between CVB3 and CAR.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_Translate</td>
+<td>Overall rate of CVB3 translation.</td>
+<td>Calculated from the translation rate, polysome size, and polyprotein length.</td>
+</tr>
+<tr>
+<td>k_N_Transcript</td>
+<td>Rate of CVB3 negative-strand synthesis.</td>
+<td>Calculated from the viral polymerase rate and CVB3 genome length.</td>
+</tr>
+<tr>
+<td>k_P_Transcript</td>
+<td>Rate of CVB3 positive-strand synthesis.</td>
+<td>Calculated from the viral polymerase rate and CVB3 genome length.</td>
+</tr>
+<tr>
+<td>k_P_on</td>
+<td>Rate of CVB3 positive-strand translocation to the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_P_off</td>
+<td>Rate of CVB3 positive-strand translocation out of the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_N_on</td>
+<td>Rate of CVB3 negative-strand translocation to the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_N_off</td>
+<td>Rate of CVB3 negative-strand translocation out of the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_Pentamer_on</td>
+<td>Rate of CVB3 capsid pentamer translocation to the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>k_Pentamer_off</td>
+<td>Rate of CVB3 capsid pentamer translocation out of the VRO.</td>
+<td> </td>
+</tr>
+<tr>
+<td>n_Hill</td>
+<td>Hill coefficient used to model viral detection by the host cell.</td>
+<td>Fit to ISG expression data from cardiomyocytes.</td>
+</tr>
+<tr>
+<td>kD_Hill</td>
+<td>Dissociation constant used in the Hill equation to model viral detection by the host cell.</td>
+<td>Fit to ISG expression data from cardiomyocytes.</td>
+</tr>
+<tr>
+<td>ISGForm</td>
+<td>Formation rate of ISG proteins.</td>
+<td>Changing the host polymerase rate for ISGs would have a similar effect as changing this parameter.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The simulation program will not open.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>The simulation program will not open if MATLAB Runtime (or the full version MATLAB) is not installed in the correct location. Double check that version 9.10 (R2021a) of MATLAB Runtime is installed. On MacOS systems, MATLAB Runtime must be in the Applications directory in a folder named “MATLAB” (<a href="#sec1.2">install the graphical user interface (GUI)</a>, steps 3e and 4a – <a href="#fig1">Figure 1</a>). On Windows systems, MATLAB Runtime must be correctly installed and present in the Add or remove programs list (<a href="#sec1.2">install the graphical user interface (GUI)</a>, step 2a). If MATLAB Runtime cannot be located, download and install the latest version for the appropriate operating system (<a href="https://www.mathworks.com/products/compiler/mcr/index.html">https://www.mathworks.com/products/compiler/mcr/index.html</a>). Alternatively, if the simulation will not open after completing the automatic installation instructions, it may help to instead follow the manual installation instructions.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>The simulation progress bar freezes.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>The simulation will freeze under three circumstances:</p>
+<p>First,if the Time (h) box is set too high, the amount of data stored may cause an out of memory error. To avoid this error, reduce the Time (h) value. In test simulations, a Time (h) value of over 50,000 led to model freezing. (The maximum value depends on the specifications of the computer used to run the simulation.) Similarly, exporting data and clearing all active simulations may help if the GUI is running slowly due to a lack of memory (<a href="#sec2.1">basic operations</a>, step 5).</p>
+<p>Second, the underlying ordinary differential equation solver encounters model parameters that are difficult to simulate. Avoid exploring input parameter combinations that lead to model freezing. For example, increasing the +ssRNA degradation rate to 5 and the Time (h) value to 96 can lead to model freezing (<a href="#sec2.1">basic operations</a>, step 6).</p>
+<p>Third, incompatible input parameter values are entered into the model. Input parameters have been constrained in the GUI to avoid incompatibilities with the model. These incompatibilities are the reason why the coefficient of variation has been constrained to a maximum of 20%. However, if simulations are run with the coefficient of variation at or near 20%, freezing due to parameter incompatibility remains a possibility (<a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a>). Reduce the coefficient of variation to avoid this problem.</p>
+<p>Unfortunately, the only solution when the model GUI is completely frozen is to close the GUI and re-open it. All data from previously active simulations will be lost. To prevent this error from occurring in the future, avoid circumstances that lead to conditions prone to freezing.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>No data appear in main GUI plot after running a simulation.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Check that the Simulation Ready lamp has turned from red to green. The green light indicates that the program has completely finished running and plotting the simulation. If there are still no data in the main GUI plot, uncheck the Log Scale Y checkbox (<a href="#sec2.1">basic operations</a>, step 3). It is possible that the output species from the simulation is at a concentration of zero throughout the simulation and therefore cannot be plotted when the Y axis is set at a log scale. Using a linear scale, the data will appear as a line along the base of the plot if the species concentration is at zero (<a href="#fig3">Figure 3</a>B, green). Alternatively, press the Reset all Parameters to Default Values button (in the Advanced Options tab) and run a default simulation to restore data plotted in the main GUI plot.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The model displays the same output between two simulations when a parameter is changed, even though different output is expected.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Depending on the simulation, one of two things may be happening:</p>
+<p>First, if the simulation involves an exogenous interferon stimulation (i.e., IFN Stimulation Time field is on), ensure that the Antiviral Response switch is toggled on (<a href="#sec2.1">basic operations</a>, step 4). If the Antiviral Response switch is off, IFN stimulation will not affect the model simulation. If toggling the Antiviral Response switch on still does not achieve the expected result, see the next potential solution.</p>
+<p>Second, it is possible that the current set of parameter values overshadows the effect of an additional change. Click the Reset all Parameters to Default Values button (in the Advanced Options tab) to restore the default values and run a baseline simulation to ensure the model is functioning (<a href="#sec2.1">basic operations</a>, step 6). Then, alter the parameter(s)-of-interest, and perform another simulation.</p>
+<p>If the expected output is still not achieved, the chosen parameter values may represent a scenario in which there is truly no change to the system or the differences are so small that the tolerances in the model do not reflect any change.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The traces in the graphical output are erratic or irregularly shaped.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Graphical traces will be irregularly shaped when the ordinary differential equation solver encounters very small parameter values that cause discontinuities in the solution. Irregularities are observed under two conditions:</p>
+<p>First, irregularities occur when plotting output species at extremely low concentrations (e.g., Endosomal +ssRNA, <a href="#expected-outcomes">expected outcomes</a> – <a href="#fig7">Figure 7</a>B). It should be noted that low concentration-based discontinuities are artifactual and should not be interpreted as discrete jumps in species abundance.</p>
+<p>Second, discrete changes in species concentrations, such as during the VRO transition, cause artifacts in the traces (<a href="#expected-outcomes">expected outcomes</a> – <a href="#fig7">Figure 7</a>C). This problem can be mitigated by exercising caution when interpreting graphs with irregular traces. Alternatively, changing altered parameters closer to their default values can improve erratic model outputs.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Andrejeva, J., Childs, K.S., Young, D.F., Carlos, T.S., Stock, N., Goodbourn, S., and Randall, R.E. (2004). The V proteins of paramyxoviruses bind the IFN-inducible RNA helicase, mda-5, and inhibit its activation of the IFN-beta promoter. Proc. Natl. Acad. Sci. U S A <i>101</i>, 17264-17269. <a class="external-link" href="https://doi.org/10.1073/pnas.0407639101">https://doi.org/10.1073/pnas.0407639101</a></p>
+<p id="bib2">Bergelson, J.M., Cunningham, J.A., Droguett, G., Kurt-Jones, E.A., Krithivas, A., Hong, J.S., Horwitz, M.S., Crowell, R.L., and Finberg, R.W. (1997). Isolation of a common receptor for Coxsackie B viruses and adenoviruses 2 and 5. Science <i>275</i>, 1320-1323. <a class="external-link" href="https://doi.org/10.1126/science.275.5304.1320">https://doi.org/10.1126/science.275.5304.1320</a></p>
+<p id="bib3">Bruggeman, F.J. and Westerhoff, H.V. (2007). The nature of systems biology. Trends Microbiol. <i>15</i>, 45-50. <a class="external-link" href="https://doi.org/10.1016/j.tim.2006.11.003">https://doi.org/10.1016/j.tim.2006.11.003</a></p>
+<p id="bib4">Coyne, C.B. and Bergelson, J.M. (2006). Virus-induced Abl and Fyn kinase signals permit coxsackievirus entry through epithelial tight junctions. Cell <i>124</i>, 119-131. <a class="external-link" href="https://doi.org/10.1016/j.cell.2005.10.035">https://doi.org/10.1016/j.cell.2005.10.035</a></p>
+<p id="bib5">Dunnebacke, T.H. and Reaume, M.B. (1958). Correlation of the yield of poliovirus with the size of isolated tissue cultured cells. Virology <i>6</i>, 8-13. <a class="external-link" href="https://doi.org/10.1016/0042-6822(58)90055-2">https://doi.org/10.1016/0042-6822(58)90055-2</a></p>
+<p id="bib6">Ellis, E.L. and Delbrück, M. (1939). The growth OF bacteriophage. J. Gen. Physiol. <i>22</i>, 365-384. <a class="external-link" href="https://doi.org/10.1085/jgp.22.3.365">https://doi.org/10.1085/jgp.22.3.365</a></p>
+<p id="bib7">Etchison, D., Milburn, S.C., Edery, I., Sonenberg, N., and Hershey, J.W. (1982). Inhibition of HeLa cell protein synthesis following poliovirus infection correlates with the proteolysis of a 220,000-dalton polypeptide associated with eucaryotic initiation factor 3 and a cap binding protein complex. J. Biol. Chem. <i>257</i>, 14806-14810. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00646-8/sref7">View at publisher</a></p>
+<p id="bib8">Feng, Q., Langereis, M.A., Lork, M., Nguyen, M., Hato, S.V., Lanke, K., Emdad, L., Bhoopathi, P., Fisher, P.B., Lloyd, R.E., and van Kuppeveld, F.J.M. (2014). Enterovirus 2Apro targets MDA5 and MAVS in infected cells. J. Virol. <i>88</i>, 3369-3378. <a class="external-link" href="https://doi.org/10.1128/JVI.02712-13">https://doi.org/10.1128/JVI.02712-13</a></p>
+<p id="bib9">Goh, K.C.M., Tang, C.K., Norton, D.C., Gan, E.S., Tan, H.C., Sun, B., Syenina, A., Yousuf, A., Ong, X.M., Kamaraj, U.S., et al. (2016). Molecular determinants of plaque size as an indicator of dengue virus attenuation. Sci. Rep. <i>6</i>, 26100. <a class="external-link" href="https://doi.org/10.1038/srep26100">https://doi.org/10.1038/srep26100</a></p>
+<p id="bib10">Jiang, P., Liu, Y., Ma, H.-C., Paul, A.V., and Wimmer, E. (2014). Picornavirus morphogenesis. Microbiol. Mol. Biol. Rev. <i>78</i>, 418-437. <a class="external-link" href="https://doi.org/10.1128/MMBR.00012-14">https://doi.org/10.1128/MMBR.00012-14</a></p>
+<p id="bib11">Kang, D., Gopalkrishnan, R.V., Wu, Q., Jankowsky, E., Pyle, A.M., and Fisher, P.B. (2002). mda-5: an interferon-inducible putative RNA helicase with double-stranded RNA-dependent ATPase activity and melanoma growth-suppressive properties. Proc. Natl. Acad. Sci. U S A <i>99</i>, 637-642. <a class="external-link" href="https://doi.org/10.1073/pnas.022637199">https://doi.org/10.1073/pnas.022637199</a></p>
+<p id="bib12">Kawai, T., Takahashi, K., Sato, S., Coban, C., Kumar, H., Kato, H., Ishii, K.J., Takeuchi, O., and Akira, S. (2005). IPS-1, an adaptor triggering RIG-I- and Mda5-mediated type I interferon induction. Nat. Immunol. <i>6</i>, 981-988. <a class="external-link" href="https://doi.org/10.1038/ni1243">https://doi.org/10.1038/ni1243</a></p>
+<p id="bib13">Kempf, B.J. and Barton, D.J. (2008). Poliovirus 2A(Pro) increases viral mRNA and polysome stability coordinately in time with cleavage of eIF4G. J. Virol. <i>82</i>, 5847-5859. <a class="external-link" href="https://doi.org/10.1128/JVI.01514-07">https://doi.org/10.1128/JVI.01514-07</a></p>
+<p id="bib14">Lopacinski, A.B., Sweatt, A.J., Smolko, C.M., Gray-Gaillard, E., Borgman, C.A., Shah, M., and Janes, K.A. (2021). Modeling the complete kinetics of coxsackievirus B3 reveals human determinants of host-cell feedback. Cell Syst. <i>12</i>, 304-323.e13. <a class="external-link" href="https://doi.org/10.1016/j.cels.2021.02.004">https://doi.org/10.1016/j.cels.2021.02.004</a></p>
+<p id="bib15">Melia, C.E., Peddie, C.J., de Jong, A.W.M., Snijder, E.J., Collinson, L.M., Koster, A.J., van der Schaar, H.M., van Kuppeveld, F.J.M., and Bárcena, M. (2019). Origins of enterovirus replication organelles established by whole-cell electron microscopy. mBio <i>10</i>. e00951–19. <a class="external-link" href="https://doi.org/10.1128/mBio.00951-19">https://doi.org/10.1128/mBio.00951-19</a></p>
+<p id="bib16">Miller, S. and Krijnse-Locker, J. (2008). Modification of intracellular membrane structures for virus replication. Nat. Rev. Microbiol. <i>6</i>, 363-374. <a class="external-link" href="https://doi.org/10.1038/nrmicro1890">https://doi.org/10.1038/nrmicro1890</a></p>
+<p id="bib17">Mukherjee, A., Morosky, S.A., Delorme-Axford, E., Dybdahl-Sissoko, N., Oberste, M.S., Wang, T., and Coyne, C.B. (2011). The coxsackievirus B 3C protease cleaves MAVS and TRIF to attenuate host type I interferon and apoptotic signaling. PLoS Pathog. <i>7</i>, e1001311. <a class="external-link" href="https://doi.org/10.1371/journal.ppat.1001311">https://doi.org/10.1371/journal.ppat.1001311</a></p>
+<p id="bib18">Racaniello, V. (2013). Picornaviridae: the viruses and their replication. In Fields Virology, D.M. Knipe and P.M. Howley, eds. (Wolters Kluwer/Lippincott Williams &amp; Wilkins Health), pp. 452-489. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00646-8/sref18">View at publisher</a></p>
+<p id="bib19">Sadler, A.J. and Williams, B.R.G. (2008). Interferon-inducible antiviral effectors. Nat. Rev. Immunol. <i>8</i>, 559-568. <a class="external-link" href="https://doi.org/10.1038/nri2314">https://doi.org/10.1038/nri2314</a></p>
+<p id="bib20">Seth, R.B., Sun, L., Ea, C.-K., and Chen, Z.J. (2005). Identification and characterization of MAVS, a mitochondrial antiviral signaling protein that activates NF-kappaB and IRF 3. Cell <i>122</i>, 669-682. <a class="external-link" href="https://doi.org/10.1016/j.cell.2005.08.012">https://doi.org/10.1016/j.cell.2005.08.012</a></p>
+<p id="bib21">Shafren, D.R., Bates, R.C., Agrez, M.V., Herd, R.L., Burns, G.F., and Barry, R.D. (1995). Coxsackieviruses B1, B3, and B5 use decay accelerating factor as a receptor for cell attachment. J. Virol. <i>69</i>, 3873-3877. <a class="external-link" href="https://doi.org/10.1128/JVI.69.6.3873-3877.1995">https://doi.org/10.1128/JVI.69.6.3873-3877.1995</a></p>
+<p id="bib22">van der Linden, L., Vives-Adrián, L., Selisko, B., Ferrer-Orta, C., Liu, X., Lanke, K., Ulferts, R., De Palma, A.M., Tanchis, F., Goris, N., et al. (2015). The RNA template channel of the RNA-dependent RNA polymerase as a target for development of antiviral therapy of multiple genera within a virus family. PLoS Pathog. <i>11</i>, e1004733. <a class="external-link" href="https://doi.org/10.1371/journal.ppat.1004733">https://doi.org/10.1371/journal.ppat.1004733</a></p>
+<p id="bib23">Wang, M., Li, R., Shu, B., Jing, X., Ye, H.-Q., and Gong, P. (2020). Stringent control of the RNA-dependent RNA polymerase translocation revealed by multiple intermediate structures. Nat. Commun. <i>11</i>, 2605. <a class="external-link" href="https://doi.org/10.1038/s41467-020-16234-4">https://doi.org/10.1038/s41467-020-16234-4</a></p>
+<p id="bib24">Xiang, W., Cuconati, A., Hope, D., Kirkegaard, K., and Wimmer, E. (1998). Complete protein linkage map of poliovirus P3 proteins: interaction of polymerase 3Dpol with VPg and with genetic variants of 3AB. J. Virol. <i>72</i>, 6732-6741. <a class="external-link" href="https://doi.org/10.1128/JVI.72.8.6732-6741.1998">https://doi.org/10.1128/JVI.72.8.6732-6741.1998</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Kevin Janes (<a href="mailto:kjanes@virginia.edu">kjanes@virginia.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The graphical user interface used during this protocol is available at <a href="https://github.com/JanesLab/CompleteKinetics-CVB3-GUI">https://github.com/JanesLab/CompleteKinetics-CVB3-GUI</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank Lionel Jensen, Quinten Kieser, and Ryley McClelland for beta-testing the GUI. This work was supported by the <a href="https://doi.org/10.13039/100000008">David and Lucile Packard Foundation</a> (2009-34710, K.A.J.), a gift from the Salamone Family Foundation (K.A.J.), the <a href="https://doi.org/10.13039/501100000854">Human Frontier Science Program</a> (LT000469/2021-L, C.D.G.), and training grant support from the National Institutes of Health (T32-HL007284, A.J.S.).</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, A.J.S., C.D.G., and K.A.J.; methodology, A.J.S., C.D.G., and K.A.J.; software, A.J.S. and C.D.G.; validation, A.J.S and C.D.G.; investigation, A.J.S. and C.D.G.; resources, A.J.S., C.D.G., and K.A.J.; data curation, A.J.S. and C.D.G.; writing — original draft, A.J.S. and C.D.G.; writing — review &amp; editing, A.J.S., C.D.G., and K.A.J.; visualization, A.J.S. and C.D.G.; supervision, K.A.J.; project administration, K.A.J.; funding acquisition, A.J.S., C.D.G., and K.A.J.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

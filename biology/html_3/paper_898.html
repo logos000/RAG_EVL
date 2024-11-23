@@ -1,0 +1,1302 @@
+<article>
+<section>
+<h1 id="header">Processing single-cell RNA-seq data for dimension reduction-based analyses using open-source tools</h1>
+<p><time datetime="2021-09-03">Published: September 3, 2021</time></p>
+<p>Bob Chen,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">6</a>,<a href="#fn2">7</a>,<a href="#cor1">*</a></sup> Marisol A. Ramirez-Solano,<sup><a href="#aff3">3</a>,<a href="#fn1">6</a></sup> Cody N. Heiser,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Qi Liu,<sup><a href="#aff3">3</a></sup> and Ken S. Lau<sup><a href="#aff2">2</a>,<a href="#aff4">4</a>,<a href="#aff5">5</a>,<a href="#fn3">8</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Program in Chemical and Physical Biology, Vanderbilt University School of Medicine, Nashville, TN, USA</p>
+<p id="aff2"><sup>2</sup>Epithelial Biology Center, Vanderbilt University Medical Center, Nashville, TN, USA</p>
+<p id="aff3"><sup>3</sup>Department of Biostatistics and Center for Quantitative Sciences, Vanderbilt University Medical Center, Nashville, TN, USA</p>
+<p id="aff4"><sup>4</sup>Department of Cell and Developmental Biology, Vanderbilt University School of Medicine, Nashville, TN, USA</p>
+<p id="aff5"><sup>5</sup>Vanderbilt Ingram Cancer Center, Nashville, TN, USA</p>
+<p id="fn1"><sup>6</sup>These authors contributed equally</p>
+<p id="fn2"><sup>7</sup>Technical contact</p>
+<p id="fn3"><sup>8</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:bob.chen@vanderbilt.edu">bob.chen@vanderbilt.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:ken.s.lau@vanderbilt.edu">ken.s.lau@vanderbilt.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100450">10.1016/j.xpro.2021.100450</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Single-cell RNA sequencing data require several processing procedures to arrive at interpretable results. While commercial platforms can serve as “one-stop shops” for data analysis, they relinquish the flexibility required for customized analyses and are often inflexible between experimental systems. For instance, there is no universal solution for the discrimination of informative or uninformative encapsulated cellular material; thus, pipeline flexibility takes priority. Here, we demonstrate a full data analysis pipeline, constructed modularly from open-source software, including tools that we have contributed.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref18">Petukhov et al. (2018)</a>, <a href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref11">Heiser et al. (2020)</a>, and <a href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref10">Heiser and Lau (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>An open-source, containerized pipeline for processing scRNA-seq data</li>
+<li>The provided Singularity and Conda files permit rapid software installation</li>
+<li>Multiple methods detailed for matrix quality control are provided for modular usage</li>
+<li>Data entry points are highlighted for flexibility with other pipelines</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Single-cell, droplet-based library generation and sequencing</h3>
+<p>This pipeline was designed to take .fastq files as input generated from tag-based single-cell RNA-sequencing (scRNA-seq) libraries, such as inDrop, 10× Chromium, or Drop-Seq, according to their respective protocols (<a href="#bib12">Klein et al., 2015</a>; <a href="#bib17">Macosko et al., 2015</a>; <a href="#bib27">Zheng et al., 2017</a>). This pipeline consists of three major sections, starting from the single-cell read alignment and DropEst quantification, followed by quality control and droplet filtering, and ending with dimension reduction (DR) structure preservation analysis. Ensure that these starting libraries are generated with technologies compatible to the DropEst software, which is elaborated upon at <a href="https://github.com/hms-dbmi/dropEst">https://github.com/hms-dbmi/dropEst</a> (<a href="#bib18">Petukhov et al., 2018</a>). Quality thresholds at this point should depend on the guidelines set by the sequencing platform used. The <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section of this pipeline utilizes a whitelist of known cell barcodes which also correspond to the sequencing platform used, ensure these are documented and accessible. We recommend encapsulating more than 1,000 single cells and sequencing them to a minimum depth of 50,000 reads per cell.</p>
+<div class="note">
+<span class="note-title">Note:</span> For this pipeline, the necessary reference and annotation files can be found through the <a href="#key-resources-table">key resources table</a>. Two sets of .fastq sequencing files can be found with the GEO accession numbers GSM4804820 and GSM5068493. The first is a normal, human colonic dataset and the second is a subsampled version of it, useful for the rapid testing of this pipeline’s installation on new computer systems. The expected results detailed in this protocol were generated with GSM4804820.</div>
+<h3 id="sec1.2">Singularity and R environment</h3>
+<p>The <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section requires reference transcriptome and annotation files, of .fasta and .gtf format respectively, which must be locally accessible. Further information on the reference files that were as examples used (and how to download them) in this protocol can be found at <a href="https://github.com/Ken-Lau-Lab/STAR_Protocol">https://github.com/Ken-Lau-Lab/STAR_Protocol</a>. This modular pipeline makes use of containerized packages, which have been organized through Singularity. For Debian systems, download the latest Go libraries to a local directory with the following:</p>
+<div class="textbox">
+<p><code>wget singularity</code> <a href="https://dl.google.com/go/go1.14.6.linux-amd64.tar.gz">https://dl.google.com/go/go1.14.6.linux-amd64.tar.gz</a></p>
+</div>
+<p>Singularity must be in installed to use our Singularity image, containing the libraries required for DropEst and STAR alignment. The image can be found at <a href="https://hub.docker.com/r/ramiremars/star_dropest">https://hub.docker.com/r/ramiremars/star_dropest</a> and can be installed with the following code along with Singularity itself:</p>
+<div class="textbox">
+<p><code>export VERSION=3.7.0 &amp;&amp; # adjust this as necessary \</code></p>
+<p><code>  mkdir -p /home/$USER/go/src/github.com/sylabs &amp;&amp; \</code></p>
+<p><code>  cd /home/$USER/go/src/github.com/sylabs &amp;&amp; \</code></p>
+<p><code>  wget</code></p>
+<p><code>https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz &amp;&amp; \</code></p>
+<p><code>  tar -xzf singularity-${VERSION}.tar.gz &amp;&amp; \</code></p>
+<p><code>  cd ./singularity &amp;&amp; \</code></p>
+<p><code>  ./mconfig</code></p>
+<p><code>cd /home/$USER/go/src/github.com/sylabs/singularity/builddir &amp;&amp; \</code></p>
+<p><code>  make &amp;&amp; \</code></p>
+<p><code>  make install</code></p>
+<p><code>singularity pull docker://ramiremars/star_dropest:star_protocols_pipeline</code></p>
+</div>
+<p>The following parameter is required:</p>
+<ol type="a">
+<li>
+<b>VERSION:</b> This is the version of singularity that will be installed. Set to “<i>3.7.0”</i> in this example.</li>
+</ol>
+<h3 id="sec1.3">Python environment preparation</h3>
+<p>The <a href="#sec3.2">heuristic droplet filtering</a>, <a href="#sec3.3">automated droplet filtering with dropkick</a>, and <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> sections use a combination of command line tools and Jupyter Notebooks managed through a Conda Python environment. Please reference the Anaconda installation guidelines (Python &gt;=3.8). Though this protocol is a full pipeline for scRNA-seq reads, its sections can be used modularly for the quality control (QC) and preliminary analysis of data at various stages of processing. are compatible with pre-computed droplet matrices, being a count matrix where the rows represent cell barcodes and columns represent detected, expressed genes. Along with an example dataset, the necessary python scripts and tutorial Jupyter Notebooks are available on our GitHub repository, where further Python environment setup instructions can also be found: <a href="https://github.com/Ken-Lau-Lab/STAR_Protocol">https://github.com/Ken-Lau-Lab/STAR_Protocol</a>.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Human colonic epithelium, paired-end read files</td>
+<td>(<a href="#bib11">Heiser et al., 2020</a>)</td>
+<td>GEO: GSM4804820</td>
+</tr>
+<tr>
+<td>Human colonic epithelium, subsampled, paired-end read files</td>
+<td>(<a href="#bib11">Heiser et al., 2020</a>)</td>
+<td>GEO: GSM5068493</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Human reference genome assembly, release 85</td>
+<td>(<a href="#bib25">Yates et al., 2020</a>)</td>
+<td>Ensembl ftp: ftp://ftp.ensembl.org/pub/release-85/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz</td>
+</tr>
+<tr>
+<td>Human reference gene annotation file, release 85</td>
+<td>(<a href="#bib25">Yates et al., 2020</a>)</td>
+<td>Vanderbilt http: <a href="https://www.mc.vanderbilt.edu/vumcdept/cellbio/laulab/data/Homo_sapiens.GRCh38.85.annotated.gtf.gz">https://www.mc.vanderbilt.edu/vumcdept/cellbio/laulab/data/Homo_sapiens.GRCh38.85.annotated.gtf.gz</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Scanpy</td>
+<td>(<a href="#bib24">Wolf et al., 2018</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>dropkick</td>
+<td>(<a href="#bib11">Heiser et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>dropEst</td>
+<td>(<a href="#bib18">Petukhov et al., 2018</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>scRNABatchQC</td>
+<td>(<a href="#bib15">Liu et al., 2019</a>)</td>
+<td><a href="https://github.com/liuqivandy/">https://github.com/liuqivandy/</a></td>
+</tr>
+<tr>
+<td>STAR</td>
+<td>(<a href="#bib5">Dobin et al., 2013</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Go (1.15.6)</td>
+<td>N/A</td>
+<td><a href="http://golang.org/">http://golang.org/</a></td>
+</tr>
+<tr>
+<td>Singularity (3.7.0)</td>
+<td>(<a href="#bib14">Kurtzer et al., 2020</a>)</td>
+<td><a href="https://github.com/hpcng/singularity">https://github.com/hpcng/singularity</a></td>
+</tr>
+<tr>
+<td>GATK4 (4.1.9.0)</td>
+<td>(<a href="#bib1">Van der Auwera et al., 2013</a>)</td>
+<td><a href="https://github.com/broadinstitute/gatk">https://github.com/broadinstitute/gatk</a></td>
+</tr>
+<tr>
+<td>STAR (2.7.6a)</td>
+<td>(<a href="#bib5">Dobin et al., 2013</a>)</td>
+<td><a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a></td>
+</tr>
+<tr>
+<td>BamTools (&gt;= 2.5.0)</td>
+<td>(<a href="#bib2">Barnett et al., 2011</a>)</td>
+<td><a href="https://github.com/pezmaster31/bamtools">https://github.com/pezmaster31/bamtools</a></td>
+</tr>
+<tr>
+<td>Boost (&gt;= 1.54)</td>
+<td>(<a href="#bib22">Schling, 2011</a>)</td>
+<td><a href="https://github.com/boostorg/boost">https://github.com/boostorg/boost</a></td>
+</tr>
+<tr>
+<td>zlib (1.2.11)</td>
+<td>N/A</td>
+<td><a href="https://github.com/madler/zlib">https://github.com/madler/zlib</a></td>
+</tr>
+<tr>
+<td>bzip2 (1.0.5)</td>
+<td>N/A</td>
+<td><a href="https://gitlab.com/federicomenaquintero/bzip2">https://gitlab.com/federicomenaquintero/bzip2</a></td>
+</tr>
+<tr>
+<td>CMake (&gt;=3.0)</td>
+<td>N/A</td>
+<td><a href="https://gitlab.kitware.com/cmake/cmake">https://gitlab.kitware.com/cmake/cmake</a></td>
+</tr>
+<tr>
+<td>gcc (&gt;=4.8.5)</td>
+<td>N/A</td>
+<td><a href="https://gcc.gnu.org/git/">https://gcc.gnu.org/git/</a></td>
+</tr>
+<tr>
+<td>dropEst (0.8.6)</td>
+<td>(<a href="#bib18">Petukhov et al., 2018</a>)</td>
+<td><a href="https://github.com/kharchenkolab/dropEst">https://github.com/kharchenkolab/dropEst</a></td>
+</tr>
+<tr>
+<td>Rcpp (1.0.5)</td>
+<td>(<a href="#bib6">Eddelbuettel and Francois, 2011</a>)</td>
+<td><a href="https://github.com/RcppCore/Rcpp">https://github.com/RcppCore/Rcpp</a></td>
+</tr>
+<tr>
+<td>R (&gt;=3.5.0)</td>
+<td>(<a href="#bib19">R Core Team (2020)</a>, 2020)</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>RcppEigen (0.3.3.7.0)</td>
+<td>(<a href="#bib3">Bates and Eddelbuettel, 2013</a>)</td>
+<td><a href="https://github.com/RcppCore/RcppEigen">https://github.com/RcppCore/RcppEigen</a></td>
+</tr>
+<tr>
+<td>RInside (0.2.16)</td>
+<td>(<a href="#bib3">Bates and Eddelbuettel, 2013</a>)</td>
+<td><a href="https://github.com/eddelbuettel/rinside">https://github.com/eddelbuettel/rinside</a></td>
+</tr>
+<tr>
+<td>Matrix (1.2-18)</td>
+<td>(<a href="#bib19">R Core Team (2020)</a>, 2020)</td>
+<td><a href="https://github.com/cran/Matrix">https://github.com/cran/Matrix</a></td>
+</tr>
+<tr>
+<td>scRNABatchQC (0.10.3)</td>
+<td>(<a href="#bib15">Liu et al., 2019</a>)</td>
+<td><a href="https://github.com/liuqivandy/scRNABatchQC">https://github.com/liuqivandy/scRNABatchQC</a></td>
+</tr>
+<tr>
+<td>Python (&gt;=3.8.0)</td>
+<td>(<a href="#bib21">van Rossum and Drake, 2009</a>)</td>
+<td><a href="https://www.python.org/">https://www.python.org/</a></td>
+</tr>
+<tr>
+<td>jupyterlab (2.3.0a1)</td>
+<td>(<a href="#bib13">Kluyver et al., 2016</a>)</td>
+<td><a href="https://github.com/jupyterlab/jupyterlab">https://github.com/jupyterlab/jupyterlab</a></td>
+</tr>
+<tr>
+<td>Jupyter (&gt;=1.0.0)</td>
+<td>(<a href="#bib13">Kluyver et al., 2016</a>)</td>
+<td><a href="https://github.com/jupyter">https://github.com/jupyter</a></td>
+</tr>
+<tr>
+<td>Scanpy (1.6.0)</td>
+<td>(<a href="#bib24">Wolf et al., 2018</a>)</td>
+<td><a href="https://github.com/theislab/scanpy">https://github.com/theislab/scanpy</a></td>
+</tr>
+<tr>
+<td>AnnData (0.7.4)</td>
+<td>(<a href="#bib24">Wolf et al., 2018</a>)</td>
+<td><a href="https://github.com/theislab/anndata">https://github.com/theislab/anndata</a></td>
+</tr>
+<tr>
+<td>dropkick (1.2.1)</td>
+<td>(<a href="#bib11">Heiser et al., 2020</a>)</td>
+<td><a href="https://github.com/Ken-Lau-Lab/dropkick">https://github.com/Ken-Lau-Lab/dropkick</a></td>
+</tr>
+<tr>
+<td>NetworkX (&gt;=2.2)</td>
+<td>(<a href="#bib8">Hagberg et al., 2008</a>)</td>
+<td><a href="https://github.com/networkx/networkx">https://github.com/networkx/networkx</a></td>
+</tr>
+<tr>
+<td>python-igraph (&gt;=0.7.1.post6)</td>
+<td>(<a href="#bib4">Csardi and Nepusz, 2006</a>)</td>
+<td><a href="https://github.com/igraph/python-igraph">https://github.com/igraph/python-igraph</a></td>
+</tr>
+<tr>
+<td>leidenalg (&gt;=0.8.2)</td>
+<td>(<a href="#bib23">Traag et al., 2019</a>)</td>
+<td><a href="https://github.com/vtraag/leidenalg">https://github.com/vtraag/leidenalg</a></td>
+</tr>
+<tr>
+<td>POT (&gt;=0.6.0)</td>
+<td>(<a href="#bib7">Flamary and Courty, 2017</a>)</td>
+<td><a href="https://github.com/PythonOT/POT">https://github.com/PythonOT/POT</a></td>
+</tr>
+<tr>
+<td>NumPy (&gt;=1.17.4)</td>
+<td>(<a href="#bib9">Harris et al., 2020</a>)</td>
+<td><a href="https://github.com/numpy/numpy">https://github.com/numpy/numpy</a></td>
+</tr>
+<tr>
+<td>pandas (&gt;=1.1.4)</td>
+<td>(<a href="#bib20">Reback et al., 2020</a>)</td>
+<td><a href="https://github.com/pandas-dev/pandas">https://github.com/pandas-dev/pandas</a></td>
+</tr>
+<tr>
+<td>NVR</td>
+<td><a href="#bib28">Chen et al., 2018</a></td>
+<td><a href="https://github.com/Ken-Lau-Lab/NVR">https://github.com/Ken-Lau-Lab/NVR</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<ul>
+<li>Data – See the <a href="#sec1.1">single-cell, droplet-based library generation and sequencing</a> section of <a href="#before-you-begin">before you begin</a>
+</li>
+<li>Hardware - The full pipeline we present is computationally intensive, given the read alignment and demultiplexing steps that occur in the <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section. We recommend running the first section of this pipeline on a high-performance workstation or computing cluster. The <a href="#sec3.2">heuristic droplet filtering</a> and <a href="#sec3.3">automated droplet filtering with dropkick</a> sections have lower requirements and do not need to be run on high-performance machines. Note that these requirements will be dependent on the read depth and barcode number of the library of interest.</li>
+<li>
+<a href="#sec3.1">Single-cell read alignment and DropEst library quantification</a> section: High-performance workstation or cluster – Memory: 32 GB required, 64 GB recommended; Processors: 8 required, 16 recommended.</li>
+<li>
+<a href="#sec3.2">Heuristic droplet filtering</a>, <a href="#sec3.3">automated droplet filtering with dropkick</a>, and <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> sections: Local machine – Memory: 8 GB required, 16 GB recommended; Processors: 1 required, 4 recommended.</li>
+<li>Software - See the <a href="#key-resources-table">key resources table</a> and the singularity and R environment and Python environment preparation sections of <a href="#before-you-begin">before you begin</a>. We tested this modular pipeline on the Ubuntu 20.04 LTS Linux operating system. We recommend that users install a Debian-based distribution of Linux, which are freely available. The <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section primarily uses a containerized installation of R in addition to command line tools, and the <a href="#sec3.2">heuristic droplet filtering</a>, <a href="#sec3.3">automated droplet filtering with dropkick</a>, and <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> sections use a combination of Python packages and scripts as detailed on our GitHub repository. The required R packages can be installed without the provided Singularity container, but we highly recommend using the container as it does not require superuser privileges.</li>
+</ul>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Throughout this protocol, each section will have multiple pause points, which are marked by the saving of files to the respective computer’s hard disk. These outputs are detailed in the <a href="#expected-outcomes">expected outcomes</a> section, as these outputs are heterogeneous in file format, size, and timing.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Single-cell read alignment and dropEst library quantification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h, for 120 million reads on a compute node with 12 cores and 48 GB of memory. 1.5 h for example subset dataset (GSM4804820) with the same specifications. Processing time decreases linearly with the number of cores available.</div>
+<p>This section encompasses the library demultiplexing, read alignment, droplet count matrix estimation, and preliminary quality assessment with the DropEst library, the STAR aligner, and the scRNABatchQC R package, respectively (<a href="#bib5">Dobin et al., 2013</a>; <a href="#bib15">Liu et al., 2019</a>; <a href="#bib18">Petukhov et al., 2018</a>). First, dropTag takes paired-end, raw .fastq files and tags them in the context of unique molecular identifiers (UMIs) and cellular barcodes for the demultiplexing process. This is dependent on the scRNA-seq platform’s barcode whitelist; in this case we use the inDrop V1 and V2 barcodes. Before running the actual alignment process, a genome index must first be generated with respect to the reference and annotation files. STAR is a fast, scalable RNA-seq aligner which has splice awareness and takes the multiple tagged fastq.gz files generated by dropTag and aligns them using a reference genome index. The sorted .bam file generated by STAR alignment is used as an input to dropEst, which generates a barcode by gene count matrix, or droplet matrix, from the STAR aligned transcripts. Finally, scRNABatchQC is used to provide summary statistics and a quality assessment of the generated droplet matrix. This droplet matrix is further filtered in the <a href="#sec3.2">heuristic droplet filtering</a> and <a href="#sec3.3">automated droplet filtering with dropkick</a> section variants.</p>
+<div class="note">
+<span class="note-title">Note:</span> This protocol serves as a reference for an order-of-operations and their parameters in our open-source pipeline; organized and executable scripts, with proper file and directory references, are available at: <a href="https://github.com/KenLauLab/STAR_Protocol/">https://github.com/KenLauLab/STAR_Protocol/</a>.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The dropEst repository should be made locally available to explore its configurations and files by cloning from <a href="https://github.com/hms-dbmi/dropEst">https://github.com/hms-dbmi/dropEst</a>. This repository is also fully available within the provided Singularity container, whose configs can be displayed with the following command:</div>
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif ls /usr/share/dropEst/configs</code></p>
+</div>
+<p>Config files of interest can then be copied from the container to the local directory with the following, where <i>&lt;example.xml&gt;</i> is the file of interest:</p>
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif cp /usr/share/dropEst/configs/&lt;example.xml&gt; .</code></p>
+</div>
+<ol>
+<li>Run DropTag with the following:
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif droptag -c /usr/share/dropEst/configs/indrop_v1_2.xml reads_R1.fastq reads_R2.fastq</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>c, config filename:</b> The file path to the .xml file containing estimation parameters within the Singularity container, which includes platform-specific information. Further parameters contained within this .xml file are described by Petukhov, et al. (<a href="#bib18">Petukhov et al., 2018</a>):<br> <a href="https://github.com/hms-dbmi/dropEst/blob/master/configs/config_desc.xml">https://github.com/hms-dbmi/dropEst/blob/master/configs/config_desc.xml</a>
+</li>
+<li>
+<b>&lt;reads_R1&gt;, &lt;reads_R2&gt;:</b> These are positional arguments which should be replaced with the paths to the fastq files representing the R1 and R2 reads respectively; set to “<i>reads_R1.fastq”</i> and “<i>reads_R2.fastq”</i> in this example. R1 corresponds to the barcode read and R2 corresponds to the gene read.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 1 is saved as multiple tagged .fastq files, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Create a directory for operations to be performed and generate the index file:
+<div class="textbox">
+<p><code>mkdir STAR_index &amp;&amp; singularity exec -e star_dropest_star_protocols_pipeline.sif \ STAR --runThreadN 16 --runMode genomeGenerate \</code></p>
+<p><code>--genomeDir STAR_index --genomeFastaFiles \ primary_assembly.fa --sjdbGTFfile \ annotation.gtf --sjdbOverhang 99</code></p>
+</div>
+To create a genome index, the user must provide the reference genome (.fasta file) and the corresponding annotation file (.gtf) and run STAR with following parameters:
+<ol type="a">
+<li>
+<b>runMode:</b> Mode to run, example set to “<i>genomeGenerate”</i>
+</li>
+<li>
+<b>runThreadN:</b> The number of threads to generate the index file with, this step speeds up with higher values and is limited by the CPU used. Set to “<i>16”</i> in the example.</li>
+<li>
+<b>genomeDir:</b> Path to directory where files will be stored, set in example to “<i>STAR_index”</i>
+</li>
+<li>
+<b>genomeFastaFiles:</b> Path to genome .fasta file, set in example to “<i>primary_assembly.fa”</i>
+</li>
+<li>
+<b>sjdbGTFfile:</b> Path to annotation .gtf file, set in example to “<i>annotation.gtf”</i>
+</li>
+<li>
+<b>sjdbOVerhang:</b> The number of bases to concatenate from donor and acceptor sides of splice junctions. Set in example as “<i>99”.</i>
+<div class="critical">
+<span class="critical-title">Critical:</span> Step 2 must be re-run for different reference genome and annotation file versions, as the generated genomic index will be unique to each version.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 2 is saved as a genomic index file, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Run the single-cell alignment process with STAR, using our Singularity container:
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif STAR \</code></p>
+<p><code>--genomeDir STAR_index \</code></p>
+<p><code>--readFilesIn reads.tagged.1.fastq.gz \</code></p>
+<p><code>--outSAMmultNmax 1 --runThreadN 16 --readNameSeparator space \</code></p>
+<p><code>--outSAMunmapped Within --outSAMtype BAM SortedByCoordinate \</code></p>
+<p><code>--outFileNamePrefix reads \</code></p>
+<p><code>--readFilesCommand gunzip -c</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>genomeDir:</b> The path to the directory containing the STAR index file. Set in example as “<i>STAR_index”</i>
+</li>
+<li>
+<b>readFilesIn:</b> The path to the tagged .fastq file(s), where multiple tagged .fastq files can be input, set as “<i>reads.tagged.1.fastq.gz”</i> in example.</li>
+<li>
+<b>outSAMmultNmax:</b> Maximum number of multiple alignments for a read that will be output to the .sam/.bam files, example set to “<i>1”</i>
+</li>
+<li>
+<b>runThreadN:</b> Number of threads, example set to <i>“12”</i>, increase value to speed up performance.</li>
+<li>
+<b>readNameSeparator</b>: Characters separating the part of the read names that will be trimmed in output, example set to “<i>space”</i>
+</li>
+<li>
+<b>outSAMunmapped:</b> Output unmapped reads within the main ,sam file, example set to “<i>Within”</i>
+</li>
+<li>
+<b>outSAMtype:</b> Output formatting of .bam file, example set to <i>“BAM SortedByCoordinate”</i>
+</li>
+<li>
+<b>outFileNamePrefix:</b> Output file name prefix, set here as <i>“reads”</i>
+</li>
+<li>
+<b>readFilesCommand:</b> Command to decompress fastq.gz files, example set to <i>“gunzip –c”</i>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure that there is sufficient memory overhead for this step, with a minimum of 32 GB allotted, as spikes in memory usage may prematurely end the alignment process.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 3 is saved as a .bam, with several attributes, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Run DropEst, configured here for an inDrop library, with the following:
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif dropest -m -V -b -F -o sample_name -g annotation.gtf -L eiEIBA -c /usr/share/dropEst/configs/indrop_v1_2.xml readsAligned.sortedByCoord.out.bam</code></p>
+</div>
+The following arguments are used in this step:
+<ol type="a">
+<li>
+<b>m, merge-barcodes:</b> Merge linked cell tags</li>
+<li>
+<b>V, verbose</b>: Output verbose logging messages</li>
+<li>
+<b>b, bam-output:</b> Print tagged bam files</li>
+<li>
+<b>F, filtered-bam:</b> Print tagged bam file after the merge and filtration</li>
+<li>
+<b>o, output-file filename:</b> The output file name, example set to “<i>sample_name”</i>
+</li>
+<li>
+<b>g, genes filename:</b> Gene annotation file (.bed or .gtf), example set to “annotation<i>.gtf”</i>
+</li>
+<li>
+<b>L:</b> This is parameter has several options which denote the inclusion of count UMIs with reads that correspond to specific parts of the genome. Set to “<i>eiEIBA”</i> in the example.
+<ol type="i">
+<li>
+<b>e:</b> UMIs with exonic reads only</li>
+<li>
+<b>i:</b> UMIs with intronic reads only</li>
+<li>
+<b>E:</b> UMIs, which have both exonic and not annotated reads</li>
+<li>
+<b>I:</b> UMIs, which have both intronic and not annotated reads</li>
+<li>
+<b>B:</b> UMIs, which have both exonic and intronic reads</li>
+<li>
+<b>A:</b> UMIs, which have exonic, intronic and not annotated reads</li>
+</ol>
+</li>
+<li>
+<b>c, config filename:</b> XML file with estimation parameters, example set to “<i>./configs/indrop/v_1_2.xml”</i>, further details can be found at: <a href="https://github.com/hms-dbmi/dropEst/blob/master/configs/config_desc.xml">https://github.com/hms-dbmi/dropEst/blob/master/configs/config_desc.xml</a>
+</li>
+<li>
+<b>&lt;readsAligned.sortedByCoord.out.bam&gt;:</b> Positional argument for the input bam file. Set in example as “<i>readsAligned.sortedByCoord.out.bam”</i>.
+<div class="critical">
+<span class="critical-title">Critical:</span> Like step 3, this is a memory-intensive step. Ensure that there is sufficient memory overhead for this step, with a minimum of 32 GB allotted.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 4 is saved as a .bam and a .rds file, both with several attributes, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>From the output of DropEst, generate sparse count matrices with the code as follows:
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif R --vanilla --slave -f /R_scripts/RDS_to_sparesematrix.r --args sample_name.rds</code></p>
+</div>
+The following arguments are used in this step:
+<ol type="a">
+<li>
+<b>--args:</b> Path to the output .rds file, set in example as “<i>sample_name.rds”.</i>
+<div class="note">
+<span class="note-title">Note:</span> The source of the invoked R script can be viewed from within singularity container using vi. This script simply loads the .rds file, its contained data, and writes matrix files that are interoperable between different processing pipelines:</div>
+</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif vi /R_scripts/RDS_to_sparesmatrix.r</code></p>
+</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 5 is saved as three files representing the droplet matrix, feature labels, and barcode labels, which are further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+<ol start="6">
+<li>Finally, generate a quality assessment report:
+<div class="textbox">
+<p><code>singularity exec -e star_dropest_star_protocols_pipeline.sif R --vanilla --slave -f /R_scripts/scRNABatchQC.r --args hsapiens sample_name.rds_cm.csv</code></p>
+</div>
+The following arguments are used in this step:
+<ol type="a">
+<li>
+<b>--args:</b> Consists of two parts, positionally, the species and target .csv file. In this example, set as “<i>hsapiens”</i> and “<i>sample_name.rds_cm.csv”.</i>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 6 is saved as an .html file, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">Variant 1. Heuristic droplet filtering</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15 to 30 min, depending on the size of the droplet matrix and cores available for certain parallelized functions.</div>
+<p>This section and its variant describe the barcode filtering of the droplet matrix, and can be used modularly if the user has a pre-computed matrix, either from the <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section of this protocol or an external source, so long as the rows represent cell barcodes and columns represent genes. The output for this section will be a cell matrix, differing from a droplet matrix in that it only contains gene read counts from only high-quality, intact single cells. Primarily, this section will be performed interactively with Jupyter Notebooks running within a Conda environment, making extensive use of the AnnData Python class and scanpy library. First, a data-driven cutoff, by means of finding the inflection point in a cumulative sum curve of ranked barcode counts, is generated and used to minimize information-spars barcodes. Second, a distribution of uniquely detected genes per droplet is automatically thresholded through Otsu’s method, separating the remaining information-rich and information-sparse droplets and generating a binary metadata label. Third, tissue-specific gene expression signatures are visualized after DR to pinpoint cell populations of interest for downstream analysis. Fourth, unsupervised clustering is performed to discretize the single-cell transcriptional landscape. Finally, by heuristically integrating these metrics and expression signatures, populations of intact single-cells and their respective high-quality transcriptomes can be selected and saved to an independent file.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> This section is performed entirely within a Jupyter Notebook available through Github at <a href="https://github.com/KenLauLab/STAR_Protocol/">https://github.com/KenLauLab/STAR_Protocol/</a>. To use this notebook, follow the instructions described in the <a href="#sec1.3">python environment preparation</a> section of <a href="#before-you-begin">before you begin</a>. For further information on how to navigate Jupyter Notebooks, see its documentation page: <a href="https://jupyterlab.readthedocs.io/">https://jupyterlab.readthedocs.io/</a>.</div>
+<ol start="7">
+<li>Prepare DropEst outputs from the <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section for analysis in an interactive Jupyter Notebook:
+<div class="textbox">
+<p><code>import scanpy as sc</code></p>
+<p><code>import numpy as np</code></p>
+<p><code>import QCPipe</code></p>
+<p><code>adata = QCPipe.qc.read_dropest(“&lt;dir&gt;”)</code></p>
+<p><code>adata.write_h5ad(“&lt;filename.h5ad&gt;”,compression=’gzip’)</code></p>
+</div>
+This step uses the arguments:
+<ol type="a">
+<li>
+<b>&lt;dir&gt;</b>: The directory where the DropEst results are stored, specifically from step 5, set in example as “<i>dir”</i>
+</li>
+<li>
+<b>&lt;filename.h5ad&gt;</b>: Filename for the output .h5ad file, set in example as “<i>filename.h5ad”</i>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 7 is saved as a compressed .h5ad file, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+<div class="note">
+<span class="note-title">Note:</span> For the <a href="#sec3.2">heuristic droplet filtering</a>, <a href="#sec3.3">automated droplet filtering with dropkick</a>, and <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> sections of this protocol, adata is a common variable, which represents the AnnData object that scanpy methods operate on. adata is typically the parameter used for each function’s first positional argument.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Restart the notebook kernel and reload the data, from file, as an AnnData object:
+<div class="textbox">
+<p><code>import scanpy as sc</code></p>
+<p><code>import QCPipe</code></p>
+<p><code>import numpy as np</code></p>
+<p><code>adata = sc.read_h5ad(“&lt;filename.h5ad&gt;”)</code></p>
+<p><code>adata.raw = adata #set the raw attribute</code></p>
+<p><code>adata.var[‘Mitochondrial’] = adata.var.index.str.startswith(&lt;mitochondrial nomenclature&gt;) #set the mitochondrial variable attribute</code></p>
+<p><code>sc.pp.calculate_qc_metrics(adata, qc_vars=[‘Mitochondrial’], use_raw=True, inplace=True)</code></p>
+</div>
+The parameters in this code are as follows:
+<ol type="a">
+<li>
+<b>&lt;filename.h5ad&gt;</b>: The filename of the .h5ad file generated in step 7</li>
+<li>
+<b>&lt;mitochondrial nomenclature&gt;</b>: The mitochondrial nomenclature of the dataset, given the gene symbol. This will vary depending on the gene nomenclature and species. For example, human mitochondrial gene symbols are designated with <i>“MT-”</i>, whereas mouse symbols are preceded by <i>“mt-”.</i>
+<div class="note">
+<span class="note-title">Note:</span> The following steps assume that the notebook kernel activated in step 8 is not subsequently deactivated or restarted; thus, library import statements are not detailed further.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>Perform the first-pass inflection point-based filtering:
+<div class="textbox">
+<p><code>Inflection_estimate = QCPipe.qc.find_inflection_point(adata)</code></p>
+<p><code>sc.pp.filter_cells(adata, min_counts=adata[Inflection_estimate].obs[‘total_counts’])</code></p>
+</div>
+Alternatively, the user can set a manual cutoff using an estimated number of encapsulated cells:
+<div class="textbox">
+<p><code>sc.pp.filter_cells(adata, min_counts=adata[&lt;estimated number of cells encapsulated&gt;].obs[‘total_counts’])</code></p>
+</div>
+The parameter in this code is as follows:
+<ol type="a">
+<li>
+<b>&lt;estimated number of cells encapsulated&gt;</b>: This number represents the estimated number of cells encapsulated during the library generation process and is based on the flow time and rate of the process.
+<div class="critical">
+<span class="critical-title">Critical:</span> If the droplet matrix to be used in this step was generated through an external pipeline, ensure that it is ordered, starting with barcodes associated with the most to the least detected reads. Step 9 will fail if the data are not ordered as such. This ordering, however, is automatically performed in the DropEst output preparation in step 7.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>Automatically identify cells with relatively high transcriptional diversity:
+<div class="textbox">
+<p><code>adata = QCPipe.qc.relative_diversity(adata)</code></p>
+</div>
+</li>
+</ol>
+<ol start="11">
+<li>Normalize, log-like transform, and scale the data in preparation for dimensionality reduction:
+<div class="textbox">
+<p><code>#Droplet matrix is normalized to the median number of counts per barcode</code></p>
+<p><code>sc.pp.normalize_total(adata)</code></p>
+<p><code>#Droplet matrix is log-like transformed with np.arcsinh, without adding a pseudocount</code></p>
+<p><code>adata.X = np.arcsinh(adata.X).copy()</code></p>
+<p><code>#Droplet matrix centered and scaled through a Z-score transformation</code></p>
+<p><code>sc.pp.scale(adata)</code></p>
+</div>
+</li>
+</ol>
+<ol start="12">
+<li>
+<b><i>Optional</i></b>: Perform feature selection with highly_variable_genes or nvr after installing the required packages. These methods can be run in a Jupyter Notebook:
+<div class="textbox">
+<p><code>sc.pp.highly_variable_genes(adata)</code></p>
+</div>
+</li>
+</ol>
+<p>Alternatively, install nvr through the command line:</p>
+<div class="textbox">
+<p><code>pip install nvr</code></p>
+</div>
+<p>Run NVR:</p>
+<div class="textbox">
+<p><code>import nvr</code></p>
+<p><code>adata = nvr.nvr_feature_select(adata)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Only one of these feature selection methods should be used at a time. Also, ensure that the data’s stage of normalization and transformation complies with the requirements of these feature selection methods.</div>
+<ol start="13">
+<li>Perform the initial dimensionality reduction with PCA:
+<div class="textbox">
+<p><code>sc.pp.pca(adata,highly_variable_genes=False)</code></p>
+</div>
+The parameter for running the PCA is as follows:
+<ol type="a">
+<li>
+<b>highly_variable_genes:</b> This parameter is used to indicate whether to use feature selected variables, set in this example as “<i>False”.</i>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="14">
+<li>Generate a K-nearest neighbors graph (KNN) from the PCA-based distance matrix. This is run with a K of approximately the square root of the total number of barcodes, balancing the influence of local and global distances:
+<div class="textbox">
+<p><code>k_neighbors = np.sqrt(adata.n_obs).astype(int)</code></p>
+<p><code>sc.pp.neighbors(adata,n_neighbors = neighbors)</code></p>
+</div>
+</li>
+</ol>
+<ol start="15">
+<li>Perform Leiden community detection:
+<div class="textbox">
+<p><code>sc.pp.leiden(adata,resolution=1)</code></p>
+</div>
+The parameter for running this Leiden clustering is as follows:
+<ol type="a">
+<li>
+<b>resolution:</b> The clustering resolution, where a higher number leads to more, smaller clusters, and a lower number leads to fewer, larger clusters. The example is set to “<i>1</i>”.</li>
+</ol>
+</li>
+</ol>
+<ol start="16">
+<li>Project the data into 2 dimensions with UMAP:
+<div class="textbox">
+<p><code>sc.tl.umap(adata,min_dist=0.25)</code></p>
+</div>
+The parameter for running this UMAP is as follows:
+<ol type="a">
+<li>
+<b>min_dist</b>: The minimum distance allowed for each cell or data point in the 2-dimensional projection. The example is set as “<i>0.25”.</i> Lower min_dist values cause the data points to be more compact in 2D space, and vice versa for higher values.</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>Visualize factors useful in the heuristic determination of high-quality cell barcodes:
+<div class="textbox">
+<p><code>sc.pl.umap(adata,color=[‘gene’,’leiden_labels’,’pct_counts_Mitochondrial’,’pct_counts_in_top_200_genes’,’relative_transcript_diversity_threshold’],use_raw=False)</code></p>
+</div>
+The parameter for running this UMAP is as follows:
+<ol type="a">
+<li>
+<b>color:</b> The values stored in the AnnData object which are to be visualized in on a 2-dimensional projection, in this example we visualize some “<i>gene”</i>, “<i>leiden_labels</i>”, “<i>pct_counts_Mitochondrial”</i>, “<i>pct_counts_in_top_200_genes</i>”, and <i>“relative_transcript_diversity_threshold”.</i> These factors are used in the heuristic selection of clusters.</li>
+<li>
+<b>use_raw</b>: Whether to visualize normalized and scaled values or the raw count values within the AnnData object droplet matrix. Set to <i>“False”</i> in this example.
+<div class="critical">
+<span class="critical-title">Critical:</span> By priority, clusters of droplet barcodes should be selected based on these criteria in step 18:</div>
+</li>
+<li>
+<b>Marker gene expression and specificity</b>: These genes will vary between the biological system of interest as well as the heterogeneity of cell input. Colorectal tumors, for example, will have a mixture of epithelial and immune cells, and markers would be used accordingly.</li>
+<li>
+<b>The number of uniquely expressed genes:</b> This is a strong predictor of encapsulated cells, and empty droplets are unlikely to contain a biologically relevant diversity of gene transcripts. This should be maximized unless there is a particular cell type that is known to express very few unique transcripts.</li>
+<li>
+<b>Mitochondrial gene count percentage</b>: This is important because encapsulated cells undergoing lysis will contain a high percentage of mitochondrial reads, effectively adding noise to a droplet due to the removal of more informative genes from a limited read count pool.</li>
+<li>
+<b>Ambient gene expression</b>: This is akin to the mitochondrial gene count percentage, as the encapsulation substrate may contain the remnants of lysed cells, often consisting of mitochondrial genes, but may vary per cell type. This should be minimized.</li>
+<li>
+<b>Total counts</b>: As the number of transcripts detected represents the amount of raw transcriptional information contained within a droplet. This should also be maximized unless there is a particular cell type that is known to express very few unique transcripts.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>Select and visualize the cells based off the heuristic criteria using discretized Leiden clusters:
+<div class="textbox">
+<p><code>adata.obs[‘Cell_Selection’] = np.isin(adata.obs[‘leiden_labels’],[&lt;cluster selection&gt;]).astype(bool)</code></p>
+<p><code>sc.pl.umap(adata,color=[‘leiden_labels','Cell_Selection'],legend_loc='on data',legend_fontoutline=True,legend_fontsize=10)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>&lt;cluster selection&gt;:</b> The set of Leiden clusters to be selected and passed as a list of characters such as <i>[‘1’,’2’, … ‘n’].</i>
+</li>
+<li>
+<b>legend_loc:</b> This parameter indicates where the cluster legends will be displayed, set as <i>“on data”</i> in this example.</li>
+<li>
+<b>legend_fontoutline:</b> This parameter is used to render an outline on the cluster legends for readability, set as <i>“True”</i> in this example.</li>
+<li>
+<b>legend_fontsize:</b> This parameter designates the size of the font, set to 10 in this example.</li>
+</ol>
+</li>
+</ol>
+<ol start="19">
+<li>Ensure that the selected cells comply with the heuristic criteria by reviewing the outputs of steps 17 and 18; then save this selection to a .h5ad file.
+<div class="textbox">
+<p><code>data_out = QCPipe.qc.subset_cleanup(adata,selection='Cell_Selection')</code></p>
+<p><code>data_out.write_h5ad(“&lt;Filtered_Data.h5ad&gt;”,compression=’gzip’)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>selection:</b> The observation attribute used to subset the data, as defined earlier, this example is set as <i>“Cell_Selection”</i>
+</li>
+<li>
+<b>&lt;Filtered_Data.h5ad&gt;:</b> The filename to save the compressed .h5ad as, set in this example as <i>“&lt;Filtered_Data.h5ad&gt;”.</i>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 19, a filtered cell matrix, is saved as an .h5ad file, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Variant 2. Automated droplet filtering with dropkick</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 to 10 min, depending on the size of the droplet matrix.</div>
+<p>This variant serves the same function as the <a href="#sec3.2">heuristic droplet filtering</a> section. For automated droplet filtering in Python, dropkick is a machine learning tool that builds a probabilistic model of single-cell barcode transcriptome quality and returns a score for all barcodes in the input scRNA-seq droplet matrix (see step 7 for generating .h5ad from DropEst files) (<a href="#bib11">Heiser et al., 2020</a>). dropkick can be run from the command line or interactively in a Jupyter Notebook. A command line interface exists for its two primary modules designed for QC reporting and filtering, whose usages are outlined as follows.</p>
+<ol start="20">
+<li>Install dropkick through pip, or from source code at <a href="https://github.com/KenLauLab/dropkick">https://github.com/KenLauLab/dropkick</a>:</li>
+</ol>
+<div class="textbox">
+<p><code>pip install dropkick</code></p>
+</div>
+<ol start="21">
+<li>Run the dropkick <i>qc</i> function to generate a quality overview report, which is saved to the current working directory as a .png image file:
+<div class="textbox">
+<p><code>dropkick qc &lt;path/to/counts[.h5ad|.csv]&gt;</code></p>
+</div>
+The required parameter for this function is:
+<ol type="a">
+<li>
+<b>&lt;path/to/counts[.h5ad|.csv]&gt;:</b> The file path to the droplet matrix file of interest, which can be either .h5ad or .csv file.
+<div class="note">
+<span class="note-title">Note:</span> If the input counts are in .csv format, ensure that the file is in cells by genes configuration with labels for gene identities as column headers. The output from the step 7 can be used here directly.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="22">
+<li>Run the dropkick filtering algorithm with the <i>run</i> function:
+<div class="textbox">
+<p><code>dropkick run &lt;path/to/counts[.h5ad|.csv]&gt; -j 5</code></p>
+</div>
+The required parameters for this function are:
+<ol type="a">
+<li>
+<b>&lt;path/to/counts[.h5ad|.csv]&gt;:</b> The file path to the droplet matrix file of interest, which can be either .h5ad or .csv file.</li>
+<li>
+<b>j:</b> The number of jobs used to parallelize the training and cross-validation of the dropkick model. We recommend adjusting the `-j` flag according to the number of available CPUs. If using a machine with more than five cores, <i>`-j 5`</i> is optimal for the five-fold cross validation performed by dropkick, and model training is usually completed in less than two minutes.
+<div class="note">
+<span class="note-title">Note:</span> All available user parameters can be found by running `dropkick run -h`. Default parameters are typically fast and robust for most datasets across encapsulation platforms, tissues, and levels of ambient background, see the <a href="#troubleshooting">troubleshooting</a> section for further points of optimization.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 22 is a .h5ad file, saved to disk, containing the input droplet matrix with additional metadata consisting of cell quality scores and binary labels. This is further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="23">
+<li>In a Jupyter Notebook, as described in step 19, load the dropkick-generated .h5ad file with the appropriate libraries and generate the filtered cell matrix:
+<div class="textbox">
+<p><code>data_out = QCPipe.qc.subset_cleanup(adata,selection='dropkick_label')</code></p>
+<p><code>data_out.write_h5ad(“&lt;Dropkick_Filtered_Data.h5ad&gt;”,compression=’gzip’)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>selection:</b> The observation attribute to use to subset the data, as defined earlier, this example is set as <i>“dropkick_label”.</i>
+</li>
+<li>
+<b>&lt;Filtered_Data.h5ad&gt;:</b> The filename to save the compressed .h5ad as, set in this example as <i>“&lt;Dropkick_Filtered_Data.h5ad&gt;”.</i>
+<div class="note">
+<span class="note-title">Note:</span> It is good practice to ensure that the selected cells also comply with the heuristic cell selection criteria as discussed in step 17. The entirety of the <a href="#sec3.2">heuristic droplet filtering</a> section can also be performed with a dropkick-labeled droplet matrix (the output from step 22), further augmenting cluster selection heuristics with learned metadata.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The output of step 23, a filtered cell matrix, is saved as an .h5ad file, further detailed in the <a href="#expected-outcomes">expected outcomes</a> section.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Post-processing and dimension reduction structure preservation analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–30 min depending on the complexity and heterogeneity of the data at hand.</div>
+<p>The final phase of this pipeline is centered around generating a representative two-dimensional projection of a filtered cell matrix to accurately visualize the global and local populational heterogeneity within dataset. Using scRNA-seq data to address hypotheses necessitates robust visualizations to counteract stochasticity inherent to several popular non-linear dimensionality algorithms. This stochasticity is often unaccounted for during downstream and may interfere with the representation of cellular relationships along the transcriptomic landscape, warping the perceived distances between cell types in 2D space. This section walks through the quantitative evaluation of two popular embedding techniques, t-SNE (<a href="#bib30">van der Maaten and Hinton, 2008</a>) and UMAP (<a href="#bib29">McInnes et al., 2018</a>), to determine the more reliable visualization strategy for a particular dataset. First, each latent space, or non-linearly projected, representation of the cell matrix is generated. Second, after identifying putative cell types in the data, discrepancies between these latent and native, or linearly transformed, spaces are calculated on global and local scales. Finally, rearrangements in subpopulation adjacencies are calculated on a graphical basis, allowing for users to choose the latent representation which minimizes discrepancies in latent-native space distances as well as in subpopulation adjacencies; both factors may greatly influence the biological interpretation of the data.</p>
+<ol start="24">
+<li>Refer to the normalization, transformation, scaling, and DR guidelines in steps 11–15, as this section uses the same processes. Ensure that the cell count matrix has been processed, up to the Leiden clustering calculation, before proceeding.</li>
+</ol>
+<ol start="25">
+<li>Using a calculated 50-component PCA, calculate a t-SNE representation of the cell count matrix.
+<div class="textbox">
+<p><code>k_neighbors = np.sqrt(adata.n_obs).astype(int)</code></p>
+<p><code>sc.tl.tsne(adata, use_rep=”X_pca”, perplexity=k_neighbors)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>use_rep:</b> The representation of the single-cell data to use to initialize t-SNE nonlinear embedding, set as “<i>X_pca”</i>, or the 50-dimensional PCA representation in this example.</li>
+<li>
+<b>perplexity:</b> This is the effective nearest neighbors that are utilized in the t-SNE embedding, set to the square-root (rounded-down) of the total number of cells being examined.</li>
+</ol>
+</li>
+</ol>
+<ol start="26">
+<li>Next, generate a coarse-grained similarity graph using communities detected through the Leiden algorithm:
+<div class="textbox">
+<p><code>sc.tl.paga(adata)</code></p>
+</div>
+</li>
+</ol>
+<ol start="27">
+<li>Project the data into 2 dimensions using UMAP, but unlike in the <a href="#sec3.2">heuristic droplet filtering</a> and <a href="#sec3.3">automated droplet filtering with dropkick</a> section variants, initialize this projection with the PAGA similarity values:
+<div class="textbox">
+<p><code>sc.tl.umap(adata, init_pos=”paga”)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>init_pos:</b> The representation of the data that is used for the initialization of the UMAP visualization, the example is set as <i>“paga”,</i> as calculated in step 26.</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>Run the structure_preservation_sc function to calculate global latent-native space discrepancies:
+<div class="textbox">
+<p><code>corr, EMD, knn = QCPipe.fcc.structure_preservation_sc(adata=adata, latent="X_tsne", native="X_pca", k=neighbors)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>latent:</b> The target latent representation of the data to be evaluated, in this example we start with “<i>X_tsne”</i>, this parameter can be replaced with <i>“X_umap”</i> to evaluate UMAP representations (<a href="#fig6">Figures 6</a>C and 6D)</li>
+<li>
+<b>native:</b> The native space representation of the data to compare the latent representation with, set as “<i>X_pca”</i> in the example due to the linear nature of its decomposition.</li>
+<li>
+<b>k:</b> The k number of nearest neighbors for use in structure preservation analysis, set to the square-root (rounded-down) of the total number of cells being examined calculated in step 25.</li>
+</ol>
+</li>
+</ol>
+<ol start="29">
+<li>Perform differential gene expression (DE) testing to derive transcriptional signatures from the detected subpopulations of cells, whose local latent-native distance discrepancies should be quantified:
+<div class="textbox">
+<p><code>sc.tl.rank_genes_groups(adata, groupby=”leiden”)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>groupby:</b> The dataset labels between which to perform DE testing, in this case we use the “<i>leiden”</i> clusters.
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure that all detected Leiden clusters can be reasonably identified through their gene expression signatures as described in literature. Unless a particular subpopulation is expected to be novel, cluster-to-cluster comparisons will not be biologically meaningful unless properly annotated. Note that the annotation of gene expression signatures is out of the scope of this protocol and will vary for each tissue of interest.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="30">
+<li>Subset single-cell cluster(s) of interest to perform latent-native discrepancy evaluation on a cluster-by-cluster basis (defined through the detection of known marker genes and the signature detection of step 29):
+<div class="textbox">
+<p><code>QCPipe.fcc.subset_uns_by_ID(adata, uns_keys=["X_pca_distances","X_tsne_distances","X_umap_distances"], obs_col="leiden", IDs=[&lt;cluster id_c&gt;])</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>uns_keys:</b> The distances of interest to be subset, which are stored in the unstructured (.uns) attribute of the AnnData object. Set in the example as <i>“X_pca_distances”, “X_tsne_distances”,</i> and <i>“X_umap_distances”</i>
+</li>
+<li>
+<b>obs_col:</b> This parameter indicates which observation attribute to use to subset the data, as defined earlier, this example is set as “<i>leiden</i>”</li>
+<li>
+<b>IDs:</b> The observational IDs in which subsets of cells, Leiden cluster IDs in this example, are selected.</li>
+</ol>
+</li>
+</ol>
+<ol start="31">
+<li>Perform the latent-native discrepancy calculations and visualize them using the distance_stats, SP_plot, joint_plot_distance_correlation, and plot_cumulative_distributions functions:
+<div class="textbox">
+<p><code>pca_dist_c, tsne_dist_c, corr_stats_c, EMD_c =QCPipe.fcc.distance_stats(pre=adata.uns[&lt;"X_pca_distances_c"&gt;], post= adata.uns["X_tsne_distances_c"])</code></p>
+<p><code>QCPipe.fcc.SP_plot(pre_norm=pca_dist_c, post_norm=tsne_dist_c, labels=["PCA (50)","t-SNE"], figsize=(4,4)).joint_plot_distance_correlation()</code></p>
+<p><code>QCPipe.fcc.SP_plot(pre_norm=pca_dist_c, post_norm=tsne_dist_c, labels=["PCA (50)","t-SNE"], figsize=(3,3)).plot_cumulative_distributions()</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>pre:</b> The calculated distances before generating the latent space representation of the data, which is are the <i>“X_pca”</i> distances in this example.</li>
+<li>
+<b>post:</b> The calculated distances after generating the latent space representation of the data, which is are the “<i>X_tsne”</i> distances in this example. For comparisons between these latent space representations, users can replace <i>“tsne”</i> with <i>“umap”</i> to test the latter embedding (<a href="#fig7">Figures 7</a>A, 7B, 7F, and 7G).</li>
+<li>
+<b>pre_norm:</b> A flattened vector of normalized, unique cell-cell distances before transformation, as output by <i>“distance_stats”.</i> This is calculated for the PCA representation in the example.</li>
+<li>
+<b>post_norm:</b> A flattened vector of normalized, unique cell-cell distances after transformation, as output by <i>“distance_stats”.</i> This is calculated for the t-SNE representation in the example.</li>
+<li>
+<b>labels:</b> The labels for the pre- and post- transformation data, set as <i>“PCA (50)”</i> and <i>“t-SNE”</i> in this example.</li>
+<li>
+<b>figsize:</b> The size of the figure, in terms of width and height. Set as <i>“(4,4)”</i> and <i>“(3,3)”</i> respectively in this example.
+<div class="note">
+<span class="note-title">Note:</span> Step 32 should be repeated as necessary with each latent space representation of interest. Here we recommend also running it with the UMAP representation calculated in step 27.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="32">
+<li>Compare these distances between subpopulations of cells, being clusters <i>c</i><sub><i>1</i></sub><i>, c</i><sub><i>2</i></sub><i>,</i> and <i>c</i><sub><i>3</i></sub> in this example as defined in step 30:
+<div class="textbox">
+<p><code>corr_tSNE, EMD_tSNE =QCPipe.fcc.cluster_arrangement_sc(</code></p>
+<p><code>  adata= adata,</code></p>
+<p><code>  pre= adata.obsm["X_pca"],</code></p>
+<p><code>  post= adata.obsm["X_tsne"],</code></p>
+<p><code>  obs_col="leiden", IDs=["c1","c2","c3"],</code></p>
+<p><code>  ax_labels=["PCA (50)","t-SNE"],</code></p>
+<p><code>  figsize=(4,4),</code></p>
+<p><code>)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>pre:</b> The coordinates of each single-cell before transformation, “<i>X_pca</i>”, or the 50-dimensional PCA are used in this case.</li>
+<li>
+<b>post:</b> The coordinates of each single-cell after transformation, “<i>X_tsne</i>”, or the 50-dimensional PCA are used in this case. For comparisons between these latent space representations, users can replace <i>“tsne”</i> with <i>“umap”</i> to test the latter embedding (<a href="#fig7">Figures 7</a>C, 7D, 7H, and 7I).</li>
+<li>
+<b>obs_col:</b> This parameter indicates which observation attribute to highlight by color, this example is set as “<i>leiden</i>”</li>
+<li>
+<b>IDs:</b> The observational IDs in which subsets of cells, Leiden cluster IDs in this example, are selected.</li>
+<li>
+<b>ax_labels:</b> The labels for the pre- and post- transformation data, set as <i>“PCA (50)”</i> and <i>“t-SNE”</i> in this example, to be plotted as axis labels.</li>
+<li>
+<b>figsize:</b> The size of the figure, in terms of width and height. Set as <i>“(4,4)”</i> and <i>“(3,3)”</i> respectively in this example.
+<div class="note">
+<span class="note-title">Note:</span> Step 3.9 should also be repeated as necessary with each latent space representation of interest. Here we recommend also running it with the UMAP representation calculated in step 27. Further, additional comparisons between other Leiden clusters should be performed to evaluate all potential subpopulations of interest, and these clusters should incorporate signatures highlighted in step 29.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="33">
+<li>Generate a minimum-spanning tree (MST) to investigate global subpopulation arrangements and structure:
+<div class="textbox">
+<p><code>QCPipe.fcc.find_centroids(adata, use_rep="X_pca", obs_col="leiden")</code></p>
+<p><code>QCPipe.fcc.find_centroids(adata, use_rep="X_tsne", obs_col="leiden")</code></p>
+<p><code>QCPipe.fcc.find_centroids(adata, use_rep="X_umap", obs_col="leiden")</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>use_rep:</b> The representation of the single-cell data to find centroids within, set as <i>“X_pca”, “X_tsne”,</i> and <i>“X_umap”</i> in this example.</li>
+<li>
+<b>obs_col:</b> This parameter indicates which observation attribute to find centroids within, as defined earlier, this example is set as “<i>leiden”</i>
+<div class="note">
+<span class="note-title">Note:</span> Step 33 should also be repeated as necessary with each latent space representation of interest, like in step 32.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="34">
+<li>Determine the edge differences from native (PCA) to latent (t-SNE and UMAP) spaces by counting edge inconsistencies in a minimum spanning tree:
+<div class="textbox">
+<p><code>tsne_set = set(adata.uns["X_tsne_centroid_MST"].edges).difference(set(adata.uns["X_pca_centroid_MST"].edges))</code></p>
+<p><code>umap_set = set(adata.uns["X_umap_centroid_MST"].edges).difference(set(adata.uns["X_pca_centroid_MST"].edges))</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>Latent MST:</b> The MST calculated based on the latent representation of the data, being “<i>X_tsne</i>” and “<i>X_umap</i>” in these two calculations.</li>
+<li>
+<b>Native MST:</b> The MST calculated based on the native representation of the data, being “<i>X_pca”</i> in these two calculations.</li>
+</ol>
+</li>
+</ol>
+<ol start="35">
+<li>Plot these calculated edge differences:
+<div class="textbox">
+<p><code>QCPipe.fcc.DR_plot(dim_name="t-SNE").plot_centroids(adata=a, obs_col="leiden", use_rep="X_tsne", highlight_edges=tsne_set)</code></p>
+<p><code>QCPipe.fcc.DR_plot(dim_name="UMAP”).plot_centroids(adata=a, obs_col="leiden", use_rep="X_umap", highlight_edges=umap_set)</code></p>
+</div>
+The parameters in this case are:
+<ol type="a">
+<li>
+<b>dim_name:</b> The name of the latent representation to be plotted, being “<i>X_tsne</i>” and “<i>X_umap</i>”.</li>
+<li>
+<b>obs_col:</b> This parameter indicates which observation attribute to highlight by color, this example is set as “<i>leiden</i>”</li>
+<li>
+<b>use_rep:</b> The representation of the single-cell data to plot, set as <i>“X_tsne”</i> and <i>“X_umap”</i> in this example.</li>
+<li>
+<b>highlight_edges:</b> Which differing edges to highlight, representing a rearrangement of coarse cluster neighbors. “<i>tsne_set</i>” and “<i>umap_set</i>” in this example, calculated earlier.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>These expected outcomes are also described in this pipeline’s repository, which can be found at <a href="https://github.com/Ken-Lau-Lab/STAR_Protocol">https://github.com/Ken-Lau-Lab/STAR_Protocol</a>. Examples in the repository also contain proper file and directory references for the provided files.</p>
+<div class="note">
+<span class="note-title">Note:</span> The entirety of this pipeline and the expected outcomes detailed here are based on the GSM5068493 dataset, with the reference genome and annotation files detailed in the <a href="#key-resources-table">key resources table</a>. The droplet and cell matrices of this dataset are also included as .h5ad files on our GitHub repository. For the sake of saving time and computational resources users may want to test the <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section with our reduced dataset, GSM4804820.</div>
+<h3 id="sec4.1">Single-cell read alignment and dropEst library quantification results</h3>
+<p><b>Step 1:</b> The output of the DropTag step will be tagged and demultiplexed fastq.gz files that will be aligned by STAR in subsequent steps. Note that the DropTag step can output around 20 tagged .fastq files, depending on the read depth of the input files. These outputs are also paired with a log, named tag_main.log, containing the number of reads processed, number of reads that passed the minimum quality threshold, number of reads with expected structure for the library type, and trimming statistics, given arguments specified in configs/indrop_v1_2.xml file. The subsampled dataset we provide will only produce 1 tagged .fastq file due to its size.</p>
+<p><b>Step 2:</b> The output genomic index file is necessary for STAR alignment and allows for the query time of each read alignment to be minimized. Only one of these genomic indices needs to be generated per reference and annotation pair.</p>
+<p><b>Step 3:</b> The .bam produced through STAR alignment contains several attributes which are detailed in <a href="#tbl1">Table 1</a>. Additionally, a file named “Log.final.out” contains useful metrics to evaluate the quality of the mapping.</p>
+<table id="tbl1">
+<caption>Table 1. Expected outputs for single-cell read alignment and DropEst library quantification</caption>
+<thead>
+<tr>
+<th>Object attribute (within .bam or .rds)</th>
+<th>Definition</th>
+<th>Step output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NH</td>
+<td>Number of reported alignments that contain the query in the current record.</td>
+<td>Step 3 .bam, Step 4 .bam</td>
+</tr>
+<tr>
+<td>HI</td>
+<td>Query hit index, indicating the alignment record is the i-th one stored in SAM.</td>
+<td>Step 3 .bam, Step 4 .bam</td>
+</tr>
+<tr>
+<td>AS</td>
+<td>Alignment score generated by aligner</td>
+<td>Step 3 .bam, Step 4 .bam</td>
+</tr>
+<tr>
+<td>nM</td>
+<td>Number of mismatches per (paired) alignment</td>
+<td>Step 3 .bam, Step 4 .bam</td>
+</tr>
+<tr>
+<td>GX</td>
+<td>Gene id</td>
+<td>Step 4 .bam</td>
+</tr>
+<tr>
+<td>CR</td>
+<td>Cell barcode raw</td>
+<td>Step 4 .bam</td>
+</tr>
+<tr>
+<td>UR</td>
+<td>UMI raw</td>
+<td>Step 4 .bam</td>
+</tr>
+<tr>
+<td>CB</td>
+<td>Cell barcode</td>
+<td>Step 4 .bam</td>
+</tr>
+<tr>
+<td>UB</td>
+<td>UMI</td>
+<td>Step 4 .bam</td>
+</tr>
+<tr>
+<td>Cm</td>
+<td>Count matrix in sparse format</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>cm_raw</td>
+<td>Count matrix in sparse format without filtration by minimal number of UMI and by the required type of reads (-L option)</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>saturation_info</td>
+<td>Data for estimating saturation using preseqR package</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>merge_targets</td>
+<td>Vector of corrected barcodes, named with raw barcodes</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>aligned_reads_per_cell</td>
+<td>Number of aligned reads per cell</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>aligned_umis_per_cell</td>
+<td>Number of aligned UMIs per cell</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>requested_umis_per_cb</td>
+<td>Number of UMIs per cell</td>
+<td>Step 4 .rds</td>
+</tr>
+<tr>
+<td>requested_reads_per_cb</td>
+<td>Number of reads per cell</td>
+<td>Step 4. rds</td>
+</tr>
+</tbody>
+</table>
+<p><b>Step 4:</b> DropEst outputs multiple files, including a sorted .bam file and a .rds file. The .bam file contains read-level information, like the output of <b>step 3</b>, and is also outlined in <a href="#tbl1">Table 1</a>. The .rds file contains information regarding the droplet matrix itself, with corrected barcode information. Both files are used to generate the final droplet matrix. Additionally, this step outputs a est_main.log file, detailing the progress of dropEst, the number of reads mapped to intergenic, exonic, and intronic regions, and further cell barcode and UMI merging statistics. This log also contains the used arguments specified in .xml configuration file.</p>
+<p><b>Step 5:</b> Droplet matrix generation utilizes both the sorted .bam and .rds file of step 4. Two directories are generated, containing the respective matrices derived from the cm and cm_raw (used for subsequent steps) fields of the .rds file. These directories contain corresponding files as follows:</p>
+<ol type="a">
+<li>Counts.mtx - This file represents the demultiplexed count matrix containing the number of times a transcript of a gene was observed with a specific barcode (vars × obs). As this matrix contains all barcodes detected in the alignment of sequenced reads, it includes both barcodes associated with real, encapsulated cells as well as empty droplets and false positives. Thus, the number of barcodes within this matrix is far greater than should exist per encapsulated cell.</li>
+<li>Features.txt - This file contains the genes detected through the alignment process. Generally, this number should be between 20,000 and 30,000. Depending on the reference transcriptome and GTF annotation file used, these will be gene symbols, ENSEMBL IDs, and other associated nomenclatures.</li>
+<li>Barcodes.txt - This file contains the detected barcodes, generally these will be a series of unique nucleotide strings that represent a detected barcode. This will vary depending on the read depth of the alignment process.</li>
+</ol>
+<p><b>Step 6:</b> The scRNABatchQC report generates a .html report with several QC diagnostic metrics such as number of cells per sample. The output is an HTML report with metrics and diagnostic plots evaluating the quality of the experiment. The report includes three parts: QC Summary, Technical View, and Biological View. The QC summary table provides metrics including the total number of counts, cells, and genes, percentage of mitochondrial and rRNA reads, and the number of cells removed due to low quality. The Technical View diagnostic plots show different features, including distributions of counts, genes, mtRNA and rRNA percentages, expression cumulative plots, and variance explained by features. The Biological View shows the highly variable genes, differentially expressed genes according to PCA, enriched pathways according to both gene lists, PCA and t-SNE plots.</p>
+<h3 id="sec4.2">Variant 1. Heuristic droplet filtering results</h3>
+<p><b>Step 9:</b> Inflection curve detection is a fast way to calculate a first pass quality cutoff for droplets and potential cells detected. The resulting curve of a dataset containing a mixed distribution of high-quality cells and empty droplets also contains information about the overall quality of the dataset. Ideally, the produced inflection curve should look similar to a logarithmic function with nonzero values. The sharpness of the angle of inflection is related to the separability of encapsulated, intact cells and empty droplets, with a sharper angle indicating a more significant distinction between the two (<a href="#fig1">Figure 1</a>A, robust inflection point indicated). In some cases, the overall library quality may be low enough to affect the generation of this curve (<a href="#fig1">Figure 1</a>C, weak inflection point indicated). Additionally, in the case of lower quality libraries, the normalized transcriptional diversity curve will contain a wider plateau when plotted by cell rank. (<a href="#fig1">Figures 1</a>B and 1D, ‘plateaus’ indicated).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Inflection curve analysis</div>
+<p>(A and B) Inflection curve thresholding (A) for a high quality dataset with corresponding Total Counts to N Genes By Counts ratio plot on log scales (B).</p>
+<p>(C and D) Inflection curve thresholding (C) for a low quality dataset with corresponding Total Counts to N Genes By Counts ratio plot on log scales (D).</p>
+<p>Red arrows indicate inflection points (A and B), and red brackets indicate the ‘plateau’ motif in the Total Counts/N Genes By Counts plot.</p>
+</figcaption>
+</figure>
+<p><b>Step 10:</b> Relative transcript diversity thresholding uses the distribution of transcript diversity as both an indicator of overall library quality and a means to automatically label potential encapsulated cells. Higher quality libraries, after running the relative_diversity function, will have distinct bimodal or multimodal distributions of transcript diversity. The labeled, higher quality barcodes within the green highlight are also labeled on a corresponding UMAP (<a href="#fig2">Figures 2</a>A and 2B, bimodal distribution indicated with highlighted UMAP counterpart). Lower quality libraries will be unimodal, with few barcodes labeled as high quality (<a href="#fig2">Figures 2</a>C and 2D unimodal distribution indicated with highlighted UMAP counterpart). In addition, the visualization of these lower quality libraries will, qualitatively, appear more amorphous in a UMAP visualization, with a single observable cluster.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Relative transcript diversity distribution analysis</div>
+<p>(Aa nd B) Relative transcript diversity histogram plot (A) for a high quality dataset with corresponding UMAP with highlighted selection (B).</p>
+<p>(C and D) Relative transcript diversity histogram plot (C) for a low quality dataset with corresponding UMAP with highlighted selection (D).</p>
+<p>Red arrows indicate bimodality and unimodality in (A and C), respectively, for the distributions of transcript diversity.</p>
+</figcaption>
+</figure>
+<p><b>Steps 17–19:</b> Leiden clustering and cell determination uses a combination of unsupervised machine learning and heuristic approaches from publicly available, open-source software. Because of the heuristic selection criteria for subpopulations of high-quality cells, the quality of subpopulation selection is augmented with prior knowledge, though this is dependent on the transcriptional nature of the cells of interest. In this example, we examine the heterogeneity of cells found in a normal, human colonic epithelium. Going in with prior knowledge of intestinal stem, transit amplifying, hematopoietic, absorptive, secretory, tuft, enteroendocrine, and intestinal epithelial cells, we examine LGR5, PCNA, PTPRC, KRT20, MUC2, POU2F3, CHGA, and EPCAM, respectively (<a href="#fig3">Figure 3</a>A). The expression of these marker genes is of the highest priority in our heuristic process, followed by transcript diversity and so on. Based on these criteria, Leiden clusters 9, 11, 16, 21, and 22 are selected (<a href="#fig3">Figures 3</a>B and 3C, selected cells indicated). The output from step 19 will be a single, compressed .h5ad file comprising a filtered cell count matrix with barcode and gene names annotated.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Heuristic cluster selection criteria</div>
+<p>(A) Marker gene UMAP overlays, with scale bars denoting the normalized and transformed values.</p>
+<p>(B) Leiden cluster labels derived through the Leiden community detection algorithm at a resolution of 2.</p>
+<p>(C) UMAP visualization of the selected clusters, being 9, 11, 16, 21, and 22.</p>
+</figcaption>
+</figure>
+<h3 id="sec4.3">Variant 2. Automated droplet filtering with dropkick results</h3>
+<p><b>Step 21:</b> Automated droplet filtering with the dropkick Python package provides quality control metrics and cell probabilities for each barcode that can be used to subset an unfiltered counts matrix using a gene-based logistic regression model (<a href="#bib11">Heiser, et al. 2020</a>). The dropkick QC module returns a report that quantifies ambient RNA and estimates global data quality by the profile of total counts and genes per barcode (<a href="#fig4">Figures 4</a>A and 4B). The human colonic mucosa sample contains ambient RNA that consists primarily of mitochondrial genes (<a href="#fig4">Figure 4</a>B) and accounts for nearly 90% of all reads in some empty droplets (<a href="#fig4">Figure 4</a>A), indicating that cell death and lysis contributed highly to background noise during this encapsulation.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Automated droplet filtering with dropkick</div>
+<p>(A) Profile of total counts (black trace) and genes (green points) detected per ranked barcode for human colonic mucosa sample. Percentage of mitochondrial (red) and ambient (blue) reads for each barcode included to denote quality along total counts profile.</p>
+<p>(B) Ranked gene dropout rates. Ambient genes identified by dropkick are used to calculate percent ambient counts in A.</p>
+<p>(C) Plot of coefficient values for 2,000 highly variable genes (top) and mean binomial deviance ± SEM (bottom) for model cross-validation along the lambda regularization path defined by dropkick. Top and bottom three coefficients are shown, in axis order, along with total model sparsity (top). Chosen lambda value shown as dashed vertical line.</p>
+<p>(D) Plot of percent ambient counts versus arcsinh-transformed genes detected per barcode, with histogram distributions plotted on margins. Initial dropkick training thresholds shown as dashed vertical lines. Each point (barcode) is colored by its final cell probability after model fitting.</p>
+</figcaption>
+</figure>
+<p><b>Step 22:</b> After training a logistic regression model using automated heuristic thresholds, the resulting dropkick coefficient values, and deviance scores along the path of tested lambda (regularization strength) are shown (<a href="#fig4">Figure 4</a>C and saved as a “_coef.png” file) as well as final cell probabilities (<a href="#fig4">Figure 4</a>D also saved as a “_score.png” file). Further outputs from this step include a single, compressed .h5ad file comprising a filtered cell count matrix with barcode and gene names annotated. This file will retain the original input counts file name, appending “_dropkick.h5ad”. “dropkick_score” and “dropkick_label” columns in the .obs dataframe of this file provide the user with cell probabilities and default thresholded labels (dropkick_score ≥ 0.5 indicates real cell), respectively.</p>
+<h3 id="sec4.4">Post-processing and dimension reduction structure preservation analysis results</h3>
+<p><b>Step 28:</b> To examine DR structure preservation on a global scale, our filtered cell counts matrix is normalized, transformed, and scaled prior to PCA for initial DR. We can explore our PCA outputs for top gene loadings in the highest PCs that indicate importance for distinguishing differences in cell populations (<a href="#fig5">Figure 5</a>A) and confirm the appropriate number of PCs for our analysis (for our human colon data: 50 PCs; <a href="#fig5">Figure 5</a>B). This PCA becomes the “native space” for downstream evaluation of data structure preservation in our two-dimensional embeddings (<a href="#fig5">Figure 5</a>C). Embeddings from t-SNE and UMAP display similar global structure and compare favorably to the native PCA space (<a href="#fig6">Figures 6</a>A–6D), with global correlation values of 0.6112 and 0.6632, Earth Mover’s Distances (EMDs) of 0.1649 and 0.1444, and K-nearest neighbor preservation values of 97.60% and 97.53% for t-SNE and UMAP, respectively. In 7C and 7D, the differing means of the cell-to-cell distance distributions are indicated. With the advantage in two out of three global metrics, UMAP outperforms t-SNE on average across all cells in our dataset. However, we can perform more in-depth analyses on local and organizational data structures to evaluate strengths and weaknesses of both embeddings.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. PCA of human colonic mucosa dataset with PAGA graph</div>
+<p>(A) Top and bottom 15 gene loadings for the first three PCs.</p>
+<p>(B) Proportion of total explained variance for each of the top 30 PCs.</p>
+<p>(C) First two PCs plotted with Leiden cluster overlay.</p>
+<p>(D) PAGA graph constructed from k-nearest neighbors (kNN) in 50-component PCA space (k = 46), describing relationships between Leiden clusters.</p>
+</figcaption>
+</figure>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Global comparison of two-dimensional embeddings of human colonic mucosa dataset</div>
+<p>(A) t-SNE embedding seeded with 50-component PCA, plotted with overlay of Leiden clustering.</p>
+<p>(B) UMAP embedding seeded with 50-component PCA and initialized with PAGA coordinates, plotted with overlay of Leiden clustering.</p>
+<p>(C) Global structural preservation correlation plot comparing t-SNE coordinates (latent space) to 50-component PCA (native space).</p>
+<p>(D) Same as in (C), comparing UMAP coordinates (latent space) to 50-component PCA (native space). Indicated with red arrows in (C) and (D) are latent space distance distributions which differ between t-SNE and UMAP.</p>
+<p>(E) Top four differentially expressed genes for each Leiden cluster, with signatures for clusters 3, 4, 8, and 11 highlighted.</p>
+</figcaption>
+</figure>
+<p><b>Step 29:</b> DE analysis allows us to identify cell types associated with each Leiden cluster (<a href="#fig6">Figure 6</a>E). We can use this information to dive more deeply into local structure preservation by t-SNE and UMAP embeddings; four clusters are highlighted in 7E, corresponding to example subpopulations for structure preservation analysis.</p>
+<p><b>Step 30:</b> To examine DR structure preservation for a single subpopulation, we focus on our tuft cell cluster and calculate correlation and EMD values of 0.3014 and 0.1587 for t-SNE and 0.4025 and 0.0851 for UMAP. This indicates that UMAP does a significantly better job of preserving cell-cell distances within the tuft cell population from their native PCA space (<a href="#fig7">Figures 7</a>A, 7B, 7F, and 7G).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/898-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Local and organizational structure preservation analysis for human colonic mucosa dataset</div>
+<p>(A) t-SNE embedding highlighting tuft cell cluster.</p>
+<p>(B) Local structure preservation correlation plot for tuft cell cluster, comparing t-SNE coordinates (latent space) to 50-component PCA (native space).</p>
+<p>(C) t-SNE embedding highlighting secretory lineage from stem cells (cluster 3) to goblet cells (cluster 8) and mature goblet cells (clusters 4 and 12).</p>
+<p>(D) Structure preservation correlation plot showing distances between stem and mature cell lineage clusters.</p>
+<p>Indicated with red arrows in (B and G) and (D and I) are latent space distance distributions which differ between t-SNE and UMAP.</p>
+<p>(E) t-SNE embedding with minimum spanning tree (MST) drawn between Leiden cluster centroids. Red edges represent those not present in native (PCA) space.</p>
+<p>(F–J) Same as in (A–E), for UMAP embedding.</p>
+</figcaption>
+</figure>
+<p><b>Step 31:</b> To examine DR structure preservation for multiple subpopulations, we investigate the distance distributions along the secretory epithelial cell lineage (<a href="#fig7">Figures 7</a>C, 7D, 7H, and 7I); we note that t-SNE slightly exaggerates distances between stem cells (cluster 3) and early goblet cells (cluster 4 and 8), as indicated by a greater shift of distances in the correlation plot above the identity line (<a href="#fig7">Figures 7</a>D and 7I). This shift is further quantified by correlation and EMD values, with a mean increase in correlation by 0.083 and a mean decrease in EMD by 0.029 comparing UMAP to t-SNE.</p>
+<p><b>Step 35</b>: For global subpopulation arrangement and structure analysis, we perform a coarse-grained global analysis of cluster arrangement by building a minimum spanning tree (MST) graph between Leiden cluster centroids in native and latent spaces. We observe five edges in the t-SNE MST that are not present in PCA space, indicating relative cluster rearrangements. UMAP, however, displays four of these edge permutations, suggesting that this embedding is more precise in maintaining populational organization than t-SNE (<a href="#fig7">Figures 7</a>E and 7J). These results indicate that further analyses and visualizations should be performed with UMAP.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This pipeline is designed to integrate open-source software in a modular fashion, and each section has its own limitations. Primarily, dataset-to-dataset variation may lead to differing performance. Relatively high hardware requirements to run the <a href="#sec3.1">single-cell read alignment and DropEst library quantification</a> section may prevent some users from fully utilizing this pipeline. The <a href="#sec3.2">heuristic droplet filtering</a>, <a href="#sec3.3">automated droplet filtering with dropkick</a>, and <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> sections involve the highest likelihood of variable parameters, though the suggested guidelines will minimize unwanted variation. Currently, this pipeline is not implemented with batch-aware functions and is unable to incorporate information across replicates into the QC process. Further limitations include a set of assumptions each of these steps makes, which should be satisfied regardless of dataset-to-dataset variation that may exist. In the <a href="#sec3.2">heuristic droplet filtering</a> and <a href="#sec3.3">automated droplet filtering with dropkick</a> section variants, limitations include:</p>
+<ul>
+<li>In step 9, a distinct inflection point will only arise given some subset of more informative, information-rich droplets. The properties of the utilized cumulative sum curve have been observed to be dependent on the encapsulation process and read depth. If all droplets within a single sequencing library contain a homogenous amount of information, an identifiable inflection may not be detected, preventing a first pass filtering of droplets.</li>
+<li>For step 10, this step assumes a multimodal distribution of the number of unique genes detected per droplet. It has been demonstrated before that single-cell libraries generated from encapsulated cells, as opposed to empty droplets, present a higher diversity of detected genes (<a href="#bib16">Lun et al., 2019</a>). This step assumes that both high and low information, with respect to read counts, are represented in each dataset. Like step 9, if this diversity in droplet quality is not detected, the identification of relatively high-quality cells is not possible. Though, given the Poissonian or super-Poissonian nature of tag-based scRNA-seq cell encapsulation, it is highly unlikely a dataset will be devoid of low-information empty droplets (<a href="#bib26">Zhang et al., 2019</a>).</li>
+<li>For step 14, the highest priority heuristic criterion assumes that a defined set of marker genes exists for the dataset of interest, which may not be the case for all biological specimens of interest. The likelihood of Type 2 error increases with fewer marker-defined subpopulations, as these subpopulations may simply express fewer genes. Similarly, Type 1 errors are also possible with the overreliance on agnostic metrics such as transcriptional diversity.</li>
+<li>In step 21, dropkick trains a cross-validated logistic regression model of genes associated with subsets of high and low-quality cells. The accuracy of this model will be dependent on the representation and detection of these bins of cells. Similarly, the default cutoff of 0.5 for binary barcode labeling may vary depending on the properties of the cell type of interest; thus, these results should be further validated with prior knowledge about target gene transcription.</li>
+</ul>
+<p>In the <a href="#sec3.4">post-processing and dimension reduction structure preservation analysis</a> section, we describe the limitations as follows:</p>
+<ul>
+<li>Steps 29 and 30, like step 14, are dependent on the detected or known heterogeneity of single cell subpopulations within the dataset. The assumption is made that there exist multiple subpopulations of cells that present detectable marker gene expression, and that these marker genes are known. In the case that these markers are unknown, the DE testing between clusters may draw some insight on distinct gene expression profiles. Still, statistically identified gene sets may need validation, whether through user review or gene set enrichment analysis. The analysis of structural preservation necessitates the capture of high-quality clusters, as identified through previous steps.</li>
+</ul>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>An error code arises that claims that the open file limit has been reached. This can arise in step 3 when setting a high –runThreadN parameter.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>This occurs for certain steps involving parallelization due to the number of files written to the disk which are read simultaneously and the default Linux system variable, ul<i>imit</i>, is set too low. This can be amended by setting this to a higher value based on the hardware available.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Droplet estimation following read alignment yields fewer than expected demultiplexed droplets. This can arise after assessing the logs alignment logs of step 3.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This can occur because a library of insufficient quality or sequenced at insufficient depth may have led to a lack of detected high quality reads. The “Uniquely mapped reads %” from the alignment logs indicate the mapping rate of the library. Generally, high-quality libraries should have above 80% mapping rate, lower than 50% may indicate a problem with the library preparation or sample quality.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>An error may arise during the Dropkick installation due to pip being unable to find a FORTRAN compiler, during step 7.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>For Debian-based systems, gfortran can be installed with:</p>
+<div class="textbox">
+<p><code>apt-get install -y gfortran</code></p>
+</div>
+<h3 id="sec6.7">Problem 4</h3>
+<p>You are not detecting any mitochondrial reads in the droplet matrix, as indicated by the average pct_counts_Mitochondrial being NaN or 0, which can arise during step 17.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>This error can occur because the calculation and visualization of mitochondrial read count percentage per single-cell transcriptome is dependent on the nomenclature of the genes themselves. Ensure that the gene nomenclature in the AnnData object is consistent with that used in setting the variable annotation “Mitochondrial”. The gene names and annotations can be checked and set with the following two lines of code, respectively:</p>
+<div class="textbox">
+<p><code>adata.var</code></p>
+<p><code>adata.var[‘Mitochondrial’] = adata.var.index.str.startswith(“&lt;mitochondrial nomenclature&gt;”)</code></p>
+</div>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Visually, a small population of cells is highly and specifically expressing verified marker genes, but there is no way to select this population given the Leiden cluster labels, which can arise during step 17 or step 24.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>This can occur due to the default Leiden clustering resolution and the simple underrepresentation of that cell population of interest in the dataset. Computationally, these cells can be singled out by further increasing the Leiden clustering resolution, at the cost of generating more clusters in general. Experimentally, more cells may have to be encapsulated and sequenced to a higher read depth to capture rare cells.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>The cumulative sum curve is too shallow to visually detect a meaningful inflection point, or the automatically detected inflection point is throwing out target cells; this can arise in step 9.</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>This error occurs primarily for the same reasons as step 1, Problem a. The lack of a detectable inflection curve, as provided in our <b>expected outputs</b> example, indicates low quality library inputs. Alternatively, if high quality cells expressing target marker genes are suspected to be removed as part of this inflection curve first pass, the user can manually set the initial quality cutoff with the following code, where &lt;user_threshold&gt; indicates the top N droplets to retain for further quality control:</p>
+<div class="textbox">
+<p><code>sc.pp.filter_cells(adata,min_counts=adata[&lt;user_threshold&gt;].obs.total_counts[0])</code></p>
+</div>
+<h3 id="sec6.13">Problem 7</h3>
+<p>dropkick is labeling cells with high and specific expression of verified marker genes as empty droplets; this can arise in step 23.</p>
+<h3 id="sec6.14">Potential solution</h3>
+<p>This error can happen due to a combination of reasons detailed in step 1, Problem a, and the dependencies on logistic regression parameters. Since the binary dropkick_label is based on a threshold at 0.5, adjustments can be made to be more or less inclusive of droplets based on the dropkick_score distribution. This can be done with the following code, where &lt;user_threshold&gt; is a number between 0 and 1, with 0 being the least stringent and 1 being the most permissive:</p>
+<div class="textbox">
+<p><code>adata.obs[‘dropkick_label’] = adata.obs[‘dropkick_score’]&gt;=&lt;user_threshold&gt;</code></p>
+</div>
+<p>Further optimizations to the generation of this dropkick score can be done through adjustments to the logistic regression parameters such as specifying more iterations, a range of alpha values, or a longer “lambda path”.</p>
+<h3 id="sec6.15">Problem 8</h3>
+<p>Latent and native space distances or subpopulation rearrangements are inconsistent between runs and machines; this can arise in steps 28, 30, 31, 32, and 35.</p>
+<h3 id="sec6.16">Potential solution</h3>
+<p>Ensure that the random seeds are consistent between different runs. Three sources of random variation originate in the PYTHONHASHSEED, the numpy library seed, and the random library seed. Still, note there may be some minor variation due to the current implementation of UMAP used in scanpy.</p>
+<h3 id="sec6.17">Problem 9</h3>
+<p>Individual subpopulations during DR structure preservation yields lack biological heterogeneity, thus affecting the interpretation of DE testing and cluster-based DR structure analysis; this can arise in steps 29, 30, 32, and 35.</p>
+<h3 id="sec6.18">Potential solution</h3>
+<p>The clustering resolution of the Leiden algorithm will need to be adjusted based on the dataset examined. A common heuristic to selecting this resolution parameter is to increase its value until the smallest, marker-indicated subpopulation of cells is discretely identified as a cluster.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Van der Auwera, G.A., Carneiro, M.O., Hartl, C., Poplin, R., del Angel, G., Levy-Moonshine, A., Jordan, T., Shakir, K., Roazen, D., Thibault, J., et al. (2013). From fastQ data to high-confidence variant calls: The genome analysis toolkit best practices pipeline. Curr. Protoc. Bioinformatics <i>43</i>, 11.10.1-11.10.33. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref1">View at publisher</a></p>
+<p id="bib2">Barnett, D.W., Garrison, E.K., Quinlan, A.R., Strömberg, M.P., and Marth, G.T. (2011). BamTools: a C++ API and toolkit for analyzing and managing BAM files. Bioinformatics <i>27</i>, 1691-1692. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref2">View at publisher</a></p>
+<p id="bib3">Bates, D. and Eddelbuettel, D. (2013). Fast and elegant numerical linear algebra using the rcppeigen package. J. Stat. Softw. <i>52</i>, 1-24. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref3">View at publisher</a></p>
+<p id="bib28">Chen, B., Herring, C.A., and Lau, K.S. (2018). pyNVR: investigating factors affecting feature selection from scRNA-seq data for lineage reconstruction. Bioinformatics <i>35</i>, 2335-2337. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref28">View at publisher</a></p>
+<p id="bib4">Csardi, G. and Nepusz, T. (2006). The igraph software package for complex network research. InterJ. Comp. Syst. 1695. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref4">View at publisher</a></p>
+<p id="bib5">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: Ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref5">View at publisher</a></p>
+<p id="bib6">Eddelbuettel, D. and Francois, R. (2011). Rcpp: Seamless R and C++ Integration. J. Stat. Softw. <i>1</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref6">View at publisher</a></p>
+<p id="bib7">Flamary, R. and Courty, N. (2017). POT Python Optimal (Transport library). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref7">View at publisher</a></p>
+<p id="bib8">Hagberg, A.A., Schult, D.A., and Swart, P.J. (2008). Exploring network structure, dynamics, and function using NetworkX. In Proceedings of the 7th Python in Science Conference, G. Varoquaux, T. Vaught, and J. Millman, eds. (), pp. 11-15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref8">View at publisher</a></p>
+<p id="bib9">Harris, C.R., Millman, K.J., van der Walt, S.J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N.J., et al. (2020). Array programming with NumPy. Nature <i>585</i>, 357-362. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref9">View at publisher</a></p>
+<p id="bib10">Heiser, C.N. and Lau, K.S. (2020). A quantitative framework for evaluating single-cell data structure preservation by dimensionality reduction techniques. Cell Rep. <i>31</i>, 107576. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref10">View at publisher</a></p>
+<p id="bib11">Heiser, C.N., Wang, V.M., Chen, B., Hughey, J.J., and Lau, K.S. (2020). Automated quality control and cell identification of droplet-based single-cell data using dropkick. BioRxiv. <a class="external-link" href="https://doi.org/10.1101/2020.10.08.332288">https://doi.org/10.1101/2020.10.08.332288</a></p>
+<p id="bib12">Klein, A.M., Mazutis, L., Akartuna, I., Tallapragada, N., Veres, A., Li, V., Peshkin, L., Weitz, D.A., Kirschner, M.W., Zilionis, R., et al. (2015). Droplet barcoding for single-cell transcriptomics applied. Cell <i>161</i>, 1187-1201. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref12">View at publisher</a></p>
+<p id="bib13">Kluyver, T., Ragan-Kelley, B., Pérez, F., Granger, B., Bussonnier, M., Frederic, J., Kelley, K., Hamrick, J., Grout, J., Corlay, S., et al. (2016). Jupyter Notebooks -- a publishing format for reproducible computational workflows. In Positioning and Power in Academic Publishing: Players, Agents and Agendas, F. Loizides and B. Schmidt, eds. (), pp. 87-90. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref13">View at publisher</a></p>
+<p id="bib14">Kurtzer, G. M. (2016, August 23). Singularity 2.1.2 - Linux application and environment containers for science. Zenodo. <a href="http://doi.org/10.5281/zenodo.60736">http://doi.org/10.5281/zenodo.60736</a></p>
+<p id="bib15">Liu, Q., Sheng, Q., Ping, J., Ramirez, M.A., Lau, K.S., Coffey, R.J., and Shyr, Y. (2019). scRNABatchQC: multi-samples quality control for single cell RNA-seq data. Bioinformatics <i>35</i>, 5306-5308. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref15">View at publisher</a></p>
+<p id="bib16">Lun, A.T.L., Riesenfeld, S., Andrews, T., Dao, T.P., Gomes, T., and Marioni, J.C.; Jamboree, participants in the 1st H.C.A. (2019). EmptyDrops: distinguishing cells from empty droplets in droplet-based single-cell RNA sequencing data. Genome Biol. <i>20</i>, 63. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref16">View at publisher</a></p>
+<p id="bib17">Macosko, E.Z., Basu, A., Satija, R., Nemesh, J., Shekhar, K., Goldman, M., Tirosh, I., Bialas, A.R., Kamitaki, N., Martersteck, E.M., et al. (2015). Highly parallel genome-wide expression profiling of individual cells using nanoliter droplets. Cell <i>161</i>, 1202-1214. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref17">View at publisher</a></p>
+<p id="bib29">McInnes, L., Healy, J., Saul, N., and Großberger, L. (2018). UMAP: Uniform Manifold Approximation and Projection. J. Open Source Softw. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/optX1El8Mlzon">View at publisher</a></p>
+<p id="bib18">Petukhov, V., Guo, J., Baryawno, N., Severe, N., Scadden, D.T., Samsonova, M.G., and Kharchenko, P.V. (2018). dropEst: Pipeline for accurate estimation of molecular counts in droplet-based single-cell RNA-seq experiments. Genome Biol. <i>19</i>, 78. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref18">View at publisher</a></p>
+<p id="bib19">R Core Team (2020). R: A language and environment for statistical computing. R A Lang. Environ. Stat. Comput. R Found. Stat. Comput. Vienna, Austria.</p>
+<p id="bib21">van Rossum, G. and Drake, F.L. (2009). (Scotts). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref21">View at publisher</a></p>
+<p id="bib20">Reback, J., McKinney, W., jbrockmendel, den Bossche, Van, J., Augspurger, T., Cloud, P., gfyoungSinhrksKlein, A., Roeschke, M., et al. (2020). <a class="external-link" href="http://doi.org/10.5281/zenodo.4572994">http://doi.org/10.5281/zenodo.4572994</a></p>
+<p id="bib22">Schling, B. (2011). The Boost C++ Libraries (XML Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref22">View at publisher</a></p>
+<p id="bib23">Traag, V.A., Waltman, L., and van Eck, N.J. (2019). From Louvain to Leiden: guaranteeing well-connected communities. Sci. Rep. <i>9</i>, 5233. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref23">View at publisher</a></p>
+<p id="bib30">van der Maaten, L. and Hinton, G. (2008). Visualizing Data using t-SNE. J. Mach. Learn. Res. <i>9</i>, 2579-2605. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/optAEsFdsOmZG">View at publisher</a></p>
+<p id="bib24">Wolf, F.A., Angerer, P., and Theis, F.J. (2018). SCANPY: Large-scale single-cell gene expression data analysis. Genome Biol. <i>19</i>, 15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref24">View at publisher</a></p>
+<p id="bib25">Yates, A.D., Achuthan, P., Akanni, W., Allen, J., Allen, J., Alvarez-Jarreta, J., Amode, M.R., Armean, I.M., Azov, A.G., Bennett, R., et al. (2020). Ensembl 2020. Nucleic Acids Res. <i>48</i>, D682-D688. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref25">View at publisher</a></p>
+<p id="bib26">Zhang, X., Li, T., Liu, F., Chen, Y., Yao, J., Li, Z., Huang, Y., and Wang, J. (2019). Comparative analysis of droplet-based ultra-high-throughput single-cell RNA-seq systems. Mol. Cell <i>73</i>, 130-142. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref26">View at publisher</a></p>
+<p id="bib27">Zheng, G.X.Y., Terry, J.M., Belgrader, P., Ryvkin, P., Bent, Z.W., Wilson, R., Ziraldo, S.B., Wheeler, T.D., McDermott, G.P., Zhu, J., et al. (2017). Massively parallel digital transcriptional profiling of single cells. Nat. Commun. <i>8</i>, 14049. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00157-X/sref27">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Ken Lau (<a href="mailto:ken.s.lau@vanderbilt.edu">ken.s.lau@vanderbilt.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate any unique datasets. All code used in this protocol is available in the following GitHub repository: <a href="https://github.com/Ken-Lau-Lab/STAR_Protocol">https://github.com/Ken-Lau-Lab/STAR_Protocol</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This study was supported by US National Institutes of Health (<a href="https://doi.org/10.13039/100000002">NIH</a>) grants U2CCA233291 and U54CA217450 (MARS, CNH, QL, KSL), R01DK103831 (KSL), and T32LM012412 (BC). Additional testing was performed by Harrison Kiang.</p>
+<h3>Author contributions</h3>
+<p>Writing, B.C., C.N.H., and M.A.R.-S.; development, B.C., C.N.H., and M.A.R.-S.; processing, B.C., C.H., and M.A.R.-S.; funding acquisition, K.S.L. and Q.L.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

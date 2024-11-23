@@ -1,0 +1,1211 @@
+<article>
+<section>
+<h1 id="header">Efficient purification and assembly of ribonucleoprotein complex for interaction analysis by MST assay coupled with GaMD simulations</h1>
+<p><time datetime="2021-02-05">Published: February 5, 2021</time></p>
+<p>Yunrong Gao,<sup><a href="#aff1">1</a></sup> Dongdong Cao,<sup><a href="#aff1">1</a></sup> Shristi Pawnikar,<sup><a href="#aff2">2</a></sup> Sana Akhter,<sup><a href="#aff2">2</a></sup> Yinglong Miao,<sup><a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#cor1">*</a></sup> and Bo Liang<sup><a href="#aff1">1</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biochemistry, Emory University School of Medicine, Atlanta, GA 30322, USA</p>
+<p id="aff2"><sup>2</sup>Center for Computational Biology and Department of Molecular Bioscience, University of Kansas, Lawrence, KS 66047, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:miao@ku.edu">miao@ku.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:bo.liang@emory.edu">bo.liang@emory.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100315">10.1016/j.xpro.2021.100315</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Here, we describe a generic protocol for monitoring protein-RNA interaction using a cleavable GFP fusion of a recombinant RNA-binding protein. We detail each expression and purification step, including high salt and heparin column for contaminant RNA removal. After the assembly of RNA into the ribonucleoprotein complex, the MicroScale Thermophoresis assay enables the binding affinity to be obtained quickly with a small amount of sample. Further Gaussian accelerated molecular dynamics simulations allow us to analyze protein:RNA interactions in detail.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib7">Gao et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Using cleavable GFP fusion to monitor RNA-binding protein expression and purification</li>
+<li>High salt and heparin column to remove contamination RNA from RNA-binding proteins</li>
+<li>Use the MicroScale Thermophoresis (MST) assay to obtain the binding affinity (K<sub>d</sub>)</li>
+<li>Simulate protein:RNA interactions with Gaussian accelerated molecular dynamics (GaMD)</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Purification of the TEV protease</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<ol>
+<li>Transform BL21(DE3) <i>E. coli</i> with the pRK793 plasmid encoding TEV protease. Inoculate the transformed colony into 250 mL Luria Broth (LB) media with antibiotics (Ampicillin: 100 μg/mL). Grow the cells in a bacterial shaker at 220 rpm at 37°C overnight (∼16 h).</li>
+<li>Inoculate 10 mL of the overnight cell culture into 1 L LB media with antibiotics (Ampicillin: 100 μg/mL) and grow the cell culture at 37°C until the OD<sub>600</sub> is between 0.6 and 0.8.</li>
+<li>Cooldown the cell culture to 16 °C for 1 h, followed by induction with IPTG at a final concentration of 0.5 mM overnight (∼16 h).</li>
+<li>Harvest the cells by centrifugation at 4,557 × <i>g</i> for 20 min at 4°C.</li>
+<li>Resuspend the cell pellets with the lysis buffer (20 mL lysis buffer per 1 L cell culture).</li>
+<li>Lyse the cell using the Misonix Sonicator 3000. Process time: 15 min; time on: 3 s, time off: 3 s, amplitude: 30%.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We suggested the sonication step should be set up in the ice water. Because in this step, sonication will generate considerable heat during processing. Ice water is a great way to cool the sample to reduce the heat-up.</div>
+<ol start="7">
+<li>Centrifuge the cell lysate at 42,625 × <i>g</i> for 40 min at 4 °C, and keep the supernatant.</li>
+<li>Equilibrate the Ni-NTA resin with 5 column volumes (CVs) lysis buffer in a reusable gravity chromatography column (roughly 2 mL resin per 1 L cell culture).</li>
+<li>Load all the supernatant to the column, and collect the flow-through.</li>
+<li>Wash the Ni-NTA resin column with wash buffer 1 for 5 CVs, and collect the flow-through.</li>
+<li>Wash the column with the wash buffer 2 for 5 CVs, and collect the flow-through.</li>
+<li>Elute the TEV protease with 2 CVs of the elution buffer, and collect the flow-through.</li>
+<li>Analyze the flow-through samples from each step with SDS-PAGE gel, and pool together the samples contain target TEV protease.</li>
+<li>Use the Q column for further purification. Equilibrate the column with Q_A buffer mixed 5% Q_B buffer.</li>
+<li>Dilute the eluted TEV protease sample with Q_A buffer. The final concentration of NaCl is around 150 mM.</li>
+<li>Load the diluted TEV protease to the Q column.</li>
+<li>Wash and elute with a gradient concentration of the Q buffer.</li>
+<li>Check the fractions from each peak of Q chromatography with SDS-PAGE gel.</li>
+<li>Pool all the fractions containing TEV protease. Use a 10 kDa molecular weight cutoff (MWCO) centrifugal filter unit to concentrate the sample and reduce the volume of pooled TEV protease to ∼2 mL.</li>
+<li>Load the concentrated TEV protease onto a Superose 6 size exclusion chromatography.</li>
+<li>Collect and concentrate the fractions containing the TEV protease and store them at −80 °C for future use.</li>
+<li>Test the activity of the TEV protease. We typically use a known recombinant protein with the TEV cleavage sequence to test the purified TEV protease activity.</li>
+</ol>
+<h3 id="sec1.2">Gaussian accelerated molecular dynamics (GaMD) simulation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="23">
+<li>Protein and RNA preparation
+<ol type="a">
+<li>Examine and prepare the protein as it would appear naturally in the biological system by removing undesired components used for experimental purposes. Record the positions of the cysteine residues that form disulfide bonds in the protein. They will be required in the next step. Similarly, examine and prepare the RNA structure as required using software tools such as PyMol and VMD.</li>
+<li>Prepare a PDB file of the protein and RNA system for further solvation in explicit water molecules by keeping atomic coordinates of the protein as in the PDB structure and placing the RNA at a distance &gt;20 Å away from the protein. The distance is measured between the closest atoms of the two molecules, i.e., the closest atoms of RNA and protein in this study, which should be ∼20 Å apart without any interactions in the starting structure. Use this PDB structure for the next step.</li>
+</ol>
+</li>
+<li>Simulation system setup
+<ol type="a">
+<li>The protein and RNA need to be prepared in an explicit solvent that mimics the experimental conditions. This can be done using the CHARMM-GUI web server with provided options to prepare the system for a membrane protein or a soluble protein.
+<ol type="i">
+<li>Provide the PDB structure of the protein and RNA and go to the next step.</li>
+<li>Patch terminal ends of the protein using neutral chemical groups such as the acetyl (ACE) and methyl amide (CT3). Add the disulfide bonds, as noted in the earlier step.</li>
+<li>Use all the default parameters for the subsequent steps. Set the temperature and solution as 310 K and 0.15 M NaCl, respectively. Download all the files in the final step for running simulations.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>BL21(DE3) competent cells</td>
+<td>Thermo Scientific</td>
+<td>EC0114</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>2GFP-T</td>
+<td>Addgene</td>
+<td>29716</td>
+</tr>
+<tr>
+<td>2GFP-T_M2-1 (encoding the RSV M2-1 gene)</td>
+<td>This study</td>
+<td>Available upon request</td>
+</tr>
+<tr>
+<td>pRK793</td>
+<td>Addgene</td>
+<td>8827</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>HisPur Ni-NTA Resin</td>
+<td>Thermo Fisher</td>
+<td>88223</td>
+</tr>
+<tr>
+<td>HiTrap Heparin High Performance</td>
+<td>MilliporeSigma</td>
+<td>GE17-0407-01</td>
+</tr>
+<tr>
+<td>Superdex 200 Increase 10/300 GL</td>
+<td>MilliporeSigma</td>
+<td>GE28-9909-44</td>
+</tr>
+<tr>
+<td>Superose 6 Increase 10/300 GL</td>
+<td>MilliporeSigma</td>
+<td>GE29-0915-96</td>
+</tr>
+<tr>
+<td>Cobalt Agarose Beads (High Density)</td>
+<td>Gold Biotechnology</td>
+<td>H-310-500</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Ampicillin</td>
+<td>Gold Biotechnology</td>
+<td>5118.111317A</td>
+</tr>
+<tr>
+<td>IPTG</td>
+<td>Gold Biotechnology</td>
+<td>1116.071717A</td>
+</tr>
+<tr>
+<td>Imidazole</td>
+<td>MilliporeSigma</td>
+<td>I5513-100G</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>MilliporeSigma</td>
+<td>S7653-1KG</td>
+</tr>
+<tr>
+<td>KCl</td>
+<td>MilliporeSigma</td>
+<td>P3911-25G</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>MilliporeSigma</td>
+<td>S9763-100G</td>
+</tr>
+<tr>
+<td>KH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>MilliporeSigma</td>
+<td>P5655-100G</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>MilliporeSigma</td>
+<td>ED-100G</td>
+</tr>
+<tr>
+<td>MES</td>
+<td>MilliporeSigma</td>
+<td>M3671-50G</td>
+</tr>
+<tr>
+<td>HEPES</td>
+<td>MilliporeSigma</td>
+<td>H3375-100G</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>MilliporeSigma</td>
+<td>G7893-4L</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>MilliporeSigma</td>
+<td>74385-1L</td>
+</tr>
+<tr>
+<td>DTT</td>
+<td>MilliporeSigma</td>
+<td>D9779-5G</td>
+</tr>
+<tr>
+<td>LB</td>
+<td>VWR</td>
+<td>VWRVJ106-2KG</td>
+</tr>
+<tr>
+<td>SOC media</td>
+<td>VWR</td>
+<td>101417-886</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>MilliporeSigma</td>
+<td>P9416-100ML</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>HKL2000</td>
+<td><a href="#bib25">Otwinowski and Minor, 1997</a></td>
+<td><a href="https://hkl-xray.com/">https://hkl-xray.com/</a></td>
+</tr>
+<tr>
+<td>PHENIX</td>
+<td><a href="#bib26">Echols et al., 2012</a></td>
+<td><a href="https://www.phenix-online.org/">https://www.phenix-online.org/</a></td>
+</tr>
+<tr>
+<td>COOT</td>
+<td><a href="#bib27">Emsley and Cowtan, 2004</a></td>
+<td><a href="https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/">https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/</a></td>
+</tr>
+<tr>
+<td>PyMOL</td>
+<td><a href="#bib28">Rigsby and Parker, 2016</a></td>
+<td><a href="https://pymol.org/">https://pymol.org/</a></td>
+</tr>
+<tr>
+<td>MUSCLE</td>
+<td><a href="#bib29">Madeira et al., 2019</a></td>
+<td><a href="https://www.ebi.ac.uk/Tools/msa/muscle/">https://www.ebi.ac.uk/Tools/msa/muscle/</a></td>
+</tr>
+<tr>
+<td>JalView</td>
+<td><a href="#bib30">Waterhouse et al., 2009</a></td>
+<td><a href="https://www.jalview.org/">https://www.jalview.org/</a></td>
+</tr>
+<tr>
+<td>CHARMM-GUI</td>
+<td><a href="#bib31">Jo et al., 2008</a></td>
+<td><a href="http://www.charmm-gui.org">http://www.charmm-gui.org</a></td>
+</tr>
+<tr>
+<td>GaMD</td>
+<td><a href="#bib15">Miao et al., 2015</a></td>
+<td><a href="http://miao.compbio.ku.edu/GaMD/">http://miao.compbio.ku.edu/GaMD/</a></td>
+</tr>
+<tr>
+<td>AMBER18</td>
+<td><a href="#bib4">Case et al., 2018</a></td>
+<td><a href="https://ambermd.org">https://ambermd.org</a></td>
+</tr>
+<tr>
+<td>CPPTRAJ</td>
+<td><a href="#bib21">Roe and Cheatham, 2013</a></td>
+<td><a href="https://amber-md.github.io/cpptraj/CPPTRAJ.xhtml">https://amber-md.github.io/cpptraj/CPPTRAJ.xhtml</a></td>
+</tr>
+<tr>
+<td>PyReweighting</td>
+<td><a href="#bib17">Miao et al., 2014</a></td>
+<td><a href="http://miao.compbio.ku.edu/PyReweighting/">http://miao.compbio.ku.edu/PyReweighting/</a></td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>PDB files (6PZQ)</td>
+<td><a href="#bib7">Gao et al., 2020</a></td>
+<td><a href="https://doi.org/10.2210/pdb6PZQ/pdb">https://doi.org/10.2210/pdb6PZQ/pdb</a></td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Cy5_SH13</td>
+<td>IDT</td>
+<td><a href="https://www.idtdna.com/">https://www.idtdna.com/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Misonix Sonicator 3000</td>
+<td>Misonix Inc</td>
+<td>Mfr # S-3000</td>
+</tr>
+<tr>
+<td>Monolith NT.115 instrument</td>
+<td>NanoTemper</td>
+<td>MO-G007</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Prepare LB agar plates</h3>
+<p>Prepare the LB/Agar containing Ampicillin (100 μg/mL) in disposable Petri dishes and store at 4 °C for less than 3 weeks.</p>
+<h3 id="sec2.2">Prepare concentrated stock solutions (store at 4°C for 2–3 months)</h3>
+<ul>
+<li>1 M Tris-HCl, pH 8.0</li>
+<li>1 M sodium phosphate, pH 7.4</li>
+<li>1 M HEPES, pH 7.4</li>
+<li>1 M Imidazole pH 7.4</li>
+<li>4 M NaCl</li>
+<li>1 M MES, pH 6.0</li>
+</ul>
+<h3 id="sec2.3">Lysis buffer (store at 4°C for 2–3 months)</h3>
+<p>Lysis buffer contains 50 mM sodium phosphate, pH 7.4; 500 mM NaCl; 5 mM Imidazole, pH 7.4; 10% glycerol; 0.2% NP-40. Prepare 1 L of Lysis buffer:</p>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M sodium phosphate pH 7.4</td>
+<td>50 mM</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>1 M Imidazole pH 7.4</td>
+<td>5 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>500 mM</td>
+<td>125 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>10%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>NP-40</td>
+<td>0.2%</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.4">Ni-NTA high salt wash buffer (store at 4°C for 2–3 months)</h3>
+<p>Ni-NTA Wash buffer contains 50 mM sodium phosphate, pH 7.4; 1.5 M NaCl; 5 mM Imidazole, pH 7.4; 10% glycerol. Prepare 1 L of Ni-NTA High Salt Wash Buffer:</p>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M sodium phosphate pH 7.4</td>
+<td>50 mM</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>1 M Imidazole pH 7.4</td>
+<td>5 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>1.5 M</td>
+<td>375 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>10%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.5">Ni-NTA elution buffer (store at 4°C for 2–3 months)</h3>
+<p>Ni-NTA Elution Buffer contains 50 mM sodium phosphate, pH 7.4; 500 mM NaCl; 250 mM Imidazole, pH 7.4; 10% glycerol. Prepare 1 L of Ni-NTA Elution Buffer:</p>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M sodium phosphate pH 7.4</td>
+<td>50 mM</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>1 M Imidazole pH 7.4</td>
+<td>250 mM</td>
+<td>250 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>500 mM</td>
+<td>125 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>10%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.6">TEV cleavage buffer (store at 4°C for 2–3 months)</h3>
+<p>TEV Cleavage Buffer contains 25 mM Tris-HCl, pH 8.0; 300 mM NaCl; 10% glycerol; 1 mM DTT. Prepare 1 L of TEV Cleavage Buffer:</p>
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris-HCl, pH 8.0</td>
+<td>25 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>300 mM</td>
+<td>75 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>10%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>DTT</td>
+<td>1 mM</td>
+<td>0.154 g</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.7">Heparin wash buffer A (store at 4°C for 2–3 months)</h3>
+<p>Heparin wash buffer A contains 50 mM MES pH 6.0; 5% glycerol. Prepare 500 mL of heparin wash buffer A:</p>
+<table id="undtbl5">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M MES, pH 6.0</td>
+<td>50 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 500 mL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.8">Heparin wash buffer B (store at 4°C for 2–3 months)</h3>
+<p>Heparin wash buffer B contains 50 mM MES pH 6.0; 1.5 M NaCl; 5% glycerol. Prepare 500 mL heparin wash buffer B:</p>
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M MES, pH 6.0</td>
+<td>50 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>1.5 M</td>
+<td>187.5 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 500 mL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.9">Q_A buffer (store at 4°C for 2–3 months)</h3>
+<p>Q_A Buffer contains 50 mM Tris pH 8.0, 5% glycerol. Prepare 500 mL Q_A Buffer:</p>
+<table id="undtbl7">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris pH 8.0</td>
+<td>50 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 500 mL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.10">Q_B buffer (store at 4°C for 2–3 months)</h3>
+<p>Q_B Buffer contains 50 mM Tris pH 8.0, 1.5 M NaCl, 5% glycerol. Prepare 500 mL Q_B Buffer:</p>
+<table id="undtbl8">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris pH 8.0</td>
+<td>50 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>1.5 M</td>
+<td>187.5 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 500 mL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.11">Gel filtration buffer (store at 4°C for 2–3 months)</h3>
+<p>Gel filtration buffer contains 50 mM HEPES, pH 7.4; 200 mM NaCl; 5% glycerol. Prepare 500 mL</p>
+<table id="undtbl9">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M HEPES pH 7.4</td>
+<td>50 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>4 M NaCl</td>
+<td>200 mM</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 500 mL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.12">Dialysis buffer (store at 4°C for 2–3 months)</h3>
+<p>Dialysis Buffer contains 50 mM Tris-HCl pH 8.0, 0.5 mM EDTA, 1 mM DTT</p>
+<table id="undtbl10">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 M Tris pH 8.0</td>
+<td>50 mM</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>0.5 mM</td>
+<td>0.15 g</td>
+</tr>
+<tr>
+<td>DTT</td>
+<td>1 mM</td>
+<td>0.15 g</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec2.13">PBS-T buffer (store at 4°C for 2–3 months)</h3>
+<p>PBS-T buffer contains 137 mM NaCl, 2.7 mM KCl, 10 mM Na<sub>2</sub>HPO<sub>4</sub>, 1.8 mM KH<sub>2</sub>PO<sub>4</sub></p>
+<table id="undtbl11">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>137 mM</td>
+<td>8 g</td>
+</tr>
+<tr>
+<td>KCl</td>
+<td>2.7 mM</td>
+<td>0.2 g</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>10 mM</td>
+<td>1.42 g</td>
+</tr>
+<tr>
+<td>KH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>1.8 mM</td>
+<td>0.24 g</td>
+</tr>
+<tr>
+<td>Tween 20</td>
+<td>0.2%</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>Milli-Q water</td>
+<td>–</td>
+<td>Q.S. to 1 L</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>The overall flowchart of this protocol is shown in <a href="#fig1">Figure 1</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. The overall flowchart of this protocol</div>
+<p>This protocol is designed for general usage of efficient recombinant protein purification with GFP fusion and ribonucleoprotein assembly for interaction analysis using the MST assay coupled with GaMD simulations. GFP, green fluorescent protein; MST, MicroScale Thermophoresis; GaMD, Gaussian Accelerated Molecular Dynamics.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.1">Bacterial transformation – day 1</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<ol>
+<li>Take agar plates with appropriate antibiotics (Ampicillin: 100 μg/mL) from the 4°C fridges and warm them up to room temperature (20°C–25 °C).</li>
+<li>Take out the BL21(DE3) competent cells from the −80 °C freezer and thaw the cells on ice (approximately 20–25 min).</li>
+<li>Mix 1–5 μL (concentration around 150 ng/μL) of the 2GFP-T_M2-1 plasmid encoding the RSV M2-1 (<a href="#fig2">Figure 2</a>) into 20–50 μL of competent cells in a microcentrifuge tube. Gently mix the cells and the plasmids and put them on ice for 30 min.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Expression of the GFP-fused protein</div>
+<p>(A) The illustration of the construct that is used for the expression of the RSV M2-1 with the 6∗His and GFP tag.</p>
+<p>(B) The protein expression and protein gel analysis of the GFP labeled protein. The green color indicates the successful expression of the GFP-fused protein in the cell culture without running a gel.</p>
+</figcaption>
+</figure>
+</li>
+<li>Heat shock each transformation tube into a 42°C water bath for 40 s.</li>
+<li>Place the tube on ice for 2 min.</li>
+<li>Add 250–1,000 μL LB or SOC media (without antibiotics) to the microcentrifuge tube and grow in the shaking incubator for 45 min at 37°C.</li>
+<li>Take 50 μL on each plate and incubate all plates at 37°C overnight (∼16 h).</li>
+</ol>
+<h3 id="sec3.2">Protein expression test and bacterial glycerol stock – day 2</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="8">
+<li>Add 5 mL liquid LB media to a tube and add the appropriate antibiotic to the correct concentration (Ampicillin: 100 μg/mL).</li>
+<li>Use a sterile pipette tip, and select a single colony from the LB agar plate.</li>
+<li>Drop the pipette tip into the tube. Loosely cover the tube with the cap, and make sure it is not airtight.</li>
+<li>Incubate bacterial culture at 37°C in the shaking incubator.</li>
+<li>Check the OD<sub>600</sub> to measure the density of the culture until the OD<sub>600</sub> value reaches 0.5.</li>
+<li>Add 500 μL of the cell culture to 500 μL of 50% glycerol in a 2 mL screw-cap tube. Freeze the glycerol stock tube at −80°C.</li>
+<li>Take 500 μL of the cell culture to a new microcentrifuge tube, and label it as “-” and store in a 4 °C fridge.</li>
+<li>Induce the rest of the cell culture with the IPTG with a final concentration of 0.5 mM. Adjust the temperature to 16°C and incubate overnight (∼16 h).</li>
+<li>Take 500 μL of the cell culture to a new microcentrifuge tube, label it as “+”. Then analyze the sample before inducing (“-”) and after inducing (“+”) by SDS-PAGE gel (<a href="#fig2">Figure 2</a>).</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The glycerol stock can be stored at −80°C for up to 2–3 years.</div>
+<h3 id="sec3.3">Scale up the cell culture – day 3</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="17">
+<li>Inoculate the glycerol stock of M2-1 with GFP tag into 500 mL LB media with antibiotics (Ampicillin: 100 μg/mL). Put the flask in the shaker at 220 rpm at 37°C overnight (∼16 h).</li>
+<li>Inoculate 10 mL of the overnight cell culture into 1 L of LB media with antibiotics (Ampicillin: 100 μg/mL) and grow the cell culture at 37°C until the OD<sub>600</sub> is between 0.6 and 0.8.</li>
+<li>Cooldown the cell media to 16 °C for 1 h. Then induce the cells with IPTG at a final concentration of 0.5 mM at 16 °C overnight (∼16 h).</li>
+<li>Harvest the cells by centrifugation at 4,557 × <i>g</i> for 20 min at 4°C.</li>
+</ol>
+<h3 id="sec3.4">Purification of His-GFP tagged M2-1 using affinity column – day 4</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="21">
+<li>Resuspend the cell pellets with the lysis buffer (20 mL lysis buffer per 1 L cell culture).</li>
+<li>Lyse the cell using the Misonix Sonicator 3000. Process time: 15 min; time on: 3 s, time off: 3 s, amplitude: 30%.</li>
+<li>Centrifuge the cell lysate at 42,625 × <i>g</i> for 40 min at 4°C, and keep the supernatant.</li>
+<li>Prepare the gravity-based column with an appropriate amount of cobalt resin. Allow the storage buffer to drain.</li>
+<li>Wash the beads with 2 CVs DI H<sub>2</sub>O.</li>
+<li>Equilibrate the beads with 2 CVs of lysis buffer, and allow the buffer to drain.</li>
+<li>Add the supernatant sample to the column, mix, and incubate with mechanical rotation for 60 min at 4°C. Remember to save 50 μL supernatant for analysis by SDS-PAGE gel.</li>
+<li>Collect the sample lysate by gravity flow and save 50 μL flow-through samples for analysis by SDS-PAGE gel.</li>
+<li>Wash the beads with 5 CVs of the wash buffer. Collect all the flow-through and save 50 μL samples for SDS-PAGE gel.</li>
+<li>Repeat the wash step with the high salt wash buffer. Collect all the flow-through, and save 50 μL samples for SDS-PAGE gel.</li>
+<li>Add 3 CVs of elution buffer. Collect all the flow-through and save 50 μL samples for SDS-PAGE gel.</li>
+<li>Detect the flow-through samples from each step with SDS-PAGE gel. Pool together the samples containing target protein M2-1.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> (For steps 28–31) After loading the lysate to the column, collect all the flow-through of each step, including washing and elution. Take 5∼10 μL from each flow-through sample for SDS-PAGE gel analysis.</div>
+<h3 id="sec3.5">TEV cleavage of the His-GFP tag – day 5</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 16 h</div>
+<ol start="33">
+<li>Make the fresh dialysis buffer. Ensure that in the dialysis buffer, the target protein is stable and soluble. Evaluate the compatibility of the dialysis buffer by mixing the purified proteins with the buffer (check whether white aggregates form).</li>
+<li>Mix the TEV protease with the protease: target protein at a ratio of 1:100 (w/w), and seal the sample in the dialysis bag.</li>
+<li>Dialyze against the dialysis buffer at 4°C overnight (∼16 h).</li>
+<li>Analyze by the SDS-PAGE gel to check the TEV cleavage result.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The TEV protease has activity in the pH range of 6–9. At pH lower than 5, the TEV protease is inactive.</div>
+<h3 id="sec3.6">Protein purification with heparin column and size exclusion chromatography - day 6</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="37">
+<li>Dilute the TEV cleavage target sample with heparin wash buffer A. Make sure that the final concentration of NaCl is lower than 150 mM.</li>
+<li>Equilibrate the column with 5–10 CVs of heparin wash buffer A.</li>
+<li>Apply the sample to the heparin column.</li>
+<li>Elute with 10–20 CVs using a step gradient from 5%–100% heparin wash buffer B buffer (monitored by UV absorption at A<sub>280</sub> and A<sub>260</sub>).</li>
+</ol>
+<h3 id="sec3.7">Protein purification with size exclusion chromatography (SEC) - day 6</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="41">
+<li>Test the buffer compatibility with the protein sample. Mix 10 μL gel filtration buffer with 10 μL protein sample, and centrifuge with 12,000 × <i>g</i> for 15 min. Check the bottom of the microcentrifuge tube to check if there are any precipitations.
+<ol type="a">
+<li>If there is no precipitation, do the next step.</li>
+<li>If precipitation occurs, optimize the buffer components to make them compatible with the protein (i.e., change the pH, increase the concentration of salt).</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We typically repeat step 41 by mixing a small volume (10 μL) of protein sample with an equal volume (10 μL) of different buffer solutions to identify a suitable buffer for the further purification step.</div>
+<ol start="42">
+<li>Use Superdex 200 Increase 10/300 GL. Equilibrate the column with 1.5 CV of the Gel Filtration buffer (50 mM HEPES pH7.4 200 mM NaCl, 5% glycerol).</li>
+<li>Centrifuge the sample with 12,000 × <i>g</i> for 15 min. Collect the supernatant and inject it into the column.</li>
+<li>Run the SEC program.
+<ol type="a">
+<li>Turn on the UV monitor at the wavelengths of 260 nm, 280 nm, and 488 nm (which can monitor the residual GFP tag).</li>
+<li>Flow rate: 0.5 mL/min.</li>
+<li>Elute the column with 1.2 CV Gel Filtration buffer (50 mM HEPES pH 7.4, 200 mM NaCl, 5% glycerol).</li>
+<li>Set up the 96-deep-well plate for collecting the flow-through with 0.5 mL for each well.</li>
+</ol>
+</li>
+<li>Collect the fractions from the peak and run the SDS-PAGE gel to check the sample purity.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The sample should be tested to see whether it is compatible with the gel filtration buffer as described in step 41.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Several alternative assessment methods could provide more in-depth tests, such as (1) Prometheus (NanoTemper) monitors the intrinsic fluorescence signal of proteins as a measure of their folding states (<a href="https://nanotempertech.com/prometheus/">https://nanotempertech.com/prometheus/</a>) and (2) the solubility and stability screen of the sample using the crystallographic hanging or sitting drops methods. An example of a screen kit can be found here: <a href="https://hamptonresearch.com/product-Solubility-Stability-Screen-620.html">https://hamptonresearch.com/product-Solubility-Stability-Screen-620.html</a>.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The sample should be fully dissolved. Centrifuge or filter to remove the precipitations before loading it to the column.</div>
+<h3 id="sec3.8">MicroScale Thermophoresis (MST) assay – day 7</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 h</div>
+<p>The instrument we used is Monolith NT.115 Blue/Red. The NT.115 instrument has two detectors:</p>
+<table id="undtbl12">
+<thead>
+<tr>
+<th>Detector</th>
+<th>Blue</th>
+<th>Red</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Excitation wavelength(nm)</td>
+<td>480–514</td>
+<td>649–652</td>
+</tr>
+<tr>
+<td>Sample fluorophores</td>
+<td>BCECF, GFP, NT-495(Blue), Fluorescein (FITC), Alexa488, YFP</td>
+<td>Cy5, NT-647(Red), Alexa647</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Before performing the MST assays, it is crucial to determine the specific equipment model to be used. The specific NT.115 model will determine which fluorophore label to use. Here, the model we used is NT.115 Blue/Red. Because we use the GFP as the fusion tag, and we noticed that even after the TEV cleavage, it has a trace amount of GFP left in the solution. To avoid the unwanted fluorescent signal of the trace mount free GFP in the sample, we limit the fluorophore labeling choices to cy5, NT-647(RED), or Alexa647. We chose to use the cy5 labeled RNA and operated in the red mode in this protocol but not the blue mode.</div>
+<div class="note">
+<span class="note-title">Note:</span> Sample preparation: The MST experiments are set up with one fluorescently labeled molecule, which is called the <b>target</b>. The target will be at a fixed concentration and mixed with various concentrations of the other non-fluorescent molecule called the <b>ligand</b>. Reaction buffers in which the target and ligand should be well behaved. The addition of 0.05% Tween 20 or other detergent is usually required to prevent sticking to the capillaries.</div>
+<ol start="46">
+<li>
+<b>Pretest:</b> The Pretest examines the fluorescence intensity, adsorption on the capillaries, variation, and sample aggregation of the fluorescent molecule.
+<ol type="a">
+<li>Plan Your Experiment
+<ol type="i">
+<li>Name the Target (the fluorescent molecule): Cy5_SH13</li>
+<li>Enter the concentration of the stock solution of Target: 40 nM</li>
+<li>Describe the assay buffer: 50 mM HEPES pH7.4, 200 mM NaCl, 0.05% Tween 20</li>
+<li>Choose Capillary: Monolith NT.115 capillary</li>
+<li>System settings, Excitation power: Auto-detect, MST Power: Medium</li>
+<li>Temperature Control: 22 °C</li>
+</ol>
+</li>
+<li>Instructions
+<ol type="i">
+<li>Follow the on-screen instructions to prepare the samples Cy5_SH13</li>
+<li>Fill 2 capillaries, and load the capillary tray, put the higher concentration in position1</li>
+<li>Insert the capillaries tray into the instrument, and click the button “Start Measurement”</li>
+</ol>
+</li>
+<li>Results
+<ol type="i">
+<li>Examine the capillary scans for fluorescence intensity, adsorption, and variation</li>
+<li>Examine the MST trace for signs of aggregation</li>
+<li>Click the “Review” buttons for more details</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Check the Fluorescence signal (800–1,000 counts should be good for the assays). Make sure there are no aggregates that can be visualized.</div>
+<ol start="47">
+<li>
+<b>Binding Affinity Experiment:</b> Setting up the concentration of the fluorescent-labeled target sample (e.g., Cy5 labeled single-strand RNA SH13), the ligand sample (e.g., M2-1 protein), the assay buffer, and the system settings, which including Excitation Power (Auto-detect) and MST Power (Medium).
+<ol type="a">
+<li>Plan your experiment
+<ol type="i">
+<li>Name the Target (the fluorescent molecule): Cy5_SH13</li>
+<li>Enter the concentration of the stock solution of Target: 40 nM</li>
+<li>Describe the assay buffer: 50 mM HEPES pH7.4, 200 mM NaCl, 0.05% Tween 20</li>
+<li>Choose Capillary: Monolith NT.115 capillary</li>
+<li>System settings, Excitation power: Auto-detect, MST Power: Medium</li>
+<li>Name the Ligand: M2-1</li>
+<li>Enter the concentration of the stock solution of Ligand: 100 μM</li>
+<li>Temperature Control: 22 °C</li>
+</ol>
+</li>
+<li>Instruments
+<ol type="i">
+<li>Follow the on-screen instructions to prepare your samples</li>
+<li>Prepare a serial dilution of the diluted ligand using the assay buffer</li>
+<li>Mix the Target to each tube of ligand by pipetting</li>
+<li>Fill the capillaries and load the capillary tray, put the higher concentration in position 1</li>
+<li>Insert the capillaries tray into the instrument, and click the button “Start Measurement”</li>
+</ol>
+</li>
+<li>Examples
+<ol type="i">
+<li>Prepare the PCR tubes and label them from #1 to #16.</li>
+<li>Prepare 25 μL of the M2-1 at 2× concentration (e.g., for a final concentration of 1 mM, prepare the sample at a concentration of 2 mM)
+<div class="note">
+<span class="note-title">Note:</span> At the first time of the test, the suitable concentration range of the ratio of M2-1: RNA is unknown. The range of the molar ratio for M2-1:RNA can be initially set up to 0.05–20. If too few or too many dose-response points are in a bound or unbound state, consider adjusting the M2-1 and RNA concentrations accordingly.</div>
+</li>
+<li>Add 10 μL of PBS-T into the PCR tubes #2–16.</li>
+<li>Add 20 μL of M2-1 into PCR tube #1.</li>
+<li>Gradient dilution from the PCR tube from #1 to #16. Transfer 10 μL of the sample M2-1 from tube #1 to tube #2 with low retention pipette tips and mix by pipetting up-and-down multiple times. Make sure no bubbles and transfer 10 μL to tube #3, and mix. Repeat the procedure for PCR tube #4-#16. Discard the extra 10 μL from the last tube #16</li>
+<li>Add 10 μL of Cy5 labeled RNA to each tube (#1-#16) and mix by pipetting.</li>
+<li>Put the capillaries to each PCR tube, load the capillaries, and measure the samples. The recommended instrument setting is 40% LED/excitation power and 40% MST power (Medium setting).
+<div class="note">
+<span class="note-title">Note:</span> It is recommended that MST is performed at “low,” “medium,” or “high” settings. The lowest setting that produces the expected thermophoresis signals should be chosen as the default setting for a specific sample.</div>
+</li>
+</ol>
+</li>
+<li>Results
+<ol type="i">
+<li>Examine the capillary scans for fluorescence intensity, adsorption, and variation</li>
+<li>Examine the MST trace for signs of aggregation</li>
+<li>Click the “Review” buttons for more details</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="48">
+<li>Data analysis
+<ol type="a">
+<li>Start Affinity Analysis software.</li>
+<li>Load raw data.</li>
+<li>Choose Fluorescence intensity, No fluorescence variation, No absorption, and No aggregates, No ligand-induced photobleaching rate changes. Make the signal/noise ratio is large enough to conclude binding.</li>
+<li>The K<sub>d</sub> can be determined using the K<sub>d</sub> fit with the default setting.</li>
+<li>Generate Full Report will create a PDF report.</li>
+<li>Use the export menu to export the curves images.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Usually, at the first test, the concentration of M2-1 is 20 folds higher than the cy5-labeled RNA. Check the does response. If too few dose-response points are in a bound or unbound state, consider adjusting the M2-1 concentration range.</div>
+<h3 id="sec3.9">GaMD simulations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼8–10 days</div>
+<ol start="49">
+<li>GaMD simulations were performed using the GPU version of AMBER18 (<a href="#bib4">Case et al., 2018</a>; <a href="#bib15">Miao et al., 2015</a>) (<a href="#fig9">Figure 9</a>). The simulation speed depends on various factors, including the system size, GPU power, etc. For the SH7 RNA binding to the M2-1 protein system with 187,013 atoms, the simulation speed obtained was ∼35–40 ns/day on NVIDIA RTX 2080 GPU. It took about a week to complete 300 ns simulations.</li>
+<li>System equilibration for GaMD production simulations
+<ol type="a">
+<li>Running conventional molecular dynamics (cMD) using AMBER
+<ol type="i">
+<li>The first step is to run energy minimization to relax the system and eliminate any steric clashes in the system using files downloaded from CHARMM-GUI.</li>
+<li>Next would be to run the equilibration for a minimum of 1 ns timescale to bring the system to an equilibrium using the default parameters provided by CHARMM-GUI.</li>
+<li>Finally, run cMD for at least 10 ns timescale to further equilibrate the system.</li>
+</ol>
+</li>
+<li>Running short cMD and GaMD equilibration using AMBER
+<ol type="i">
+<li>A template GaMD equilibration input file as provided here <a href="http://miao.compbio.ku.edu/GaMD/tutorial.html">http://miao.compbio.ku.edu/GaMD/tutorial.html</a> was used to run short cMD of 4 ns and GaMD equilibration of 40 ns with 2 fs timestep using GaMD implemented in GPU version of AMBER18 (<a href="#bib4">Case et al., 2018</a>).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>The parameters were set as the following:</p>
+<ul>
+<li style="list-style-type: none;">nstlim = 22000000,</li>
+<li style="list-style-type: none;">irest = 0,</li>
+<li style="list-style-type: none;">ntx = 1,</li>
+<li style="list-style-type: none;">igamd = 3, iE = 1, irest_gamd = 0,</li>
+<li style="list-style-type: none;">ntcmd = 2000000, nteb = 20000000, ntave = 400000,</li>
+<li style="list-style-type: none;">ntcmdprep = 800000, ntebprep = 800000,</li>
+<li style="list-style-type: none;">sigma0P = 6.0, sigma0D = 6.0,</li>
+</ul>
+<ol start="51">
+<li>Running GaMD production
+<ol type="a">
+<li>Start GaMD production simulation using a template input file as provided here <a href="http://miao.compbio.ku.edu/GaMD/tutorial.html">http://miao.compbio.ku.edu/GaMD/tutorial.html</a> in GPU version of AMBER18 (<a href="#bib4">Case et al., 2018</a>). The parameters were set as the following:
+<ul>
+<li style="list-style-type: none;">nstlim = 25000000,</li>
+<li style="list-style-type: none;">irest = 0,</li>
+<li style="list-style-type: none;">ntx = 1,</li>
+<li style="list-style-type: none;">igamd = 3, iE = 1, irest_gamd = 1,</li>
+<li style="list-style-type: none;">ntcmd = 0, nteb = 0, ntave = 400000,</li>
+<li style="list-style-type: none;">ntcmdprep = 0, ntebprep = 0,</li>
+<li style="list-style-type: none;">sigma0P = 6.0, sigma0D = 6.0,</li>
+</ul>
+</li>
+<li>Repeat running jobs using the following input file until end of GaMD production simulation with parameters as follows:
+<ul>
+<li style="list-style-type: none;">nstlim = 25000000,</li>
+<li style="list-style-type: none;">irest = 1,</li>
+<li style="list-style-type: none;">ntx = 5,</li>
+<li style="list-style-type: none;">igamd = 3, iE = 1, irest_gamd = 1,</li>
+<li style="list-style-type: none;">ntcmd = 0, nteb = 0, ntave = 400000,</li>
+<li style="list-style-type: none;">ntcmdprep = 0, ntebprep = 0,</li>
+<li style="list-style-type: none;">sigma0P = 6.0, sigma0D = 6.0,</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The expression and purification of a cleavable GFP as a fusion tag for the RNA-binding protein have several advantages (<a href="#fig3">Figures 3</a> and <a href="#fig4">4</a>). <b>(1)</b> The green color (compared to the yellow-colored cells) indicates the successful expression of the GFP protein as part of the GFP-fused protein (<a href="#bib11">Margolin, 2000</a>). <b>(2)</b> The successful folding of GFP can facilitate the folding of the target protein of interests (<a href="#bib20">Pedelacq et al., 2006</a>). <b>(3)</b> Naked eyes can observe the green fluorescent color without the need to disrupt the cells or run native protein gels to confirm the protein expression (<a href="#bib11">Margolin, 2000</a>). <b>(4)</b> The presence of a trace amount of GFP can be detected using the UV monitor at specific wavelengths, such as UV 488 nm (<a href="#bib18">Miyawaki et al., 2003</a>, <a href="#bib19">2005</a>). We also want to point out that in some cases, the constructs bearing cleavable GFP have the tendency to generate partial fusion as the GFP protein only, or lose the GFP tag partly, resulting in excess fluorescence due to free GFP proteins. Despite this, the GFP fusion provides us significant advantages to prepare the recombinant RNA-binding protein, especially if we remove the GFP tag to generate a tag-free protein.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The representative images for procedures of the expression and early stages of protein purification</div>
+<p>Please note the greenish color is shown in all steps of protein expression and purification compared to traditional non-GFP labeled expression and purification systems.</p>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The representative profiles for protein purification</div>
+<p>Note that three different UV wavelengths were monitored simultaneously, UV 260, UV 280, and UV 488. The ratio of UV 260/UV 280 indicates the quality of the protein sample, and UV 488 indicates whether the GFP is present in the solution.</p>
+<p>(A) The purification profile of the heparin column. We use this column as a key step to remove the non-specific contaminants. Note that the GFP comes out from the flow-through fraction.</p>
+<p>(B) The size exclusion chromatography (SEC) profile of the final tag-cleaved M2-1. Note that the peak of cleaved M2-1 does not contain GFP protein judging by the UV 488 value.</p>
+</figcaption>
+</figure>
+<p>Another important aspect of our protocol is removing the GFP tag if not desired for further biochemical or biophysical analyses. In many cases, the GFP tagged proteins are widely used for <i>in vivo</i> or <i>in vitro</i> fluorescence microscopy. In our study, we specifically removed the GFP tagged using the TEV protease on a pre-engineered TEV cleavage sequence Glu-Asn-Leu-Tyr-Phe-Gln-(Gly/Ser) (<a href="#bib5">Cesaratto et al., 2016</a>). Because GFP has a maximal absorbance at UV 488 nm, it is easy for us to distinguish the GFP from the target protein (M2-1) by monitoring the sample absorbance at UV 488 nm. (<a href="#fig4">Figures 4</a> and <a href="#fig5">5</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The SDS-PAGE gels of the protein</div>
+<p>(A) The M2-1 with a 6xHis-GFP tag.</p>
+<p>(B) The TEV protease cleaved products of M2-1 and GFP tag.</p>
+<p>(C) M2-1 only with the tag removed.</p>
+</figcaption>
+</figure>
+<p>During the purification of the RNA-binding protein, we implemented two critical steps to remove non-specific RNA contaminants, high salt wash, and heparin column. <b>(1)</b> High salt (1.0–1.5 M NaCl) wash is typically useful to wash out non-specific RNA contaminants during the affinity purification step because the high ion strengths of the high salt break the interactions between the RNA-binding protein and RNA (<a href="#bib12">Maroto and Sierra, 1989</a>; <a href="#bib13">Marvil et al., 1980</a>; <a href="#bib23">Tran et al., 2009</a>). <b>(2)</b> heparin column is a hybrid of cation exchange and affinity chromatography, primarily used for isolated nucleic acid-binding proteins (<a href="#bib3">Bolten et al., 2018</a>; <a href="#bib6">Fahling et al., 2019</a>). We use this column as a key step to remove the non-specific RNA contaminants, aiming for high-resolution purification of RNA-binding proteins. Sometimes, the heparin column can be exchanged with a regular ion-exchange column (i.e., Q column).</p>
+<p>The MicroScale Thermophoresis (MST) is a powerful technique to quantify biomolecular interactions, based on the thermophoresis, the movement of biomolecules in a temperature gradient (<a href="#bib1">Asmari et al., 2018</a>; <a href="#bib8">Jerabek-Willemsen et al., 2011</a>; <a href="#bib22">Seidel et al., 2013</a>). Compared to traditional Isothermal Calorimetry (ITC) (<a href="#bib10">Liang, 2008</a>) and Surface Plasmon Resonance (SPR) (<a href="#bib9">Lausted et al., 2009</a>; <a href="#bib24">Vo et al., 2019</a>), the MST assay permits us to get the binding affinity (K<sub>d</sub>) in minutes using a smaller amount of sample. For the MST assay, each experiment uses 20 μL of 16 different concentrations of the samples. With the highest 50 μM, the others are half diluted as the previous condition (i.e., 50 μM, 25 μM, 12.5 μM, 6.25 μM, and so on. These values depend on the expected affinity). The key steps and general procedures are shown in <a href="#fig6">Figures 6</a>, <a href="#fig7">7</a>, and <a href="#fig8">8</a>.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. The capillaries for the MST assay</div>
+<p>(A) The capillaries are inserted into microcentrifuge tubes to load the samples.</p>
+<p>(B) The capillaries are placed on the adaptor for measurements.</p>
+</figcaption>
+</figure>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. The pre-settings for the MST assay</div>
+<p>(A) Plan: Setting up the concentration of the target sample, the assay buffer, and the system settings, which including Excitation Power (Auto-detect) and MST Power (Medium).</p>
+<p>(B) Instructions: Prepare the sample as instructed.</p>
+</figcaption>
+</figure>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. The representative results for the MST assay</div>
+<p>(A) Results: Check each result for the pretest. Like Fluorescence intensity, No fluorescence variation, No absorption, and No aggregates. The curve of each capillary scan should be almost the same. If the result is good, then move to the next step for binding assays using MST.</p>
+<p>(B) Details: The details of the MST results.</p>
+</figcaption>
+</figure>
+<p>GaMD simulation is advantageous over conventional molecular dynamics in sampling low-energy conformations of the biomolecules (<a href="#bib2">Bhattarai and Miao, 2018</a>; <a href="#bib14">Miao, 2018</a>; <a href="#bib16">Miao and McCammon, 2016</a>). The rough energy landscapes of biological systems make it difficult for sampling using conventional methods. Enhanced sampling methods such as GaMD facilitate simulations of biomolecular conformations that are separated by high energy barriers. The GaMD boost potential smooths energy surfaces and enables transitions between various low-energy states of the biomolecules (<a href="#fig9">Figure 9</a>). Moreover, accurate energetic reweighting of GaMD simulations allows us to recover the original free energy profiles of the studied systems.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/453-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. The workflow of the GaMD simulations</div>
+<p>The simulation system is set up by solvating the protein and RNA in the NaCl solution. Computer simulations are performed using the GaMD enhanced sampling method. Software tools, including PyMol, VMD, CPPTRAJ, MD analysis, and PyReweighting, are applied to analyze the simulation trajectories. Results, including free energy profiles and low-energy conformational states of the protein-RNA interactions, are finally obtained.</p>
+</figcaption>
+</figure>
+<p>With simulation parameters as listed above and proper modeling of the experimental conditions, multiple GaMD simulations have captured spontaneous binding of the RNA to the ZBD and CD of the M2-1 protein within ∼150–180 ns. Important interactions between RNA nucleotides and protein residues are revealed as recognizing determinants for RNA binding to the M2-1 (<a href="#fig9">Figure 9</a>). Finally, we have identified low-energy conformational states of the RNA-protein complex from the calculated GaMD free energy profiles (<a href="#fig9">Figure 9</a>).</p>
+<p>In principle, we can build computational models for the protein and RNA that do not have available experimental structures, e.g., homology modeling of the protein. Then we can still carry out GaMD simulations to capture the spontaneous binding of RNA to the target protein and model their interactions. Therefore, we describe a general protocol of integration of the experimental methods (MST assay) and the computational simulations (GaMD). With preferred but not required structural information of our interested ribonucleoprotein system, we could combine MST assay experiments and GaMD simulations for in-depth analysis of the protein:RNA interactions</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec5.1">Analyzing GaMD simulations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol>
+<li>Simulation analysis was carried out using CPPTRAJ (<a href="#bib21">Roe and Cheatham, 2013</a>) (<a href="#fig9">Figure 9</a>).</li>
+<li>The hierarchical agglomerative clustering algorithm was used to cluster snapshots of the diffusing RNA with all five production GaMD simulations combined.
+<ol type="a">
+<li>The top-ranked structural clusters were identified as the most probable binding conformations of the RNA on the protein surface.</li>
+<li>Binding of RNA to the ZBD and CD of the M2-1 protein was ranked as the first and second cluster, respectively, being consistent with the crystal structure.</li>
+<li>Analysis of these two structural clusters further helped us to identify the critical interactions between the RNA and M2-1 protein.</li>
+</ol>
+</li>
+<li>Salt-bridge analysis:
+<ol type="a">
+<li>A salt bridge between Arg4 of the M2-1 ZBD with the phosphate backbone of U4 of RNA was identified.</li>
+<li>Another salt bridge formed between Lys92 of the M2-1 CD and the phosphate on the RNA backbone was identified.</li>
+<li>The third salt bridge formed between Lys150 of the M2-1 CD and the A5 base of RNA was identified.</li>
+</ol>
+</li>
+<li>Distances between the RNA and protein residues and the radius of gyration (<i>R</i><sub>g</sub>) of RNA were calculated as reaction coordinates.
+<ol type="a">
+<li>The <i>PyReweighting</i> toolkit (<a href="#bib17">Miao et al., 2014</a>) was applied to reweight GaMD simulations.</li>
+<li>A bin size of 1.5 Å and a cutoff of 500 frames in one bin were used to calculate 2D free energy profiles of the RNA <i>R</i><sub>g</sub> and RNA-protein distances.</li>
+<li>Low-energy conformations were identified from the reweighted free energy profiles. For binding RNA to the M2-1 ZBD, the distance between the charge centers of Arg4(CZ) and U4(P) was ∼5 Å at the free energy minimum.</li>
+<li>Similarly, the distance evaluated at a low energy minimum for RNA binding to the M2-1 CD at the charge centers of Lys92(NZ) and U4(P) was ∼3 Å.</li>
+</ol>
+</li>
+<li>Combine all GaMD simulation trajectories for the free energy calculations. Low-energy conformations of M2-1:SH7 predicted by the simulations correlate with the X-ray crystal structure.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>GFP is a fluorescent protein that can monitor each procedure when express and purify the recombinant protein fused with the GFP tag. The fact is that no tag is guaranteed to be removed with 100% efficiency. In the protocol described here, even though there is no peak with the absorption of the GFP tag in the target protein M2-1 peak and no GFP bands on the SDS-PAGE gel, the concentrated protein sample still shows a light green color.</p>
+<p>The GFP fusion tag can be either fused in the N-terminal or C-terminal of the recombinant proteins. We typically choose N-terminal GFP fusion. The N-terminal GFP fusion boosts the overall expression level of the recombinant proteins because it is the first part of the polyprotein being translated. The successful folding of GFP can facilitate the folding of the target protein of interests. However, sometimes the overexpressed polyproteins are auto-cleaved by the host proteases, resulting in GFP tag only. Therefore, there is a portion of the GFP only proteins that can be found during the purification.</p>
+<p>The MST (i.e., Monolith NT.115) allows for detecting the fluorescence wavelengths between 480 and 720 nm. One of the interaction molecules should be labeled with a fluorophore, and the labeled protein or RNA molecule needs to be stable after the label. The MST is highly sensitive to fluorescent signals; therefore, the sample needs to be 100% free of contamination. One limit factor here is that we found that the GFP tag, located close to the RNA-protein interaction site in the fusion protein, interferes with the interaction of M2-1 with RNA. Therefore, we need to remove the GFP fusion tag before the MST assay for M2-1:RNA. In theory, the GFP fusion tag should be removed completely. However, there is always a trace amount of residual GFP present after the TEV cleavage in practice. To avoid the free, residual GPF to interfere with the MST assay, we labeled RNA with the red fluorophore Cy5 and performed the assay with NT.115 in the red mode.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Sometimes, the protein constructs bearing cleavable GFP might be partially synthesized, resulting in excess free GFP (step 45).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>One potential solution to avoid the excess free GFP is to make the protein construct with the cleavable GFP tag in the C terminus instead of the N terminus of the protein. As a C terminus fusion tag, the GFP is the last part to be translated as the fusion protein; Therefore, it avoids the premature partial synthesis of GFP proteins. Of course, the C terminus tag might lose the advantage of the expression boost of the translation and folding of the protein as a whole.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>As a fusion tag to the protein of interest, the GFP has the potential to be directly used as the fluorophore for the MST assay. When checking the interactions of RNA and M2-1 (GFP tagged, uncleaved) directly using the MST assay without removing the GFP tag, the fluorescent signals might not be stable (step 46).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>In our study, M2-1 has two RNA-binding sites. One is the RNA-binding domain located at the N terminus of M2-1. The GFP fusion is at the N terminus of M2-1, and GFP potentially interferes with the RNA interactions with M2-1, which might result in unstable signals. That is why using the GFP tag as the fluorophore here is not desired for the interaction using the MST assay. The solution here is to remove the GFP tag and to use cy5 labeled RNA as a fluorophore for the assay.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>In the procedure of MST assay, the sample needs to dilute multiple times. Sometimes it will get some error because of the retention of the tips (step 47).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>The solution here is to use low retention tips. Practice the handling of the samples when dispensing such small volumes of the samples. Keep from generating any bubbles when dilute and mix the samples.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Asmari, M., Ratih, R., Alhazmi, H.A., and El Deeb, S. (2018). Thermophoresis for characterizing biomolecular interaction. Methods <i>146</i>, 107-119. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref1">View at publisher</a></p>
+<p id="bib2">Bhattarai, A. and Miao, Y. (2018). Gaussian accelerated molecular dynamics for elucidation of drug pathways. Expert Opin. Drug Discov. <i>13</i>, 1055-1065. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref2">View at publisher</a></p>
+<p id="bib3">Bolten, S.N., Rinas, U., and Scheper, T. (2018). Heparin: role in protein purification and substitution with animal-component free material. Appl. Microbiol. Biotechnol. <i>102</i>, 8647-8660. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref3">View at publisher</a></p>
+<p id="bib4">Case, D.A., Ben-Shalom, I.Y., Brozell, S.R., Cerutti, D.S., Cheatham, T.I., and Cruzeiro, V.W.D. (2018). AMBER 2018 (University of California). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref4">View at publisher</a></p>
+<p id="bib5">Cesaratto, F., Burrone, O.R., and Petris, G. (2016). Tobacco Etch Virus protease: a shortcut across biotechnologies. J. Biotechnol. <i>231</i>, 239-249. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref5">View at publisher</a></p>
+<p id="bib26">Echols, N., Grosse-Kunstleve, R.W., Afonine, P.V., Bunkóczi, G., Chen, V.B., Headd, J.J., McCoy, A.J., Moriarty, N.W., Read, R.J., Richardson, D.C., et al. (2012). Graphical tools for macromolecular crystallography in PHENIX. J. Appl. Crystallogr. <i>45</i>, 581-586. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optWNqyMrZFbK">View at publisher</a></p>
+<p id="bib27">Emsley, P. and Cowtan, K. (2004). Coot: model-building tools for molecular graphics. Acta Crystallogr. D Biol. Crystallogr. <i>60</i>, 2126-2132. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optLmNk93Nr29">View at publisher</a></p>
+<p id="bib6">Fahling, M., Paliege, A., Jonsson, S., Becirovic-Agic, M., Melville, J.M., Skogstrand, T., and Hultstrom, M. (2019). NFAT5 regulates renal gene expression in response to angiotensin II through Annexin-A2-mediated posttranscriptional regulation in hypertensive rats. Am. J. Physiol. Renal Physiol. <i>316</i>, F101-F112. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref6">View at publisher</a></p>
+<p id="bib7">Gao, Y., Cao, D., Pawnikar, S., John, K.P., Ahn, H.M., Hill, S., Ha, J.M., Parikh, P., Ogilvie, C., Swain, A., et al. (2020). Structure of the human respiratory syncytial virus M2-1 protein in complex with a short positive-sense gene-end RNA. Structure <i>28</i>, 979-990.e4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref7">View at publisher</a></p>
+<p id="bib8">Jerabek-Willemsen, M., Wienken, C.J., Braun, D., Baaske, P., and Duhr, S. (2011). Molecular interaction studies using microscale thermophoresis. Assay Drug Dev. Technol. <i>9</i>, 342-353. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref8">View at publisher</a></p>
+<p id="bib31">Jo, S., Kim, T., Iyer, V.G., and Im, W. (2008). CHARMM-GUI: a web-based graphical user interface for CHARMM. J. Comput. Chem. <i>29</i>, 1859-1865. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optSbllQsOxru">View at publisher</a></p>
+<p id="bib9">Lausted, C., Hu, Z., Hood, L., and Campbell, C.T. (2009). SPR imaging for high throughput, label-free interaction analysis. Comb. Chem. High Throughput Screen. <i>12</i>, 741-751. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref9">View at publisher</a></p>
+<p id="bib10">Liang, Y. (2008). Applications of isothermal titration calorimetry in protein science. Acta. Biochim. Biophys. Sin. (Shanghai) <i>40</i>, 565-576. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref10">View at publisher</a></p>
+<p id="bib29">Madeira, F., Park, Y.M., Lee, J., Buso, N., Gur, T., Madhusoodanan, N., Basutkar, P., Tivey, A.R.N., Potter, S.C., Finn, R.D., and Lopez, R. (2019). The EMBL-EBI search and sequence analysis tools APIs in 2019. Nucleic. Acids Res. <i>47</i>, W636-W641. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optCFWlI6ARbY">View at publisher</a></p>
+<p id="bib11">Margolin, W. (2000). Green fluorescent protein as a reporter for macromolecular localization in bacterial cells. Methods <i>20</i>, 62-72. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref11">View at publisher</a></p>
+<p id="bib12">Maroto, F.G. and Sierra, J.M. (1989). Purification and characterization of mRNA cap-binding protein from <i>Drosophila melanogaster</i> embryos. Mol. Cell. Biol. <i>9</i>, 2181-2190. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref12">View at publisher</a></p>
+<p id="bib13">Marvil, D.K., Nowak, L., and Szer, W. (1980). A single-stranded nucleic acid-binding protein from <i>Artemia salina</i>. I. Purification and characterization. J. Biol. Chem. <i>255</i>, 6466-6472. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref13">View at publisher</a></p>
+<p id="bib14">Miao, Y. (2018). Acceleration of biomolecular kinetics in Gaussian accelerated molecular dynamics. J. Chem. Phys. <i>149</i>, 072308. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref14">View at publisher</a></p>
+<p id="bib15">Miao, Y., Feher, V.A., and McCammon, J.A. (2015). Gaussian accelerated molecular dynamics: unconstrained enhanced sampling and free energy calculation. J. Chem. Theory Comput. <i>11</i>, 3584-3595. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref15">View at publisher</a></p>
+<p id="bib16">Miao, Y. and McCammon, J.A. (2016). Graded activation and free energy landscapes of a muscarinic G-protein-coupled receptor. Proc. Natl. Acad. Sci. U S A <i>113</i>, 12162-12167. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref16">View at publisher</a></p>
+<p id="bib17">Miao, Y., Sinko, W., Pierce, L., Bucher, D., Walker, R.C., and McCammon, J.A. (2014). Improved reweighting of accelerated molecular dynamics simulations for free energy calculation. J. Chem. Theory Comput. <i>10</i>, 2677-2689. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref17">View at publisher</a></p>
+<p id="bib18">Miyawaki, A., Nagai, T., and Mizuno, H. (2003). Mechanisms of protein fluorophore formation and engineering. Curr. Opin. Chem. Biol. <i>7</i>, 557-562. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref18">View at publisher</a></p>
+<p id="bib19">Miyawaki, A., Nagai, T., and Mizuno, H. (2005). Engineering fluorescent proteins. Adv. Biochem. Eng. Biotechnol. <i>95</i>, 1-15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref19">View at publisher</a></p>
+<p id="bib25">Otwinowski, Z. and Minor, W. (1997). Processing of X-ray diffraction data collected in oscillation mode. Methods Enzymol. <i>276</i>, 307-326. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optLSQHg00m9X">View at publisher</a></p>
+<p id="bib20">Pedelacq, J.D., Cabantous, S., Tran, T., Terwilliger, T.C., and Waldo, G.S. (2006). Engineering and characterization of a superfolder green fluorescent protein. Nat. Biotechnol. <i>24</i>, 79-88. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref20">View at publisher</a></p>
+<p id="bib28">Rigsby, R.E. and Parker, A.B. (2016). Using the PyMOL application to reinforce visual understanding of protein structure. Biochem. Mol. Biol. Educ. <i>44</i>, 433-437. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/opt8FjfZK3cfc">View at publisher</a></p>
+<p id="bib21">Roe, D.R. and Cheatham, T.E. (2013). PTRAJ and CPPTRAJ: software for processing and analysis of molecular dynamics trajectory data. J. Chem. Theory Comput. <i>9</i>, 3084-3095. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref21">View at publisher</a></p>
+<p id="bib22">Seidel, S.A., Dijkman, P.M., Lea, W.A., van den Bogaart, G., Jerabek-Willemsen, M., Lazic, A., Joseph, J.S., Srinivasan, P., Baaske, P., Simeonov, A., et al. (2013). Microscale thermophoresis quantifies biomolecular interactions under previously challenging conditions. Methods <i>59</i>, 301-315. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref22">View at publisher</a></p>
+<p id="bib23">Tran, T.L., Castagne, N., Dubosclard, V., Noinville, S., Koch, E., Moudjou, M., Henry, C., Bernard, J., Yeo, R.P., and Eleouet, J.F. (2009). The respiratory syncytial virus M2-1 protein forms tetramers and interacts with RNA and P in a competitive manner. J. Virol. <i>83</i>, 6363-6374. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref23">View at publisher</a></p>
+<p id="bib24">Vo, T., Paul, A., Kumar, A., Boykin, D.W., and Wilson, W.D. (2019). Biosensor-surface plasmon resonance: a strategy to help establish a new generation RNA-specific small molecules. Methods <i>167</i>, 15-27. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/sref24">View at publisher</a></p>
+<p id="bib30">Waterhouse, A.M., Procter, J.B., Martin, D.M.A., Clamp, M., and Barton, G.J. (2009). Jalview Version 2--a multiple sequence alignment editor and analysis workbench. Bioinformatics <i>25</i>, 1189-1191. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00022-8/optT6NJ6MLxBp">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Bo Liang, <a href="mailto:bo.liang@emory.edu">bo.liang@emory.edu</a>.</p>
+<h4>Materials Availability</h4>
+<p>The materials are available upon request.</p>
+<h4>Data and Code Availability</h4>
+<p>The GaMD codes are available through the AMBER simulation package. PyReweighting scripts are available through <a href="http://miao.compbio.ku.edu/PyReweighting/">http://miao.compbio.ku.edu/PyReweighting/</a>.</p>
+<h3>Acknowledgments</h3>
+<p>B.L. was supported by <a href="https://doi.org/10.13039/100000057">NIGMS</a> R01GM130950 and the Start-Up Fund from <a href="https://doi.org/10.13039/100006939">Emory University</a> School of Medicine. Y.M. was supported by startup funding from the College of Liberal Arts and Sciences at the University of Kansas. We want to thank Dr. Karen Kirby for the MST training and Dr. Stefan Sarafianos for allowing us to use the MST instrument. We thank the Liang group members at Emory University School of Medicine for performing the experimental studies, including protein purification and MST assays, and the members of the Miao group at the University of Kansas for computational simulations.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, Y.M. and B.L.; investigation, Y.G., D.C., S.P., and S.A.; writing – original draft, Y.G., S.P., Y.M., and B.L.; writing – review &amp; editing, Y.M. and B.L.; funding acquisition, Y.M. and B.L.; supervision, Y.M. and B.L.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

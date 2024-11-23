@@ -1,0 +1,2250 @@
+<article>
+<section>
+<h1 id="header">Optimized workflow for single-cell transcriptomics on infectious diseases including COVID-19</h1>
+<p><time datetime="2021-01-22">Published: January 8, 2021</time></p>
+<p>Elena De Domenico,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a></sup> Lorenzo Bonaguro,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">4</a></sup> Jonas Schulte-Schrepping,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">4</a></sup> Matthias Becker,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Kristian Händler,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> and Joachim L. Schultze<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn3">6</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>German Center for Neurodegenerative Diseases (DZNE), PRECISE Platform for Genomics and Epigenomics at DZNE, and University of Bonn, Bonn, Germany</p>
+<p id="aff2"><sup>2</sup>Systems Medicine, German Center for Neurodegenerative Diseases (DZNE), Bonn, Germany</p>
+<p id="aff3"><sup>3</sup>Genomics and Immunoregulation, Life &amp; Medical Sciences (LIMES) Institute, University of Bonn, Bonn, Germany</p>
+<p id="fn1"><sup>4</sup>These authors contributed equally</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="fn3"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:j.schultze@uni-bonn.de">j.schultze@uni-bonn.de</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100233">10.1016/j.xpro.2020.100233</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>In December 2019, a new coronavirus, SARS-CoV-2, which causes the respiratory illness that led to the COVID-19 pandemic, was reported. In the face of such a new pathogen, special precautions must be taken to examine potentially infectious materials due to the lack of knowledge on disease transmissibility, infectivity, and molecular pathogenicity. Here, we present a complete and safe workflow for performing scRNA-seq experiments on blood samples of infected patients from cell isolation to data analysis using the micro-well based BD Rhapsody platform.</p>
+<p>For complete information on the use and execution of this protocol, please refer to <a href="#bib6">Schulte-Schrepping et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Complete, safe protocol for handling potentially infectious blood samples for scRNA-seq</li>
+<li>scRNA-seq application including sample multiplexing and AbSeq protein quantification</li>
+<li>Guidelines for flow cytometry analyses of potentially infectious blood samples</li>
+<li>Recommendations and code for processing and analysis of multiplexed scRNA-seq data</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Study subject details and written informed consent</h3>
+<p>The original study following this protocol, <a href="#bib6">Schulte-Schrepping et al. (2020)</a>, was approved by the Institutional Review board of the University Hospital Bonn (073/19 and 134/20). After providing written informed consent, control donors and COVID-19 patients were included in the study. In patients who were not able to consent at the time of study enrollment, consent was obtained after recovery.</p>
+<h3 id="sec1.2">Prepare working area</h3>
+<p>This protocol must be performed in a Biosafety level 2 laboratory. The initial part of the protocol must be done in a laminar flow hood and special precautions must be taken to avoid any potential risk working with samples from COVID-19 patients. It is important to realize that as soon as samples from COVID-19 patients are handled under the hood everything is considered potentially contaminated and should be treated as such. In order to minimize handling of potentially contaminated materials outside of the hood it is critical to organize the working area (<a href="#fig1">Figure 1</a>) and disinfect both hands and materials with Sterillium and Terralin respectively before taking them out of the hood.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Working area</div>
+</figcaption>
+</figure>
+<h3 id="sec1.3">Prepare cell culture hood and materials</h3>
+<p>Refer to “<a href="#materials-and-equipment">Materials and equipment</a>” for the list of materials to be prepared before the experiment.</p>
+<h3 id="sec1.4">Prepare solutions</h3>
+<p>Refer to “<a href="#materials-and-equipment">Materials and equipment</a>” for the list of buffers and solutions to be prepared before the experiment. Prepare all necessary buffers and working dilutions in advance to avoid possible contaminations of the stock solutions.</p>
+<h3 id="sec1.5">General precautions</h3>
+<p>Up to the cell lyses the samples are considered infected and potentially infectious. Therefore, special precautions need to be taken when steps must be performed outside of the laminar flow hood. In this section we present how to safely perform cell counting and centrifugation steps.</p>
+<ol>
+<li>Spinning samples
+<ol type="a">
+<li>Have a centrifuge bucket and lid ready in the hood
+<div class="note">
+<span class="note-title">Note:</span> Everything inside the bucket is possibly contaminated. Do not open it outside of the hood. Leave the balance bucket outside the hood to avoid contaminations.</div>
+</li>
+<li>Close your tube and place it in the centrifuge bucket, close the lid</li>
+<li>Disinfect your hands with Sterillium and wipe the outside of the bucket with Terralin PAA</li>
+<li>You can now spin outside the hood</li>
+<li>Bring closed bucket back under the hood for subsequent sample processing</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Counting cells
+<ol type="a">
+<li>Prepare Eppendorf tubes with ready to use Trypan blue solution (0.4%) according to the desired ratio (1:10) outside of the hood beforehand and place them in the hood</li>
+<li>Mix the cell sample with the Trypan blue solution (0.4%) according to the chosen ratio (1:10) under the cell culture hood</li>
+<li>Load cell suspension on a single-use counting chamber</li>
+<li>Place the counting chambers in the 4-well dish</li>
+<li>Close the 4-well dish with its lid and seal the dish with tape (<a href="#fig2">Figure 2</a>)
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Counting chamber in the 4-well dish</div>
+</figcaption>
+</figure>
+</li>
+<li>Disinfect your hands with Sterillium and wipe the plate with Terralin PAA</li>
+<li>You can now count your cells outside hood
+<div class="note">
+<span class="note-title">Note:</span> Do not take the counting chamber out of the plate at any time outside of the hood. The cell counting procedure at the microscope can be performed leaving the counting chamber inside the plate (<a href="#fig3">Figure 3</a>).</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Microscope setup for cell counting</div>
+</figcaption>
+</figure>
+</li>
+<li>After cell counting, bring back the plate under the hood</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Clean up
+<ol type="a">
+<li>Disinfect all materials that must be moved out of the hood with Terralin PAA before discarding them</li>
+<li>Prepare a decontamination bath with Terralin PAA for decontaminating the centrifuge buckets and lids for at least 10 min
+<div class="critical">
+<span class="critical-title">Critical:</span> Open bucket under water in the decontamination bath so that the Terralin PAA covers all surfaces.</div>
+</li>
+<li>Discard the liquid waste flask in a labeled autoclave bag and close the bag properly for autoclaving</li>
+<li>Leave the 2 liter Terralin PAA cylinder flask with the used serological pipettes under the hood for 24 h. After decontamination, the pipettes can be discarded in a bag for autoclaving and the Terralin PAA can be discarded safely into a sink</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>HLA-DR BV421 (L243)</td>
+<td>BioLegend</td>
+<td>Cat# 307635; RRID:AB_10897449</td>
+</tr>
+<tr>
+<td>CD4 BV510 (OKT4)</td>
+<td>BioLegend</td>
+<td>Cat# 317444; RRID:AB_2561866</td>
+</tr>
+<tr>
+<td>CD16 BV605 (3G8)</td>
+<td>BioLegend</td>
+<td>Cat# 302039; RRID:AB_2561354</td>
+</tr>
+<tr>
+<td>CD45 BV711 (HI30)</td>
+<td>BioLegend</td>
+<td>Cat# 304050; RRID:AB_2563466</td>
+</tr>
+<tr>
+<td>CD8 BV785 (SK1)</td>
+<td>BioLegend</td>
+<td>Cat# 344740; RRID:AB_2566202</td>
+</tr>
+<tr>
+<td>CD66b FITC (G10F5)</td>
+<td>BioLegend</td>
+<td>Cat# 305104; RRID:AB_314496</td>
+</tr>
+<tr>
+<td>CD14 PerCp-Cy5.5 (MϕP9)</td>
+<td>Becton Dickinson</td>
+<td>Cat# 562692; RRID:AB_2737726</td>
+</tr>
+<tr>
+<td>CD56 PE (MY31)</td>
+<td>Becton Dickinson</td>
+<td>Cat# 345810; RRID:AB_396511</td>
+</tr>
+<tr>
+<td>CD3 PE/Dazzle (UCHT1)</td>
+<td>BioLegend</td>
+<td>Cat# 300450; RRID:AB_2563618</td>
+</tr>
+<tr>
+<td>CD11c PE/Cy5 (B-ly6)</td>
+<td>Becton Dickinson</td>
+<td>Cat# 551077; RRID:AB_394034</td>
+</tr>
+<tr>
+<td>Siglec8 PE/Cy7 (7C9)</td>
+<td>BioLegend</td>
+<td>Cat# 347112; RRID:AB_2629720</td>
+</tr>
+<tr>
+<td>CD203c APC (NP4D6)</td>
+<td>BioLegend</td>
+<td>Cat# 324609; RRID:AB_2099774</td>
+</tr>
+<tr>
+<td>CD1c AlexaFluor700 (L161)</td>
+<td>BioLegend</td>
+<td>Cat# 331530; RRID:AB_2563657</td>
+</tr>
+<tr>
+<td>CD19 APC/Fire 750 (HIB19)</td>
+<td>BioLegend</td>
+<td>Cat# 302258; RRID:AB_2629691</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>BD Horizon brilliant stain buffer</td>
+<td>Becton Dickinson</td>
+<td>Cat# 563794</td>
+</tr>
+<tr>
+<td>RBC lysis buffer 10×</td>
+<td>BioLegend</td>
+<td>Cat# 420301</td>
+</tr>
+<tr>
+<td>Trypan blue</td>
+<td>Invitrogen</td>
+<td>Cat# T10282</td>
+</tr>
+<tr>
+<td>Pierce 16% formaldehyde (w/v), methanol-free</td>
+<td>Thermo Fisher</td>
+<td>Cat# 28908</td>
+</tr>
+<tr>
+<td>RPMI 1640 medium</td>
+<td>Gibco</td>
+<td>Cat# 11875093</td>
+</tr>
+<tr>
+<td>Fetal bovine serum</td>
+<td>PAN Biotec</td>
+<td>Cat# 3302</td>
+</tr>
+<tr>
+<td>Pancoll human, density: 1.077 g/mL</td>
+<td>Pan Biotech</td>
+<td>Cat# P04-601000</td>
+</tr>
+<tr>
+<td>Dulbecco's phosphate buffered saline, MO</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# D8537</td>
+</tr>
+<tr>
+<td>FcR blocking reagent, human</td>
+<td>Miltenyi</td>
+<td>Cat# 130-059-901</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Invitrogen</td>
+<td>Cat# AM9937</td>
+</tr>
+<tr>
+<td>Sterrilium</td>
+<td>PAUL HARTMANN</td>
+<td>Cat# 9800081</td>
+</tr>
+<tr>
+<td>Terralin PAA 160 mL (2 × 80 mL)</td>
+<td>Schülke</td>
+<td>Cat# 126203</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Human single-cell multiplexing kit</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633781</td>
+</tr>
+<tr>
+<td>SPRIselect reagent</td>
+<td>Beckman Coulter</td>
+<td>Cat# B23318</td>
+</tr>
+<tr>
+<td>LIVE/DEAD fixable yellow dead cell stain kit, for 405 nm excitation</td>
+<td>Invitrogen</td>
+<td>Cat# L34959</td>
+</tr>
+<tr>
+<td>BD Rhapsody WTA amplification kit</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633801</td>
+</tr>
+<tr>
+<td>BD Rhapsody cartridge kit</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633733</td>
+</tr>
+<tr>
+<td>BD cartridge reagent kit</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633731</td>
+</tr>
+<tr>
+<td>BD Rhapsody cDNA kit</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633773</td>
+</tr>
+<tr>
+<td>High sensitivity D5000 ScreenTape</td>
+<td>Agilent</td>
+<td>Cat# 5067-5592</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS assay kit</td>
+<td>Thermo Fisher</td>
+<td>Cat# Q32854</td>
+</tr>
+<tr>
+<td>NovaSeq 6000 S1 reagent kit (100 cycle)</td>
+<td>Illumina</td>
+<td>Cat# 200012865</td>
+</tr>
+<tr>
+<td>NovaSeq 6000 S2 reagent kit (100 cycle)</td>
+<td>Illumina</td>
+<td>Cat# 20012862</td>
+</tr>
+<tr>
+<td>NovaSeq 6000 S2 reagent kit (200 cycles)</td>
+<td>Illumina</td>
+<td>Cat# 20040326</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>scRNA-seq raw data</td>
+<td><a href="#bib6">Schulte Schrepping et al., 2020</a></td>
+<td>EGAS00001004571</td>
+</tr>
+<tr>
+<td>Processed scRNA-seq count data and code</td>
+<td><a href="#bib6">Schulte Schrepping et al., 2020</a></td>
+<td><a href="https://beta.fastgenomics.org/p/schulte-schrepping_covid19">https://beta.fastgenomics.org/p/schulte-schrepping_covid19</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Bcl2fastq2</td>
+<td>Illumina</td>
+<td>v2.20</td>
+</tr>
+<tr>
+<td>STAR</td>
+<td><a href="#bib3">Dobin et al., 2013</a></td>
+<td>v2.6.1b</td>
+</tr>
+<tr>
+<td>Cutadapt</td>
+<td><a href="#bib5">Martin, 2011</a></td>
+<td>v1.16</td>
+</tr>
+<tr>
+<td>Dropseq-tools</td>
+<td><a href="https://github.com/broadinstitute/Drop-seq/">https://github.com/broadinstitute/Drop-seq/</a></td>
+<td>v2.0.0</td>
+</tr>
+<tr>
+<td>Picard</td>
+<td><a href="https://github.com/broadinstitute/picard">https://github.com/broadinstitute/picard</a></td>
+<td>v2.23.7</td>
+</tr>
+<tr>
+<td>R</td>
+<td><a href="http://www.cran.r-project.org">www.cran.r-project.org</a></td>
+<td>v3.6.2</td>
+</tr>
+<tr>
+<td>Seurat (R package)</td>
+<td>
+<a href="#bib1">Butler et al., 2018</a>; <a href="#bib8">Stuart et al., 2019</a>
+</td>
+<td>v3.1.2 (CRAN)</td>
+</tr>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Blood samples from COVID-19 patients</td>
+<td>University Hospital Bonn (for details see <a href="#bib6">Schulte Schrepping et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Falcon tube (50 mL)</td>
+<td>Corning</td>
+<td>Cat# CLS430290-500EA</td>
+</tr>
+<tr>
+<td>Falcon tube (15 mL)</td>
+<td>Corning</td>
+<td>Cat# CLS430053-500EA</td>
+</tr>
+<tr>
+<td>Improved Neubauer hemocytometer</td>
+<td>INCYTO</td>
+<td>Cat# DHC-N01-5</td>
+</tr>
+<tr>
+<td>Cryovials</td>
+<td>Sarstedt</td>
+<td>Cat# 72.379.002</td>
+</tr>
+<tr>
+<td>4-well dish</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 267061</td>
+</tr>
+<tr>
+<td>Serological pipettes (5, 10, 25 mL)</td>
+<td>Santa Cruz</td>
+<td>Cat# sc-200283 sc-200281, sc-200283</td>
+</tr>
+<tr>
+<td>Thermo Scientific Megafuge 40R with TX-1000 rotor</td>
+<td>Thermo Fisher Scientific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Slide coat TX-1000 buckets with TX-1000 ClickSeal biocontainment lids</td>
+<td>Thermo Fisher Scientific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Adapter BIOFlex HC (15 mL/50 mL)</td>
+<td>Thermo Fisher Scientific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>BD Rhapsody Express Single-Cell Analysis System Package</td>
+<td>Becton Dickinson</td>
+<td>Cat# 633707</td>
+</tr>
+<tr>
+<td>TapeStation 4200 system</td>
+<td>Agilent</td>
+<td>Cat# G2991AA</td>
+</tr>
+<tr>
+<td>Invitrogen Qubit fluorometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# Q33240</td>
+</tr>
+<tr>
+<td>Eppendorf ThermoMixer C</td>
+<td>Eppendorf</td>
+<td>Cat# 5382000015</td>
+</tr>
+<tr>
+<td>Magnetic separation stand (0.2 mL; 5 mL)</td>
+<td>V&amp;P Scientific</td>
+<td>Cat# VP 772F4-1, VP 772FB-1A, VP 772FB-1</td>
+</tr>
+<tr>
+<td>DynaMag-2 magnet</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 12321D</td>
+</tr>
+<tr>
+<td>BD LSRII/Symphony</td>
+<td>Becton Dickinson</td>
+<td>Special order research product</td>
+</tr>
+<tr>
+<td>Light-transmission microscope</td>
+<td>Major supplier</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Thermocycler</td>
+<td>Major supplier</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Minifuge for PCR TubeStrips</td>
+<td>Major supplier</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Illumina NovaSeq 6000</td>
+<td>Illumina</td>
+<td>Cat# 20012850</td>
+</tr>
+<tr>
+<td>Illumina NextSeq 500</td>
+<td>Illumina</td>
+<td>Cat# SY-415-1001</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Preparation of buffers and solutions</h3>
+<ul>
+<li>
+<b>Complete RPMI:</b> Supplement RPMI1640 medium with 10% FCS (store at 4°C, up to 4 weeks).</li>
+<li>
+<b>PFA:</b> 16% Methanol-free PFA is diluted to a final concentration of 4% in sterile PBS (prepare freshly if possible or store small aliquots at −20°C).</li>
+<li>
+<b>RBC lysis Buffer:</b> 10× RBC lysis buffer stock solution (BioLegend) is diluted to a final concentration of 1× in sterile nuclease-free ddH<sub>2</sub>O (prepare freshly).</li>
+</ul>
+<h3 id="sec2.2">Preparation of materials and equipment</h3>
+<p>Here, a list of required materials and equipment is described:</p>
+<ul>
+<li>Reservoirs filled with Terralin PAA solution to rinse tips before discarding into waste bins</li>
+<li>2 liter Terralin PAA cylinder flask to discard serological pipettes</li>
+<li>Empty waste flask for liquid waste</li>
+<li>Waste bucket with double bag</li>
+<li>Sterillium bottle for disinfection of gloves/hands</li>
+<li>Terralin PAA squeeze bottle to disinfect surfaces and materials</li>
+<li>Stack of dust-free paper towels</li>
+<li>1,000 μL, 200 μL and 10 μL filter tips and pipettes</li>
+<li>50 mL Falcons</li>
+<li>Single-use counting chambers</li>
+<li>Cryovials</li>
+<li>4-well dish</li>
+<li>Pre-cut stripes of tape to seal 4-well dish for counting</li>
+<li>Electric pipette</li>
+<li>25 mL, 10 mL, and 5 mL serological pipettes</li>
+<li>Aliquots of the media and buffers needed
+<ul>
+<li>cell culture medium (RPMI1640+10%FBS)</li>
+<li>PBS</li>
+<li>BD stain buffer (on ice)</li>
+<li>BD sample tags (on ice)</li>
+<li>Trypan blue</li>
+</ul>
+</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> Prepare aliquots before starting to work with the samples to avoid contamination of the stock solutions. Volumes of aliquots should be scaled according to number of samples.</div>
+<ul>
+<li>Thermo Scientific Megafuge 40R with TX-1000 rotor</li>
+<li>Slide coat TX-1000 buckets with TX-1000 ClickSeal biocontainment lids and 50 mL and 15 mL Adapter BIOFlex HC</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Any refrigerated centrifuge with swinging bucket rotor and buckets with biocontainment lids can be used.</div>
+<ul>
+<li>BD Rhapsody Express instrument</li>
+<li>BD Rhapsody P1200M and P5000M pipettes</li>
+<li>TapeStation 4200 system</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The 2100 Bioanalyzer (Agilent technologies) can alternatively be used for fragment distribution analyses.</div>
+<ul>
+<li>Invitrogen Qubit Fluorometer</li>
+<li>Eppendorf ThermoMixer C</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Any programmable thermomixer can be used.</div>
+<ul>
+<li>Magnetic separation stands for 5 mL, 1.5 mL and 0.2 mL</li>
+<li>3-laser flow cytometer (e.g., BD LSRII/Symphony)</li>
+<li>Light-transmission microscope</li>
+<li>Thermocycler</li>
+<li>Minifuge for PCR TubeStrips</li>
+<li>Illumina NovaSeq 6000/NextSeq500</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<div class="note">
+<span class="note-title">Note:</span> If both peripheral blood mononuclear cells (PBMC) isolation and red blood cell lysis are performed from the same sample in parallel, it is necessary to split the samples in 2 aliquots. The respective volumes depend on the starting material and should be adjusted to the required material for downstream applications.</div>
+<h3 id="sec3.1">Red blood cell (RBC) lysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>In this section, the RBC lysis procedure to prepare whole blood samples for scRNA-seq and FACS from blood of COVID-19 patients is described.</p>
+<ol>
+<li>Preparation of the RBC lysis solution
+<ol type="a">
+<li>Dilute 1:9 the 10× RBC lysis buffer (BioLegend) in sterile ddH<sub>2</sub>O freshly before use</li>
+</ol>
+</li>
+<li>Red blood cell lysis
+<ol type="a">
+<li>Transfer the blood tube in the biological hood and gently transfer 1 mL of blood to a 50 mL Falcon</li>
+<li>Using a serological pipette carefully add 10 mL of 1× RBC lysis buffer</li>
+<li>Shortly vortex the Falcon and incubate for 10 min between 20°C–22°C</li>
+<li>Dilute the cell solution in RBC lysis buffer by adding 40 mL of PBS</li>
+<li>Centrifuge the cell suspension at 300 × <i>g</i> for 10 min, 4°C, following the above-mentioned safety instructions</li>
+<li>Remove the supernatant and resuspend the cell pellet in the desired volume of PBS</li>
+<li>Count the cells following the above-mentioned safety instructions</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">PBMC purification using density-gradient centrifugation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>In this section the procedure to purify PBMC from blood of COVID-19 patients is described. Special emphasis will be paid on the necessary steps to avoid contamination of the working area and infection of the experimenter.</p>
+<ol start="3">
+<li>Preparation of the necessary materials
+<ol type="a">
+<li>For each sample prepare and label two 50 mL Falcons, fill one of the tubes with 10 mL of Pancoll pre-warmed to between 20°C–22°C and one with 20 mL PBS</li>
+<li>Label the tubes with all necessary information (PBS, Pancoll, sample ID, etc.)</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Pancoll density-gradient centrifugation
+<ol type="a">
+<li>Move the blood tube under the laminar flow hood</li>
+<li>Transfer the content (maximum 20 mL) to a new 50 mL Falcon and add an equal volume of PBS</li>
+<li>Gently overlay the diluted blood onto 10 mL Pancoll (pre-filled tubes) following the manufacturer’s protocol</li>
+<li>Centrifuge at 700 × <i>g</i> 25 min, 20°C, without breaks, following the above-mentioned safety instructions</li>
+<li>After centrifugation, take the Falcon out of the centrifugation bucket under the hood and carefully collect the PBMC fraction into a 50 mL Falcon pre-filled with PBS using a serological pipette
+<div class="note">
+<span class="note-title">Note:</span> PBS volume should be two volumes of the expected PBMC fraction; final volume should be adjusted accordingly.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Prevent mixing of the density phases to avoid contamination of the PBMC fraction with erythrocytes and granulocytes.</div>
+</li>
+<li>Centrifuge cells at 300 × <i>g</i> for 10 min, 4°C, following the above-mentioned safety instructions</li>
+<li>Remove supernatant and resuspend the PBMC in the desired volume of complete RPMI</li>
+<li>Count the cells following the above-mentioned safety instructions</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">Cryopreservation of PBMC samples (optional)</h3>
+<p>In this section we describe how to store PBMC samples for long-term sample acquisition and processing for scRNA-seq. Cells are stored in DMSO-supplemented freezing media in liquid nitrogen.</p>
+<ol start="5">
+<li>Preparation of required media and equipment
+<ol type="a">
+<li>2× freezing medium: RPMI1640 supplemented with 40% FBS and 20% DMSO</li>
+<li>Resuspension medium: RPMI1640 supplemented with 40% FBS</li>
+<li>Chill a cell freezing container in a 4°C refrigerator</li>
+<li>Cryovials</li>
+</ol>
+</li>
+<li>Cryopreservation Protocol
+<ol type="a">
+<li>Prepare and label cryovials, open them, and place them on ice in the hood</li>
+<li>Centrifuge the purified PBMC at 300 × <i>g</i> for 5 min, 4°C, following the above-mentioned safety instructions</li>
+<li>Resuspend the cell pellet in an appropriate volume of chilled resuspension medium to achieve a cell concentration of ∼2–10 × 10<sup>6</sup> cells/mL (maintain the cells on ice)</li>
+<li>Gently add an equivalent volume of chilled 2× freezing medium to achieve a cell concentration of ∼1–5 × 10<sup>6</sup> cells/mL</li>
+<li>Gently mix the cells</li>
+<li>Dispense 1 mL aliquots of the cell suspension into the cryovials on ice</li>
+<li>Close the cryovials with the corresponding lid</li>
+<li>Remove the chilled cell freezing container from the 4°C refrigerator and place it in the hood</li>
+<li>Wipe each cryovial with Terralin PAA and place inside the cell freezing container</li>
+<li>Wipe the outside of the cell freezing container with Terralin PAA</li>
+<li>Move the container out of the hood and place it in a −80°C freezer for minimum 12 h, ensure that the bottom and top vents of the container are not obstructed to allow adequate air flow</li>
+<li>Transfer the cryovials to liquid nitrogen for long-term storage</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Thawing procedure:
+<ol type="a">
+<li>Remove cryovial(s) from liquid nitrogen storage and transport immediately on ice in the hood</li>
+<li>Thaw the samples in a reservoir containing water at 37°C for 2–3 min</li>
+<li>Gently transfer thawed cell suspension into an empty 50 mL Falcon using a 1 mL pipette tip (If possible, use wide-bore tips for the complete thawing procedure)</li>
+<li>Rinse the cryovial with 1 mL warm complete RPMI and add the medium dropwise to the 50 mL Falcon containing the cell suspension while gently shaking the Falcon
+<div class="note">
+<span class="note-title">Note:</span> Dropwise addition of medium allows the cells sufficient time for a gradual loss of DMSO and therefore prevents osmotic lysis.</div>
+</li>
+<li>Serially dilute the cells with complete RPMI a total of 4 times by 1:1 volume addition with approximately 1 min wait between additions (final volume: 32 mL)</li>
+<li>Put all 50 mL Falcons in a centrifuge bucket inside the hood and close the lid</li>
+<li>Centrifuge cells at 300 × <i>g</i> for 5 min between 20 and 22°C, following the above-mentioned safety instructions</li>
+<li>Remove most of the supernatant, leaving ∼1 mL and resuspend cell pellet in this volume using a 1 mL pipette tip</li>
+<li>Add an additional 4 mL complete growth medium to achieve a total volume of ∼5 mL</li>
+<li>Proceed to count viable cells as described above and adjust the cell concentration according to the downstream protocol</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Oligo-coupled antibody-based sample multiplexing (and optionally AbSeq)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> from 1 h to 3 h</div>
+<p>In this section the staining with universal antibodies conjugated to unique polyadenylated DNA barcodes (sample tags) is described. The use of sample tags allows multiplexing of up to 12 samples reducing potential technical batch effects. Furthermore, multiplexing of samples significantly reduces the time and costs of the library preparation and sequencing processes. After the sample tag labeling, an optional step can be introduced to detect surface protein expression. This protocol is termed AbSeq by BD and is based on a second staining using currently up to 100 selected antibodies conjugated to oligonucleotides (Ab-Oligos) (<a href="#fig4">Figure 4</a>). Cells can be either co-labeled with sample tag and Ab-Oligos concurrently in the same tube or labeled sequentially. The latter allows reducing the cost per sample considerably, but increases both time and the risk to lose cells during the additional washing steps. It is, therefore, critical to take these considerations into account for the experimental design. Here we describe the sequential labeling approach. Considering the potential loss of cells during the extra wash steps, starting with 1 million cells is recommended, but the following protocol also works with low-abundance samples (&lt; 100,000 cells).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Schematic overview for the combination of WTA, sample tag, and AbSeq</div>
+</figcaption>
+</figure>
+<ol start="8">
+<li>Labeling samples with sample tag-coupled antibodies
+<ol type="a">
+<li>Transfer 20,000–2 × 10<sup>6</sup> cells into 200–500 μL of BD Stain Buffer in a 5 mL Eppendorf tube</li>
+<li>Proceed to spin samples at 300 × <i>g</i> for 5 min, 4°C following the above-mentioned safety instructions</li>
+<li>Resuspend the cell pellet in 190 μL of BD Stain Buffer</li>
+<li>For each sample, transfer the cell suspension to the respective sample tag tube previously aliquoted (see Note) and mix by pipetting only
+<div class="note">
+<span class="note-title">Note:</span> The original BD Rhapsody protocol uses the whole volume of 20 μL of each sample tag-coupled antibody mix for labeling the samples. However, using 10 μL yielded comparable results.</div>
+</li>
+<li>Incubate the cell suspension between 20°C and 22°C for 20 min</li>
+<li>Add 200 μL of BD Stain Buffer to the cell suspension and mix by pipetting</li>
+<li>Proceed to spin samples at 300 × <i>g</i> for 5 min, 4°C following the above-mentioned safety instructions</li>
+<li>Carefully remove the supernatant with a pipette leaving a small amount of medium to ensure the cell pellet is not disturbed</li>
+<li>Resuspend the pellet in 500 μL of BD Stain Buffer</li>
+<li>Repeat step 8g and centrifuge the cell suspension at 300 × <i>g</i> for 5 min, 4°C following the above-mentioned safety instructions</li>
+<li>Remove the supernatant leaving a small amount of medium and resuspend the pellet in 300 μL of BD Sample Buffer</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For low-abundance samples leave ∼50 μL of supernatant and resuspend the cells in a total volume of 100 μL.</div>
+<div class="note">
+<span class="note-title">Note:</span> For low-abundance samples, a co-labeling approach as mentioned above could be used to decrease the potential risk of cell loss. It is important, however, to consider that this approach substantially increases the cost for the AB-labeling per sample. For more details, please, refer to the BD protocol. (<a href="http://static.bdbiosciences.com/documents/BD-AbSeq-Ab-Oligos-Single-Cell-Multiplexing-Kit-User-Guide.pdf">http://static.bdbiosciences.com/documents/BD-AbSeq-Ab-Oligos-Single-Cell-Multiplexing-Kit-User-Guide.pdf</a>)</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> If the Ab-oligo labeling step follows, samples need to be resuspended in BD Stain Buffer, otherwise resuspend in BD Sample Buffer.</div>
+<ol start="9">
+<li>Pooling samples
+<ol type="a">
+<li>Count the cell number of each sample after labeling as described above</li>
+<li>Pool the cells of all samples at equal numbers and adjust the volume with BD Sample Buffer to a final volume of 610 μL</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If Ab-Oligo staining is not performed, proceed immediately with the single-cell capture step.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Accurate cell counting is critical for obtaining an equal distribution of cells between the different samples in the final cell mixture.</div>
+<ol start="10">
+<li>
+<b>Optional:</b> Ab-Oligo Labeling
+<ol type="a">
+<li>After Oligo-coupled antibody-based sample multiplexing, centrifuge the cell mixture at 300 × <i>g</i> for 5 min, 4°C following the above-mentioned safety instructions</li>
+<li>To block non-specific AB binding sites, remove the supernatant, add 100 μL blocking buffer (95 μL BD Stain Buffer + 5 μL human FcR blocking reagent) and incubate the cell suspension for 10 min between 20°C and 22°C</li>
+<li>Add 100 μL of the antibody mix to the cell suspension and incubate the cell suspension for 40 min on ice
+<div class="note">
+<span class="note-title">Note:</span> BD AbSeq oligo-coupled antibodies are optimized for use at a final concentration of 1:100. Thus, 2 μL of each antibody are mixed and depending on the numbers of antibodies used stain buffer is added to reach a volume of 100 μL of the antibody mix. At this point the mix is added to the cell suspension in blocking buffer reaching a final volume of 200 μL.</div>
+</li>
+<li>Add 1 mL of Stain Buffer and proceed to spin the samples at 300 × <i>g</i> for 5 min, 4°C, following the above-mentioned safety instructions</li>
+<li>Repeat the wash step two more times</li>
+<li>Resuspend the cell pellet in 300 μL of BD Sample Buffer</li>
+<li>Count the cells as described above</li>
+<li>Considering the number of cells to load on the BD Rhapsody cartridge, adjust the volume with Sample Buffer to obtain a final volume of 610 μL</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.5">BD Rhapsody single-cell capture and cDNA synthesis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 h</div>
+<p>This section describes cell loading and capturing of single cells onto the BD Rhapsody Cartridge (RC) and subsequently cDNA synthesis and exonuclease treatment. The critical step here is to define the desired number of cells to load on the RC. BD estimates a multiplet rate of 4.7% when loading 20,000 cells. Using the oligo-coupled antibody-based sample multiplexing strategy enables to efficiently identify doublets in the data <i>in silico</i> thus allowing to super-load a higher number of cells thereby substantially increasing the number of singlets (<a href="#bib7">Stoeckius et al., 2018</a>). On average, we observe a doublet rate ranging roughly from 20 to 40 % when super-loading the cartridges with 60,000 cells and end up with approximately 15–20k cells. The inevitable increase in doublets of course also leads to higher sequencing cost for the informative cells as the doublets take up a substantial part of the reads. But as clinical samples are precious and sequencing costs decrease continuously, this is the preferred approach to get as much information per sample with as little batch effects as possible.</p>
+<ol start="11">
+<li>Prepare the following items before starting the experiment:
+<ol type="a">
+<li>Set two thermomixers at 37°C and 80°C, respectively</li>
+<li>Thaw all the reagents from the BD Rhapsody cDNA kit and place them on ice. Remove the enzymes from −20°C only right before use</li>
+<li>Place Sample Buffer, 1 M DTT, Lysis Buffer, and Cell capture beads from the BD Rhapsody Cartridge Reagent kit on ice</li>
+<li>Prepare Cell Capture Beads by placing the Cell Capture Bead tube on the magnet for 1 min and remove the storage buffer. Afterward, remove the tube from the magnet and resuspend the beads in 750 μL of cold BD Sample Buffer</li>
+<li>Prepare Lysis Buffer by adding 75 μL 1 M DTT to one 15 mL Lysis Buffer bottle</li>
+<li>Ensure that the waste collector and a labeled 5 mL LoBind tube are inserted in the designated slots of the BD Rhapsody Express instrument (<a href="#fig5">Figure 5</a>). The waste collector located inside the instrument must be pre-filled with 1,400 μL absolute ethanol
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. BD Rhapsody Express instrument</div>
+</figcaption>
+</figure>
+</li>
+<li>Move the left slider on top of the instrument in the middle in position <b>0</b> and the slider on the front to <b>WASTE</b>
+</li>
+<li>Prepare a Terralin PAA bottle and a respiratory protection mask (FFP2 or FFP3) next to the BD Rhapsody express instrument for the case of contamination</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> In order to assure no potential contamination, the cell loading step has to be carried out under the laminar flow hood. Once the cells are loaded on the RC, it can be brought outside the hood to proceed with the protocol.</div>
+<div class="note">
+<span class="note-title">Note:</span> For operations on the BD Rhapsody Express instrument only electronic BD Rhapsody P1200M and P5000M pipettes can be used. The flow rate in these pipettes is optimized for each different step. For more details on how to use the BD Rhapsody express instrument please consult the BD user guide (<a href="http://static.bdbiosciences.com/documents/BD-Rhapsody-Single-Cell-Analysis-System-Instrument.pdf">http://static.bdbiosciences.com/documents/BD-Rhapsody-Single-Cell-Analysis-System-Instrument.pdf</a>).</div>
+<ol start="12">
+<li>Priming of the RC
+<div class="note">
+<span class="note-title">Note:</span> All buffers used in this step need to be equilibrated between 20°C and 22°C.</div>
+<ol type="a">
+<li>Place the RC into the BD Rhapsody Express instrument assuring that the RC barcodes faces out</li>
+<li>Set the P1200M pipette to “Prime/Treat” mode</li>
+<li>Load 700 μL of absolute ethanol onto the RC</li>
+<li>Remove the ethanol from the RC loading 700 μL of air</li>
+<li>Load 700 μL of Cartridge Wash Buffer 1 (CWB1) and leave it for 1 min at between 20°C and 22°C</li>
+<li>Remove the CWB1 from the RC loading 700 μL of air and subsequently load 700 μL of CWB1 once more leaving it for 10 min between 20°C and 22°C</li>
+<li>Load the RC with 700 μL of air to empty it and immediately load 700 μL Cartridge Wash Buffer 2
+<div class="note">
+<span class="note-title">Note:</span> The RC can be primed up to 4 h and stored at a temperature between 20°C and 22°C before cell loading.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>Cell Loading onto the RC and bead retrieval
+<ol type="a">
+<li>With the RC placed on the BD Rhapsody Express instrument empty the RC by loading air into it with the P1200M set in “Prime/Treat” mode</li>
+<li>Bring the RC and P1200M pipette set in “Cell Load” mode under the laminar flow hood
+<div class="note">
+<span class="note-title">Note:</span> Please consider that in “Cell Load” mode, it is required to press the button of the P1200M a first time to aspirate 40 μL of air, and then after immersing the tip in cold cell suspension to press once more in order to fill the tip and aspirate 575 μL of solution.</div>
+</li>
+<li>Mix the cell suspension by pipetting with a normal 1,000 μL pipette and then immediately load 575 μL cell suspension on the RC using the P1200M pipette</li>
+<li>Incubate the RC at 20°C–22°C for 15 min
+<div class="note">
+<span class="note-title">Note:</span> At this step, if working with two cartridges in parallel, proceed with cell loading into the second one. We recommend waiting until almost the end of the incubation of step 13d. This allows processing the first cartridge until step (14g) during the incubation time of the second one.</div>
+</li>
+<li>In the meantime:
+<ol type="i">
+<li>Disinfect your hands and wipe the outside of RC and the P1200M carefully with Terralin PAA assuring that the entire surface has been decontaminated</li>
+<li>Transfer both the P1200AM and the RC outside of the hood and place the latter into the Rhapsody Express instrument</li>
+</ol>
+</li>
+<li>Set the P1200M pipette in “Prime/Treat” mode and load the RC with air to remove cells in excess
+<div class="note">
+<span class="note-title">Note:</span> The diluted cell solution will be discarded directly into the waste collector pre-filled with absolute ethanol. The final concentration of ethanol inside the container is sufficient to neutralize the virus and the waste can be considered virus free.</div>
+</li>
+<li>Set the P1200M pipette in “Bead Load” mode</li>
+<li>Resuspend the BD beads by pipetting with a normal 1,000 μL pipette and then immediately aspirate 630 μL bead suspension and load on the RC using the P1200M pipette in “Bead Load” mode</li>
+<li>Incubate the RC at 20°C–22°C for 3 min</li>
+<li>Shake the RC at 20°C–22°C for 15 s using a plate mixer or Thermo mixer at 1,000 rpm to resuspend the beads in excess before to remove them</li>
+<li>Return the RC on the BD Rhapsody Express instrument and wait 30 s</li>
+<li>Set the P1200M pipette in “Wash” mode and load the RC with air and cold Sample Buffer in the following order
+<ol type="i">
+<li>Air</li>
+<li>Cold Sample Buffer</li>
+<li>Air</li>
+<li>Cold Sample Buffer</li>
+</ol>
+</li>
+<li>Move the left slider on the BD Express instrument to <b>LYSIS</b> and set the P1200M in “Lysis” mode</li>
+<li>Load 550 μL Lysis Buffer + DTT on the RC and incubate at 20°C–22°C for 2 min</li>
+<li>Set the P5000M pipette in “Retrieval” mode</li>
+<li>Move the front slider on the BD Express instrument to <b>BEADS</b> and the left slider on <b>RETRIEVAL</b>
+</li>
+<li>Move the retrieval magnet in down position and leave it for 30 s</li>
+<li>Aspirate 5,000 μL Lysis Buffer + DTT with the P5000M pipette</li>
+<li>Place the P5000M pipette in position to seal against the gasket of the RC</li>
+<li>Move the left slider to the middle position (0) and <b>immediately</b> load 4,950 μL Lysis Buffer with DTT</li>
+<li>Move the front slider on the BD Express instrument to <b>OPEN</b> and collect the 5 mL LoBind Tube</li>
+</ol>
+</li>
+</ol>
+<ol start="14">
+<li>Washing of the cell capture beads
+<ol type="a">
+<li>Place the 5 mL LoBind tube on a large magnetic stand for 5 mL Eppendorf tubes</li>
+<li>After 1 min remove all but ∼1 mL of supernatant without disturbing the beads</li>
+<li>Removing the tube from the magnet, gently pipet the beads and transfer them to a new 1.5 mL LoBind Tube</li>
+<li>Place the tube on the magnetic stand holding 1.5 mL tubes for about 2 min and remove supernatant
+<div class="critical">
+<span class="critical-title">Critical:</span> Avoid leaving Lysis Buffer in the tube. Lysis Buffer might inhibit the reverse transcription reaction<b>.</b>
+</div>
+</li>
+<li>Remove the tube from the magnet and gently resuspend the beads with 1 mL of cold Bead Wash Buffer (BWB)</li>
+<li>Place the tube on the magnet for ∼2 min and remove the supernatant</li>
+<li>Repeat the washing step once more and proceed with the reverse transcriptase reaction
+<div class="note">
+<span class="note-title">Note:</span> Beads can sit in BWB on ice for up to 30 min before proceeding with the next steps. If working with two cartridges, at this time the second cell incubation in RC of step 13d should be finished and can be further processed. In this way. It is possible to proceed with the Reverse transcription and Exonuclease I treatment with both samples together</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="15">
+<li>Reverse transcription and treatment with Exonuclease I on the cell capture beads
+<ol type="a">
+<li>Prepare the cDNA mix (<a href="#tbl1">Table 1</a>) and assure that a Thermomixer is set to 37°C and 1,200 rpm
+<table id="tbl1">
+<caption>Table 1. cDNA mix</caption>
+<thead>
+<tr>
+<th>Components</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RT buffer</td>
+<td>40</td>
+</tr>
+<tr>
+<td>dNTP</td>
+<td>20</td>
+</tr>
+<tr>
+<td>RT 0.1 DTT</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Bead RT/PCR enhancer</td>
+<td>12</td>
+</tr>
+<tr>
+<td>RNase inhibitor</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Reverse transcriptase</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>98</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>200</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Place the tube containing the Cell Capture Beads on the magnetic stand for ∼2 min and remove the supernatant</li>
+<li>Pipet 200 μL cDNA mix into the tube containing the Cell Capture Beads</li>
+<li>On a thermomixer incubate the samples at 1,200 rpm and 37°C for 20 min</li>
+<li>In the meantime, prepare the Exonuclease I mix (<a href="#tbl2">Table 2</a>) and assure that a thermomixer is set at 80°C without shaking
+<table id="tbl2">
+<caption>Table 2. Exonuclease I mix</caption>
+<thead>
+<tr>
+<th>Components</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× exonuclease I buffer</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Exonuclease</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>170</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>200</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Place the tube with the Cell Capture Beads incubated with the cDNA mix on the magnet for ∼2 min and remove the supernatant</li>
+<li>Remove tube from the magnet and pipet 200 μL of Exonuclease I Mix onto the beads and gently pipet the mix</li>
+<li>Incubate the bead suspension first in a thermomixer at 1,200 rpm and 37°C for 30 min and then at 80<b>°</b>C for 20 min (no shaking)</li>
+<li>Place tube with the Cell Capture Beads on the magnet for ∼1 min and remove the supernatant</li>
+<li>Resuspend the beads in 200 μL of cold Resuspension Buffer</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> At this point, the cDNA sample can be stored at 2°C to 8°C for ≤3 months.</div>
+<h3 id="sec3.6">BD Rhapsody 3′ whole transcriptome analysis (WTA)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼8 h</div>
+<p>This section describes the workflow to prepare single-cell whole transcriptome mRNA, sample tag, and optionally AbSeq libraries. After a first denaturation step in which sample tag sequences (and AbSeq sequences) are denatured off the beads, it is possible to generate the different sequencing libraries (WTA, sample tag, and AbSeq) by several PCR steps. BD provides the protocol for performing WTA analysis either with sample tag or AbSeq. Here, we further describe an optional extension that allows to process the 3 different products together (<a href="#fig6">Figure 6</a>).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Library preparation workflow</div>
+</figcaption>
+</figure>
+<ol start="16">
+<li>Prepare the following items before starting the experiment:
+<ol type="a">
+<li>Thaw all the reagents from the BD Rhapsody WTA amplification kit and place them on ice. Remove the enzymes from −20°C only right before use</li>
+<li>Set three thermomixers at 95°C, 37°C and 25°C, respectively</li>
+<li>Save the program shown in <a href="#tbl3">Table 3</a> on the thermomixer
+<table id="tbl3">
+<caption>Table 3. Extension reaction program</caption>
+<thead>
+<tr>
+<th>Temperature</th>
+<th>Rpm</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25°C</td>
+<td>1,200</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>37°C</td>
+<td>1,200</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>45°C</td>
+<td>1,200</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>55°C</td>
+<td>1,200</td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The ramp rates of the thermomixer must be set to maximum to assure that the device reaches the desired temperature in the shortest time possible.</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend saving the program (<a href="#tbl3">Table 3</a>) in the same thermomixer that is set at 25°C from step 17f.iii. This allows to prevent that the sample handling time is unnecessarily extended.</div>
+<ol start="17">
+<li>Random Priming Extension (RPE) on the cell capture beads
+<ol type="a">
+<li>Prepare the Random Primer Mix (<a href="#tbl4">Table 4</a>) and keep at 20°C–22°C
+<table id="tbl4">
+<caption>Table 4. Random primer mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WTA extension buffer</td>
+<td>20</td>
+</tr>
+<tr>
+<td>WTA extension primers</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>134</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Place the Exonuclease I-treated beads on the magnet for ∼2 min, remove the supernatant and resuspend the beads in 75 μL Elution Buffer</li>
+<li>Heat the beads in a thermomixer at 95°C for 5 min without shaking (<a href="#fig6">Figure 6</a>A)</li>
+<li>Put the tube on the magnet for ∼2 min, remove the supernatant and transfer it (AbSeq/sample tag solution) to a new labeled tube. Keep the supernatant at 4°C for later processing</li>
+<li>Resuspend the beads in 174 μL of Random Primers Mix (<a href="#fig6">Figure 6</a>B)</li>
+<li>Incubate the tube in the following order
+<ol type="i">
+<li>95°C for 5 min (no shaking)</li>
+<li>37°C, 1,200 rpm for 5 min</li>
+<li>25°C, 1,200 rpm for 15 min</li>
+</ol>
+</li>
+<li>In the meantime, proceed to prepare the Extension Enzyme Mix (<a href="#tbl5">Table 5</a>)
+<table id="tbl5">
+<caption>Table 5. Extension enzyme mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1×library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10 mM dNTP</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Bead RT/PCR enhancer</td>
+<td>12</td>
+</tr>
+<tr>
+<td>WTA extension enzyme</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>After the incubations, add 26 μL of Extension Enzyme Mix into the tube containing the beads and place it in the thermomixer with the pre-saved Extension Reaction Program (see “<a href="#before-you-begin">Before you begin</a>” section at the start of this step)
+<div class="note">
+<span class="note-title">Note:</span> While the program is running it is possible to proceed with the sample tag (optional AbSeq) PCR 1 step (<a href="#fig6">Figure 6</a>C).</div>
+</li>
+<li>Place the tube containing the Random Primer Extension product on the magnet (from step 17h), remove the supernatant and resuspend the beads in 205 μL of Elution Buffer</li>
+<li>Denature the products off the beads by incubating the sample at 95°C for 5 min (no shaking)</li>
+<li>Briefly centrifuge the sample and then resuspend the beads by placing the tube in a thermomixer at any temperature for 30 s at 1,200 rpm</li>
+<li>Place the tube on a magnet and transfer the supernatant containing the Random Primer Extension products in a new tube and proceed with step 18</li>
+<li>Pipette 200 μL of cold bead resuspension buffer in the tube with the beads</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> At this step, the beads can be stored at 4°C for up to 3 months.</div>
+<ol start="18">
+<li>Random Primer Extension Product purification (<a href="#fig6">Figure 6</a>B)
+<ol type="a">
+<li>Before to start freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as Random Primer Extension Purified Product</li>
+<li>Pipet 360 μL of the beads into the tube containing 200 μL of Random Primer Extension product (from step 17l) and gently mix</li>
+<li>Incubate at 20°C–22°C for 10 min</li>
+<li>Place the suspension on the magnet for 5 min until the sample becomes clear and remove the supernatant</li>
+<li>Add 1 mL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 18e and 18f once more</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 5 min</li>
+<li>Resuspend the beads in 40 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place the tube on the magnet until the solution is clear and transfer the supernatant in the new labeled tube</li>
+</ol>
+</li>
+</ol>
+<ol start="19">
+<li>RPE PCR (<a href="#fig6">Figure 6</a>D)
+<ol type="a">
+<li>Prepare the RPE PCR Mix (<a href="#tbl6">Table 6</a>)
+<table id="tbl6">
+<caption>Table 6. RPE PCR mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>60</td>
+</tr>
+<tr>
+<td>Universal oligo</td>
+<td>10</td>
+</tr>
+<tr>
+<td>WTA amplification primer</td>
+<td>10</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td>80</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Add 80 μL of the RPE PCR mix to 40 μL of the Random Primer Extension Purified Product from step 18j</li>
+<li>Pipette around 60 μL of the reaction in two 0.2 mL PCR tubes and run the following PCR program (<a href="#tbl7">Table 7</a>)
+<table id="tbl7">
+<caption>Table 7. RPE PCR program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>12–13 (for more than 10K cells use 12 cycles)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>1 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Splitting the reaction in two tubes assures that the entire volume in each tube is reaching the same temperature increasing the efficiency of the PCR reaction.</div>
+<div class="note">
+<span class="note-title">Note:</span> Suggested PCR cycles need to be optimized for different cell types and cell number.</div>
+</li>
+<li>After the PCR, briefly centrifuge the tubes, combine the two reactions in one 1.5 mL tube and proceed to purify the product with SPRIselect beads</li>
+</ol>
+</li>
+</ol>
+<ol start="20">
+<li>RPE PCR product purification (<a href="#fig6">Figure 6</a>E)
+<ol type="a">
+<li>Before to start freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as Random Primer Extension Purified Product</li>
+<li>Pipet 120 μL of the beads into the tube containing 120 μL of RPE PCR product and gently mix</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the suspension on the magnet for 3 min until the sample becomes clear and remove the supernatant</li>
+<li>Add 300 μL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 20e and 20f once more</li>
+<li>Assure to remove all the supernatant and drops that could be on the wall of the tube and air dry the sample at 20°C–22°C for 5 min</li>
+<li>Resuspend the beads in 40 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place on the magnet until the solution is clear and transfer the supernatant in the new labeled tube</li>
+<li>Quantify the concentration and check the fragment distribution using the TapeStation System</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The TapeStation profile should be a broad peak from ∼200 bp to 2,000 bp (<a href="#fig7">Figure 7</a>A). For proceeding with the WTA index PCR step set a region between 150 bp and 600 bp and consider this concentration to calculate how much template to add.</div>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. TapeStation profiles</div>
+</figcaption>
+</figure>
+<ol start="21">
+<li>Sample tag PCR 1 (<a href="#fig6">Figure 6</a>C)
+<ol type="a">
+<li>Prepare the sample tag PCR 1 Mix (<a href="#tbl8">Table 8</a>)
+<table id="tbl8">
+<caption>Table 8. Sample tag PCR 1 mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Universal oligo</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Bead RT/PCR enhancer</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Sample Tag PCR 1 primer</td>
+<td>1</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>133</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>In a 1.5 mL tube mix 133 μL of sample tag PCR 1 mix with 67 μL of the sample tag product from step 17d.</li>
+<li>Split the PCR 1 mix in four 0.2 mL PCR tubes and run the following program (<a href="#tbl9">Table 9</a>)
+<table id="tbl9">
+<caption>Table 9. Sample tag PCR 1 program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>11–15 (for more than 10K cells use 11cycles)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>3 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Suggested PCR cycles need to be optimized for different cell types and cell number.</div>
+</li>
+<li>After the PCR, combine the 4 reactions in one 1.5 mL tube and proceed to purify the product with SPRIselect beads</li>
+</ol>
+</li>
+</ol>
+<ol start="22">
+<li>Sample tag PCR 1 purification (<a href="#fig6">Figure 6</a>F)
+<ol type="a">
+<li>Before to start freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as sample tag PCR1 purified product</li>
+<li>Pipet 360 μL of the SPRIselect beads into the tube containing 200 μL of sample tag PCR1 and gently mix</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the suspension on the magnet for 5 min until the sample becomes clear and remove the supernatant</li>
+<li>Add 600 μL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 22e and 22f once more</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 5 min</li>
+<li>Resuspend the beads in 30 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place the tube on the magnet until the solution is clear and transfer the supernatant in the new labeled tube</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> After the purification steps both the RPE PCR and sample tag PCR 1 products can be stored at 4°C if the protocol is continued within 24 h or can be stored at −20°C for up to 6 months.</div>
+<ol start="23">
+<li>WTA Index PCR (<a href="#fig6">Figure 6</a>G)
+<ol type="a">
+<li>Considering the concentration of the 150–600 bp region, dilute the RPE PCR product to a concentration of 2 nM using Elution Buffer.</li>
+<li>Prepare the WTA Index PCR mix as described below (<a href="#tbl10">Table 10</a>)
+<table id="tbl10">
+<caption>Table 10. WTA index PCR mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Library forward primer</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Library reverse primer (1–4)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>5</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>40</b></td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> In the BD Rhapsody WTA Amplification four different Library Reverse primers are present. When preparing multiple libraries, for each of them different reverse primers should be used to allow combined sequencing.</div>
+</li>
+<li>Combine 10 μL of 2 nM template with 40 μL of the WTA Index PCR mix</li>
+<li>Run the following program (<a href="#tbl11">Table 11</a>)
+<table id="tbl11">
+<caption>Table 11. WTA index PCR program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>8–9 (for less than 2 nM use 9 cycles)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>After PCR, briefly centrifuge the tube for collecting all the sample at the bottom of the tube</li>
+<li>Add 60 μL of nuclease-free water to the WTA index PCR product, pipet and then transfer 100 μL into a new 0.2 mL PCR tube</li>
+</ol>
+</li>
+</ol>
+<ol start="24">
+<li>WTA index PCR product purification (dual-sided cleanup) (<a href="#fig6">Figure 6</a>H)
+<ol type="a">
+<li>Before to start freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended, prepare a new 0.2 mL PCR tube for the second clean up and label a new 1.5 mL tube as WTA index PCR Purified Product.</li>
+<li>Pipet 60 μL of the beads into the tube containing 100 μL of the WTA Index PCR product (from step 23f) and gently mix</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the suspension on the magnet for 2 min</li>
+<li>In the meantime, pipet 15 μL of SPRIselect beads in a new 0.2 mL PCR tube</li>
+<li>Transfer 160 μL of the supernatant from step 24d in the tube containing 15 μL of beads and gently pipet</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the tube on the magnet for 2 min until the suspension becomes clear and remove the supernatant</li>
+<li>Add 300 μL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 24i and 24j once more</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 2 min</li>
+<li>Resuspend the beads in 30 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place the tube on the magnet until the solution is clear and transfer the supernatant in the new labeled tube</li>
+<li>Quantify the concentration with a Qubit Fluorometer and check the fragment distribution with the TapeStation System (<a href="#fig7">Figure 7</a>B)</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The fragment distribution should show a peak between 250 and 1,000 bp (<a href="#fig7">Figure 7</a>B). If lower peaks are shown or the concentration is too low refer to the troubleshooting section (see below).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> If a peak at ∼165 bp is shown in the TapeStation, profile a second purification is recommended using a beads ratio of 0.75 (following the steps from 24f to 24o).</div>
+<ol start="25">
+<li>Sample tag PCR 2 (<a href="#fig6">Figure 6</a>I)
+<ol type="a">
+<li>Prepare the sample tag PCR 2 Mix (<a href="#tbl12">Table 12</a>)
+<table id="tbl12">
+<caption>Table 12. Sample tag PCR 2 mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Universal oligo</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sample tag PCR 2 primer</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>15</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>45</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>In a 1.5 mL tube mix 45 μL of sample tag PCR 2 mix with 5 μL of the sample tag PCR 1 product from step 22j</li>
+<li>Run the following program (<a href="#tbl13">Table 13</a>)
+<table id="tbl13">
+<caption>Table 13. Sample tag PCR 2 program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>3 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>After the PCR, proceed to purify the product with SPRIselect beads</li>
+</ol>
+</li>
+<li>Sample tag PCR 2 purification (<a href="#fig6">Figure 6</a>J)
+<ol type="a">
+<li>Before to start freshly, prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as sample tag PCR2 purified product</li>
+<li>Pipet 60 μL of the beads into the tube containing 50 μL of sample tag PCR 2 product and gently mix</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the suspension on the magnet for 3 min until the sample becomes clear and remove the supernatant</li>
+<li>Add 200 μL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 26e and 26f once more</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 3 min</li>
+<li>Resuspend the beads in 30 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place on the magnet until the solution is clear and transfer the supernatant in a new labeled tube</li>
+<li>Measure the concentration with a Qubit fluorometer</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> After the purification steps both the WTA Index and sample tag PCR 2 products can be store at 4°C if the protocol is continued within 24 h or can be stored at −20°C for up to 6 months.</div>
+<ol start="27">
+<li>Sample tag index PCR (<a href="#fig6">Figure 6</a>K)
+<ol type="a">
+<li>Prepare the sample tag index PCR mix as described below (<a href="#tbl14">Table 14</a>):
+<table id="tbl14">
+<caption>Table 14. Sample tag index PCR mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Library forward primer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Library reverse primer (1–4)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>18</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>47</b></td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> When preparing libraries from multiple RC, for each of them different reverse primers must be used. However, for one RC the same index for both the WTA and sample tag can be used.</div>
+</li>
+<li>Combine 3 μL of 1 ng/μL of template with 47 μL of the sample tag index PCR mix</li>
+<li>Run the following program (<a href="#tbl15">Table 15</a>)
+<table id="tbl15">
+<caption>Table 15. Sample tag index PCR program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>6–8 (for concentrations between 0.5 and 1.1 ng/μL use 6 cycles)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Suggested PCR cycles need to be optimized for different cell types and cell number</div>
+</li>
+<li>After PCR, briefly centrifuge the tube for collecting the entire sample at the bottom of the tube and proceed with the purification.</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>Sample tag index PCR product purification (<a href="#fig6">Figure 6</a>L)
+<ol type="a">
+<li>Before to start, freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as sample tag index purified product</li>
+<li>Pipet 40 μL of the beads into the tube containing 50 μL of sample tag index PCR product and gently mix</li>
+<li>Incubate at 20°C–22°C for 5 min</li>
+<li>Place the suspension on the magnet for 3 min until the sample becomes clear and remove the supernatant</li>
+<li>Add 200 μL of 80% ethanol into the tube sitting on the magnet</li>
+<li>Wait 30 s and then remove the supernatant</li>
+<li>Repeat steps 28e and 28f once more</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 3 min</li>
+<li>Resuspend the beads in 30 μL of Elution Buffer and incubate at 20°C–22°C for 2 min</li>
+<li>Place the tube on the magnet until the solution is clear and transfer the supernatant in a new labeled tube</li>
+<li>Quantify the concentration with a Qubit Fluorometer and check the fragment distribution with TapeStation System (<a href="#fig7">Figure 7</a>C)</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The sample tag should show a unique peak at ∼290 bp. If other peaks are shown or the concentration is too low refer to the troubleshooting section (see below).</div>
+<ol start="29">
+<li>
+<b>Optional:</b> <u>AbSeq Library</u>
+<div class="note">
+<span class="note-title">Note:</span> If the samples have been stained with oligo-coupled AbSeq antibodies as well, an AbSeq library needs to be prepared together with the WTA and sample tag library. In this case, the protocol mainly deviates in one step, the sample tag PCR 1 step (step 21), as primers specifically targeting the AbSeq oligo peptides are added to the PCR 1 mix.</div>
+<ol type="a">
+<li>AbSeq/sample tag PCR 1 (<a href="#fig6">Figure 6</a>C)
+<ol type="i">
+<li>Prepare the AbSeq/sample tag PCR 1 Mix (<a href="#tbl16">Table 16</a>)
+<table id="tbl16">
+<caption>Table 16. AbSeq/sample tag PCR 1 mix</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>1× library (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR master mix</td>
+<td>117.5</td>
+</tr>
+<tr>
+<td>Universal oligo</td>
+<td>23.5</td>
+</tr>
+<tr>
+<td>Bead RT/PCR enhancer</td>
+<td>14.1</td>
+</tr>
+<tr>
+<td>Sample tag PCR 1 primer</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>AbSeq PCR 1 primer</td>
+<td>11.8</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>168</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>In a 1.5 mL tube mix 168 μL of AbSeq/sample tag PCR 1 mix with 67 μL of the AbSeq/sample tag product from step 17d.</li>
+<li>Split the PCR 1 mix in four 0.2 mL PCR tubes and run the following program (<a href="#tbl17">Table 17</a>)
+<table id="tbl17">
+<caption>Table 17. AbSeq/sample tag PCR 1 program</caption>
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot start</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>11–15 (for more than 10K cells use 11cycles)</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>3 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>∞</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Suggested PCR cycles need to be optimized for different cell types and cell number.</div>
+</li>
+<li>After the PCR, combine the 4 reactions in one 1.5 mL tube and proceed to purify the product with SPRIselect beads</li>
+</ol>
+</li>
+<li>AbSeq/sample tag PCR 1 Purification (<a href="#fig6">Figure 6</a>F)
+<ol type="i">
+<li>Before to start, freshly prepare 80% ethanol, vortex the SPRIselect beads until they are fully resuspended and label a new 1.5 mL tube as AbSeq/sample tag PCR1 purified product</li>
+<li>Pipet 423 μL of beads in 235 μL of AbSeq/sample tag product and incubate 5 min at 20°C–22°C</li>
+<li>Place the tube on the magnets, wait 5 min, and remove supernatant</li>
+<li>Wash twice with 600 μL of 80% ethanol</li>
+<li>Assure to remove all the supernatant and drops of ethanol on the wall of the tube and air dry the sample at 20°C–22°C for 5 min.</li>
+<li>Resuspend in 30 μL Elution Buffer and incubate 2 min at 20°C–22°C</li>
+<li>Place the tube on the magnet and pipette the eluate in a new tube</li>
+<li>Quantify on the Qubit fluorometer</li>
+<li>Dilute an aliquot of AbSeq/sample tag product to 1 ng/μL and proceed to index PCR of the AbSeq product (<a href="#fig6">Figure 6</a>M). For the sample tag use undiluted PCR 1 product and proceed with the sample tag PCR 2 step (step 25) as described above
+<div class="note">
+<span class="note-title">Note:</span> The diluted AbSeq sample can be stored at 4°C for 24 h to run the indexing PCR later together with the sample tag PCR 2 product. The conditions for indexing both the AbSeq and the sample tag libraries are the same (see step 27).</div>
+</li>
+<li>Once the AbSeq index PCR has been run, purify the product as described for sample tag (see step 28) and check fragment size (<a href="#fig6">Figure 6</a>N). The product should show only a peak around 260 bp (<a href="#fig7">Figure 7</a>D). Refer to the troubleshooting sections (see below) if the concentration is too low or other peaks are detectable.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.7">Multi-color flow cytometry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 h depending on sample number</div>
+<p>This section describes all important steps and details for sample preparation and recording of flow cytometric data from COVID-19 blood samples. Representative data and a gating strategy are shown in <a href="#fig8">Figure 8</a>. For more elaborate analyses we refer the reader to <a href="#bib6">Schulte-Schrepping et al. (2020)</a>. Emphasis will be put on the procedure applied to avoid possible contamination of the scientist during both the preparation of the samples and the final recording of the data.</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Visualization of representative flow cytometry data and gating strategy</div>
+</figcaption>
+</figure>
+<ol start="30">
+<li>Prepare the staining solution adding the necessary microliters for the respective components (Antibodies-human FcR Blocking reagent-BD Horizon Brilliant Stain Buffer-PBS) to reach the desired concentration in a final volume of 100 μL per sample as indicated in the <a href="#tbl18">Table 18</a>
+<table id="tbl18">
+<caption>Table 18. Pipetting scheme for flow cytometry antibody staining</caption>
+<thead>
+<tr>
+<th>Antibody (clone)</th>
+<th>Dilution (2× master mix)</th>
+<th>μL to add for each sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HLA-DR BV421 (L243)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD4 BV510 (OKT4)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD16 BV605 (3G8)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD45 BV711 (HI30)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD8 BV785 (SK1)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD66b FITC (G10F5)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD14 PerCp-Cy5.5 (MϕP9)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD56 PE (MY31)</td>
+<td>1:12.5</td>
+<td>8</td>
+</tr>
+<tr>
+<td>CD3 PE/Dazzle (UCHT1)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD11c PE/Cy5 (B-ly6)</td>
+<td>1:25</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Siglec8 PE/Cy7 (7C9)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD203c APC (NP4D6)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD1c AlexaFluor700 (L161)</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CD19 APC/Fire 750 (HIB19)</td>
+<td>1:25</td>
+<td>4</td>
+</tr>
+<tr>
+<td>LIVE/DEAD fixable yellow dead cell stain</td>
+<td>1:50 (1:10 pre-dilution in PBS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>BD Horizon brilliant stain buffer</td>
+<td>1:5</td>
+<td>20</td>
+</tr>
+<tr>
+<td>FcR blocking reagent, human</td>
+<td>1:50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td> </td>
+<td>38</td>
+</tr>
+<tr>
+<td>Total</td>
+<td> </td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For LIVE/DEAD Fixable Yellow Dead Cell Stain a pre-dilution 1:10 in PBS is required.</div>
+<ol start="31">
+<li>Labeling with fluorescently labeled antibodies
+<ol type="a">
+<li>Count the cell suspension and aliquot at least 2 million cells of each sample (see Cell counting section for details); if the number of available cells is lower see <a href="#troubleshooting">Troubleshooting</a> section
+<div class="note">
+<span class="note-title">Note:</span> Flow cytometric analysis can be performed with a lower number of cells; however, this results in reduced statistical power for low represented cell types.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Add 10 μL counting beads to the cell suspension before counting; this will allow you to retrieve the absolute number of cells for each milliliter of blood.</div>
+</li>
+<li>Centrifuge samples for 5 min at 300 × <i>g</i>, 4°C in 15 mL Falcon tubes following the above-mentioned safety instructions</li>
+<li>After centrifugation, remove the supernatant entirely and resuspend the cells in 100 μL of PBS</li>
+<li>Add 100 μL of staining solution and incubate at 4°C for 30 min</li>
+<li>After antibody incubation, wash the cell suspension with 1 mL of PBS and centrifuge for 5 min at 300 × <i>g</i>, 4°C following the above-mentioned safety instructions</li>
+<li>Remove the supernatant and resuspend the cells carefully in 500 μL of methanol-free PFA (4% in PBS)</li>
+<li>Incubate for 5 min at 20°C–22°C</li>
+<li>Wash samples in 1 mL of PBS following centrifugation for 5 min at 300 × <i>g</i>, 4°C. Repeat this step twice</li>
+<li>Remove the supernatant and resuspend PFA fixed cell pellet in 500 μL PBS</li>
+<li>Store samples protected from light until flow cytometric analysis
+<div class="note">
+<span class="note-title">Note:</span> PFA-treated samples can be considered virus free.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="32">
+<li>Flow cytometric analysis
+<ol type="a">
+<li>Before starting the measurement exchange the waste tank of the instrument and use an autoclave-grade waste canister
+<div class="note">
+<span class="note-title">Note:</span> According to the technology in use, assess daily the performance of the instrument to ensure the highest quality possible form the analysis. For example, for BD instruments CS&amp;T beads or Rainbow (8-peak) beads can be used for routine performance check.</div>
+</li>
+<li>Acquire a minimum of 100,000 events in the living/CD45+ cells gate for each sample
+<div class="note">
+<span class="note-title">Note:</span> According to the stability of the used instrument and the consistency in the experimental procedure, the voltage setting of the instrument for the measured parameters can be kept the same over different experiments. The daily performance check will give important information in this regard.</div>
+<div class="note">
+<span class="note-title">Note:</span> We provide one possible workflow for flow cytometric analysis, variations are possible according to the procedure established in each facility. For detailed information, we refer to <a href="#bib2">Cossarizza et al. (2019)</a>.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="33">
+<li>Cleaning of the instrument after measurement
+<ol type="a">
+<li>For washing the instrument, set the flow cytometer to the highest acquisition speed for sample acquisition</li>
+<li>10 min flow with FACS Rinse</li>
+<li>10 min flow with FACS Clean</li>
+<li>10 min flow with ddH<sub>2</sub>O (autoclaved water can be cleaned from debris with a 0.2 um filter just before use)</li>
+<li>Waste canister is removed and autoclaved</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Data analysis will not be part of this protocol since the focus here is on the preparation of potentially harmful samples. For guideline on data analysis, we refer to <a href="#bib2">Cossarizza et al. (2019)</a>.</div>
+<h3 id="sec3.8">Sequencing and sequencing depth estimation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 18 h</div>
+<p>This step elutes on multiplexing for sequencing, settings of the sequencer, as well as estimated read numbers per pool.</p>
+<ol start="34">
+<li>Pooling of BD Rhapsody libraries for sequencing
+<ol type="a">
+<li>Pool WTA, AbSeq and sample tag libraries of the same cartridge (with the same index) at a molar ratio of 1:1:0.1 (Library Pool)
+<div class="note">
+<span class="note-title">Note:</span> Molarity is calculated by average fragment size of each library determined by the D5000 assay on a TapeStation4200 system and concentration by Qubit HS dsDNA assay.</div>
+</li>
+<li>Pool an equal number of moles per each library pool normalizing them for the expected number of beads retrieved from each cartridge (theoretically this number should correspond to the actual number of capture single cells)</li>
+</ol>
+</li>
+</ol>
+<ol start="35">
+<li>Perform Sequencing on a NovaSeq6000 System (Illumina) using v1 S2 200 cycle kits
+<ol type="a">
+<li>Pool Rhapsody Cartridge libraries to aim for 50,000 reads for WTA, 50,000 reads for AbSeq, and 5,000 reads for sample tag per cell, allowing for a total of ∼38,000 cells on a S2 flow cell</li>
+<li>PE R1 75 cycles, i7 8 cycles, R2 75 cycles mode</li>
+<li>Final clustering concentration of 220 pM</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.9">Data pre-processing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 24 h, depends on sequencing depth and sample size</div>
+<p>This section describes the computational steps required for pre-processing and alignment of multiplexed BD Rhapsody WTA scRNA-seq data, optionally with AbSeq data. The protocol is based on the Drop-seq tools initially developed for processing of drop-seq data (<a href="#bib4">Macosko et al., 2015</a>) and has been developed into a Snakemake workflow for simple and reproducible use (<a href="https://github.com/Hoohm/dropSeqPipe">https://github.com/Hoohm/dropSeqPipe</a>). In brief, the two reads of the paired-end sequencing stored in fastq format after demultiplexing of bcl files are transformed into BAM format and the cell barcode and UMI sequence of read 1 are stored as tags in the BAM file containing the read 2 information. Afterwards, the read 2 sequences, treated as single-end reads, are transformed back to fastq format, cleaned and trimmed of 5′ adapter and 3′ polyA sequences and aligned against the reference sequences. After alignment, the BAM tags from the unaligned BAM file are merged with the aligned reads to recover cell barcode and UMI information. Next, additional annotation is added to the reads depending on their genomic location, e.g., their overlap with genes or exons, to enable subsequent gene expression quantification (<a href="#fig9">Figure 9</a>).</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Schematic overview of the scRNA-seq analysis</div>
+</figcaption>
+</figure>
+<ol start="36">
+<li>Mapping
+<ol type="a">
+<li>Demultiplex bcl files using Bcl2fastq2 from Illumina</li>
+<li>For mapping of cDNA, sample tag and optionally AbSeq reads, prepare a suitable reference genome by adding sample tag sequences and antibody-coupled oligo sequences as additional chromosomes to the reference genome of choice in <i>fasta</i> format. Additionally, a corresponding annotation file in <i>gtf</i> format must be prepared by adding the necessary information to the gene annotation file of choice</li>
+<li>Build a STAR index from the custom reference genome and annotation file.</li>
+<li>Filter the input reads for valid Rhapsody barcodes
+<div class="note">
+<span class="note-title">Note:</span> As cell barcodes in the BD Rhapsody system are produced as random combinations of 3 from a pool of 96 possible sequences with standardized spacer sequences in between, a whitelist of the 884.736 possible cell barcodes is available and can be used to eliminate reads with wrong cell barcodes upfront. This allows to skip time-consuming error repair and barcode correction steps.</div>
+</li>
+<li>Next, using the above-mentioned pipeline, cDNA, sample tag and AbSeq reads are processed, trimmed using <i>Cutadapt</i> (<a href="#bib5">Martin, 2011</a>) and mapped to the custom reference genome using <i>STAR</i> (<a href="#bib3">Dobin et al., 2013</a>)</li>
+</ol>
+</li>
+</ol>
+<ol start="37">
+<li>Quantification
+<ol type="a">
+<li>To estimate gene expression abundances, BAM records are annotated depending on their genomic location and overlap with genic regions</li>
+<li>Expression values are extracted from the BAM files using the picard <i>DigitalExpression</i> module and stored as gene expression matrix including gene expression, sample tag, and optionally AbSeq counts</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.10">Downstream data analysis</h3>
+<p>This section describes the essential downstream analysis steps for the resulting gene expression count data using the R software package <i>Seurat</i> (<a href="#bib1">Butler et al., 2018</a>), including de-multiplexing, quality control, normalization, dimension reduction, clustering and differential gene testing (<a href="#fig9">Figure 9</a>). The following section is based on tutorials and vignettes published by the developer team of <i>Seurat</i> available at <a href="https://satijalab.org/seurat/">https://satijalab.org/seurat/</a>. In addition, the following R packages are required for the analysis: <i>dplyr</i>, <i>Matrix</i>, and <i>ggplot2</i>. For the analysis of AbSeq data, we would like to refer the reader to the respective tutorial by the developer team of <i>Seurat</i>: <a href="https://satijalab.org/seurat/v3.2/multimodal_vignette.html">https://satijalab.org/seurat/v3.2/multimodal_vignette.html</a>.</p>
+<ol start="38">
+<li>Downstream analysis
+<ol type="a">
+<li>Import scRNA-seq UMI count matrices data to R and divide gene expression, sample tag and, if available, AbSeq counts into separate matrices.
+<ol type="i">
+<li>Data import</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p>dir &lt;- "path/to/directory/" # set the path to the directory containing the gene expression quantification output</p>
+<p>mtx &lt;- readMM(paste(dir, "umi/matrix.mtx",sep="/"))</p>
+<p>genes &lt;- read.delim(paste(dir,"umi/genes.tsv",sep="/"), header = F, stringsAsFactors = F)</p>
+<p>bc &lt;- read.delim(paste(dir,"umi/barcodes.tsv",sep="/"), header = F, stringsAsFactors = F)</p>
+<p>mtx@Dimnames[[1]] &lt;- as.character(genes$V1)</p>
+<p>mtx@Dimnames[[2]] &lt;- as.character(bc$V1)</p>
+<p>```</p>
+<div class="note">
+<span class="note-title">Note:</span> To speed up downstream processing, we can filter cell barcodes with less than a set number of UMIs.</div>
+<p>```{r}</p>
+<p>mtx &lt;- mtx[,colSums(mtx)&gt;250]</p>
+<p>```</p>
+<ol start="2" type="i">
+<li>Separate sample tag quantifications and gene expression to new matrices</li>
+</ol>
+<p>```{r}</p>
+<p>sampletags &lt;- c("SampleTag1", "SampleTag2", "SampleTag3", "SampleTag4", "SampleTag5", "SampleTag6", "SampleTag7", "SampleTag8", "SampleTag9", "SampleTag10", "SampleTag11", "SampleTag12")</p>
+<p># Separate the sample tag counts</p>
+<p>mtx_sampletag&lt;-mtx[mtx@Dimnames[[1]] %in% sampletags,]</p>
+<p># Separate AbSeq counts (optional)</p>
+<p>mtx_AbSeq &lt;- mtx[mtx@Dimnames[[1]] %in%</p>
+<p>mtx@Dimnames[[1]][grepl("ˆAB_",mtx@Dimnames[[1]])]),]</p>
+<p># Separate the gene expression counts</p>
+<p>mtx_counts &lt;- mtx[!mtx@Dimnames[[1]] %in% c(sampletags,</p>
+<p>mtx@Dimnames[[1]][grepl("ˆAB_",mtx@Dimnames[[1]])]),]</p>
+<p>```</p>
+<ol start="2" type="a">
+<li>Create a <i>Seurat</i> object using the gene expression count matrix and add the sample tag quantifications as a separate assay to the object.
+<ol type="i">
+<li>Create Seurat object</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p>seurat &lt;- CreateSeuratObject(counts = mtx_counts,</p>
+<p>assay = "RNA",</p>
+<p>min.cells = 5,</p>
+<p>min.features = 250,</p>
+<p>project = "Multiplexed BD Rhapsody WTA")</p>
+<p>```</p>
+<ol start="2" type="i">
+<li>Add sample tag data as a separate assay to the Seurat object</li>
+</ol>
+<p>```{r}</p>
+<p>seurat[["HTO"]] &lt;- CreateAssayObject(counts = mtx_sampletag[,mtx_sampletag@Dimnames[[2]] %in% Cells(seurat)])</p>
+<p># <b>Optional:</b> Filter cells with less than 1 tag reads</p>
+<p>seurat &lt;- subset(seurat, subset = nCount_HTO &gt; 0)</p>
+<p>```</p>
+<ol start="3" type="a">
+<li>Perform standard quality control and filtering of cells.
+<ol type="i">
+<li>Quality Control</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p>seurat[['percent.mito']] &lt;- PercentageFeatureSet(seurat, pattern = "ˆMT-")</p>
+<p>VlnPlot(object = seurat,</p>
+<p>features = "nFeature_RNA",</p>
+<p>pt.size = 0,</p>
+<p>group.by = "orig.ident") +</p>
+<p>theme(legend.position="none")</p>
+<p>VlnPlot(object = seurat,</p>
+<p>features = "nCount_RNA",</p>
+<p>log =TRUE,</p>
+<p>pt.size = 0,</p>
+<p>group.by = "orig.ident")+</p>
+<p>theme(legend.position="none")</p>
+<p>VlnPlot(object = seurat,</p>
+<p>features = "nCount_HTO",</p>
+<p>log =TRUE,</p>
+<p>pt.size = 0,</p>
+<p>group.by = "orig.ident")+</p>
+<p>theme(legend.position="none")</p>
+<p>VlnPlot(object = seurat,</p>
+<p>features = "percent.mito",</p>
+<p>pt.size = 0,</p>
+<p>group.by = "orig.ident")+</p>
+<p>theme(legend.position="none")</p>
+<p>```</p>
+<ol start="2" type="i">
+<li>Filter cells</li>
+</ol>
+<p>Filter cells according to selected quality criteria, including the information content per cell, i.e., the number of detected features and the percentage of reads from mitochondrial genes.</p>
+<p>```{r}</p>
+<p>seurat &lt;- subset(x = seurat, subset = nFeature_RNA &gt; 250 &amp;</p>
+<p>nFeature_RNA &lt; 5000 &amp;</p>
+<p>nCount_RNA &gt; 500 &amp;</p>
+<p>percent.mito &lt; 25)</p>
+<p>```</p>
+<ol start="4" type="a">
+<li>Demultiplex cells from different samples based on the sample tag counts.
+<ol type="i">
+<li>Sample tag-based demultiplexing</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p># Normalize HTO data, here we use centered log-ratio (CLR) transformation</p>
+<p>seurat &lt;- NormalizeData(seurat, assay = "HTO", normalization.method = "CLR")</p>
+<p># Demultiplex</p>
+<p>seurat &lt;- HTODemux(seurat, assay = "HTO", positive.quantile = 0.99)</p>
+<p># Visualize demultiplexing results</p>
+<p>ggplot(<a href="mailto:seurat@meta.data">seurat@meta.data</a>, aes(x =hash.ID ,fill=hash.ID))+</p>
+<p>geom_text(stat='count', aes(label=..count..), vjust=0)+</p>
+<p>geom_bar()</p>
+<p># Filter singlets</p>
+<p>seurat_singlet &lt;- subset(seurat, subset= HTO_classification.global == "Singlet")</p>
+<p>```</p>
+<ol start="5" type="a">
+<li>Perform normalization, scaling, variable gene selection, and dimension reduction on the data to get a global representation of the data structure.
+<ol type="i">
+<li>Data normalization and dimension reduction</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p># Normalization</p>
+<p>seurat_singlet &lt;- NormalizeData(object = seurat_singlet,</p>
+<p>normalization.method = "LogNormalize",</p>
+<p>scale.factor = 1e4)</p>
+<p># Define variable genes</p>
+<p>seurat_singlet &lt;- FindVariableFeatures(object = seurat_singlet,</p>
+<p>assay="RNA",</p>
+<p>selection.method = 'vst')</p>
+<p># Scaling</p>
+<p>seurat_singlet &lt;- ScaleData(object = seurat_singlet,</p>
+<p>vars.to.regress = c("nCount_RNA"))</p>
+<p># PCA</p>
+<p>seurat_singlet &lt;- RunPCA(object = seurat_singlet,</p>
+<p>features = VariableFeatures(object = seurat_singlet))</p>
+<p># UMAP</p>
+<p>seurat_singlet &lt;- RunUMAP(seurat_singlet, reduction.use = "pca", dims = 1:20, seed.use = 42)</p>
+<p>DimPlot(object = seurat_singlet,</p>
+<p>reduction = 'umap',</p>
+<p>label = FALSE,</p>
+<p>group.by = "hash.ID")</p>
+<p>```</p>
+<ol start="6" type="a">
+<li>Cluster the cells and determine cluster marker genes to understand the cluster identity and cell type composition.
+<ol type="i">
+<li>Clustering</li>
+</ol>
+</li>
+</ol>
+<p>```{r}</p>
+<p>seurat_singlet &lt;- FindNeighbors(object = seurat_singlet, dims = 1:20, reduction="pca", force.recalc = TRUE)</p>
+<p>seurat_singlet &lt;- FindClusters(object = seurat_singlet, resolution = 0.5, algorithm = 1)</p>
+<p>DimPlot(object = seurat_singlet,</p>
+<p>reduction = 'umap',</p>
+<p>label = TRUE,</p>
+<p>group.by = "RNA_snn_res.0.5")</p>
+<p>```</p>
+<ol start="2" type="i">
+<li>Cluster marker gene identification</li>
+</ol>
+<p>```{r}</p>
+<p>Idents(seurat_singlet) &lt;- "RNA_snn_res.0.5"</p>
+<p>cluster.markers.wilcox &lt;- FindAllMarkers(object = seurat_singlet,</p>
+<p>only.pos = TRUE,</p>
+<p>min.pct = 0.2,</p>
+<p>logfc.threshold = 0.25,</p>
+<p>min.diff.pct = 0.1,</p>
+<p>test.use = "wilcox")</p>
+<p>top &lt;- cluster.markers.wilcox %&gt;% group_by(cluster) %&gt;% top_n(n = 5, wt = avg_logFC)</p>
+<p>DotPlot(seurat_singlet,</p>
+<p>group.by = "RNA_snn_res.0.5",</p>
+<p>features = unique(top$gene))</p>
+<p>```</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>After demultiplexing, stringent quality control and filtering of low-quality cells, we expect to retrieve approximately 15,000 to 20,000 high quality single-cell transcriptomes per BD Rhapsody cartridge super-loaded with 60,000 cells. In case of successful oligo-coupled antibody-based sample multiplexing, we expect the cells to be equally originating from the 12 originally multiplexed samples and representing all major cell types present in the human peripheral blood at physiological or pathological proportions. For more detailed information on the quality of the data, the possible downstream analyses and <i>in silico</i> applications and their biological meaningfulness, we would like to refer the reader to <a href="#bib6">Schulte-Schrepping et al., (2020)</a>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>One of the limitations is the lack of BD imaging. The imaging functionality of the BD Rhapsody system cannot be used following the strict safety instructions described above.</p>
+<p>Moreover, due to the size of the microwells in the BD cartridge, this system is not suitable for large cell types. A substantial decline in the number of recovered cells has been already recorded for cells with a diameter bigger than 20 μm. In this case additional cells can be loaded into the cartridge to offset the losses observed.</p>
+<p>In addition, no multi-omic solution (e.g., scRNA-seq and scATAC-seq) from BD is available at this point in time. Further developments, however, are expected for this platform as well.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Product concentration lower than required in one of the quality control steps (steps 24, 26, 28, 29; <a href="#fig10">Figure 10</a>A)</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/356-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. TapeStation profile with low DNA concentration or unexpected peak</div>
+</figcaption>
+</figure>
+<h3 id="sec6.2">Potential solution</h3>
+<p>If the library concentration in one of the QC steps is too low, it is possible to repeat the step optimizing the number of PCR cycles. Note that increasing the number of PCR cycles will reduce the complexity of the final library impacting the sequencing performance. Therefore, it is recommended to start with one or just few cycles. It is also possible to re- start the entire procedure using the exonuclease-treated beads.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Unexpected peak in the TapeStation profile after SPRIbead cleaning steps (steps 24, 28, 29; <a href="#fig10">Figure 10</a>B)</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Poor bead cleaning procedure can result in peaks with smaller size (&lt;165 bp). In this case, it is possible to repeat the bead cleaning step using the same ratio. However, it is important to consider that repeating a cleaning step will entail the loss of a certain amount of sample product. Therefore, sample concentration should also be taken into account before repeating this step.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Low number of cells for flow cytometry after RCB lysis (step 31).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>If the number of cells is &gt; 0.5 million, continue with the procedure as described, pay special attention in all washing steps to avoid excessive loss of cells. If the number is lower, check temperature and concentration of the RBC lysis buffer, wrong concentration or too high temperature of the buffer can be a common cause of loss of cells during the purification procedure.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Butler, A., Hoffman, P., Smibert, P., Papalexi, E., and Satija, R. (2018). Integrating single-cell transcriptomic data across different conditions, technologies, and species. Nat. Biotechnol. <i>36</i>, 411-420.</p>
+<p id="bib2">Cossarizza, A., Chang, H.-D., Radbruch, A., Acs, A., Adam, D., Adam-Klages, S., Agace, W.W., Aghaeepour, N., Akdis, M., Allez, M., et al. (2019). Guidelines for the use of flow cytometry and cell sorting in immunological studies (second edition). Eur. J. Immunol. <i>49</i>, 1457-1973.</p>
+<p id="bib3">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21.</p>
+<p id="bib4">Macosko, E.Z., Basu, A., Satija, R., Nemesh, J., Shekhar, K., Goldman, M., Tirosh, I., Bialas, A.R., Kamitaki, N., Martersteck, E.M., et al. (2015). Highly parallel genome-wide expression profiling of individual cells using nanoliter droplets. Cell <i>161</i>, 1202-1214.</p>
+<p id="bib5">Martin, M. (2011). Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet. J. <i>17</i>, 10.</p>
+<p id="bib6">Schulte-Schrepping, J., Reusch, N., Paclik, D., Baßler, K., Schlickeiser, S., Zhang, B., Krämer, B., Krammer, T., Brumhard, S., Bonaguro, L., et al. (2020). Severe COVID-19 is marked by a dysregulated myeloid cell compartment. Cell <i>182</i>, 1419-1440.e23.</p>
+<p id="bib7">Stoeckius, M., Zheng, S., Houck-Loomis, B., Hao, S., Yeung, B.Z., Mauck, W.M., Smibert, P., and Satija, R. (2018). Cell Hashing with barcoded antibodies enables multiplexing and doublet detection for single cell genomics. Genome Biol. <i>19</i>, 224.</p>
+<p id="bib8">Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W.M., Hao, Y., Stoeckius, M., Smibert, P., and Satija, R. (2019). Comprehensive integration of single-cell data. Cell <i>177</i>, 1888-1902.e21.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Joachim L. Schultze (<a href="mailto:j.schultze@uni-bonn.de">j.schultze@uni-bonn.de</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and Code Availability</h4>
+<p>ScRNA-seq data generated using this protocol and published in <a href="#bib6">Schulte-Schrepping et al. (2020)</a> are deposited at the European Genome-phenome Archive (EGA) under access number EGAS00001004571, which is hosted by the EBI and the CRG. Furthermore, respective count data has been uploaded to the online analysis platform FASTGenomics for easy access and direct use under <a href="https://beta.fastgenomics.org/p/schulte-schrepping_covid19">https://beta.fastgenomics.org/p/schulte-schrepping_covid19</a>.</p>
+<h3>Acknowledgments</h3>
+<p>J.L.S.. was funded by the <a href="https://doi.org/10.13039/501100002347">BMBF</a>-funded excellence project Diet–Body–Brain (DietBB) under grant number 01EA1809A and by EU project SYSCID under grant number 733100.</p>
+<h3>Author Contributions</h3>
+<p>Writing and reviewing, E.D.D., L.B., J.S.-S., K.H., M.B., and J.L.S.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

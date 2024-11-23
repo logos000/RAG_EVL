@@ -1,0 +1,1071 @@
+<article>
+<section>
+<h1 id="header">CombiFlow: Flow cytometry-based identification and characterization of genetically and functionally distinct AML subclones</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Roos Houtsma,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor1">*</a></sup> Shanna M. Hogeling,<sup><a href="#aff1">1</a></sup> and Jan Jacob Schuringa<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Hematology, University Medical Center Groningen, University of Groningen, Hanzeplein 1, 9713GZ Groningen, the Netherlands</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:r.houtsma@umcg.nl">r.houtsma@umcg.nl</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:j.j.schuringa@umcg.nl">j.j.schuringa@umcg.nl</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100864">10.1016/j.xpro.2021.100864</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Many cancers, including leukemias, are dynamic oligoclonal diseases. Tools to identify and prospectively isolate genetically distinct clones for functional studies are needed. We describe our CombiFlow protocol, which is a combinatorial flow cytometry-based approach to identify and isolate such distinct clones. CombiFlow enables the visualization of clonal evolution during disease progression and the identification of potential relapse-inducing cells at minimal residual disease (MRD) time points. The protocol can be adapted to various research questions and allows functional studies on live sorted cell populations.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref7">de Boer et al. (2018)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Subclones can be identified and sorted based on aberrant marker expression</li>
+<li>Functional in vitro and in vivo studies can be performed on identified subclones</li>
+<li>Combiflow can visualize the phenotype and track clonal evolution in AML</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the analysis of two diagnosis samples, a paired relapse sample, and a healthy control sample. The protocol may also be applied to the comparison of multiple diagnostic samples within a subgroup of AML or to longitudinally track disease progression by including data from MRD time points. Preparation consists of:</p>
+<ol>
+<li>Installation of the required R packages (<a href="#key-resources-table">key resources table</a>) for the CombiFlow analysis</li>
+<li>Primer design for targeted sequencing.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th colspan="2">SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="4">Antibodies</td>
+</tr>
+<tr>
+<td>ADAM17-PE (10 μL∗∗)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB9301PRRID:AB_357217Clone 111633</td>
+</tr>
+<tr>
+<td>ALCAM-PE∗ (1 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#343904RRID: AB_2289302Clone 3A6</td>
+</tr>
+<tr>
+<td>CCR1-PE (5 μL)</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>Cat#130-100-367RRID:AB 2655839Clone REA158</td>
+</tr>
+<tr>
+<td>CD117-PE (3 μL)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#555714RRID: AB_396058Clone YB5.B8</td>
+</tr>
+<tr>
+<td>CD123-PE∗ (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#306006RRID: AB_314580Clone 6H6</td>
+</tr>
+<tr>
+<td>CD151-PE∗ (1 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB1884PRRID: AB_2228965</td>
+</tr>
+<tr>
+<td>CD19-PE (5 μL)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#345777RRID: AB_2868805Clone 4G7</td>
+</tr>
+<tr>
+<td>CD25-PE∗ (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#302606RRID: AB_314276Clone BC96</td>
+</tr>
+<tr>
+<td>CD200-PE∗ (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB27241PRRID: AB_1061611Clone 325516</td>
+</tr>
+<tr>
+<td>CD206-PE (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB25342PRRID: AB_10889015</td>
+</tr>
+<tr>
+<td>CD274-PE (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#329706RRID: AB_940368Clone 29E.2A3</td>
+</tr>
+<tr>
+<td>CD34-APC (backbone, see 9)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#555824RRID: AB_398614Clone 581</td>
+</tr>
+<tr>
+<td>CD38-FITC (backbone, see 9)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#555459RRID: AB_395852Clone HIT2</td>
+</tr>
+<tr>
+<td>CD45-PE-Cy7 (backbone, see 9)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#557748RRID: AB_396854Clone HI30</td>
+</tr>
+<tr>
+<td>CD45RA-BV421 (backbone, see 9)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#304108RRID: AB_314412Clone HI100</td>
+</tr>
+<tr>
+<td>CD47-PE∗ (3 μL)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#556046RRID: AB_396317</td>
+</tr>
+<tr>
+<td>CD82-PE∗ (1 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#342104RRID: AB_1595455Clone ASL-24</td>
+</tr>
+<tr>
+<td>CD93-PE (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#336108RRID: AB_2076048Clone VIMD2</td>
+</tr>
+<tr>
+<td>CD97-PE∗ (1 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#336308RRID: AB_2076182Clone VIM3b</td>
+</tr>
+<tr>
+<td>CD99-PE∗ (1 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#371306RRID: AB_2616974Clone 3B2/TA8</td>
+</tr>
+<tr>
+<td>CLL1-PE∗ (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB2946PRRID: AB_10892515</td>
+</tr>
+<tr>
+<td>CXCR4-PE (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#306506RRID: AB_314612Clone 12G5</td>
+</tr>
+<tr>
+<td>EMR2-PE (1 μL)</td>
+<td colspan="2">Miltenyi</td>
+<td>Cat#130-119-810RRID: AB_2751862Clone REA302</td>
+</tr>
+<tr>
+<td>ESAM-PE (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB4204PRRID: AB_2293790Clone 408519</td>
+</tr>
+<tr>
+<td>ESEL-Fc-PE (1 μL)</td>
+<td colspan="2">GlycoMimetics</td>
+<td>Cat#B252284</td>
+</tr>
+<tr>
+<td>FLT3-PE∗ (10 μL)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#558996RRID: AB_397175</td>
+</tr>
+<tr>
+<td>GPR56-PE∗ (1 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#358204RRID: AB_2562084Clone CG4</td>
+</tr>
+<tr>
+<td>IFNGRI-PE∗ (1 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB673PRRID: AB_2264548</td>
+</tr>
+<tr>
+<td>IL1RAP-PE∗ (3 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB676PRRID: AB_10717521</td>
+</tr>
+<tr>
+<td>IL6-PE (1 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB227PRRID: AB_2127909Clone 17506</td>
+</tr>
+<tr>
+<td>ITGA5-PE∗ (3 μL)</td>
+<td colspan="2">BD Biosciences</td>
+<td>Cat#555617RRID: AB_395984</td>
+</tr>
+<tr>
+<td>ITGA6-PE (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#313612RRID: AB_893373Clone GoH3</td>
+</tr>
+<tr>
+<td>ITGAE-PE (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#350206RRID: AB_10641843Clone Ber-ACT8</td>
+</tr>
+<tr>
+<td>ITGB7-PE (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB4669PRRID: AB_1964636Clone 473207</td>
+</tr>
+<tr>
+<td>JAMC-PE (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB11891PRRID: AB_2128938Clone 208212</td>
+</tr>
+<tr>
+<td>LILRB2-PE (5 μL)</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>Cat#130-100-564RRID: AB_2659347Clone REA184</td>
+</tr>
+<tr>
+<td>Propidium iodide</td>
+<td colspan="2">Invitrogen</td>
+<td>Cat#P3566</td>
+</tr>
+<tr>
+<td>PVR-PE (5 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB25301PRRID: AB_2269068Clone 300907</td>
+</tr>
+<tr>
+<td>SEMA4D-PE (10 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB74701PRRID: AB_2732844Clone 758726</td>
+</tr>
+<tr>
+<td>SIRPA-PE (10 μL)</td>
+<td colspan="2">Thermo Scientific</td>
+<td>Cat#MA1-74228RRID: AB_1955117Clone 15-414</td>
+</tr>
+<tr>
+<td>TGFBRII-PE (10 μL)</td>
+<td colspan="2">R&amp;D Systems</td>
+<td>Cat#FAB241PRRID: AB_2044728Clone 25508</td>
+</tr>
+<tr>
+<td>TIM3-PE∗ (3 μL)</td>
+<td colspan="2">BioLegend</td>
+<td>Cat#345006RRID: AB_2116576Clone F38-2E2</td>
+</tr>
+<tr>
+<td colspan="4">Biological samples</td>
+</tr>
+<tr>
+<td>AML mononuclear cells</td>
+<td colspan="2">UMCG</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="4">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>iQ SYBR Green Supermix</td>
+<td colspan="2">Bio-Rad</td>
+<td>Cat#170-8887</td>
+</tr>
+<tr>
+<td>FcR blocking reagent</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>Cat#130-059-901</td>
+</tr>
+<tr>
+<td>DAPI</td>
+<td colspan="2">Thermo Scientific</td>
+<td>Cat#D1306</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumin fraction V (BSA)</td>
+<td colspan="2">Roche</td>
+<td>Cat#10735094001</td>
+</tr>
+<tr>
+<td>Calcium chloride dihydrate</td>
+<td colspan="2">Merck Millipore</td>
+<td>Cat#10035-04-8</td>
+</tr>
+<tr>
+<td>Heparin</td>
+<td colspan="2">Hospital pharmacy UMCG</td>
+<td>Cat#EP00242</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub>
+</td>
+<td colspan="2">Sigma-Aldrich</td>
+<td>Cat#M2643-500G</td>
+</tr>
+<tr>
+<td>DNase I</td>
+<td colspan="2">Sigma-Aldrich/Roche</td>
+<td>Cat#112854932001</td>
+</tr>
+<tr>
+<td colspan="4">Critical commercial assays</td>
+</tr>
+<tr>
+<td>TruSight™ Myeloid Sequencing Panel</td>
+<td colspan="2">Illumina</td>
+<td>Cat#FC-130-1010</td>
+</tr>
+<tr>
+<td>NucleoSpin Tissue Kit</td>
+<td colspan="2">MACHEREY-NAGEL</td>
+<td>Cat#740952</td>
+</tr>
+<tr>
+<td colspan="4">Deposited data</td>
+</tr>
+<tr>
+<td>Marker panel – histograms R script</td>
+<td colspan="2">This paper</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>CombiFlow R script</td>
+<td colspan="2">This paper</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Tutorial videos</td>
+<td colspan="2">This paper</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="4">Oligonucleotides</td>
+</tr>
+<tr>
+<td>gDNA primers for mutation detection</td>
+<td colspan="2"><a href="#bib7">de Boer et al. (2018)</a></td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="4">Software and algorithms</td>
+</tr>
+<tr>
+<td colspan="2">FlowJo™ Software VX</td>
+<td>Becton, Dickinson and Company</td>
+<td><a href="https://www.flowjo.com/">https://www.flowjo.com/</a></td>
+</tr>
+<tr>
+<td colspan="2">R, version 4.0.2</td>
+<td>R Foundation for Statistical Computing</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td colspan="2">RStudio®</td>
+<td>RStudio</td>
+<td><a href="https://www.rstudio.com/">https://www.rstudio.com/</a></td>
+</tr>
+<tr>
+<td colspan="2">Infinicyt™</td>
+<td>Cytognos</td>
+<td><a href="https://www.cytognos.com/infinicyt/">https://www.cytognos.com/infinicyt/</a></td>
+</tr>
+<tr>
+<td colspan="2">Chromas Lite</td>
+<td>Technelysium Pty Ltd</td>
+<td><a href="https://technelysium.com.au/wp/chromas/">https://technelysium.com.au/wp/chromas/</a></td>
+</tr>
+<tr>
+<td colspan="2">Clone Manager</td>
+<td>Sci-Ed Software</td>
+<td><a href="https://www.scied.com/dl_cm10.htm">https://www.scied.com/dl_cm10.htm</a></td>
+</tr>
+<tr>
+<td colspan="2">Adobe Illustrator</td>
+<td>Adobe</td>
+<td><a href="https://www.adobe.com/nl/products/illustrator.html">https://www.adobe.com/nl/products/illustrator.html</a></td>
+</tr>
+<tr>
+<td colspan="4">Other</td>
+</tr>
+<tr>
+<td colspan="2">NCBI gene database</td>
+<td>National Center for Biotechnology Information</td>
+<td><a href="https://www.ncbi.nlm.nih.gov/gene/">https://www.ncbi.nlm.nih.gov/gene/</a></td>
+</tr>
+<tr>
+<td colspan="2">Hanks’ Balanced Salt Solution (HBSS)</td>
+<td>Gibco</td>
+<td>Cat#14170-088</td>
+</tr>
+<tr>
+<td colspan="2">Trypan blue</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#T6146</td>
+</tr>
+<tr>
+<td colspan="2">Fetal bovine calf serum</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#F7524</td>
+</tr>
+<tr>
+<td colspan="2">Newborn calf serum</td>
+<td>Gibco</td>
+<td>Cat#26010-074</td>
+</tr>
+<tr>
+<td colspan="2">15 mL Centrifugal tubes</td>
+<td>Greiner Bio-One</td>
+<td>Cat#188271</td>
+</tr>
+<tr>
+<td colspan="2">12 × 75 Polystyrene tube</td>
+<td>Greiner Bio-One</td>
+<td>Cat#120180</td>
+</tr>
+<tr>
+<td colspan="2">Cryovials</td>
+<td>Greiner Bio-One</td>
+<td>Cat#1222643</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">∗ These are the markers we prioritize in case of limited patient material.<br> ∗∗ Volume per tube of 100 μL</p>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>ESEL-Fc buffer</th>
+<th>Final concentration</th>
+<th>Stock concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HBSS</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>49.5 mL</td>
+</tr>
+<tr>
+<td>CaCl<sub>2</sub>
+</td>
+<td>1 mM</td>
+<td>100 mM</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>BSA</td>
+<td>0.5%</td>
+<td>n/a</td>
+<td>0.25 g</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 4°C.</p>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>NCS mix</th>
+<th>Final concentration</th>
+<th>Stock concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NCS</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>6 mL</td>
+</tr>
+<tr>
+<td>Heparine</td>
+<td>5 U/mL</td>
+<td>1000 IU/mL</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub>
+</td>
+<td>4 μM</td>
+<td>200 mM</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>DNase I</td>
+<td>20 U/mL</td>
+<td>1 mg/mL</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>n/a</b></td>
+<td><b>7,5 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make fresh each time.</p>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>R Package</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CATALYST</td>
+<td>(<a href="#bib5">Crowell, 2021</a>)</td>
+</tr>
+<tr>
+<td>ConsensusClusterPlus</td>
+<td>(<a href="#bib44">Wilkerson and Hayes, 2010</a>)</td>
+</tr>
+<tr>
+<td>cowplot</td>
+<td>(<a href="#bib43">Wilke, 2020</a>)</td>
+</tr>
+<tr>
+<td>devtools</td>
+<td>(<a href="#bib40">Wickham, 2021a</a>)</td>
+</tr>
+<tr>
+<td>dplyr</td>
+<td>(<a href="#bib41">Wickham, 2021b</a>)</td>
+</tr>
+<tr>
+<td>emstreeR</td>
+<td>(<a href="#bib25">Quadros, 2020</a>)</td>
+</tr>
+<tr>
+<td>factoextra</td>
+<td>(<a href="#bib17">Kassambara, 2020b</a>)</td>
+</tr>
+<tr>
+<td>FactoMineR</td>
+<td>(<a href="#bib21">Le and Husson, 2008</a>)</td>
+</tr>
+<tr>
+<td>flowCore</td>
+<td>(<a href="#bib9">Ellis, 2021</a>)</td>
+</tr>
+<tr>
+<td>FlowSOM</td>
+<td>(<a href="#bib32">Van Gassen et al., 2015</a>)</td>
+</tr>
+<tr>
+<td>flowWorkspace</td>
+<td>(<a href="#bib10">Finak, 2021</a>)</td>
+</tr>
+<tr>
+<td>fpc</td>
+<td>(<a href="#bib13">Hennig, 2020</a>)</td>
+</tr>
+<tr>
+<td>ggcyto</td>
+<td>(<a href="#bib34">Van et al., 2018</a>)</td>
+</tr>
+<tr>
+<td>ggplot2</td>
+<td>(<a href="#bib37">Wickham, 2016</a>)</td>
+</tr>
+<tr>
+<td>ggpubr</td>
+<td>(<a href="#bib16">Kassambara, 2020a</a>)</td>
+</tr>
+<tr>
+<td>ggrepel</td>
+<td>(<a href="#bib29">Slowikowski, 2021</a>)</td>
+</tr>
+<tr>
+<td>ggsci</td>
+<td>(<a href="#bib45">Xiao, 2018</a>)</td>
+</tr>
+<tr>
+<td>gridExtra</td>
+<td>(<a href="#bib1">Auguie, 2017</a>)</td>
+</tr>
+<tr>
+<td>igraph</td>
+<td>(<a href="#bib6">Csardi, 2006</a>)</td>
+</tr>
+<tr>
+<td>limma</td>
+<td>(<a href="#bib26">Ritchie et al., 2015</a>)</td>
+</tr>
+<tr>
+<td>lme4</td>
+<td>(<a href="#bib3">Bates et al., 2015</a>)</td>
+</tr>
+<tr>
+<td>magrittr</td>
+<td>(<a href="#bib2">Bache, 2020</a>)</td>
+</tr>
+<tr>
+<td>MASS</td>
+<td>(<a href="#bib35">Venables and Ripley, 2002</a>)</td>
+</tr>
+<tr>
+<td>matrixStats</td>
+<td>(<a href="#bib4">Bengtsson, 2021</a>)</td>
+</tr>
+<tr>
+<td>mclust</td>
+<td>(<a href="#bib28">Scrucca et al., 2016</a>)</td>
+</tr>
+<tr>
+<td>multcomp</td>
+<td>(<a href="#bib15">Hothorn et al., 2008</a>)</td>
+</tr>
+<tr>
+<td>mvtnorm</td>
+<td>(<a href="#bib12">Genz, 2020</a>)</td>
+</tr>
+<tr>
+<td>pheatmap</td>
+<td>(<a href="#bib18">Kolde, 2019</a>)</td>
+</tr>
+<tr>
+<td>purrr</td>
+<td>(<a href="#bib14">Henry, 2020</a>)</td>
+</tr>
+<tr>
+<td>RColorBrewer</td>
+<td>(<a href="#bib23">Neuwirth, 2014</a>)</td>
+</tr>
+<tr>
+<td>RcppArmadillo</td>
+<td>(<a href="#bib8">Eddelbuettel and Sanderson, 2014</a>)</td>
+</tr>
+<tr>
+<td>readr</td>
+<td>(<a href="#bib42">Wickham, 2020</a>)</td>
+</tr>
+<tr>
+<td>readxl</td>
+<td>(<a href="#bib38">Wickham, 2019a</a>)</td>
+</tr>
+<tr>
+<td>reshape2</td>
+<td>(<a href="#bib36">Wickham, 2007</a>)</td>
+</tr>
+<tr>
+<td>RJSONIO</td>
+<td>(<a href="#bib31">Temple Lang, 2020</a>)</td>
+</tr>
+<tr>
+<td>robustbase</td>
+<td>(<a href="#bib22">Maechler, 2021</a>)</td>
+</tr>
+<tr>
+<td>Rtsne</td>
+<td>(<a href="#bib20">Krijthe, 2015</a>)</td>
+</tr>
+<tr>
+<td>tidyverse</td>
+<td>(<a href="#bib39">Wickham, 2019b</a>)</td>
+</tr>
+<tr>
+<td>umap</td>
+<td>(<a href="#bib19">Konopka, 2020</a>)</td>
+</tr>
+<tr>
+<td>viridis</td>
+<td>(<a href="#bib11">Garnier, 2021</a>)</td>
+</tr>
+<tr>
+<td>XML</td>
+<td>(<a href="#bib30">Temple Lang, 2021</a>)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Thawing an AML sample</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min–1 h</div>
+<p>AML samples (bone marrow or peripheral blood) stored in liquid nitrogen can be thawed and immediately stained with antibodies for the marker panel or cell sorting. The used thawing procedure, as previously described (<a href="#bib27">Schuringa and Schepers, 2009</a>; <a href="#bib33">van Gosliga et al., 2007</a>), consists of the following steps:</p>
+<ol>
+<li>Thaw two tubes of 6 mL newborn calf serum (NCS)</li>
+<li>Collect the AML sample from the liquid nitrogen storage and quickly thaw the sample in a water bath kept at 37°C</li>
+<li>Transfer the AML sample to an NCS tube and centrifuge for 5 min at 450 <i>g</i>
+</li>
+<li>In the meantime, prepare NCS mix by adding 5 U/mL heparine, 4 μM MgSO<sub>4</sub> and 20 U/mL DNAse I to the other NCS tube</li>
+<li>Resuspend the AML cell pellet in the pre-warmed NCS mix</li>
+<li>Incubate the cells at 37°C for 15 min</li>
+<li>Spin down cells and resuspend in PBS-mix (6 mL PBS + DNAse (5 U/mL) and MgSO<sub>4</sub> (4 μM))</li>
+<li>Count the viable cells using Trypan Blue and continue with:
+<ol type="a">
+<li>Run the marker panel or</li>
+<li>Sorting of potential subclones</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> 30–50% of the AML cells will not survive the thawing process. To obtain a higher yield speed is essential in steps 2 and 3. Complete steps 2 and 3 within 15 minutes. If less than 50% viable cells are obtained, it can be considered to perform a Ficoll separation to remove deal cells.</div>
+<h3 id="sec3.2">Run the marker panel</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>Plasma Membrane Protein marker expression data is acquired by flow cytometry that can be used as input for the following analyses: 1) Leukemic cells can be identified based on aberrant expression of one or more markers compared to the healthy control. 2) Aberrantly expressed plasma membrane protein marker expression can be used to identify and sort potential subclones. 3) Disease progression can be tracked by running the panel on longitudinal samples from individual patients.</p>
+<ol start="9">
+<li>Cells are stained for markers CD34, CD38, CD45 and CD45RA, from now onwards called backbone stain. These markers are used as a basis to merge all measured plasma membrane protein markers together and are therefore present in every tube. More detailed explanation about this principle can be found in <b>Merge the marker panel flow data.</b> Addition of antibodies can be performed at 15°C–25°C. All stainings are carried out at 4°C in the dark.
+<ol type="a">
+<li>Label unstained and single stained control tubes</li>
+<li>Take 15 million viable mononuclear cells (MNCs) of the thawed AML sample and resuspend this in 320 μL PBS</li>
+<li>Add 2 μL of cell suspension to the unstained and single stained control tubes containing 98 μL PBS</li>
+<li>Add the backbone stain to the remaining cells:
+<ol type="i">
+<li>FcR blocking reagent 10 μL</li>
+<li>CD34-APC 9 μL</li>
+<li>CD38-FITC 9 μL</li>
+<li>CD45-PECy7 3 μL</li>
+<li>CD45RA-BV421 3 μL</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Stain cells for 20 min at 4°C in the dark
+<ol type="a">
+<li>Label tubes for the marker panel (1-36)</li>
+<li>Add PBS to the backbone-stained cells in a total volume of 100 μL ∗ number of markers</li>
+<li>Add 100 μL of backbone-stained cells to each of the labeled tubes. Resuspend in between so that all tubes have a similar amount of cells</li>
+<li>Add one PE-labeled plasma membrane protein marker antibody per tube. The volume of antibody per tube is indicated in the <a href="#key-resources-table">key resources table</a>.</li>
+<li>Stain cells for 30 min at 4°C in the dark</li>
+<li>Wash cells with 2 mL of PBS per tube and centrifuge at 450 <i>g</i> for 5 min</li>
+<li>Remove PBS and resuspend cells in 100 μL fresh PBS</li>
+</ol>
+</li>
+<li>Acquire expression data using a flow cytometer</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The extra volume of backbone-stained cells will be approximately 300 μl. Keep this at 4°C until all PE-labeled marker panel antibodies have been added. It can serve as back-up if a pipetting mistake is made with the marker panel.</div>
+<div class="note">
+<span class="note-title">Note:</span> The steps described above have been optimized for staining of cells in FACS tubes. For staining of cells in a 96-well plate some adjustments may be needed in the protocol.</div>
+<div class="note">
+<span class="note-title">Note:</span> While we have used a backbone panel with antibodies against CD34, CD38, CD45 and CD45RA, other markers, or additional markers such as CD64 or CD117, can be included as backbone markers as well.</div>
+<div class="note">
+<span class="note-title">Note:</span> The percentage of viable, thawed cells when measuring the marker panel usually lies between 70-90%. The largest cell loss during the thawing procedure is cleaned by the DNase in the NCS mix and does not result in the accidental staining of large number of dead cells. If desired, PI (at 1 μg/mL) can be added to the backbone panel in order to discriminate viable cells. In case of limited patient material, for instance at follow-up time points, a prioritized list consisting of 15 markers can be used, indicated by an asterisk behind the antibody in the <a href="#key-resources-table">key resources table</a>. The ranking of these markers was based on the number of times it was positive in a cohort of 87 AML samples and on literature describing the use of specific markers in AML.</div>
+<div class="note">
+<span class="note-title">Note:</span> We acquire flow data at the MacsQuant Analyzer 10. Other flow cytometers may also be used if the lasers are sufficient for the used fluorophores.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Experiment can be paused here. Data analysis and the thawing of a second AML sample for sorting can be done on a different day<b>.</b>
+</div>
+<h3 id="sec3.3">Merge the marker panel flow data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>A limiting factor in flow cytometry is that the number of markers that can be measured per tube is limited due to availability of fluorochrome-labeled antibodies with distinct excitation and emission spectra and flow cytometers with multiple lasers. To circumvent this problem, we add a backbone of markers in each independent FACS tube. Additional to the backbone in each of the tubes an antibody against a specific plasma membrane marker is added, that can carry the same fluorochrome, in our case PE. Flow data acquired in separate tubes can be combined based on the expression of the backbone markers using Infinicyt™. With the recent development of full spectrum flow cytometers, such as the Cytek Aurora, more fluorochromes may be included to further increase the resolution and reduce analysis time.</p>
+<ol start="12">
+<li>Gate the FCS files in FlowJo
+<ol type="a">
+<li>Export the cells of interest as new FCS files. Here, we make use of CD45<sup>+</sup> cells of which 10.000 events were exported per FCS file. See <a href="#mmc1">Methods video S1</a> for stepwise instructions</li>
+</ol>
+</li>
+<li>Use Infinicyt™ to combine FlowJo™ exported FCS files into a merged file. See <a href="#mmc2">Methods video S2</a> for stepwise instructions
+<ol type="a">
+<li>Within the Infinicyt™ environment, select ‘Calculate data’ in the ‘Guided modules’ window</li>
+<li>Load all FCS files necessary for your analysis. For instance, when disease progression is monitored load all FCS files per patient for every time point</li>
+<li>Deselect parameters that can be excluded, such as the time parameter HDR-T</li>
+<li>Separate the PE parameter so that one row is created for every included marker</li>
+<li>Check for a potential merge warning. Check out troubleshooting – <a href="#sec6.1">problem 1</a> if this is the case</li>
+<li>Rename the rows that were created in step 13d by the corresponding plasma membrane protein marker name</li>
+<li>Check the “The selected populations were unequivocally identified” box and select calculate data</li>
+<li>Save the calculated data file before continuing to the analysis window</li>
+<li>Continue to the analysis window and save</li>
+</ol>
+</li>
+<li>Export the merged FCS file
+<ol type="a">
+<li>For continuation of CombiFlow, see <b>CombiFlow</b>
+</li>
+<li>For identification of potential subclones, see <b>Identification of potential subclones.</b> <a href="#sec6.1">Troubleshooting 1</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> By making use of Infinicyt to separate the PE-labeled markers, the panel can be easily adapted. The number of markers can be increased, provided that a PE-labeled antibody is available.</div>
+<div class="note">
+<span class="note-title">Note:</span> Pay attention to the names of the markers and make sure these are consistent throughout analyses. This will avoid errors in the CombiFlow pipeline. Spaces are allowed but will be replaced by an underscore in the Combiflow analysis script.</div>
+<div class="note">
+<span class="note-title">Note:</span> Additional information on exporting FCS files can be found here: <i>FCS file export from FlowJo</i>. Additional explanations on the merging of FCS files and the APS plotting can be found in the Infinicyt documentation available on the Cytognos website.</div>
+<div class="note">
+<span class="note-title">Note:</span> Select which markers to include in the export if the merged file is used as input for CombiFlow, since here markers should match between included files.</div>
+<figure id="mmc1"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Mmc1.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. Export CD45+ cells as new FCS files, related to step 12</div>
+</figcaption>
+</figure>
+<figure id="mmc2"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Mmc2.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. Creating a merged FCS file with Infinicyt, related to step 13</div>
+</figcaption>
+</figure>
+<h3 id="sec3.4">Identification of potential subclones</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min–1 h</div>
+<p>With the merged flow data from <b>Merge the marker panel flow data</b> marker expressions can be compared with marker expressions of a healthy donor. Aberrantly expressed markers can be selected and used for further analysis in the Infinicyt™ environment to identify potential subclones as depicted in <a href="#fig1">Figure 1</a>. First, markers with aberrant expression are selected and used as input for the Principal Component analysis, which is used to identify the most discriminating marker (<a href="#fig1">Figures 1</a>A and B). Subpopulations can be sorted based on this marker and sequenced (<a href="#fig1">Figure 1</a>C). Based on the sequencing outcomes, a pedigree can be created that depicts the expected evolutionary track of the leukemic cells (<a href="#fig1">Figure 1</a>D).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Outcome of subclone identification by Principal Component analysis</div>
+<p>(A and B) (A) Gating strategy for the sorting of subpopulations (B) Expression of plasma membrane protein markers of an AML sample plotted together with the expression of these markers in a healthy control in order to identify which plasma membrane protein markers are aberrantly expressed.</p>
+<p>(C) A Principal Component analysis was performed using aberrantly expressed plasma membrane protein markers, showing the most distinguishing markers for Principal Component 1 (PC1) and Principal Component 2 (PC2). Plasma membrane protein marker CD25 was identified as most distinguishing marker. A FACS sort was performed based on CD34 and CD25 expression resulting in two subclones: subclone 1 CD34<sup>+</sup>CD25<sup>+</sup> and subclone 2 CD34<sup>+</sup>CD25<sup>-</sup>.</p>
+<p>(D) To identify whether the sorted subclones were genetically distinct targeted sequencing was performed for the mutations DNMT3A G&gt;A, RUNX1 duplication CCTA and FLT3-ITD. It was found that both subclones have a DNMT3A and RUNX1 mutation, but only subclone 1 CD34<sup>+</sup>CD25<sup>+</sup> also has a FLT3-ITD.</p>
+<p>(E) Pedigree of the subclones depicting the possible evolution pattern. This figure was adjusted from <a href="#bib7">de Boer et al., 2018</a>; figure 3.</p>
+</figcaption>
+</figure>
+<ol start="15">
+<li>Prepare the data from the merged file for further analysis
+<ol type="a">
+<li>Export marker expression data per cell from the population of interest in the merged FCS file using FlowJo™</li>
+<li>Prepare a data file for the healthy control</li>
+</ol>
+</li>
+<li>Run R script: “Marker panel – histograms” to plot plasma membrane protein marker expression data of a healthy control and the data of interest to find aberrantly expressed proteins
+<ol type="a">
+<li>Save generated histogram plot as pdf</li>
+</ol>
+</li>
+<li>Select plasma membrane protein markers that are aberrantly expressed in comparison to the healthy control using the previously generated histogram plots</li>
+<li>Open the analysis file, saved in step 13i, in the Infinicyt™ environment. See <a href="#mmc3">Methods video S3</a> for stepwise instructions
+<ol type="a">
+<li>If necessary: gate population of interest</li>
+<li>Check if Negative Visibility Configuration is selected for Automatic Negativity</li>
+</ol>
+</li>
+<li>Perform a Principal Component analysis
+<ol type="a">
+<li>Plot an APS (Automated Population Separator) diagram (Ctrl+D)</li>
+<li>Deselect backbone markers and select aberrantly expressed markers (Right click: Diagram Configuration → Parameters Configuration)</li>
+<li>Obtain Principal Component values (Ctrl+I) and select most distinguishing markers</li>
+<li>Gate subpopulations and visualize in dot plots</li>
+</ol>
+</li>
+<li>Export all graphs and individual subpopulations for use in Manuscript Figures or downstream analysis</li>
+<li>Determine a sorting strategy using the most distinguishing marker(s) in the merged FCS file using Flow Jo™
+<ol type="a">
+<li>Continue with Sorting of potential subclones</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If more than one plasma membrane protein marker is needed to distinguish between potential subclones, it is necessary to check whether this marker is available with a different fluorophore than PE before continuing with <b>Sorting of potential subclones</b>. <a href="#sec6.3">Troubleshooting 2</a>
+</div>
+<figure id="mmc3"><video controls="controls">
+    <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Mmc3.mp4" type="video/mp4"></source>
+    Your browser does not support HTML5 video.
+  </video>
+<figcaption>
+<div class="figcaption-title">Methods video S3. Identification of potential subclones, related to steps 18 and 19</div>
+</figcaption>
+</figure>
+<h3 id="sec3.5">Sorting of potential subclones</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>After determining the most distinguishing plasma membrane protein marker(s) to identify potential subclones using the merged FCS file and Infinicyt™. The potential clones can be sorted using the protocol below. This part is a continuation of <b>Thawing an AML</b>.</p>
+<ol start="22">
+<li>To sort potential subclones AML cells need to be stained with part of the backbone markers and the most distinguishing plasma membrane protein markers (PMPs) that were determined by a Principal Component analysis
+<ol type="a">
+<li>Label tubes for unstained and single stained controls</li>
+<li>Resuspend all thawed AMLs cells in PBS-mix (10 × 10<sup>6</sup> cells/100 μL)</li>
+<li>Add 1 ul of cells to unstained and single stained controls containing 99 μL of PBS-mix</li>
+<li>Add staining to the remaining cells. Volume/100 μL.
+<ol type="i">
+<li>Fc block 3 μL</li>
+<li>CD34-APC 3 μL</li>
+<li>CD45-PECy7 1 μL</li>
+<li>PMP marker 1-PE</li>
+<li>PMP marker 2 (optional)</li>
+</ol>
+</li>
+<li>Stain cells for 20 min at 4°C</li>
+</ol>
+</li>
+<li>In the meantime, prepare collection tubes containing medium with FCS</li>
+<li>Wash cells with PBS and resuspend them:
+<ol type="a">
+<li>For unstained/single cell tubes in ±300 μL PBS-mix</li>
+<li>For main tube in 1000 μL PBS-mix per 50 × 10<sup>6</sup> cells</li>
+<li>Add PI stain to the main tube at 1 μg/mL</li>
+</ol>
+</li>
+<li>Sort subclones of interest. If the FACS sorter is clogged, check troubleshooting – <a href="#sec6.3">problem 2</a> for extra instructions</li>
+<li>Process sorted cells for downstream analysis e.g., targeted sequencing, RNA sequencing or culturing</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This sorting protocol is optimized for the Beckman Coulter MoFlo Astrios and XDP at our FACS facility. Before starting sorting subclones it is advised to optimize the protocol for your FACS equipment. <a href="#sec6.5">Troubleshooting 3</a> and <a href="#sec6.7">4</a>
+</div>
+<h3 id="sec3.6">CombiFlow</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>The CombiFlow pipeline can be used to study the hematopoietic landscape of healthy and leukemic samples at diagnosis and longitudinally. Potential relapse-inducing populations can be identified at MRD time points and changes in clonal composition can be monitored based on marker expression data as depicted in <a href="#fig2">Figures 2</a> and <a href="#fig3">3</a>. The CombiFlow pipeline is based on an analysis workflow for CyTOF data (<a href="#bib24">Nowicka et al., 2017</a>). Whereas in the described examples clusters are assigned to visualize differences between diagnosis, relapse and healthy (<a href="#fig2">Figure 2</a>), it may also be used to visualize different cell types such as blasts, lymphocytes and mature myeloid cells.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Example of assigning clusters to a sample</div>
+<p>(A) Total tSNE landscape of combined samples (left) and tSNE landscape per sample (right) colored by forty clusters.</p>
+<p>(B) Cell count per cluster per sample. Clusters were assigned to diagnosis, MRD, relapse, or healthy indicated in bold.</p>
+</figcaption>
+</figure>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1041-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Outcome of CombiFlow pipeline for a patient with paired diagnosis and relapse samples and a healthy control</div>
+<p>(A) TruSight sequencing Variant Allele frequencies at diagnosis and relapse depicted in a fish plot.</p>
+<p>(B) tSNE landscape per sample. Distinction between diagnosis (red), relapse (blue) and healthy (green).</p>
+<p>(C) Principal Component analysis of the forty clusters, colored by sample.</p>
+<p>(D) Ranking of markers contributing to Principal Component 1 (PC1, top) or Principal Component 2 (PC2, bottom).</p>
+</figcaption>
+</figure>
+<ol start="27">
+<li>Data preparation
+<ol type="a">
+<li>Export population of interest from the merged FCS files using FlowJo™ and zip the files</li>
+<li>Create a metadata file</li>
+<li>Create a panel file</li>
+</ol>
+</li>
+<li>Create a cluster file. The number of clusters can be adjusted based on the expected number of populations. If this is not known before running the analysis, a fixed number of clusters can be used. Here, 40 clusters were created per analysis to avoid missing out on smaller, more rare cell populations</li>
+<li>Clusters are formed using the FlowSOM algorithm (<a href="#bib32">Van Gassen et al., 2015</a>) and can be visualized for all samples or per sample using tSNE landscapes. These can be colored by marker expression to identify and visualize specific cell populations such as CD34<sup>+</sup> cells or CD4<sup>+</sup> lymphocytes</li>
+<li>Create a heatmap that depicts the transformed marker expression per cluster. This can be used to assign clusters to specific cell types</li>
+<li>Run the script until the step ‘Manual clustering per sample’
+<ol type="a">
+<li>Clusters can be assigned to a sample based on the cluster cell count per sample</li>
+<li>Create a sample file</li>
+</ol>
+</li>
+<li>Visualize the newly assigned clusters for all samples combined or per sample</li>
+<li>A new heatmap can be created, which depicts the combined expression of all clusters assigned to one specific sample</li>
+<li>Continue running the script until the Principal Component analysis step
+<ol type="a">
+<li>Select which markers and clusters to include in the Principal Component analysis. A Principal Component analysis can be performed for all included samples, but a comparison of diagnosis and relapse, without the healthy clusters, is also a possibility</li>
+<li>Run the Principal Component analysis to identify the most discriminating marker(s). <a href="#sec6.9">Troubleshooting 5</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Clusters can be assigned to a sample but also cell type. In order to do so, create a file similar to the cluster and sample file but now assign each cluster to a cell type based on the expression data in the heatmap. For example, a cluster with small size, high CD45 and CD19 expression may be assigned to either lymphocytes or, more specifically, B cells.</div>
+<div class="note">
+<span class="note-title">Note:</span> Some clusters may have cells originating from both the leukemic and healthy sample. We opted to assign these cells to the healthy sample until the ratio Healthy/Leukemic cells fell below 1:8.</div>
+<div class="note">
+<span class="note-title">Note:</span> Uniform manifold approximation and projection (UMAP) visualization may be an alternative for the currently used tSNE plots. Implementation of UMAP into the CombiFlow pipeline is currently ongoing, as well as a more automated, machine-learning approach for the cluster assignments to reduce analysis time.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>With this protocol we generated marker expression profiles of 2 diagnosis samples, a paired relapse sample and a healthy control. Of the unpaired diagnosis sample we selected the plasma membrane protein markers that were aberrantly expressed in comparison to the expression levels in the healthy control (<a href="#fig1">Figure 1</a>A). Using the aberrantly expressed markers a Principal Component analysis was performed in the Infinicyt™ environment and the marker CD25 was identified as most distinguishing maker (<a href="#fig1">Figure 1</a>B). The diagnosis sample was sorted in two populations: CD34<sup>+</sup>CD25<sup>+</sup> and CD34<sup>+</sup>CD25<sup>-</sup>, and cells were processed for further analysis. We isolated gDNA from both clones and performed targeted sequencing for the mutations DNMT3A G&gt;A, RUNX1 dup. CCTA and FLT3-ITD. We found that DNTM3A and RUNX1 were present in both clones, but FLT3-ITD was only found in the CD25<sup>+</sup> clone (<a href="#fig1">Figure 1</a>C). Based on these findings we can predict a possible evolutionary pattern of the clones found in this particular individual. Various downstream analyses were performed on the sorted subclones. RNA sequencing and GO analysis revealed enrichment of processes related to cell proliferation, mitochondrial activity and cytokine signaling in the FLT3-ITD clone, whereas the FLT-WT clone was enriched for processes related to chromatin organization and histone modification. By <i>in vitro</i> culture of the subclones followed by treatment with the FLT3 tyrosine kinase inhibitor AC-220, differences in sensitivity to AC-220 were found as only the FLT3-ITD subclone showed reduced cell counts and increased levels of apoptosis.</p>
+<p>The CombiFlow examples show one AML patient with diagnosis and relapse samples and a healthy control. In <a href="#fig2">Figure 2</a> the forty clusters are visualized in total and per sample. Here it can be observed that the diagnosis and relapse differ based on their marker expression profiles. TruSight sequencing data was also available at diagnosis and relapse, variant allele frequencies at both time points are depicted in a fish plot (<a href="#fig3">Figure 3</a>A). Clonal evolution between diagnosis and relapse was observed as the BCOR mutation was no longer detected at relapse, whereas the mutations in KMT2A and CEBPA newly appeared. The size of the NPM1 mutated clone increased. These genetic differences between diagnosis and relapse were visualized in the tSNE landscape (<a href="#fig3">Figure 3</a>B), indicating that the markers used to create the landscape could separate cell clusters derived from the diagnosis and relapse sample. The healthy control clustered away from the AML samples. The Principal Component analysis reflected this separation and identified ITGA5, CD97 and IL1RAP as the top markers to distinguish between the AML and healthy cells (<a href="#fig3">Figures 3</a>C and 3D). CD47, CD99 and CLL1 differ between diagnosis and relapse and possibly within the healthy cells as well (<a href="#fig3">Figure 3</a>D).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>A possible bottleneck is the merging of the flow data in Infinicyt™. This is sensitive to aberrations in expression of the backbone markers. It may lead to having to exclude one of the markers. Furthermore, it is possible that the subclone that was found is very small, so there are not enough cells left after sorting for further analysis. In addition, differences in mutational status are not always found in the sorted subclones, resulting in having to go back to the drawing board. Another limitation is that the number of events that can be included in the CombiFlow analysis is currently relatively low. This is due to a lack of computational power. By running the analysis on a cluster this may be circumvented and the number of events can be increased. Another issue that is commonly present when working with patient material is a low quantity of cells. For longitudinal studies this is mainly at MRD time points, when most of the cells are expected to be healthy but a small aberrant population may remain. A smaller marker panel may be used in these instances to reduce the amount of needed material. Markers may be selected based on their aberrant expression at diagnosis, yet this may exclude markers with a different-from-normal expression that arise following treatment. Lastly, we are currently working on automating the process by a machine-learning approach of creating and assigning clusters to a sample or cell type to reduce analysis time and remove potential user bias.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>A merge warning occurs (step 13).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Exclude the FCS file that is listed first in the merge warning window or separate the backbone marker from the aberrant file from the rest similar to what is needed for the PE-labeled markers. A disadvantage of this is that the marker can no longer serve as a backbone marker and the calculate data step will take longer. Another possibility is to include more events in the ‘calculate data’ step. For example, instead of including only the blasts or CD45<sup>+</sup> cells, include all viable cells. This will mainly help if cell numbers per file are relatively low.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>No subpopulations can be identified in the APS plot (step 19).</p>
+<h3 id="sec6.4">Potential solution:</h3>
+<p>This is a possibility as some AMLs do not have clear subpopulations based on their marker expression profile. It may be that markers currently not included in the panel are capable of distinguishing subpopulations in the AML in question. Another option is that the highest ranking marker does have a larger range in expression than other markers but that lower ranked markers have a more bimodal expression pattern indicative of subpopulations. It is therefore, in these instances, recommended to deselect the one or two highest ranking parameters to see if the APS plot changes.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Stickiness of AML cells result in clogging of FACS sorter (step 25).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>AML cells can be diluted further in PBS mix; the DNaseI in the mix breaks down free DNA. If this is not sufficient cells can be put through a 35 μm cell strainer.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The sorted subpopulations do not differ in mutation status (step 26).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>It is possible that sorting an AML into subpopulations based on the highest ranking marker(s) in the PCA does not result in genetically distinct subclones. A potential solution may be to sort the AML again, except this time not based on the highest ranking but on the second or third ranking marker. Another explanation for the lack of difference in mutation status may be that the differences in marker expression are not due to genetic, but due to epigenetic or transcriptomic variation between the subpopulations. This will require more extensive analysis of the sorted subpopulations than NGS sequencing.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Running the CombiFlow script results in an error (step 29)</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Check if the script refers to the correct files. The metadata file should contain the exact file names that are included in the zipped folder containing the FCS files. The markers included in the analysis should match between each FCS file and between the FCS files and the panel file. Lastly, the CombiFlow script can be used for different comparisons, e.g., AML versus healthy or tracking an AML patient longitudinally. This may affect the description of the condition, which should match between the metadata file and the script.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Auguie, B. (2017). gridExtra: Miscellaneous Functions for “Grid” Graphics (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref1">View at publisher</a></p>
+<p id="bib2">Bache, S.M.W. (2020). magrittr: A Forward-Pipe Operator for R (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref2">View at publisher</a></p>
+<p id="bib3">Bates, D., Machler, M., Bolker, B.M., and Walker, S.C. (2015). Fitting linear mixed-effects models using lme4. J. Stat. Softw. <i>67</i>, 1-48. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref3">View at publisher</a></p>
+<p id="bib4">Bengtsson, H. (2021). matrixStats: Functions that Apply to Rows and Columns of Matrices (and to Vectors (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref4">View at publisher</a></p>
+<p id="bib5">Crowell, H.L.e.a. (2021). CATALYST: Cytometry dATa anALYSis Tools (Bioconductor). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref5">View at publisher</a></p>
+<p id="bib6">Csardi, G.N.,T. (2006). The igraph Software Package for Complex Network Research (InterJournal <i>Complex Systems</i>). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref6">View at publisher</a></p>
+<p id="bib7">de Boer, B., Prick, J., Pruis, M.G., Keane, P., Imperato, M.R., Jaques, J., Brouwers-Vos, A.Z., Hogeling, S.M., Woolthuis, C.M., Nijk, M.T., et al. (2018). Prospective isolation and characterization of genetically and functionally distinct AML subclones. Cancer Cell <i>34</i>, 674-689.e8. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref7">View at publisher</a></p>
+<p id="bib8">Eddelbuettel, D. and Sanderson, C. (2014). RcppArmadillo: Accelerating R with high-performance C plus plus linear algebra. Comput. Stat. Data <i>71</i>, 1054-1063. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref8">View at publisher</a></p>
+<p id="bib9">Ellis, B.E.A. (2021). flowCore: Basic Structures for Flow Cytometry Data (Bioconductor). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref9">View at publisher</a></p>
+<p id="bib10">Finak, G.J.M. (2021). flowWorkspace: Infrastructure for representing and interacting with gated and ungated cytometry data sets. Bioconductor. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref10">View at publisher</a></p>
+<p id="bib11">Garnier, S.E.A. (2021). Rvision - Colorblind-Friendly Color Maps for R (RPubs). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref11">View at publisher</a></p>
+<p id="bib12">Genz, A.E.A. (2020). mvtnorm: Multivariate Normal and t Distributions (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref12">View at publisher</a></p>
+<p id="bib13">Hennig, C. (2020). fpc: Flexible Procedures for Clustering (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref13">View at publisher</a></p>
+<p id="bib14">Henry, L.W. (2020). purrr: Functional Programming Tools (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref14">View at publisher</a></p>
+<p id="bib15">Hothorn, T., Bretz, F., and Westfall, P. (2008). Simultaneous inference in general parametric models. Biom J. <i>50</i>, 346-363. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref15">View at publisher</a></p>
+<p id="bib16">Kassambara, A. (2020a). ggpubr: 'ggplot2 (Based Publication Ready Plots). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref16">View at publisher</a></p>
+<p id="bib17">Kassambara, A.M.,F. (2020b). factoextra: Extract and Visualize the Results of Multivariate Data Analyses (). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref17">View at publisher</a></p>
+<p id="bib18">Kolde, R. (2019). pheatmap: Pretty Heatmaps (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref18">View at publisher</a></p>
+<p id="bib19">Konopka, T. (2020). umap: Uniform Manifold Approximation and Projection (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref19">View at publisher</a></p>
+<p id="bib20">Krijthe, J.H. (2015). Rtsne: T-distributed stochastic neighbor embedding using a Barnes-Hut implementation. CRAN.r-projects. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref20">View at publisher</a></p>
+<p id="bib21">Le, S.J. and Husson, F. (2008). FactoMineR: an R package for multivariate analysis. J. Stat. Softw. <i>25</i>, 1-18. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref21">View at publisher</a></p>
+<p id="bib22">Maechler, M.E.A. (2021). robustbase: Basic Robust Statistics (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref22">View at publisher</a></p>
+<p id="bib23">Neuwirth, E. (2014). RColorBrewer: ColorBrewer Palettes (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref23">View at publisher</a></p>
+<p id="bib24">Nowicka, M., Krieg, C., Crowell, H.L., Weber, L.M., Hartmann, F.J., Guglietta, S., Becher, B., Levesque, M.P., and Robinson, M.D. (2017). CyTOF workflow: differential discovery in high-throughput high-dimensional cytometry datasets. F1000Res <i>6</i>, 748. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref24">View at publisher</a></p>
+<p id="bib25">Quadros, A. (2020). emstreeR: Tools for Fast Computing and Plotting Euclidean Minimum Spanning Trees (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref25">View at publisher</a></p>
+<p id="bib26">Ritchie, M.E., Phipson, B., Wu, D., Hu, Y., Law, C.W., Shi, W., and Smyth, G.K. (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. <i>43</i>, e47. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref26">View at publisher</a></p>
+<p id="bib27">Schuringa, J.J. and Schepers, H. (2009). Ex vivo assays to study self-renewal and long-term expansion of genetically modified primary human acute myeloid leukemia stem cells. Methods Mol. Biol. <i>538</i>, 287-300. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref27">View at publisher</a></p>
+<p id="bib28">Scrucca, L., Fop, M., Murphy, T.B., and Raftery, A.E. (2016). mclust 5: Clustering, classification and density estimation using Gaussian finite mixture models. R. J. <i>8</i>, 289-317. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref28">View at publisher</a></p>
+<p id="bib29">Slowikowski, K. (2021). ggrepel: Automatically Position Non-overlapping Text Labels with ‘ggplot2’ (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref29">View at publisher</a></p>
+<p id="bib30">Temple Lang, D. (2021). XML: Tools for Parsing and Generating XML within R and S-Plus (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref30">View at publisher</a></p>
+<p id="bib31">Temple Lang, D.W. (2020). RJSONIO: Serialize R Objects to JSON, JavaScript Object Notation (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref31">View at publisher</a></p>
+<p id="bib32">Van Gassen, S., Callebaut, B., Van Helden, M.J., Lambrecht, B.N., Demeester, P., Dhaene, T., and Saeys, Y. (2015). FlowSOM: Using self-organizing maps for visualization and interpretation of cytometry data. Cytometry A <i>87</i>, 636-645. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref32">View at publisher</a></p>
+<p id="bib33">van Gosliga, D., Schepers, H., Rizo, A., van der Kolk, D., Vellenga, E., and Schuringa, J.J. (2007). Establishing long-term cultures with self-renewing acute myeloid leukemia stem/progenitor cells. Exp. Hematol. <i>35</i>, 1538-1549. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref33">View at publisher</a></p>
+<p id="bib34">Van, P., Jiang, W., Gottardo, R., and Finak, G. (2018). ggCyto: next generation open-source visualization software for cytometry. Bioinformatics <i>34</i>, 3951-3953. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref34">View at publisher</a></p>
+<p id="bib35">Venables, W.N. and Ripley, B.D. (2002). Modern Applied Statistics with S (Springer-Verlag New York). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref35">View at publisher</a></p>
+<p id="bib36">Wickham, H. (2007). Reshaping data with the reshape package. J. Stat. Softw. <i>21</i>, 1-20. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref36">View at publisher</a></p>
+<p id="bib37">Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis (Springer). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref37">View at publisher</a></p>
+<p id="bib38">Wickham, H.B.,J. (2019a). readxl: Read Excel Files. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref38">View at publisher</a></p>
+<p id="bib39">Wickham, H.E.A. (2019b). Welcome to the Tidyverse. J. Open Source Softw. <i>4</i>, 1686. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref39">View at publisher</a></p>
+<p id="bib40">Wickham, H.E.A. (2021a). devtools: Tools to Make Developing R Packages Easier. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref40">View at publisher</a></p>
+<p id="bib41">Wickham, H.E.A. (2021b). dplyr: A Grammar of Data Manipulation. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref41">View at publisher</a></p>
+<p id="bib42">Wickham, H.H.J. (2020). readr: Read Rectangular Text Data (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref42">View at publisher</a></p>
+<p id="bib43">Wilke, C.O. (2020). Cowplot: Streamlined Plot Theme and Plot Annotations for ‘ggplot2’ (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref43">View at publisher</a></p>
+<p id="bib44">Wilkerson, M.D. and Hayes, D.N. (2010). ConsensusClusterPlus: a class discovery tool with confidence assessments and item tracking. Bioinformatics <i>26</i>, 1572-1573. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref44">View at publisher</a></p>
+<p id="bib45">Xiao, N. (2018). ggsci: Scientific Journal and Sci-Fi Themed Color Palettes for ‘ggplot2’ (CRAN.r-projects). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00570-0/sref45">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Prof Dr. J.J. Schuringa, <a href="mailto:j.j.schuringa@umcg.nl">j.j.schuringa@umcg.nl</a></p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The videos and code generated and used in this study are available at <a href="https://github.com/rhoutsma/CombiFlow">https://github.com/rhoutsma/CombiFlow</a>.</p>
+<h3>Acknowledgments</h3>
+<p>Funding was provided by the Dutch Cancer Foundation to J.J.S. (11013). TruSight sequencing data at diagnosis and relapse were kindly provided by the Routine Diagnostics Department of the UMCG.</p>
+<h3>Author contributions</h3>
+<p>S.M.H. and R.H. performed the experiments and optimized the data analysis pipelines. S.M.H., R.H., and J.J.S. analyzed data and wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

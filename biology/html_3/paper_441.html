@@ -1,0 +1,406 @@
+<article>
+<section>
+<h1 id="header">Protocol for quantitative assessment of social cooperation in mice</h1>
+<p><time datetime="2021-02-05">Published: February 5, 2021</time></p>
+<p>Jungsu Shin<sup><a href="#aff1">1</a></sup> and Jaewon Ko<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Brain and Cognitive Sciences, Daegu Gyeongbuk Institute of Science and Technology (DGIST), Daegu 42988, Korea</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:jaewonko@dgist.ac.kr">jaewonko@dgist.ac.kr</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100305">10.1016/j.xpro.2021.100305</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Social cooperation in rodents was recently validated in rats, and we recently successfully applied a modified automated analysis to mice. Here, we describe a detailed procedure for using this paradigm in mice that relies on reward-based mutual communication that is automatically detected by a software algorithm embedded in the custom-made equipment. We also describe exemplary results of analyses in mice as a guide to broader neuroscience research applications employing transgenic knockout mice modeling neuropsychiatric disorders and mice of various ages.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib8">Han et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Detailed protocol for performing customized social cooperation tests in mice</li>
+<li>Detailed guidelines for analyzing social cooperation in mice</li>
+<li>Troubleshooting of the most common pitfalls associated with the procedure</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Social cooperation, which suppresses intra-specific aggression or minimizes its negative effects and promotes social bonding, is considered the major factor driving the evolution of sociality in rodents under all environmental conditions (<a href="#bib10">Ko, 2017</a>). A number of studies, particularly in psychology and social science fields, have suggested that social reward is a significant mechanism underlying the emergence of cooperative behaviors throughout animal evolution (<a href="#bib7">Dridi and Akcay, 2018</a>; <a href="#bib17">Yang et al., 2018</a>). A variety of behavioral tests have been developed to measure cooperation in monkeys, chimpanzees, and elephants (<a href="#bib3">Brosnan and de Waal, 2003</a>, <a href="#bib4">2004</a>, <a href="#bib5">2005</a>; <a href="#bib9">Hirata and Fuwa, 2007</a>; <a href="#bib14">Plotnik et al., 2019</a>). However, only a few such tests have been used to analyze social cooperative behavior in rodents (<a href="#bib11">Kozma et al., 2019</a>; <a href="#bib16">Wood et al., 2016</a>). Moreover, these prior studies have been performed primarily in rats; rather than providing clarity, findings obtained from these studies have often complicated our understanding of genetic mechanisms underlying the cognitive component of cooperative behavior.</p>
+<p>We recently modified the automated social cooperation apparatus—initially developed by Avital and colleagues as a novel behavioral paradigm for monitoring social cooperative behavior in non-conditioning-based rat responses (<a href="#bib1">Avital et al., 2016</a>; <a href="#bib8">Han et al., 2020</a>)—for use in mice. This apparatus, which is intended to accommodate a pair of mice (∼6-week-old C57BL/6N male), housed together in the same cage, was custom-designed as a white Plexiglas box divided vertically into two lanes by a transparent, perforated divider (<a href="#fig1">Figure 1</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Social cooperation maze</div>
+<p>Schematic illustration of instruments for measuring social cooperation-like behavior in mice. The white opaque Plexiglas box (width, 20 cm; length, 60 cm; height, 25 cm) and transparent perforated Plexiglas divider comprising the basic apparatus are shown. The divider, located in the central part of the maze, separates the maze into two compartments; sucrose dishes are located in the reward zone. Mouse movements through the maze are recorded by a digital camera located in the ceiling, and recorded movies are analyzed using EthoVision XT software. A mini I/O-box is installed for transferring the TTL signal that activates the peristaltic pumps providing sucrose.</p>
+</figcaption>
+</figure>
+<p>During this test, the pair of mice must move coordinately through three virtual zones—zone A to zone B to zone C—to receive a reinforcement reward (20% sucrose solution from a liquid receptacle [single cup]) connected to peristaltic pumps. Similar to results reported in rats (<a href="#bib1">Avital et al., 2016</a>), we found that over the course of 12 consecutive days, wild-type (WT) mice exhibited progressively enhanced social cooperation learning. The performance of mice was tracked in its entirety and recorded using a video tracking system (<a href="#bib8">Han et al., 2020</a>; <a href="#fig1">Figure 1</a>; <a href="#mmc1">Methods Video S1</a>), allowing quantification of a number of parameters that collectively provide a measure of the extent of cooperative behavior. Note that the original algorithm designed by Avital and colleagues did not implement a situation in which one of the paired mice reversed course and returned to a previous zone (e.g., zone B to zone A; <a href="#fig2">Figure 2</a>) (<a href="#bib1">Avital et al., 2016</a>). We would argue that this additional optimization of the original protocol is essential for precisely measuring social cooperative behavior in mice.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Algorithm implemented in EthoVision software for analyzing social cooperation-like behaviors in mice</div>
+<p>(A) Schematic flowchart of the algorithm designed to measure cooperativity in mice. To receive a sucrose reward, the paired mice must move coordinately from the distal zone (zone A) to reward zone (zone C) through the middle zone (zone B). Backward movement of mice (one or both) from zone B to zone A or zone C to zone B during trial is considered a failed trial (indicated as “Restart”). In addition, if the paired mice spend longer than 10 s transitioning from zone B to zone C, it is considered as a hesitation move and is also not counted as social cooperativity (indicated as “Restart”).</p>
+<p>(B) Simulated circumstances matched with corresponding index numbers indicated in (A). Red-colored mazes represent cases where “Restart” ensues, whereas green-colored mazes represent cases where paired mice are in transit during cooperative-like behaviors.</p>
+</figcaption>
+</figure>
+<figure id="mmc1"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Mmc1.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S1. Overview of social cooperation test, related to steps 1–21</div>
+</figcaption>
+</figure>
+<h3 id="sec1.1">Set up animals and equipment before starting the procedure</h3>
+<h4 id="sec1.1.1">Animals</h4>
+<p>Mice purchased from external providers are allowed to acclimate for at least ∼1 week in the animal facility before use in behavioral tests. In the case of genetically altered mutant mice, heterozygous male and female intercrossings are performed to produce homozygous mutant mice and WT littermates. All mice are housed 2–4 animals per cage at a room temperature (24°C–26°C) with a 12 h/12 h light/dark cycle (lights on at 7 AM and off at 7 PM). All experiments were conducted according to the guidelines and protocols (DGIST-IACUC-19073003-00 and DGIST-IACUC-20062604-00) for rodent experimentation approved by the Institutional Animal Care and Use Committee of DGIST.</p>
+<div class="note">
+<span class="note-title">Note:</span> Adult (4–12 weeks old) male or female mice of the C57BL/6N strain purchased from Jackson Research Laboratory were used in experiments. All experiments using WT and transgenic mice must conform to local and national regulations. All mouse protocols used in the social cooperation test were approved by the Animal Care and Use Committee of the animal facility at Daegu Gyeongbuk Institute of Science and Technology (DGIST). Mice that display deficits in recognition memory should not be used for this experiment.</div>
+<h4 id="sec1.1.2">Equipment</h4>
+<p>We use an opaque Plexiglas box with the dimensions, 60 cm (length) × 20 cm (width) × 25 cm (height), divided vertically into two lanes by a transparent perforated well (see <a href="#fig1">Figure 1</a>). Three zones are only distinguished in “Arena Settings” menu of EthoVision software. As noted in “Overview of Experimental Design,” liquid dispensers are triggered to provide 20% sucrose only when the mouse pair exhibits coordinated movement through the three virtual zones, which is automatically recorded by the EthoVision software. Before each trial, 70% (vol/vol) ethanol is used to completely clean the maze and perforated divider (<a href="#mmc1">Methods Video S1</a>).</p>
+<h3 id="sec1.2">Overview of experimental design</h3>
+<p>Our protocol for measuring social cooperative behavior consists of four main phases: pairing (1 day), habituation/training (1 day), testing/recording (at least 12 days) and video analyses (variable, depending on the amount of captured video files). In the pairing phase, two mice are chosen for housing in the same home cage. In the habituation phase, mice are allowed to walk through three virtual zones to familiarize themselves with the automated maze. In the testing phase, which continues for 12 consecutive days, pairs of mice housed in the same home cage are tested for a total of 15 min, during which the number of mutual rewards, latency and activity are counted. Mice are adapted to handling to reduce stress to the extent possible throughout the course of experiments. All behavioral testing results (<a href="#fig3">Figures 3</a>, <a href="#fig4">4</a>, and <a href="#fig5">5</a>) described in the current protocol were performed on two independent cohorts.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Social cooperation performance of C57BL/6N male WT and Shank3 mutant mice</div>
+<p>(A) Example showing quantification of the number of mutual rewards. Data are presented as means ± SEM (error bars) (n = number of mouse pairs; WT, 6 pairs; Shank3, 10 pairs; ∗p &lt; 0.05, ∗∗p &lt; 0.01, ∗∗∗p &lt; 0.001, ∗∗∗∗p &lt; 0.0001).</p>
+<p>(B) Example showing quantification of activity.</p>
+<p>(C) Example showing quantification of latency.</p>
+<p>(D) Example showing calculation of efficacy. Figure reprinted with permission from <a href="#bib8">Han et al. (2020)</a>,</p>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Social cooperation performance of C57BL/6N male and female mice</div>
+<p>(A) Example showing quantification of the number of mutual rewards. Data are presented as means ± SEM (n = number of mouse pairs; 8 pairs of each gender).</p>
+<p>(B) Example showing quantification of activity.</p>
+<p>(C) Example showing quantification of latency.</p>
+<p>(D) Example showing calculation of efficacy.</p>
+</figcaption>
+</figure>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Social cooperation performance of C57BL/6N male mice of various ages</div>
+<p>(A) Example showing quantification of the number of mutual rewards. Data are presented as means ± SEM (n = number of mouse pairs; 6 mouse pairs of 4- and 6-week-old male and 5 mouse pairs of 12-week-old male groups).</p>
+<p>(B) Example showing quantification of activity.</p>
+<p>(C) Example showing quantification of latency.</p>
+<p>(D) Example showing calculation of efficacy.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.3">Pairing (housing) (steps 1–3)</h3>
+<p>The pairing phase is critical for efficient performance of mice in the testing phase. First, pairs of mice should be reared in the same home cages; in our experience, some cage mates, particularly &gt;12-week-old male mice, frequently and violently fight to establish a dominance hierarchy. Because the coordinated movement of both mice in a pair between three predefined zones (zones A to C) is counted as “positive” cooperativity, selection of pairs with matched body weight beneficially affects outcome. We usually house 2 or 4 mice (i.e., 1 or 2 pairs) in the same cage (isolated rearing or overcrowded rearing should be avoided). Note that a mouse is paired with a designated partner to maximize the pairing effect.</p>
+<h3 id="sec1.4">Habituation and training (steps 4–11)</h3>
+<p>The purpose of the habituation phase is to familiarize paired mice with the test procedure and maze environment. Each mouse should be individually placed in the cooperation maze for at least 30 min to allow it to overcome neophobia. In addition, all mice are water deprived for at least 6 h to enhance reward-based motivation. In our experience, restricted availability of water for intervals up to 8 h does not cause any noticeable physiological impairment (e.g., body weight loss). During “Training” sessions lasting up to 30 min (<a href="#mmc2">Methods Video S2</a>), mice should learn the location in the reward zone (zone C) where the 20% sucrose solution is provided. Note that freshly prepared sucrose solutions are autoclaved and can be stored in a refrigerator for 2 weeks. The sucrose solution is placed at room temperature (24°C–26°C) for at least 30 min before the habituation session. After mice have completed the session, the maze should be thoroughly cleaned using 70% (vol/vol) ethanol and completely dried out.</p>
+<figure id="mmc2"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Mmc2.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S2. Representative video showing mice in the habituation/training phase of social cooperation test, related to steps 4–11</div>
+</figcaption>
+</figure>
+<h3 id="sec1.5">Testing and recording (steps 12–21)</h3>
+<p>The test phase lasts for 12 consecutive days. On day 1, habituated and trained mouse pairs are again water deprived for at least 6 h and placed pair-wise in the maze. Animals should be water deprived prior to every daily session. Mouse performance is automatically tracked and recorded by a video camera connected to a computer running EthoVision software (Noldus), providing a real-time readout of the relative location of paired mice in the three predefined zones of the maze. A trial is considered successful when the paired mice shuttle coordinately between the three predefined zones and arrive together at the end of the maze (zone C) with a maximum transition delay of 10 s from the adjacent zone. In our experiments, a pair of adult WT mice exhibit gradually increased efficacy in cooperating to gain mutual rewards over the course of testing days (<a href="#fig2">Figures 2</a>, <a href="#fig3">3</a>, and <a href="#fig4">4</a>). If the paired mice do not exhibit a typical social cooperation learning curve by day 6, they are not further tested. In our experience, ∼10% of the paired C57BL/6N adult mice exhibited no cooperative behavior and these animals were removed from the experiments. Before each day’s test, we manually check that peristaltic pumps are properly activated, and ensure that the sucrose solution is not contaminated before putting it into the liquid receptacle (cup). After each 15-min trial, the paired mice are returned to their home cage and the maze is cleaned using 70% (vol/vol) ethanol for use with another pair of mice in a subsequent trial.</p>
+<h3 id="sec1.6">Video analysis (steps 22–25)</h3>
+<p>A video device is used to record the entire test procedure (e.g., see <a href="#mmc1">Methods Video S1</a>) and precisely capture the coordinated movement of the paired mice. Importantly, manually eliminating false-positive cases of sucrose consumption, such as when mice nose poke near the liquid dispenser without actually sipping sucrose, is critical for reaching a reliable conclusion because the algorithm installed in EthoVision software does not discriminate these events from genuine positives (see <a href="#fig2">Figure 2</a>). The following four parameters can be determined: (1) mutual rewards; (2) activity, defined as the total distance moved during the recording session; (3) efficacy, defined as the number of mutual rewards divided by activity; and (4) latency, defined as the time to receive the first mutual reward.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Ethanol</td>
+<td>DUKSAN Bio</td>
+<td>Cat #UN1170</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>Sigma Aldrich</td>
+<td>Cat #S7903</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>White Plexiglas [60 cm (length) × 20 cm (width) × 25 cm (height)]</td>
+<td>Customized</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Borosilicate glass laboratory bottle</td>
+<td>Duran</td>
+<td>Cat #218013651</td>
+</tr>
+<tr>
+<td>Peristaltic pump</td>
+<td>Campden Instruments</td>
+<td>Cat #80204-0.5</td>
+</tr>
+<tr>
+<td>Mini USB-IO box</td>
+<td>Noldus</td>
+<td>Cat #PTIO-0030</td>
+</tr>
+<tr>
+<td>Digital 1280H WDR box camera</td>
+<td>Hanwha Techwin</td>
+<td>Cat #SCB-5003</td>
+</tr>
+<tr>
+<td>Computer installed with EthoVision XT11.5 software</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Mice: C57BL/6N mice (female and male), 4–12 weeks old</td>
+<td>The Jackson Research Laboratory</td>
+<td>Cat #005304</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Photoshop</td>
+<td>Adobe</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Microsoft Excel</td>
+<td>Microsoft</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>EthoVision XT Video tracking software</td>
+<td>Noldus</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>All equipment is listed in the <a href="#key-resources-table">Key resources table</a>.</p>
+<h3 id="sec2.1">Reagents</h3>
+<ul>
+<li>Ethanol (DUKSAN Bio, cat. no. UN1170)</li>
+<li>Sucrose (Sigma Aldrich, cat. no. S7903); dissolved in distilled water (final concentration: 20%) and autoclaved before use, and can be stored in a refrigerator for 2 weeks</li>
+</ul>
+<h3 id="sec2.2">Equipment</h3>
+<ul>
+<li>Custom-made white Plexiglas box with the dimensions, 60 cm (length) × 20 cm (width) × 25 cm (height). The dividing wall of the apparatus designed for C57BL/6N mouse experiments (SciTech, custom-made product), was made of transparent Plexiglas.</li>
+<li>Borosilicate glass laboratory bottle (Duran, cat. no. 218013651); two bottles are required for the behavioral test to provide a sucrose solution to each dish located in each sub-compartment of the cooperation maze.</li>
+<li>Peristaltic pump (Campden Instruments, cat. no. 80204-0.5) to provide sucrose solution at a constant flow rate</li>
+<li>Mini USB-IO box (Noldus, cat. no. PTIO-0030) to control on-demand automatic pellet dispensers</li>
+<li>Digital 1280H WDR box camera (Hanwha Techwin, cat. no. SCB-5003)</li>
+<li>Computer installed with EthoVision XT11.5 software (Noldus; <a href="https://www.noldus.com/ethovision-xt">https://www.noldus.com/ethovision-xt</a>) to track and record mouse movement; positioned 140 cm from the cooperation maze.</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Pairing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol>
+<li>Transfer the desired number of littermate mice from different home cages and house 2 or 4 mice of similar weight per cage.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Exclude belligerent mice from pairings to avoid stress effects that might affect social cooperation in the testing phase.</div>
+<div class="note">
+<span class="note-title">Note:</span> Male and female mice should not be paired in the same cage.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Although the same littermate mice are always used in the behavior test, their weights can be sometimes markedly different. Thus, choose mice with weight differences of less than 10%.</div>
+<ol start="2">
+<li>Check the identity of ear-tagged mice and document which mice are paired.</li>
+<li>Observe whether mice exhibit any abnormal behaviors (e.g., fighting, jumping) 24 h after pairing (see also <a href="#troubleshooting">Troubleshooting</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Some transgenic mice display heightened aggression or increased anxiety; severely harmed mice should not be further used. LABORAS (Laboratory Animal Behavior Observation Registration and Analysis System), if available, can be used to characterize the home cage activities of paired mice.</div>
+<h3 id="sec3.2">Habituation and training</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day, ∼15 min/mouse pair</div>
+<ol start="4">
+<li>The next day, bring the mice to the behavioral testing room and allow them to habituate for at least 30 min, with the room set to testing conditions.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Overhead lighting should be minimized to avoid anxiogenic effects that might affect social cooperation performance. Brightness should be measured in all three zones of the maze to ensure that the apparatus is evenly lit. Brightness should be maintained at ∼20 lux.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Mice should be water restricted for at least 6 h before habituation to increase motivation to search for the reward.</div>
+<ol start="5">
+<li>Before training, 70% (vol/vol) ethanol, paper towels, a pen, a timer, and 20% (wt/vol) sucrose solution should be prepared and available for use. The table and cooperation maze should be cleaned with 70% ethanol to remove any residual odor cues that might affect mouse behaviors.</li>
+<li>Connect two bottles containing 200 mL of 20% (wt/vol) sucrose solution via tubing to a peristaltic pump (<a href="#fig1">Figure 1</a>). Turn on a toggle switch to provide ∼100 μL of sucrose solution in a dish located at zone C in the reward zone by manually activating the pump (<a href="#fig1">Figure 1</a>). The bottle containing the remaining 20% sucrose solution should be returned to a refrigerator located in the behavioral testing room.</li>
+<li>Remove the cage lid and gently place the paired mice into each divided compartment of the cooperation maze.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Animals should be handled gently and deftly. To minimize handling stress, do not suspend the mouse by its tail while carrying it.</div>
+<ol start="8">
+<li>Start a timer and allow 15 min for the paired mice to explore the reward zone and nose poke a designated position to sip the 20% sucrose solution provided in the dish. Ensure that mice consume sucrose solution completely during the habituation phase.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This step is critical for mice to learn the location of the reward zone (see also <a href="#troubleshooting">Troubleshooting</a>).</div>
+<ol start="9">
+<li>Remove mice from the cooperation maze and gently return them to their home cage.</li>
+<li>Wipe down the cooperation maze and divider with 70% (vol/vol) ethanol to remove any residual odors, urine, and feces. Ensure that tube is clean and dry without a residual ethanol odor.</li>
+<li>Repeat steps 7–10 on other paired mice.</li>
+</ol>
+<h3 id="sec3.3">Testing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 12 days, ∼15 min/mouse pair</div>
+<ol start="12">
+<li>The next day, bring paired mice to the behavioral testing room and allow them to habituate for at least 30 min with the room set to testing conditions.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Mice should be water restricted for at least 6 h before habituation to increase motivation to search for the reward (see also <a href="#troubleshooting">Troubleshooting</a>).</div>
+<ol start="13">
+<li>Activate the video camera linked to computer-installed EthoVision software and divide the horizontal length of the maze into three zones (zone A, zone B and zone C) using a calibrating bar (60-cm in length) (see <a href="#mmc1">Methods Video S1</a>). Ensure that the movement of habituated mice is clearly and sharply visible in the “Detection Settings” tab in EthoVision software. Set a video rate of 30 frames/s for detailed frame-by-frame analysis.</li>
+<li>Prepare 70% (vol/vol) ethanol and 20% (wt/vol) sucrose solution in advance and preposition paper towels and a pen. Clean the table and cooperation maze with 70% ethanol to remove any residual odor cues that might affect mouse behaviors.</li>
+<li>Retrieve autoclaved 20% (wt/vol) sucrose solution from the refrigerator where it is stored, place it on the table so that it can come to room temperature (24°C–26°C), and transfer 100 mL of the solution into each bottle connected to a peristaltic pump. Connect tubing to each bottle containing 20% (wt/vol) sucrose.</li>
+<li>Turn on the toggle switch to activate the pump, and confirm that a sucrose droplet is properly dispensed onto the dish (see also <a href="#troubleshooting">Troubleshooting</a>).</li>
+<li>Remove the cage lid and separately place the paired mice gently into each divided compartment of the cooperation maze.</li>
+<li>Gently place a pair of mice into zone A (virtually designated) of each compartment of the cooperation maze, and start recording by clicking “New Trial” and “Start Trial” buttons of “Acquisition” tab in the EthoVision software for 15 min/trial. Ensure that the pair of mice is located in zone A when recording is started (see also <a href="#troubleshooting">Troubleshooting</a>).</li>
+<li>Between trials with different pairs of mice, clean the cooperation maze and divider with 70% (vol/vol) ethanol.</li>
+<li>After the testing session is completed on a specific day, drain the remaining sucrose solution from the tubing and infuse with clean water three times to completely wash out leftover sucrose.</li>
+<li>Repeat steps 15–20 on each subsequent test day.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> After finishing the experiments, ensure that a recording file has been stored in EVXT format in a designated folder on the computer and is later archived for video analysis (see below).</div>
+<h3 id="sec3.4">Video analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 days (variable, depending on amount of recorded data)</div>
+<ol start="22">
+<li>After the recording session is completed, click “Statistics &amp; Charts” and “Calculate” tabs sequentially in EthoVision software to obtain the number of mutual rewards and latency for dispensing sucrose solution.</li>
+<li>Click “Integrated Visualization” tab in the EthoVision software and manually inspect the recorded video frames throughout each 15-min trial to ensure nose poking by the mouse pair. Unless both mice exhibit nose poking, it is not counted as a mutual reward.</li>
+<li>Repeat step 23 for all trials performed on days 2–12.</li>
+<li>The following parameters should be calculated to reach final conclusions: number of mutual rewards, activity (defined as total distance moved during the 15-min recording session), efficacy (defined as number of mutual rewards divided by activity), and latency (defined as the time to receive the first reward). See “<a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a>” section for detailed instructions on how to utilize EthoVision software for analyses.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The modified social cooperation test has several advantages. First, this behavioral paradigm involves a non-conditioning apparatus that is fully automated, controlled by video tracking, and easily accessible to first time users. Moreover, our analyses do not evoke fear responses in mice; instead, they seek to quantitatively (if possible) measure internal representations that are encouraged by “reward”-based motivation and distinct from helping behavior or altruistic/empathy-like behavior. As shown in <a href="#fig3">Figures 3</a>, <a href="#fig4">4</a>, and <a href="#fig5">5</a>, adult WT mice exhibited robust learning and latent learning phases over the course of experiments.</p>
+<p>Social cooperativity in mice becomes established gradually, peaking on day 6 and further increasing until day 9 (see <a href="#fig3">Figure 3</a>A). As described and demonstrated above, the current protocol works well for C57BL/6N male mice of various ages and adult C57BL/6N female mice (<a href="#fig3">Figures 3</a>, <a href="#fig4">4</a>, and <a href="#fig5">5</a>; see also <a href="#mmc3">Methods Videos S3</a>, <a href="#mmc4">S4</a>, and <a href="#mmc5">S5</a>).</p>
+<figure id="mmc3"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Mmc3.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S3. Representative video of 6-week-old male WT and Shank3 mutant mice in the social cooperation test, related to steps 12–21</div>
+</figcaption>
+</figure>
+<figure id="mmc4"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Mmc4.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S4. Representative video of 6-week-old male and female C57BL/6N mice in the social cooperation test, related to steps 12–21</div>
+</figcaption>
+</figure>
+<figure id="mmc5"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/441-Mmc5.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </source></video>
+<figcaption>
+<div class="figcaption-title">Methods video S5. Representative video of 4-, 6-, and 12-week-old male C57BL/6N mice in the social cooperation test, related to steps 12–21</div>
+</figcaption>
+</figure>
+<p>In most cases, an increasing trend in the number of mutual rewards and an accompanying decreasing trend in latency should be observed over the course of testing days. There has been no definitive demonstration of the key brain regions and neural circuits that underpin social cooperativity in mice (<a href="#bib8">Han et al., 2020</a>). However, chemogenetics approaches, which have recently been used effectively to identify key neural circuits underlying social hierarchy, could be employed to manipulate neuronal activity in specific neurons and/or neuronal projections with concurrent monitoring for alterations in social cooperativity. Optogenetics would not likely be suitable for our behavioral paradigm because the near-instantaneous responses triggered by this approach are incompatible with the slower timescale of associated behavioral traits.</p>
+<h3 id="sec4.1">Analyzing cooperation in rodents using the Prisoner’s Dilemma paradigm</h3>
+<p>Although social cooperation has been extensively studied in human laboratory tests (<a href="#bib13">Melis and Semmann, 2010</a>), only a handful of studies have investigated non-human experimental subjects, particularly rodents, and those that have differ in terms of species and experimental paradigms used. Cooperative behavior reflects a cognitive response to risk and reward. Employing these cognitive and emotional elements, Avital and colleagues designed a non-conditioned environment for measuring social cooperative-like behavior in rats, which we subsequently modified for use in mice. However, social decision-making is also critical for cooperative behavior. Some prior studies have incorporated a “decision-making” element in assessments of the cooperative behavior of rats through development of an operant model of the iterated Prisoner’s Dilemma (IPD) game (<a href="#bib16">Wood et al., 2016</a>). In the IPD paradigm, an operant chamber is bisected by a metal screen, and rats are tested pair-wise in daily sessions of multiple trials each. At the start of each trial, stimulus lights are illuminated, after which levers are inserted on both sides of the chamber. Rats are allowed a short period (e.g., 2 s) to respond before the levers are retracted and the house-light is illuminated. In a given trial, each rat chooses whether to cooperate or defect. If both choose to cooperate, they both receive the highest payoff (categorized as “Reward”), whereas if both defect, neither gets a reward (categorized as “Punishment”). If one defects while the other cooperates, the defector receives an intermediate payoff (categorized as “Temptation”), whereas the cooperating rat receives no reward (categorized as “Sucker”). Various versions of the IPD are well established for measuring cooperation in rats, but their applicability to mice has not been tested, highlighting the importance of developing a new behavioral assay for quantitatively measuring social cooperation in mice.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec5.1">Detailed steps for analyzing social cooperation using EthoVision software</h3>
+<p>We use EthoVision software with two installed modules – Social Interaction and Trial &amp; Hardware control – for tracking and recording mouse movement during social cooperation learning. Specifically, we have used it for quantitative analyses of video files, as detailed below:</p>
+<ol>
+<li>Activate program executable file, then click the “Statistics &amp; Charts” tab and ensure that all values are recorded for all trials.</li>
+<li>Click the “Integrated Visualization” tab and check the activity of a paired mice (subject 1 and subject 2, indicated by red-colored curves) as a function of recorded time in each trial.</li>
+<li>Check the value shown in the “Statistics &amp; Charts” tab indicating the time point at which the sucrose solution is provided when both mice are located in the reward zone.</li>
+<li>Analyze the corresponding video frame afterward to manually track the specific time point after starting when both mice exhibit nose poking (i.e., latency). This is counted as a single mutual reward.</li>
+<li>Continue steps 3 and 4, counting number of mutual rewards during a 15-min trial.</li>
+<li>Repeat steps 2–5 for other trials performed on a single day.</li>
+<li>Repeat steps 1–6 for all trials performed on other days.</li>
+<li>Perform statistical analyses using quantified raw values obtained from steps 1–7.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> GraphPad Prism 8.4.3 software (<a href="https://www.graphpad.com">https://www.graphpad.com</a>) is used to calculate statistical significance. Repeated measures two-way analysis of variance (ANOVA) with Sidak’s <i>post hoc</i> comparisons are used to determine how day, gender, strain, and genotype affect social cooperativity. In our experience, obtaining a sufficient number of mouse pairs with Gaussian distributions is challenging; this may necessitate the use of repeated measures two-way ANOVA. A probability level of p <i>&lt;</i> 0.05 is adopted as the level of statistical significance for all analyses.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Similar to other rodent behavioral paradigms, the social cooperation test also has its limitations. First, numerous factors, including age, weight, and basal stress level, can influence the results of the social cooperation test, reflecting the well-established relationship between stress level and reward level in mice (<a href="#bib2">Bath et al., 2017</a>; <a href="#bib6">Carlton et al., 2020</a>; <a href="#bib18">Yuan et al., 2019</a>). Circumventing these confounding factors requires precisely matching mouse age and weight, and minimizing stress through habituation and training procedures. In particular, despite having been housed in the home cage, aged C57BL/6N male mice exhibit aggressive behavior, which can affect the results of the social cooperation test. Thus, care should be taken to avoid exposing experimental mice to a harmful environment. Second, in applications using some transgenic mutant mice, defects in social novelty recognition or perceptual modalities can also lead to misinterpretation of experimental results. Other behavioral analyses, for example, those that engage different sensory or motor properties of mice, should be performed to examine these features of mutant mice before drawing conclusions about the results of the social cooperation test. Third, locomotion activity of mice should be carefully considered in interpreting results. For example, <i>Shank2</i><sup>Δ6-7</sup> mice, a transgenic mutant mouse model of autism (<a href="#bib15">Won et al., 2012</a>), exhibit significantly heightened hyperactivity, which often led to increased coordinated movement in our experiments (<a href="#bib8">Han et al., 2020</a>). In contrast, <i>Shank3</i><i>Δ</i><sup>9</sup> mice, another autism mutant mouse model (<a href="#bib12">Lee et al., 2015</a>), showed normal locomotion activity in association with decreased social cooperativity in parallel experiments (<a href="#bib8">Han et al., 2020</a>) (see <a href="#fig3">Figure 3</a>; <a href="#mmc3">Methods Video S3</a>). Again, correct interpretation of results requires conducting additional behavioral analyses.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Mouse is extremely aggressive in the home cage and exhibits violent (step 3).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>This could be caused by grouping of adult male mice together in the same cage, which often contributes to establishment of social hierarchy and frequently fights. Do not use mice that are too violent and/or have been physically harmed in the social cooperation test. Take care to minimize stress during handling.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>A mouse is not well habituated to exploring the reward zone (step 8).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Water deprivation might differentially alter the activity of neural circuits underlying hunger or thirst in individual mice, particularly those of certain transgenic strains. Let the mouse rest and explore freely for an additional 15-min period outside the social cooperation maze. Ensure that weights of all mice are comparable after water restriction. In addition, this could be caused by poor quality of sucrose solution because the 20% sucrose solution is susceptible to contamination in certain environment. Prepare and autoclave a fresh sucrose solution, place in the liquid dispenser, and observe mouse behavior. Furthermore, take care to minimize stress during transfer of mice from cage to maze. Ensure that temperature, humidity, and light intensity controls are operating properly.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Mouse is not conditioned to eat sucrose solution (step 12).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>This could be caused by insufficient period of water restriction to increase motivation of sucrose palatability. Mice always consume more fluid when water intake is restricted. In our experience, water deprivation in the home cage for 6–8 h is sufficient to facilitate sucrose intake. Moreover, temperature of sucrose solution might not be optimal. Water restriction has been reported to strengthen cold preference. Adjust temperature to 15°C–20°C by ice cooling on ice (if still warm from autoclaving) or warming in a water bath (if still cool from being previously refrigerated). Lastly, a 15-min habituation period might not be sufficient for the mouse to learn the reward zone position or how sucrose is provided. Some mice adapt more slowly to habituation and training. Let the mouse explore the reward zone to learn its position for an additional 30 min.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Sucrose droplet is not efficiently provided from liquid dispenser after repeated experiments (step 16).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>This could be caused by insufficient inlet pressure or air suction. Increase the level of the sucrose solution in the suction tank, replace pump, or reduce pump speed. Also ensure connections are airtight. Moreover, it is possible that leftover sucrose has dried and stuck inside the tubing of the peristaltic pump. Peristaltic pump should be kept clean to ensure reliable operation. Carefully clean the pump housing and roller assembly without using solvents</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>The pair of mice is not located together in the distal zone when placed in the maze (step 18).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>One or both mice in a pair might exhibit sudden impulsivity or heightened anxiety. In this case, wait for up to 15 min until both mice are located in the distal zone. If not, remove the pair of mice from the experiments.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Avital, A., Aga-Mizrachi, S., and Zubedat, S. (2016). Evidence for social cooperation in rodents by automated maze. Sci. Rep. <i>6</i>, 29517. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref1">View at publisher</a></p>
+<p id="bib2">Bath, K.G., Russo, S.J., Pleil, K.E., Wohleb, E.S., Duman, R.S., and Radley, J.J. (2017). Circuit and synaptic mechanisms of repeated stress: perspectives from differing contexts, duration, and development. Neurobiol. Stress <i>7</i>, 137-151. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref2">View at publisher</a></p>
+<p id="bib3">Brosnan, S.F. and de Waal, F.B.M. (2003). Monkeys reject unequal pay. Nature <i>425</i>, 297-299. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref3">View at publisher</a></p>
+<p id="bib4">Brosnan, S.F. and de Waal, F.B.M. (2004). Socially learned preferences for differentially rewarded tokens in the brown Capuchin monkey (<i>Cebus apella</i>). J. Comp. Psychol. <i>118</i>, 133-139. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref4">View at publisher</a></p>
+<p id="bib5">Brosnan, S.F. and de Waal, F.B.M. (2005). Responses to a simple barter task in chimpanzees, Pan troglodytes. Primates <i>46</i>, 173-182. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref5">View at publisher</a></p>
+<p id="bib6">Carlton, C.N., Sullivan-Toole, H., Ghane, M., and Richey, J.A. (2020). Reward circuitry and motivational deficits in social anxiety disorder: what can be learned from mouse models?. Front. Neurosci. <i>14</i>, 154. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref6">View at publisher</a></p>
+<p id="bib7">Dridi, S. and Akcay, E. (2018). Learning to cooperate: the evolution of social rewards in repeated interactions. Am. Nat. <i>191</i>, 58-73. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref7">View at publisher</a></p>
+<p id="bib8">Han, K.A., Yoon, T.H., Shin, J., Um, J.W., and Ko, J. (2020). Differentially altered social dominance and cooperative-like behaviors in Shank2- and Shank3-mutant mice. Mol. Autism <i>11</i>, 87. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref8">View at publisher</a></p>
+<p id="bib9">Hirata, S. and Fuwa, K. (2007). Chimpanzees (Pan troglodytes) learn to act with other individuals in a cooperative task. Primates <i>48</i>, 13-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref9">View at publisher</a></p>
+<p id="bib10">Ko, J. (2017). Neuroanatomical substrates of rodent social behavior: the medial prefrontal cortex and its projection patterns. Front. Neural Circuits <i>11</i>, 41. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref10">View at publisher</a></p>
+<p id="bib11">Kozma, K., Kassai, F., Ernyey, A.J., and Gyertyan, I. (2019). Establishment of a rodent cooperation assay as a model of social cognition. J. Pharmacol. Tox. Met. <i>97</i>, 44-51. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref11">View at publisher</a></p>
+<p id="bib12">Lee, J., Chung, C., Ha, S., Lee, D., Kim, D.Y., Kim, H., and Kim, E. (2015). Shank3-mutant mice lacking exon 9 show altered excitation/inhibition balance, enhanced rearing, and spatial memory deficit. Front. Cell Neurosci. <i>9</i>, 94. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref12">View at publisher</a></p>
+<p id="bib13">Melis, A.P. and Semmann, D. (2010). How is human cooperation different?. Philos. Trans. R Soc. B <i>365</i>, 2663-2674. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref13">View at publisher</a></p>
+<p id="bib14">Plotnik, J.M., Brubaker, D.L., Dale, R., Tiller, L.N., Mumby, H.S., and Clayton, N.S. (2019). Elephants have a nose for quantity. Proc. Natl. Acad. Sci. U S A <i>116</i>, 12566-12571. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref14">View at publisher</a></p>
+<p id="bib15">Won, H., Lee, H.R., Gee, H.Y., Mah, W., Kim, J.I., Lee, J., Ha, S., Chung, C., Jung, E.S., Cho, Y.S., et al. (2012). Autistic-like social behaviour in Shank2-mutant mice improved by restoring NMDA receptor function. Nature <i>486</i>, 261-265. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref15">View at publisher</a></p>
+<p id="bib16">Wood, R.I., Kim, J.Y., and Li, G.R. (2016). Cooperation in rats playing the iterated Prisoner's Dilemma game. Anim. Behav. <i>114</i>, 27-35. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref16">View at publisher</a></p>
+<p id="bib17">Yang, C.L., Zhang, B., Charness, G., Li, C., and Lien, J.W. (2018). Endogenous rewards promote cooperation. Proc. Natl. Acad. Sci. U S A <i>115</i>, 9968-9973. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref17">View at publisher</a></p>
+<p id="bib18">Yuan, Y., Wu, W., Chen, M., Cai, F., Fan, C., Shen, W., Sun, W., and Hu, J. (2019). Reward inhibits paraventricular CRH neurons to relieve stress. Curr. Biol. <i>29</i>, 1243-1251. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00012-5/sref18">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Jaewon Ko (<a href="mailto:jaewonko@dgist.ac.kr">jaewonko@dgist.ac.kr</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and Code Availability</h4>
+<p>This study did not generate/analyze datasets/code.</p>
+<h3>Acknowledgments</h3>
+<p>We thank Jinha Kim (DGIST) for technical support and Dr. Ji Won Um (DGIST) for advice. This study was supported by grants from the Brain Research Program through the <a href="https://doi.org/10.13039/501100003725">National Research Foundation</a> (NRF) of Korea (2017M3C7A1023470 to J.K.) and the DGIST R&amp;D Program of the <a href="https://doi.org/10.13039/501100014188">Ministry of Science, ICT &amp; Future Planning</a> (20-CoE-BT-01 to J.K.).</p>
+<h3>Author Contributions</h3>
+<p>J.S. and J.K. designed the experimental strategy. J.S. performed and optimized experimental procedures. J.K. wrote the manuscript with input from J.S.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

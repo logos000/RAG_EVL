@@ -1,0 +1,693 @@
+<article>
+<section>
+<h1 id="header">A modified CUT&amp;RUN protocol and analysis pipeline to identify transcription factor binding sites in human cell lines</h1>
+<p><time datetime="2021-08-20">Published: August 20, 2021</time></p>
+<p>Nikki Ruoxi Kong,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Li Chai,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Daniel Geoffrey Tenen,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a></sup> and Mahmoud Adel Bassal<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Pathology, Brigham and Women’s Hospital and Harvard Medical School, Boston, MA 02115, USA</p>
+<p id="aff2"><sup>2</sup>Harvard Stem Cell Institute, Boston, MA 02115, USA</p>
+<p id="aff3"><sup>3</sup>Cancer Science Institute of Singapore, National University of Singapore, Singapore 117599, Singapore</p>
+<p id="fn1"><sup>4</sup>Lead contact</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:mahmoud.bassal@mymail.unisa.edu.au">mahmoud.bassal@mymail.unisa.edu.au</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100750">10.1016/j.xpro.2021.100750</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>CUT&amp;RUN is a recently developed <i>in situ</i> chromatin profiling technique that enables high-resolution chromatin mapping and probing. Herein, we describe our adapted CUT&amp;RUN protocol for transcription factors (TFs). Our protocol outlines all necessary steps for TF profiling including the procedure to obtain proteinA-Mnase, while also outlining the bioinformatic pipeline steps required to process, analyze, and identify novel binding sites and sequences. Due to the small number of cells required, this method will allow the elucidation of cell context-dependent functions of many TFs.</p>
+<p>For details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref8">Kong et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>CUT&amp;RUN was recently developed for <i>in situ</i> chromatin mapping and probing</li>
+<li>Herein, we describe our modified CUT&amp;RUN protocol to profile TF binding sites and motifs</li>
+<li>Modifications relate to nuclear TF targeting, rather than whole-cell histone targeting</li>
+<li>Bespoke bioinformatics pipeline simplifies analysis enabling binding site identification</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/944-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Cleavage under targets and release using nuclease (Cut&amp;Run) is a recently developed method for <i>in situ</i> genome wide profiling (<a href="#bib20">Skene et al., 2018</a>). Cut&amp;Run is alternative but analogous technique to chromatin immunoprecipitation with sequencing (ChIP-Seq) that aims to alleviate some of the inherent biases and limitations of ChIP-Seq. In contrast to ChIP-Seq, Cut&amp;Run can be used on as few as 600,000 cells while still showing significant enrichment at transcription factor binding sites (<a href="#bib20">Skene et al., 2018</a>). Furthermore, Cut&amp;Run tends to produce smaller DNA fragments than ChIP-Seq with less background. This translates into requiring shallower sequencing depth and a cleaner, sharper enrichment profile at target sites. This reduced background signal though, wreaks havoc for existing ChIP-Seq peak calling tools and pipelines which require a level of background “noise” for them to adequately call peaks. To that end, a new peak caller was developed, SEACR (<a href="#bib14">Meers et al., 2019</a>), to better handle the low background signal typically seen in Cut&amp;Run datasets and enable peak calling in datasets with sparse background signals.</p>
+<p>In this protocol we outline our adapted transcription factor Cut&amp;Run protocol and the bioinformatics pipeline developed to analyze our data. Details of the original study are outlined in our recent publication (<a href="#bib8">Kong et al., 2021</a>). This protocol however, describes in detail the steps undertaken in that study.</p>
+<p>The following protocol was performed on SNU-398 cells.</p>
+<h3 id="sec1.1">Preparation one: Purification of ProteinA-MNase</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days including overnight (16–18 h) incubation</div>
+<ol>
+<li>Protein expression
+<ol type="a">
+<li>Transform Addgene plasmid number 86973 into BL21-DE3 expression bacteria and plate on kanamycin-containing plates (50 μg/mL), incubate overnight (16–18 h) at 37°C</li>
+<li>Next day, pick a colony and grow in 4 mL culture of NZYM media (VWR Catalog number AAJ60918-AP) with kanamycin (50 μg/mL) with shaking at 37°C for at least 4 h</li>
+<li>Prepare 200 mL NZYM media in flask, take 1 mL as reference, and add 4 mL of culture into the flask, incubate with shaking at 37°C; monitor OD600 every hour until OD=0.6</li>
+<li>Collect 1 mL of sample as uninduced control; to the remaining culture, add IPTG (2 mM) to induce, let incubate with shaking at 37°C for 2 h</li>
+</ol>
+</li>
+<li>Protein extraction
+<ol type="a">
+<li>Spin down uninduced sample at 4000 rpm (Eppendorf 5414D) or 1500 <i>g</i> at room temperature (RT) (20°C–25°C) for 10 min; lyse directly in 50 μL of 2× sample buffer (diluted with ddH<sub>2</sub>O from 4× Bolt LDS sample buffer, ThermoFisher B0007, containing reducing agent, Thermo B0009), boil for 5 min, store supernatant for later</li>
+<li>After 2 h of induction, collect bacteria pellet by spinning at 4000 rpm at 4°C for 10 min, discard supernatant; save 1 mL of induced sample, prepare supernatant as in preparation two steps 5 and 6 for uninduced sample</li>
+<li>Re-suspend with 10 mL TEN buffer (10 mM Tris-HCl pH7.5, 2 mM EDTA, and 150 mM NaCl) supplemented with fresh DTT (5 mM), lysozyme (0.1 mg/mL)</li>
+<li>Incubate on ice for 10 min</li>
+<li>Sonicate on ice with a microtip sonicator, 6 times at level 54, 30 s each cycle at 90% duty cycle</li>
+<li>The sample will still look cloudy, spin down at 12,000 rpm in SS-34 rotor at 4°C for 30 min, save the supernatant (“S1”). Make 500 μL aliquots, then either flash freeze in liquid N<sub>2</sub> or continue to preparation one, step 3 ProteinA-MNase purification</li>
+</ol>
+</li>
+<li>ProteinA-MNase purification
+<ol type="a">
+<li>Prepare IgG Sepharose 6 Fast Flow resin (Sigma GE17-0969-01): for each 500 μL of S1, aliquot 30 μL of bed volume of IgG resin into low binding tubes, add 1 mL of TEN buffer, spin down at 1,000 rpm for 1 min, repeat for 2 washes</li>
+<li>Either use S1 from preparation one, step 2 protein extraction, sub-step f, or thaw aliquot on ice, add to prepared IgG resin, incubate for 3 h at 4°C with rocking</li>
+<li>After incubation, save an aliquot of flow-through for preparation one, step 4 testing and quantification, wash resin twice with 1 mL of TEN supplemented with Empigen (0.03%, Sigma 30326), then twice with 1 mL of TEN-500 (TEN buffer containing 500 mM NaCl and 0.03% Empigen); each wash is 5 min incubation with rocking at 4°C followed by 1 min spin at 1,000 rpm</li>
+<li>After final wash, add 1 mL of NH<sub>4</sub>Ac (5 mM, pH 5), directly followed by 1 min spin at 1,000 rpm</li>
+<li>Elute by adding 60 μL of HAc/NH<sub>4</sub>Ac (0.5M, pH 3.4), incubate with rocking at 4°C for 10 min</li>
+<li>Spin at 1,000 rpm for 1 min, carefully take out supernatant and add into a tube containing 50 μL of 1% NaOH to balance the pH</li>
+<li>Add glycerol to 20% final concentration, aliquot and flash freeze to store at −80°C for up to 3 months.</li>
+</ol>
+</li>
+<li>Testing and quantification
+<ol type="a">
+<li>Run in an SDS-PAGE gel: uninduced and induced culture from preparation two, steps 5 and 6; S1; flow-through; one aliquot of eluate; leftover IgG resin; all boiled in 2× LDS sample buffer for 5 min and spin down at top speed, with supernatant saved</li>
+<li>Quantify by running BSA standards along with the samples</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If eluate is yellowish-green when 2× LDS sample buffer is added, it is too acidic and more 1% NaOH needs to be added</div>
+<div class="note">
+<span class="note-title">Note:</span> Please also refer to Protocol step 5 – Quality Control.</div>
+<p><a href="#sec5.1">Troubleshooting 1</a></p>
+<h3 id="sec1.2">Preparation two: Test digitonin concentration</h3>
+<ol start="5">
+<li>Prepare 5% stock concentration of Digitonin in water.</li>
+<li>Test cell of interest by re-suspending 1∗10<sup>5</sup> cells in Wash Buffer (20 mM HEPES pH7.5, 150 mM NaCl, 0.5 mM Spermidine) containing Digitonin, final concentration from 0.02–1%</li>
+<li>Incubate at room temperature (20°C–25°C) for 1 min</li>
+<li>Dilute cell suspension 1:1 with 0.4% Trypan blue</li>
+<li>Check under the microscope the percentage of Trypan blue-positive cells. Use the lowest concentration of digitonin that resulted in over 75% Trypan blue-positive cells.</li>
+</ol>
+<h3 id="sec1.3">Preparation three: Analysis software environment setup</h3>
+<p>For this analysis, a custom Cut&amp;Run Analysis Pipeline (CnRAP) was developed and uploaded to GitHub (See <a href="#key-resources-table">key resources table</a> for URL). Refer to the GitHub repository for detailed installation and setup instructions which must be completed prior to analysis. Take note that for deeply sequenced libraries and/or for processing many samples, performing the computational processing on a computing cluster will drastically reduce the time required for processing.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> CnRAP consists of 6 scripts, numbered 01–06. Once the CnRAP environment is setup and genome indexes have been built for both intended genomes (human and yeast), a number of scripts require configuration for the user’s specific system setup and environment. For detailed information regarding the required configuration of each script, refer to the GitHib Repository.</div>
+<div class="note">
+<span class="note-title">Note:</span> The bioinformatics workflow described in this protocol has two assumptions. The first being that CnRAP has been setup as per the instruction outlined on the GitHub repository, while the second is that all scripts have been configured as outlined in the GitHub repository</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>SALL4 (2.5 ug used per sample)</td>
+<td>Cell Signaling Technology</td>
+<td>Cat# D16H12</td>
+</tr>
+<tr>
+<td>Normal Rabbit IgG (2.5 ug used per sample)</td>
+<td>Abcam</td>
+<td>Cat# Ab171870</td>
+</tr>
+<tr>
+<td>H3K9Me3 (D4W1U) (1 ug used per sample)</td>
+<td>Cell Signaling Technology</td>
+<td>Cat# 13969</td>
+</tr>
+<tr>
+<td>Histone 3 (1 ug used per sample)</td>
+<td>Abcam</td>
+<td>Cat# Ab1791</td>
+</tr>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>BL21 (DE3)</td>
+<td>Novagen</td>
+<td>Cat# 69450</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>Sigma</td>
+<td>Cat# F2442</td>
+</tr>
+<tr>
+<td>RPMI</td>
+<td>Thermo Fisher</td>
+<td>Cat# 11875119</td>
+</tr>
+<tr>
+<td>DMEM</td>
+<td>Thermo Fisher</td>
+<td>Cat# 11965118</td>
+</tr>
+<tr>
+<td>Trypsin-EDTA (0.25%)</td>
+<td>Thermo Fisher</td>
+<td>Cat# 25200114</td>
+</tr>
+<tr>
+<td>Concanavalin A beads</td>
+<td>Bangs Laboratories</td>
+<td>Cat# BP531</td>
+</tr>
+<tr>
+<td>proteinA-micrococcal nuclease</td>
+<td>This paper</td>
+<td> </td>
+</tr>
+<tr>
+<td>Digitonin</td>
+<td>Sigma</td>
+<td>Cat# D141</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>NEBNext Ultra II DNA Library Prep Kit</td>
+<td>NEB</td>
+<td>Cat# M0541</td>
+</tr>
+<tr>
+<td>NEBNext MμLtiplex Oligos for Illumina (index primers set 1)</td>
+<td>NEB</td>
+<td>Cat# E7335</td>
+</tr>
+<tr>
+<td>Pippin Prep DNA Size Selection Kit</td>
+<td>Sage Science</td>
+<td>CDF3010</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/Strains</td>
+</tr>
+<tr>
+<td>SNU-398</td>
+<td>ATCC</td>
+<td>Cat# CRL-2233</td>
+</tr>
+<tr>
+<td>SNU-387</td>
+<td>ATCC</td>
+<td>Cat# CRL-2237</td>
+</tr>
+<tr>
+<td>HeLa</td>
+<td>ATCC</td>
+<td>Cat# CCL-2</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>enoLOGOS (no version number provided)</td>
+<td>(<a href="#bib22">Workman et al., 2005</a>)</td>
+<td><a href="http://www.benoslab.pitt.edu/cgi-bin/enologos/enologos.cgi">http://www.benoslab.pitt.edu/cgi-bin/enologos/enologos.cgi</a></td>
+</tr>
+<tr>
+<td>Cut &amp; Run Analysis Pipeline (CnRAP) (Github Release)</td>
+<td>(<a href="#bib1">Bassal, 2019</a>; <a href="#bib8">Kong et al., 2021</a>)</td>
+<td><a href="https://github.com/mbassalbioinformatics/CnRAP">https://github.com/mbassalbioinformatics/CnRAP</a></td>
+</tr>
+<tr>
+<td>CUT&amp;RUNTools (bitbucket release)</td>
+<td>(<a href="#bib24">Zhu et al., 2019</a>)</td>
+<td><a href="https://bitbucket.org/qzhudfci/cutruntools/src/master/">https://bitbucket.org/qzhudfci/cutruntools/src/master/</a></td>
+</tr>
+<tr>
+<td>Trimmomatic v0.36</td>
+<td>(<a href="#bib4">Bolger et al., 2014</a>)</td>
+<td><a href="http://www.usadellab.org/cms/?page=trimmomatic">http://www.usadellab.org/cms/?page=trimmomatic</a></td>
+</tr>
+<tr>
+<td>BWA v0.7.17-r1188</td>
+<td>(<a href="#bib9">Li and Durbin, 2009</a>)</td>
+<td><a href="http://bio-bwa.sourceforge.net/">http://bio-bwa.sourceforge.net/</a></td>
+</tr>
+<tr>
+<td>SAMtools v1.5</td>
+<td>(<a href="#bib10">Li et al., 2009</a>)</td>
+<td><a href="http://samtools.sourceforge.net/">http://samtools.sourceforge.net/</a></td>
+</tr>
+<tr>
+<td>Stampy v1.032</td>
+<td>(<a href="#bib12">Lunter and Goodson, 2011</a>)</td>
+<td><a href="https://www.rdm.ox.ac.uk/research/lunter-group/lunter-group/stampy">https://www.rdm.ox.ac.uk/research/lunter-group/lunter-group/stampy</a></td>
+</tr>
+<tr>
+<td>Picard v2.21.2</td>
+<td>(<a href="#bib5">Broad Institute, 2019</a>)</td>
+<td><a href="https://broadinstitute.github.io/picard/">https://broadinstitute.github.io/picard/</a></td>
+</tr>
+<tr>
+<td>deepTools v2.5.7 – bamCoverage</td>
+<td>(<a href="#bib18">Ramirez et al., 2016</a>)</td>
+<td><a href="https://deeptools.readthedocs.io/en/develop/">https://deeptools.readthedocs.io/en/develop/</a></td>
+</tr>
+<tr>
+<td>bedtools v2.25.0</td>
+<td>(<a href="#bib16">Quinlan and Hall, 2010</a>)</td>
+<td><a href="https://bedtools.readthedocs.io/en/latest/">https://bedtools.readthedocs.io/en/latest/</a></td>
+</tr>
+<tr>
+<td>SEACR v1.1</td>
+<td>(<a href="#bib14">Meers et al., 2019</a>)</td>
+<td><a href="https://github.com/FredHutch/SEACR">https://github.com/FredHutch/SEACR</a></td>
+</tr>
+<tr>
+<td>ChIPSeeker v1.20.0</td>
+<td>(<a href="#bib23">Yu et al., 2015</a>)</td>
+<td><a href="https://guangchuangyu.github.io/software/ChIPseeker/">https://guangchuangyu.github.io/software/ChIPseeker/</a></td>
+</tr>
+<tr>
+<td>HOMER v4.10</td>
+<td>(<a href="#bib7">Heinz et al., 2010</a>)</td>
+<td><a href="http://homer.ucsd.edu/homer/">http://homer.ucsd.edu/homer/</a></td>
+</tr>
+<tr>
+<td>ImageJ v1.51</td>
+<td>(<a href="#bib19">Schneider et al., 2012</a>)</td>
+<td><a href="https://imagej.nih.gov/ij/">https://imagej.nih.gov/ij/</a></td>
+</tr>
+<tr>
+<td>MEME v5.0.5</td>
+<td>(<a href="#bib13">Machanick and Bailey, 2011</a>)</td>
+<td><a href="http://meme-suite.org/tools/meme-chip">http://meme-suite.org/tools/meme-chip</a></td>
+</tr>
+<tr>
+<td>R v3.6.1</td>
+<td>(<a href="#bib17">R Core Team, 2021</a>)</td>
+<td><a href="https://www.R-project.org">https://www.R-project.org</a></td>
+</tr>
+<tr>
+<td>Python2 (v2.7) and Python3 (v3.6.1)</td>
+<td>(<a href="#bib15">Python Software Foundation, 2021</a>)</td>
+<td><a href="http://www.python.org">http://www.python.org</a></td>
+</tr>
+<tr>
+<td>Perl v5.22</td>
+<td>N/A</td>
+<td><a href="https://www.perl.org/">https://www.perl.org/</a></td>
+</tr>
+<tr>
+<td>GenePix Pro v7.2</td>
+<td>Molecular Devices</td>
+<td><a href="https://support.moleculardevices.com/s/article/GenePix-Pro-7-Microarray-Acquisition-Analysis-Software-Download-Page">https://support.moleculardevices.com/s/article/GenePix-Pro-7-Microarray-Acquisition-Analysis-Software-Download-Page</a></td>
+</tr>
+<tr>
+<td>Masliner</td>
+<td>(<a href="#bib2">Berger et al., 2006</a>; <a href="#bib6">Dudley et al., 2002</a>)</td>
+<td><a href="http://arep.med.harvard.edu/masliner/supplement.htm">http://arep.med.harvard.edu/masliner/supplement.htm</a></td>
+</tr>
+<tr>
+<td>Universal PBM Analysis Suite</td>
+<td>(<a href="#bib3">Berger and Bulyk, 2009</a>)</td>
+<td><a href="http://thebrain.bwh.harvard.edu/PBMAnalysisSuite/indexSep2017.html">http://thebrain.bwh.harvard.edu/PBMAnalysisSuite/indexSep2017.html</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Step 1: Cell nuclei purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<p>This step allows for maximized binding of antibodies to nuclear factors and will result in cleaner CUT&amp;RUN signal compared to protocol using whole cells</p>
+<ol>
+<li>Cell collection and swelling
+<ol type="a">
+<li>Collect 2∗10<sup>6</sup>–2∗10<sup>7</sup> cells of interest by either scraping or centrifugation. We successfully used this protocol on SNU398, K562, and NB4 cell lines.</li>
+<li>Resuspend in 5 mL of cold PBS and spin at 2,500 rpm at 4°C for 15 min</li>
+<li>Measure the packed cell volume (PCV) of the cell pellet and add 5× PCV of 1× Buffer A (10× Buffer A contains 100 mM HEPES, 15 mM MgCl<sub>2</sub>, 100 mM KCl, adjust pH to 7.9 with 10M KOH)</li>
+<li>Vortex on high for 2s</li>
+<li>Incubate on ice for 20 min to swell the cells</li>
+</ol>
+</li>
+<li>Nuclei collection
+<ol type="a">
+<li>Spin cell pellet at 2,500 rpm for 10 min</li>
+<li>Measure PCV again (should be slightly larger), add 2× PCV (original) of 1× Buffer A containing fresh protease inhibitor (Sigma complete protease inhibitor cocktail, 11697498001), 1 mM PMSF, 1 mM benzamidine, and 1 mM DTT; keep on ice</li>
+<li>Dounce with a 1 mL, prechilled glass douncer to break up the cell pellet, 7 strokes; alternatively, pass the cell lysate through a 25G needle 10×</li>
+<li>Incubate on ice for 10 min, transfer to 1.5 mL tube</li>
+<li>Spin down at 6,000 rpm at 4°C for 20 min</li>
+<li>Take out supernatant (cytoplasmic portion) for testing if needed; keep the pellet containing the nuclei</li>
+<li>Either flash freeze in liquid N<sub>2</sub> or move directly to the CUT&amp;RUN experiments</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Each CUT&amp;RUN reaction requires 2∗10<sup>6</sup> equivalent of cell nuclei.</div>
+<h3 id="sec2.2">Step 2: Antibody binding</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h to Overnight (16–18 h)</div>
+<ol start="3">
+<li>Resuspend nuclei in 1 mL room temperature (20°C–25°C) Wash Buffer (20 mM HEPES pH7.5, 150 mM NaCl, 0.5 mM Spermidine) supplemented with fresh protease inhibitor</li>
+<li>Prepare Concanavalin A beads (Bangs Laboratories BP531)
+<ol type="a">
+<li>Take out enough beads for 10 μL/condition, can process together in one 1.5 mL low-binding microcentrifuge tube until protocol step 2.4.g</li>
+<li>Add 1.5 mL Binding Buffer (20 mM HEPES pH7.9, 10 mM KCl, 1 mM CaCl<sub>2</sub>, 1 mM MnCl<sub>2</sub>)</li>
+<li>Place in a magnetic stand to clear for between 30 s to 2 min</li>
+<li>Remove from the stand and add 1.5 mL Binding Buffer, mix by inversion</li>
+<li>5s spin at 500 rpm</li>
+<li>Put the tube back to the stand to clear</li>
+<li>Re-suspend with 1:1 volume of Binding Buffer (i.e., 10 μL for 10 μL of beads) and aliquot into corresponding CUT&amp;RUN low-binding tubes</li>
+</ol>
+</li>
+<li>While gently vortexing prepared Concanavalin A beads, add the nuclei in wash buffer from protocol step 2.3</li>
+<li>Rotate at room temperature (20°C–25°C) for 10 min</li>
+<li>Place on magnetic stand to clear (may take up to 1 min)</li>
+<li>Take tubes off of the stand, add 50 μL of Antibody Buffer (Wash Buffer supplemented with fresh protease inhibitors, 2 mM EDTA, and 0.02%–0.1% Digitonin, exact concentration as determined in Preparation Two)</li>
+<li>To each condition, add the appropriate amount of antibody or corresponding normal isotype IgG control (typically 2.5 μg of each, but exact concentration should be determined experimentally)</li>
+<li>Incubate 1 h to overnight (16–18 h) with rocking at 4°C</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If you are running CUT&amp;RUN for the first time, include a histone mark antibody for the quality control step.</div>
+<h3 id="sec2.3">Step 3: ProteinA-Mnase binding and Mnase digestion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="11">
+<li>Quick spin the tubes at 500rom and place on magnetic stand to clear</li>
+<li>Add 1 mL of Dig-Wash buffer (Wash Buffer with Digitonin, important: NO EDTA)</li>
+<li>Mix by inversion, place on magnetic stand to clear</li>
+<li>To each tube, add 50 μL of Dig-Wash containing 700 ng/mL of proteinA-MNase (concentration as determined in Preparation One, step 4)</li>
+<li>Rotate for 1 h at 4°C</li>
+<li>Quick spin the tubes at 500 rpm and place on magnetic stand to clear</li>
+<li>Add 1 mL of Dig-Wash buffer</li>
+<li>Repeat protocol steps 1, 3.16, and 3.17 for a total of 2 washes</li>
+<li>Add 100 μL of Dig-Wash buffer along the sides to dislodge the beads</li>
+<li>Place tubes in heat block sitting on wet ice (should be around 0°C)</li>
+<li>While gently shaking each tube, add 2 μL of 100 mM CaCl<sub>2</sub>
+</li>
+<li>Incubate for 10–30 min (start with 30 min, if too long, then decrease the incubation, see Quality Control in step 5.47)</li>
+<li>Add 100 μL of 2× Stop Buffer (0.34M NaCl, 20 mM EDTA, 4 mM EGTA, 0.02% Digitonin, 50 μg/mL RnaseA, 50 μg/mL glycogen, and 20 pg/mL heterologous spike-in purified DNA from yeast or bacteria)</li>
+<li>Gently vortex</li>
+<li>Incubate at 37°C for 10 min to release fragmented DNA</li>
+<li>Centrifuge at 16,000 <i>g</i> for 5 min at 4°C</li>
+<li>Place on magnetic stand to clear</li>
+<li>Save clear supernatant containing DNA to a new tube</li>
+</ol>
+<h3 id="sec2.4">Step 4: DNA purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2.5 h to Overnight (16–18 h)</div>
+<ol start="29">
+<li>To each tube (∼200 μL total), add 2 μL of 10% SDS (final concentration 0.1%), 2.5 μL of proteinase K (20 mg/mL)</li>
+<li>Mix by inverting and incubate for 10 min at 70°C</li>
+<li>Add 300 μL of phenol:chloroform:isopropanol (25:24:1) to each tube</li>
+<li>Vortex for 2s</li>
+<li>Transfer mixture to a phase-lock tube (Qiagen MaXtract, prepared by pre-spinning at 13,000 rpm for 30 s to settle the resin)</li>
+<li>Centrifuge at 16,000 <i>g</i> for 5 min at room temperature (20°C–25°C)</li>
+<li>Take out the top aqueous layer and transfer to a tube</li>
+<li>Add 2 μL of glycogen (2 mg/mL, Thermo catalog number R0561)</li>
+<li>Add 750 μL of cold 100% ethanol</li>
+<li>Mix by inversion, incubate for at least an hour (up to overnight (16–18 h) at −20°C</li>
+<li>Centrifuge at 16,000 <i>g</i> for 10 min at 4°C</li>
+<li>Pour off liquid and dry on a piece of tissue</li>
+<li>Rinse the pellet once with 950 μL of 100% ethanol</li>
+<li>Centrifuge at 16,000 <i>g</i> for 1 min at 4°C</li>
+<li>Pour off the liquid and drain on tissue</li>
+<li>Air dry for 3 min</li>
+<li>Dissolve the pellet in 25 μL of 1 mM Tris-HCl (pH8) and 0.1 mM EDTA (i.e., 0.1× TE)</li>
+</ol>
+<h3 id="sec2.5">Step 5: Quality control</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="46">
+<li>Quantify 1 μL of purified DNA by Qubit HS DNA kit (ThermoFisher Q32851) following manufacturer’s instructions
+<ul>
+<li>Example amounts of DNA recovered
+<ul>
+<li>Histone mark: 15–20 ng/μL</li>
+<li>TF: 10–15 ng/μL</li>
+<li>IgG isotype control: &lt;10 ng/μL</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Run control histone mark CUT&amp;RUN DNA on the 2100 Bioanalyzer system (Agilent)</li>
+<li>Transcription factor CUT&amp;RUN DNA are typically around 50–150 bp and may not show up on bioanalyzer, proceed to library amplification and size-selection</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Transcription factor CUT&amp;RUN DNA may not show up on the bioanalyzer electropherogram if run prior to amplification. This is due to the low concentration of DNA present. To asses protocol efficacy, it is recommended to run, in parallel, a control CUT&amp;RUN with an antibody against a histone mark.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> If running a control histone mark CUT&amp;RUN, should see mono-, di-, and tri-nucleosomes in the Bioanalyzer traces (<a href="#fig1">Figure 1</a>).</div>
+<p><a href="#sec5.3">Troubleshooting 2</a></p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/944-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Expected Bioanalyzer electropherogram for CUT&amp;RUN with an antibody against an histone mark</div>
+<p>When running a histone mark CUT&amp;RUN in parallel to your transcription factor of interest as quality control, one should expect to see small peaks representing mono-, di-, and tri-nucleosomes, which indicate successful proteinA-Mnase digestion.</p>
+</figcaption>
+</figure>
+<p><a href="#sec5.5">Troubleshooting 3</a></p>
+<h3 id="sec2.6">Step 6: Library construction (with NEBNext ultra II DNA library Prep, NEB 7103, for transcription factor CUT&amp;RUN DNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<div class="note">
+<span class="note-title">Note:</span> For histone mark CUT&amp;RUN library preparation, see <a href="#bib20">Skene et al., 2018</a>.</div>
+<div class="note">
+<span class="note-title">Note:</span> This step is based on the protocol (<a href="https://dx.doi.org/10.17504/protocols.io.bagaibse">https://dx.doi.org/10.17504/protocols.io.bagaibse</a>) and publication (<a href="#bib11">Liu et al., 2018</a>)</div>
+<ol start="49">
+<li>Dilute CUT&amp;RUN DNA (6 ng) into 25 μL with water, add 1.5 μL NEBNext Ultra II End Prep enzyme mix and 3.5 μL of NEBNext Ultra II End Prep reaction buffer (30 μL total)</li>
+<li>Mix well and place in thermocycler, with heated lid set to &gt;60°C: 30 min at 20°C, 60 min at 50°C, hold at 4°C</li>
+<li>Dilute the adapters supplied by the NEBNext kit from the original 15 uM to 3 uM</li>
+<li>Combine End repair mix from protocol step 6.50 with 15 μL of Ligation mater mix, 0.5 μL enhancer, 1.25 μL diluted adapter (∼47 μL total)</li>
+<li>Incubate for 15 min at 20°C in a thermocycler with no heated lid</li>
+<li>Add 1.5 μL of USER enzyme to the mix</li>
+<li>Mix well and incubate for 15 min at 37°C with heated lid set to &gt;47°C</li>
+<li>Vortex Ampure beads (Beckman A63880) and bring up to room temperature (20°C–25°C) for at least 30 min</li>
+<li>Add 80 μL of beads (∼1.75× volume) to the DNA mix from protocol step 6.55</li>
+<li>Pipette 10 times to mix, incubate for 5 min at room temperature (20°C–25°C)</li>
+<li>Place on magnetic stand for less than 5 min or until clear</li>
+<li>Remove and discard the supernatant while the tube in the on the stand, leave the beads</li>
+<li>While on the stand, wash twice with 200 μL of freshly made 80% ethanol, each time with incubation for 30 s at room temperature (20°C–25°C)</li>
+<li>Remove all trance of ethanol with a p10 pipette tip</li>
+<li>Air-dry the beads up to 5 min (don’t over dry)</li>
+<li>Remove the tubes from the stand and add 14 μL of 0.1× TE (same as protocol step 6.45)</li>
+<li>Mix well or gently vortex</li>
+<li>Incubate for 2 min at room temperature (20°C–25°C)</li>
+<li>Place on the magnetic stand for 5 min</li>
+<li>Remove and save 13 μL of supernatant containing DNA</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Can store at −20°C before PCR amplification</div>
+<ol start="69">
+<li>Set up PCR by combining 13 μL of DNA from protocol step 6.68, 15 μL NEBNext Ultra II Q5 Master Mix, 1 μL Index primer, and 1 μL Universal PCR primer (30 μL total)</li>
+<li>Run PCR:
+<ul>
+<li>Cycle 1: 98°C for 30 s</li>
+<li>Cycle 2: 57°C for 10 s, repeat 12 times total (Low Tm for transcription factor libraries)</li>
+<li>Cycle 3: 65°C for 5 min</li>
+<li>Hold at 4°C</li>
+</ul>
+</li>
+<li>Vortex Ampure beads and bring up to room temperature (20°C–25°C) for at least 30 min</li>
+<li>Removing DNA products of &gt;350 bp: add 24 μL (0.8×) Ampure beads to the PCR reaction and mix well, incubate for 5 min at room temperature (20°C–25°C), place the tubes on the magnetic stand for 5 min or until clear, carefully transfer the supernatant containing small DNA into a new tub3e</li>
+<li>Keep DNA products of &lt;150 bp: add 12 μL (1.2×) of re-suspended Ampure beads to the supernatant (so the effective bead to DNA ratio is 2×) from protocol step 6.72, mix 12 times, incubate for 5 min at room temperature (20°C–25°C), place the tubes on the magnetic stand for 5 min or until clear, remove and discard the supernatant</li>
+<li>Wash twice with 200 μL of freshly made 80% ethanol, incubate for 30 s each time at room temperature (20°C–25°C)</li>
+<li>Air-dry the beads for up to 5 min, do not over dry</li>
+<li>Remove the beads from the magnetic stand and elute the DNA from the beads by adding 15 μL of 0.1× TE</li>
+<li>Mix well and incubate for 2 min at room temperature (20°C–25°C)</li>
+<li>Place the tubes back on the magnetic stand for 5 min or until clear</li>
+<li>Transfer 13 μL of supernatant containing the library into a new PCR tube</li>
+<li>Check size distribution on the 2100 Bioanalyzer system (<a href="#fig2">Figure 2</a>)
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/944-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Expected Bioanalyzer electropherograms following library construction for nuclear DNA</div>
+<p>Following library amplification, the bioanalyzer electropherograms should show sharp peaks at the size of the fragmented DNA with adapters as shown. Transcription factor CUT&amp;RUN samples tend to show a smaller peak if following the described protocol</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Store the libraries at −20°C until sequencing</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not discard supernatant from protocol step 6.72 which contain the desired DNA library, discard the Ampure beads from this step which contain larger DNA fragments.</div>
+<h3 id="sec2.7">Step 7: Sequencing with MiniSeq (illumina): 4 h</h3>
+<ol start="81">
+<li>Up to 24 barcoded quantified libraries can be mixed at equal molar ratio</li>
+<li>(Optional) Remove PCR dimers with Pippin prep size selection according to the manufacturer’s instructions</li>
+<li>Perform paired-end sequencing (2 × 42 bp) on MiniSeq (Illumina) 5 million reads per library are sufficient</li>
+</ol>
+<h3 id="sec2.8">Step 8: Data analysis with CnRAP – time – hours to a couple of days depending on computer hardware, sequencing depth, and the number of samples to be processed</h3>
+<p>The bioinformatics pipeline written for this analysis consists of three essential scripts and three optional scripts. Each of the essential scripts performs a required function in processing the sequencing files in order to call the Cut&amp;Run peaks while the optional scripts perform the peak annotation and motif enrichment analysis once the peaks are called. Briefly, the scripts perform the following functions:</p>
+<ul>
+<li>Script 01 – Read quality trimming and alignment to reference genomes</li>
+<li>Script 02 – Generation of bedgraph files and normalization</li>
+<li>Script 03 – Peak calling using SEACR</li>
+<li>Script 04 – (Optional) Annotate called peaks using ChIPSeeker</li>
+<li>Script 05 – (Optional) File preparation for HOMER motif enrichment analysis</li>
+<li>Script 06 – (Optional) File preparation for MEME motif enrichment analysis.</li>
+</ul>
+<p>In this section, we will outline the function and purpose of each script, as well as outline how to call and use said script. Additional details can also be found on the GitHub page.</p>
+<p>For those wishing to follow this analysis, the dataset analyzed in our original publication (<a href="#bib8">Kong et al., 2021</a>) is referenced in the Data Availability section. Users can download the raw and processed data from GEO and compare their results with the published findings.</p>
+<div class="note">
+<span class="note-title">Note:</span> Before beginning, it is important to note that for each sample sequenced, there should exist a pair of de-multiplexed fastq files corresponding to both read directions. These typically contain R1/R2 in the filename to denote read direction. Both files are needed per sample.</div>
+<div class="note">
+<span class="note-title">Note:</span> Ensure that you have followed preparation 3 in the “Before You Begin” section before proceeding. Next, the configured conda environment must be activated prior to attempting to run any of the following commands. See the GitHub repository for additional details.</div>
+<ol start="84">
+<li>The first step in running the analysis pipeline is to run CnRAP script 01 on each sample separately. Note, each sample will consist of 2 read files, R1 and R2, corresponding to the reads in both directions. This script takes care of performing all the necessary quality trimming steps required on the sequenced reads and alignment to the reference genomes. Firstly, trimmomatic is run to remove poor quality bases from both the start and the end of the reads while also removing any potential adapter sequences that might be found. Following this, the kseq_trimming tool is run to remove any additional barcode sequences. Once the reads are cleaned up, alignment to the reference genomes is performed using BWA followed by Stampy. In this protocol, reads are aligned to both the human (hg) and saccharomyces cerevisiae (sacCer) genomes. Alignment to hg is because the cell line used (SNU-398) is a human cell line, while alignment to the sacCer genome enables utilizing the spike-in DNA for normalizing. BWA and Stamy were chosen for alignment as they were found to result in improved alignment performance when benchmarked (<a href="#bib21">Thankaswamy-Kosalai et al., 2017</a>). Following alignment, unmapped reads are removed; bam files are sorted, indexed and alignment statistics are calculated.</li>
+</ol>
+<p>To run script 01, use the following command.</p>
+<p><code>&gt; python3 01_cut_n_run_pairedReads_filter_align.py &lt;sample_name&gt; &lt;read1_fq_gz&gt; &lt;read2_fq_gz&gt; &lt;num_cores&gt; &lt;aligned_folder&gt;</code></p>
+<p>Wherein:</p>
+<p><code>&gt; &lt;sample_name&gt;</code> defines the prefix corresponding this sample;</p>
+<p><code>&gt; &lt;read1_fq_gz&gt;</code> is the full path location of the read1 fastq file;</p>
+<p><code>&gt; &lt;read2_fq_gz&gt;</code> is the full path location of the read2 fastq file;</p>
+<p><code>&gt; &lt;num_cores&gt;</code> defines the number of processor cores to use for processing;</p>
+<p><code>&gt; &lt;aligned_folder&gt;</code> is the folder where all output will be saved.</p>
+<p>Following the above python3 call, a bash script will be generated <code>01_cut_n_run_pairedReads_filter_align.sh</code> which can simply be run in the terminal to perform the required steps for this stage of analysis.</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> Following genome alignment, some users may wish to assess the degree of PCR duplication present in their data. Marking and removal of PCR duplicates can be performed by Picard tools as well. Such an analysis can be performed using the following code. For additional information on interpreting the output of Picard, refer to the official documentation on the Broad website.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Following the generation of the aligned bam files, users can optionally run the tool “plotFingerprint” on the sample and IgG control bam files to check whether they see greater enrichment as expected in their sample. An example of such a figure can be found in <a href="#fig3">Figure 3</a>, wherein users can see a separation between the IgG and sample curves.</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/944-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Example Enrichment fingerPrint plot following genome alignment</div>
+<p>Following alignment to the human genome, users can optionally generate a global enrichment fingerPrint plot to assess the extent of enrichment observed in their sample over control. The sample curve (blue) should be closer to the bottom right corner than the control IgG curve (orange). The greater the separation between the curves the greater enrichment observed, which will likely result in more peaks being called at the peak calling step.</p>
+</figcaption>
+</figure>
+<div class="optional">
+<span class="optional-title">Optional:</span> Following genome alignment, some users may wish to assess library complexity before proceeding. For this, Picard tools is an ideal and commonly accepted toolkit to do so. Such an analysis can be performed using the following code. For additional information on interpreting the output of Picard, refer to the official documentation on the Broad website.</div>
+<p><code>&gt; java -jar picard.jar EstimateLibraryComplexity I=input.bam O=estimated_library_complexity_metrics.txt</code></p>
+<p><code>&gt; java -jar picard.jar MarkDuplicates I=input.bam O=marked_duplicates.bam M=marked_duplicates_metrics.txt</code></p>
+<p>This command will simply mark the duplicate reads and not remove them. If you wish to remove duplicate reads, the <code>MarkDuplicates</code> command has two flags that can use utilized <code>REMOVE_DUPLICATES</code> and <code>REMOVE_SEQUENCING_DUPLICATES</code>. For full details on how to incorporate these flags into the afore mentioned command, refer to the official documentation on the Broad website.</p>
+<div class="note">
+<span class="note-title">Note:</span> Be sure to set the same output <code>&lt;aligned_folder&gt;</code> for all samples as subsequent scripts will process all samples contained in given folders. Only script 01 is to be run separately per sample.</div>
+<p><a href="#sec5.7">Troubleshooting 4</a></p>
+<p><a href="#sec5.9">Troubleshooting 5</a></p>
+<ol start="85">
+<li>Next, CnRAP script 02 needs to be run on the output folder of script 01 which is supposed to contain the aligned bam files of all samples processed with script 01. Script 02 first takes the aligned bam files for each sample and converts them to bedgraph files. Next, the hg bedgraph files are normlized to the sacCer spike-in controls. For this, a normalization factor is calculated for each hg-sacCer file pair which is calculated as follows</li>
+</ol>
+<p class="math-ml"><math> <mrow> <mi>n</mi> <mi>o</mi> <mi>r</mi> <mi>m</mi> <mi>a</mi> <mi>l</mi> <mi>i</mi> <mi>z</mi> <mi>a</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mo>_</mo> <mi>f</mi> <mi>a</mi> <mi>c</mi> <mi>t</mi> <mi>o</mi> <mi>r</mi> <mo>=</mo> <mspace></mspace> <mfrac> <mrow> <mn>10,000,000</mn> <mspace></mspace> </mrow> <mfrac> <mrow> <mi>m</mi> <mi>a</mi> <mi>p</mi> <mi>p</mi> <mi>e</mi> <mi>d</mi> <mo>_</mo> <mi>r</mi> <mi>e</mi> <mi>a</mi> <mi>d</mi> <mi>s</mi> <mo>_</mo> <mi>p</mi> <mi>e</mi> <mi>r</mi> <mo>_</mo> <mi>s</mi> <mi>a</mi> <mi>c</mi> <mi>C</mi> <mi>e</mi> <mi>r</mi> <mo>_</mo> <mi>g</mi> <mi>e</mi> <mi>n</mi> <mi>o</mi> <mi>m</mi> <mi>e</mi> <mspace></mspace> </mrow> <mn>2</mn> </mfrac> </mfrac> </mrow> </math></p>
+<p>This normalization ensures that peak heights are adjusted correctly prior to peak calling in the next step.</p>
+<p>To run script 02, use the following command.</p>
+<p><code>&gt; python3 02_cut_n_run_bamToBed_normalize_SEACRPrepv1.py &lt;aligned_bams_folder&gt; &lt;normalized_beds_folder&gt; &lt;chrom_sizes_txt&gt;</code></p>
+<p>Wherein:</p>
+<p><code>&gt; &lt;aligned_bams_folder&gt;</code> defines where the aligned bams, the output of script 01, are saved;</p>
+<p><code>&gt; &lt;normalized_beds_folder&gt;</code> is the folder where the normalized bed files will be saved in preparation for running SEACR, the peak calling algorithm for Cut&amp;Run;</p>
+<p><code>&gt; &lt;chrom_sizes_txt&gt;</code> is a text file defining the base-pair size of each chromosome. This is required when converting the aligned bam files to bedGraph files. This file can be downloaded from UCSC directly.</p>
+<p>Following the above python3 call, a bash script will be generated <code>02_cut_n_run_bamToBed_normalize_SEACRPrepv1.sh</code> which can simply be run in the terminal to perform the required steps for this stage of analysis.</p>
+<ol start="86">
+<li>Next, run CnRAP script 03 is required to be run over the normalized bedgraph files. This script proceeds to first make bigWig coverage files for all normalized bedgraph files (for viewing in IGV or on UCSC) and then calls peaks using SEACR in both “stringent” and “relaxed” modes.</li>
+</ol>
+<p>To run script 03, use the following command</p>
+<p><code>&gt; python3 03_cut_n_run_SEACR_peakProcess_v1beds.py &lt;seacr_location&gt; &lt;normalized_beds_folder&gt; &lt;output_folder&gt; &lt;chrom_sizes_txt&gt;</code></p>
+<p>Wherein:</p>
+<p><code>&gt; &lt;seacr_location&gt;</code> defines where the Cut&amp;Run peak caller SEACR is saved;</p>
+<p><code>&gt; &lt;normalized_beds_folder&gt;</code> is the folder where the normalized bed files have been saved;</p>
+<p><code>&gt; &lt;output_folder&gt;</code>is the folder where the called peak files will be saved;</p>
+<p><code>&gt; &lt;chrom_sizes_txt&gt;</code> is a text file defining the base-pair size of each chromosome. This is required for bedGraph file manipulation.</p>
+<p>Following the above python3 call, a bash script will be generated <code>03_cut_n_run_SEACR_peakProcess_v1beds.sh</code> which can simply be run in the terminal to perform the required steps for this stage of analysis.</p>
+<ol start="87">
+<li>Once peaks are called, users will likely want to annotate them although this is not essential. As such, script 04, is considered as an optional script to be run. If users wish to annotate their called peaks, script 04 can be utilized which will annotate called peaks using the R package, ChIPSeeker. In addition to annotating the called peaks, ChIPSeeker will also generate summary plots which may be of relevance to users. Script 04 will only annotate using ChIPSeeker. Alternatively, users may wish to annotate their called peaks using the HOMER annotatePeaks function. No script is provided as part of CnRAP to use HOMER though. For details on how to annotate your peaks using HOMER, refer to the official documentation.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Once peaks are called, users may wish to perform motif enrichment analysis to investigate the presence of characteristic motifs. For this, users can use script 5 and/or script 6. Script 05 script, processes the called peaks and generates the required script to run motif enrichment analysis using the HOMER toolkit. Once generated, the corresponding bash script can be run in the terminal to perform said analysis. This script is optional as, depending on the experimental design, motif enrichment analysis may not be required. It is evident from user forums however that some users prefer to use the MEME-Suite of tools in preference to HOMER for motif discovery. As such, we have also provided script 06 which will prepare the required files for performing motif enrichment analysis using the MEME-Suite. The choice for which toolkit to use will be up to the users and their experiment. For the results generated using this protocol, both HOMER and MEME results were compared to ensure reproducibility in the called motif.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The first time an experimenter follows this protocol, they should run a parallel histone mark CUT&amp;RUN library and should expect to observe mono-, di-, tri-nucleosome Bioanalyzer traces prior to library amplification that suggest (1) the purified proteinA-Mnase worked; and (2) the protocol worked. Once the bioinformatic pipeline was run, the experimenter should expect to see TF-specific peaks enriched above IgG-CUT&amp;RUN levels. These peaks should be small enough to facilitate more precise identification of binding sites of transcription factors and their consensus binding sequences.</p>
+<p>When assessing the sample quality using the bioanalyzer traces, if running in parallel a histone mark CUT&amp;RUN, three sets of small peaks representing mono-, di-, and tri-nucleosomes can be expected, indicating that the proteinA-Mnase digestion was successful (<a href="#fig1">Figure 1</a>). Following library amplification and purification, the bioanalyzer traces expected should show a sharp peak at the size of the fragmented DNA with adapters (<a href="#fig2">Figure 2</a>).</p>
+<p>Although Cut&amp;Run does produce small DNA fragments, this does not necessarily pose an issue for the bioinformatics analysis. One point to be aware of though is that as part of our analysis pipeline, reads of length less than 20 bp are discarded. This is because shorter reads map ambiguously to the genome at a higher rate than longer reads and so are not deemed to be informative in this context.</p>
+<p>For the bioinformatics analysis steps, a number of files can be expected as outputs of each script run. For CnRAP script 01, the key outputs for this script are aligned bam files and bam index files for each sample for both human and yeast genomes, i.e., 4 output files per input sample. For script 02, users should expect a single normalized bedGraph and a coverage bigwig file output per sample. The yeast genome data is used to normalize the human bedGraph file and so is no longer needed following normalization. Script 03 will generate two called peak files for each sample corresponding to SEACR’s stringent and relaxed running modes, which output to use will depend on the biological question being addressed. Script 04 will output an annotated peak file along with six summary plots showing the genomic binding distribution of the peaks per sample. Once annotated, you can load your alignment or coverage files in IGV or any Genome Browser and view your peaks. Example peaks can be found in <a href="#fig4">Figure 4</a>. Scripts 05 and 06 will each output a single folder per sample that contains all the files generated as part of the motif discovery analysis for that sample. Each folder will contain a hyper-text markup language (html) file to open in a browser to view the results.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/944-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Example Cut&amp;Run peaks at selected genomic loci</div>
+<p>Once peaks are called, users can view the coverage files in UCSC genome browser or locally using a program such as IGV. At the loci where peaks are called, users should see noticeable enrichment in the sample compared to the IgG controls as seen here. The peaks shown here are from our published dataset reported in Cell Reports looking at SALL4 in the SNU398 liver cancer cell line.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This protocol is dependent on the availability of a good and specific antibody against the transcription factor of interest, which can be tested empirically through western blotting and co-immunoprecipitation experiments. Furthermore, this protocol describes production of proteinA-Mnase, the activity of which should be tested by running a parallel CUT&amp;RUN experiment with antibodies against histone marks. This parallel histone mark CUT&amp;RUN experiment should be run as a positive control when performing CUT&amp;RUN for the first time, see “Critical” under protocol step 2.</p>
+<p>The pipeline developed for our analysis, CnRAP, is limited in its future use as the program Stampy, which is used in the sample alignment stage, is written in python2. As of 2021 python2 has reached its end-of-life and is no longer developed or maintained and Stampy is no longer maintained by its developers. While it is still possible to install python2 and Stampy, with instructions outlined on the CnRAP GitHub repository page, software incompatibility issues will likely arise in time. A future release of CnRAP will include enhanced features and will not have the same limitations as the release detailed in this protocol. While the exact future feature set is still developing, we are re-writing the analysis pipeline to be more robust and more user friendly in all aspects from setup, to usage and parameter setting. We also plan on developing a graphical interface to enable non-bioinformaticians to process their own Cut&amp;Run datasets without needing to dive into the command-line, while still retaining the command-line for power users. When the new pipeline is developed, a link will be made available on the CnRAP GitHub repository.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Related to preparation 1, step 4</p>
+<p>No purified proteinA-Mnase observed on gel.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>If the induced but unpurified sample also does not contain the pAMnase, then this could be due to non-optimized induction, try longer induction period and different temperatures. If the protein is largely present in the flow through fraction, then incubate the bacterial lysates with 60 uL of IgG Fast Flow resin overnight (16–18 h) at 4°C with rocking.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Relating to protocol step 5: quality control</p>
+<p>No distinct nucleosome peaks are seen in the parallel histone mark CUT&amp;RUN sample.</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>This could be due to inefficient Mnase digestion, so one can use more Mnase digest and/or incubate for longer at 37°C.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Relating to protocol step 5: quality control</p>
+<p>No TF CUT&amp;RUN DNA was recovered from Qubit quantification.</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>The most likely answer is the antibody tested was not optimized for binding. Try immunoprecipitating with the TF-specific antibody and proteinA/G beads first by incubating it overnight (16–18 h) with nuclei that were purified following the protocol, lyse the nuclei the next day and perform western blotting to verify that the antibody can bind to the TF of interest to ensure the antibody is not the concern.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Relating to protocol step 8</p>
+<p>Rarely, when running CnRAP script 01 (step 8.84), python2 will fail with a “broken pipe error”.</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>This error typically occurred when assigning to python more system resources than are available. To resolve, simply re-run script 01 but assign fewer processing cores to the analysis.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Relating to protocol step 8</p>
+<p>Pipeline scripts fail with the error “MemoryError”.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>This error would likely occur if your computer has run out of RAM and if it occurs will likely be when running script 01 (step 8.84). Having at least 16 Gb of RAM in your system available should be sufficient per sample though. This should be sufficient to run a single instance of script 01 (step 8.84) at a time. If you wish to run multiple samples simultaneously, or your samples are deeply sequenced, consider running the pipeline on a dedicated computing cluster.</p>
+<p>If this error occurred you will need to provide more RAM for analysis. First try closing down any unnecessary programs running in the background to free as much RAM as possible. If this fails to work you will need to increase the size of your swap-disk. This is a much more complicated solution and you will need to Google how to do so for your own operating system and its version. The final solution is to simply find another computer with more hardware resources to perform the analysis on.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bassal, M.A. (2019). Cut&amp;Run Analysis Pipeline (CnRAP), ver. 1.0 (GitHub). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref1">View at publisher</a></p>
+<p id="bib2">Berger, M.F., Philippakis, A.A., Qureshi, A.M., He, F.S., Estep, P.W., and Bulyk, M.L. (2006). Compact, universal DNA microarrays to comprehensively determine transcription-factor binding site specificities. Nat. Biotechnol. <i>24</i>, 1429-1435. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref2">View at publisher</a></p>
+<p id="bib3">Berger, M.F. and Bulyk, M.L. (2009). Universal protein-binding microarrays for the comprehensive characterization of the DNA-binding specificities of transcription factors. Nat. Protoc. <i>4</i>, 393-411. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref3">View at publisher</a></p>
+<p id="bib4">Bolger, A.M., Lohse, M., and Usadel, B. (2014). Trimmomatic: a flexible trimmer for Illumina sequence data. Bioinformatics <i>30</i>, 2114-2120. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref4">View at publisher</a></p>
+<p id="bib5">Broad Institute. (2019). Picard toolkit (Broad Institute, Broad Institute, Github repository). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref5">View at publisher</a></p>
+<p id="bib6">Dudley, A.M., Aach, J., Steffen, M.A., and Church, G.M. (2002). Measuring absolute expression with microarrays with a calibrated reference sample and an extended signal intensity range. Proc. Natl. Acad. Sci. U S A <i>99</i>, 7554-7559. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref6">View at publisher</a></p>
+<p id="bib7">Heinz, S., Benner, C., Spann, N., Bertolino, E., Lin, Y.C., Laslo, P., Cheng, J.X., Murre, C., Singh, H., and Glass, C.K. (2010). Simple combinations of lineage-determining transcription factors prime cis-regulatory elements required for macrophage and B cell identities. Mol. Cell <i>38</i>, 576-589. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref7">View at publisher</a></p>
+<p id="bib8">Kong, N.R., Bassal, M.A., Tan, H.K., Kurland, J.V., Yong, K.J., Young, J.J., Yang, Y., Li, F., Lee, J.D., Liu, Y., et al. (2021). Zinc finger protein SALL4 functions through an AT-rich motif to regulate gene expression. Cell Rep. <i>34</i>, 108574. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref8">View at publisher</a></p>
+<p id="bib9">Li, H. and Durbin, R. (2009). Fast and accurate short read alignment with Burrows-Wheeler transform. Bioinformatics <i>25</i>, 1754-1760. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref9">View at publisher</a></p>
+<p id="bib10">Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R., and Genome Project Data Processing Subgroup. (2009). The sequence alignment/map format and SAMtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref10">View at publisher</a></p>
+<p id="bib11">Liu, N., Hargreaves, V.V., Zhu, Q., Kurland, J.V., Hong, J., Kim, W., Sher, F., Macias-Trevino, C., Rogers, J.M., Kurita, R., et al. (2018). Direct Promoter Repression by BCL11A Controls the Fetal to Adult Hemoglobin Switch. Cell <i>173</i>, 430-442.e17. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref11">View at publisher</a></p>
+<p id="bib12">Lunter, G. and Goodson, M. (2011). Stampy: a statistical algorithm for sensitive and fast mapping of Illumina sequence reads. Genome Res. <i>21</i>, 936-939. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref12">View at publisher</a></p>
+<p id="bib13">Machanick, P. and Bailey, T.L. (2011). MEME-ChIP: motif analysis of large DNA datasets. Bioinformatics <i>27</i>, 1696-1697. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref13">View at publisher</a></p>
+<p id="bib14">Meers, M.P., Tenenbaum, D., and Henikoff, S. (2019). Peak calling by Sparse Enrichment Analysis for CUT&amp;RUN chromatin profiling. Epigenet. Chromatin <i>12</i>, 42. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref14">View at publisher</a></p>
+<p id="bib15">Python Software Foundation (2021). Python Language Reference, ver. 2.7, 3.7. <a class="external-link" href="http://www.python.org">http://www.python.org</a></p>
+<p id="bib16">Quinlan, A.R. and Hall, I.M. (2010). BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics <i>26</i>, 841-842. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref16">View at publisher</a></p>
+<p id="bib17">R Core Team (2021). R: A Language and Environment for Statistical Computing (R Foundation for Statistical Computing). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref17">View at publisher</a></p>
+<p id="bib18">Ramirez, F., Ryan, D.P., Gruning, B., Bhardwaj, V., Kilpert, F., Richter, A.S., Heyne, S., Dundar, F., and Manke, T. (2016). deepTools2: a next generation web server for deep-sequencing data analysis. Nucleic Acids Res. <i>44</i>, W160-W165. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref18">View at publisher</a></p>
+<p id="bib19">Schneider, C.A., Rasband, W.S., and Eliceiri, K.W. (2012). NIH Image to ImageJ: 25 years of image analysis. Nat. Methods <i>9</i>, 671-675. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref19">View at publisher</a></p>
+<p id="bib20">Skene, P.J., Henikoff, J.G., and Henikoff, S. (2018). Targeted in situ genome-wide profiling with high efficiency for low cell numbers. Nat. Protoc. <i>13</i>, 1006-1019. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref20">View at publisher</a></p>
+<p id="bib21">Thankaswamy-Kosalai, S., Sen, P., and Nookaew, I. (2017). Evaluation and assessment of read-mapping by multiple next-generation sequencing aligners based on genome-wide characteristics. Genomics <i>109</i>, 186-191. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref21">View at publisher</a></p>
+<p id="bib22">Workman, C.T., Yin, Y., Corcoran, D.L., Ideker, T., Stormo, G.D., and Benos, P.V. (2005). enoLOGOS: a versatile web tool for energy normalized sequence logos. Nucleic Acids Res. <i>33</i>, W389-W392. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref22">View at publisher</a></p>
+<p id="bib23">Yu, G., Wang, L.-G., and He, Q.-Y. (2015). ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization. Bioinformatics <i>31</i>, 2382-2383. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref23">View at publisher</a></p>
+<p id="bib24">Zhu, Q., Liu, N., Orkin, S.H., and Yuan, G.-C. (2019). CUT&amp;RUNTools: a flexible pipeline for CUT&amp;RUN processing and footprint analysis. Genome Biol. <i>20</i>, 192. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00457-3/sref24">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to Mahmoud A. Bassal (<a href="mailto:mahmoud.bassal@mymail.unisa.edu.au">mahmoud.bassal@mymail.unisa.edu.au</a>). Details and information regarding the computational analysis should also be directed to Mahmoud A. Bassal (<a href="mailto:mahmoud.bassal@mymail.unisa.edu.au">mahmoud.bassal@mymail.unisa.edu.au</a>).</p>
+<h4>Materials availability</h4>
+<p>All materials are available commercially or through AddGene with category numbers provided in-text.</p>
+<h4>Data and code availability</h4>
+<p>The datasets generated during our study are available on GEO with accession number GSE136332 and are referenced in the original study as well. Users can download the raw and processed data from GEO, run the outlined pipeline described herein, and compare the results. The bioinformatics pipeline utilized, CnRAP, is accessible on GitHub (<a href="https://github.com/mbassalbioinformatics/CnRAP">https://github.com/mbassalbioinformatics/CnRAP</a>).</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (NIH) grant number T32 HL066987 to N.R.K., grant number HL131477 to D.G.T. This work was further supported by the <a href="https://doi.org/10.13039/100000054">National Cancer Institute</a> grant number R35 CA197697 to D.G.T.; the <a href="https://doi.org/10.13039/100000050">National Heart, Lung, and Blood Institute</a> grant number P01 HL095489 to L.C.; the <a href="https://doi.org/10.13039/100005189">Leukemia and Lymphoma Society</a> grant number P-TRP-5855-15 to L.C.; and Xiu Research Fund to L.C. This work was also supported by the Singapore Ministry of Health’s <a href="https://doi.org/10.13039/501100001349">National Medical Research Council</a> under its Singapore Translational Research (STaR) Investigator Award and by the <a href="https://doi.org/10.13039/501100001381">National Research Foundation</a> Singapore and the <a href="https://doi.org/10.13039/501100001459">Singapore Ministry of Education</a> under its Research Centres of Excellence Initiative. We would also like to thank the Molecular Biology Core Facilities at the Dana Farber Cancer Institute for their help.</p>
+<h3>Author contributions</h3>
+<p>N.R.K. designed, performed, and optimized the SALL4 CUT&amp;RUN. M.A.B. designed, wrote, and performed the bioinformatics analysis. N.R.K. and M.A.B. wrote and edited the protocol. L.C. and D.G.T. supervised the project and secured funding.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

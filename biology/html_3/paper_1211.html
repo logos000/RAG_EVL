@@ -1,0 +1,1062 @@
+<article>
+<section>
+<h1 id="header">Preparation of mouse pancreatic tumor for single-cell RNA sequencing and analysis of the data</h1>
+<p><time datetime="2021-12-10">Published: December 10, 2021</time></p>
+<p>Aizhan Surumbayeva,<sup><a href="#aff1">1</a>,<a href="#fn1">9</a>,<a href="#cor1">*</a></sup> Michael Kotliar,<sup><a href="#aff2">2</a>,<a href="#aff5">5</a>,<a href="#fn1">9</a>,<a href="#cor2">**</a></sup> Linara Gabitova-Cornell,<sup><a href="#aff1">1</a></sup> Andrey Kartashov,<sup><a href="#aff2">2</a>,<a href="#aff5">5</a>,<a href="#aff6">6</a></sup> Suraj Peri,<sup><a href="#aff7">7</a>,<a href="#aff8">8</a></sup> Nathan Salomonis,<sup><a href="#aff4">4</a>,<a href="#aff5">5</a></sup> Artem Barski,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#aff5">5</a>,<a href="#aff6">6</a>,<a href="#cor3">***</a></sup> and Igor Astsaturov<sup><a href="#aff1">1</a>,<a href="#aff8">8</a>,<a href="#fn2">10</a>,<a href="#cor4">****</a></sup></p>
+<p id="aff1"><sup>1</sup>The Marvin &amp; Concetta Greenberg Pancreatic Cancer Institute, Fox Chase Cancer Center, Philadelphia, PA 19111, USA</p>
+<p id="aff2"><sup>2</sup>Division of Allergy and Immunology, University of Cincinnati, Cincinnati, OH 45221, USA</p>
+<p id="aff3"><sup>3</sup>Division of Human Genetics, University of Cincinnati, Cincinnati, OH 45221, USA</p>
+<p id="aff4"><sup>4</sup>Division of Biomedical Informatics, University of Cincinnati, Cincinnati, OH 45221, USA</p>
+<p id="aff5"><sup>5</sup>Cincinnati Children’s Hospital Medical Center and Department of Pediatrics, University of Cincinnati, Cincinnati, OH 45221, USA</p>
+<p id="aff6"><sup>6</sup>Datirium, LLC, Cincinnati, OH 45226, USA</p>
+<p id="aff7"><sup>7</sup>Biostatistics and Bioinformatics Facility, Fox Chase Cancer Center, Philadelphia, PA 19111, USA</p>
+<p id="aff8"><sup>8</sup>Cancer Biology Program, Fox Chase Cancer Center, Philadelphia, PA 19111, USA</p>
+<p id="fn1"><sup>9</sup>Technical contact</p>
+<p id="fn2"><sup>10</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:aizhan.surumbayeva@fccc.edu">aizhan.surumbayeva@fccc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:michael.kotliar@cchmc.org">michael.kotliar@cchmc.org</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:artem.barski@cchmc.org">artem.barski@cchmc.org</a></p>
+<p id="cor4"><sup>****</sup>Correspondence: <a href="mailto:igor.aststaurov@fccc.edu">igor.aststaurov@fccc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100989">10.1016/j.xpro.2021.100989</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Preparation of single-cell suspension from primary tumor tissue can provide a valuable resource for functional, genetic, proteomic, and tumor microenvironment studies. Here, we describe an effective protocol for mouse pancreatic tumor dissociation with further processing of tumor suspension for single-cell RNA sequencing analysis of cellular populations. We further provide an outline of the bioinformatics processing of the data and clustering of heterogeneous cellular populations comprising pancreatic tumors using Common Workflow Language (CWL) pipelines within user-friendly Scientific Data Analysis Platform (<a href="https://SciDAP.com">https://SciDAP.com</a>).</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/J.CCELL.2020.08.015">Gabitova-Cornell et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Isolation of single-cell suspension from pancreatic tumor</li>
+<li>Step-by-step guidance to the generation of quality single-cell RNA libraries</li>
+<li>An online informatics pipeline SciDAP for downstream processes</li>
+<li>SciDAP uses open source pipelines to obtain reproducible results</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<ol>
+<li>Prepare reagents Enzyme D, Enzyme R, Enzyme A by reconstitution of the lyophilized powders from the Tumor Dissociation Kit(mouse) according to <a href="#tbl1">Table 1</a>. Make aliquots (100 μL of Enzyme D, 50 μL of Enzyme R, and 12.5 μL of Enzyme A per sample) and store them at −20°C, to avoid repeated freeze-thaw cycles. These solutions are stable for 6 months after reconstitution.
+<table id="tbl1">
+<caption>Table 1. Media and reagents</caption>
+<thead>
+<tr>
+<th>Enzyme</th>
+<th>Reconstitution solution</th>
+<th>Volume</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D</td>
+<td>RPMI 1640 or DMEM</td>
+<td>3 mL</td>
+<td>filter (0.22 μm) prior to aliquoting</td>
+</tr>
+<tr>
+<td>R</td>
+<td>RPMI 1640 or DMEM</td>
+<td>2.7 mL</td>
+<td> </td>
+</tr>
+<tr>
+<td>A</td>
+<td>Buffer A</td>
+<td>1 mL</td>
+<td>do not vortex</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Prepare sterile 1<b>×</b> PBS (Ca2+ and Mg2+ free). Pre-cool PBS at +4°C.</li>
+<li>Prepare sterile, double-distilled water.</li>
+<li>Pre-cool the centrifuge to +4°C.</li>
+<li>Prepare the necessary stock solutions and sterile tools according to the <a href="#materials-and-equipment">materials and equipment</a> section.</li>
+<li>Prepare 1<b>×</b> Binding Buffer from 20<b>×</b> Binding Buffer Stock Solution supplied with the Dead Cell Removal Kit by diluting in double-distilled water.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not use deionized water for dilution.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Binding of Dead Cell Removal MicroBeads requires Ca2+. The presence of the ion chelator EDTA will abolish binding. 1<b>×</b> Binding Buffer is optimized for best Dead Cell Removal MicroBeads binding. The use of a different buffer may lead to poor dead cell removal efficiency.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Mouse primary tumor cells carry potentially hazardous pathogens. Procedures should be performed under BSL-2 conditions.</div>
+<p>Tumor-bearing mice were observed twice weekly until signs of sickness appeared or animals showed distress or weight loss of more than 10%, per the local Institutional Animal Care and Use Committee (IACUC) guidelines.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th colspan="2">SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="4">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Dulbecco's phosphate-buffered saline (DPBS) (Ca2+and Mg2+ free)</td>
+<td colspan="2">Sigma-Aldrich</td>
+<td>D5652</td>
+</tr>
+<tr>
+<td>Dulbecco's Modified Eagle Medium (DMEM)</td>
+<td colspan="2">Corning</td>
+<td>50-013-PB</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum (FBS)</td>
+<td colspan="2">HyClone</td>
+<td>AE28209281</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumin (BSA)</td>
+<td colspan="2">Fisher Scientific</td>
+<td>BP1600-100</td>
+</tr>
+<tr>
+<td>Penicillin/Streptomycin</td>
+<td colspan="2">Cellgro</td>
+<td>MT30-002-CL</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td colspan="2">Fisher Scientific</td>
+<td>BP120-500</td>
+</tr>
+<tr>
+<td>Trypan Blue Stain</td>
+<td colspan="2">Fisher Scientific</td>
+<td>15250061</td>
+</tr>
+<tr>
+<td colspan="4">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Tumor Dissociation Kit, mouse</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>130-096-730</td>
+</tr>
+<tr>
+<td>Dead Cell Removal Kit</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>130-090-101</td>
+</tr>
+<tr>
+<td>CD45 MicroBeads, mouse</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>130-052-301</td>
+</tr>
+<tr>
+<td>Red Blood Cell Lysis Solution</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>130-094-183</td>
+</tr>
+<tr>
+<td>Annexin V MicroBead Kit</td>
+<td colspan="2">Miltenyi Biotec</td>
+<td>130-092-052</td>
+</tr>
+<tr>
+<td>Chromium Single Cell 3′ Library, Gel Bead &amp; Multiplex Kit and Chip Kit V3</td>
+<td colspan="2">10X Genomics</td>
+<td>PN-1000092</td>
+</tr>
+<tr>
+<td>Bioanalyzer High Sensitivity DNA Kit</td>
+<td colspan="2">Agilent Technologies</td>
+<td>5067–4626</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS Assay Kit</td>
+<td colspan="2">Thermo Fisher Scientific</td>
+<td>Q32851</td>
+</tr>
+<tr>
+<td colspan="4">Deposited data</td>
+</tr>
+<tr>
+<td>Single-cell RNAseq data</td>
+<td colspan="2">Sequence Read Archive (SRA), <a href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a>
+</td>
+<td>PRJNA657051</td>
+</tr>
+<tr>
+<td colspan="4">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Male and female mice of KPC genotype (<i>LSL-<u>K</u>ras</i><sup><i>G12D</i></sup><i>;Tr<u>p</u>53</i><sup><i>f/f</i></sup><i>; Pdx1</i>-<i><u>C</u>re</i>) were generated in house. Original strains were obtained from <a href="http://JAX.org">JAX.org</a>. Tumor-bearing mice at age of 7–8 weeks were used for tumor harvesting</td>
+<td colspan="2">The Jackson Laboratory, Bar Harbor, ME</td>
+<td>JAX 014647; 019104;008462</td>
+</tr>
+<tr>
+<td colspan="4">Software and algorithms</td>
+</tr>
+<tr>
+<td>CellRanger 4.0.0</td>
+<td>10X Genomics</td>
+<td colspan="2"><a href="https://support.10xgenomics.com/">https://support.10xgenomics.com/</a></td>
+</tr>
+<tr>
+<td>Seurat version 4.0.1</td>
+<td>New York Genome Center</td>
+<td colspan="2"><a href="https://satijalab.org/seurat/install.html">https://satijalab.org/seurat/install.html</a></td>
+</tr>
+<tr>
+<td>CWL pipelines for scRNA-Seq data processing</td>
+<td>Datirium, LLC</td>
+<td colspan="2"><a href="https://github.com/datirium/workflows">https://github.com/datirium/workflows</a></td>
+</tr>
+<tr>
+<td colspan="4">Other</td>
+</tr>
+<tr>
+<td>gentleMACS™ Dissociator</td>
+<td>Miltenyi Biotec.</td>
+<td colspan="2">130-093-235</td>
+</tr>
+<tr>
+<td>gentleMACS C Tubes</td>
+<td>Miltenyi Biotec.</td>
+<td colspan="2">130-093-237</td>
+</tr>
+<tr>
+<td>MACS MultiStand separator</td>
+<td>Miltenyi Biotec.</td>
+<td colspan="2">130-042-303</td>
+</tr>
+<tr>
+<td>MACS Separation Columns (LS)</td>
+<td>Miltenyi Biotec.</td>
+<td colspan="2">130-042-401</td>
+</tr>
+<tr>
+<td>MACSmix™ Tube Rotator</td>
+<td>Miltenyi Biotec.</td>
+<td colspan="2">130-090-753</td>
+</tr>
+<tr>
+<td>37°C incubator</td>
+<td>N/A</td>
+<td colspan="2">N/A</td>
+</tr>
+<tr>
+<td>FlowmiTM Tip Strainers 70 μm</td>
+<td>SP BEL-ART</td>
+<td colspan="2">H13680-0070</td>
+</tr>
+<tr>
+<td>50 mL sterile falcon tubes</td>
+<td>CellStar</td>
+<td colspan="2">227261</td>
+</tr>
+<tr>
+<td>15 mL sterile falcon tubes</td>
+<td>CellStar</td>
+<td colspan="2">188271</td>
+</tr>
+<tr>
+<td>Sterile dissecting forceps and scissors</td>
+<td>N/A</td>
+<td colspan="2">N/A</td>
+</tr>
+<tr>
+<td>Sterile blades</td>
+<td>Bard-Parker</td>
+<td colspan="2">371210</td>
+</tr>
+<tr>
+<td>Sterile petri dish</td>
+<td>Fisher Scientific</td>
+<td colspan="2">FB012923</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>Enzyme mix (Tumor dissociation, mouse kit, Miltenyi Biotec, Cat#130-096-730)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td>2.35 mL</td>
+</tr>
+<tr>
+<td>Enzyme D</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>Enzyme R</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Enzyme A</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td>
+<b>2512.5</b> μL</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Thaw and keep enzyme mix on ice.</div>
+<table id="undtbl2">
+<caption>DMEM +10%FBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td> </td>
+<td>44.5 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>10%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>Penn/strep</td>
+<td>1%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td>50 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at 2°C–8°C up to one month.</div>
+<table id="undtbl3">
+<caption>DMEM +1%FBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td> </td>
+<td>9.8 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>1%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>Penn/strep</td>
+<td>1%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td>10 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at 2°C–8°C up to one month.</div>
+<table id="undtbl4">
+<caption>1<b>×</b> Binding Buffer (Dead cell removal kit)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20× Binding Buffer Stock</td>
+<td>1<b>×</b>
+</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>Sterile ddH<sub>2</sub>O</td>
+<td> </td>
+<td>9.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at 2°C–8°C up to the date indicated by the manufacturer.</div>
+<table id="undtbl5">
+<caption>1<b>×</b> Red Blood Cell Lysis Solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× Red Blood Cell Lysis Solution</td>
+<td>1<b>×</b>
+</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Sterile ddH<sub>2</sub>O</td>
+<td> </td>
+<td>9 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store the prepared solution at 18°C–25°C. Discard unused solution at the end of the day.</div>
+<table id="undtbl6">
+<caption>Depletion Buffer (CD45+ depletion kit)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBS (pH 7.2)</td>
+<td>1<b>×</b>
+</td>
+<td>49.650 mL</td>
+</tr>
+<tr>
+<td>BSA</td>
+<td>0.5%</td>
+<td>250 μL</td>
+</tr>
+<tr>
+<td>EDTA (1 M)</td>
+<td>2mM</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Keep Buffer cold on wet ice (2°C–8°C). Discard unused solution at the end of the day.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Tumor dissociation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5 h</div>
+<p>This step combines mechanical and enzymatic dissociation using gentleMACS Dissociator and gentleMACS Tubes. Gentle dissociation allows for obtaining a single-cell suspension with preserved cell characteristics for further single-cell RNA-Seq analysis.</p>
+<ol>
+<li>Euthanize the mouse according to the IACUC guidelines.</li>
+<li>Transcardially perfuse the animal with ice cold sterile PBS for 4–5 min or until the liver is cleared of blood.</li>
+<li>Carefully excise pancreatic tumor with sterile dissecting tools without damaging nearby organs of gastro-intestinal tract to avoid bacterial contamination (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Excision of pancreatic tumor from the mouse</div>
+<p>The area of the tumor is outlined in red.</p>
+</figcaption>
+</figure>
+</li>
+<li>Wash the tumor with ice cold sterile PBS.</li>
+<li>Remove fat and necrotic areas and excise blood vessels to the extent possible.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Measure tissue weight if needed for further normalization of cell number per gram of tissue.</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend processing no more than two samples at a time.</div>
+<ol start="6">
+<li>Add 1 mL of enzyme mixture to the sterile petri dish and place the dish on ice.</li>
+<li>Place tumor tissue in the dish with enzyme mix and cut to small pieces of 2–4 mm<sup>3</sup> using sterile blades.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Pieces have to be chopped finely to 1 mm or less.</div>
+<ol start="8">
+<li>Transfer tissue pieces into the gentleMACS C Tube containing the remaining enzyme mix.</li>
+<li>Tightly close the C Tube, place it upside down onto the sleeve of the gentleMACS Dissociator at 18°C–25°C (<a href="#fig2">Figure 2</a>, <i>left</i>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Tumor dissociation</div>
+<p><i>Left,</i> C Tube placed on the gentleMACS Dissociator. <i>Right</i>, C tube placed on the MACSmix™ Tube Rotator.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure that the sample material is located in the area of the rotor/stator.</div>
+<ol start="10">
+<li>Run program m_impTumor_02.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend using predefined programs on gentleMACS Dissociator. However, testing different programs, or creating a custom program should aim at the best balance of viability versus yield of single-cell suspension.</div>
+<ol start="11">
+<li>Place the C Tube on the MACSmix™ Tube Rotator. Incubate for 40 min with continuous rotation at 37°C (<a href="#fig2">Figure 2</a>, <i>right</i>).</li>
+<li>Place the C Tube on gentleMACS Dissociator, run program m_impTumor_03 twice (pre-defined on gentleMACS Dissociator).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure that the sample material is located in the area of the rotor/stator.</div>
+<ol start="13">
+<li>Perform a short (10 s) centrifugation to collect the sample material at the bottom of the tube.</li>
+<li>Resuspend sample and apply the cell suspension to a 70 μm strainer placed on a 50 mL sterile falcon tube. Wash the strainer with 20 mL of RPMI-1640 or DMEM.</li>
+<li>Apply the cell suspension to the new clean 70 μm strainer placed on a 50 mL sterile falcon tube one more time.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep cells on ice from this point forward.</div>
+<ol start="16">
+<li>Determine total cell number in obtained single cell suspension manually using hemocytometer with Trypan Blue exclusion counting.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The starting amount of tumor tissue is usually not a limiting factor. You will need 700–1,200 cells/μl in the final solution. Cell viability should be more than 70% (preferably 90%). Purging apoptotic cells and/or CD45+ cells may significantly reduce the cell number. Apoptotic cell purging using Annexin V ferromagnetic beads is needed if viability is close or below 70%.</div>
+<ol start="17">
+<li>Centrifuge cell suspension at 300 <i>g</i> for 7 min at +4°C. Proceed immediately to dead cell removal.</li>
+</ol>
+<h3 id="sec3.2">Dead cell removal</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min to 1 h</div>
+<p>This step allows for reducing the amount of non-viable cells from a single cell suspension using Dead Cell Removal MicroBeads (Miltenyi Biotec). A large number of dead cells containing mitochondrial transcripts will be (by default) removed from the downstream analyses in Seurat or other platforms. Excessive loss of viability can affect the results of cell lineage profiling, of cells clustering, and interpretation of the experiment. When cell suspension passes through the column, the magnetically-labeled dead cells are retained within the column, and unlabeled living cells flow through.</p>
+<ol start="18">
+<li>Remove the supernatant.</li>
+<li>Resuspend the cell pellet in 100 μL of Dead Cell Removal Microbeads per up to 10<sup>7</sup> total cells. If cell number is higher than 10<sup>7</sup> cells, scale up all reagent volumes accordingly. Mix well by pipetting and incubate for 15 min at 18°C–25°C.</li>
+<li>While incubating, place the LS column in the magnetic field of the MACS Separator. Rinse the column with a 3 mL 1<b>×</b> Binding Buffer.</li>
+<li>Place the 15 mL sterile falcon tube under the LS column (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. LS column placed in the MACS Separator</div>
+</figcaption>
+</figure>
+</li>
+<li>Apply cell suspension onto the column and collect flow-through containing unlabeled non-apoptotic cells (live cells).</li>
+<li>Wash column with 1<b>×</b> Binding Buffer 4 times, adding 3 mL each time and collect all unlabeled cells that pass through combining it with the flow-through from step 21.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Always wait until the column reservoir is empty before proceeding to the next step.</div>
+<ol start="24">
+<li>Centrifuge the live cells at 300 <i>g</i> for 7 min at +4°C.</li>
+<li>Remove the supernatant.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If there is a thick red layer in the cell pellet, proceed to Red Blood Cell Lysis followed by Leukocytes depletion. If the red layer is very thin or invisible, proceed directly to the Leukocytes depletion step.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Mouse tissue perfusion via heart or portal vein cannulation with 10 mL of PBS helps to remove the red blood cells from the tissues.</div>
+<h3 id="sec3.3">Red blood cell lysis (optional, but recommended if pellet has intense red color after the first centrifugation step)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15 min</div>
+<p>Red blood lysis provides lysis of erythrocytes in single-cell suspension with minimal effect on other cell types.</p>
+<ol start="26">
+<li>Resuspend the cell pellet in 10 volumes (10 <b>×</b> the pellet volume) of 1<b>×</b> Red Blood Cell Lysis Solution.</li>
+<li>Vortex for 5 s and incubate the suspension for 2 min at 18°C–25°C.</li>
+<li>Centrifuge the cells at 300 <i>g</i> for 10 min at 18°C–25°C.</li>
+<li>Remove the supernatant and proceed to the next step.</li>
+</ol>
+<h3 id="sec3.4">Leukocytes depletion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>CD45 MicroBeads are used in this step for the depletion of the leukocyte from the tumor tissue.</p>
+<div class="note">
+<span class="note-title">Note:</span> Do not use leukocyte depletion if immune cells are of interest.</div>
+<div class="note">
+<span class="note-title">Note:</span> All solutions need to be pre-cooled.</div>
+<ol start="30">
+<li>Determine total cell number manually or using automated hemocytometer.</li>
+<li>Centrifuge at 300 <i>g</i> for 5 min at +4°C. Pipette off supernatant completely.</li>
+<li>Resuspend the cell pellet in 90 μL of Depletion Buffer per 10<sup>7</sup> total cells.</li>
+<li>Mix well by pipetting and incubate for 15 min at +4°C</li>
+<li>Wash cells by adding 1–2 mL of Buffer per 10<sup>7</sup> cells and centrifuge at 300 <i>g</i> for 10 min at +4°C. Aspirate supernatant completely.</li>
+<li>Resuspend the cell pellet in 500 μL of Buffer.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For higher cell numbers, scale up Buffer volume accordingly.</div>
+<ol start="36">
+<li>Place the LS column in the separator. Rinse the column with 3 mL of Buffer.</li>
+<li>Apply cell suspension to the column to collect the flow through by gravity (leukocytes are trapped in the column).</li>
+<li>Rinse the column with 3 mL 1<b>×</b> Buffer for 3 times. Collect all the flow-through in the collection tube and combine it with the flow-through from step 37.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> These are unlabeled CD45-negative cells.</div>
+<ol start="39">
+<li>Remove the column from the separator and place it on a 15 mL tube.</li>
+<li>Add 5 mL of Buffer to the column. Immediately flush out the magnetically labeled cells by firmly pushing the plunger into the column.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Always wait until the column reservoir is empty before proceeding to the next step.</div>
+<ol start="41">
+<li>Centrifuge the unlabeled cells at 300 <i>g</i> for 7 min at +4°C and proceed to the final preparation.</li>
+</ol>
+<h3 id="sec3.5">Final preparation and counting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<ol start="42">
+<li>Resuspend the cell pellet in 0.5 mL of DMEM+1%FBS.</li>
+<li>Filter cell suspension with Flowmi <sup>TM</sup> Tip Strainers (70 μm) . Count cells using Trypan Blue and hemocytometer, observing viability and cell appearance (single, well separated cells without any cell conglomerates).</li>
+<li>Repeat counting two times with two different aliquots.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It’s critical to have well-separated single cells with viability no less than 90%. Dead cell removal and filtering should be repeated if needed.</div>
+<ol start="45">
+<li>Resuspend cells in DMEM+1%FBS for final concentration 700–1200 cells/μL with total cell number at least 7,000–12,000 cells.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The number of loaded cells is determined by the number of beads in each reagent kit which has to be matched close to 1:1 with the cell number. Gross deviation from the number recommended by the manufacturer's instructions would result in artifacts. For details on cell suspension volume calculation, refer to the manufacturer's manual (<a href="https://assets.ctfassets.net/an68im79xiti/4tjk4KvXzTWgTs8f3tvUjq/2259891d68c53693e753e1b45e42de2d/CG000183_ChromiumSingleCell3__v3_UG_Rev_C.pdf">https://assets.ctfassets.net/an68im79xiti/4tjk4KvXzTWgTs8f3tvUjq/2259891d68c53693e753e1b45e42de2d/CG000183_ChromiumSingleCell3__v3_UG_Rev_C.pdf</a>). We prefer manual counting in a hemocytometer with Trypan Blue exclusion staining.</div>
+<h3 id="sec3.6">Generation of single-cell sequencing libraries</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol start="46">
+<li>Make a single-cell droplet with GEM beads using Chromium controller.</li>
+<li>Convert single-cell suspension to barcoded scRNA-seq libraries by using the Chromium Single Cell 3′Library, Gel Bead &amp; Multiplex Kit, and Chip Kit V3, loading an estimated 7,000–12,000 cells per library/well and following the manufacturer's instructions.</li>
+<li>Carefully remove the tube from the Chromium Controller. It should appear milky. Without disturbing the emulsion, carefully place the tube(s) in a thermal cycler for reverse transcription.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The sample can be left on the PCR machine until the next day.</div>
+<ol start="49">
+<li>Check the final libraries for cDNA quality using Bioanalyzer High Sensitivity DNA Kit, and quantify nucleic acids’ contents using the Qubit 2.0 (<a href="#fig4">Figure 4</a>). The total cDNA yield (ng) varies based on cell type, targeted cell recovery, etc. The number of secondary PCR cycles will depend on total cDNA yield. For the detailed information, refer to the manufacturer's manual (<a href="https://assets.ctfassets.net/an68im79xiti/4tjk4KvXzTWgTs8f3tvUjq/2259891d68c53693e753e1b45e42de2d/CG000183_ChromiumSingleCell3__v3_UG_Rev_C.pdf">https://assets.ctfassets.net/an68im79xiti/4tjk4KvXzTWgTs8f3tvUjq/2259891d68c53693e753e1b45e42de2d/CG000183_ChromiumSingleCell3__v3_UG_Rev_C.pdf</a>).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Example of a high-quality electropherogram of cDNA library</div>
+<p>The baseline is under 5 fluorescent units; a clearly identifiable single peak is well within the upper and lower bracket markers (upper marker- 10,380 bp, lower marker-35 bp); total cDNA amount is permitted within a relatively broad range of 1–1,900 ng. A ¼ (25%) fraction of the total cDNA is used for sequencing index PCR (SI-PCR). The yield of cDNA, however, defines the number of the SI-PCR cycles.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 10X Genomics recommends sequencing a minimum of 20,000 read pairs/cells for Single Cell 3′ v3/v3.1/HT v3.1/LT v3.1 and Single Cell 5′ v1.1/v2/HT v2 gene expression libraries. For Single Cell 3′ v2 libraries, we recommend 50,000 read pairs/cells.</div>
+<h3 id="sec3.7">Bioinformatics analysis of single-cell RNA sequencing</h3>
+<p>In the original paper (<a href="#bib4">Gabitova-Cornell et al., 2020</a>), analysis of scRNA-Seq data was conducted by manual command line and R processing. However, due to potential changes in tool versions, libraries and execution environments simply repeating the sequence of commands used in processing is likely to produce different results for different users (<a href="#bib9">Sandve et al., 2013</a>). In order to guarantee the reproducibility and portability of our analytic approach, we converted our analysis into reproducible Common Workflow Language (CWL) pipelines (<a href="https://github.com/common-workflow-language/cwltool/releases/tag/1.0.20170828135420">https://github.com/common-workflow-language/cwltool/releases/tag/1.0.20170828135420</a>) and executed them on user-friendly Scientific Data Analysis Platform (SciDAP, <a href="https://scidap.com">https://scidap.com</a>). Open source CWL Pipelines used here are available at <a href="https://github.com/datirium/workflows">https://github.com/datirium/workflows</a>. As a workflow runner we used CWL-Airflow (<a href="#bib6">Kotliar et al., 2019</a>), however, the same pipelines (<a href="https://doi.org/10.5281/zenodo.5339177">https://doi.org/10.5281/zenodo.5339177</a> ) can be executed in any other CWL-based execution environments (<a href="https://commonwl.org">https://commonwl.org</a>).</p>
+<p>CWL specification was developed (<a href="https://w3id.org/cwl/v1.0/">https://w3id.org/cwl/v1.0/</a>) in order to make workflows portable and reproducible. It is a data-driven standard that describes tools and pipelines as YAML or JSON structured linked data documents. For each workflow step (“tool”), CWL defines inputs and outputs in a formalized way that allows for linking of tools into workflows. Moreover, CWL tool description includes a Docker (or Singularity) container supporting execution in an isolated runtime environment with a pre-installed and tested version of the required software. Therefore, the pipeline becomes independent of the execution platform and can be run in exactly the same way anywhere CWL standard is supported. A basic outline of scRNA-Seq pipeline as well as the structural schema of data processing on SciDAP is shown on <a href="#fig5">Figure 5</a>. The processing time for all Cell Ranger based workflows will depend on the quality of the input datasets, sequencing depth, number of detected cells, and available hardware resources. As for Seurat clustering pipeline, its performance will be mostly influenced by the input cells number, filtering thresholds and clustering resolution.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. scRNA-Seq data analysis on SciDAP and by manual command line processing</div>
+<p>Timings calculated for the scRNA-Seq data analysis pipeline (A) show an actual processing time for each workflow run sequentially. All Cell Ranger based pipelines were limited both by 10 CPU and 30 GB of RAM. Seurat clustering analysis was limited only by 10 CPUs and at maximum used 20 GB of RAM. Disk usage to store data analyses results does not include the size of the input and temporary files. The preparation steps, such as downloading or uploading input data, installing and configuring required software are not included in timings. On the structural schema (B) all required pipelines are saved on GitHub repository following CWL specification that makes them portable and reproducible. After the user selects a workflow type, uploads or sets SRA run accession numbers for input data, the system automatically schedules workflow for execution on one of the available workers (personal computer, in-house or cloud server). When workflow finishes running, the user gets access to the data processing results.</p>
+</figcaption>
+</figure>
+<p>We recommend using specialized data analysis platform as it doesn’t require from a user having powerful computational resources. It also keeps data organized and guarantees workflows reproducibility as each workflow step is run inside a Docker container with the pre-installed and tested version of the required software. SciDAP provides a graphical user interface that allows biologists to analyze data using transparent, reproducible, and portable CWL pipelines without the need for coding. After the analysis is complete, biologists can explore results using interactive visualization tools and produce publication-ready images. Advanced users can adjust CWL pipelines and visualizations to suit their specific analysis needs. Below we will discuss how scRNA-Seq data analysis can be performed in SciDAP, how analysis parameters are chosen and briefly discuss what happens under the hood. The CWL pipelines used here are available on GitHub and can be used with any other CWL runner (see <a href="https://commonwl.org">https://commonwl.org</a> for full list), but without the graphical interface described here.</p>
+<ol start="50">
+<li>Create a new project and attach workflows. In SciDAP, projects keep data organized by the study. Attaching workflows to projects ensures that similar data are processed by compatible pipelines.
+<ol type="a">
+<li>Log in or create a new user account on <a href="https://scidap.com">https://scidap.com</a>. Follow the on-screen guides to set up your own laboratory or to join an existing one.</li>
+<li>Create a new project by clicking the <b><i>New Project</i></b> button on the <b><i>Projects</i></b> page.</li>
+<li>Set an arbitrary <b><i>Project title</i></b> and <b><i>Project subtitle</i></b> to distinguish the newly created project from the others (<a href="#fig6">Figure 6</a>A). Optionally, add detailed project description in the <b><i>Abstract</i></b> field below the <b><i>Project subtitle</i></b> section (<a href="#fig6">Figure 6</a>B).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Creating a new project for scRNA-Seq data analysis</div>
+<p>Setting project title and subtitle helps to distinguish it from the other projects (A). A detailed project description can be added as a Markdown-formatted text (B). Since there are many ways to process the same data, only workflows that have been attached to the project can be used for data analyses to ensure that samples are directly comparable(C). The list of available workflows can be edited after project creation as well.</p>
+</figcaption>
+</figure>
+</li>
+<li>Select the following workflows (<a href="#fig6">Figure 6</a>C) for single-cell RNA-Seq data analysis. For your convenience, use the search bar to find the required workflows faster.
+<ol type="i">
+<li>Cell Ranger Build Reference Indices</li>
+<li>Cell Ranger Count Gene Expression</li>
+<li>Cell Ranger Aggregate</li>
+<li>Seurat Cluster</li>
+</ol>
+</li>
+<li>Click the <b><i>Save</i></b> button at the top right corner of the screen.</li>
+</ol>
+</li>
+</ol>
+<ol start="51">
+<li>Build Cell Ranger reference indices. To build reference genome indices Cell Ranger runs STAR (<a href="#bib1">Dobin et al., 2013</a>). Genome indices are used to make alignment algorithms fast and efficient. For Cell Ranger both genome sequences (FASTA) and gene annotation (GTF) files should be provided. The gene annotation file is required for splice junction extraction which improves mapping accuracy of scRNA-Seq data. More details about preparing genome references for Cell Ranger can be found on the official 10X Genomics documentation page (<a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/advanced/references">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/advanced/references</a>).
+<ol type="a">
+<li>Enter a newly created project.</li>
+<li>Create a new experiment by clicking the <b><i>Add sample</i></b> button on the <b><i>Sample</i></b> tab.</li>
+<li>Select <b><i>Cell Ranger Build Reference Indices</i></b> workflow from the <b><i>Experiment type</i></b> dropdown menu (<a href="#fig7">Figure 7</a>A).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Building Cell Ranger reference indices</div>
+<p>After the user selects experiment type (A), they are presented with a form that allows them to specify experiment/analysis parameters (B). SciDAP automatically creates these input forms based on CWL pipelines. Optional experiment details can be added as a Markdown-formatted text (C).</p>
+</figcaption>
+</figure>
+</li>
+<li>On the <b><i>General info</i></b> tab set an arbitrary <b><i>Experiment short name</i></b> to distinguish the newly created sample from the others. Select <b><i>Mus Musculus (mm10)</i></b> genome from the <b><i>Genome type</i></b> dropdown menu (<a href="#fig7">Figure 7</a>B). Optionally, add detailed experiment description in the <b><i>Details</i></b> section (<a href="#fig7">Figure 7</a>C). SciDAP already has the genome and annotation in its database and they will be used for indexing.</li>
+<li>Click the <b><i>Save sample</i></b> button at the bottom of the screen.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Before proceeding to the next step make sure that building Cell Ranger reference indices finished running successfully. If the analysis failed SciDAP displays an error marker with the percentage and the name of the last executed workflow step on the right side from the failed experiment on the <b><i>Sample</i></b> tab. SciDAP will not allow using failed experiments for further analyses.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="52">
+<li>Quantify gene expression. Cell Ranger gene expression quantification starts with read trimming (for Single Cell 3′ Gene Expression) and running STAR for splice-aware read alignment. Only the reads that are uniquely mapped to the transcriptome are used for analysis. PCR duplicate reads are removed based on Unique Molecular Identifiers (UMI). Cell Ranger supports automatic sequencing error corrections in UMIs, which allows saving more reads. The unique reads that have valid cell barcodes and UMIs, and that are mapped to exactly one gene are used to create cell by gene matrix. More details about the Cell Ranger gene expression quantification algorithm can be found on the official 10X Genomics documentation page (<a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/algorithms/overview">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/algorithms/overview</a>).
+<ol type="a">
+<li>Enter the project where the sample with the Cell Ranger reference indices was created.</li>
+<li>Create a new experiment by clicking the <b><i>Add sample</i></b> button on the <b><i>Sample</i></b> tab.</li>
+<li>Select <b><i>Cell Ranger Count Gene Expression</i></b> workflow from the <b><i>Experiment type</i></b> dropdown menu (<a href="#fig8">Figure 8</a>A).
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Gene expression quantification for KPPC 1 SRR12450154 dataset</div>
+<p>Experiment entry form allows users to select workflow type (A), set general parameters (B) and attach data files or provide accession number/URL to the data (C). For data from NCBI short read archive (SRA) SciDAP will automatically download and extract raw sequencing data into a pair of FASTQ files based on the SRR accession number (D). Same SRR number should be provided for both FASTQ R1 and R2 input files (C).</p>
+</figcaption>
+</figure>
+</li>
+<li>On the <b><i>General info</i></b> tab set an arbitrary <b><i>Experiment short name</i></b> to distinguish the newly created sample from the others. Select the experiment with the Cell Ranger reference indices from the <b><i>Genome type</i></b> dropdown menu (<a href="#fig8">Figure 8</a>B). Optionally, add detailed experiment description in the <b><i>Details</i></b> section.</li>
+<li>Click the <i>Use File Manager</i> button under the <i>FASTQ file R1</i> label (<a href="#fig8">Figure 8</a>C).</li>
+<li>On the <i>Attach from URL</i> tab provide SRR run accession number in a form of geo://SRR12450154 (<a href="#fig8">Figure 8</a>D). Click the <i>Use custom URL</i> button.</li>
+<li>Provide the same SRR run accession number when clicking the <i>Use File Manager</i> button under the <i>FASTQ file R2</i> label.</li>
+<li>Click the <i>Save sample</i> button at the bottom of the screen. SciDAP will not allow adding failed or unfinished samples as input into ther next step. Users will be notified with the correspondent warning message about missing upstream analysis.
+<div class="note">
+<span class="note-title">Note:</span> Repeat the same steps for each experiment to be analyzed (e.g. every SRX run in the <b>PRJNA657051</b> BioProject). The <b>KPPC 1 SRR12450154</b> dataset is shown as an example. To obtain a list of required SRR run accession numbers open <a href="https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA657051">https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA657051</a> (<a href="#fig9">Figure 9</a>A) and copy SRR identifiers for each of the SRX experiments (<a href="#fig9">Figure 9</a>B).</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> If sequence data from the multiple SRR runs belong to the same SRX experiment and should be processed as a single sample, SRR run accession numbers should be provided in a form of comma-separated list. In addition to downloading from NCBI SRA, <b><i>Attach from URL</i></b> tab also supports direct URLs to the FASTQ files deposited to other repositories.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Input FASTQ files can be uploaded from the user’s computer using the <b><i>File Manager</i></b> tab or downloaded from the FTP server through the <b><i>FTP Connection</i></b> tab.</div>
+The results of each successfully finished gene expression quantification experiment can be explored in a form of web-based report generated by Cell Ranger, and interactively in the UCSC Cell Browser (<a href="#bib8">Speir et al., 2021</a>). Additionally, a file compatible with the Loupe Browser (10X Genomics) can be downloaded from the <b><i>Files</i></b> tab. The user is presented with QC measures including the number of reads mapped to intergenic, exonic or intronic regions; the barcode rank plot and others.
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Searching for SRR run accession numbers that belong to the PRJNA657051 BioProject</div>
+<p>On NCBI SRA the raw sequencing data is saved in a form of SRA archives that can be accessed by their SRR run accession numbers (B). Multiple SRR runs can belong to the same SRX/GSM sample which in turn belongs to an SRP/GSE study (A). The same pages can be found via GEO search.</p>
+</figcaption>
+</figure>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Before proceeding to the next step make sure that gene expression quantification experiments successfully finished running for all five datasets.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="53">
+<li>Aggregate cells by gene data from multiple samples. To proceed to the clustering analysis, the results of all five gene expression quantification experiments should be merged into a single feature-barcode matrix. However, since for each scRNA-Seq experiment, cell barcodes were drawn from the same pool of whitelisted barcodes (10X Genomics) a simple merging may result in having duplicated barcodes. To avoid this scenario Cell Ranger updates each barcode with an integer suffix pointing to the dataset the cell came from before running aggregation. Optionally, Cell Ranger may run a depth normalization algorithm to make all merged datasets have a similar number of uniquely mapped to transcriptome reads per cell. This approach may be suboptimal since all data will be downsampled to match the worst sample. Here we aggregate samples without normalization, leaving normalization to Seurat. More details about the Cell Ranger aggregation algorithm can be found on the official 10X Genomics documentation page (<a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/aggregate">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/aggregate</a>).
+<ol type="a">
+<li>Enter the project where the sample with the Cell Ranger reference indices was created.</li>
+<li>Create a new experiment by clicking the <b><i>Add analysis</i></b> button on the <b><i>Analysis</i></b> tab.</li>
+<li>Select <b><i>Cell Ranger Aggregate</i></b> workflow from the <b><i>Experiment type</i></b> dropdown menu (<a href="#fig10">Figure 10</a>A).
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Aggregating gene expression from multiple datasets</div>
+<p>For Cell Ranger Aggregate workflow (A) setting library depth normalization to None (C) will disable the default behavior of normalizing the average read depth per cell between merged datasets (B). Normalization will be applied when integrating datasets with Seurat.</p>
+</figcaption>
+</figure>
+</li>
+<li>On the <b><i>General info</i></b> tab set an arbitrary <b><i>Experiment short name</i></b> to distinguish the newly created sample from the others. Select all five Cell Ranger Count Gene Expression experiments from the <b><i>scRNA-Seq Cell Ranger Experiment</i></b> dropdown menu (<a href="#fig10">Figure 10</a>B). Optionally, add detailed experiment description in the <b><i>Details</i></b> section.</li>
+<li>On the <b><i>Advanced</i></b> tab set <b><i>Library depth normalization mode</i></b> to <b><i>None</i></b> (<a href="#fig10">Figure 10</a>C).</li>
+<li>Click the <b><i>Save sample</i></b> button at the bottom of the screen.
+<div class="optional">
+<span class="optional-title">Optional:</span> The results of successfully finished gene expression aggregation experiment can be explored in a form of web-based report generated by Cell Ranger, and interactively in the UCSC Cell Browser (<a href="#bib8">Speir et al., 2021</a>). Additionally, a file compatible with the Loupe Browser (10X Genomics) can be downloaded from the <b><i>Files</i></b> tab.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Before proceeding to the next step make sure that gene expression aggregation experiment finished running successfully</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="54">
+<li>Cluster and identify gene markers. The joint analysis of multiple scRNA-Seq datasets with Seurat (<a href="#bib5">Hao et al., 2021</a>) starts with evaluation of common single-cell quality control (QC) metrics – genes and UMIs counts, percentage of mitochondrial genes expressed. QC allows to get a general overview of the dataset quality as well as to define filtering thresholds for dead or low-quality cell removal. Filtered merged datasets are then being processed with the integration algorithm. Its main goal is to identify integration anchors – pairs of cells that can “pull together” the same cell type populations from the different datasets. An integration algorithm can also solve batch correction problems by regressing out the unwanted sources of variation. The integrated data then undergo the dimensionality reduction processing that starts from the principal component analysis (PCA). Based on the PCA results the uniform manifold approximation and projection (UMAP) and clustering analysis are run with the principal components of the highest variance. Clustered data are then used for gene markers identification. These genes are differentially expressed between clusters and can be used for cell types assignment. More details about scRNA-Seq integration analysis with Seurat can be found on the official documentation page (<a href="https://satijalab.org/seurat">https://satijalab.org/seurat</a>).
+<ol type="a">
+<li>Enter the project where the sample with the Cell Ranger reference indices was created.</li>
+<li>Create a new experiment by clicking the <b><i>Add analysis</i></b> button on the <b><i>Analysis</i></b> tab.</li>
+<li>Select <b><i>Seurat Cluster</i></b> workflow from the <b><i>Experiment type</i></b> dropdown menu (<a href="#fig11">Figure 11</a>A).
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Clustering and gene markers identification</div>
+<p>For Seurat Cluster workflow (A) the file defining sample groups can be uploaded through the experiment entry form (D and E). In case it is not provided each dataset from the selected scRNA-Seq Cell Ranger Aggregate Experiment (B) will be assigned to its own separate group. The default filtering and clustering parameters can be adjusted on the Advanced tab (C).</p>
+</figcaption>
+</figure>
+</li>
+<li>On the <b><i>General info</i></b> tab set an arbitrary <b><i>Experiment short name</i></b> to distinguish the newly created sample from the others. Select Cell Ranger Aggregate experiment from the <b><i>scRNA-Seq Cell Ranger Aggregate Experiment</i></b> dropdown menu (<a href="#fig11">Figure 11</a>B). Optionally, add detailed experiment description in the <b><i>Details</i></b> section.</li>
+<li>On the <b><i>Advanced</i></b> tab (<a href="#fig11">Figure 11</a>C) set workflow execution parameters listed in the <b>Adjusted</b> column of <a href="#tbl2">Table 2</a>. The logic behind updating the default clustering parameters is explained in the <b>Explore clustering results</b> section. With a new dataset, we recommend to first perform analysis using the default parameters and then based on QC results adjust the parameters and repeat the Seurat analysis.
+<table id="tbl2">
+<caption>Table 2. Advanced filtering, clustering and gene markers identification parameters</caption>
+<thead>
+<tr>
+<th>Group</th>
+<th>Parameter</th>
+<th>Default</th>
+<th>Adjusted</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="7">QC filtering</td>
+<td>Include genes detected in at least this many cells</td>
+<td>10</td>
+<td>10</td>
+<td> </td>
+</tr>
+<tr>
+<td>Include cells where at least this many genes are detected</td>
+<td>250</td>
+<td>300</td>
+<td rowspan="2">Adjusted to remove outliers based on the genes per cell density distribution violin and ranked cells plots.</td>
+</tr>
+<tr>
+<td>Include cells with the number of genes not bigger than this value</td>
+<td>5000</td>
+<td>6200</td>
+</tr>
+<tr>
+<td>Include cells where at least this many UMIs are detected</td>
+<td>500</td>
+<td>500</td>
+<td> </td>
+</tr>
+<tr>
+<td>Include cells with the novelty score (the ratio of genes per cell over UMIs per cell) not lower than this value</td>
+<td>0.8</td>
+<td>0.8</td>
+<td> </td>
+</tr>
+<tr>
+<td>Include cells with the percentage of transcripts mapped to mitochondrial genes not bigger than this value</td>
+<td>5</td>
+<td>5</td>
+<td> </td>
+</tr>
+<tr>
+<td>Pattern to identify mitochondrial genes</td>
+<td>ˆMt-</td>
+<td>ˆmt-</td>
+<td>Mitochondrial genes from the mouse genome start with lowercase “mt-“.</td>
+</tr>
+<tr>
+<td rowspan="5">Integration and dimensional reduction</td>
+<td>Number of highly variable genes to detect (used for dataset integration and dimensional reduction)</td>
+<td>3000</td>
+<td>3000</td>
+<td> </td>
+</tr>
+<tr>
+<td>Number of principal components to use in UMAP projection and clustering (from 1 to 50)</td>
+<td>10</td>
+<td>20</td>
+<td>Adjusted to point to PC20 where the curve on the Elbow plot starts to plateau</td>
+</tr>
+<tr>
+<td>Regress cell cycle as a confounding source of variation</td>
+<td>False</td>
+<td>False</td>
+<td> </td>
+</tr>
+<tr>
+<td>Regress mitochondrial gene expression as a confounding source of variation</td>
+<td>False</td>
+<td>False</td>
+<td> </td>
+</tr>
+<tr>
+<td>Clustering resolution</td>
+<td>0.1</td>
+<td>0.5</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="4">Gene markers identification</td>
+<td>Include only those genes that on average have log fold change difference in expression between every tested pair of clusters not lower than this value</td>
+<td>0.25</td>
+<td>0.25</td>
+<td> </td>
+</tr>
+<tr>
+<td>Include only those genes that are detected in not lower than this fraction of cells in either of the two tested clusters</td>
+<td>0.1</td>
+<td>0.1</td>
+<td> </td>
+</tr>
+<tr>
+<td>Statistical test to use for gene markers identification</td>
+<td>Wilcox</td>
+<td>Wilcox</td>
+<td> </td>
+</tr>
+<tr>
+<td>Report only positive gene markers</td>
+<td>False</td>
+<td>True</td>
+<td>Uses only genes that are overexpressed in a given cluster as putative markers. If False, both overexpressed and silent genes will be reported.</td>
+</tr>
+<tr>
+<td>Gene expression</td>
+<td>Comma or space separated list of genes of interest</td>
+<td>None</td>
+<td><i>Clec3b, Il6, Lgals7, Pdgfra, Vim, Tgfb1, Ptprc, Epcam, Cldn4, Krt7, Sox9, Cdh1, Upk3b, Mki67</i></td>
+<td>Genes of biological interest can be selected for plotting.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>In a text editor or Microsoft Excel create comma-separated <b><i>condition.csv</i></b> file to assign each dataset to either KPPC or KPCCN group (<a href="#tbl3">Table 3</a>). <b><i>library_id</i></b> column includes values used in <b><i>Experiment short name</i></b> fields of Cell Ranger Count Gene Expression experiments, <b><i>condition</i></b> column defines the group to which each dataset should be assigned.
+<table id="tbl3">
+<caption>Table 3. Comma-separated <i>condition.csv</i> file to define datasets grouping</caption>
+<thead>
+<tr>
+<th>library_id</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KPPC 1 SRR12450154</td>
+<td>KPPC</td>
+</tr>
+<tr>
+<td>KPPC 2 SRR12450155</td>
+<td>KPPC</td>
+</tr>
+<tr>
+<td>KPPC 3 SRR12450156</td>
+<td>KPPC</td>
+</tr>
+<tr>
+<td>KPPCN 1 SRR12450157</td>
+<td>KPPCN</td>
+</tr>
+<tr>
+<td>KPPCN 2 SRR12450158</td>
+<td>KPPCN</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Click the <b><i>Use File Manager</i></b> button (<a href="#fig11">Figure 11</a>D) to upload the newly created <b><i>condition.csv</i></b> file.</li>
+<li>On the <b><i>File Manager</i></b> tab click the <b><i>Upload</i></b> button and find the previously saved <b><i>condition.csv</i></b> file. Once the file is successfully uploaded select it from the list and click the <b><i>Attach</i></b> button (<a href="#fig11">Figure 11</a>E).</li>
+<li>Click the <b><i>Save sample</i></b> button at the bottom of the screen.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Before proceeding to the next step make sure that clustering and gene markers identification experiment finished running successfully.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Explore clustering results</div>
+Cell Ranger Count Gene Expression pipeline uses an advanced cell-calling algorithm that allows the identification of high-quality cells from each dataset. It also runs a preliminary clustering analysis that may be sufficient for some cases. However, in addition to that, we recommend exploring commonly used QC metrics for the merged datasets that are produced by Seurat. These will help to evaluate how filtering parameters influence the number of remaining cells, define datasets dimensionality, perform clustering, identify gene markers, and evaluate expression levels of genes of interest to assign cell types to clusters. All of these are accessible on the <b><i>QC (not filtered)</i></b>, <b><i>QC (filtered)</i></b>, <b><i>Dimensionality evaluation</i></b>, <b><i>QC (integrated)</i></b>, <b><i>Clustering</i></b>, <b><i>Gene expression</i></b>, and <b><i>Putative gene markers</i></b> tabs of the successfully finished clustering experiment.</li>
+<li>Cell count bar plot (<a href="#fig12">Figure 12</a>A) allows to examine the number of cells per dataset. Cell counts mainly depend on the number of loaded cells and on the capture efficiency of the used single-cell protocol. The minimum required number of cells can be estimated based on the assumed number of cell types, the minimum fraction of the rarest cell type in population, and the minimum required number of cells per type (<a href="https://satijalab.org/howmanycells/">https://satijalab.org/howmanycells/</a>).
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. QC metrics for merged datasets</div>
+<p>Cell count bar plot (A) shows the number of cells per dataset. The violin plots (B) are used to visualize density distributions of the main QC metrics. Genes per cell density distribution plot (C) is split into KPPC and KPPCN groups. Zoomed in section of the density plot (D) displays all 5 datasets within the selected boundaries. Cell rank plot (E) displays cells sorted by gene per cell counts within each dataset. The lower and upper limits for genes per cell values are shown as red and green lines correspondingly. On the genes per cell over UMIs per cell correlation plot (F) a vertical red line indicates the minimum threshold for UMIs per cell values. All the cells with the percentage of transcripts mapped to mitochondrial genes below 5% are marked as blue.</p>
+</figcaption>
+</figure>
+</li>
+<li>The violin plots (<a href="#fig12">Figure 12</a>B) are used to visualize per cell density distributions of the following metrics: UMI counts, gene counts, the percentage of transcripts mapped to mitochondrial genes, and novelty score. Embedded box plots help to spot outliers and define filtering thresholds for each metrics. In general, it is recommended to filter out all of the cells with less than 500 UMIs per cell. The abundance of cells with low UMIs per cell values may indicate a small number of reads uniquely mapped to transcriptome or low sequencing depth. The percentage of transcripts mapped to mitochondrial genes correlates with the number of dying cells. In most of the cases cells with more than 5% of the reads mapped to mitochondrial genes should be discarded. The novelty score indicates the complexity of the dataset and is calculated as the ratio of genes per cell over UMIs per cell. Typically, the novelty score should be above 0.8. Higher novelty score implies higher diversity of genes per UMIs and requires more cells to be called per dataset.</li>
+<li>To evaluate the lower and upper limits for gene per cell counts not only the density distribution (<a href="#fig12">Figure 12</a>B–12D), but also the cell rank plot (<a href="#fig12">Figure 12</a>E) can be used. The latter allows to visually identify the cells with extremely low or extremely high number of genes for each dataset. In general, to filter out low-quality cells or empty droplets the minimum threshold for gene per cell counts should be set to 500. Setting the upper limit for these metrics can be used to remove cell doublets.</li>
+<li>All three metrics combined (UMI counts, gene counts, the percentage of transcripts mapped to mitochondrial genes) are shown on the genes per cell over UMIs per cell correlation plot (<a href="#fig12">Figure 12</a>F). This plot can be used to evaluate whether a certain threshold has already discarded all unnecessary cells, so the other filtering criteria can be omitted, thus avoiding accidental removal of viable cell populations.</li>
+<li>A combined effect of filtering by UMI counts, gene counts, and by the percentage of mitochondrial reads is shown on the genes per cell over UMIs per cell correlation plot (<a href="#fig13">Figure 13</a>A). The plot displays the remaining cells after all QC filters have been applied.
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. QC metrics and dimensional reduction analysis of filtered integrated datasets</div>
+<p>Combined effect of multiple filtering parameters can be explored on the genes per cell over UMIs per cell correlation plot (A). Elbow plot (B) helps to define datasets dimensionality, but it is rather a subjective measure and should not be used as the main criteria. Final clustering results (C) as well as split by condition clusters (D) are used to evaluate cell populations present in datasets.</p>
+</figcaption>
+</figure>
+</li>
+<li>The Elbow plot (<a href="#fig13">Figure 13</a>B) is used to evaluate the dimensionality of the filtered integrated datasets by selecting only those principal components that capture the majority of the data variation. Typically, it is defined by the principal component after which the plot starts to plateau.</li>
+<li>UMAP plot shows cell clusters in the filtered integrated dataset (<a href="#fig13">Figure 13</a>C). The same plot but split into KPPC and KPPCN groups (<a href="#fig13">Figure 13</a>D) allows to spot clusters distinctive for each group.</li>
+<li>Dot plot with scaled gene expression (<a href="#fig14">Figure 14</a>A) is used to visually evaluate the average expression levels and the percentage of genes of interest per cluster. It helps to explore the similarities between clusters and identify cell types.
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Gene expression plots for assigning cell types to clusters</div>
+<p>Clusters on a dot plot (A) are grouped together based on the similarities of the expression levels of genes of interest. On the feature plots (B) cells are highlighted correspondingly to the normalized expression levels of each of the genes of interest. Violin plots (C) show gene expression for genes of interest in each cluster.</p>
+</figcaption>
+</figure>
+</li>
+<li>Feature plots (<a href="#fig14">Figure 14</a>B) highlight normalized expression levels of genes of interest over the identified clusters.</li>
+<li>The violin plots (<a href="#fig14">Figure 14</a>C) show the density distributions of the normalized expression levels of genes of interest per cluster. Altogether with above mentioned plots they are used for manual assigning cell types to clusters.</li>
+<li>Clustering results loaded in UCSC Cell Browser allow to interactively explore identified clusters (<a href="#fig15">Figure 15</a>A), highlight cells belonging to various samples and conditions (<a href="#fig15">Figure 15</a>B), explore expression of genes of interest (<a href="#fig15">Figure 15</a>C), and export barcodes of selected cells (<a href="#fig15">Figure 15</a>D) for further analyses.
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. Clustering results visualized in UCSC Cell Browser (next page)</div>
+<p>Depending on the option selected on the Annotation tab, UCSC Cell Browser highlights identified clusters (A), groups datasets by specified condition (B), colors cells based on the expression of genes of interest (C), and generates a barcodes list for a selected group of cells (D).</p>
+</figcaption>
+</figure>
+</li>
+<li>On the <b><i>Putative gene markers</i></b> tab (<a href="#fig16">Figure 16</a>A) an interactive table includes gene markers for each cluster. The column names correspond to the output of <b><i>FindAllMarkers</i></b> function (Seurat 4.0.1 R package). On the <b><i>Files</i></b> tab (<a href="#fig16">Figure 16</a>B) the list of all generated files is available for download. Among these files the <b><i>seurat_clst_data_rds.rds</i></b> (<a href="#fig16">Figure 16</a>C) includes Seurat clustering data in a format compatible with RStudio.
+<figure id="fig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig16.jpg" alt="Fig16.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 16. Gene markers identification and direct download of workflow execution results</div>
+<p>In the putative gene markers table (A), the values in <i>avg_log2FC</i> column are calculated as a log2 fold change difference between the average gene expression in the current cluster compared to all other clusters combined. The <i>pct.1</i> and <i>pct.2</i> columns show the percentage of cells with the specific gene expressed in the current cluster and all other clusters combined. This table can be used to identify gene markers of interest and assign cell types. Seurat clustering results can be downloaded in a compatible with RStudio format (C) from the <i>Files</i> tab (B).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>This protocol provides the reproducible method for mouse pancreatic tumor dissociation and preparation of single-cell suspension for single-cell RNA sequencing analysis. The protocol was used for mice with advanced tumors at 7–8 weeks of age. After mechanical and enzymatic digestion, dead cells removal, red blood cell lysis, and leukocytes’ depletion the final single-cell suspension consisted of populations of tumor cells and stromal non-myeloid cells. The data analysis part of protocols allows to identify cell populations that are common and distinct between cancer types.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Because pancreatic tumors contain significant percentage of inflammatory hematopoietic cells (nearly ½ of all cellular population isolated using the enzymatic digestion procedures described above (<a href="#bib2">Dominguez et al., 2020</a>)), and because of the limited cell number allotted for creating single-cell RNA expression libraries, removal of CD45-expressing cells may be necessary for the applications when the investigators are interested in capturing the minority cellular populations such as specific subsets of epithelial cancer cells or cancer-associated fibroblasts (<a href="#bib7">Peng et al., 2019</a>). We recommend flow cytometry analysis of the isolated cell populations to enrich the desired cell types if necessary (<a href="#fig17">Figure 17</a>).</p>
+<figure id="fig17"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1211-Fig17.jpg" alt="Fig17.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 17. Flow cytometry analysis of a representative single-cell suspension isolated from a mouse pancreatic tumor</div>
+<p>Estimated number of cell types based on single-cell RNA sequencing data is shown on the right panel.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Poor viability of cells following enzymatic digestion.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>We found significant batch and vendor variability of the enzymatic preparations which could affect the viability of cells at the end of enzymatic digestion. Test the amount of enzyme and titrate the dilutions to achieve the optimal balance of viability and tissue disintegration for single cell isolation.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Low number of the desired cell population.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Consider negative or positive selection enrichment strategies for the desired cell population based on the established surface markers applicable to live cells. Refer to vendors for available reagents: <a href="https://www.miltenyibiotec.com/">https://www.miltenyibiotec.com/</a> or others.</p>
+<p>We and others (<a href="#bib2">Dominguez et al., 2020</a>; <a href="#bib3">Francescone et al., 2021</a>) found that fibroblastic cells are more difficult to isolate from fibrotic tumor samples. Longer enzymatic digestion may be needed.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/bts635">https://doi.org/10.1093/bioinformatics/bts635</a></p>
+<p id="bib2">Dominguez, C.X., Müller, S., Keerthivasan, S., Koeppen, H., Hung, J., Gierke, S., Breart, B., Foreman, O., Bainbridge, T.W., Castiglioni, A., et al. (2020). Single-cell RNA sequencing reveals stromal evolution into LRRC15+ myofibroblasts as a determinant of patient response to cancer immunotherapy. Cancer Discov. <i>10</i>, 232-253. <a class="external-link" href="https://doi.org/10.1158/2159-8290.CD-19-0644">https://doi.org/10.1158/2159-8290.CD-19-0644</a></p>
+<p id="bib3">Francescone, R., Barbosa Vendramini-Costa, D., Franco-Barraza, J., Wagner, J., Muir, A., Lau, A., Gabitova, L., Pazina, T., Gupta, S., Luong, T., et al. (2021). Netrin G1 promotes pancreatic tumorigenesis through cancer-associated fibroblast-driven nutritional support and immunosuppression. Cancer Discov. <i>11</i>, 446-479. <a class="external-link" href="https://doi.org/10.1158/2159-8290.CD-20-0775">https://doi.org/10.1158/2159-8290.CD-20-0775</a></p>
+<p id="bib4">Gabitova-Cornell, L., Surumbayeva, A., Peri, S., Franco-Barraza, J., Restifo, D., Weitz, N., Ogier, C., Goldman, A.R., Hartman, T.R., Francescone, R., et al. (2020). Cholesterol pathway inhibition induces TGF-β signaling to promote basal differentiation in pancreatic cancer. Cancer Cell <i>38</i>, 567-583.e11. <a class="external-link" href="https://doi.org/10.1016/J.CCELL.2020.08.015">https://doi.org/10.1016/J.CCELL.2020.08.015</a></p>
+<p id="bib5">Hao, Y., Hao, S., Andersen-Nissen, E., Mauck, W., Zheng, S., Butler, A., Lee, M., Wilk, A., Darby, C., Zager, M., et al. (2021). Integrated analysis of multimodal single-cell data. Cell <i>184</i>, 3573-3587.e29. <a class="external-link" href="https://doi.org/10.1016/J.CELL.2021.04.048">https://doi.org/10.1016/J.CELL.2021.04.048</a></p>
+<p id="bib6">Kotliar, M., Kartashov, A.V., and Barski, A. (2019). CWL-Airflow: a lightweight pipeline manager supporting Common Workflow Language. Gigascience <i>8</i>. <a class="external-link" href="https://doi.org/10.1093/GIGASCIENCE/GIZ084">https://doi.org/10.1093/GIGASCIENCE/GIZ084</a></p>
+<p id="bib7">Peng, J., Sun, B.F., Chen, C.Y., Zhou, J.Y., Chen, Y.S., Chen, H., Liu, L., Huang, D., Jiang, J., Cui, G.S., et al. (2019). Single-cell RNA-seq highlights intra-tumoral heterogeneity and malignant progression in pancreatic ductal adenocarcinoma. Cell Res <i>29</i>, 725-738. <a class="external-link" href="https://doi.org/10.1038/s41422-019-0195-y">https://doi.org/10.1038/s41422-019-0195-y</a></p>
+<p id="bib9">Sandve, G.K., Nekrutenko, A., Taylor, J., and Hovig, E. (2013). Ten simple rules for reproducible computational research. PLoS Comput Biol <i>9</i>, e1003285. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00695-X/optemlDIeCZ9M">View at publisher</a></p>
+<p id="bib8">Speir, M., Bhaduri, A., Markov, N., Moreno, P., Nowakowski, T., Papatheodorou, I., Pollen, A., Raney, B., Seninge, L., Kent, W., and Haeussler, M. (2021). UCSC cell browser: visualize your single-cell data. Bioinformatics. <a class="external-link" href="https://doi.org/10.1093/BIOINFORMATICS/BTAB503">https://doi.org/10.1093/BIOINFORMATICS/BTAB503</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Igor Astsaturov, Fox Chase Cancer Center, 333 Cottman Avenue, Philadelphia, PA 19111. Phone (215) 214–4297; Fax (215) 728–3639, e-mail: <a href="mailto:igor.astsaturov@fccc.edu">igor.astsaturov@fccc.edu</a></p>
+<h4>Materials availability</h4>
+<p>This study did not generate a new unique reagent.</p>
+<h4>Data and code availability</h4>
+<p>The datasets generated during this study are available at Sequence Read Archive (SRA), <a href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a>, deposition PRJNA530747. Source code for CWL pipelines is available from <a href="https://github.com/datirium/workflows">https://github.com/datirium/workflows</a></p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> core grant CA06927, by the <a href="https://doi.org/10.13039/100000875">Pew Charitable Fund</a>, and by a generous gift from Mrs. Concetta Greenberg to the M&amp;C Greenberg Pancreatic Cancer Institute at Fox Chase Cancer Center. Some of the authors were supported by <a href="https://doi.org/10.13039/100000002">NIH</a> R01 CA188430, K22 CA160725, R21 CA164205, R21 CA231252 (I.A.), and R41 HG 011219 (to A.K. and A.B); a career development award from <a href="https://doi.org/10.13039/100004328">Genentech</a> (I.A.); a grant from the Bucks County Board of Associates (L.G.C., I.A.); T32 CA009035 (L.G.C.); and the Program of Competitive Growth of <a href="https://doi.org/10.13039/501100012528">Kazan Federal University</a> (L.G.C.). We are grateful to Catherine Reiner for technical assistance and to Dr. Kathy Q. Cai for histological analyses of tumor tissues. Dr. Yin Fei Tan provided assistance with generation of single-cell cDNA libraries and sequencing using the 10X Genomics reagents and protocols.</p>
+<h3>Author contributions</h3>
+<p>A.S., M.K., A.B., and I.A. designed research; A.S., L.G.C., S.P., and M.K. performed research; M.K., A.K., N.S., and A.B. contributed analytical tools; A.S., M.K., and I.A. analyzed data; A.S., M.K., A.B., and I.A. wrote the paper.</p>
+<h3>Declaration of interests</h3>
+<p>A.K. and A.B. are co-founders of Datirium, LLC.</p>
+</section>
+</article>

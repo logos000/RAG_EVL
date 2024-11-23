@@ -1,0 +1,609 @@
+<article>
+<section>
+<h1 id="header">Analysis workflow to assess <i>de novo</i> genetic variants from human whole-exome sequencing</h1>
+<p><time datetime="2021-03-12">Published: March 12, 2021</time></p>
+<p>Nicholas S. Diab,<sup><a href="#aff1">1</a>,<a href="#fn1">8</a>,<a href="#fn2">9</a></sup> Spencer King,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn1">8</a></sup> Weilai Dong,<sup><a href="#aff1">1</a>,<a href="#aff4">4</a>,<a href="#fn1">8</a></sup> Garrett Allington,<sup><a href="#aff1">1</a></sup> Amar Sheth,<sup><a href="#aff5">5</a></sup> Samuel T. Peters,<sup><a href="#aff2">2</a></sup> Kristopher T. Kahle,<sup><a href="#aff5">5</a>,<a href="#aff6">6</a>,<a href="#aff7">7</a>,<a href="#cor1">*</a></sup> and Sheng Chih Jin<sup><a href="#aff2">2</a>,<a href="#fn3">10</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Genetics, Yale School of Medicine, New Haven, CT, USA</p>
+<p id="aff2"><sup>2</sup>Department of Genetics, Washington University School of Medicine, St. Louis, MO, USA</p>
+<p id="aff3"><sup>3</sup>Department of Computer Science &amp; Engineering, Washington University in St. Louis, St. Louis, MO, USA</p>
+<p id="aff4"><sup>4</sup>Laboratory of Human Genetics and Genomics, The Rockefeller University, New York, NY, USA</p>
+<p id="aff5"><sup>5</sup>Department of Neurosurgery, Yale School of Medicine, New Haven, CT, USA</p>
+<p id="aff6"><sup>6</sup>Department of Pediatrics, Yale School of Medicine, New Haven, CT, USA</p>
+<p id="aff7"><sup>7</sup>Department of Cellular &amp; Molecular Physiology, Yale School of Medicine, New Haven, CT, USA</p>
+<p id="fn1"><sup>8</sup>These authors contributed equally</p>
+<p id="fn2"><sup>9</sup>Technical contact</p>
+<p id="fn3"><sup>10</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:kristopher.kahle@yale.edu">kristopher.kahle@yale.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:jin810@wustl.edu">jin810@wustl.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100383">10.1016/j.xpro.2021.100383</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Here, we present a protocol to analyze <i>de novo</i> genetic variants derived from the whole-exome sequencing (WES) of proband-parent trios. We provide stepwise instructions for using existing pipelines to call <i>de novo</i> mutations (DNMs) and determine whether the observed number of such mutations is enriched relative to the expected number. This protocol may be extended to any human disease trio-based cohort. Cohort size is a limiting determinant to the discovery of high-confidence pathogenic DNMs.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib1">Dong et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>We demonstrate the ability to call <i>de novo</i> mutations from whole-exome sequencing data</li>
+<li>This protocol is applied to WES from cohorts composed of proband and both parents</li>
+<li>We demonstrate how to perform enrichment analysis using <i>denovolyzR</i>
+</li>
+<li>The size of the trio-based cohort is a limiting determinant of this protocol’s accuracy</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/514-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<div class="timing">
+<span class="timing-title">Timing:</span> hours to days; factors that affect timing include the number of samples and available computing resources</div>
+<div class="note">
+<span class="note-title">Note:</span> The user should already have recruited and performed WES on a cohort of trios (proband and both parents). Following this, the user will need to take unmapped sequence information and create a variant call format (VCF) file for downstream analysis. The genome analysis toolkit (GATK), developed by the Broad Institute, features a “best practices” workflow for data preprocessing and variant discovery (<a href="#bib12">The 1000 genomes project consortium, 2015</a>; <a href="#bib7">McKenna et al., 2010</a>; <a href="#bib13">Van der Auwera et al., 2013</a>).</div>
+<ol>
+<li>Data preprocessing: data preprocessing generates binary alignment/map (BAM) files from unmapped sequencing reads. Preprocessing includes: alignment of unmapped reads to the human reference genome. The Broad Institute preprocessing workflow can be found at the location listed below:
+<ol type="a">
+<li><a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery">https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery</a></li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Variant discovery:
+<ol type="a">
+<li>The BAM files generated during preprocessing are fed into GATK’s HaplotypeCaller to perform per-sample variant calling, outputting a genomic VCF (gVCF) for a single sample. The Broad Institutes GATK preprocessing workflow can be found at the locations listed below.
+<ol type="i">
+<li><a href="https://github.com/gatk-workflows/gatk4-exome-analysis-pipeline">https://github.com/gatk-workflows/gatk4-exome-analysis-pipeline</a></li>
+<li><a href="https://dockstore.org/workflows/github.com/broadinstitute/warp/ExomeGermlineSingleSample:ExomeGermlineSingleSample_v2.2.0?tab=info">https://dockstore.org/workflows/github.com/broadinstitute/warp/ExomeGermlineSingleSample:ExomeGermlineSingleSample_v2.2.0?tab=info</a></li>
+</ol>
+</li>
+<li>Joint-calling and variant quality score recalibration (VQSR) generates a final, multisample VCF that is the starting point for downstream analysis. The Broad Institute joint genotyping workflow can be found at the locations listed below.
+<ol type="i">
+<li><a href="https://github.com/gatk-workflows/broad-prod-wgs-germline-snps-indels">https://github.com/gatk-workflows/broad-prod-wgs-germline-snps-indels</a></li>
+<li><a href="https://dockstore.org/workflows/github.com/broadinstitute/warp/JointGenotyping:JointGenotyping_v1.3.0?tab=info">https://dockstore.org/workflows/github.com/broadinstitute/warp/JointGenotyping:JointGenotyping_v1.3.0?tab=info</a></li>
+</ol>
+</li>
+<li>Additional best practices information for GATK germline pipelines can be found here: <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-short-variant-discovery-SNPs-Indels-">https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-short-variant-discovery-SNPs-Indels-</a>
+<div class="note">
+<span class="note-title">Note:</span> Dong et al. used GATK best practices version 3 for all preprocessing steps, including mapping sequence reads at each site to the GRCh37 reference genome (<a href="#bib1">Dong et al., 2020</a>). Please note, however, that GATK version 3 is no longer supported by the developers. For this reason, the above discussion gives instructions specific to GATK4 and links user to GATK4 resources. We recognize that different users will be operating with access to different levels of computational resources and support, and so implementation of GATK4 best practices is likely to feature user-specific needs that are beyond the scope of this manuscript. For this reason, we recommend users visit the links posted above if they have questions about implementing GATK. In addition, we have provided two links below that for users interested in other pipelines for data preprocessing and germline variant discovery:</div>
+<ol type="i">
+<li><a href="https://github.com/ekg/alignment-and-variant-calling-tutorial">https://github.com/ekg/alignment-and-variant-calling-tutorial</a></li>
+<li>
+<a href="https://bcbio-nextgen.readthedocs.io/en/latest/">https://bcbio-nextgen.readthedocs.io/en/latest/</a>
+<div class="note">
+<span class="note-title">Note:</span> Steps 3 and 4 pertain to kinship analysis and sample duplicate removal. Kinship analysis is a prerequisite to the discovery of <i>de novo</i> genetic variation. There are multiple established and accepted methods for verifying biological relationships among self-reported mother-father-proband trios. Dong et al. used identity-by-descent (IBD) (<a href="#bib9">Purcell et al., 2007</a>) and an analysis of high quality ultrarare single nucleotide polymorphisms (SNPs) absent from ExAC and gnomAD (<a href="#bib6">Lek et al., 2016</a>) for this purpose.</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Pedigree confirmation
+<ol type="a">
+<li>Pairwise PLINK IBD calculation (<a href="#bib9">Purcell et al., 2007</a>)</li>
+</ol>
+</li>
+<li>Sample duplicate removal
+<ol type="a">
+<li>Remove individuals with ≥90% IBD (<a href="#bib9">Purcell et al., 2007</a>)</li>
+<li>Remove individuals with shared ultrarare SNPs</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Published paper and data</td>
+<td><a href="#bib1">Dong et al., 2020</a></td>
+<td>dbGap accession number: phs000744</td>
+</tr>
+<tr>
+<td>1,000 genomes</td>
+<td><a href="#bib12">The 1000 genomes project consortium, 2015</a></td>
+<td><a href="https://www.internationalgenome.org/data">https://www.internationalgenome.org/data</a></td>
+</tr>
+<tr>
+<td>ExAC database</td>
+<td><a href="#bib6">Lek et al., 2016</a></td>
+<td><a href="https://gnomad.broadinstitute.org/">https://gnomad.broadinstitute.org/</a></td>
+</tr>
+<tr>
+<td>Exome variant server (EVS)</td>
+<td>Exome Variant Server, NHLBI GO Exome Sequencing Project (ESP), Seattle, WA</td>
+<td><a href="https://evs.gs.washington.edu/EVS/">https://evs.gs.washington.edu/EVS/</a></td>
+</tr>
+<tr>
+<td>BRAVO</td>
+<td><a href="#bib8">Program, 2018</a></td>
+<td><a href="https://bravo.sph.umich.edu/freeze8/hg38/">https://bravo.sph.umich.edu/freeze8/hg38/</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>TrioDeNovo</td>
+<td><a href="#bib15">Wei et al., 2014</a></td>
+<td><a href="https://genome.sph.umich.edu/wiki/Triodenovo">https://genome.sph.umich.edu/wiki/Triodenovo</a></td>
+</tr>
+<tr>
+<td>GATK</td>
+<td><a href="#bib7">McKenna et al., 2010</a></td>
+<td><a href="https://github.com/broadinstitute/gatk/">https://github.com/broadinstitute/gatk/</a></td>
+</tr>
+<tr>
+<td>DeNovo protocol code</td>
+<td>Scripts, intermediate files, and data generated for this protocol</td>
+<td><a href="https://github.com/jinlab-washu/de-novo-wes-star-protocol">https://github.com/jinlab-washu/de-novo-wes-star-protocol</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>We have created a github that features all of the necessary files, scripts, and example outputs for the method presented herein. The github can be found at:</p>
+<p><a href="https://github.com/jinlab-washu/de-novo-wes-star-protocol">https://github.com/jinlab-washu/de-novo-wes-star-protocol</a></p>
+<p>Users are advised to refer to github to download example trios (in VCF format) and pedigree (PED) files if they wish to replicate the step-by-step instructions reported here exactly.</p>
+<h3 id="sec2.1">Run DeNovo Analysis for each trio</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> hours to days</div>
+<p>In this step users will perform DeNovo analysis using TriodenovoRearrange_pythonAuto.R, which outputs a filtered tsv (tab-separated values) file of calls for each trio in your cohort.</p>
+<ol>
+<li>Generate the commands for each trio, replacing TRIO_NAME with the name of each trio: <i>Rscript TriodenovoRearrange_pythonAuto.R exome_calls_chr4_2trios.vcf Trios.ped OUTPUT_FOLDER TRIO_NAME.</i> This should be done in the command line, and if this is sufficient then users should continue to step 2. Otherwise, users should execute the following sub-steps in R (recommended version 4.0.2).
+<ol type="a">
+<li>Create a new directory for the cohort
+<ol type="i">
+<li><i>system(paste("mkdir ",CohortName,sep = ''),intern = F)</i></li>
+</ol>
+</li>
+<li>Read in the pedigree file
+<ol type="i">
+<li><i>Fam = read.table(file=ped,header=TRUE,stringsAsFactors=FALSE)</i></li>
+<li>See Trios.ped for an example pedigree format</li>
+</ol>
+</li>
+<li>Change your working directory to the cohort directory
+<ol type="i">
+<li><i>setwd(CohortName)</i></li>
+</ol>
+</li>
+<li>Create a directory for the sample and change to id
+<ol type="i">
+<li><i>command0=paste("mkdir -p ",Familyno,sep="")</i></li>
+<li><i>system(command0,intern=F)</i></li>
+<li><i>setwd(Familyno)</i></li>
+</ol>
+</li>
+<li>Generate a pedigree file for just one trio
+<ol type="i">
+<li><i>index &lt;- which(Fam$FamID == Familyno)</i></li>
+<li><i>write.table(Fam[index,],file = paste("Trio_",Familyno,".ped",sep = ""),col.names=FALSE,row.names=FALSE,sep="∖t",quote=FALSE)</i></li>
+<li><i>Fam = Fam[index,]</i></li>
+<li><i>index = which(Fam$Father != 0)</i></li>
+<li><i>Proband_ID = Fam[index,2]</i></li>
+<li><i>Father_ID = Fam[index,3]</i></li>
+<li><i>Mother_ID = Fam[index,4]</i></li>
+</ol>
+</li>
+<li>Generate a VCF file for each trio, removing all records with missing genotype, only extracting lines where AC != 0
+<ol type="i">
+<li>
+<i>command1=paste("java -Xmx64g -jar GenomeAnalysisTK_3.5.jar -nt 16 -R /ref_data/h_sapiens/1000genomes/2.5/b37/human_g1k_v37_decoy.fasta -T SelectVariants --variant ",Input," -o Trio_",Familyno,".vcf -env -sn ",Proband_ID,' -sn ',Father_ID,' -sn ',Mother_ID,sep="")</i>
+<ul>
+<li>-nt 16: use 16 threads</li>
+<li>-R: path to reference fasta</li>
+<li>-T SelectVariants --variant: select a subset of variants from a VCF</li>
+<li>-o: output file path</li>
+<li>-env</li>
+<li>-sn: specify a sample name from which to include genotypes</li>
+</ul>
+</li>
+<li><i>system(command1,intern=F)</i></li>
+</ol>
+</li>
+<li>Regenotype
+<ol type="i">
+<li>
+<i>system(paste('java -Xmx64g -jar GenomeAnalysisTK_3.5.jar -nt 16 -R /ref_data/h_sapiens/1000genomes/2.5/b37/human_g1k_v37_decoy.fasta -T RegenotypeVariants --variant Trio_',Familyno,'.vcf -o Trio_',Familyno,'_reGT.vcf',sep = ''),intern = F)</i>
+<ul>
+<li>-nt 16: use 16 threads</li>
+<li>-R: path to reference fasta</li>
+<li>-T RegenotypeVariants --variant: Regenotypes the variants from a VCF</li>
+<li>-o: output file path</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Split multi-allelic sites
+<ol type="i">
+<li>
+<i>system(paste('bcftools norm -m-both -o Trio_',Familyno,'_reGT_step1.vcf Trio_',Familyno,'_reGT.vcf',sep = ''),intern = F)</i>
+<ul>
+<li>norm: normalize indels</li>
+<li>-m-both</li>
+<li>-o: output file path</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Left normalization
+<ol type="i">
+<li>
+<i>system(paste('bcftools norm -f /ref_data/h_sapiens/1000genomes/2.5/b37/human_g1k_v37.fasta -o Trio_',Familyno,'_reGT_step2.vcf Trio_',Familyno,'_reGT_step1.vcf',sep = ''),intern = F)</i>
+<ul>
+<li>norm: normalize indels</li>
+<li>-f: path to reference fasta</li>
+<li>-o: output file path</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Remove extra information (PID, PGT)
+<ol type="i">
+<li><i>system(paste('vcfkeepgeno Trio_',Familyno,'_reGT_step2.vcf GT AD DP GQ PL &gt; Trio_',Familyno,'_reGT_step2_modified.vcf',sep = ''),intern = F)</i></li>
+</ol>
+</li>
+<li>Remove ./., unfavored PL, and AC != 0
+<ol type="i">
+<li><i>system(paste('python ParseTrioVCF.py ',Familyno,sep = ''),intern = F)</i></li>
+<li>Requires ParseTrioVCF.py</li>
+</ol>
+</li>
+<li>Annotate the updated VCF with annovar
+<ol type="i">
+<li>
+<i>command7=paste("perl table_annovar.pl --vcfinput Trio_",Familyno,"_updated.vcf /programs/annovar/humandb/ -buildver hg19 -out Trio_",Familyno," -remove -protocol refGene,genomicSuperDups,snp138,dbnsfp33a,esp6500siv2_all,1000g2015aug_all,exac03,gnomad_exome,gnomad_genome,bravo -operation g,r,f,f,f,f,f,f,f,f -nastring '.'",sep = "")</i>
+<ul>
+<li>--vcfinput: specify the input vcf file</li>
+<li>-buildver: genome build version</li>
+<li>-out: specify the output file</li>
+<li>-remove: remove all temporary files</li>
+<li>-protocol: comma-delimited string specifying database protocol</li>
+<li>In this case we are using these protocols: refGene,genomicSuperDups,snp138,dbnsfp33a,esp6500siv2_all,1000g2015aug_all,exac03,gnomad_exome,gnomad_genome</li>
+<li>-operation: comma-delimited string specifying type of operation</li>
+<li>-nastring: string to display when a score is not available</li>
+</ul>
+</li>
+<li><i>system(command7,intern=F)</i></li>
+</ol>
+</li>
+<li>Run triodenovo
+<ol type="i">
+<li>
+<i>command6=paste("triodenovo --ped Trio_",Familyno,".ped --in_vcf Trio_",Familyno,"_updated.vcf --out Trio_",Familyno,".denovo.Bayfilter.vcf --mixed_vcf_records",sep = "")</i>
+<ul>
+<li>--ped: specifies the pedigree file to use</li>
+<li>--in_vcf: specifies the vcf file to use</li>
+<li>--out: specifies the output file</li>
+<li>--mixed_vcf_records</li>
+</ul>
+</li>
+<li><i>system(command6,intern=F)</i></li>
+</ol>
+</li>
+<li>Delete intermediate files
+<ol type="i">
+<li><i>system(paste("rm Trio_",Familyno,".avinput",sep = ""),intern = F)</i></li>
+<li><i>system(paste("rm Trio_",Familyno,".hg19_multianno.txt",sep = ""),intern = F)</i></li>
+</ol>
+</li>
+<li>Rearrangement
+<ol type="i">
+<li><i>system(paste('python PrepareMerge.py ',Familyno,sep = ''),intern = F)</i></li>
+<li>Requires PrepareMerge.py</li>
+</ol>
+</li>
+<li>Determine the order of members in the VCF
+<ol type="i">
+<li><i>Order = unlist(strsplit(try(system(paste("grep -w '#CHROM' Trio_",Familyno,"_updated.vcf",sep = ""),intern = T)),'∖t'))</i></li>
+<li><i>col15 = Order[10]</i></li>
+<li><i>col16 = Order[11]</i></li>
+<li><i>col17 = Order[12]</i></li>
+</ol>
+</li>
+<li>Process the triodenovo output
+<ol type="i">
+<li><i>Bayfilter=readLines(paste("Trio_",Familyno,".denovo.Bayfilter.content.txt",sep = ""))</i></li>
+<li><i>Bayfilter=sapply(1:length(Bayfilter),function(i) unlist(strsplit(Bayfilter[i],"∖t")))</i></li>
+<li><i>Bayfilter=data.frame(t(Bayfilter),stringsAsFactors = F)</i></li>
+<li><i>colnames(Bayfilter)=c("CHROM","POS","ID","REF","ALT","QUAL","FILTER","INFO","FORMAT",Father_ID,Mother_ID,Proband_ID)</i></li>
+<li><i>Bayfilter$POSITION=paste(Bayfilter$CHROM,Bayfilter$POS,Bayfilter$REF,Bayfilter$ALT,sep=":")</i></li>
+</ol>
+</li>
+<li>Process the annovar output
+<ol type="i">
+<li><i>Anno=readLines(paste("Trio_",Familyno,".hg19_multianno.content.txt",sep = ""))</i></li>
+<li><i>Anno=sapply(1:length(Anno),function(i) unlist(strsplit(Anno[i],"∖t")))</i></li>
+<li><i>Anno=data.frame(t(Anno),stringsAsFactors = F)</i></li>
+<li><i>colnames(Anno)=c("CHROM","POS","ID","REF","ALT","QUAL","FILTER","Info","Format",paste("Anno.",col15,sep = ""),paste("Anno.",col16,sep = ""),paste("Anno.",col17,sep = ""))</i></li>
+<li><i>Anno$POSITION=paste(Anno$CHROM,Anno$POS,Anno$REF,Anno$ALT,sep=":")</i></li>
+</ol>
+</li>
+<li>Delete intermediate files
+<ol type="i">
+<li><i>system(paste("rm Trio_",Familyno,".hg19_multianno.content.txt",sep = ""),intern = F)</i></li>
+<li><i>system(paste("rm Trio_",Familyno,".denovo.Bayfilter.content.txt",sep = ""),intern = F)</i></li>
+</ol>
+</li>
+<li>Merge based on the triodenovo file
+<ol type="i">
+<li><i>AnnoBayfilter=merge(Bayfilter,Anno,by="POSITION",all.x=TRUE)</i></li>
+<li><i>AnnoBayfilter=AnnoBayfilter[,c(1:8,10:13,21:25)]</i></li>
+<li><i>colnames(AnnoBayfilter)=c("POSITION","CHROM","POS","ID","REF","ALT","QUAL","FILTER","FORMAT",Father_ID,Mother_ID,Proband_ID,"INFO","AnnoFormat",paste("Anno.",col15,sep = ""),paste("Anno.",col16,sep = ""),paste("Anno.",col17,sep = ""))</i></li>
+</ol>
+</li>
+<li>Write the final output to a file</li>
+</ol>
+</li>
+<li>Run the list of commands generated in step 1</li>
+<li>Concatenate the output files into one final file, in the command line
+<ol type="a">
+<li><i>head -1 TRIO_NAME/∗DenovoM &gt; Trios.BayesianFilter.DenovoM</i></li>
+<li>
+<i>for file in TRIO_PREFIX∗/∗DenovoM;do sed '1d' $file &gt;&gt;</i><b><i><u>Trios.BayesianFilter.DenovoM</u></i></b><i>;done</i>
+</li>
+<li>Output: Trios.BayesianFilter.DenovoM</li>
+</ol>
+</li>
+<li>Filter the concatenated file using Python 3.7.3 These commands should be executed in the command line with paths to the Python scripts.
+<ol type="a">
+<li><i>python ParseBayOutput_SciencePaper.py Trios.BayesianFilter.DenovoM Trios.BayesianFilter.DenovoM.filtered</i></li>
+<li>Requires ParseBayOutput_SciencePaper.py</li>
+<li>Output: Trios.BayesianFilter.DenovoM.filtered</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.2">Denovolyze preparation and visualization of candidate DNMs</h3>
+<p>The DeNovo Analysis output will now be manually filtered and annotated to prepare for the Denovolyze step.</p>
+<ol start="5">
+<li>After compiling a list of candidate DNMs, all calls must be verified manually using the integrative genomics viewer (IGV) (<a href="#bib10">Robinson et al., 2011</a>). IGV can be accessed at <a href="http://igv.org">igv.org</a> and manual visualization of DNM calls can be accomplished as follows:
+<ol type="a">
+<li>Open IGV and load in a BAM, CRAM (and any associated index file), or other supported file format from the first subject you wish to analyze.</li>
+<li>Select the appropriate reference sequence for your analysis and enter the chromosome and position of the called variant to the search bar at the top.</li>
+<li>Zoom in to the user-determined threshold window to visualize all recorded reads.</li>
+<li>Export the image by clicking "Save Image" under the "File" menu and saving to your desired folder.</li>
+<li>Repeat steps for all candidate DNMs in the call list for the specific subject file loaded into IGV.</li>
+<li>End the current session and create a new session loading the BAM or CRAM file of the next subject you wish to analyze.</li>
+<li>Repeat the above steps until all candidate DNM calls have been manually analyzed in IGV.</li>
+<li><a href="#troubleshooting">Troubleshooting (Problem 2)</a></li>
+</ol>
+</li>
+<li>Open the output in your preferred spreadsheet software and classify the mutations into different categories in the column denovo_metasvm_cadd30
+<ol type="a">
+<li>Use the ExonicFunc.refGene column to aid in this process</li>
+<li>The MetaSVM and CADD columns may also be helpful</li>
+<li>Example: A nonsynonymous_SNV with a CADD (v1.3) score ≥ 30 or a MetaSVM prediction of “D” would be classified as misD (<a href="#bib5">Kircher et al., 2014</a>)</li>
+<li>Output: Trios.BayesianFilter.DenovoM.filtered.PlotReads.xlsx</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.3">Enrichment analysis</h3>
+<p>The enrichment analysis relies on the denovolyzeR library and will output mutability or enrichment tables depending on the script. The sample data was generated by the DeNovo Analysis step and prepared for denovolyzeR in the previous step. The gene lists used by Dong et al. are available in the github. Users will need curate their own gene lists based upon published literature for the disease they are studying.</p>
+<ol start="7">
+<li>Run the scripts
+<ol type="a">
+<li><i>Rscript denovolyzR.script.R</i></li>
+<li>Requires: TN_n70_Input.txt, 0819_hs37d5_coding_idt_med_v2_spikein_padded_Mar2018_adj_modified.txt</li>
+<li>Output: Trios_ObserveExpect_metasvm_cadd30.txt</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Steps 3 and 4 from the <a href="#step-by-step-method-details">step-by-step method details</a> generate tab-separated files. Example outputs are provided in the github.</p>
+<p>Step 5 requires the user to generate IGV plots. An example IGV plot is given in the <a href="#troubleshooting">troubleshooting</a> section of this protocol.</p>
+<p><a href="#tbl1">Table 1</a> shows the expected outcome of the enrichment analysis for DNMs for all genes (<a href="#tbl1">Table 1</a>). The results match that of supplemental table 2b in our companion paper by Dong et al. The analysis can and should be extended to controls in order to interpret the results; the full findings can be found in <a href="#bib1">Dong et al., 2020</a>.</p>
+<table id="tbl1">
+<caption>Table 1. <i>De novo</i> enrichment analysis among cases</caption>
+<thead>
+<tr>
+<th colspan="7">
+<i>De novo</i> enrichment analysis in 70 TN cases</th>
+</tr>
+<tr>
+<th>Class</th>
+<th>Observed</th>
+<th>rate_obs_cases</th>
+<th>Expected</th>
+<th>rate_exp_cases</th>
+<th>Enrichment</th>
+<th>p value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all</td>
+<td>74</td>
+<td>1.057142857</td>
+<td>79.5</td>
+<td>1.135714286</td>
+<td>0.931</td>
+<td>0.747</td>
+</tr>
+<tr>
+<td>syn</td>
+<td>22</td>
+<td>0.314285714</td>
+<td>22.5</td>
+<td>0.321428571</td>
+<td>0.977</td>
+<td>0.571</td>
+</tr>
+<tr>
+<td>misT</td>
+<td>27</td>
+<td>0.385714286</td>
+<td>37.4</td>
+<td>0.534799393</td>
+<td>0.721</td>
+<td>0.968</td>
+</tr>
+<tr>
+<td>misD</td>
+<td>17</td>
+<td>0.242857143</td>
+<td>12.7</td>
+<td>0.181428571</td>
+<td>1.34</td>
+<td>0.141</td>
+</tr>
+<tr>
+<td>lof</td>
+<td>8</td>
+<td>0.114285714</td>
+<td>6.9</td>
+<td>0.098571429</td>
+<td>1.16</td>
+<td>0.387</td>
+</tr>
+<tr>
+<td>protD</td>
+<td>25</td>
+<td>0.357142857</td>
+<td>19.6</td>
+<td>0.28</td>
+<td>1.28</td>
+<td>0.134</td>
+</tr>
+<tr>
+<td>prot</td>
+<td>52</td>
+<td>0.742857143</td>
+<td>57</td>
+<td>0.814285714</td>
+<td>0.912</td>
+<td>0.764</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Results of the enrichment analysis for DNMs across all genes in cases. Corresponds to supplemental table 2b in <a href="#bib1">Dong et al. (2020)</a>.</p>
+<p>The rate_obs_cases is the number of DNMs divided by the number of individuals in the cohort. The enrichment is the ratio of observed to expected numbers of mutations. misD is damaging missense mutations as predicted by MetaSVM and CADD algorithms; misT is the non-damaging missense mutations; protD is the damaging category (misD +lof); prot is the protein altering category (misT + misD + lof). All genes from the genome were considered for the analysis.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p><a href="#tbl2">Table 2</a> details the filtering criteria used by Dong et al. for putative DNMs.</p>
+<table id="tbl2">
+<caption>Table 2. Filtering criteria for putative DNMs</caption>
+<thead>
+<tr>
+<th>Cases</th>
+<th>Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<ul>
+<li>Minor allele frequency ≤ 4 × 10<sup>−4</sup> across all samples in 1000 Genomes, EVS, and ExAC, Bravo</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>in-cohort allele frequency ≤ 4 × 10<sup>−4</sup>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<ul>
+<li>probands must have at least 10 total reads and 5 alternative allele reads</li>
+<li>probands must have a minimum of 20% alternate allele ratio for alternate allele reads ≥10 or a minimum 28% alternate ratio for alternate allele reads &lt;10</li>
+<li>parents must have a minimum depth of 10 reference reads and alternate allele ratio &lt;3.5%</li>
+<li>exonic or canonical splice-site variants</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Example filtering criteria to analyze DNMs in cases and controls. The criteria are the same as those used by <a href="#bib1">Dong et al. (2020)</a>.</p>
+<p>Dong et al. used a previously developed mutability model (<a href="#bib11">Samocha et al., 2014</a>) to compute a mutability table containing the expected number of DNMs per gene per variant class. We have provided a copy of the mutability table generated by Dong et al. on the github for this protocol for users wishing to replicate their analysis.</p>
+<p>The observed versus expected number of DNMs for each variant class were compared using a one-tailed Poisson test. The statistical analyses for DNMs were implemented as part of “denovolyzeR” (<a href="#bib14">Ware et al., 2015</a>) and we included the instructions for replicating these analyses in the <a href="#step-by-step-method-details">step-by-step method details</a>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>While WES can identify genetic variation that may predispose an individual to certain disease states, bioinformatic analyses and statistical genetic approaches do not provide functional insight into the role of candidate genes/variants in disease pathogenesis. Statistically significant genetic variation can sometimes be found to be functionally irrelevant when the candidate mutations are reproduced in animal models. Functional validation is a valuable and necessary counterpart to unbiased sequencing approaches if one hopes to obtain mechanistic insight into their disease of interest.</p>
+<p>Dong et al., reconstituted the human DNM p.Cys188Trp in the GABA<sub>A</sub> receptor Cl<sup>−</sup> channel γ-1 subunit (<i>GABRG1</i>) using mice, and found that mice with these mutations showed signs of trigeminal neuralgia (<a href="#bib1">Dong et al., 2020</a>). However, the resource and time costs of creating and testing such mouse models preclude the possibility of reconstituting each candidate hit. As such, our mechanistic understanding of how genetic variation shapes disease pathogenesis often lags behind our knowledge of what genetic variation exists between patients and healthy controls.</p>
+<p>Our protocol is limited by the small number of trios available to Dong et al (70 trios). Small cohorts limit the power to identify candidate genes with more than one damaging DNM. Other studies that used the method illustrated here have featured larger cohorts (<a href="#bib3">Homsy et al., 2015</a>; <a href="#bib4">Jin et al., 2017</a>). For example, studies by Homsy et al. and Jin et al. were able to identify 21 and 66 (respectively) genes with greater than one DNM in cohorts of congenital heart disease (CHD) patients. Informatively, the cohort size in Homsy et al. was 1,213 probands with CHD and this increased to 2,645 CHD probands for the study by Jin et al., reflecting that as the number of cases increases so too does the ability to detect genes with more than one DNM. Despite not being able to directly compare results in a trigeminal neuralgia cohort to a CHD cohort, one appreciates that regardless of disease indication there is a benefit to having larger numbers of cases. Still, even with only 70 trios Dong et al was able to discover pathogenic genetic lesions that arose from DNMs.</p>
+<p>Recruitment of larger cohorts would certainly lend greater power to the study by Dong et al., but it is not always possible to recruit cohorts of the necessary size. Importantly, the method outlined in this manuscript does not require a minimum number of case trios. While the method benefits from increased case trios (like any study would), the lack of a minimum number of required case count allows this method to be applied to even very rare diseases where it may be impossible to recruit more than a few dozen patients. Regardless of how many patients one recruits, it is advisable to sequence subjects to coverage of at least 40x if trying to identify DNMs, as this level of coverage has been successful in prior studies (<a href="#bib3">Homsy et al., 2015</a>; <a href="#bib4">Jin et al., 2017</a>). Low coverage makes it more likely to count false positives as true hits, even with visualization in IGV.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<h4 id="sec6.1.1">Choice of reference genome: GRCh37 versus GRCh38</h4>
+<p>The cohort analyzed in our companion paper was mapped to GRCh37. Alignment against a more complete build of the human reference genome (GRCh38) could offer more accurate read-mapping and result in a more comprehensive variant call set.</p>
+<h3 id="sec6.2">Potential solution 1</h3>
+<h4 id="sec6.2.1">Choice of reference genome</h4>
+<p>There is not a correct or incorrect choice when choosing between alignment to GRCh37 or GRCh38. The choice of reference genome used for alignment can have a substantial impact on variant discovery and the choice should be made in the context of what a user hopes to accomplish with their dataset. Increasingly, we would advise users to align to GRCh38 because it will offer greater compatibility with resources like version three of gnomAD (natively aligned to GRCh38). Nevertheless, for users who already have data aligned to GRCh37, it may not be worthwhile or feasible to remap to GRCh38. In these cases, one may consider a liftover of GRCh37 coordinates to GRCh38 if GRCh38 coordinates are required. Liftover can be accomplished by using any number of publicly available tools including:</p>
+<ul>
+<li>The UCSC genome browser (<a href="http://www.genome.ucsc.edu/cgi-bin/hgLiftOver">http://www.genome.ucsc.edu/cgi-bin/hgLiftOver</a>)</li>
+<li>NCBI Remap (<a href="https://www.ncbi.nlm.nih.gov/genome/tools/remap">https://www.ncbi.nlm.nih.gov/genome/tools/remap</a>)</li>
+</ul>
+<p>While an in-depth discussion of these tools is beyond the scope of this manuscript, an informative introduction to these resources can be found online at <a href="https://genviz.org/module-01-intro/0001/06/02/liftoverTools/">https://genviz.org/module-01-intro/0001/06/02/liftoverTools/</a></p>
+<h3 id="sec6.3">Problem 2</h3>
+<h4 id="sec6.3.1">Integrative Genomics Viewer (IGV)</h4>
+<p>During manual validation of potential DNMs using IGV, it is possible different users will have a different judgment about whether a particular call is a true DNM or a false-positive. This can influence the final set of candidate DNMs.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>We have included example IGV images for a true DNM (<a href="#fig1">Figure 1</a>A) and a false-positive DNM (<a href="#fig1">Figure 1</a>B) for the user to contrast. The sample reads and coverage depth are visualized with the putative DNM site demarcated between two dashed lines. The example in <a href="#fig1">Figure 1</a>B is a false-positive call because the putative DNM site is mutated in several reads in parent 177-3. We recognize that the in-text versions of these visualizations may be low resolution for some users. Therefore, we have provided high resolution versions of the IGV plot for each individual from <a href="#fig1">Figure 1</a> as part of the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/514-Mmc1.zip">Data S1</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/514-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Example IGV plots for two DNM calls</div>
+<p>(A) A true-positive DNM in the gene GABRG1.</p>
+<p>(B) A false-positive DNM in the gene HTT. Color scheme: A is green, C is blue, G is brown, and T is red.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Dong, W., Jin, S.C., Allocco, A., Zeng, X., Sheth, A.H., Panchagnula, S., Castonguay, A., Lorenzo, L.É., Islam, B., Brindle, G., et al. (2020). Exome sequencing implicates impaired GABA signaling and neuronal ion transport in trigeminal neuralgia. IScience <i>23</i>, 101552. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref1">View at publisher</a></p>
+<p id="bib3">Homsy, J., Zaidi, S., Shen, Y., Ware, J.S., Samocha, K.E., Karczewski, K.J., DePalma, S.R., McKean, D., Wakimoto, H., Gorham, J., et al. (2015). De novo mutations in congenital heart disease with neurodevelopmental and other congenital anomalies. Science <i>350</i>, 1262-1266. <a class="external-link" href="https://doi.org/10.1126/science.aac9396">https://doi.org/10.1126/science.aac9396</a></p>
+<p id="bib4">Jin, S.C., Homsy, J., Zaidi, S., Lu, Q., Morton, S., DePalma, S.R., Zeng, X., Qi, H., Chang, W., Sierant, M.C., et al. (2017). Contribution of rare inherited and de novo variants in 2,871 congenital heart disease probands. Nat. Genet. <i>49</i>, 1593-1601. <a class="external-link" href="https://doi.org/10.1038/ng.3970">https://doi.org/10.1038/ng.3970</a></p>
+<p id="bib5">Kircher, M., Witten, D.M., Jain, P., O'Roak, B.J., Cooper, G.M., and Shendure, J. (2014). A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. <i>46</i>, 310-315. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref5">View at publisher</a></p>
+<p id="bib6">Lek, M., Karczewski, K.J., Minikel, E.V., Samocha, K.E., Banks, E., Fennell, T., O'DonnellLuria, A.H., Ware, J.S., Hill, A.J., Cummings, B.B., et al. (2016). Analysis of proteincoding genetic variation in 60,706 humans. Nature <i>536</i>, 285-291. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref6">View at publisher</a></p>
+<p id="bib7">McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M., et al. (2010). The genome analysis Toolkit: a MapReduce framework for analyzing next-generation DNA sequencing data. Genome Res. <i>20</i>, 1297-1303. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref7">View at publisher</a></p>
+<p id="bib8">Program, T.N.T. (2018). BRAVO variant browser: University of Michigan and NHLBI. <a class="external-link" href="https://bravosphumichedu/freeze5/hg38/">https://bravosphumichedu/freeze5/hg38/</a></p>
+<p id="bib9">Purcell, S., Neale, B., Todd-Brown, K., Thomas, L., Ferreira, M.A., Bender, D., Maller, J., Sklar, P., de Bakker, P.I., Daly, M.J., et al. (2007). PLINK: a tool set for whole-genome association and population-based linkage analyses. Am. J. Hum. Genet. <i>81</i>, 559-575. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref9">View at publisher</a></p>
+<p id="bib10">Robinson, J.T., Thorvaldsdóttir, H., Winckler, W., Guttman, M., Lander, E.S., Getz, G., and Mesirov, J.P. (2011). Integrative genomics viewer. Nat. Biotechnol. <i>29</i>, 24-26. <a class="external-link" href="https://doi.org/10.1038/nbt.1754">https://doi.org/10.1038/nbt.1754</a></p>
+<p id="bib11">Samocha, K.E., Robinson, E.B., Sanders, S.J., Stevens, C., Sabo, A., McGrath, L.M., Kosmicki, J.A., Rehnstrom, K., Mallick, S., Kirby, A., et al. (2014). A framework for the interpretation of de novo mutation in human disease. Nat. Genet. <i>46</i>, 944-950. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref11">View at publisher</a></p>
+<p id="bib12">The 1000 genomes project consortium. (1000). A global reference for human genetic variation. Nature <i>526</i>, 68-74. <a class="external-link" href="https://doi.org/10.1038/nature15393">https://doi.org/10.1038/nature15393</a></p>
+<p id="bib13">Van der Auwera, G.A., Carneiro, M.O., Hartl, C., Poplin, R., Del Angel, G., Levy-Moonshine, A., Jordan, T., Shakir, K., Roazen, D., Thibault, J., et al. (2013). From FastQ data to high confidence variant calls: the Genome Analysis Toolkit best practices pipeline. Curr. Protoc. Bioinformatics <i>43</i>, 11.10.1-11.10.33. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref13">View at publisher</a></p>
+<p id="bib14">Ware, J.S., Samocha, K.E., Homsy, J., and Daly, M.J. (2015). Interpreting de novo variation in human disease using denovolyzeR. Curr. Protoc. Hum. Genet. <i>87</i>, 7.25.1-7.25.15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00090-3/sref14">View at publisher</a></p>
+<p id="bib15">Wei, Q., Zhan, X., Zhong, X., Liu, Y., Han, Y., Chen, W., and Li, B. (2014). A Bayesian framework for de novo mutation calling in parents-offspring trios. Bioinformatics <i>31</i>, 1375-1381. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btu839">https://doi.org/10.1093/bioinformatics/btu839</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the co-corresponding authors (<a href="mailto:kristopher.kahle@yale.edu">kristopher.kahle@yale.edu</a> and j<a href="mailto:in810@wustl.edu">in810@wustl.edu</a>).</p>
+<h4>Materials Availability</h4>
+<p>No biological reagents were used as part of this protocol.</p>
+<h4>Data and Code Availability</h4>
+<p>The WES data analyzed with this protocol and generated by the companion paper Dong et al. are available at dbGap with accession number phs000744. We have provided our Python and R scripts for the <i>de novo</i> variant analysis demonstrated in Dong et al. and this protocol. These can be found at the github repository for this protocol (<a href="https://github.com/jinlab-washu/de-novo-wes-star-protocol">https://github.com/jinlab-washu/de-novo-wes-star-protocol</a>).</p>
+<h3>Supplemental Information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/514-Mmc1.zip">Data S1. This zip contains high resolution versions of the IGV plots from Figure 1, related to expected outcome and troubleshooting problem 2</a></p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> Medical Scientist Training Program Training Grant T32GM136651 (N.S.D.) and by R01 NS111029-01A1, R01 NS109358, and K12 228168, as well as by the <a href="https://doi.org/10.13039/100011765">Rudi Schulte Research Institute</a> (K.T.K.). W.D. is supported by <a href="https://doi.org/10.13039/100000968">American Heart Association</a> Predoctoral Fellowship (19PRE34380842). S.C.J. is supported by a K99/R00 Pathway to Independence Award (K99HL143036 and R00HL143036-02).</p>
+<h3>Author Contributions</h3>
+<p>Protocol Design and Conceptualization, N.S.D., S.K., W.D., K.T.K., and S.C.J. Pipeline Execution and Documentation, N.S.D., S.K., W.D., A.S., S.P., G.A., and S.C.J. Writing – Review &amp; Editing, N.S.D., S.K., W.D., G.A., A.S., S.P., K.T.K., and S.C.J. Funding Acquisition and Supervision, K.T.K. and S.C.J.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

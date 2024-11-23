@@ -1,0 +1,903 @@
+<article>
+<section>
+<h1 id="header">Pipeline for 2-photon all-optical physiology in mouse: From viral titration and optical window implantation to binarization of calcium transients</h1>
+<p><time datetime="2021-12-10">Published: December 17, 2021</time></p>
+<p>Roberta Guimarães Backhaus,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn3">5</a>,<a href="#cor1">*</a></sup> Ting Fu,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup> Hendrik Backhaus,<sup><a href="#aff2">2</a></sup> and Albrecht Stroh<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup></p>
+<p id="aff1"><sup>1</sup>Institute of Pathophysiology, University Medical Center Mainz, Hanns-Dieter-Hüsch-Weg 19, 55128 Mainz, Germany</p>
+<p id="aff2"><sup>2</sup>Leibniz Institute for Resilience Research, Wallstr. 7, 55122 Mainz, Germany</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical contact</p>
+<p id="fn3"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:roberta.backhaus@lir-mainz.de">roberta.backhaus@lir-mainz.de</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:ting.fu@unimedizin-mainz.de">ting.fu@unimedizin-mainz.de</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.101010">10.1016/j.xpro.2021.101010</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>2-photon all-optical physiology combines <i>in vivo</i> 2-photon calcium imaging and optogenetics, which enables both the read out and manipulation of neuronal microcircuits with single-cell resolution. Here, we describe a protocol for achieving optimized co-expression of calcium indicator and opsin. To enable longitudinal designs, we introduce a template for virus injection and chronic window implantation. We also highlight key aspects of performing 2-photon imaging and suggest an analysis algorithm for the binarization of putatively action-potential (AP)-related calcium transients.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref14">Fu et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Optimization of co-expression of calcium indicator and opsin</li>
+<li>Virus injection and chronic window implantation for 2-P all-optical experiments</li>
+<li>Readout and interrogation of neuronal microcircuits in a 2-P all-optical experiment</li>
+<li>Binarization of putatively action-potential (AP)-related calcium transients</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>2-photon (2-P) all-optical physiology experiments require cells functionally expressing both, calcium indicator and opsin. Viral vectors transfer a gene of interest to cells either by genomic insertion, or, in case of most adeno-associated viruses predominantly used for the transfer of genes encoding for calcium indicators or opsins, via episomal expression. Viral gene transfer provides the foundation for regional and cellular specificity of indicator or opsin protein expression (<a href="#bib2">Aschauer et al., 2013</a>). However, to avoid overexpression leading to toxicity and apoptosis, while at the same time ensuring functionality of calcium indicator and opsin, it is crucial to adjust virus titration in advance (<a href="#bib12">Fois et al., 2014</a>). Cell and layer specificity can be achieved by promoters, driving targeted calcium indicator and opsin expression (<a href="#bib4">Bohlen et al., 2020</a>; <a href="#bib31">Wu et al., 2019</a>). Whenever possible, a spectral separation of excitation wavelengths of the calcium indicator/opsin pair is advisable, please see our recent publication associated with this protocol (<a href="#bib14">Fu et al., 2021</a>). Please note, that an <i>a priori</i> titration needs to be conducted for every newly started calcium indicator/opsin pair. We established our protocol with genetically encoded calcium indicator GCaMP6f (<a href="#bib7">Chen et al., 2013</a>) and opsin C1V1<sub>T/T</sub> (<a href="#bib23">Prakash et al., 2012</a>) fused with a red fluorophore. We employ third-generation adeno-associated viral vectors (AAV) for delivery of genes encoding calcium indicator and an opsin. Particularly adeno-associated viruses exhibit a limited packaging capacity (<a href="#bib30">Tornabene and Trapani, 2020</a>; <a href="#bib17">Kay et al., 2001</a>; <a href="#bib20">Nidetz et al., 2020</a>). Both opsin and indicator typically require rather large sequences as they are rather large proteins, and they need to be combined with cell specific promotors. In addition, a sequence encoding for a fluorophore is needed to be incorporated as well, to facilitate identification of opsin-expressing cells by fluorescence microscopy. Consequently, the gene sequence of an opsin-indicator pair, in conjunction with a cell specific promoter, generally well exceeds the packaging capacity of AAVs. Therefore, one AAV is produced containing the sequence for promoter and opsin, and the other for promoter and indicator. This dual-virus approach requires the injection and titration of two viruses (<a href="#bib29">Thompson and Towne, 2018</a>). Here we describe in detail the concepts of viral titration, injection, and optical window implantation, and give a short overview on all optical 2-P imaging experiment. We furthermore include the description of an analysis routine for the acquired functional 2-P images, as this constitutes an integral building block of an all-optical physiology pipeline. While the available analysis approaches for 2-P calcium imaging increase almost at a daily basis, we would strongly suggest to adapt an approach yielding a binarized matrix of putative AP related calcium transients. Ultimately, 2-P calcium imaging of local microcircuits serves as a proxy for obtaining circuit output, i.e., action potential firing (<a href="#bib11">Ellwardt et al., 2018</a>; <a href="#bib1">Arnoux et al., 2018</a>). The presented protocol can be used as a template for the implementation and adaptation of other calcium indicator/opsin pairs and in other cortical regions. <a href="#fig1">Figure 1</a> serves as a guide to this protocol, giving an overview of each step including hands-on time as well as waiting times for virus expression.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. An overview of all steps within this protocol, including hands-on- and waiting- time</div>
+<p>I, II, III, IV correspond to protocol part 1; V, VI correspond to protocol part 2; VII corresponds to protocol part 3 and VIII correspond to protocol part 4.</p>
+</figcaption>
+</figure>
+<p>Our experiments were carried out along institutional animal welfare guidelines and approved by the Landesuntersuchungsamt Koblenz, State of Rhineland-Palantine, Germany. Adult male C57/BL6 mice were used.</p>
+<h3 id="sec1.1">Pulling micropipettes for virus injection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 min per pipette</div>
+<ol>
+<li>Add additional marks on the micropipettes (capillary pipettes with ring marks, see <a href="#key-resources-table">key resources table</a> for brand) for identifying injected volumes during injection (<a href="#fig2">Figure 2</a>A).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Close-up of the pulled micropipette for viral injections</div>
+<p>A ring-cap micropipette is pulled by a standard puller to form a tip with an outer diameter of 45 μm and an inner diameter of 15 μm. Additional marks are drawn on the micropipette to assess the injected volume.</p>
+</figcaption>
+</figure>
+</li>
+<li>Pull the micropipette using a standard puller. The puller parameter should be adjusted to yield a pipette with an approximately 1 cm section of decreasing diameter. The tip should have an outer diameter of 45 ± 3 μm and an inner diameter of 15 ± 3 μm.</li>
+<li>Store it carefully in a petri dish attached in Patafix.</li>
+</ol>
+<h3 id="sec1.2">Prerequisite for surgery</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–10 min</div>
+<ol start="4">
+<li>Disinfect the table and stereotaxic system according to your institutional guidelines and sterilize all surgical tools prior to carrying out the surgery.</li>
+<li>(For chronic window only) fill a Petri dish with phosphor buffered saline (PBS)/Saline and dip small pieces of surgical sponge in it. Warm it up in the microwave until the PBS/Saline reaches a temperature of 60°C, if possible, to speed up the softening of the sponge.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>rAAV1/CamKIIa-GCaMP6f</td>
+<td>Penn Vector Core, PA, USA</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>rAAV2/CamKIIa-C1V1 (E122T/E162T)-TS-mCherry</td>
+<td>UNC Vector Core, NC, USA</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>2% xylocaine</td>
+<td>AstraZeneca</td>
+<td>REF.: 01138060</td>
+</tr>
+<tr>
+<td>Xylocaine Pump Spray</td>
+<td>Aspen</td>
+<td>PZN - 03839482</td>
+</tr>
+<tr>
+<td>Isoflurane Forene</td>
+<td>Abbvie</td>
+<td>REF.: B506</td>
+</tr>
+<tr>
+<td>PBS pH7.4 (1X) – Phosphate Buffered Saline</td>
+<td>Gibco</td>
+<td>REF.: 10010-015</td>
+</tr>
+<tr>
+<td>Buprenorphine - TEMGESIC</td>
+<td>Indivior Europe Ltd.</td>
+<td>REF.: 00345928</td>
+</tr>
+<tr>
+<td>Eye cream - Vidisic</td>
+<td>Bausch Lomb</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>4% PFA</td>
+<td>Electron Microscopy Sciences</td>
+<td>REF.: 15710</td>
+</tr>
+<tr>
+<td>DAPI</td>
+<td>Invitrogen</td>
+<td>REF.: D1306</td>
+</tr>
+<tr>
+<td>Vectashield Mounting Medium</td>
+<td>Vector Laboratories</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>Carl Roth</td>
+<td>REF.: 4621.1</td>
+</tr>
+<tr>
+<td>Surgical glue vetbond</td>
+<td>3M</td>
+<td>REF.: 1469SB</td>
+</tr>
+<tr>
+<td>Polytec UV-Glue 2195</td>
+<td>Polytec PC</td>
+<td>REF.: 2017PWP1188</td>
+</tr>
+<tr>
+<td>Saline 0.9%</td>
+<td>Fresenius Kabi</td>
+<td>PZN - 06605514</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse: C57BL/6J, P40, male</td>
+<td>Janvier Laboratory</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Matlab</td>
+<td>The MathWorks</td>
+<td>Version 2016b</td>
+</tr>
+<tr>
+<td><i>Custom written code for segmentation (MATLAB):</i></td>
+<td>Stroh lab (<a href="#bib14">Fu et al., 2021</a>)</td>
+<td><a href="https://github.com/Strohlab/ROIMeasure">https://github.com/Strohlab/ROIMeasure</a></td>
+</tr>
+<tr>
+<td>IGOR Pro</td>
+<td>Wavemetrics</td>
+<td>Version 6.2</td>
+</tr>
+<tr>
+<td><i>Custom written code for calcium transient detection and binarization (IGOR Pro):</i></td>
+<td>Stroh lab (<a href="#bib14">Fu et al., 2021</a>)</td>
+<td><a href="https://github.com/Strohlab/Igor-Spike-Detection">https://github.com/Strohlab/Igor-Spike-Detection</a></td>
+</tr>
+<tr>
+<td>ImageJ</td>
+<td><a href="#bib27">Schneider et al. (2012)</a></td>
+<td><a href="https://imagej.nih.gov/ij/">https://imagej.nih.gov/ij/</a></td>
+</tr>
+<tr>
+<td><i>Cell-Counter plugin for ImageJ:</i></td>
+<td>Included in cell_counter.jar, and is released under the GNU General Public License.</td>
+<td><a href="https://imagej.nih.gov/ij/plugins/cell-counter.html">https://imagej.nih.gov/ij/plugins/cell-counter.html</a></td>
+</tr>
+<tr>
+<td><i>Motion correction plugin for ImageJ:</i></td>
+<td>GitHub (<a href="#bib10">Dubbs et al., 2016</a>)</td>
+<td><a href="https://github.com/NTCColumbia/moco">https://github.com/NTCColumbia/moco</a></td>
+</tr>
+<tr>
+<td>Imspector</td>
+<td>LaVision BioTec GmbHA Miltenyi Biotec Company</td>
+<td>Version 5.0.273.0</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Ringcaps/Micropipette/Capillary pipettes</td>
+<td>Hirschmann</td>
+<td>REF.: 960-01-05</td>
+</tr>
+<tr>
+<td>Surgical sponges</td>
+<td>Spongostan Standard</td>
+<td>REF.: MS0006</td>
+</tr>
+<tr>
+<td>Absorption Triangles</td>
+<td>Fine Science Tools</td>
+<td>REF.: 18105-03</td>
+</tr>
+<tr>
+<td>Sterile scalpel blade #11</td>
+<td>Braun</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Parafilm M</td>
+<td>Witeg</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Object slide (histology)</td>
+<td>Gerhard Menzel</td>
+<td>J1800AMNZ</td>
+</tr>
+<tr>
+<td>Object cover slip (histology)</td>
+<td>Gerhard Menzel</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Round cover slip 3 mm– #0 (optical window)</td>
+<td>Electron Microscopy Sciences</td>
+<td>REF.: 72296-03</td>
+</tr>
+<tr>
+<td>Round cover slip 4 mm- #1 (optical window)</td>
+<td>Electron Microscopy Sciences</td>
+<td>REF.: 640724</td>
+</tr>
+<tr>
+<td>Student Vannas Spring Scissors</td>
+<td>Fine Science Tools</td>
+<td>REF.: 91500-09</td>
+</tr>
+<tr>
+<td>Dumont 590 Forceps - Micro-Blunted, Standard Tips/Angled 90°/Inox/11cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11253-29</td>
+</tr>
+<tr>
+<td>Dumont #5CO Forceps - BiologyTips/Straight/Dumostar/11cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11295-20</td>
+</tr>
+<tr>
+<td>Dumont #5 Fine Forceps - Biology Tips/Straight/Inox/11cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11254-20</td>
+</tr>
+<tr>
+<td>Student Vannas Spring Scissors -Curved/Sharp/9cm/5mm CuttingEdge</td>
+<td>Fine Science Tools</td>
+<td>REF.: 91501-09</td>
+</tr>
+<tr>
+<td>Dumont #5/45 Forceps - StandardTips/Angled 45°/Dumoxel/11cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11251-35</td>
+</tr>
+<tr>
+<td>Skin Marker</td>
+<td>Fine Science Tools</td>
+<td>REF.: 18000-30</td>
+</tr>
+<tr>
+<td>Burrs for Micro Drill - 0.5mm TipDiameter/Carbon Steel</td>
+<td>Fine Science Tools</td>
+<td>REF.: 19007-05</td>
+</tr>
+<tr>
+<td>London Forceps - Serrated/Angled /45°/16 cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11080-02</td>
+</tr>
+<tr>
+<td>Moria 9987 Ultra Fine Forceps -Biology/Curved/13cm</td>
+<td>Fine Science Tools</td>
+<td>REF.: 11399-87</td>
+</tr>
+<tr>
+<td>Biopsy punch 4mm</td>
+<td>Glaxo Smith Kline GmbH</td>
+<td>REF.: 3547087</td>
+</tr>
+<tr>
+<td>Patafix</td>
+<td>UHU GmbH &amp; Co</td>
+<td>REF.: 3001145</td>
+</tr>
+<tr>
+<td>Microlance 3–18G (Needle)</td>
+<td>BD</td>
+<td>REF.: 304622</td>
+</tr>
+<tr>
+<td>Cotton swabs</td>
+<td>Q-Tips</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Micropipette puller</td>
+<td>NARISHIGE</td>
+<td>Model: PC-10</td>
+</tr>
+<tr>
+<td>Electric hair trimmer</td>
+<td>Aesculap</td>
+<td>GT416</td>
+</tr>
+<tr>
+<td>Halogen gun for polymerization</td>
+<td>Megaphysics</td>
+<td>Megalux Soft start</td>
+</tr>
+<tr>
+<td>Stereotaxic frame</td>
+<td>Kopf</td>
+<td>DKI 942, DKI 923-B and DKI 922</td>
+</tr>
+<tr>
+<td>Animal temperature controller</td>
+<td>World precision instruments</td>
+<td>ATC 200</td>
+</tr>
+<tr>
+<td>Confocal microscope</td>
+<td>Leica Microsystems</td>
+<td>SP8</td>
+</tr>
+<tr>
+<td>Dental drill</td>
+<td>Ultimate XL-F</td>
+<td>Y141513</td>
+</tr>
+<tr>
+<td>Micro Drill steel Burrs 0,5mm</td>
+<td>Fine Science Tools</td>
+<td>19007-05</td>
+</tr>
+<tr>
+<td>Vibratome</td>
+<td>Leica Biosystems</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Custom-made 2-photon microscope</td>
+<td>LaVision Biotec</td>
+<td>TrimScope II</td>
+</tr>
+<tr>
+<td>Ti:Sapphire laser</td>
+<td>Coherent</td>
+<td>Chameleon II</td>
+</tr>
+<tr>
+<td>VIS-IR objective</td>
+<td>Zeiss</td>
+<td>W-Plan-Apochromatic 20 × DIC</td>
+</tr>
+<tr>
+<td>Optical parametric oscillator</td>
+<td>Coherent</td>
+<td>Chameleon compact OPO</td>
+</tr>
+<tr>
+<td>PMT</td>
+<td>Hamamatsu</td>
+<td>H7-422-40 LV GaAsP</td>
+</tr>
+<tr>
+<td>Peristaltic pump (perfusion)</td>
+<td>Ismatec</td>
+<td>Model ISM831C</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Part 1: Virus injection and titer optimization</h3>
+<ol>
+<li>Preparing viral dilutions for titration
+<div class="timing">
+<span class="timing-title">Timing:</span> 10–15 min</div>
+For all different calcium indicator/opsin pairs a titration and histological examination should be conducted. It is advised to perform a viral titer optimization <i>a priori</i>. This can be done in a sequential manner, starting with the two viruses in parallel (<a href="#fig3">Figures 3</a>A–3D), before conducting a final titration step with the combination of these two. Once the optimal titer for each virus is known, it serves as a starting reference to define the optimal titer for the combination of two viruses (<a href="#fig3">Figures 3</a>E and 3F). Each chosen titer should be tested at least in two animals to minimize the impact of eventual pipetting or injection errors.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Titration procedure to achieve optimal calcium indicator/opsin co-expression</div>
+<p>(A–D) Three different titer concentrations of the virus carrying the calcium indicator (A) or opsin (C) information are diluted and injected in two independent hemispheres of two different mice (B and D).</p>
+<p>(E) Once the optimal concentration of indicator and opsin is defined, another titration experiment is conducted.</p>
+<p>(F) A solution containing both viruses at their optimal concentration (F c<sub>I</sub>) is injected in two hemispheres of two independent animals. To ensure an optimal co-expression and to exclude any interference of the viruses, a second solution (F c<sub>II</sub>) containing the optimal concentration of the calcium indicator combined with a changed titer of the virus containing the opsin and a third solution (F c<sub>III</sub>) containing the optimal titer of the opsin in combination with a changed titer of the virus containing the calcium indicator information is injected in two hemispheres of two independent animals each.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Prepare 6 tubes, three for each virus (calcium indicator and opsin, respectively) and label them accordingly (<a href="#fig3">Figures 3</a>A and 3C).
+<div class="critical">
+<span class="critical-title">Critical:</span> Before handling AAVs or any other viruses, make sure to read and adhere to the safety instructions of your institution.</div>
+</li>
+<li>Dilute the virus in sterile PBS or saline (<a href="#bib3">Bennett et al., 2017</a>) in parallel, according to the desired titer in each labeled tube. We recommend the following starting titers based on viral particle numbers ranging at:
+<ol type="i">
+<li>CamKII-GCaMP6f: undiluted, 1(GCaMP6f):20(PBS), 1:40.</li>
+<li>CamKII-C1V1: undiluted, 2(C1V1):1(PBS), 1:1.</li>
+</ol>
+</li>
+<li>Store the tubes at 4°C, protected from light, for up to 2 weeks.
+<div class="note">
+<span class="note-title">Note:</span> After performing the titration and evaluating both viruses independently, another titration should be conducted, commencing with the two best titers of both viruses in the same solution.</div>
+</li>
+<li>Prepare three tubes and label them accordingly.</li>
+<li>Pipette the virus-pair (calcium indicator + opsin) in three labeled tubes: one virus-combination constitutes the optimal titer of the respective virus defined previously. For the remaining two combinations, one titer is retained while the other titer is going to be changed (<a href="#fig3">Figure 3</a>E). In our case, the optimal titer for each virus has been confirmed as 1:20 (GCaMP6f) and 2:1 (C1V1<sub>T/T</sub>), so we chose the titer-combinations for GCaMP6f/C1V1<sub>T/T</sub> of 1:20/2:1, 1:40/2:1 and 1:20/4:1.</li>
+<li>Store the tubes at 4°C and avoid any light exposure.
+<div class="note">
+<span class="note-title">Note:</span> After the best titer combination is found, we calculate the particle number as reference for further experiments. In our case, the optimal titer was 1:20/2:1, resulting in the particle numbers 1.84 × 10<sup>10</sup>/ mL and 3.33 × 10<sup>11</sup>/ mL, GCaMP6f/C1V1<sub>T/T</sub> respectively.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be aware if the administered virus has synapse crossing properties, e.g. rabies based viral vectors (<a href="#bib24">Reardon et al., 2016</a>). In this case, a bilateral injection in the same animal is not advised.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Animal preparation (Induction of anesthesia):
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–10 min</div>
+<ol type="a">
+<li>Weigh the animal. The age, strain and sex of the animals is defined for each study individually. In our previous study (<a href="#bib14">Fu et al., 2021</a>), we used C57BL/6J mice (P40).</li>
+<li>Anesthetize the animal, by placing the mouse in an anesthesia induction chamber (4% Isoflurane/oxygen).</li>
+<li>Under visual control, wait until the breathing rate of the animal drops to approximately 60 BPM.</li>
+<li>Administer local analgesia, in our case by injecting buprenorphine (diluted with sterile water or saline for injection) subcutaneously with a concentration of 0.05–0.1 mg/kg.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Placement of animal in stereotaxic system:
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–20 min</div>
+<ol type="a">
+<li>Immediately transfer the deeply anesthetized animal to the stereotaxic frame. Position the upper front teeth into the dedicated opening of the tooth bar. In case volatile anesthetics is used, cover the nose with the anesthesia mask and ensure it fits tightly. The isoflurane level typically is set to 2%.</li>
+<li>Test the animal’s reflexes, by pinching the skin between the toes of the medial with a forceps. If no reflex is observed, continue with the next step. If reflexes are observed, slowly increase the anesthesia.</li>
+<li>Monitor the temperature of the animal ideally by a closed loop <i>in vivo</i> monitoring system comprising of a temperature sensor, heating plate and control electronics. Insert the temperature sensor into the rectum of the animal and set the desired temperature value (37°C–38°C).
+<div class="critical">
+<span class="critical-title">Critical:</span> Observe the respiration carefully. Throughout surgery, take utmost care to ensure that respiration rate exceeds 30 breaths per minute. Avoiding gasping of the animal is crucial. Once it enters this respiratory stage, the animal is unlikely to achieve a stable state of anesthesia, even if isoflurane level is decreased.</div>
+</li>
+<li>Shave the head with an electric hair trimmer (the shaved area should be larger than the actual opening for the injection/window) and carefully clean up after then.</li>
+<li>Apply an eye cream containing the agent dexpanthenol (Vidisic) to avoid the eyes drying out.</li>
+<li>Apply 2% xylocaine solution on the surgery area (several minutes before the surgery/opening). We use 10–20 mg xylocaine.</li>
+<li>Fix the head firmly with the ear bars and make sure to check the front-back and left-right alignment.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Craniotomy:
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–20 min</div>
+<ol type="a">
+<li>Cut the scalp with a scalpel blade at the midline sagittal suture (<a href="#fig4">Figure 4</a>I).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Accessing the injection site</div>
+<p>(I) An incision is made on the scalp with a scalpel blade to reveal the skull. (II) The skull is cleaned using triangle sponges and PBS. (III) After the skull is thoroughly cleaned, the injection site is marked for drilling the craniotomy. The scale bars are 1 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Pull the scalp aside, peel/cut the periosteum off, clean and expose the skull with triangle sponges (<a href="#fig4">Figure 4</a>II).</li>
+<li>Attach an 18G needle to the stereotaxic frame and match its tip to bregma. Set the coordinates of the micromanipulator to zero. All coordinates refer to the bregma location.</li>
+<li>Move the tip of the needle to the injection point by operating the manipulator according to the desired coordination for injection. In our case, for visual cortex we use anterior posterior 3.0 mm and medial lateral 2.8 mm. Mark the position(s) on the skull using ink (Skin Marker) that was administered on the tip of the needle (<a href="#fig4">Figure 4</a>III).</li>
+<li>Perform the craniotomy employing a dental drill (0.5 mm diameter of the drill bit)</li>
+<li>First, thin the skull at the respective location (<a href="#fig5">Figure 5</a>I–III).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Performing the craniotomy to access the brain for virus injection</div>
+<p>(I) The skull is thinned out using a dental drill. (II) Overview of the craniotomy shortly before the brain is exposed and a magnification (III) of the preparation of the injection site. Both images show the same time point in the surgery. The scale bars in (I) and (II) are 1 mm, the scale bar in (III) is 0.5 mm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is of utmost importance to drill very slowly and carefully when getting closer to break through the skull to avoid puncturing the brain (see <a href="#troubleshooting">troubleshooting 1</a>). Furthermore, setting the drill speed too high can cause high temperatures damaging the brain tissue. Saline or PBS should be poured every 2–3 min on the drilling site to prevent heating damage.</div>
+</li>
+<li>Finally, gently flip up the thinned skull fragment using a 20G needle or a fine tip forceps (see <a href="#troubleshooting">troubleshooting 1</a>).
+<div class="critical">
+<span class="critical-title">Critical:</span> The opening area should always be covered with saline or PBS or surgical sponge soaked with these solutions, to prevent tissue damage due to dehydration until the surgery is completed.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Injection of virus solution for titration
+<div class="timing">
+<span class="timing-title">Timing:</span> 25–30 min</div>
+<ol type="a">
+<li>Exchange the 18G needle with the pulled micropipette in the stereotaxic frame, connect the syringe with tubing to the end of the micropipette. The syringe will be used to apply and control pressure to the attached micropipette to manually load and inject the virus (<a href="#fig6">Figure 6</a>I).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Injection of the viral vectors</div>
+<p>(I) The micropipette is mounted to the arm of the stereotaxic frame and is positioned in the right angel and coordinate to enter the exposed brain. (II) A piece of parafilm is placed onto the animal’s head and 1 μL of the virus solution is dropped on it. The micropipette is lowered until the tip is placed inside the drop of the solution and front-loaded by applying negative pressure via the syringe connected to the backend of the micropipette. When the virus solution is loaded into the micropipette, withdraw it by operating the micromanipulator and remove the parafilm. (III) The micropipette containing the solution is lowered into the injection site at a depth of 250 μm and the virus is administered at three different depths: 250 μm, 200 μm and 150 μm with an angle of 35°. The micropipette is indicated by white dashed lines. The scale bar in (III) is 0.5 mm.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In our laboratory, we prefer the manual injection, as this procedure allows the experimenter to observe and ensure that the virus solution is injected and control any clogging of the injection pipette.</div>
+</li>
+<li>Place a disinfected piece of parafilm (approx. 1.5 cm × 1.5 cm) on the top of the surgical sponge that is covering the craniotomy. Lower the tip of the micropipette for the injection (<a href="#fig6">Figure 6</a>I). In our case, we perform the injection with an angle of 35°.
+<div class="note">
+<span class="note-title">Note:</span> Injection with an angle will decrease the virus spillover, as the micropipette will further penetrate a longer distance in the tissue leading to a better dispersion of the virus. Furthermore, the damage in the tissue caused by the micropipette track will promote less interference during image acquisition. If you are using an angle for injection, make sure to recalculate the penetration depth correspondingly to reach the region of interest.</div>
+</li>
+<li>Apply a drop of the virus solution, in our case 1.0 μL, onto the parafilm (<a href="#fig6">Figure 6</a>II).
+<div class="critical">
+<span class="critical-title">Critical:</span> The virus solution should always be kept at 4°C until it is applied onto the parafilm. The steps c to h should not last more than 15–20 min.</div>
+</li>
+<li>“Front-load” the virus into the micropipette by operating the micromanipulator with the attached pipette. When the micropipette is located in the center of the drop, pull the connected syringe to load the virus solution until the necessary volume of 0.6 μL is reached. Gently retract the micropipette (<a href="#fig6">Figure 6</a>II).</li>
+<li>Remove the parafilm and move the micropipette back to the injection point until it touches the surface of the brain.</li>
+<li>Reset the z-axis of the micromanipulator to zero.</li>
+<li>Advance the micropipette slowly into the brain (ca. 150–250 μm in z-coordinate, (<a href="#fig6">Figure 6</a>III). In our case, multiple injections points along the z-axis are performed. Therefore, we use a total volume of 0.6 μL for injection. At each injection point, administer 200 nL virus volume.
+<div class="note">
+<span class="note-title">Note:</span> Multi-injections at several z-coordinates above the initial injection site can make a broader expression of the virus. We recommend injecting the virus solution in three depths, along the injection site. In our case, we inject at 250 μm, 200 μm and 150 μm with an angle of 35°.</div>
+</li>
+<li>Carefully apply pressure onto the syringe to inject the virus solution into the brain. Control the speed of injection by observing the ink markers on the micropipette and regulating the pressure in parallel. The injection rate should be in a range of ≤ 0.20 μL/min.</li>
+<li>Keep the micropipette in place for another 5–10 min after the injection is finished. This allows the dispersion of the virus solution in the brain and minimizes upward flow of virus solution after raising the micropipette.</li>
+<li>Withdraw the micropipette slowly.</li>
+<li>Clean the injection point with saline/PBS. Put the scalp back to the original place and suture it or front-load a micropipette with surgical glue for sealing the incision (<a href="#fig7">Figure 7</a>I–III).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Closing the exposed skull</div>
+<p>(I) The scalp is carefully moved back to its original position with a triangle sponge and the skin is glued using surgical glue (II). To ensure that the skin is not glued to the skull, use a forceps, and move the glued skin from one side to another. The scale bars are 2 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Carefully administer the glue on the incision and make sure to not let it get under the skin: by moving the scalp from one side to another to ensure the scalp is not adhered to the skull by remnants of the glue, which would be detrimental to the healing process (<a href="#fig7">Figure 7</a>III).
+<div class="note">
+<span class="note-title">Note:</span> To front-load the micropipette with surgical glue, first use a small spring scissor to cut the tip of a pulled micropipette to create a large opening of approx. 0.5 mm, then dip it into a surgical glue drop. Capillary forces will suck the surgical glue into the micropipette.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Histology for characterization of the calcium indicator/opsin co-expression
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–5 days</div>
+<div class="note">
+<span class="note-title">Note:</span> 4–6 weeks post injection is the ideal time for virus expression.</div>
+<ol type="a">
+<li>Initially transcardially perfuse the animal with PBS to remove blood residues. Afterwards, switch the perfusion solution to 4% PFA to fix the tissue. We suggest using a peristaltic pump for this procedure.</li>
+<li>Remove the brain of the animal without damaging it and post-fix it in 4% PFA for 24 h, e.g., in a falcon tube. Use sufficient amount of PFA to cover the brain.</li>
+<li>After 24 h, start dehydrating the tissue by transferring the brain to a falcon tube containing 15% sucrose for 24 h.</li>
+<li>On the following day, transfer the tissue to a new falcon tube containing 30% sucrose for another 24 h.
+<div class="note">
+<span class="note-title">Note:</span> The volume of the sucrose solution should exceed at least 5–10 times the volume of the brain.</div>
+</li>
+<li>Slice the brain region of interest (70 μm thickness) using a Vibratome. In our case, we cut the brain in coronal slices.</li>
+<li>Slices should be directly transferred onto object slides.</li>
+<li>The slices should be marked with a nucleic acid stain shortly before mounting, e.g., DAPI, following the safety instructions and the protocol of the agent. Mount the slice with Vectashield Mounting Medium and fixate it with a cover slip.</li>
+<li>Brain tissue sections should be imaged with a confocal microscope (<a href="#fig8">Figures 8</a>A–8C). Typically, first, an overview image to ascertain the volume of opsin or indicator expression with a 10× objective is advised. Filter settings and laser power levels depend both on the fluorophore and the confocal hardware. Homogenous staining, as described below, is best assessed by a 40× objective, or, in case of axonal or dendritic staining, by a 63× objective.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Confocal micrographs of GCaMP6f and C1V1<sub>T/T</sub> co-expressing neurons in mouse visual cortex</div>
+<p>(A and B) CamKII-GCaMP6f, represented in green, and CamKII-C1V1<sub>T/T</sub> in red, are mostly expressed in neurons in layer II/III, V and VI. An excerpt of a co-expressing neuron is highlighted in the upper right corner.</p>
+<p>(C) A magnification of an overlay of both channels is showing co-expressing neurons in yellow, indicated by white arrows. The scale bars in (A) and (B) are 100 μm, scale bar in (C) is 25 μm. The scale bars of the insets in (A) and (B) are 25 μm.</p>
+</figcaption>
+</figure>
+</li>
+<li>The optimal titer will then be determined depending on the outcome of the following procedure:</li>
+<li>To determine the density of calcium indicator and opsin expressing cells, all cells with smooth and strong expression within the volume are counted separately for each layer by using the cell counter plug-in of ImageJ (Plugins – Analyze – Cell Counter, see section <a href="#da0010">code availability</a>).</li>
+<li>The density of cells per mm<sup>3</sup> in cortical layers II/III, IV, V/VI are calculated by dividing the total number of cells within the volume of strong yet homogenous fluorescence in each layer by the volume. The two independently injected hemispheres for each titer concentration are considered on this calculation. Further information regarding titration evaluation can be found in the references (<a href="#bib14">Fu et al., 2021</a>; <a href="#bib9">Döring et al., 2018</a>).
+<div class="note">
+<span class="note-title">Note:</span> Judging the quality of confocal micrographs depends on several experiment specific factors, such as the targeted cell population, the type of virus used and the brain region. However, in our experiments, we aim for an outcome exhibiting homogeneous expression along the neuronal somata, the absence of blebbing and fluorescent punctae as well as a nucleus free staining. For detailed practical advice and example images, please see <a href="#bib32">Yang et al. (2018)</a>.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.2">Part 2: Chronic window implantation for longitudinal 2-photon calcium imaging</h3>
+<ol start="7">
+<li>Virus injection and chronic window implantation:
+<div class="timing">
+<span class="timing-title">Timing:</span> 60–120 min</div>
+<ol type="a">
+<li>Prepare the virus solution according to "Protocol Part 1": 1d–f, repeat 2a–d and 3a–g.</li>
+<li>Make an incision: cut the scalp with a scalpel blade at the midline sagittal suture, then use a small spring scissor to partially remove the scalp from the skull (<a href="#fig9">Figure 9</a>I–II).
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Commencing the surgery for chronic window implantation</div>
+<p>The scalp is removed by initially making medial incision with a scissor, followed by cutting the scalp in a circular manner (I–II). The periosteum is peeled off and the skull thoroughly cleaned with sponge and PBS (II). Ink-mark the tip of a needle to locate the bregma for defining the zero-position of the micromanipulator (III). The scale bars are 2 mm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> the exposed skull surface must be smaller than the shaved region so the adhesive (i.e.: dental cement, UV-Glue, etc.) will not be on top of the hair. The exposed surface should not include the neck/facial muscles for avoiding muscle inflammation caused by the glue. An inflamed muscle may lead to a reduced adhesion of the UV-glue or dental cement.</div>
+</li>
+<li>Peel or cut off the periosteum, clean the exposed skull with triangle sponges drenched in PBS.</li>
+<li>Use a scalpel blade to scratch the remaining tissue/fascia from the skull carefully. The surface of the skull needs to be clean and dry.
+<div class="critical">
+<span class="critical-title">Critical:</span> This step is essential for the attachment of adhesive, it is crucial to perform this step with utmost care, even though it might be time consuming. A sloppy cleaning of the skull`s surface might result in an insufficient adhesion of the glue and a loss of the headholder (<a href="#bib16">Hefendehl et al., 2012</a>).</div>
+</li>
+<li>Attach an 18G needle to the stereotaxic frame and match its tip to bregma (<a href="#fig9">Figures 9</a>III and <a href="#fig10">10</a>I–II). Set the micromanipulator coordinates to zero (<a href="#fig10">Figure 10</a>I).
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Defining the reference position</div>
+<p>Locate the needle above bregma (I). Lower the needle until it touches bregma and set the micromanipulator coordinates to zero (II). The scale bar in (I) is 2 mm, the scale bar in (II) is 1 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Use the micromanipulator to move the tip of the needle to the injection point according the required coordinates and mark the position(s) on the skull using ink on the tip of the needle (<a href="#fig11">Figure 11</a>I).
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Preparing the craniotomy site</div>
+<p>The tip of the ink-marked needle is located at the site for performing the craniotomy (I). Here, we located the primary visual cortex V1 at the coordinates AP 3.0 mm ML 2.8 mm. A biopsy punch is used to create a ledger line as a guide for the subsequent craniotomy (II). The borders of the skin are sealed with surgical glue for a more stable preparation (III). The scale bars are 1 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Place a piece of surgical sponge soaked in PBS/Saline on top of the injection site and keep it there for a few minutes in order to soften the skull. This will simplify the drilling and flipping-up of the bone fragment in the following steps.</li>
+<li>Remove the sponge and use a biopsy puncher to make a very shallow cut around the central point of the injection site as a landmark for a round craniotomy (<a href="#fig11">Figure 11</a>II). The opening area must be smaller than the coverslip.</li>
+<li>Front-load a micropipette with surgical glue and seal the edges of the skin surrounding the exposed skull (<a href="#fig11">Figure 11</a>III).</li>
+<li>Drill the skull (according the biopsy puncher mark) very carefully, to thin out the bone but without punctuating the brain (<a href="#fig12">Figure 12</a>I). Clean the surface from the bone scrapings with compressed air and moisture the skull with wet surgical sponges from time to time.
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. Accessing the injection site, administering the viral vectors, and implanting of the chronic window</div>
+<p>The skull is thinned out with a dental drill at the ledger line previously prepared with the biopsy punch (I). The remains of the thinned skull are flipped up with a forceps to expose the brain (II). Apply PBS or saline on the brain and always remain it hydrated (III). Front-load the virus into the micropipette, (IV) and administer it into the exposed brain (V) according to desired coordinate. Implant the cover glass by placing it onto the opened skull and apply gentle pressure with a curved forceps on it while sealing it with surgical glue filled in a micropipette (VI). After all edges are sealed, keep the pressure upright until the glue is dry. Micropipettes are indicated by white dashed lines (IV and V) and black dashed lines (VI) for better visibility. The scale bars in (I), (II), (III), (IV) and (VI) are 0.5 mm, the scale bar in (V) is 1 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Use a fine forceps to remove the detached skull while the dura remains intact (<a href="#fig12">Figure 12</a>II).</li>
+<li>Place a surgical sponge soaked with PBS/Saline on top of the opening area (<a href="#fig12">Figure 12</a>V).).</li>
+<li>Locate the micropipette for virus injection to the injection point and front load the virus according to the steps 5a–e from “protocol part 1” (<a href="#fig12">Figure 12</a>IV).</li>
+<li>Pull the surgical sponge aside to perform the virus injection according to the steps 5f – j from “protocol part 1” (<a href="#fig12">Figure 12</a>V) and then clean the injection point with saline/PBS carefully (see <a href="#troubleshooting">troubleshooting 1</a>).
+<div class="critical">
+<span class="critical-title">Critical:</span> The exposed brain tissue has to be covered with PBS/Saline or a wet surgical sponge throughout the whole procedure. If the brain tissue is drying out the tissue can be permanently damaged.</div>
+</li>
+<li>Front-load a micropipette with surgical glue for gluing the coverslip in step 7 r.</li>
+<li>Take a coverslip with a diameter of 3 or 4 mm and a thickness of 0.1 mm with a small forceps and clean it with a triangle sponge and ETOH 70%, then float it in PBS/Saline solution (see <a href="#troubleshooting">troubleshooting 3</a>).</li>
+<li>Remove the surgical sponge from the exposed tissue and moisten the exposed tissue with PBS/Saline drop.</li>
+<li>Put the coverslip over the opening area and gently press the coverslip on the skull with an angled forceps to make the coverslip completely adhere to the bone (<a href="#fig12">Figure 12</a>VI).</li>
+<li>Use triangle sponges to carefully dry the skull around the coverslip without soaking up the PBS/Saline under the coverslip while applying gentle pressure with an angled forceps.
+<div class="critical">
+<span class="critical-title">Critical:</span> For successful imaging, it is critical to make sure that there are no air bubbles between the tissue and the coverslip. In doubt, leave the bone surrounding the cover slip a little bit wet (see <a href="#troubleshooting">troubleshooting 2</a>).</div>
+</li>
+<li>Use the micropipette loaded with surgical glue to apply small amounts of surgical glue point after point all around the coverslip while applying gentile pressure with an angled forceps (<a href="#fig12">Figure 12</a>VI).
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure to apply the appropriate amount of glue, so that it will not get into the opening area nor on top of the coverslip.</div>
+</li>
+<li>Maintain the pressure by the angled forceps for approximately 2 min until the glue is dry.</li>
+<li>In case the remaining exposed skull is wet, dry it properly by using Q-tips and triangle sponges.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Holder implantation
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol type="a">
+<li>Gently make small incisions on the skull surface with a scalpel blade in a grid pattern for improved adhesion (<a href="#fig13">Figure 13</a>I).
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. Implantation of the headholder</div>
+<p>Use a scalpel blade to cut small incisions forming a grid pattern into the exposed skull to increase adhesion of the UV-glue in the following step (I). The white dashed lines serve as illustration for the desired pattern (I). Apply UV-glue in layers onto the skull and hardening them with UV-light after placing each layer (II). Implant the holder by gluing it on the last layers (III). The scale bars in (I), (II) are 1 mm, the scale bar in (III) is 2 mm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Prepare the adhesive (dental cement or UV-glue) and use a 20G needle for applying it on the exposed skull. Make sure to apply the adhesive only on the exposed skull and not to the skin (<a href="#fig13">Figure 13</a>II).
+<div class="note">
+<span class="note-title">Note:</span> The size of the headholder needs to be big enough to cover both hemispheres of the skull (<a href="#fig14">Figure 14</a>). A two to four point fixation with the fixation points located at two hemispheres is mandatory to ensure a movement artefact free recording.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> When using cement, make sure that the cement is not too fluid nor too dense. When using UV-Glue, apply the glue in small layers and expose it to UV-light after each layer. Do not administer a big amount of UV-glue at once to avoid a hardening of the upper layer while the lower layers remain viscous which can lead to an instability of the headholder (see <a href="#troubleshooting">troubleshooting 4</a>).</div>
+</li>
+<li>While applying the first layer of adhesive around the coverslip, take care to only cover its borders with adhesive. Do not administer adhesive on top of the coverslip since it is very difficult to remove it afterwards, reducing the quality of the imaging experiments.
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Headholder</div>
+<p>We use a circular metal holder for stable fixation of the animal during imaging. The outer diameter is 14 mm, the inner diameter is 7 mm and the thickness 2 mm (<a href="#bib16">Hefendehl et al., 2012</a>).</p>
+</figcaption>
+</figure>
+</li>
+<li>Apply adhesive to attach the holder to the animal’s skull (<a href="#fig13">Figure 13</a>III). When using UV glue, apply some glue to the base of the head holder and then place it on top of the previously administered layer of UV glue.</li>
+<li>Make sure that the adhesive is completely dry before moving the animal from the stereotaxic frame.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.3">Part 3: 2-P all-optical experiment</h3>
+<p>2-P all-optical experiments require a dedicated hardware for, ideally, photostimulate opsin expressing cells while fast full-field imaging the field of view. It has to be noted, that excitation wavelengths that are close to each other might lead to a cross-talk between the channels. We propose to choose the calcium indicator/opsin pair that the spectral wavelengths for imaging and excitation are as separated as possible to avoid cross-talk from 2-P stimulation during image acquisition. An overview of commonly used calcium indicators and opsins are shown in <a href="#fig15">Figure 15</a> to serve as an orientation for choosing the best suited pair. Note that it is also possible to reach spectral independency using a blue shifted opsin like the newly developed stCoChR, a soma-targeted variant of the opsin CoChR, while 2-P imaging the neuronal micronetwork with the red-shifted calcium indicator jRCaMP1a (<a href="#bib13">Forli et al., 2021</a>).</p>
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. A selection of calcium indicator opsin pairs and their spectral properties under a two-photon regime</div>
+<p>Cross-talk between indicator and opsin can be avoided by choosing a pair with non-overlapping excitation and emission wavelengths. For example, we used the combination of GCaMP6f, excited at 920 nm, and C1V1<sub>T/T</sub> was excited above 1100 nm to reach cross-talk free imaging (<a href="#bib6">Chen et al., 2019</a>; <a href="#bib14">Fu et al., 2021</a>; <a href="#bib19">Lin et al., 2013</a>; <a href="#bib25">Ronzitti et al., 2017a</a>; <a href="#bib22">Papagiakoumou et al., 2018</a>; <a href="#bib8">Chettih and Harvey, 2019</a>).</p>
+<p>Figure adapted from <a href="#bib5">Chen et al. (2018)</a>.</p>
+</figcaption>
+</figure>
+<ol start="9">
+<li>2-P calcium imaging combined with 2-P optogenetics
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<div class="note">
+<span class="note-title">Note:</span> We advise to perform imaging experiments within 4 to 6 weeks post injection to ensure functional co-expression of calcium indicator and opsin. Furthermore, transient inflammation caused by the surgical procedure can cease.</div>
+<ol type="a">
+<li>Transfer the animal to the microscope (<a href="#fig16">Figure 16</a>). Mount the headholder (<a href="#bib16">Hefendehl et al., 2012</a>) to a restraining device under the microscopes’ objective.
+<figure id="fig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig16.jpg" alt="Fig16.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 16. A head-restrained mouse under the objective of a 2-P microscope.</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> This protocol can be applied to both, anesthetized and awake imaging experiments. If the experiment is carried out in awake animals, perform a habituation prior to the imaging session. This is necessary to reduce the stress load of the animal during the experiment and consequently affects the quality of your data. Plan approximately 5 days for habituation for each animal. On the first 2 days, handle the animal 15–20 min and let it get used to the experimenter. On day 3 and 4, restrain the animal’s head and on day 5 restrain the animal under the microscope without imaging.</div>
+</li>
+<li>Use a femtosecond pulsed laser and resonant scanner for fast full-field scanning up to 35 Hz for imaging the calcium indicator expressing cells. In our case, we use a Titan-Sapphire (Ti:Sa) laser at 920 nm (<a href="#fig17">Figure 17</a>III) (see <a href="#troubleshooting">troubleshooting 5</a>). For a schematic overview of the microscopic system used for our experiments, please see <a href="#bib14">Fu et al. (2021)</a> and <a href="#bib9">Döring et al. (2018)</a>.
+<figure id="fig17"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig17.jpg" alt="Fig17.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 17. Overview of the user interface of the software Imspector controlling the 2-P microscope</div>
+<p>Region of interest (ROI) for photostimulation are defined and settings such as pixel dwell times and line width can be adapted (I). The recorded field of view for functional calcium imaging and the sensitivity of the PMTs are adjusted (II). The wavelength of the laser for calcium indicator (III) and opsin excitation is set and the shutters are controlled (IV). Properties of the lasers for photostimulation and imaging can be modified (V). The figure is published with the kind permission of LaVision BioTec GmbH, Bielefeld, Germany.</p>
+</figcaption>
+</figure>
+</li>
+<li>Images were acquired by a Zeiss W-Plan-Apochromatic 20 × DIC VIS-IR objective (NA = 1.0) (<a href="#fig17">Figure 17</a>II), resulting in a field of view (FOV) of 466 × 466 μm. However, the actual dimension of the recorded FOV depends on the used objective and its magnification properties. Typically, the FOV is represented in a matrix of 512 × 512 pixels (see <a href="#troubleshooting">troubleshooting 3</a>).</li>
+<li>For opsin excitation, an independent laser should be used to temporally uncouple opsin and indicator excitation, enabling a simultaneous readout of the microcircuits response upon optogenetic manipulation of single neurons. In our case, we used an optical parametric oscillator (OPO) at 1100 nm pumped by a Ti:Sa laser at 800 nm (<a href="#fig17">Figure 17</a>V).
+<div class="note">
+<span class="note-title">Note:</span> In resonant scanning full field mode of our experiment, the pixel dwell time ranges at 1 μs, which might be too short to efficiently excite an opsin. To achieve longer pixel dwell times, either use a second galvo-resonant mirror system or a spatial light modulator for scanless excitation of opsin expressing cells.</div>
+</li>
+<li>Signals may be collected by a dual – PMT solution: The first PMT is equipped with a spectral bandpass filter matching the emission properties of the calcium indicator. A second PMT needs to be operated with a bandpass filter matching the properties of the fluorescence reporter of the opsin (<a href="#fig17">Figure 17</a>II).
+<div class="note">
+<span class="note-title">Note:</span> During the experiment, the co-expression of the recorded field of view needs to be evaluated. Therefore, two PMTs are necessary to identify co-expressing neurons in the ongoing experiment.</div>
+</li>
+<li>A region of interest (ROI)-based raster-scan stimulation of previously identified co-expressing cells is carried out. Alternatively, if a spatial light modulator (SLM) is implemented in the microscopes beam path, excitation is conducted in a scanless manner by modulating the electric field of the laser beam, enabling the generation of multiple focus points (<a href="#fig17">Figure 17</a>I). For a more detailed and technical explanation, please see <a href="#bib21">Papagiakoumou et al. (2010)</a>.</li>
+<li>Stimulation is delivered by a pixel dwell time of 6 μs, in case of C1V1, but this strongly depends on the opsin used, and a line scan resolution of 0.5–2 μm (<a href="#fig17">Figure 17</a>I) to cover the entire membrane surface area containing the opsins. Note, that the effective spatial coverage is determined by the point spread function (PSF). It is advisable to measure the PSF as part of the regular quality control of the used microscope.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.4">Part 4: Identification and binarization of putative AP-related calcium transient</h3>
+<ol start="10">
+<li>Identification and binarization of putative AP-related calcium transient.
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–6 h</div>
+<ol type="a">
+<li>Export the imaging data as a series of single tiffs or tiff stack.</li>
+<li>In functional 2-P imaging, motion artefacts induced by heartbeat or breathing, and, especially in awake recordings, movement of the animal can affect the quality of the measurement. Motion artefacts in x–y direction can be compensated for by performing a motion correction, in our case we use the moco plugin of ImageJ (see section <a href="#da0010">code availability</a>). Here, all images within a time-lapse image series are aligned with a reference image. The reference image is a single frame from the entire time-series that comprises a high amount of visible neurons. Alternatively, an average intensity projection of the entire time-series can be calculated using the ImageJ function “z-project” and chose “average” projection. This can be necessary if the signal-noise ratio (SNR) is low. Note, that also other projection types can be used depending on the quality of your recording, e.g., a maximum or a median intensity projection if the contrast is low.
+<div class="note">
+<span class="note-title">Note:</span> Motion correction is crucial for the next step to guarantee that an identified neuron does not move out of the boundaries defining its outline (see <a href="#troubleshooting">troubleshooting 4</a>).</div>
+</li>
+<li>For the identification of neuronal somata in the microcircuit, each soma is identified as functional unit and is defined and segmented as a ROI. In our case, we use a custom written Matlab script. The motion corrected single tiffs or the tiff stacks are loaded into Matlab and an average intensity projection is calculated. The projection is used to mark all identifiable neurons with polygon shapes, defining them as ROIs (<a href="#fig18">Figures 18</a>A and 18B). Especially for neurons located at the boarders of the FOV, the contrast can often be low. Therefore, the Matlab figure properties can be used to adapt brightness properties of the projection, simplifying the identification of neurons exhibiting a weak baseline fluorescence. These figure properties can be accessed choosing “Edit” and “Colormap”.
+<figure id="fig18"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig18.jpg" alt="Fig18.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 18. Preprocessing and segmentation of neuronal somata for subsequent analysis</div>
+<p>Prior segmentation, basic parameters of the recording need to be stated: an average intensity projection (AvgIP) is calculated based on the stated number of frames that should be considered in the projection.</p>
+<p>(A) The dimensions of the field of view need to be stated in μm and the sample rate of the image acquisition is reported (A).</p>
+<p>(B) Each somata in the field of view is now labeled by drawing a polygon around its border (B). This is reiterated for all visible neurons in the field of view. The averaged intensity of the enclosed pixels over time is calculated for each ROI and displayed as intensity trace. The scale bars in (B) are 20 μm.</p>
+<p>(C) To calculate the relative change of fluorescence, a baseline free of activity is defined for each intensity trace, indicated by the green dashed boxes (C).</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In recent years a variety of tools based on mathematical models were developed to automatize the step of segmentation, like deep-learning based algorithms (<a href="#bib28">Soltanian-Zadeh et al., 2019</a>; <a href="#bib18">Klibisz et al., 2017</a>). However, these algorithms are reaching their limits when applied on datasets of varying quality, e.g. datasets of a particularly low SNR. Furthermore, depending on the algorithm used, a dedicated training set is needed. We suggest to perform a manual segmentation to ensure a reliable identification of neuronal somata in the recorded microcircuit.</div>
+</li>
+<li>The change in fluorescence for each neuron, identified as a functional unit, needs to be represented as a series of values in an array for further analysis. For this, average all intensity values of all pixels within each ROI for every image of the series of single tiffs or the tiff stack, resulting in an intensity trace for every ROI (see <a href="#troubleshooting">troubleshooting 5</a>).</li>
+<li>Define a 10 s long period of quiescence characterized by the absence of functional calcium transient or signal fluctuations as baseline F<sub>0</sub> separately for each neuron and calculate the relative change of fluorescence for each time point F with <math> <mrow> <mi>Δ</mi> <mi>F</mi> <mo>=</mo> <mfrac> <mrow> <mi>F</mi> <mo>−</mo> <msub> <mi>F</mi> <mn>0</mn> </msub> </mrow> <msub> <mi>F</mi> <mn>0</mn> </msub> </mfrac> </mrow> </math> (<a href="#fig18">Figure 18</a>C).
+<div class="critical">
+<span class="critical-title">Critical:</span> The absolute level of intensity is based on multiple factors such as autofluorescence, the expression level of the calcium indicator, or the influence of stray light. Therefore, it is recommended to calculate the relative change of fluorescence. Because these dynamic changes, depending on their temporal dynamics, are most likely due to changes in intracellular calcium levels and can therefore be termed as calcium transients.</div>
+</li>
+<li>To verify that all identified functional units exhibit physiological meaningful signal components as expected from neurons, the data is loaded into IGOR Pro. With a custom written code each intensity trace is smoothed by a Gaussian filter and inspected for ongoing neuronal activity during the measurement. At this step, unwanted or falsely identified structures can be manually excluded from the analysis (<a href="#fig19">Figure 19</a>A).
+<figure id="fig19"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1228-Fig19.jpg" alt="Fig19.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 19. Binarization of putatively AP related calcium transients</div>
+<p>(A) The imported data (blue) is initially smoothed by a gaussian filter (red) and intensity traces are inspected for the presence of functional calcium transients of physiological origin. At this step, every intensity trace that is not exhibiting calcium transients or does not represent a somata can be excluded from further analysis.The scale bar is 100% dF/F.</p>
+<p>(B) Calcium transients are identified by a standard deviation-based threshold. The onset of the transient is detected when the amplitude of the peak falls below 0.5 SD of the baseline value. The grey line indicates the calculated first derivative of the smoothed raw trace. The scale bar is 100% dF/F.</p>
+<p>(C) The offset of a calcium transient is then calculated by fitting an exponential curve (black) to the peak to model the decay dynamics of the calcium indicator. When the fitted curve crosses 0.5 SD of the baseline, the offset is detected. The scale bar is 100% dF/F.</p>
+</figcaption>
+</figure>
+</li>
+<li>Calcium indicators show rather stereotypical signal characteristics. At this step, we are inspecting every intensity trace to identify the presence of these characteristic components. In our case, we use the calcium indicator GCaMP6f, exhibiting a sharp onset, followed by an exponential decay. These dynamics are modelled in our analysis routine for each intensity trace, initially by detecting the onset, peak and offset of an AP calcium transient by a standard deviation-based threshold algorithm:
+<ol type="i">
+<li>The mean value of the intensity trace is calculated.</li>
+<li>Amplitudes exceeding 3–3.5 standard deviations (SD) above the mean are detected (<a href="#fig19">Figure 19</a>B). By specifying a refraction time, the minimum time difference that must lie between two peaks can be defined.</li>
+<li>For peak identification of calcium transients, two criteria need to be fulfilled: the first derivative of the amplitude has to cross zero, the second derivate has to be negative (<a href="#fig19">Figure 19</a>B).</li>
+<li>The onset of the calcium transient is identified as the first data point that dropped below 0.5 SD of the baseline.</li>
+<li>The offset of the calcium transient is determined by fitting an exponential curve to the trace, mimicking the <math> <mrow> <msub> <mi>τ</mi> <mrow> <mi>o</mi> <mi>f</mi> <mi>f</mi> </mrow> </msub> </mrow> </math> of the calcium indicator, and identifying the data point after the peak when the fitted curve reaches 0.5 SD of the baseline (<a href="#fig19">Figure 19</a>C). Without <i>a priori</i> knowledge of the calcium indicator dynamics, a reliable identification of AP-related calcium transients is not advisable.</li>
+<li>If necessary, peak locations can be corrected manually.</li>
+<li>Intensity traces are binarized such as that peaks are represented as 1 and periods of quiescence are represented as 0.
+<div class="note">
+<span class="note-title">Note:</span> The here proposed pipeline for binarizing calcium transients is based on Matlab and IGOR Pro. However, the procedures can also be implemented in any other programming language or analysis software, e.g. Python, LabView, Java and many others.</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The proposed protocol enables the experimenter to master the first steps of a 2-P all-optical experiment <i>in vivo</i>. Following the protocol, cellular co-expression of both, calcium indicator and opsin, will be achieved, representing the prerequisite for conducting all-optical physiology experiments. Meanwhile, cell damage by overexpression or insufficient co-expression can be avoided (<a href="#bib12">Fois et al., 2014</a>)</p>
+<p>The described step-by-step guidelines for a clean and accurate implanted chronic window as well as a stable headholder preparation is suitable for longitudinal approaches over several weeks while observing the same microcircuit. The field of view can comprise up to several hundred neurons, which contain cells that functionally express both, indicator and opsin. Under this condition, the microcircuit can be manipulated on single-cell level. Since the excitation bands of calcium indicators and opsins can have an overlap, a cross-talk in the calcium indicators readout channel during opsin excitation can occur. To reduce the risk of cross-talk in all-optical approaches, a calcium indicator opsin pair with non-overlapping action spectra is preferably chosen (<a href="#bib14">Fu et al., 2021</a>).</p>
+<p>The consecutive analysis aims at the avoidance of false-positive results, i.e., falsely identifying a putative AP related calcium transient. A subsequent binarization of the detected calcium transient facilitates the application of analysis methods originating from electrophysiology. Compared to electrophysiological methods, with clearly superior temporal precision and directly recording the signal of interest, i.e., APs, 2-P all-optical <i>in vivo</i> experiments carry the advantage of a superior spatial resolution and enable for manipulating microcircuits on single-cell level in longitudinal studies. Employing 2-P all-optical methods in rodent models of disease provide a truly promising approach to deepen our knowledge on the causal relations between single-cell dysregulation and microcircuit performance, ultimately shining light on the role of cortical microcircuit function and dysfunction in disease development.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<h3 id="sec4.1">Neuron number and network limitations</h3>
+<p>The expression of the gene of interest in this protocol is confined to a restricted area according to the injection site. Thus, only a limited number of cells are transfected. The experimenter can only investigate an <i>a priori</i> defined micronetwork comprising several hundred neurons, therefore conclusions about the interaction with other cortical areas cannot be drawn. Nonetheless, the method is well suited to explore subtle changes in a micronetwork, especially under the perspective of cell-specific responses and modulations <i>in vivo</i> on single cell resolution, where other methods like electrophysiological approaches reach their limits.</p>
+<h3 id="sec4.2">Experimental timeframe</h3>
+<p>Since longitudinal studies are on the rise, and the experiments are performed within the same animal over a longer time, it has to be noted that the natural healing process of the skull leads to a slow but steady closure of the craniotomy. Therefore, the time window for conducting 2-P all-optical experiments is limited. Certainly, the here proposed protocol can be used for longitudinal experiments in a timeframe of weeks, but not months. For further information on how to optimize the chronic window preparation and maximize the time window for imaging, please see the <a href="#troubleshooting">troubleshooting</a> section number 4.</p>
+<h3 id="sec4.3">Opsin activation by raster scanning</h3>
+<p>Raster scan methods represent a reliable approach when a specific neuron or several neurons successively one after another need to be excited. However, if several neurons of a microcircuit need to be excited simultaneously, the raster scan method is not fast enough: the minimal excitation volume of a microscope is defined by the full-width at half maximum of the point spread function (PSF). The radial PSF can be estimated by the magnification of the chosen objective and the wavelength for opsin excitation and can be calculated with <math> <mrow> <mi>Δ</mi> <mi>r</mi> <mo>≈</mo> <mspace></mspace> <mfrac> <mi>λ</mi> <mrow> <mn>2</mn> <mo>⋅</mo> <msqrt> <mn>2</mn> </msqrt> <mo>⋅</mo> <mi>N</mi> <mi>A</mi> </mrow> </mfrac> </mrow> </math> (<a href="#bib26">Ronzitti et al., 2017b</a>). The whole membrane of the opsin-expressing neuron needs to be covered during photostimulation. For C1V1, a laser operating at 1100 nm, 6 μs pixel dwell time and an objective with a NA = 1.0 can be employed. Under this condition, it will take up to 16 ms for a neuron of an average surface of 20 × 20 μm to be excited. For 6 neurons, the total excitation time is around 96 ms, without taking into account the time moving from target to target. If the experiment requires the simultaneous excitation of a bigger number of neurons, only an approach based on spatial light modulators can achieve the necessary excitation times.</p>
+<h3 id="sec4.4">Analysis</h3>
+<p>The proposed analysis pipeline takes advantage of the rather stereotypical signal dynamics and waveforms of AP related calcium transients. Methodologically, the somatic calcium influx and efflux is convolved with the binding dynamics of the calcium indicator. These dynamics can be described based on parameters as the rise time, the decay and the duration of the transients. The rise time of a calcium indicator is based on its dissociation constant K<sub>D</sub>: a small K<sub>D</sub> causes a high affinity to calcium and therefore, considering the fast calcium influx, results in a sharp onset of the recorded calcium transient. In consequence to the high affinity, the off dynamics is inherently slow, and not reflecting the true underlying dynamics of the intracellular calcium concentration. In addition, the re-uptake of calcium in intracellular stores, reflecting the main source of intracellular calcium, depends on ATP-driven pumps, such as the SERCA: Generally, pumps are slower than channels, so the efflux is slower than the influx which is governed by voltage-gated or ligand gated calcium channels. Our pipeline is developed and well tested for the genetically encoded calcium indicator GCaMP6f and its dynamics (<a href="#bib11">Ellwardt et al., 2018</a>; <a href="#bib1">Arnoux et al., 2018</a>; <a href="#bib14">Fu et al., 2021</a>). However, as long as the dynamics of another calcium indicator are identical or similar, such as it is the case for RCaMP6f, the pipeline will still perform in the proposed quality. The pipeline reaches its limits when using calcium indicators that exhibit lower affinities towards calcium or different dynamics. It has to be noted, that, in general, every analytical pipeline for identification of calcium transients of physiological origin has to be adapted to the used calcium indicator.</p>
+<p>Due to the highly variable quality of all-optical experiments, e.g., in terms of SNR, every algorithm, potentially, can lead to false-positive result. Therefore, a manual inspection of the binarized data is considered important, independent from the chosen method or algorithm used to extract AP related calcium transients from an intensity trace. We advise for a rather conservative approach to identify AP related calcium transients to avoid any false-positive results, even if it means an increase in false-negative results.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Bleeding while performing the craniotomy (step 4, step 7).</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Bleedings commonly occur while performing the craniotomy, especially by flipping up the remaining bone fragment with the forceps. To solve this issue, first, place a surgical sponge soaked with saline onto the bleeding cranial opening and wait for several minutes for stopping the bleeding. Then apply a triangle sponge gently on top of the surgical sponge to soak up the liquid. Rehydrate the surgical sponge on the opening area by applying a drop of saline onto it. Repeat the process several times until the area is clean.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>The implanted chronic window becomes intransparent (step 7).</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>An opaque cranial window will directly interfere with the quality of your subsequent 2-P all-optical experiments. A smooth and clean craniotomy will reduce the risk of an intransparent chronic window. Insufficient cleaning of the opening area can lead to opacity. After the virus injection, clean the opening area with a surgical sponge soaked with saline several times (see problem number 1).</p>
+<p>Air bubbles under the cranial window will create an artefact during the image acquisition. Therefore, during chronic window sealing, enrich the volume under the coverslip with saline, which will help to reduce forming air bubbles. If any bubble is seen under the window, repeat the procedure. The surrounding solution should be carefully dried by triangle sponge before sealing the coverslip onto the skull. During sealing, avoid any surgical glue to reach the brain tissue or get on top of the coverslip.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Limited imaging area through chronic window (step 7, step 9).</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>In our experiment, the coverslip has a diameter of Ø 3 or 4 mm. To optimize the area of cortex that can be effectively imaged, the size of the craniotomy has to be maximized while maintaining an adhesion surface sufficient for gluing the coverslip. In our case, we suggest a maximum craniotomy diameter of 2.5 mm. However, if the examination of several microcircuits in the same cortical area is required, a chronic window of a bigger diameter can be employed, as long as the coverslip does not collide with the headholder. If the experimental design requires access to the entire dorsal cerebral cortex, ‘see-shells’ can be used as a possible solution, as proposed by <a href="#bib15">Ghanbari et al. (2019)</a>.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Movement artefacts during the 2-P imaging lead to signal loss (step 8, step 10).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>During single-plane imaging, distortions in z-direction should be avoided since post hoc correction cannot be conducted. Therefore, it is important to ensure mechanical stability of the animal during the experiment by using an adequate head holder. One-point fixations on only one hemisphere of the skull, often designed as a metal bar connected to the skull by dental cement or UV-glue may not provide sufficient stability. We suggest a headholder with two-point fixation. A maximization of the adhesive surface between holder and skull is as well recommended.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>The recorded intensity trace comprises a non-linear, exponential decay (step 9, step 10)</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>During the first seconds of data acquisition, it is often happening that the intensity trace displays a non-linear, exponential decrease which cannot be compensated for. Non-linear manipulations are highly problematic due to the effect onto the dynamics of the calcium transients. Reducing the intensity of the laser for calcium indicator excitation can help to minimize the initial non-linear bleaching, but comes at the price of a lower SNR.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Arnoux, I., Willam, M., Griesche, N., Krummeich, J., Watari, H., Offermann, N., Weber, S., Narayan Dey, P., Chen, C., Monteiro, O., et al. (2018). Metformin reverses early cortical network dysfunction and behavior changes in Huntington's disease. Elife <i>7</i>, e38744. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref1">View at publisher</a></p>
+<p id="bib2">Aschauer, D.F., Kreuz, S., and Rumpel, S. (2013). Analysis of transduction efficiency, tropism and axonal transport of AAV serotypes 1, 2, 5, 6, 8 and 9 in the mouse brain. PLoS One <i>8</i>, e76310. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref2">View at publisher</a></p>
+<p id="bib3">Bennett, A., Patel, S., Mietzsch, M., Jose, A., Lins-Austin, B., Yu, J.C., Bothner, B., Mckenna, R., and Agbandje-Mckenna, M. (2017). Thermal stability as a determinant of AAV serotype identity. Mol. Ther. Methods Clin. Dev. <i>6</i>, 171-182. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref3">View at publisher</a></p>
+<p id="bib4">Bohlen, M.O., Mccown, T.J., Powell, S.K., El-Nahal, H.G., Daw, T., Basso, M.A., Sommer, M.A., and Samulski, R.J. (2020). Adeno-associated virus capsid-promoter interactions in the brain translate from rat to the nonhuman primate. Hum. Gene Ther. <i>31</i>, 1155-1168. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref4">View at publisher</a></p>
+<p id="bib5">Chen, I.W., Papagiakoumou, E., and Emiliani, V. (2018). Towards circuit optogenetics. Curr. Opin. Neurobiol. <i>50</i>, 179-189. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref5">View at publisher</a></p>
+<p id="bib6">Chen, I.W., Ronzitti, E., Lee, B.R., Daigle, T.L., Dalkara, D., Zeng, H., Emiliani, V., and Papagiakoumou, E. (2019). In vivo submillisecond two-photon optogenetics with temporally focused patterned light. J. Neurosci. <i>39</i>, 3484-3497. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref6">View at publisher</a></p>
+<p id="bib7">Chen, T.W., Wardill, T.J., Sun, Y., Pulver, S.R., Renninger, S.L., Baohan, A., Schreiter, E.R., Kerr, R.A., Orger, M.B., Jayaraman, V., et al. (2013). Ultrasensitive fluorescent proteins for imaging neuronal activity. Nature <i>499</i>, 295-300. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref7">View at publisher</a></p>
+<p id="bib8">Chettih, S.N. and Harvey, C.D. (2019). Single-neuron perturbations reveal feature-specific competition in V1. Nature <i>567</i>, 334-340. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref8">View at publisher</a></p>
+<p id="bib9">Döring, J., Fu, T., Arnoux, I., and Stroh, A. (2018). Concepts of All-Optical Physiology. Optogenetics: A Roadmap (Springer Protocols). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref9">View at publisher</a></p>
+<p id="bib10">Dubbs, A., Guevara, J., and Yuste, R. (2016). Moco: fast motion correction for calcium imaging. Front. Neuroinform. <i>10</i>, 6. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref10">View at publisher</a></p>
+<p id="bib11">Ellwardt, E., Pramanik, G., Luchtman, D., Novkovic, T., Jubal, E.R., Vogt, J., Arnoux, I., Vogelaar, C.F., Mandal, S., Schmalz, M., et al. (2018). Maladaptive cortical hyperactivity upon recovery from experimental autoimmune encephalomyelitis. Nat. Neurosci. <i>21</i>, 1392-1403. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref11">View at publisher</a></p>
+<p id="bib12">Fois, C., Prouvot, P.H., and Stroh, A. (2014). A roadmap to applying optogenetics in neuroscience. Methods Mol. Biol. <i>1148</i>, 129-147. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref12">View at publisher</a></p>
+<p id="bib13">Forli, A., Pisoni, M., Printz, Y., Yizhar, O., and Fellin, T. (2021). Optogenetic strategies for high-efficiency all-optical interrogation using blue-light-sensitive opsins. Elife <i>10</i>, e63359. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref13">View at publisher</a></p>
+<p id="bib14">Fu, T., Arnoux, I., Döring, J., Backhaus, H., Watari, H., Stasevicius, I., Fan, W., and Stroh, A. (2021). Exploring two-photon optogenetics beyond 1100 nm for specific and effective all-optical physiology. iScience <i>24</i>, 102184. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref14">View at publisher</a></p>
+<p id="bib15">Ghanbari, L., Carter, R.E., Rynes, M.L., Dominguez, J., Chen, G., Naik, A., Hu, J., Sagar, M.A.K., Haltom, L., Mossazghi, N., et al. (2019). Cortex-wide neural interfacing via transparent polymer skulls. Nat. Commun. <i>10</i>, 1500. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref15">View at publisher</a></p>
+<p id="bib16">Hefendehl, J.K., Milford, D., Eicke, D., Wegenast-Braun, B.M., Calhoun, M.E., Grathwohl, S.A., Jucker, M., and Liebig, C. (2012). Repeatable target localization for long-term in vivo imaging of mice with 2-photon microscopy. J. Neurosci. Methods <i>205</i>, 357-363. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref16">View at publisher</a></p>
+<p id="bib17">Kay, M.A., Glorioso, J.C., and Naldini, L. (2001). Viral vectors for gene therapy: the art of turning infectious agents into vehicles of therapeutics. Nat. Med. <i>7</i>, 33-40. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref17">View at publisher</a></p>
+<p id="bib18">Klibisz, A., Rose, D., Eicholtz, M., Blundon, J., and Zakharenko, S. (2017). Fast, simple calcium imaging segmentation with fully convolutional networks. In Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support, M. Cardoso and et al, eds. (Springer), pp. 285-293. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref18">View at publisher</a></p>
+<p id="bib19">Lin, J.Y., Knutsen, P.M., Muller, A., Kleinfeld, D., and Tsien, R.Y. (2013). ReaChR: a red-shifted variant of channelrhodopsin enables deep transcranial optogenetic excitation. Nat. Neurosci. <i>16</i>, 1499-1508. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref19">View at publisher</a></p>
+<p id="bib20">Nidetz, N.F., Mcgee, M.C., Tse, L.V., Li, C., Cong, L., Li, Y., and Huang, W. (2020). Adeno-associated viral vector-mediated immune responses: understanding barriers to gene delivery. Pharmacol. Ther. <i>207</i>, 107453. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref20">View at publisher</a></p>
+<p id="bib21">Papagiakoumou, E., Anselmi, F., Begue, A., de Sars, V., Gluckstad, J., Isacoff, E.Y., and Emiliani, V. (2010). Scanless two-photon excitation of channelrhodopsin-2. Nat. Methods <i>7</i>, 848-854. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref21">View at publisher</a></p>
+<p id="bib22">Papagiakoumou, E., Ronzitti, E., Chen, I.W., Gajowa, M., Picot, A., and Emiliani, V. (2018). Two-photon optogenetics by computer-generated holography. In Optogenetics: A Roadmap, A. Stroh, ed. (Humana Press), pp. 175-197. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref22">View at publisher</a></p>
+<p id="bib23">Prakash, R., Yizhar, O., Grewe, B., Ramakrishnan, C., Wang, N., Goshen, I., Packer, A.M., Peterka, D.S., Yuste, R., Schnitzer, M.J., and Deisseroth, K. (2012). Two-photon optogenetic toolbox for fast inhibition, excitation and bistable modulation. Nat.Methods <i>9</i>, 1171-1179. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref23">View at publisher</a></p>
+<p id="bib24">Reardon, T.R., Murray, A.J., Turi, G.F., Wirblich, C., Croce, K.R., Schnell, M.J., Jessell, T.M., and Losonczy, A. (2016). Rabies virus CVS-N2c(DeltaG) strain enhances retrograde synaptic transfer and neuronal viability. Neuron <i>89</i>, 711-724. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref24">View at publisher</a></p>
+<p id="bib25">Ronzitti, E., Conti, R., Zampini, V., tanese, D., Foust, A.J., Klapoetke, N., Boyden, E.S., Papagiakoumou, E., and Emiliani, V. (2017a). Submillisecond optogenetic control of neuronal firing with two-photon holographic photoactivation of chronos. J. Neurosci. <i>37</i>, 10679-10689. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref25">View at publisher</a></p>
+<p id="bib26">Ronzitti, E., Ventalon, C., Canepari, M., Forget, B.C., Papagiakoumou, E., and Emiliani, V. (2017b). Recent advances in patterned photostimulation for optogenetics. J. Opt. <i>19</i>, 113001. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref26">View at publisher</a></p>
+<p id="bib27">Schneider, C.A., Rasband, W.S., and Eliceiri, K.W. (2012). NIH Image to ImageJ: 25 years of image analysis. Nat. Methods <i>9</i>, 671-675. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref27">View at publisher</a></p>
+<p id="bib28">Soltanian-Zadeh, S., Sahingur, K., Blau, S., Gong, Y., and Farsiu, S. (2019). Fast and robust active neuron segmentation in two-photon calcium imaging using spatiotemporal deep learning. Proc. Natl. Acad. Sci. U S A <i>116</i>, 8554-8563. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref28">View at publisher</a></p>
+<p id="bib29">Thompson, K.R. and Towne, C. (2018). A Hitchhiker’s guide to the selection of viral vectors for optogenetic studies. In Optogenetics: A Roadmap, A. Stroh, ed. (Humana Press), pp. 1-23. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref29">View at publisher</a></p>
+<p id="bib30">Tornabene, P. and Trapani, I. (2020). Can adeno-associated viral vectors deliver effectively large genes?. Hum. Gene Ther. <i>31</i>, 47-56. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref30">View at publisher</a></p>
+<p id="bib31">Wu, M.R., Nissim, L., Stupp, D., Pery, E., Binder-Nissim, A., Weisinger, K., Enghuus, C., Palacios, S.R., Humphrey, M., Zhang, Z., et al. (2019). A high-throughput screening and computation platform for identifying synthetic promoters with enhanced cell-state specificity (SPECS). Nat. Commun. <i>10</i>, 2880. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref31">View at publisher</a></p>
+<p id="bib32">Yang, J.-W., Prouvot, P.-H., Stroh, A., and Luhmann, H.J. (2018). Combining optogenetics with MEA, depth-resolved LFPs and assessing the scope of optogenetic network modulation. In Optogenetics: A Roadmap, A. Stroh, ed. (Humana Press), pp. 133-152. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00716-4/sref32">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Roberta Guimarães Backhaus (<a href="mailto:roberta.backhaus@lir-mainz.de">roberta.backhaus@lir-mainz.de</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>All original code necessary for analysis has been deposited at the repositories on GitHub listed below and is publicly available as of the date of publication. DOIs are listed in the key resources table.</p>
+<p>Cell-Counter plugin for ImageJ: <a href="https://imagej.nih.gov/ij/plugins/cell-counter.html">https://imagej.nih.gov/ij/plugins/cell-counter.html</a></p>
+<p>Motion correction plugin for ImageJ: <a href="https://github.com/NTCColumbia/moco">https://github.com/NTCColumbia/moco</a></p>
+<p>Custom written code for segmentation (MATLAB): <a href="https://github.com/Strohlab/ROIMeasure">https://github.com/Strohlab/ROIMeasure</a></p>
+<p>Custom written code for calcium transient detection and binarization (IGOR Pro): <a href="https://github.com/Strohlab/Igor-Spike-Detection">https://github.com/Strohlab/Igor-Spike-Detection</a></p>
+<h3>Acknowledgments</h3>
+<p>The German Research Council (DFG CRC128 B9) and <a href="https://doi.org/10.13039/100001003">Boehringer Ingelheim</a> foundation supported this study.</p>
+<h3>Author contributions</h3>
+<p>R.G.B., T.F., H.B., and A.S. wrote the protocol, T.F. performed the experiments, and R.G.B. and H.B. created the figures.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

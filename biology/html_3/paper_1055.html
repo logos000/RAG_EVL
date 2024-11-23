@@ -1,0 +1,941 @@
+<article>
+<section>
+<h1 id="header">An optimized ATAC-seq protocol for genome-wide mapping of active regulatory elements in primary mouse cortical neurons</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Maya Maor-Nof,<sup><a href="#aff1">1</a>,<a href="#fn1">5</a>,<a href="#cor2">**</a></sup> Zohar Shipony,<sup><a href="#aff1">1</a></sup> Georgi K. Marinov,<sup><a href="#aff1">1</a></sup> William J. Greenleaf,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a></sup> and Aaron D. Gitler<sup><a href="#aff1">1</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Genetics, Stanford University, Stanford, CA 94305, USA</p>
+<p id="aff2"><sup>2</sup>Center for Personal Dynamic Regulomes, Stanford University, Stanford, CA 94305, USA</p>
+<p id="aff3"><sup>3</sup>Department of Applied Physics, Stanford University, Stanford, CA 94305, USA</p>
+<p id="aff4"><sup>4</sup>Chan Zuckerberg Biohub, San Francisco, CA 94158, USA</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:agitler@stanford.edu">agitler@stanford.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:maormaya@stanford.edu">maormaya@stanford.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100854">10.1016/j.xpro.2021.100854</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>ATAC-seq is a versatile, adaptable, and widely adopted technique for mapping open chromatin regions. However, some biological systems, such as primary neurons, present unique challenges to its application. Conventional ATAC-seq would require the dissociation of the primary neurons after plating but dissociating them leads to rapid cell death and major changes in cell state, affecting ATAC-seq results. We have developed this modified ATAC-seq protocol to address this challenge for primary neurons, providing a high-quality and high-resolution accessible chromatin profile.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref3">Maor-Nof et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Neuronal ATAC maps chromatin accessibility in primary neurons.</li>
+<li>Neuronal ATAC avoids damage to neurons during cell handling and nuclei preparation.</li>
+<li>Neuronal ATAC provides high-quality and high resolution accessible chromatin profiles.</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1055-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol is used to interrogate the chromatin accessibility landscape of primary neurons cultured on plates. Before you start assays open chromatin in such a setting, it is advisable that:</p>
+<ol>
+<li>Institutional permission and oversight information for the animal study should be obtained. In this study, animals were bred and used as approved by the Administrative Panel of Laboratory Animal Care (APLAC) of Stanford University, an institution accredited by the Association for the Assessment and Accreditation of Laboratory Animal Care (AAALAC).</li>
+<li>Cell culture conditions are optimized, and you have made certain that plated neurons are not exhibiting elevated levels of cell death or other undesirable behavior, as this could interfere with the results of the ATAC-seq (or other functional genomic assays carried out).</li>
+<li>If using homemade Tn5 transposase rather than one obtained from commercial sources, it is good to check its quality by generating test libraries on any cell culture suspensions that might be available in the lab, sequencing 1–2M reads, and examining the enrichment for open chromatin (see below for more details).</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Papain Dissociation System</td>
+<td>Worthington Biochemical Corporation</td>
+<td>LK003150</td>
+</tr>
+<tr>
+<td>B-27 serum-free supplementPoly-L-lysine-solution (0.01% (wt/vol))</td>
+<td>Life TechnologiesSigma-Aldrich</td>
+<td>17504-044P4832</td>
+</tr>
+<tr>
+<td>Neurobasal Medium</td>
+<td>Life Technologies</td>
+<td>21103-049</td>
+</tr>
+<tr>
+<td>GlutaMAX</td>
+<td>Invitrogen</td>
+<td>35050-061</td>
+</tr>
+<tr>
+<td>Tn5<sup>a</sup>
+</td>
+<td>Illumina</td>
+<td>FC-131-1024</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630 detergent<sup>b</sup>
+</td>
+<td>Sigma</td>
+<td>11332465001</td>
+</tr>
+<tr>
+<td>Tween-20 detergent<sup>c</sup>Digitonin detergent<sup>d</sup>
+</td>
+<td>SigmaPromega</td>
+<td>11332465001G9441</td>
+</tr>
+<tr>
+<td>1M Tris-HCl pH 7.5</td>
+<td>Thermo Fisher</td>
+<td>15567027</td>
+</tr>
+<tr>
+<td>5M NaCl</td>
+<td>Thermo Fisher</td>
+<td>AM9759</td>
+</tr>
+<tr>
+<td>1M MgCl2</td>
+<td>Thermo Fisher</td>
+<td>AM9530G</td>
+</tr>
+<tr>
+<td>Dimethyl formamide</td>
+<td>Sigma</td>
+<td>D4551</td>
+</tr>
+<tr>
+<td>Deoxyribonuclease I (DNAse I)</td>
+<td>Worthington</td>
+<td>LS006331</td>
+</tr>
+<tr>
+<td>10mM dNTP Mix</td>
+<td>Thermo Fisher</td>
+<td>18427013</td>
+</tr>
+<tr>
+<td>SYBR Green I Nucleic Acid Gel Stain</td>
+<td>Thermo Fisher</td>
+<td>S7563</td>
+</tr>
+<tr>
+<td>PhiX Control v3</td>
+<td>Illumina</td>
+<td>FC-110-3001</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Sequencing library primers/adapters<sup>e,f</sup>
+</td>
+<td>Illumina</td>
+<td>FC-131-1096</td>
+</tr>
+<tr>
+<td>NEBNext High-Fidelity 2× PCR Master Mix</td>
+<td>NEB</td>
+<td>M0541S</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA Polymerase</td>
+<td>NEB</td>
+<td>M0530L</td>
+</tr>
+<tr>
+<td>MinElute PCR Purification Kit</td>
+<td>QIAGEN</td>
+<td>28004/28006</td>
+</tr>
+<tr>
+<td>Zymo DNA Clean and Concentrator Kit</td>
+<td>Zymo</td>
+<td>D4013/D4014</td>
+</tr>
+<tr>
+<td>QuBit dsDNA HS Assay Kit</td>
+<td>Thermo Fisher</td>
+<td>Q32854</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw and analyzed data</td>
+<td><a href="#bib3">Maor-Nof et al. (2021)</a></td>
+<td>GEO: GSE162048</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>C57BL/6J</td>
+<td>The Jackson Laboratory</td>
+<td>JAX:100012</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>Primary mouse cortical neurons</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Nuclease-free H<sub>2</sub>O</td>
+<td>Thermo Fisher</td>
+<td>AM9916</td>
+</tr>
+<tr>
+<td>1× PBS buffer solution</td>
+<td>Thermo Fisher</td>
+<td>10010023</td>
+</tr>
+<tr>
+<td>qPCR machine (StepOne or equivalent)</td>
+<td>Thermo Fisher</td>
+<td>4376357</td>
+</tr>
+<tr>
+<td>200-<i>μ</i>L PCR tubes</td>
+<td>Thermo Fisher</td>
+<td>AB0620</td>
+</tr>
+<tr>
+<td>1.5-mL Microcentrifuge tubes<sup>g</sup>
+</td>
+<td>Eppendorf</td>
+<td>022431021</td>
+</tr>
+<tr>
+<td>Thermomixer</td>
+<td>Eppendorf</td>
+<td>5382000023</td>
+</tr>
+<tr>
+<td>Tabletop centrifuge</td>
+<td>Eppendorf</td>
+<td>5427R</td>
+</tr>
+<tr>
+<td>Qubit fluorometer</td>
+<td>Thermo Fisher</td>
+<td>Q33238</td>
+</tr>
+<tr>
+<td>QuBit tubes</td>
+<td>Thermo Fisher</td>
+<td>Q32856</td>
+</tr>
+<tr>
+<td>TapeStation</td>
+<td>Agilent</td>
+<td>G2991BA</td>
+</tr>
+<tr>
+<td>TapeStation D1000 tape</td>
+<td>Agilent</td>
+<td>5067-5582</td>
+</tr>
+<tr>
+<td>TapeStation D1000 reagents</td>
+<td>Agilent</td>
+<td>5067-5583</td>
+</tr>
+<tr>
+<td>Thermocycler</td>
+<td>Eppendorf</td>
+<td>2231000813</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend"><sup>a</sup> Tn5 is the key reagent in the ATAC-seq protocol; it can be obtained from Illumina as listed here, but it can also be prepared in-house, following the protocol described previously by <a href="#bib5">Picelli et al. (2014)</a>. The Tn5 enzyme is called “Amplicon Tagment Mix” in the Illumina kit<br> <sup>b</sup> Supplied as a 10% solution<br> <sup>c</sup> Supplied as a 10% solution; store at 4°C<br> <sup>d</sup> Supplied as a 2% solution in DMSO; (store at -20°C)<br> <sup>e</sup> PCR primers for amplifying ATAC-seq libraries can also be ordered directly from other sources; the i7 primer sequence is 5′-CAAGCAGAAGACGGCATACGAGAT[i7]GTCTCGTGGGCTCGG-3′, the i5 sequence is 5′AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTC-3′, where [i7] and [i5] are the index sequences (typically 8-bp long). Dissolve and dilute to 25μM.<br> <sup>f</sup> -bp long<br> <sup>g</sup> Tubes should be preferably low protein- and DNA-binding</p>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>ATAC-RSB buffer (50 mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M Tris-HCl pH 7.4</td>
+<td>10 mM</td>
+<td>500 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>5M NaCl</td>
+<td>10 mM</td>
+<td>100 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>1M MgCl<sub>2</sub>
+</td>
+<td>3 mM</td>
+<td>150 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td> </td>
+<td>49.25 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<caption>ATAC-RSB lysis buffer (1 mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10% IGEPAL CA-630</td>
+<td>0.1%</td>
+<td>10 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>10% Tween-20</td>
+<td>0.1%</td>
+<td>10 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>2% Digitonin</td>
+<td>0.01%</td>
+<td>5 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>ATAC-RSB</td>
+<td> </td>
+<td>970 <i>μ</i>L</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl3">
+<caption>ATAC-RSB wash buffer (10 mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10% Tween-20</td>
+<td>0.1%</td>
+<td>100 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>ATAC-RSB</td>
+<td> </td>
+<td>9.9 mL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl4">
+<caption>2× TD buffer (10 mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl pH 7.5</td>
+<td>20 mM</td>
+<td>200 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>1M MgCl<sub>2</sub>
+</td>
+<td>10 mM</td>
+<td>100 <i>μ</i>L</td>
+</tr>
+<tr>
+<td>Dimethyl Formamide</td>
+<td>20%</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td> </td>
+<td>9.78 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> store the ATAC-RSB master buffer at 4°C (no specific time limit), and only prepare the ATAC-RSB-Lysis and ATAC-RSB-Wash buffers prior to use. Stored the 2× TD buffer (up to 1 year) and the Tn5 enzyme (according to the manufacture expiry date) at −20°C.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<div class="note">
+<span class="note-title">Note:</span> This protocol has been adapted from the omniATAC version of the ATAC-seq assay, previously described in <a href="#bib2">Corces et al., 2017</a>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> We advise to perform at least two independent replicates for each condition assayed.</div>
+<h3 id="sec3.1">Preparation of primary mouse cortical neurons</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼3 h plus subsequent culturing.</div>
+<p>In this step, neurons are harvested from mouse cortices and then transferred onto plates, where they can be subjected to various treatments and manipulations.</p>
+<ol>
+<li>Dissociate primary mouse cortical neurons into single-cell suspensions from E16.5 mouse cortices with a papain dissociation system following manufacturer’s recommended protocols (<a href="https://www.worthington-biochem.com/PDS/default.html">papain dissociation protocol</a>) with 40 min incubation time in papain solution at 37C.</li>
+<li>Plate neurons onto poly-L-lysine- coated –(add the solution to the plates and incubate for 1 h, then remove it, and rinse three times with H<sub>2</sub>O) 12-well plates for DNA extraction (450,000 cells/well).</li>
+<li>Grow neurons in Neurobasal medium supplemented with B-27 serum-free supplement, GlutaMAX, and penicillin–streptomycin in a humidified incubator at 37<sup>0</sup>C, with 5% CO2.</li>
+<li>Perform half media changes every 4 or 5 days, or as required.</li>
+</ol>
+<h3 id="sec3.2">DNAse treatment of cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼40 min</div>
+<div class="note">
+<span class="note-title">Note:</span> DNAse treatment helps improve signal to noise by removing free-floating DNA and digesting DNA from dead cells.</div>
+<ol start="5">
+<li>Add DNAse at a concentration of 200 U/mL to the media in the plate with the neurons.</li>
+<li>Incubate at 37°C for 30 min.</li>
+<li>Remove the media with the DNAse from the plate.</li>
+<li>Add cold 1× PBS to cover the plate and remove the PBS.</li>
+<li>Repeat step 8 three additional times.</li>
+</ol>
+<h3 id="sec3.3">Preparation of nuclei</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼30 min</div>
+<p>In this step, nuclei are isolated from the rest of cells (thus removing mitochondria and various other debris) and prepared for transposition.</p>
+<div class="note">
+<span class="note-title">Note:</span> To avoid cell death caused by trypsinization, neurons are directly lysed on the plate, and the nuclei are prepared from the lysate. Carry out all steps on ice and centrifugations at 4°C.</div>
+<ol start="10">
+<li>Add 1 mL cold ATAC-RSB-Lysis Buffer directly to the neurons on plate.</li>
+<li>Incubate on ice for 10 min.</li>
+<li>Use cell scraper to collect neurons from the plate and count them on a hemocytometer after staining nucleus with trypan blue.</li>
+<li>Centrifuge ∼50,000 nuclei at 500 <i>g</i> for 5 min in a pre-chilled 4°C fixed-angle centrifuge.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Nuclei can be counted directly using a cell counter or they can be estimated based on the input number of cells from the previous step.</div>
+<ol start="14">
+<li>Carefully aspirate the supernatant in two steps, by first removing most of it, then using the P200 pipette to remove the last ∼100 <i>μ</i>L.</li>
+<li>Resuspend the pellet in 1 mL of ATAC-RSB-Wash Buffer.</li>
+<li>Centrifuge for 10 min at 500 <i>g</i> at 4°C.</li>
+<li>Carefully aspirate the supernatant in two steps as described above.</li>
+</ol>
+<h3 id="sec3.4">Transposition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼ 35 min</div>
+<p>In this step nuclei are incubated with the transposase enzyme, which will insert itself into accessible chromatin regions.</p>
+<p>Carry out transposition as follows:</p>
+<ol start="18">
+<li>Immediately resuspend the pellet in the transposase reaction mix (prepare a master mix for multiple samples in the same proportions):</li>
+</ol>
+<table id="undtbl5">
+<thead></thead>
+<tbody>
+<tr>
+<td>25 <i>μ</i>L TD buffer</td>
+</tr>
+<tr>
+<td>2.5 <i>μ</i>L Tn5</td>
+</tr>
+<tr>
+<td>5 <i>μ</i>L nuclease-free H<sub>2</sub>0</td>
+</tr>
+<tr>
+<td>16.75 <i>μ</i>L 1× PBS</td>
+</tr>
+<tr>
+<td>0.25 <i>μ</i>L 2% digitonin</td>
+</tr>
+<tr>
+<td>0.5 μL 10% Tween-20</td>
+</tr>
+</tbody>
+</table>
+<ol start="19">
+<li>Incubate at 37°C for 30 min in a Thermomixer with shaking at 1000 RPM.</li>
+</ol>
+<h3 id="sec3.5">DNA purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼20 min</div>
+<p>Transposed DNA needs to be purified before it can be amplified.</p>
+<div class="note">
+<span class="note-title">Note:</span> Reactions can be cleaned up either with the Zymo DNA Clean and Concentrator or the Qiagen MinElute Cleanup kits, with equivalent results.</div>
+<ol start="20">
+<li>Immediately stop the reaction using 250 <i>μ</i>L (i.e., 5×) of PB buffer (if using MinElute) or DNA Binding Buffer (if using Zymo).</li>
+<li>Purify samples following the kit instructions.</li>
+<li>Elute with 10 <i>μ</i>L of Elution Buffer.</li>
+</ol>
+<h3 id="sec3.6">PCR amplification and library generation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼1 h</div>
+<p>Transposed DNA is minuscule in its amount given the low number of input cells, and needs to be amplified sufficiently to be sequenced.</p>
+<div class="note">
+<span class="note-title">Note:</span> When amplifying transposed DNA, the initial extension is needed to fill in the gap left from the transposition itself and allow PCR primers to land in subsequent amplification cycles. Hot-start polymerase mixes, in which the polymerase is only activated by exposing it to denaturation temperatures, are therefore not recommended for amplifying ATAC-seq libraries.</div>
+<ol start="23">
+<li>Set up the following PCR reaction:</li>
+</ol>
+<table id="undtbl6">
+<thead></thead>
+<tbody>
+<tr>
+<td>10 μL transposition eluate</td>
+</tr>
+<tr>
+<td>10 μL Nuclease-free H<sub>2</sub>O</td>
+</tr>
+<tr>
+<td>2.5 μL of Adapter 1</td>
+</tr>
+<tr>
+<td>2.5 μL of Adapter 2</td>
+</tr>
+<tr>
+<td>25 μL NEBNext High-Fidelity 2× PCR Master Mix</td>
+</tr>
+</tbody>
+</table>
+<ol start="24">
+<li>Optimize PCR conditions, pre-amplification. Amplify DNA for 5 cycles as follows:</li>
+</ol>
+<table id="undtbl7">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial</td>
+<td>72°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">5</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="25">
+<li>Determine additional cycles using qPCR. Use 5 <i>μ</i>L of the pre-amplified reaction in a total qPCR reaction of 15 <i>μ</i>L as follows:</li>
+</ol>
+<table id="undtbl8">
+<thead></thead>
+<tbody>
+<tr>
+<td>3.76 μL nuclease-free H2O</td>
+</tr>
+<tr>
+<td>0.5 μL of Adapter 1</td>
+</tr>
+<tr>
+<td>0.5 μL of Adapter 2</td>
+</tr>
+<tr>
+<td>0.24 μL 25× SYBR Green (in DMSO)</td>
+</tr>
+<tr>
+<td>5 μL NEBNext High-Fidelity 2× PCR Master Mix</td>
+</tr>
+<tr>
+<td>5 μL pre-amplified sample</td>
+</tr>
+</tbody>
+</table>
+<ol start="26">
+<li>Determine additional cycles using qPCR. Run the qPCR reaction with the following settings in a qPCR machine:</li>
+</ol>
+<table id="undtbl9">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">20</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="27">
+<li>Assess the amplification profiles and determine the required number of additional cycles to amplify.</li>
+<li>Carry out final amplification by placing the remaining 45 <i>μ</i>L in a thermocycler and running the following program:</li>
+</ol>
+<p><i>N</i><sub><i>add</i></sub> cycles of:</p>
+<table id="undtbl10">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">
+<i>N</i><sub><i>add</i></sub>
+</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p>Where <i>N</i><sub><i>add</i></sub> is the number of additional cycles.</p>
+<p>In practice, 8–10 total cycles are usually sufficient to amplify a standard ATAC library thus if a large number of samples are being processed at the same time, the following reaction can be run:</p>
+<ol start="29">
+<li>Single-step PCR.</li>
+</ol>
+<table id="undtbl11">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial</td>
+<td>72°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">8–10</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="30">
+<li>Purify the amplified library as described above for the purified ATAC reaction<sup>7</sup>. Elute in 20 <i>μ</i>L Elution Buffer.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In our experience, primer dimers are efficiently removed from ATAC libraries with simple column purification and size selection with beads is not necessary.</div>
+<h3 id="sec3.7">Library size distribution profiling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼10 min</div>
+<p>A highly informative quality control step is to evaluate the distribution of final libraries. i.e., to check whether it shows the typical nucleosomal pattern, or it deviates from it in potentially important ways.</p>
+<ol start="31">
+<li>There are multiple options for carrying out this step, e.g., the TapeStation and BioAnalyzer instruments. We prefer to use a TapeStation with the D1000 or HS D1000 kits due to its ease of use, flexibility and rapid turnaround time. Follow the manufacturer’s instructions depending on the exact instrument and kit used (<a href="https://www.agilent.com/cs/library/usermanuals/public/ScreenTape_D1000_QG.pdf">TapeStation online protocol</a>).</li>
+</ol>
+<h3 id="sec3.8">Library quantification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼50 min</div>
+<p>Before they are sequenced, libraries need to be quantified, and this has to be done in terms of molarity, not just mass, as molarity is what is important for accurate loading on the sequencer.</p>
+<div class="note">
+<span class="note-title">Note:</span> This step is typically carried out using a Qubit fluorometer for most high-throughput sequencing libraries that exhibit a unimodal fragment length distribution. However, ATAC-seq fragment distribution is usually not unimodal and ATAC-seq libraries often include fragments longer than what can be sequenced on standard Illumina instruments. Effective library concentrations therefore often differ from apparent library concentrations measured using Qubit. The best way to estimate effective library concentration is thus qPCR. Commercial kits such as the NEBNext Library Quant Kit for Illumina or KAPA Library Quantification Kits can also be used, in a similar manner.</div>
+<ol start="32">
+<li>Generate a standard curve using Illumina PhiX standard (10nM) by first making a 50× dilution to 200 pM, then making additional serial 2× dilutions to 100 pM, 50 pM, 25 pM, 12.5 pM, 6.25 pM, 3.125 pM, and 1.56 pM.</li>
+<li>Set up a 20 <i>μ</i>L qPCR reactions as follows:</li>
+</ol>
+<table id="undtbl12">
+<thead></thead>
+<tbody>
+<tr>
+<td>7.9 μL nuclease-free H<sub>2</sub>O</td>
+</tr>
+<tr>
+<td>5 μL ATAC-seq 400× diluted library or PhiX standards</td>
+</tr>
+<tr>
+<td>4 μL Phusion HF Buffer</td>
+</tr>
+<tr>
+<td>1μL Adapter 1</td>
+</tr>
+<tr>
+<td>1μL Adapter 2</td>
+</tr>
+<tr>
+<td>0.4 μL 10mM dNTP mix</td>
+</tr>
+<tr>
+<td>0.5 μL 25× SYBR Green (in DMSO)</td>
+</tr>
+<tr>
+<td>0.2 μL NEB Phusion HF</td>
+</tr>
+</tbody>
+</table>
+<ol start="34">
+<li>Run the qPCR reaction with the following settings in a qPCR machine:</li>
+</ol>
+<table id="undtbl13">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">20</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td>forever</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="35">
+<li>Create a standard curve based on the PhiX dilutions and estimate the library’s true molarity based on it.</li>
+</ol>
+<h3 id="sec3.9">Sequencing</h3>
+<p>This protocol generates libraries intended to be sequenced on Illumina sequencers.</p>
+<div class="note">
+<span class="note-title">Note:</span> Make sure to use optimally compatible index pairs when pooling libraries prior to sequencing.</div>
+<div class="note">
+<span class="note-title">Note:</span> Once libraries have been made, the optimal sequencing format needs to be decided on, as there are multiple different Illumina kits, which differ in their output, read length, and cost.</div>
+<div class="note">
+<span class="note-title">Note:</span> ATAC-seq libraries should not be sequenced in a single-end format, as the analysis of fragment lengths is important for the quality evaluation of ATAC-seq datasets and for a number of downstream analyses, which are only possible in a paired-end format. In addition, some analytical tasks, (such as transcription factor foot printing) focus on Tn5 insertions rather than read coverage, and paired-end reads produce twice as many such data points for the same cost.</div>
+<div class="note">
+<span class="note-title">Note:</span> We also note that the post-sequencing ATAC-seq insert length distribution peaks between 50 and 100 bp (<a href="#fig2">Figure 2</a>A). It is accordingly most cost-effective to sequence ATAC libraries in 2×36 bp or 2 × 50 bp formats (depending on whether using a NextSeq or some of the higher-throughput Illumina instruments). However, some applications (e.g. analyzing the effects of sequence variation on chromatin accessibility) can benefit from longer reads, and this should be kept in mind depending on the goals of the particular study.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p><a href="#fig1">Figure 1</a> shows examples of typical ATAC-seq library size profiles. A clear nucleosomal pattern is expected, with peaks corresponding to subnucleosomal, mononucleosomal, dinucleosomal, and so on fragments, due to the inhibitory effect of nucleosomes on Tn5 insertion. Occasionally, it is possible to see a “flattened” profile, in which the nucleosomal peaks stand out less than usual. This is often due to the presence of a large amount of mitochondrial genome-derived fragments and does not necessarily affect enrichment for open chromatin in the nuclear genome.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1055-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Typical TapeStation profile (D1000 TapeStation in this case) of an ATAC-seq library</div>
+<p>ATAC-seq libraries tend to display a nucleosomal pattern with dominant peaks corresponding to subnucleosomal fragments (the ∼180-∼250 range; note that the length of adapters is included in these values), mononucleosomes, dinucleosomes, and so on. The relative height of peaks can occasionally vary between different libraries (A and B).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Quality characterization and evaluation after sequencing is based on the following criteria:</p>
+<ol>
+<li>Evaluation of the fragment length distribution (<a href="#fig2">Figure 2</a>A). It is possible to have a very prominent subnucleosomal peak without a strong mononucleosomal one and still have quite high enrichment for open chromatin, but high-quality ATAC libraries in eukaryotes typically display the characteristic nucleosomal signature in their fragment length distribution.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1055-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Typical ATAC-seq results after processing of sequencing data</div>
+<p>(A) Length distribution for mapped fragments (shown is the dataset corresponding to SRA accession SRR13120289).</p>
+<p>(B) TSS profile (for the same sample).</p>
+<p>(C) TSS scores for the library from <a href="#bib3">Maor-Nof et al. (2021)</a>.</p>
+<p>(D) ATAC-seq profiles around protein coding TSSs in the genome.</p>
+<p>(E) ATAC-seq shows activation of one of the promoters of the <i>Cdkn1a</i> gene in (PR)<sub>50</sub> cells relative to TDP-43 and control GFP cells.</p>
+<p>(F) Example of transcription factor footprint detection with ATAC-seq (a metaplot of ATAC-seq cleavage around occupied CTCF motif instances is shown).</p>
+</figcaption>
+</figure>
+</li>
+<li>Evaluation of open chromatin enrichment (<a href="#fig2">Figures 2</a>B and 2C). To this end, the average profile around the transcription start sites (TSS) of protein coding genes is a very useful, intuitive and independent of ad hoc parameters such as peak calling thresholds measure. It can also be distilled to a single “TSS score” number, which is calculated as the ratio of signal (in read-per-million-mapped reads units or read counts) over the region immediately (e.g., ±100 bp) around the TSS versus the average signal over the two regions of equal size located ±2 kb on the flanks either side of the TSS (<a href="#bib4">Marinov and Shipony 2021</a>). High-quality ATAC libraries tend to have TSS scores ≥10 for mammalian genomes. TSS scores for the libraries from <a href="#bib3">Maor-Nof et al. (2021)</a> are shown in <a href="#fig2">Figure 2</a>C.</li>
+<li>Evaluation of the extent of mitochondrial contamination. As mitochondria do not have nucleosomes and their DNA is highly accessible, they are preferentially transposed by Tn5. High levels of mitochondrial reads are not necessarily associated with poor open chromatin enrichment in the nuclear genome, but they result in having to sequence much deeper to obtain the same effective sequencing coverage and are a sign of a need to optimize the protocol. While in early versions of the ATAC-seq protocol (<a href="#bib1">Buenrostro et al., 2013</a>), most of ATAC libraries consisted of mitochondria-derived fragments, since then the omniATAC protocol (<a href="#bib2">Corces et al., 2017</a>), on which the plated neuronal ATAC protocol is based, has greatly reduced the level of mitochondrial contamination. The fraction of chrM reads for the libraries from <a href="#bib3">Maor-Nof et al. (2021)</a> is shown in <a href="#fig2">Figure 2</a>C.</li>
+<li>The molecular complexity of libraries – high-quality libraries should contain a large number of distinct fragments.</li>
+<li>The effective sequencing depth – in general we aim for ∼20–30 million reads after deduplicating fragments mapping to the nuclear genome.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> ATAC-seq libraries should also display visible enrichment over promoters and other regulatory elements when examined using a genome browser or globally, as shown in <a href="#fig2">Figures 2</a>D and 2E.</div>
+<div class="note">
+<span class="note-title">Note:</span> ATAC-seq libraries can also be used to evaluate footprinting of transcription factors (although mostly globally rather than at individual sites). An example of global protection footprints around sites occupied by the CTCF is shown in <a href="#fig2">Figure 2</a>F.</div>
+<div class="note">
+<span class="note-title">Note:</span> It is in practice often highly useful to sequence a small number of reads (a few hundred thousand to a million) to evaluate library quality before committing to a full production run, as most of these metrics, especially TSS enrichment and mitochondria contamination, can be calculated on just a small sampling of the final library.</div>
+<div class="note">
+<span class="note-title">Note:</span> We refer the reader to previous treatments of the subject (<a href="#bib4">Marinov and Shipony, 2021</a>) regarding the details of ATAC-seq processing and analysis.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The usual limitations to the ATAC-seq assay, even if very few, also apply to the version described here. The signal-to-noise ratio is sensitive to the condition of the cells used as input and Tn5’s strong preference for inserting into unprotected genomic regions means many mitochondrial reads (which are of little use for most analyses) can be observed in libraries. Below we list some tips on improving the quality of datasets if such issues are encountered.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Primary neurons do not extend their axons (steps 1–4).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>The number of cortical neurons you plate will have tremendous impact on the growth of their axons. There are a minimal number of neurons that needs to be present in order for the neurons to survive and grow processes. This number changes according to the area surface size in the plate. Here for the 12 well plate it is critical not to use lower number of neurons than 450,000 cells/well.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Libraries exhibit low TSS enrichment, i.e., TSS scores substantially below 10 (steps 31–35).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>ATAC-seq is quite robust and usually works well in terms of producing good enrichment for open chromatin. When issues with poor enrichment are encountered, this is typically due to problems with the input material, such as the presence of many dead and nonviable cells (which contain significant quantities of dechromatinized DNA) or free floating DNA. The DNAse pretreatment step is designed to address these issues.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Libraries contain a high fraction of mitochondrial reads (steps 32–35).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>The omniATAC protocol and its derivatives are usually quite successful at minimizing the extent of mitochondrial contamination. A typical reason for very high levels of chrM-mapping reads is failure to aspirate all the supernatant (which contains the mitochondria) during the nuclei preparation procedure prior to transposition. Make sure to remove all of it while being careful not to disturb the pellet.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>Final ATAC-seq libraries show low yield (low concentration and a barely visible TapeStation/BioAnalyzer trace), and after sequencing contain few distinct fragments and are of generally low molecular complexity (steps 31–35).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>This issue could be due to cell loss during the nuclei preparation procedure. Because ATAC-seq works on relatively small numbers of cells/nuclei – only ∼50,000 – cell and nuclei pellets are often quite small and barely visible in tubes. It can thus be easy to inadvertently disturb them while aspirating supernatants, leading to cell loss. Be careful to avoid pellets by using the usual methods of spinning tubes consistently with one side pointing outwards within the centrifuge then carefully pipetting out liquids on the opposite side of the tube.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Poor sequencing yield, i.e., many fewer raw reads obtained than the expected based on the characteristics of the sequencing kit used (steps 31–35).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>ATAC-seq libraries are generally difficult to quantify because the fragment length distribution is not uniform and often fragments longer than the maximum length that can be sequenced on an Illumina instrument are present in the library. Thus the effective concentration is usually lower than the apparent concentration, which can result in underloading of sequencing flowcells. For optimal yields, be very careful when measuring library concentration using qPCR; it can also help to try to “overload” the flowcell by a factor of 20–30%.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Buenrostro, J.D., Giresi, P.G., Zaba, L.C., Chang, H.Y., and Greenleaf, W.G. (2013). Transposition of na-tive chromatin for fast and sensitive epigenomic pro-filing of open chromatin, DNA-binding proteins and nucleosome position. Nat. Methods <i>10</i>, 1213-1218. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref1">View at publisher</a></p>
+<p id="bib2">Corces, M.R., Trevino, A.E., Hamilton, E.G., Greenside, P.G., Sinnott-Armstrong, N.A., Vesuna, S., Satpathy, A.T., Rubin, A.J., Montine, K.S., Wu, B., et al. (2017). An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues. Nat. Methods <i>14</i>, 959-962. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref2">View at publisher</a></p>
+<p id="bib3">Maor-Nof, M., Shipony, Z., Lopez-Gonzalez, R., Nakayama, L., Zhang, Y.J., Couthouis, J., Blum, J.A., Castruita, P.A., Linares, G.R., Ruan, K., et al. (2021). p53 is a central regulator driving neurodegeneration caused by C9orf72 poly(PR). Cell <i>184</i>, 689-708.e20. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref3">View at publisher</a></p>
+<p id="bib4">Marinov, G.K. and Shipony, Z. (2021). Interrogating the accessible chromatin landscape of eukaryote Ge-nomes using ATAC-seq. Methods Mol. Biol. <i>2243</i>, 183-226. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref4">View at publisher</a></p>
+<p id="bib5">Picelli, S., Bjorklund, A.K., Reinius, B., Sagasser, S., Winberg, G., and Sandberg, R. (2014). Tn5 transposase and tagmentation procedures for massively scaled se-quencing projects. Genome Res. <i>24</i>, 2033-2040. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00560-8/sref5">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Aaron D. Gitler (<a href="mailto:agitler@stanford.edu">agitler@stanford.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The raw and analyzed sequence data from our original paper carrying out ATAC-seq in primary cultured neurons (<a href="#bib3">Maor-Nof et al., 2021</a>) can be found on NCBI GEO (GSE162048).</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grants R35NS097263(10) (A.D.G.), P50HG007735 (W.J.G.), R01HG008140 (W.J.G.), U19AI057266 (W.J.G.), UM1HG009442 (W.J.G.), and 1UM1HG009436 (W.J.G.) and the Brain Rejuvenation Project of the <a href="https://doi.org/10.13039/100014373">Wu Tsai Neurosciences Institute</a> (A.D.G.). W.J.G. is a Chan Zuckerberg Biohub investigator. Some of the computing for this project was performed on the Sherlock cluster. We would like to thank Stanford University and the Stanford Research Computing Center for providing computational resources and support that contributed to these research results. This work used the Genome Sequencing Service Center by Stanford Center for Genomics and Personalized Medicine Sequencing Center, supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grant S10OD020141. Some of the figures were created with <a href="http://BioRender.com">BioRender.com</a>.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, M.M.-N., Z.S., and A.D.G.; methodology and writing, M.M.-N., G.K.M., and Z.S.; supervision, W.J.G. and A.D.G.</p>
+<h3>Declaration of interests</h3>
+<p>A.D.G. is a scientific founder of Maze Therapeutics. W.J.G. has affiliations with 10<b>×</b> Genomics (consultant), Guardant Health (consultant), and Protillion Biosciences (co-founder and consultant).</p>
+</section>
+</article>

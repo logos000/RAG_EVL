@@ -1,0 +1,751 @@
+<article>
+<section>
+<h1 id="header">Using ICLite for deconvolution of bulk transcriptional data from mixed cell populations</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Matthew J. Camiolo,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">5</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup> Sally E. Wenzel,<sup><a href="#aff1">1</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a></sup> and Anuradha Ray<sup><a href="#aff1">1</a>,<a href="#aff4">4</a></sup></p>
+<p id="aff1"><sup>1</sup>Division of Pulmonary, Allergy, and Critical Care Medicine, Department of Medicine, University of Pittsburgh School of Medicine, Pittsburgh, PA 15213, USA</p>
+<p id="aff2"><sup>2</sup>Center for Systems Immunology, University of Pittsburgh Medical Center, Pittsburgh, PA 15213, USA</p>
+<p id="aff3"><sup>3</sup>Department of Environmental Medicine and Occupational Health, Graduate School of Public Health, University of Pittsburgh School of Medicine, Pittsburgh, PA 15213, USA</p>
+<p id="aff4"><sup>4</sup>Department of Immunology, University of Pittsburgh School of Medicine, Pittsburgh, PA 15213, USA</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:camiolomj@upmc.edu">camiolomj@upmc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100847">10.1016/j.xpro.2021.100847</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Bulk expression data from heterogeneous cell populations pose a challenge for investigators, as differences in cell numbers and transcriptional programs may complicate analysis. To improve the performance of bulk RNA sequencing on mixed populations, we created Immune Cell Linkage through Exploratory Matrices (ICLite). The ICLite package for R constructs modules of correlated genes and identifies their relationship to specific lineages in mixed cell populations. This protocol details formatting, optimization of run parameters, and interpretation of results following implementation of ICLite.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref4">Camiolo et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>ICLite identifies gene modules in bulk transcriptional data from mixed cell populations</li>
+<li>Protocol details how to run and interpret the results of ICLite</li>
+<li>Discussion of parameter tuning, data formatting, and solution evaluation</li>
+<li>Details for post-run exploration including gene ontology and semantic similarity</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>While the advent of single cell RNA sequencing has allowed for unprecedented insight into the molecular underpinnings of disease, its cost and availability may limit its implementation, particularly on large scale studies of human cohorts. Bulk sequencing is an affordable and readily available alternative that poses its own unique challenges. Analysis of bulk transcriptional data from heterogenous cell populations can be particularly difficult. Changes to relative composition as well as cell state across samples create multiple drivers of variance that can suppress biological discovery and complicate techniques such as simple differential expression.</p>
+<p>The ICLite package for R allows users to gain insight into the function of specific cells from a mixed population by breaking bulk transcriptional data into smaller sets of gene modules. These gene modules allow for inference of biological activity, akin to results from a scRNA sequencing experiment. Unlike algorithms designed to estimate relative cell abundance from bulk transcriptional data using pre-defined gene expression sets, ICLite uses correlation between cell abundance and gene module expression to assemble de novo gene modules and link them to cells. These gene modules can be used for a number of downstream applications, such as biological process enrichment and determination of cell activity in health and disease.</p>
+<p>The modules identified by ICLite are derived by comparing gene clustering solutions from an array of user-selected input parameters to determine an optimal solution. ICLite accounts for cluster error, cell-to-module connectivity and representation of the starting transcriptional dataset to identify the combination of input parameters that provides a best-fit solution. Ultimately, however, it remains up to the user to decide what solution best suits their needs. For instance, tuning of input parameters may lead to thorough description of some cell types while providing little to no information on others. In the protocol below, we detail how to format data for use with ICLite and walk users through an initial run. We provide example code for determining the most effective solution from a set of input parameters and guide the user through the process of tuning for the objective best fit as well as homing on particular populations of interest.</p>
+<p>To properly execute the functions of ICLite, you will need log normalized RNA sequencing or microarray data as well as matched cell count log ratios or absolute values. Though the execution detailed in <a href="#bib4">Camiolo et al. (2021)</a> employed high dimensional data from mass cytometry analysis, the ICLite algorithm is suitable for use with clinically obtained differential cell count data or other measures of cell prevalence. Given the heterogeneity of immune cells, lower resolution data must be interpreted with caution as discussed below (Limitations). In principle, the algorithm behind ICLite should function on non-immune cell populations as well, as no pre-populated gene lists are required for a successful run. The output of ICLite includes CSV files of gene module membership, a graphical correlation plot describing the module-to-cell connectivity, and several objects in the R global environment that can be used for further analysis. We describe downstream analysis below, including study of module relatedness based on functional similarity.</p>
+<p>To properly run an analysis using ICLite, you will need the R statistical software environment installed on your computer (<a href="#bib7">Core Team, 2015</a>).</p>
+<h3 id="sec1.1">Prepare your transcriptional data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<p>The algorithm driving ICLite’s deconvolution process has been tested on both RNA sequencing and microarray data. In the author’s experience, RNA sequencing data tends to have less sample-to-sample variation than microarray profiling, making gene module assembly a more robust process. Below is a general pipeline for preparation of RNA sequencing data for use with ICLite.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> ICLite requires log2 normalized data for execution. The below steps detail how to build properly formatted RNA sequencing data. Microarray data must also be log normalized.</div>
+<p>Resources for consistent RNA sequencing results can be found through the ENCODE Data Coordinating Center Uniform Processing Pipelines (<a href="#bib8">Davis et al., 2018</a>) at:</p>
+<p><a href="https://www.encodeproject.org/pages/pipelines/#RNA-seq">https://www.encodeproject.org/pages/pipelines/#RNA-seq</a></p>
+<ol>
+<li>Compile a count library from your cells of interest.
+<ol type="a">
+<li>Generate and sequence cDNA libraries from isolated immune cells using the Illumina NextSeq500 System or an equivalent platform</li>
+<li>Perform sequence alignment using STAR (<a href="#bib9">Dobin et al., 2013</a>) or an equivalent algorithm</li>
+<li>Quantify read counts to uniquely mapped using featureCounts (<a href="#bib12">Liao et al., 2014</a>)</li>
+</ol>
+</li>
+<li>Prepare log2 RNA sequencing data using the DESeq2 package in R (<a href="#bib13">Love et al., 2014</a>). Benefits of this approach to normalization are discussed below (<a href="#troubleshooting">troubleshooting</a>). For more complete information on using the DESeq2 suite, please visit:</li>
+</ol>
+<p><a href="https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html</a></p>
+<div class="textbox">
+<p><code>&gt; library(DESeq2)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; filePath &lt;- ∼/R_code/New_RNAseq/" ## replace this with your directory</code></p>
+<p><code>&gt; gtf &lt;- read.csv(paste(filePath,"gtf_abridged.csv", sep = ""))[,-1]</code></p>
+<p><code>&gt; counts &lt;- read.csv(paste(filePath,"counts", sep = ""))</code></p>
+<p><code>&gt; metaData &lt;- read.csv(paste(filePath,"metadata", sep = ""))</code></p>
+<p><code>&gt; metaData$sex &lt;- factor(metaData$sex)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; ## The below code features no design input and is not meant for differential</code></p>
+<p><code>&gt; ## testing.</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; dds &lt;- DESeqDataSetFromMatrix(countData = counts, colData = metaData,</code></p>
+<p><code>&gt;           design = ∼sex, tidy = TRUE)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; ## Variance stabilizing transform</code></p>
+<p><code>&gt; vsdNobatch &lt;- vst(dds, blind = FALSE)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The below code features adjustment for batch outside DESeq2. This process can also be performed inside DESeq2 by amending the ‘design’ input to the ‘DESeqDataSetFromMatrix’ function.</div>
+<ol start="3">
+<li>Additional adjustment to address potential batch effect using algorithms such as COMBAT is encouraged (<a href="#bib11">Leek et al., 2012</a>).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(sva)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; metaData$batch &lt;- factor(metaData$batch)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; ## Build a covariate matrix. This can be amended to include other covariates. In this</code></p>
+<p><code>&gt; ## example we will only be adjusting for batch</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; modcombat = model.matrix(∼1, data = data.frame(metaData))</code></p>
+<p><code>&gt;</code></p>
+<p><code>## This step generates normalized and transformed data</code></p>
+<p><code>&gt; gene_expression_data &lt;- ComBat(assay(vsdNobatch), metadata$batch,</code></p>
+<p><code>&gt;          mod = modcombat, prior.plots = T)</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Multiple entries for the same gene should be avoided. There are no limitations for the gene nomenclature library used. The sample data set provided by the ICLite package uses universal gene symbols as identifiers. Conversion for gene ontology analysis is covered below.</div>
+<h3 id="sec1.2">Obtain paired cell count data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>Every sample from the transcriptional data set must have paired cell count data for execution of ICLite. Note that log ratio transformation, as detailed below, is required for compositional data sets such as those created by the popular automated cell clustering package cytofkit for R (<a href="#bib6">Chen et al., 2016</a>). Below is a standardized pipeline for automated cell clustering with cytofkit using the FlowSOM algorithm.</p>
+<ol start="4">
+<li>Load your FCS files following mass cytometry event acquisition and normalization as described by the cytokit authors: <a href="https://github.com/JinmiaoChenLab/cytofkit">https://github.com/JinmiaoChenLab/cytofkit</a>
+</li>
+<li>Perform automated clustering and calculate the relative percentage of each cell type across the samples/individuals in your experiment:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; cell_clusters &lt;- cytof_cluster(xdata = marker_intensity_data, method = "FlowSOM”)</code></p>
+<p><code>&gt; clustered_unstim_cells&lt;-data.frame(marker_intensity_data, cluster = cell_clusters)</code></p>
+<p><code>&gt; cell_percentages &lt;- cytof_clusterStat(data = clustered_unstim_cells, cluster = "cluster",</code></p>
+<p><code>&gt;          statMethod = "percentage")</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Cluster percentage values must be log ratio transformed as detailed below prior to use with ICLite.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Bulk RNA sequencing from BAL immune cells of IMSA cohort participants</td>
+<td>GEO</td>
+<td>Accession number:GSE136587</td>
+</tr>
+<tr>
+<td>FCS files from paired mass cytometry of BAL immune cells of IMSA cohort participants</td>
+<td>FlowRepository</td>
+<td>Repository ID:FR-FCM-Z395</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>ICLite</td>
+<td><a href="#bib4">Camiolo et al. (2021)</a></td>
+<td><a href="https://github.com/camiolomj/ICLite/">https://github.com/camiolomj/ICLite/</a></td>
+</tr>
+<tr>
+<td>Blockcluster (4.4.3)</td>
+<td><a href="#bib3">Bhatia et al. (2017)</a></td>
+<td><a href="https://www.jstatsoft.org/article/view/v076i09">https://www.jstatsoft.org/article/view/v076i09</a></td>
+</tr>
+<tr>
+<td>Corrplot (0.84)</td>
+<td>Taiyun Wei and Viliam Simko (2017)</td>
+<td><a href="https://github.com/taiyun/corrplot">https://github.com/taiyun/corrplot</a></td>
+</tr>
+<tr>
+<td>Tidyr (1.1.3)</td>
+<td><a href="#bib18">Wickham et al. (2019)</a></td>
+<td><a href="https://tidyr.tidyverse.org/">https://tidyr.tidyverse.org/</a></td>
+</tr>
+<tr>
+<td>R Statistical Software</td>
+<td>The R Project for Statistical Computing</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Local computer – memory: 8GB required, 16GB recommended; processors: 1 required, 4 recommended</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<ul>
+<li>Data (Bulk RNA-sequencing log2 normalized gene values and paired cell abundance data– see <a href="#before-you-begin">before you begin</a>)</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<div class="critical">
+<span class="critical-title">Critical:</span> All code appearing in this protocol, including troubleshooting vignettes, is available as R script titled ‘STAR ICLite Run Code’ in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Mmc1.zip">Data S1</a>.</div>
+<h3 id="sec3.1">Install ICLite and its dependencies</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<p>The ICLite package for R is available through the following public repository:</p>
+<p><a href="https://github.com/camiolomj/ICLite/">https://github.com/camiolomj/ICLite/</a></p>
+<ol>
+<li>Download the most recent version of the R package blockcluster (<a href="#bib3">Bhatia et al., 2017</a>) from one of the following sources and install it into your R library:
+<ol type="a">
+<li><a href="https://cran.r-project.org/src/contrib/Archive/blockcluster/">https://cran.r-project.org/src/contrib/Archive/blockcluster/</a></li>
+<li><a href="https://www.jstatsoft.org/article/view/v076i09">https://www.jstatsoft.org/article/view/v076i09</a></li>
+</ol>
+</li>
+</ol>
+<p>You may also use the following command lines inside R for installation:</p>
+<div class="textbox">
+<p><code>&gt; library(devtools)</code></p>
+<p><code>&gt; install_github("cran/blockcluster")</code></p>
+</div>
+<ol start="2">
+<li>Download ICLite to your R library using the code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(devtools)</code></p>
+<p><code>&gt; install_github("camiolomj/ICLite")</code></p>
+</div>
+<h3 id="sec3.2">Load ICLite and example data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<ol start="3">
+<li>Load the ICLite package:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(ICLite)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The ICLite package includes reference the input data from the Immune Mechanisms of Severe Asthma (IMSA) cohort (<a href="#bib4">Camiolo et al., 2021</a>), which can be used as reference for formatting issues or trial runs of the algorithm.</div>
+<ol start="4">
+<li>Load the example IMSA data set:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load_IMSA_data()</code></p>
+</div>
+<ol start="5">
+<li>Verify the presence of ‘gene_expression_data’ and ‘immune_cell_logratios’ in the Global Environment. These objects will be used for example code going forward.</li>
+</ol>
+<h3 id="sec3.3">Transcriptional data formatting</h3>
+<ol start="6">
+<li>Format your gene expression data so that columns represent samples/individuals and rows represent genes.</li>
+</ol>
+<h3 id="sec3.4">Cell count data transformation and formatting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> This step is not necessary if using the included immune cell log ratio data.</div>
+<p>Cell count data where each of the values for a given sample or individual represent a fraction of the whole must be log ratio transformed to address the constraints of compositional data (<a href="#bib15">van den Boogaart and Tolosana-Delgado, 2008</a>). Failure to perform this step may lead to unreliable results as discussed below (<a href="#troubleshooting">troubleshooting</a>).</p>
+<ol start="7">
+<li>Inspect cell count values prior to running ICLite to determine whether your data is compositional. While relative percentages from cell count data must be log ratio transformed as detailed below, absolute cell counts do not.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Many R packages commonly used for automated cell cluster analysis of mass cytometry data such as cytofkit, detailed above, provide cluster percentage values for downstream analysis. These data must be log ratio transformed as detailed below prior to use with ICLite.</div>
+<ol start="8">
+<li>If your cell count data is compositional:
+<ol type="a">
+<li>Install and load the R package “compositions”:
+<div class="textbox">
+<p><code>&gt; install.packages("compositions")</code></p>
+<p><code>&gt; library(compositions)</code></p>
+</div>
+</li>
+<li>Transform your cell count data (obtained above in <a href="#before-you-begin">before you begin</a>):
+<div class="textbox">
+<p><code>&gt; sample_compositions &lt;-acomp(cell_ percentages, total = 100)</code></p>
+<p><code>&gt; immune_cell_logratios&lt;-cdt(comp_immune)</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>The input cell count matrix for ICLite should be formatted such that columns represent cell lineages and rows represent samples/individuals. The “immune_cell_logratios” object loaded by load_IMSA_data()provides an example of properly formatted data.</li>
+</ol>
+<h3 id="sec3.5">Setup initial run_ICLite() parameters</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<p>Once you have prepared your input data and installed ICLite, you are ready to begin the deconvolution process. We recommend that initial runs with ICLite employ a broad range of run parameters.</p>
+<ol start="10">
+<li>Create a vector for rho exclusion values. These values should range from 0.3 to 0.9. Gene correlations below this value are converted to 0 in binary space while those above are converted to 1. Higher cutoffs will result in smaller gene modules.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; input_rho&lt;-c(0.4, 0.5, 0.6)</code></p>
+</div>
+<ol start="11">
+<li>Create a vector of minimum connectivity values. Genes that do not meet a threshold of interactions above the rho exclusion will be removed from the analysis. Higher cutoffs will result in smaller gene modules that are more tightly connected.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;-c(150,300)</code></p>
+</div>
+<ol start="12">
+<li>Create a list of assumed number of clusters to be used for blockclustering.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; number_of_clusters&lt;-as.list(c(12,24,36))</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Example formatting for run parameters is available in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Mmc1.zip">Data S1</a>. This .ZIP file contains an R script titled ‘STAR ICLite Run Code’ related to the the toy example provided in this manuscript as fully executable code.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Users should include a vector of at least 2 input parameters for minimum connectivity, rho cutoff and number of clusters.</div>
+<h3 id="sec3.6">Execute run_ICLite()</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<ol start="13">
+<li>To initiate a run of ICLite, use the code below. For the example code detailed in this manuscript, see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Mmc1.zip">Data S1</a>.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;set.seed(95)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;run_ICLite(gene_expression_data = gene_expression_data,</code></p>
+<p><code>&gt;      immune_cell_logratios = immune_cell_logratios,</code></p>
+<p><code>&gt;      input_connectivities = input_connectivities,</code></p>
+<p><code>&gt;      input_rho = input_rho,</code></p>
+<p><code>&gt;      number_of_clusters = number_of_clusters)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The blockcluster algorithm is sensitive to seed. To ensure consistency, users may choose to set the global R seed value prior to running ICLite.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Saving your workspace after an ICLite run can be done using the command:</div>
+<div class="textbox">
+<p><code>&gt;save.image("Your_Experiment_Name_Here.Rdata")</code></p>
+</div>
+<p>The session can be reloaded by using the following command:</p>
+<div class="textbox">
+<p><code>&gt;load("Your_Experiment_Name_Here.Rdata")</code></p>
+</div>
+<h3 id="sec3.7">Inspect ICLite run results</h3>
+<ol start="14">
+<li>Following completion of an ICLite run, the user will be left with output files in the R working directory that include:
+<ol type="a">
+<li>A correlation plot describing all relationships between gene modules and cells in the analysis titled “mod solution corrplot.png”</li>
+<li>Individual module vs cell lineage dot plots featuring a linear regression trend line, spearman’s rho calculation and p-value</li>
+<li>Comma separated value (CSV) files for gene module membership</li>
+</ol>
+</li>
+</ol>
+<p>The data shown in <a href="#fig1">Figure 1</a> illustrates the graphical output from solution generated by ICLite on the IMSA data set included in the package with the parameters described above. Several objects will be created in the Global Environment, including <b>gene_module_lists,</b> which contains the gene names for the modules assembled by ICLite.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Initial output of ICLite using broad run parameters</div>
+<p>(A) Spearman correlation plot generated by execution of ICLite where calculated rho between BAL gene modules (x-axis) and cell lineages (y-axis) is demarcated by circles colored according to the scale detailed to the right. Only associations with FDR corrected p-value of &lt; 0.05 are illustrated. The size of the circle is inversely proportional to p-value of interaction.</p>
+<p>(B) Plotting of module scoring vs cell log ratio values with super-imposed linear trend line, Spearman’s rho and p-value as indicated in the figure.</p>
+</figcaption>
+</figure>
+<p>Should your run produce no connectivity results, see topics below for more information (<a href="#troubleshooting">troubleshooting</a>).</p>
+<h3 id="sec3.8">Tune ICLite run parameters</h3>
+<p>After inspection of ICLite results, users may choose a narrower band of input parameters focused around the optimal solution identified during the initial run.</p>
+<ol start="15">
+<li>To explore the relationship between input parameters and genes included in module assembly, use the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;plot_solution_size()</code></p>
+</div>
+<p>The resultant graph plotting the relationship between gene matrix size, rho cutoff and minimum connectivity value will be saved in the working directory and is demonstrated in <a href="#fig2">Figure 2</a>.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Graphical output from plot_solution_size()</div>
+<p>Execution of the plot_solution_size() function will use objects in the R global environment to generate a plot detailing the number of genes included for module assembly by ICLite (y-value) vs rho cutoff value (x-axis). Coloration of dots indicates solution connectivity value.</p>
+</figcaption>
+</figure>
+<ol start="16">
+<li>To examine run parameters from the optimal solution, use the following code to create a graph of fit scoring. Note that dot size is related to solution fit, with the largest dot equating to the best fit:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;plot_fit_score()</code></p>
+</div>
+<p>The graph will again be saved to the working directory. Results from the above example are illustrated in <a href="#fig3">Figure 3</a>. The specific values for the identified optimal run conditions will also be displayed in the R console after executing this command. Note that subsequent ICLite run parameters can be chosen based on these data.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Graphical output from plot_fit_score()</div>
+<p>Execution of the plot_fit_score () function will use objects in the R global environment to generate a plot detailing the ICLite solution score by input rho, connectivity and number of clusters. Size of dots in the plot correspond to relative value of fit scoring. Coloration of dots indicates solution connectivity value.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> We can see from both text and graphical outputs that the optimal solution occurred with a rho cutoff = 0.4, connectivity = 150 and number of clusters = 24.</div>
+<ol start="17">
+<li>Create input parameters with smaller gradients of change focusing around the optimal parameters from the initial run:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;-c(75,150,225)</code></p>
+<p><code>&gt; input_rho&lt;-c(0.4, 0.425, 0.45)</code></p>
+<p><code>&gt; number_of_clusters&lt;-as.list(c(22,24,26))</code></p>
+</div>
+<ol start="18">
+<li>Re-run ICLite:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;set.seed(95)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;run_ICLite(gene_expression_data = gene_expression_data,</code></p>
+<p><code>&gt;      immune_cell_logratios = immune_cell_logratios,</code></p>
+<p><code>&gt;      input_connectivities = input_connectivities,</code></p>
+<p><code>&gt;      input_rho = input_rho,</code></p>
+<p><code>&gt;      number_of_clusters = number_of_clusters)</code></p>
+</div>
+<p>The data shown in <a href="#fig4">Figure 4</a> illustrates the graphical output from ICLite based on the parameters described above. This time around, we can see that a solution with rho = 0.45, connectivity = 75 and number of clusters = 26 greatly outperformed our initial run.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Output of ICLite using focused parameters</div>
+<p>(A) Plotting generated by execution of plot_solution_size() from focused run parameters following the initial ICLite run.</p>
+<p>(B) Plotting generated by execution of plot_fit_score () from focused run parameters.</p>
+<p>(C) Spearman correlation plot from the optimal solution using tuned run parameters in ICLite. Calculated rho between modules (x-axis) and cell lineages (y-axis) is demarcated by circles colored according to the scale detailed to the right. Only associations with FDR corrected p-value of &lt; 0.05 are illustrated. The size of the circle is inversely proportional to p-value of interaction.</p>
+</figcaption>
+</figure>
+<div class="optional">
+<span class="optional-title">Optional:</span> At this time, the user may choose to move onto functional analysis or continue tuning ICLite parameters around the new optimal run.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> As stated above (<a href="#before-you-begin">before you begin</a>), tuning of input parameters may influence the ability of ICLite to capture relationships to specific cells in your data set. For more information regarding parameter tuning to address these issues, please see <a href="#troubleshooting">troubleshooting</a> below.</div>
+<h3 id="sec3.9">Perform gene ontology analysis</h3>
+<p>The "gene_module_lists" may be used for subsequent Gene Ontology (GO) enrichment analysis as a means of understanding the biological functions represented by ICLite modules. In the analysis presented in Camiolo et al., we used the TopGO package in R (<a href="#bib1">Alexa and Rahnenfuhrer, 2020</a>). Example code for running TopGO is detailed below. More information on TopGO can be found at:</p>
+<p><a href="https://www.bioconductor.org/packages/devel/bioc/html/topGO.html">https://www.bioconductor.org/packages/devel/bioc/html/topGO.html</a></p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Output module membership lists will use whatever input nomenclature was used, which may require conversion prior to running enrichment analysis with popular tools such as fgsea (<a href="#bib10">Korotkevich et al., 2021</a>) or topGO.</div>
+<ol start="19">
+<li>Prior to GO enrichment using topGO, convert the gene symbols used in the example IMSA data into Entrez ids. To do so, first install and load the conversion database (<a href="#bib5">Carlson, 2019</a>):</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; BiocManager::install("org.Hs.eg.db")</code></p>
+<p><code>&gt; library('org.Hs.eg.db')</code></p>
+</div>
+<ol start="20">
+<li>Next, convert our genes of interest from the R object containing our gene modules:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; GOI&lt;- gene_module_lists[[n]] ## where n = the module index from ICLite</code></p>
+<p><code>&gt; GOI_converted&lt;-unique(mapIds(org.Hs.eg.db, GOI, 'ENTREZID', 'SYMBOL'))</code></p>
+</div>
+<ol start="21">
+<li>Generate a background index of all genes from our transcriptional dataset:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; all_genes&lt;-rownames(gene_expression_data)</code></p>
+<p><code>&gt; background_names&lt;-unique(mapIds(org.Hs.eg.db, all_genes, 'ENTREZID', 'SYMBOL'))</code></p>
+</div>
+<ol start="22">
+<li>Install and load topGO:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; BiocManager::install("topGO")</code></p>
+<p><code>&gt; library(topGO)</code></p>
+</div>
+<ol start="23">
+<li>Run TopGO for the selected ICLite module:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; geneList &lt;- factor(as.integer(background_names %in% GOI_converted))</code></p>
+<p><code>&gt; names(geneList) &lt;- background_names</code></p>
+<p><code>&gt; GOdata &lt;- new("topGOdata", allGenes = geneList, nodeSize = 10, ontology = "BP",</code></p>
+<p><code>&gt;          annot = annFUN.org, mapping = "org.Hs.eg.db")</code></p>
+<p><code>&gt; resultFisher &lt;- runTest(GOdata, algorithm = "classic", statistic = "fisher")</code></p>
+<p><code>&gt; upRes &lt;- GenTable(GOdata, classicFisher = resultFisher, ranksOf = "classicFisher",</code></p>
+<p><code>&gt;          topNodes = 50, numChar = 40)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The above example uses pre-defined values for node size, enrichment algorithm and test statistic. Please refer to the topGO website above for more information regarding parameter selection.</div>
+<p>Example GO enrichment results and corresponding cell log ratio vs module scoring plots from our optimized ICLite solution are illustrated in <a href="#fig5">Figure 5</a>.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Pathway analysis of modules linked to T cell populations</div>
+<p>(A) Barplot of -log10(p-values) for GO term enrichment of ICLite modules 6 which correlates with CD4 and CD8 EMs, CMs and TRMs.</p>
+<p>(B) Barplot of -log10(p-values) for GO term enrichment of ICLite module 9, which correlates with CD4 and CD8 EMs, CMs and TRMs.</p>
+<p>(C) Plotting of module 6 scoring vs cell log ratio values with super-imposed linear trend line, Spearman’s rho and p-value as indicated in the figure.</p>
+<p>(D) Plotting of module 9 scoring vs cell log ratio values with super-imposed linear trend line, Spearman’s rho and p-value as indicated in the figure.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.10">Perform semantic similarity clustering</h3>
+<p>Gene module membership from ICLite solutions is exclusive, meaning that a single gene may be a member of only one module. GO semantic similarity allows us to take sets of gene ontology results and compare them for overlap. This can be used to generate distance measures for dendrogram construction to better understand functional relationships between gene modules.</p>
+<p>The GOSemSim package is not provided with ICLite and must be downloaded and installed separately (<a href="#bib16">Yu et al., 2010</a>). Information on this package can be found at:</p>
+<p><a href="https://bioconductor.org/packages/release/bioc/html/GOSemSim.html">https://bioconductor.org/packages/release/bioc/html/GOSemSim.html</a></p>
+<ol start="24">
+<li>Install and load the GOSemSim package:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; BiocManager::install("GOSemSim")</code></p>
+<p><code>&gt; library(GOSemSim)</code></p>
+</div>
+<ol start="25">
+<li>After identifying a satisfactory ICLite solution, obtain GO results for all modules as detailed above and create a list object containing all GO enrichment terms:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; all_GO_terms&lt;-list(module_1_terms, module_2_terms….)</code></p>
+</div>
+<ol start="26">
+<li>Create a GO library object:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; hsGO &lt;- godata('org.Hs.eg.db', ont="BP")</code></p>
+</div>
+<ol start="27">
+<li>Create a matrix for semantic similarity results:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ##Where num_clust = the number of modules from the accepted ICLite solution</code></p>
+<p><code>&gt; GO_semantic_mat&lt;-matrix(0, ncol = num_clust, nrow = num_clust)</code></p>
+</div>
+<ol start="28">
+<li>Perform semantic similarity for pairwise comparison between GO term lists corresponding to ICLite modules:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; for(c in 1:ncol(GO_semantic_mat)){</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;  gs1&lt;- all_GO_terms [[c]]</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;  for(r in 1:nrow(GO_semantic_mat)){</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    gs2&lt;- all_GO_terms [[r]]</code></p>
+<p><code>&gt;    GO_semantic_mat[r,c]&lt;-mgoSim(gs1, gs2, semData=hsGO, measure="Wang",</code></p>
+<p><code>&gt;          combine="BMA")</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;  }</code></p>
+<p><code>&gt; }</code></p>
+</div>
+<ol start="29">
+<li>Create a phylogram based on the sematic similarity results to illustrate similarities in the biological process represented by each ICLite module (<a href="#bib14">Paradis and Schliep, 2019</a>):</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; install_github("cran/ape")</code></p>
+<p><code>&gt; library("ape")</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; GO_hclust = hclust(dist(GO_semantic_mat), method = "ward.D2")</code></p>
+<p><code>&gt; GO_phylo&lt;-as.phylo(GO_hclust)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; png(“GO semantic phylogram,.png", height = 2400, width = 2400, res = 300)</code></p>
+<p><code>&gt; plot(GO_phylo, type = "unrooted", cex = 1.2,</code></p>
+<p><code>&gt;  no.margin = F, label.offset = 0.03)</code></p>
+<p><code>&gt; dev.off()</code></p>
+</div>
+<p>While not necessary, semantic similarity clustering can provide reassurance that the modules identified by ICLite are biologically plausible. As demonstrated in <a href="#fig6">Figure 6</a>, ICLite has linked modules of functionally related genes to similar cells. In principle, we expect that modules linked to the same cell lineages should themselves share ontological similarity.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Using semantic similarity to explore functional similarity of ICLite modules</div>
+<p>Phylogram of GO term semantic similarity for ICLite modules described in the solution from <a href="#fig4">Figure 4</a>. Distance is independent of cell associations and based only on functional enrichment in GO terms from recovered ICLite modules. Module coloring is based off hierarchical clustering of semantic similarity. Terms adjacent to phylogram summarize cell lineages attached to GO semantic families.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.11">Use modules from an ICLite solution for sample scoring</h3>
+<p>Once an ICLite solution has been validated, the modules created may be used for scoring individual samples. These scores may be treated as continuous variables.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Module scoring may be done on external transcriptional data sets, as described in <a href="#bib4">Camiolo et al., (2021)</a>. To do so, gene names must be consistent. Please see the section above on converting nomenclature.</div>
+<ol start="30">
+<li>Create module score values for the example cohort. Using this code, we call the function mod_score() from the ICLite package on the gene_module_lists object from a successful ICLite run.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; individual_mod_scores&lt;-do.call(cbind, lapply(gene_module_lists, mod_score))</code></p>
+<p><code>&gt; colnames(individual_mod_scores)&lt;-paste0("Mod_",</code></p>
+<p><code>&gt;       unique(accepted_solution@rowclass)+1)</code></p>
+</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>After completion of an ICLite run, the resultant module to gene connectivity solution, correlation plots and output CSV files will be stored in the R working directory. Output .CSV files can be opened in R or excel for downstream analysis using tools such as gene ontology enrichment. Though the examples above used additional R coding for ontology analysis, public internet databases are also suitable. Inspection of optimal run parameters can be made using the plot_fit_score() function.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Given a broad enough array of starting parameters, ICLite should be successful at deriving an output set of modules. It is, however, possible for the blockclustering process to fail at reaching a suitable result. Scenarios for this will be covered below (<a href="#troubleshooting">troubleshooting</a>).</p>
+<p>ICLite was initially built for use on high-dimensional cell count data derived from mass cytometry experiments. The analysis of immune cells detailed in <a href="#bib4">Camiolo et al. (2021)</a> featured 33 surface markers with more than 20 distinct cell lineages identified from the bronchoalveolar lavage of cohort participants. Using more simplified immune cell data, such as clinically obtained differential cell counts, may lead to loss of resolution during the solution selection phase of ICLite. Because gene modules are derived independently, it may still be possible to capture heterogeneous processes within a “parent” cell type. We highly recommend careful gene ontology analysis following these runs to ensure the biological plausibility of your results. Data generated by ICLite is meant to enable further hypothesis testing and guide downstream validation.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Below we will cover some common issues that may give rise to errors when running ICLite.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Code for troubleshooting vignettes is available as R script titled ‘STAR ICLite Run Code’ in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Mmc1.zip">Data S1</a>.</div>
+<h3 id="sec6.1">Problem 1</h3>
+<p>ICLite Fails to Connect ANY Cells to Modules.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>In the example provided by load_IMSA_data(), 39 individuals are used for pooled analysis. The power to discern relationships will be directly related to the number of samples in your dataset. Though a strong relationship may be identified with fewer samples, we would caution against using data sets with less than 10 individuals. Successful solution finding may take several iterations using varied inputs. In the example provided, we started with broad parameters and focused more finely afterward. An alternate approach would be running two or more sets of focused parameters up front. Details on how parameters may impact relationship resolution are detailed below. In addition, properly normalized data is critical to ICLite functionality.</p>
+<p>ICLite employs Spearman’s rank correlation, which does not assume linear relationship between cell count and gene expression values. Log scaling of expression data does allow for more practical visualization of correlations by graphical output, however. Furthermore, accounting for RNA composition is recommended for accurate comparison of expression between samples, making normalization a critical step towards ensuring reliable results (<a href="#bib2">Anders and Huber, 2010</a>). In the example provided above, we have employed DESeq’s normalization algorithm prior to analysis with ICLite.</p>
+<p>It is important to note that other commonly used normalization methods, such as reads per kilobase of exon per million reads mapped (RPKM) or transcripts per kilobase million (TPM), are less suitable for use with ICLite. Both of these methods describe the relative abundance of a transcript among the population of sequence transcripts, and therefore depend on the composition of the RNA population in the sample (<a href="#bib17">Zhao et al., 2020</a>). As RNA repertoires may differ across samples, particularly with mixed cell population data, use of DESeq2 for normalization is preferable.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>ICLite Fails to Describe My Cells of Interest.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Under certain circumstances, describing the activity of specific cells lineages may be of interest to investigators. The below example is illustrated using the IMSA dataset to demonstrate how input parameters may influence the ability to resolve these relationships.</p>
+<p>Consider a run with the following parameters:</p>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;- c(100, 200)</code></p>
+<p><code>&gt; input_rho&lt;- c(0.55, 0.65)</code></p>
+<p><code>&gt; number_of_clusters&lt;- c(12,24,36)</code></p>
+<p><code>&gt; run_ICLite(gene_expression_data, immune_cell_logratios, input_connectivities,</code></p>
+<p><code>&gt;      input_rho, number_of_clusters)</code></p>
+</div>
+<p>The resultant correlation plot is presented in <a href="#fig7">Figure 7</a>. GO analysis demonstrates appropriate functional enrichment in modules linked to T cell populations, however ICLite as failed to link many other cell types to gene modules. Looking back at our run parameters, we see that we have selected high rho exclusion values (0.55 and 0.65), which will remove all but the strongest gene-gene interactions. As noted above (Tuning ICLite Run Parameters), selection of input parameters will influence the total number of genes included in module generation. We will rerun the analysis, this time also considering solutions with rho exclusion values of 0.45.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. High rho cutoffs result in poor description of macrophage populations</div>
+<p>(A) Spearman correlation plot generated by execution of ICLite on the example data set using high rho exclusion values only. Calculated rho between modules (x-axis) and cell lineages (y-axis) is demarcated by circles colored according to the scale detailed to the right. Only associations with FDR corrected p-value of &lt; 0.05 are illustrated. The size of the circle is inversely proportional to p-value of interaction.</p>
+<p>(B) Barplot of -log10(p-values) for GO term enrichment of ICLite modules 12 and 23, which correlate with CD4 and CD8 EMs, CMs and TRMs.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> As number of genes included in module assembly increases, so does overall run time and system memory requirements.</div>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;- c(100, 200)</code></p>
+<p><code>&gt; input_rho&lt;- c(0.45, 0.55)</code></p>
+<p><code>&gt; number_of_clusters&lt;- c(20,24,26)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt; run_ICLite(gene_expression_data, immune_cell_logratios, input_connectivities,</code></p>
+<p><code>&gt;      input_rho, number_of_clusters)</code></p>
+</div>
+<p>By varying our input parameters, we were able to maintain relationships with T cell populations while capturing additional information about cell lineages that were previously poorly described (<a href="#fig8">Figure 8</a>). For a similar number of assumed clusters and minimum connectivity, we are able to describe relationships between several macrophage and innate lineages and ICLite gene modules. Performing GO analysis, we see that these new module connections represent interesting biological functions that we may now ascribe to other immune cells from our data set. <a href="#tbl1">Table 1</a> illustrates the differences in outcome we get by considering a lower rho exclusion value, giving us a favorable solution that describes a greater breadth of cells in our experiment. Note that the relationship between output GO terms and genes included is not linear!</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Decreasing input stringency identifies additional relationships</div>
+<p>(A) Spearman correlation plot generated by execution of ICLite on the example data set using a broader set of rho exclusion values in parameters used to generate <a href="#fig7">Figure 7</a>. Calculated rho between modules (x-axis) and cell lineages (y-axis) is demarcated by circles colored according to the scale detailed to the right. Only associations with FDR corrected p-value of &lt; 0.05 are illustrated. The size of the circle is inversely proportional to p-value of interaction.</p>
+<p>(B) Barplot of -log10(p-values) for GO term enrichment of ICLite modules 11 and 22, which correlate with CD4 and CD8 EMs, CMs and TRMs.</p>
+<p>(C) Barplot of -log10(p-values) for GO term enrichment of ICLite modules 17 and 10, which correlate with FceRI+ CD127+ innate cells and FceRI+ macrophages, respectively.</p>
+</figcaption>
+</figure>
+<table id="tbl1">
+<caption>Table 1. Comparison of input and output measures from clustering solutions demonstrated in <a href="#fig7">Figures 7</a> “Unfavorable Solution” and <a href="#fig8">8</a> “Favorable Solution”, respectively</caption>
+<thead>
+<tr>
+<th>Favorable solution</th>
+<th>Unfavorable solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_clust = 24</td>
+<td>num_clust = 24</td>
+</tr>
+<tr>
+<td>rho_cutoff = 0.45</td>
+<td>rho_cutoff = 0.65</td>
+</tr>
+<tr>
+<td>min_connectivity = 200</td>
+<td>min_connectivity = 200</td>
+</tr>
+<tr>
+<td>Successful Positive Correlations: 56</td>
+<td>Successful Positive Correlations: 48</td>
+</tr>
+<tr>
+<td>Number of Genes in Solution: 13151</td>
+<td>Number of Genes in Solution: 2704</td>
+</tr>
+<tr>
+<td>GO Terms Enriched in Modules: 3625</td>
+<td>GO Terms Enriched in Modules: 1905</td>
+</tr>
+<tr>
+<td>GO Terms Linked to Cells: 994</td>
+<td>GO Terms Linked to Cells: 436</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec6.5">Problem 3</h3>
+<p>ICLite Connect Cells and Modules with Disparate Ontological Function.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Extensive work has demonstrated that spurious correlation or anti-correlation may occur when using compositional data, thereby impacting the results obtained from ICLite. If you find that ICLite is detecting inappropriate relationships between modules and cells, verify that you have addressed the need for log ratio transformation as detailed above. In brief, if cell count data for every sample adds up to 1 or 100, it is likely compositional and requires transformation (Cell Count Data Transformation and Formatting).</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Gene modules returned by ICLite seem functionally redundant and connect to similar cells.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>The number of assumed gene clusters should be considered in relation to the total size of the transcriptional data set. Though ICLite does penalize for over-clustering, it will only consider solutions from the input vector. Therefore, initial runs may benefit from a broad array of values that may be narrowed on successive iterations. Subsequent runs may focus on finer gradients in parameters around previously successful solutions. Note that the blockclustering algorithm that ICLite employs is sensitive to seed. To ensure consistency between runs, make sure to set a global seed beforehand.</p>
+<p>For the sake of illustration, 3 correlation plots have been drawn showing how number of clusters will influence solution generation (<a href="#fig9">Figure 9</a>). As might be expected, a greater number of clusters will lead to a greater number of total positive correlations. Examining the plots, we see that many of the relationships appear to be redundant as number of assumed clusters increases. Specifically, we see that the T cells in our data set share connection to increasing number of modules as total number of assumed clusters increases. Ontologically, these modules are highly related and consist of genes that are clustered together in other solutions (demarcated by red boxes). Though ICLite penalizes for potential over-clustering, evaluation of ontology followed by semantic similarity clustering may help the user avoid scenarios where many small gene clusters are functionally redundant.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Assessing for relative overclustering in ICLite solutions</div>
+<p>Correlation plots from solutions generated by execution of ICLite with similar rho exclusion and connectivity values but varying number of assumed clusters. Calculated rho between modules (x-axis) and cell lineages (y-axis) is demarcated by circles colored according to the scale detailed to the right. The size of the circle is inversely proportional to p-value of interaction.</p>
+<p>(A–C) (A) 12 clusters assumed for blockclustering, (B) 24 clusters assumed for blockclustering or (C) 36 clusters assumed for blockclustering. Red boxes indicate modules with similar ontologic function and gene membership across solutions.</p>
+</figcaption>
+</figure>
+<h3 id="sec6.9">Problem 5</h3>
+<p>ICLite terminates mid-run without successful solution generation.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Combinations of high connectivity and rho cutoff values will eventually generate empty test matrices. For example:</p>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;- c(1000, 2000)</code></p>
+<p><code>&gt; input_rho&lt;- c(0.85, 0.95)</code></p>
+<p><code>&gt; number_of_clusters&lt;- c(24,36)</code></p>
+</div>
+<p>The empty matrix will cause an error in blockcluster:</p>
+<div class="textbox">
+<p><code>&gt;Error in blockcluster::coclusterBinary(test_mat, semisupervised = FALSE, :</code></p>
+<p><code>+ Number of Row clusters exceeds numbers of rows.</code></p>
+</div>
+<p>We may decrease the rho exclusion cutoffs (below) to resolve this error:</p>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;- c(1000, 2000)</code></p>
+<p><code>&gt; input_rho&lt;- c(0.85, 0.95)</code></p>
+<p><code>&gt; number_of_clusters&lt;- c(24,36)</code></p>
+</div>
+<p>This time, the run generates 3 successful clustering solutions but fails on the third matrix:</p>
+<div class="textbox">
+<p><code>&gt; Co-Clustering Failed!</code></p>
+<p><code>&gt; Co-Clustering successfully terminated!</code></p>
+<p><code>&gt; Co-Clustering successfully terminated!</code></p>
+<p><code>&gt; Error in blockcluster::coclusterBinary(test_mat, semisupervised = FALSE, :</code></p>
+<p><code>+ Number of Row clusters exceeds numbers of rows.</code></p>
+</div>
+<p>ICLite creates an environmental object named “test_mat_list” that includes the input matrices for all solutions fed into blockcluster for module assembly. Inspec this value in RStudio using this code:</p>
+<div class="textbox">
+<p><code>&gt; for(m in 1:length(test_mat_list)){</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;    print(attributes(test_mat_list[[m]])$dim)</code></p>
+<p><code>&gt;</code></p>
+<p><code>&gt;}</code></p>
+</div>
+<p>Which results in:</p>
+<div class="textbox">
+<p><code>+ }</code></p>
+<p><code>[1] 4081 4081</code></p>
+<p><code>[1] 1426 1426</code></p>
+<p><code>[1] 910 910</code></p>
+<p><code>[1] 0 0</code></p>
+<p><code>&gt;</code></p>
+</div>
+<p>We see now that the first 3 matrices were generated without issue but the final has no column or row values. This can again be corrected by liberalizing our cutoffs. This time, decreasing minimum connectivity as below yields a successful run:</p>
+<div class="textbox">
+<p><code>&gt; input_connectivities&lt;- c(750, 1000)</code></p>
+<p><code>&gt; input_rho&lt;- c(0.45, 0.55)</code></p>
+<p><code>&gt; number_of_clusters&lt;- c(24,36)</code></p>
+</div>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Alexa, A. and Rahnenfuhrer, J. (2020). topGO: Enrichment Analysis for Gene Ontology. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref1">View at publisher</a></p>
+<p id="bib2">Anders, S. and Huber, W. (2010). Differential expression analysis for sequence count data. Genome Biol. <i>11</i>, R106. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref2">View at publisher</a></p>
+<p id="bib3">Bhatia, P.S., Iovleff, S., and Govaert, G. (2017). Blockcluster: an R Package for Model-Based Co- Clustering. Journal of Statistical Software, <i>76</i>. <a class="external-link" href="https://doi.org/10.18637/jss.v076.i09">https://doi.org/10.18637/jss.v076.i09</a></p>
+<p id="bib4">Camiolo, M.J., Zhou, X., Oriss, T.B., Yan, Q., Gorry, M., Horne, W., Trudeau, J.B., Scholl, K., Chen, W., Kolls, J.K., et al. (2021). High-dimensional profiling clusters asthma severity by lymphoid and non-lymphoid status. Cell Rep. <i>35</i>, 108974. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref4">View at publisher</a></p>
+<p id="bib5">Carlson, M. (2019). org.Hs.eg.db: Genome Wide Annotation for Human. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref5">View at publisher</a></p>
+<p id="bib6">Chen, H., Lau, M.C., Wong, M.T., Newell, E.W., Poidinger, M., and Chen, J. (2016). Cytofkit: a Bioconductor package for an integrated mass cytometry data analysis pipeline. PLoS Comput. Biol. <i>12</i>, e1005112. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref6">View at publisher</a></p>
+<p id="bib7">Core Team, R. (2015). R: A Language and Environment for Statistical Computing (R Foundation for Statistical Computing). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref7">View at publisher</a></p>
+<p id="bib8">Davis, C.A., Hitz, B.C., Sloan, C.A., Chan, E.T., Davidson, J.M., Gabdank, I., Hilton, J.A., Jain, K., Baymuradov, U.K., Narayanan, A.K., et al. (2018). The Encyclopedia of DNA elements (ENCODE): data portal update. Nucleic Acids Res. <i>46</i>. D794–d801. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref8">View at publisher</a></p>
+<p id="bib9">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref9">View at publisher</a></p>
+<p id="bib10">Korotkevich, G., Sukhov, V., Budin, N., Shpak, B., Artyomov, M.N., and Sergushichev, A. (2021). Fast gene set enrichment analysis. bioRxiv. 060012. <a class="external-link" href="https://doi.org/10.1101/060012">https://doi.org/10.1101/060012</a></p>
+<p id="bib11">Leek, J.T., Johnson, W.E., Parker, H.S., Jaffe, A.E., and Storey, J.D. (2012). The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics <i>28</i>, 882-883. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref11">View at publisher</a></p>
+<p id="bib12">Liao, Y., Smyth, G.K., and Shi, W. (2014). featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics <i>30</i>, 923-930. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref12">View at publisher</a></p>
+<p id="bib13">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. <i>15</i>, 550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref13">View at publisher</a></p>
+<p id="bib14">Paradis, E. and Schliep, K. (2019). Ape 5.0: an environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics <i>35</i>, 526-528. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref14">View at publisher</a></p>
+<p id="bib15">van Den Boogaart, K.G. and Tolosana-Delgado, R. (2008). “compositions”: A unified R package to analyze compositional data. Comput. Geosci. <i>34</i>, 320-338. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref15">View at publisher</a></p>
+<p id="bib18">Wickham, Hadley &amp; Averick; Mara &amp; Bryan; Jennifer &amp; Chang; Winston &amp; McGowan; Lucy &amp; François; Romain &amp; Grolemund; Garrett &amp; Hayes; Alex &amp; Henry; Lionel &amp; Hester; Jim &amp; Kuhn; Max &amp; Pedersen; Thomas &amp; Miller; Evan &amp; Bache; Stephan &amp; Müller; Kirill &amp; Ooms; Jeroen &amp; Robinson; David &amp; Seidel; Dana &amp; Spinu; Vitalie &amp; Yutani; Hiroaki (2019). Welcome to the Tidyverse. Journal of Open Source Software <i>4</i>. . <a class="external-link" href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a></p>
+<p id="bib16">Yu, G., Li, F., Qin, Y., Bo, X., Wu, Y., and Wang, S. (2010). GOSemSim: an R package for measuring semantic similarity among GO terms and gene products. Bioinformatics <i>26</i>, 976-978. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref16">View at publisher</a></p>
+<p id="bib17">Zhao, S., Ye, Z., and Stanton, R. (2020). Misuse of RPKM or TPM normalization when comparing across samples and sequencing protocols. RNA <i>26</i>, 903-909. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00553-0/sref17">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Matthew Camiolo (<a href="mailto:camiolomj@upmc.edu">camiolomj@upmc.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents. Example data referenced in the text can be loaded into R using the command ICLite::load_IMSA_data(). Unprocessed FCS files and gene expression data can be accessioned as detailed above.</p>
+<h4>Data and code availability</h4>
+<p>The GEO accession number for the RNA-seq data is GSE136587. FCS files of mass cytometry data are available through FlowRepository. The ICLite package and documentation are available for download at <a href="https://github.com/camiolomj/ICLite/">https://github.com/camiolomj/ICLite/</a>. Immune cell count and BAL transcriptional data from IMSA participants are included as part of the R package and are preformatted to run in ICLite. Code detailed in this Protocol, including Troubleshooting, is available as an R script through <a href="#appsec1">supplemental information</a>.</p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1045-Mmc1.zip">Data S1. Complete R code for generation of figures shown in this manuscript, related to step 13</a></p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grants P01AI106684 (to A.R. and S.E.W.), R01HL113956 (to A.R. and P.R.) and R01AI048927 (to A.R.), U10HL109152 (S.E.W.), and 1F32HL14741501 (to M.J.C).</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, M.J.C.; methodology, M.J.C.; data analysis, M.J.C.; writing, M.J.C.; supervision, A.R. and S.E.W.; funding acquisition, A.R., S.E.W., and M.J.C.</p>
+<h3>Declaration of interests</h3>
+<p>A.R. has a research agreement with Pieris Pharmaceuticals. S.E.W. is a consultant for AstraZeneca, Glaxo Smith-Kline, and Sanofi. She is also involved in clinical trials being run by Knopp, Sanofi, and AstraZeneca. She has a research agreement with Pieris Pharmaceuticals. M.J.C. is a consultant for Pieris Pharmaceuticals.</p>
+</section>
+</article>

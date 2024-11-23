@@ -1,0 +1,2142 @@
+<article>
+<section>
+<h1 id="header">Processing single-cell RNA-seq datasets using SingCellaR</h1>
+<p><time datetime="2022-04-08">Published: April 8, 2022</time></p>
+<p>Guanlin Wang,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">5</a></sup> Wei Xiong Wen,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Adam J. Mead,<sup><a href="#aff1">1</a>,<a href="#aff4">4</a></sup> Anindita Roy,<sup><a href="#aff1">1</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a></sup> Bethan Psaila,<sup><a href="#aff1">1</a>,<a href="#aff4">4</a></sup> and Supat Thongjuea<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff4">4</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>MRC Molecular Haematology Unit, MRC WIMM, University of Oxford, Oxford OX3 9DS, UK</p>
+<p id="aff2"><sup>2</sup>Centre for Computational Biology, Medical Research Council Weatherall Institute of Molecular Medicine (MRC WIMM), University of Oxford, Oxford OX3 9DS, UK</p>
+<p id="aff3"><sup>3</sup>Department of Paediatrics, Children’s Hospital, John Radcliffe Hospital, and MRC WIMM, University of Oxford, Oxford OX3 9DS, UK</p>
+<p id="aff4"><sup>4</sup>National Institute for Health Research (NIHR) Oxford Biomedical Research Centre, Oxford OX4 2PG, UK</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:supat.thongjuea@imm.ox.ac.uk">supat.thongjuea@imm.ox.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2022.101266">10.1016/j.xpro.2022.101266</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Single-cell RNA sequencing has led to unprecedented levels of data complexity. Although several computational platforms are available, performing data analyses for multiple datasets remains a significant challenge. Here, we provide a comprehensive analytical protocol to interrogate multiple datasets on SingCellaR, an analysis package in R. This tool can be applied to general single-cell transcriptome analyses. We demonstrate steps for data analyses and visualization using bespoke pipelines, in conjunction with existing analysis tools to study human hematopoietic stem and progenitor cells.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref23">Roy et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>SingCellaR is an open-source analysis tool for single-cell RNA sequencing data</li>
+<li>SingCellaR facilitates various analyses, including data integration and comparison</li>
+<li>Step-by-step analysis and visualization using SingCellaR for human hematopoietic cells</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol describes a method for analyzing single-cell RNA sequencing (scRNA-seq) datasets using an R package called SingCellaR. In addition to standard functions (e.g., reading gene expression matrices, data filtering, doublet removal, dimensionality reduction, data integration, clustering and marker gene identification, and differential gene expression analysis), similar to those performed by available R and Python analysis tools like Seurat (<a href="#bib9">Hao et al., 2021</a>; <a href="#bib26">Stuart et al., 2019</a>), Monocle (<a href="#bib29">Trapnell et al., 2014</a>), and Scanpy (<a href="#bib30">Wolf et al., 2018</a>), SingCellaR supports multiple data integration methods within a single platform. It also incorporates objective benchmarking of the integrative results, facilitating the comparison and choice of the most appropriate integration. To complement existing integration packages, SingCellaR includes a novel integration method - Supervised Harmony (<a href="#bib23">Roy et al., 2021</a>), which showed a better integrative result than available methods for integrating multiple scRNA-seq datasets generated from different hematopoietic tissues.</p>
+<p>SingCellaR supports multiple modalities for visualization, including tSNE, UMAP, force-directed graph (FDG) in two- or three-dimensional embeddings, diffusion maps, violin and bubble plots, and heatmaps. Cells can be identified on these plots according to user-defined parameters, such as cluster, donor, tissue of origin, disease state, etc., by accessing relevant information from the SingCellaR object. Multiple signature gene scores can also be superimposed on the same embeddings. For example, visualization of sets of canonical genes used to distinguish different blood cell lineages can help exploration of the cell types contained within a dataset independently of cell clustering algorithms. To annotate cell types and states, SingCellaR uses gene set enrichment analysis to calculate enrichment scores for user-defined, curated gene sets. This system can be used alongside manual inspection for canonical marker genes, or other existing algorithms (<a href="#bib3">Aran et al., 2019</a>; <a href="#bib19">Pliner et al., 2019</a>; <a href="#bib25">Shao et al., 2020</a>; <a href="#bib33">Zhang et al., 2019</a>).</p>
+<p>We recently demonstrated the utility of the SingCellaR pipeline in a study of human hematopoiesis. Studying the site- and stage-specific changes of normal hematopoiesis over human development is crucial to understanding the origin of disorders that tend to emerge at specific ages. We analyzed scRNA-seq datasets from hematopoietic stem and progenitor cells (HSPCs) from five different tissues sampled across four stages of the human lifetime (<a href="#bib23">Roy et al., 2021</a>). This study aimed to explore dynamic changes in the cellular compositions of lineage-specific HSPCs and identify the site and developmental stage-specific transitions in gene regulatory networks across human developmental stages.</p>
+<p>Here we present a comprehensive protocol for the analytical pipeline demonstrating step-by-step data analysis and visualization as employed in the recent publication (<a href="#bib23">Roy et al., 2021</a>). We cover the software installation, processing of an individual sample and integrating multiple samples with benchmarking of multiple integration methods, cell clustering, cell type annotation, implementation of AUCell, differential abundance, and trajectory analyses. We also provide R functions for single-cell data visualization useful for interpreting results. Finally, limitations, problems, and potential solutions are discussed. All processed datasets, R objects, and codes are available and maintained on the published data repositories.</p>
+<h3 id="sec1.1">scRNA-seq datasets</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–10 min</div>
+<p>In this protocol, we use scRNA-seq datasets of hematopoietic stem and progenitor cells (HSPCs) from human tissues across different developmental stages, including early fetal liver (eFL), matched fetal liver (FL) and bone marrow (FBM) isolated from the same fetuses, pediatric bone marrow (PBM), and adult bone marrow (ABM). Here, human fetal liver samples from first and second trimester are referred to eFL and FL respectively. Table S1 in (<a href="#bib23">Roy et al., 2021</a>) shows the summary of samples and single-cell quality information. Sample collection, fluorescence-activated cell sorting (FACS) strategies, high-throughput sequencing using 10× Genomics platform and data pre-processing steps are described in the method section of (<a href="#bib23">Roy et al., 2021</a>).</p>
+<p>We have provided pre-processed datasets and available gene sets on Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a>. Zenodo (<a href="https://zenodo.org/">https://zenodo.org/</a>) is an open and citable repository for sharing curation and publication of data and software from research outputs, regardless of data format, size, and access restrictions or license.</p>
+<p>The compiled datasets consist of:</p>
+<ol>
+<li>cellranger pipeline outputs of samples from different tissues: the file ‘cellranger_output.zip’ is a zipped folder containing the cellranger pipeline results of 9 samples (eFL, n= 2; FL, n= 2; FBM, n= 2; PBM, n= 2; ABM, n=1);</li>
+<li>human signature gene sets that are used in this protocol;</li>
+<li>codes (Code.zip) used in this protocol;</li>
+<li>generated R objects from this protocol.</li>
+</ol>
+<h4 id="sec1.1.1">Cell Ranger software</h4>
+<p>(<a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a>) contains analysis pipelines used to align sequencing reads to the reference genome, generate feature-barcode matrices, and perform other downstream analyses. We performed cellranger count as described in <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count</a> to obtain feature-barcode matrices for each library. The outputs of the pipeline include a Matrix Market file of gene expression (matrix.mtx.gz), cell barcode (barcodes.tsv.gz) and gene metadata (features.tsv.gz) files.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>cellranger pipeline outputs pre-processed illustrated in this protocol</td>
+<td>(<a href="#bib23">Roy et al., 2021</a>)</td>
+<td>
+<a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R (v4.0.4)</td>
+<td>Team R C. R: A language and environment for statistical computing[J]. 2013.</td>
+<td>
+<a href="https://cran.r-project.org/bin/macosx/">https://cran.r-project.org/bin/macosx/</a> (macOS)<a href="https://cran.r-project.org/bin/windows/base/">https://cran.r-project.org/bin/windows/base/</a> (Windows)<a href="https://cran.r-project.org/bin/linux">https://cran.r-project.org/bin/linux</a>/ (Linux)</td>
+</tr>
+<tr>
+<td>RStudio (v1.1.463)</td>
+<td>Team R S. Rstudio: integrated development for R[J]. Rstudio, Inc., Boston, MA URL <a href="http://www.Rstudio.com">http://www.Rstudio.com</a>, 2015, 42: 14.</td>
+<td><a href="https://www.rstudio.com/products/rstudio/download/">https://www.rstudio.com/products/rstudio/download/</a></td>
+</tr>
+<tr>
+<td>SingCellaR (v1.2.0)</td>
+<td>(<a href="#bib23">Roy et al., 2021</a>)</td>
+<td>Github:<a href="https://github.com/supatt-lab/SingCellaR">https://github.com/supatt-lab/SingCellaR</a>Zenodo:<a href="https://doi.org/10.5281/zenodo.5153387">https://doi.org/10.5281/zenodo.5153387</a>
+</td>
+</tr>
+<tr>
+<td>monocle (v3_0.2.3.0)</td>
+<td>(<a href="#bib29">Trapnell et al., 2014</a>)</td>
+<td><a href="https://cole-trapnell-lab.github.io/monocle3/">https://cole-trapnell-lab.github.io/monocle3/</a></td>
+</tr>
+<tr>
+<td>AUCell (v1.14.0)</td>
+<td>(<a href="#bib1">Aibar et al., 2017</a>)</td>
+<td><a href="https://www.bioconductor.org/packages/release/bioc/vignettes/AUCell/inst/doc/AUCell.html">https://www.bioconductor.org/packages/release/bioc/vignettes/AUCell/inst/doc/AUCell.html</a></td>
+</tr>
+<tr>
+<td>harmony (v0.1.0)</td>
+<td>(<a href="#bib14">Korsunsky et al., 2019</a>)</td>
+<td><a href="https://github.com/immunogenomics/harmony">https://github.com/immunogenomics/harmony</a></td>
+</tr>
+<tr>
+<td>fgsea (v1.18.0)</td>
+<td>(<a href="#bib13">Korotkevich et al., 2021</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/fgsea.html">https://bioconductor.org/packages/release/bioc/html/fgsea.html</a></td>
+</tr>
+<tr>
+<td>DAseq (v1.0.0)</td>
+<td>(<a href="#bib34">Zhao et al., 2021</a>)</td>
+<td><a href="https://github.com/KlugerLab/DAseq">https://github.com/KlugerLab/DAseq</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Computing Platform:
+<ul>
+<li>A desktop with local memory 16 GB; 32 GB or higher memory is recommended for large datasets integration. This protocol was performed on macOS Mojave (v10.14.5) with 3.8 GHz Intel Core i5 processor and 32 GB memory.</li>
+<li>A high-performance workstation or computing cluster – 32 GB memory or higher with 8-core processor or higher processing cores is recommended.</li>
+</ul>
+</td>
+<td>MacOSLinux</td>
+<td>
+<a href="https://www.apple.com">https://www.apple.com</a><a href="https://www.linux.org/">https://www.linux.org/</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">SingCellaR installation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10–20 min</div>
+<p>Before we begin, the user has to install SingCellaR and other dependency packages. R packages are hosted across multiple repositories, namely Comprehensive R Archive Network (CRAN), Bioconductor, and Github. For a brief introduction, CRAN is the R central software repository for the latest and previous versions of the R distribution and packages. Bioconductor is the R repository to facilitate R packages developed for biological data analysis. GitHub is a commercial repository that hosts services for individuals and teams for software version control and collaboration. The R functions ‘install.packages’, ‘BiocManager::install’, and ‘devtools::install_github’ will be used to install packages from CRAN, Bioconductor, and Github, respectively. Prior to installation, the function ‘if(!require("package_name"))’ will be used to check if the package has already been installed on a computer, and installation will proceed for packages not yet installed on the computer.</p>
+<ol>
+<li>
+<b>Install SingCellaR from GitHub by running the following R code</b>:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; if(!require(devtools)) {</code></p>
+<p><code>&gt;    install.packages("devtools")</code></p>
+<p><code>&gt; }</code></p>
+<p><code>&gt; if(!require(BiocManager)) {</code></p>
+<p><code>&gt;    install.packages("BiocManager")</code></p>
+<p><code>&gt; }</code></p>
+<p><code>&gt; devtools::install_github('supatt-lab/SingCellaR',ref='master',</code></p>
+<p><code>repos=BiocManager::repositories())</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> We tested SingCellaR installation on macOS Mojave and Catalina, and Windows 10.</div>
+<p>R version 4 or higher is required with other R packages, as shown in the <a href="#key-resources-table">key resources table</a>. SingCellaR incorporates functions from Python (version 3.8) modules that have to be installed as described below. The timing of this step depends on the installation of devtools and Bioconductor packages. Devtools package is an R package to support the installation for other packages that are not yet in a standard package repository, such as CRAN or Bioconductor. R packages, including SingCellaR, usually depend on other R packages (dependencies) to support their full range of functionalities. Therefore, the time to complete the installation depends on the number of dependencies that have to be installed on the computer.</p>
+<ol start="2">
+<li>Install required python modules by running the following R code:
+<ol type="a">
+<li>Modules required for the force-directed graph analysis.
+<div class="textbox">
+<p><code>&gt; library(reticulate)</code></p>
+<p><code>&gt; conda_create("r-reticulate", python_version="3.8")</code></p>
+<p><code>&gt; py_install("fa2", envname="r-reticulate")</code></p>
+<p><code>&gt; py_install("networkx", envname="r-reticulate")</code></p>
+</div>
+</li>
+<li>Module required for doublet removal using Scrublet.
+<div class="textbox">
+<p><code>&gt; py_install("Scrublet",envname="r-reticulate")</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> We tested the fa2 python module for the force-directed graph analysis using Python versions 2.7, 3.6 and 3.8. Using Conda environment is recommended in conjunction with reticulate package. Conda (<a href="https://docs.conda.io/en/latest/">https://docs.conda.io/en/latest/</a>) is a virtual environment management system for Python. With Conda, the user can create, remove, and update environments that have different versions of Python packages installed in them. This flexibility is especially helpful on devices in which the user does not have administrative privileges to install Python packages on the device and compile version control for specific packages.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Install required R packages by running the following R code:
+<ol type="a">
+<li>harmony – required for data integration using Harmony method (<a href="#bib14">Korsunsky et al., 2019</a>).
+<div class="textbox">
+<p><code>&gt; if(!require(harmony)) {</code></p>
+<p><code>&gt;    install.packages("harmony")</code></p>
+<p><code>&gt; }</code></p>
+</div>
+</li>
+<li>AUCell – required for computing AUCell scores with specified gene signatures (<a href="#bib1">Aibar et al., 2017</a>).
+<div class="textbox">
+<p><code>&gt; if(!require(AUCell)) {</code></p>
+<p><code>&gt;    BiocManager::install("AUCell")</code></p>
+<p><code>&gt; }</code></p>
+</div>
+</li>
+<li>doParallel and doRNG – required for parallel processing in AUCell analysis.
+<div class="textbox">
+<p><code>&gt; if(!require(doParallel)) {</code></p>
+<p><code>&gt;    install.packages("doParallel")</code></p>
+<p><code>&gt; }</code></p>
+<p><code>&gt; if(!require(doRNG)) {</code></p>
+<p><code>&gt;    install.packages("doRNG")</code></p>
+<p><code>&gt; }</code></p>
+</div>
+</li>
+<li>DAseq – required for the analysis of differential abundance (<a href="#bib34">Zhao et al., 2021</a>).
+<div class="textbox">
+<p><code>&gt; if(!require(DAseq)) {</code></p>
+<p><code>&gt;    devtools::install_github("KlugerLab/DAseq")</code></p>
+<p><code>&gt; }</code></p>
+</div>
+</li>
+<li>destiny – required for the trajectory analysis using diffusion map (<a href="#bib8">Haghverdi et al., 2015</a>).
+<div class="textbox">
+<p><code>&gt; if(!require(destiny)) {</code></p>
+<p><code>&gt;    BiocManager::install("destiny")}</code></p>
+</div>
+</li>
+<li>monocle3 – required for the trajectory analysis (<a href="#bib29">Trapnell et al., 2014</a>).
+<div class="textbox">
+<p><code>&gt; devtools::install_github('cole-trapnell-lab/monocle3',</code></p>
+<p><code>ref="develop")</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The destiny package is not available for Bioconductor version 3.13. The user can install this package from GitHub.</div>
+<div class="textbox">
+<p><code>&gt; install_github("https://github.com/theislab/destiny",</code></p>
+<p><code>build_vignettes=FALSE, dependencies=TRUE)</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> SingCellaR supports multiple dataset integration and batch correction methods including Scanorama (<a href="#bib10">Hie et al., 2019</a>), Seurat Canonical Correlation Analysis (CCA) and Reciprocal PCA (RPCA) (<a href="#bib9">Hao et al., 2021</a>), Liger with online integrative non-negative matrix factorization (iNMF) (<a href="#bib5">Gao et al., 2021</a>), ComBat (<a href="#bib12">Johnson et al., 2007</a>) and Limma (<a href="#bib21">Ritchie et al., 2015</a>).</div>
+</li>
+<li>scanorama – required for the data integration. The user can install scanorama using pip command line:
+<div class="textbox">
+<p><code>&gt; pip install scanorama</code></p>
+</div>
+</li>
+<li>Seurat CCA/RPCA – required for the data integration.
+<div class="textbox">
+<p><code>&gt; install.packages("Seurat")</code></p>
+</div>
+</li>
+<li>rliger – required for the data integration.
+<div class="textbox">
+<p><code>&gt; install.packages("rliger")</code></p>
+</div>
+</li>
+<li>ComBat – required for the batch removal.
+<div class="textbox">
+<p><code>&gt; if (!requireNamespace("BiocManager", quietly = TRUE))</code></p>
+<p><code>                install.packages("BiocManager")</code></p>
+<p><code>&gt; BiocManager::install("sva")</code></p>
+</div>
+</li>
+<li>Limma – required for the batch removal.
+<div class="textbox">
+<p><code>&gt; if (!requireNamespace("BiocManager", quietly = TRUE))</code></p>
+<p><code>                install.packages("BiocManager")</code></p>
+<p><code>&gt; BiocManager::install("limma")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.2">Processing scRNA-seq for an individual sample</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10–15 min for each sample, depending on the number of cells being analyzed</div>
+<p>This step creates a SingCellaR object for each sample and performs quality control (QC) to identify cells that qualify for further downstream analyses. We demonstrate the selection process of high-quality cells using multiple QC plots, data normalization, and identifying highly variable genes. The process starts from reading in the input files for each sample generated directly from the cellranger pipeline. Here, we show an early fetal liver (eFL_1) dataset as an example.</p>
+<ol start="4">
+<li>Load SingCellaR package into R environment:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+<p><code>&gt; setwd("./SingCellaR_objects")</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> ‘./SingCellaR_objects’ is a local folder for this analysis. The user can change the folder name to a suitable file path in a local computer or server.</div>
+<ol start="5">
+<li>
+<b>Create SingCellaR object.</b> SingCellaR object is an extension of the SingleCellExperiment (<a href="#bib2">Amezquita et al., 2020</a>) object for storing data generated from single-cell experiments. The R code below shows how to read in the input files for generating the SingCellaR object using the function ‘load_matrices_from_cellranger’. The input files are from the output of the cellranger pipeline version 3.0.1. The folder eFL1 contains input files consisting of cell barcodes (barcodes.tsv.gz), gene features (features.tsv.gz), and matrix (matrix.mtx.gz) containing unique molecular identifier (UMI) counts for gene expression. The user can assign a unique identifier to the sample in this step.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; data_matrices_dir&lt;-"./cellranger_output/eFL1/"</code></p>
+<p><code>&gt; eFL_1&lt;-new("SingCellaR")</code></p>
+<p><code>&gt; eFL_1@dir_path_10x_matrix&lt;-data_matrices_dir</code></p>
+<p><code>&gt; eFL_1@sample_uniq_id&lt;-"eFL_1"</code></p>
+<p><code>&gt; load_matrices_from_cellranger(eFL_1,cellranger.version = 3)</code></p>
+<p><code>&gt; eFL_1</code></p>
+</div>
+<p>Now the SingCellaR object – eFL_1 is created.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The ‘cellranger.version’ parameter is required to be compatible with the cellranger pipeline output file. The cellranger output file ‘features.tsv.gz’ for gene features is generated from Cell Ranger version 3 and above, whereas version 2 of Cell Ranger creates the file ‘genes.tsv.gz’.</div>
+<ol start="6">
+<li>
+<b>Create cell metadata.</b> Cell metadata will be created. Rows represent cells and columns represent variables. Variables computed in this step include the number of UMIs and detected genes per cell, and percentage of mitochondrial gene expression for each cell.
+<div class="textbox">
+<p><code>&gt; process_cells_annotation(eFL_1, mito_genes_start_with="MT-")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>mito_genes_start_with:</b> Gene names starting with ‘MT-’ are used as a set of mitochondrial genes for human and ‘mt-’ for mouse samples.
+<div class="note">
+<span class="note-title">Note:</span> The cell metadata can be accessed using the function ‘get_cells_annotation(eFL_1)’ or <a href="mailto:efl_1@meta.data">eFL_1@meta.data</a>. The user can manually add additional information to the columns of the cell metadata.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>
+<b>Visualize QC matrices.</b> QC matrices computed in step 6 can be explored using the plotting functions:
+<ol type="a">
+<li>Histogram (<a href="#fig1">Figure 1</a>A).
+<div class="textbox">
+<p><code>&gt; plot_cells_annotation(eFL_1,type="histogram")</code></p>
+</div>
+</li>
+<li>Boxplot (<a href="#fig1">Figure 1</a>B).
+<div class="textbox">
+<p><code>&gt; plot_cells_annotation(eFL_1,type="boxplot")</code></p>
+</div>
+</li>
+<li>Plot of the number of UMIs versus the number of detected genes per cell (<a href="#fig1">Figure 1</a>C).
+<div class="textbox">
+<p><code>&gt; plot_UMIs_vs_Detected_genes(eFL_1)</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. SingCellaR visualization of QC matrices for a single sample</div>
+<p>(A) Histograms show the cell frequency based on the number of UMI counts per cell, the number of detected genes per cell, and the percentage of mitochondrial gene expression per cell. Dashed lines represent the mean.</p>
+<p>(B) The same QC matrices as in (A) but represented using boxplots that show the distribution of cells (dots).</p>
+<p>(C) Scatterplot showing the number of UMI counts per cell (x-axis) and the number of detected genes per cell (y-axis); These panels can be used to determine the cell filtering criteria for selecting high-quality cells. Dashed lines represent the mean of detected genes and UMI counts per cell.</p>
+</figcaption>
+</figure>
+<ol start="8">
+<li>
+<b>Annotate cell quality, identify expressed genes, and assign cell and gene status into metadata.</b> After visualizing QC matrices in step 7, the user can specify filtering parameters using the observed number of UMIs and detected genes per cell, and percentage of mitochondrial gene expression. The function ‘filter_cells_and_genes’ assigns a new column named IsPassed that will be added into the cell metadata. Cells that pass QC will be annotated as TRUE. Expressed genes will be identified in this step and the column named IsExpress will be added into the gene metadata. Genes expressed above and below the user-defined threshold will be annotated as TRUE or FALSE. Although all original cells and genes are retained in the metadata and gene expression matrix in this step, these annotations will be used to subset cells and expressed genes for further downstream analyses. The number of cells passing QC thresholds will be shown on the R console after running the following code:
+<div class="textbox">
+<p><code>&gt; filter_cells_and_genes(eFL_1,</code></p>
+<p><code>                                min_UMIs=1000,</code></p>
+<p><code>                                max_UMIs=50000,</code></p>
+<p><code>                                min_detected_genes=500,</code></p>
+<p><code>                                max_detected_genes=6000,</code></p>
+<p><code>                                max_percent_mito=10,</code></p>
+<p><code>                                genes_with_expressing_cells = 10,</code></p>
+<p><code>                                isRemovedDoublets = FALSE)</code></p>
+</div>
+The following parameters are described:
+<ol type="a">
+<li>
+<b>min_UMIs:</b> The lower threshold for UMI counts, above which cells are annotated as high-quality. To be used in conjunction with max_UMIs argument. Default value is 1,000.</li>
+<li>
+<b>max_UMIs:</b> The upper threshold for UMI counts, below which cells are annotated as high-quality. To be used in conjunction with min_UMIs argument. Default value is 30,000.</li>
+<li>
+<b>min_detected_genes:</b> The lower threshold for the number of expressed genes, above which cells are annotated as high-quality. To be used in conjunction with max_detected_genes argument. Default value is 1,000.</li>
+<li>
+<b>max_detected_genes:</b> The upper threshold for the number of expressed genes, below which cells are annotated as high-quality. To be used in conjunction with min_detected_genes argument. Default value is 8,000.</li>
+<li>
+<b>genes_with_expressing_cells:</b> The lower threshold for the number of cells in which a gene is expressed (UMI &gt;=1), above which, the gene will be annotated as expressed. Default value is 10.</li>
+<li>
+<b>isRemovedDoublets:</b> If set to TRUE (default), doublets will be removed prior to downstream analyses.
+<div class="note">
+<span class="note-title">Note:</span> Parameters used for filtering out cells with low quality can be varied across tissues and organs from different datasets. For example, the percentage threshold for mitochondrial gene expression, ‘max_percent_mito’ can be set higher for liver tissues (<a href="#bib15">MacParland et al., 2018</a>). The user can use the plotting functions as described above to explore different cut-offs for all samples.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> In addition, we have incorporated the Scrublet package (<a href="#bib31">Wolock et al., 2019</a>) for doublet removal into the latest version of SingCellaR. The user can add the optional step below to detect and exclude doublets:</div>
+<div class="textbox">
+<p><code>&gt; DoubletDetection_with_scrublet(eFL_1)</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>
+<b>Normalize UMI counts.</b> SingCellaR scales UMI counts by normalizing each library size to 10,000 or mean library size.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; normalize_UMIs(eFL_1, use.scaled.factor = T)</code></p>
+</div>
+<p>The following parameter is required:</p>
+<p><b>use.scaled.factor:</b> When set to TRUE, the gene expression values will be multiplied by 10,000 (by default) and normalized against the library size (total UMI counts) of each cell. The user can change the scale factor value using the scale.factor parameter. If set to FALSE, the function will use the mean of library size across all cells as the scale factor.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Using use.scaled.factor=TRUE is recommended for 10× genomics data. The user should consider specifying use.scaled.factor=FALSE for scRNA-seq data generated from plate-based protocols, e.g., Smart-seq2 (<a href="#bib18">Picelli et al., 2014</a>) and TARGET-Seq (<a href="#bib22">Rodriguez-Meira et al., 2019</a>). This is because the sequencing depth of scRNA-seq data generated from the plate-based protocols is in the higher ranges compared to 10× genomics data (e.g., from a hundred thousand to millions of reads per cell). Thus, using a scale factor of 10,000 is insufficient and leads to small gene expression values. The user should set use.scaled.factor=FALSE in order to use the mean library size from all single cells as the scale factor.</div>
+<ol start="10">
+<li>
+<b>Identify highly variable genes.</b> SingCellaR uses a gamma generalized linear model (GLM) as the fitting method for gene expression and coefficient of variation to identify highly variable genes. The GLM is suitable for modeling log-normal data from a sparse normalized gene expression matrix. A column named IsVarGenes is added to the gene metadata and genes identified as highly variable are annotated as TRUE, while all other genes are annotated as FALSE. The number of genes used to fit in the model and the number of identified variable genes will be shown after running the following code:
+<div class="textbox">
+<p><code>&gt; get_variable_genes_by_fitting_GLM_model(eFL_1,</code></p>
+<p><code>                                mean_expr_cutoff = 0.05,</code></p>
+<p><code>                                disp_zscore_cutoff = 0.05)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>mean_expr_cutoff:</b> The mean normalized expression value, above which, the genes are identified as highly variable. Default value is 0.1.</li>
+<li>
+<b>disp_zscore_cutoff:</b> The dispersion of z-score, above which, the genes are identified as highly variable. Default value is 0.1.
+<div class="note">
+<span class="note-title">Note:</span> In this step, we used lower cut-off values to increase the number of detected highly variable genes per sample for the downstream analyses.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Save the R object for further analyses.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; save(eFL_1, file="./eFL_1.SingCellaR.rdata")</code></p>
+</div>
+<ol start="12">
+<li>
+<b>Repeat the analyses for the rest of samples.</b> R codes are available at Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a>.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The user can pause the analysis after pre-processing each sample.</div>
+<h3 id="sec2.3">Integrating biological replicates</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–30 min for each group, 1–2 h for all stages</div>
+<p>This step integrates the individual R objects from pre-processed biological or technical replicates generated from step 12. Here, we illustrate the integration of two early fetal liver samples collected from two donors (<a href="#bib23">Roy et al., 2021</a>).</p>
+<ol start="13">
+<li>Load SingCellaR package.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+</div>
+<ol start="14">
+<li>
+<b>Integrate pre-processed biological replicates.</b> The user will initialize the integrated SingCellaR class object ‘SingCellaR_Int’ and assign a unique identifier prior to merging two datasets using the ‘preprocess_integration’ function.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; eFL &lt;- new("SingCellaR_Int")</code></p>
+<p><code>&gt; eFL@dir_path_SingCellR_object_files&lt;-"./"</code></p>
+<p><code>&gt; eFL@SingCellR_object_files=c("eFL_1.SingCellaR.rdata",</code></p>
+<p><code>                                    "eFL_2.SingCellaR.rdata")</code></p>
+<p><code>&gt; preprocess_integration(eFL)</code></p>
+<p><code>&gt; eFL</code></p>
+</div>
+<ol start="15">
+<li>
+<b>Annotate cell quality and expressed genes.</b> Filtering process has been already performed separately for each sample (see step 8), therefore the filtering parameters for this step will be set to include all cells. From the filtering output below, all cells will be retained, after running the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; filter_cells_and_genes(eFL,</code></p>
+<p><code>                                min_UMIs=1000,</code></p>
+<p><code>                                max_UMIs=50000,</code></p>
+<p><code>                                min_detected_genes=500,</code></p>
+<p><code>                                max_detected_genes=6000,</code></p>
+<p><code>                                max_percent_mito=10,</code></p>
+<p><code>                                isRemovedDoublets = FALSE)</code></p>
+</div>
+<ol start="16">
+<li><b>Normalize and scale UMI counts.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; normalize_UMIs(eFL, use.scaled.factor = T)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> See step 9 for details of required parameters.</div>
+<ol start="17">
+<li>
+<b>Regress out confounding factors.</b> The normalized and scaled gene expression values from step 16 will be adjusted by regressing out cell-to-cell variation in gene expression values due to confounding factors (e.g., batch and donor effect). To this end, SingCellaR implements the ‘lmFit’ function from the R package limma (<a href="#bib21">Ritchie et al., 2015</a>), SingCellaR provides the ‘remove_unwanted_confounders’ wrapper function to regress out the unwanted source of variation. Here, we will regress out the effects of UMI counts, percentage of mitochondrial gene expression, and donor. Adjusted gene expression will be used for further analyses.
+<div class="textbox">
+<p><code>&gt; remove_unwanted_confounders(eFL,</code></p>
+<p><code>    residualModelFormulaStr="∼UMI_count+percent_mito+sampleID")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>residualModelFormulaStr:</b> The formula format used to regress out confounding factors. The names of variables defined have to be the same as the column names of the cell metadata.
+<div class="note">
+<span class="note-title">Note:</span> The user can change the residualModelFormulaStr parameter and perform the following steps down to step 23 (UMAP analysis) to explore the effect on cell clustering by specifying different sets of confounding factors. For example, the user can set residualModelFormulaStr = "∼UMI_count+percent_mito" to compare with residualModelFormulaStr = "∼UMI_count+percent_mito+sampleID" to explore the effect of sample.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>
+<b>Identify highly variable genes.</b> The number of genes used for fitting the GLM model and the number of highly variable genes will be identified after running the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; get_variable_genes_by_fitting_GLM_model(eFL,</code></p>
+<p><code>                                                  mean_expr_cutoff = 0.05,</code></p>
+<p><code>                                                  disp_zscore_cutoff = 0.05)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> See step 10 for details of required parameters.</div>
+<ol start="19">
+<li>
+<b>Remove selected genes.</b> Here, we remove mitochondrial and ribosomal genes from highly variable genes identified from step 18 to avoid the skewed effect of ribosomal and mitochondrial gene expression in downstream analyses. The number of genes that are excluded will be shown after running the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; remove_unwanted_genes_from_variable_gene_set(eFL,</code></p>
+<p><code>        gmt.file = "./Human_genesets/human.ribosomal-mitochondrial.genes.gmt",</code></p>
+<p><code>        removed_gene_sets=c("Ribosomal_gene","Mitochondrial_gene"))</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The human.ribosomal-mitochondrial.genes.gmt file can be downloaded from Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a> under the folder Human_genesets.</div>
+<ol start="20">
+<li>Visualize highly variable genes (<a href="#fig2">Figure 2</a>A).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Visualization of highly variable genes and UMAP analysis results</div>
+<p>(A) Highly variable genes are identified and shown on the fitted gamma generalized linear model (GLM) plot. Gray dots represent all genes that are used to fit in GLM model. Light blue dots represent genes identified as highly variable genes that pass the gene expression cutoff and are fitted above the general fitted lines (red dashed-line).</p>
+<p>(B) The elbow plot represents the proportion of variance (y-axis) captured by the principal component analysis (PCA) and are ranked from PC1 to PC50 (x-axis). This plot can be used to determine the number of PCs to include in the downstream analyses; The first 30 PCs are used in this case.</p>
+<p>(C) The UMAP plot shows the expression of lineage gene sets. Yellow – lymphoid cells; Cyan – myeloid cells; Red – erythroid cells; Purple – megakaryocytic cells; Gray – HSPCs that do not (or lowly) express lineage signature genes.</p>
+<p>(D) The UMAP plot shows identified Louvain clusters.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_variable_genes(eFL)</code></p>
+</div>
+<ol start="21">
+<li>
+<b>Perform principal component analysis (PCA).</b> To interpret the relationship across single cells, dimensionality reduction methods are required to reduce high dimensionality data to the visualizable two- or three-dimensional space. In PCA, the reduced dimensional space is represented by principal components. The top PCs will capture most of the variance of the dataset. Here, we perform linear dimensionality reduction using PCA and then bring forward the most informative PCs for further nonlinear dimensionality reduction to visualize cells in a two-dimensional space. To this end, highly variable genes identified from steps 18–19 and visualized in step 20 will be used for PCA using the ‘runPCA’ function, a wrapper function for the ‘irlba’ function from the irlba package (<a href="http://bwlewis.github.io/irlba/">http://bwlewis.github.io/irlba/</a>).
+<div class="textbox">
+<p><code>&gt; SingCellaR::runPCA(eFL, use.components=50, use.regressout.data = T)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>use.components:</b> The number of principal components (PCs) to estimate. Default value is 50.</li>
+<li>
+<b>use.regressout.data:</b> If set to TRUE (default), the adjusted gene expression values from step 17 will be used.</li>
+</ol>
+</li>
+</ol>
+<ol start="22">
+<li>
+<b>Visualize principal components.</b> The elbow plot is used to determine the number of PCs to be included for further dimensionality reduction analyses (<a href="#fig2">Figure 2</a>B). The number of PCs to specify downstream should correspond to the elbow point, used as a cut-off to include PCs that capture most of the biological variations found in the data.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_PCA_Elbowplot(eFL)</code></p>
+</div>
+<ol start="23">
+<li>
+<b>Perform nonlinear dimensionality reduction analyses.</b> Running nonlinear dimension reduction on all highly variable genes requires high computational resources and processing time. Hence, using identified PCs from step 22 for nonlinear dimension reduction analysis is a standard technique for scRNA-seq analysis. Nonlinear dimension reduction analysis is suitable for capturing cellular heterogeneity (<a href="#bib32">Xiang et al., 2021</a>). Here, we use Uniform Manifold Approximation and Projection (UMAP) (<a href="#bib16">McInnes et al., 2018</a>) by running the ‘runUMAP’ wrapper function that implements the ‘umap’ function from the uwot package (<a href="https://cran.r-project.org/web/packages/uwot/">https://cran.r-project.org/web/packages/uwot/</a>). Based on the elbow plot shown in step 22, we select the first 30 PCs for UMAP analysis.
+<div class="textbox">
+<p><code>&gt; SingCellaR::runUMAP(eFL,</code></p>
+<p><code>                            dim_reduction_method = "pca",</code></p>
+<p><code>                            n.dims.use = 30,</code></p>
+<p><code>                            n.neighbors = 30,</code></p>
+<p><code>                            uwot.metric = "euclidean")</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>dim_reduction_method</b>: The method name for the linear dimension reduction.</li>
+<li>
+<b>n.dims.use:</b> The number of selected PCs as determined in step 22.</li>
+<li>
+<b>n.neighbors:</b> The number of neighboring cells (the size of the local neighborhood) used for manifold approximation. Default value is 30.</li>
+<li>
+<b>uwot.metric:</b> The distance metric name. Default is ‘cosine’.
+<div class="note">
+<span class="note-title">Note:</span> The user can also apply the t-Distributed Stochastic Neighbor Embedding (tSNE) approach using the ‘runTSNE’ function. The reduced dimension coordinates for UMAP and tSNE can be accessed using functions ‘get_umap.result’ and ‘get_tsne.result’ respectively.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="24">
+<li>
+<b>Visualize cell lineages on low dimensional space.</b> To explore whether the cells in each lineage are clustered in close proximity, we will visualize the UMAP result with the expression of multi-lineage gene sets using the ‘plot_umap_label_by_multiple_gene_sets’ function (<a href="#fig2">Figure 2</a>C). Here, we observe that cells are clustered together according to major cell types.
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_multiple_gene_sets(eFL,</code></p>
+<p><code>    gmt.file = "./Human_genesets/human.signature.genes.v1.gmt",</code></p>
+<p><code>    show_gene_sets = c("Erythroid","Myeloid","Lymphoid","Megakaryocyte"),</code></p>
+<p><code>    custom_color = c("red","cyan","orange","purple"),</code></p>
+<p><code>    isNormalizedByHouseKeeping = F,</code></p>
+<p><code>    point.size = 1)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>gmt.file:</b> Path to the file containing the gene signatures in GMT format.</li>
+<li>
+<b>show_gene_sets:</b> The names of the gene signatures to plot on UMAP.</li>
+<li>
+<b>custom_color:</b> The color assignment to each signature specified in ‘show_gene_sets’.</li>
+<li>
+<b>isNormalisedByHouseKeeping:</b> When set to TRUE (default), the gene expression values of the individual genes of each gene signature specified will be normalized by the housekeeping genes. The housekeeping genes are defined as the top 100 genes with the highest total gene expression values across all cells.</li>
+<li>
+<b>point.size:</b> Size of the data points on UMAP plot. Default value is 2.
+<div class="note">
+<span class="note-title">Note:</span> Lineage gene sets (human.signature.genes.v1.gmt) are available at Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a> under Human_genesets folder and from original publication (<a href="#bib23">Roy et al., 2021</a>).</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="25">
+<li>
+<b>Detect and assign clusters.</b> To detect and assign cell clusters, the ‘identifyClusters’ function is used. By default, the Louvain community-detection method implemented in the igraph package (<a href="https://igraph.org/r">https://igraph.org/r</a>) is used for cell clustering.
+<div class="textbox">
+<p><code>&gt; identifyClusters(eFL,n.dims.use = 30,</code></p>
+<p><code>                            dim_reduction_method = "pca",</code></p>
+<p><code>                            n.neighbors = 30,</code></p>
+<p><code>                            knn.metric = "euclidean")</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>n.dims.use:</b> The number of PCs to use. Default number is 30.</li>
+<li>
+<b>dim_reduction_method:</b> The dimensionality reduction analysis name.</li>
+<li>
+<b>n.neighbors:</b> The number of neighboring cells. This number may be the same as specified in step 23 if UMAP is used. Default number is 30.</li>
+<li>
+<b>knn.metric:</b> The distance metric, ‘euclidean’ is used by default. Another option is ‘cosine’.
+<div class="note">
+<span class="note-title">Note:</span> The cluster metadata for each cell can be accessed using the ‘get_cluster’ function.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="26">
+<li>
+<b>Visualize clusters on low dimensional space.</b> Louvain clusters can be shown on UMAP using the ‘plot_umap_label_by_clusters’ function (<a href="#fig2">Figure 2</a>D).
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_clusters(eFL,show_method = "louvain",mark.clusters = F)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>show_method:</b> The clustering detection name used as in step 25.</li>
+<li>
+<b>mark.clusters:</b> If set to TRUE (default) , cluster identifiers will be shown on the plot.</li>
+</ol>
+</li>
+</ol>
+<ol start="27">
+<li>
+<b>Identify cluster-specific genes.</b> The user can identify marker genes, which are particularly expressed in each cluster using the ‘findMarkerGenes’ function. Differentially expressed gene analysis between one cluster against all other clusters is performed using the nonparametric Wilcoxon test on normalized expression values for the comparison of expression level and Fisher’s exact test for the comparison of expressing cell frequency (<a href="#bib6">Giustacchini et al., 2017</a>). <i>P</i>-values generated from both tests are then combined using Fisher’s method and are adjusted using Benjamini–Hochberg (BH). This process is iterated for each cluster against all other clusters, therefore the processing time in this step is dependent on the number of cells and clusters. By default, the minimum log2 fold change ‘min.log2FC’ parameter is set to 0.5 and the minimum fraction of expressing cells in each cluster ‘min.expFraction’ parameter is set to 0.3.
+<div class="textbox">
+<p><code>&gt; findMarkerGenes(eFL,cluster.type = "louvain")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>cluster.type:</b> The clustering detection method used in step 25.</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li><b>Save R object for further analyses.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; save(eFL,file, “./eFL_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="29">
+<li>
+<b>Repeat the integration process for all biological replicates of FL, FBM, and PBM samples.</b> There is only one sample for ABM. Therefore, data integration is not required for this sample at this step. All R codes provided for each integration are available at Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a>.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The user can pause the analysis after integrating the biological replicates for each developmental stage and save the results in multiple SingCellaR objects.</div>
+<h3 id="sec2.4">Integrating samples from all tissue types</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 h</div>
+<p>The aim of integrating all samples is to assess the existence of batch or donor-specific effects that are confounding factors contributing to differences in gene expression profile across samples. Examples of batch effect include differences in library preparation methods, sequencing batch, and donor or sample ID (<a href="#bib28">Tran et al., 2020</a>). If the batch effect is observed, it can be adjusted by a variety of existing batch correction and integration methods incorporated in SingCellaR, including a novel technique, namely Supervised Harmony that we have developed and described in (<a href="#bib23">Roy et al., 2021</a>). SingCellaR also implements the wrapper functions for other integration methods including Harmony (<a href="#bib14">Korsunsky et al., 2019</a>), Seurat (<a href="#bib9">Hao et al., 2021</a>), Liger (<a href="#bib5">Gao et al., 2021</a>), Scanorama (<a href="#bib10">Hie et al., 2019</a>), Combat (<a href="#bib12">Johnson et al., 2007</a>), and Limma (<a href="#bib21">Ritchie et al., 2015</a>). In this step, we demonstrate examples of how to use these methods for data integration using the wrapper functions. A strategy to benchmark how well single cells are clustered across covariate variables (e.g., batch and donor) is illustrated.</p>
+<p>General examples of data integration include integrating samples from healthy donors and patients (<a href="#bib7">Granja et al., 2019</a>; <a href="#bib20">Psaila et al., 2020</a>) and from patients at different disease stages such as in cancer at diagnosis, remission, and relapse. Here, we illustrate the integration of HSPCs from five tissues spanning four different stages of human development that also happened to be processed and sequenced in two different batches (<a href="#bib23">Roy et al., 2021</a>).</p>
+<ol start="30">
+<li>Load SingCellaR package.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+</div>
+<ol start="31">
+<li>Initialize the SingCellaR_Int object and merge datasets generated from step 29.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; Human_HSPC &lt;- new("SingCellaR_Int")</code></p>
+<p><code>&gt; Human_HSPC@dir_path_SingCellR_object_files&lt;-"./"</code></p>
+<p><code>&gt; Human_HSPC@SingCellR_object_files=c("eFL_All.SingCellaR.rdata",</code></p>
+<p><code>                                                "FL_All.SingCellaR.rdata",</code></p>
+<p><code>                                                "FBM_All.SingCellaR.rdata",</code></p>
+<p><code>                                                "PBM_All.SingCellaR.rdata",</code></p>
+<p><code>                                                "ABM_1.SingCellaR.rdata")</code></p>
+<p><code>&gt; preprocess_integration(Human_HSPC)</code></p>
+<p><code>&gt; Human_HSPC</code></p>
+</div>
+<ol start="32">
+<li>
+<b>Annotate cell quality.</b> Input parameters for integrated samples have been set to include all cells. The user should observe that there are no cells being filtered out after running the following code:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; filter_cells_and_genes(Human_HSPC,</code></p>
+<p><code>                                min_UMIs=1000,</code></p>
+<p><code>                                max_UMIs=60000,</code></p>
+<p><code>                                min_detected_genes=500,</code></p>
+<p><code>                                max_detected_genes=6000,</code></p>
+<p><code>                                max_percent_mito=20,</code></p>
+<p><code>                                isRemovedDoublets = F)</code></p>
+</div>
+<ol start="33">
+<li>
+<b>Incorporate donor and sequencing batch information into cell metadata.</b> This information is required to perform the batch correction.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; meta.data &lt;- read.delim(file = "./meta.data.txt", header = T, sep = "∖t")</code></p>
+<p><code>&gt; Human_HSPC@meta.data&lt;- meta.data</code></p>
+</div>
+<p>Updated meta.data can be checked by running:</p>
+<div class="textbox">
+<p><code>&gt; head(Human_HSPC@meta.data)</code></p>
+</div>
+<ol start="34">
+<li>Normalize and scale UMI counts.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; normalize_UMIs(Human_HSPC, use.scaled.factor = T)</code></p>
+</div>
+<ol start="35">
+<li>Identify highly variable genes.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; get_variable_genes_by_fitting_GLM_model(Human_HSPC,</code></p>
+<p><code>                                                mean_expr_cutoff = 0.05,</code></p>
+<p><code>                                                disp_zscore_cutoff = 0.05)</code></p>
+</div>
+<ol start="36">
+<li>Remove ribosomal and mitochondrial genes.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; remove_unwanted_genes_from_variable_gene_set(Human_HSPC,</code></p>
+<p><code>    gmt.file = "./Human_genesets/human.ribosomal-mitochondrial.genes.gmt",</code></p>
+<p><code>    removed_gene_sets=c("Ribosomal_gene","Mitochondrial_gene"))</code></p>
+</div>
+<ol start="37">
+<li>Visualize highly variable genes.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_variable_genes(Human_HSPC)</code></p>
+</div>
+<ol start="38">
+<li>Run PCA.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; SingCellaR::runPCA(Human_HSPC,</code></p>
+<p><code>                            use.components = 100,</code></p>
+<p><code>                            use.regressout.data = FALSE</code></p>
+<p><code>                            )</code></p>
+</div>
+<ol start="39">
+<li>
+<b>Visualize principal components.</b> Based on the elbow plot, the first 40 PCs will be used for data integration.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_PCA_Elbowplot(Human_HSPC)</code></p>
+</div>
+<ol start="40">
+<li>
+<b>Integrate data using Supervised Harmony.</b> We introduce Supervised Harmony, a method for data integration implemented in SingCellaR. Supervised Harmony can be performed using the ‘runSupervised_Harmony’ function. This method is an adaptation of Harmony method (<a href="#bib14">Korsunsky et al., 2019</a>). More details of this method were described (<a href="#bib23">Roy et al., 2021</a>). Here, sequencing batch and donor IDs as defined in step 33 are specified as covariates.
+<div class="textbox">
+<p><code>&gt; SingCellaR::runSupervised_Harmony(Human_HSPC,</code></p>
+<p><code>                                          covariates = c("batch","donor"),</code></p>
+<p><code>                                          n.dims.use = 40,</code></p>
+<p><code>                                          hcl.height.cutoff = 0.3,</code></p>
+<p><code>                                          harmony.max.iter = 20,</code></p>
+<p><code>                                          n.seed = 6)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>covariates:</b> The name(s) of the covariate(s) specified as batch effect to be adjusted. The names should be the same as the column names of the cell metadata.</li>
+<li>
+<b>n.dims.use:</b> The number of PCs as determined from step 39 to be used in this step.</li>
+<li>
+<b>hcl.height.cutoff:</b> The cutree cut-off value for hierarchical clustering. Default value is 0.25.</li>
+<li>
+<b>harmony.max.iter:</b> The maximum number of rounds to run harmony. Default value is 10.</li>
+<li>
+<b>n.seed:</b> The random seed number generator. Default value is 1.
+<div class="critical">
+<span class="critical-title">Critical:</span> Before running Supervised Harmony method, the ‘findMarkerGenes’ function must be performed for each developmental stage analysis (see step 27). The seed number (random number generator) and software version can vary across different devices. Hence, the user may notice variations in the rotation of the plots and clusters, which can be verified and visualized using lineage genes (see step 24).</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="41">
+<li>Nonlinear dimension reduction analysis.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                            useIntegrativeEmbeddings = T,</code></p>
+<p><code>                            integrative_method = "supervised_harmony",</code></p>
+<p><code>                            umap_method = "uwot",</code></p>
+<p><code>                            n.dims.use = 40,</code></p>
+<p><code>                            uwot.metric = "euclidean",</code></p>
+<p><code>                            n.seed = 1)</code></p>
+</div>
+<p>The UMAP analysis result from Supervised Harmony integration will be saved. This UMAP object will be used to compare with the results from other integrative methods (see steps below).</p>
+<div class="textbox">
+<p><code>&gt; supervised_harmony.UMAP&lt;-get_umap.result(Human_HSPC)</code></p>
+<p><code>&gt; saveRDS(supervised_harmony.UMAP,file="supervised_harmony.UMAP.rds")</code></p>
+</div>
+<ol start="42">
+<li>
+<b>Integrate data using Harmony.</b> SingCellaR also implements a wrapper function for Harmony integration method (<a href="#bib14">Korsunsky et al., 2019</a>). Harmony can be performed using the ‘runHarmony’ function. Here, sequencing batch and donor IDs as defined are specified as covariates. UMAP analysis will be performed to obtain the embedding.
+<div class="textbox">
+<p><code>&gt; library(harmony)</code></p>
+<p><code>&gt; SingCellaR::runHarmony(Human_HSPC,</code></p>
+<p><code>                                          covariates = c("batch","donor"),</code></p>
+<p><code>                                          n.dims.use = 40,</code></p>
+<p><code>                                          harmony.max.iter = 20,</code></p>
+<p><code>                                          n.seed = 6)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>covariates:</b> The name(s) of the covariate(s) specified as batch effect to be adjusted. The names should be the same as the column names of the cell metadata.</li>
+<li>
+<b>n.dims.use:</b> The number of PCs as determined from step 39 to be used in this step.</li>
+<li>
+<b>harmony.max.iter:</b> The maximum number of rounds to run harmony. Default value is 10.</li>
+<li>
+<b>n.seed:</b> The random seed number generator. Default value is 1.
+<div class="textbox">
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                            useIntegrativeEmbeddings = T,</code></p>
+<p><code>                            integrative_method = "harmony",</code></p>
+<p><code>                            umap_method = "uwot",</code></p>
+<p><code>                            n.dims.use = 40,</code></p>
+<p><code>                            uwot.metric = "euclidean",</code></p>
+<p><code>                            n.seed = 1)</code></p>
+</div>
+The UMAP analysis result from Harmony integration will be saved. This UMAP object contains cell metadata and UMAP coordinates that will be used to compare with the results from other integrative methods.
+<div class="textbox">
+<p><code>&gt; harmony.UMAP&lt;-get_umap.result(Human_HSPC)</code></p>
+<p><code>&gt; saveRDS(harmony.UMAP,file="harmony.UMAP.rds")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="43">
+<li>
+<b>Integrate data using Seurat.</b> SingCellaR implements two wrapper functions for Seurat integration (<a href="#bib9">Hao et al., 2021</a>). First, the function ‘runSeuratIntegration’ is for the standard Seurat integration with Canonical Correlation Analysis (CCA). Second, the function ‘runSeuratIntegration_with_rpca’ is for the fast integration using Reciprocal PCA (RPCA). More details about Seurat integration are described on Seurat’s website (<a href="https://satijalab.org/seurat/">https://satijalab.org/seurat/</a>). Due to the fast integration of using RPCA, in this protocol, we will demonstrate the function ‘runSeuratIntegration_with_rpca’ as an example. However, the user should try Seurat CCA to make a comparison of the integrative results. The user can find how to use the function ‘runSeuratIntegration’ from SingCellaR’s vignette. After the integration, the UMAP analysis from Seurat RPCA integration will be performed to obtain the embedding.
+<div class="textbox">
+<p><code>&gt; library(Seurat)</code></p>
+<p><code>&gt; meta.data&lt;-get_cells_annotation(Human_HSPC)</code></p>
+<p><code>&gt; rownames(meta.data)&lt;-meta.data$Cell</code></p>
+<p><code>&gt; SingCellaR::runSeuratIntegration_with_rpca(Human_HSPC,</code></p>
+<p><code>    Seurat.metadata=meta.data,</code></p>
+<p><code>    n.dims.use = 40,</code></p>
+<p><code>    Seurat.split.by = "data_set",</code></p>
+<p><code>    use.SingCellaR.varGenes = T)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>Seurat.metadata:</b> The cell metadata.</li>
+<li>
+<b>n.dims.use:</b> The number of PCs as determined from step 39 to be used in this step.</li>
+<li>
+<b>Seurat.split.by:</b> The indicated feature name found in the cell metadata for splitting samples for integration.</li>
+<li>
+<b>Use.SingCellaR.varGenes:</b> If set to TRUE, the highly variable genes identified by SingCellaR will be used. If set to FALSE, the highly variable genes will be identified using Seurat. Default value is FALSE. Next, the UMAP analysis from Seurat RPCA integration will be performed and saved. This UMAP object will be used to compare with the results from other integrative methods.
+<div class="textbox">
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                            useIntegrativeEmbeddings = T,</code></p>
+<p><code>                            integrative_method = "seurat",</code></p>
+<p><code>                            umap_method = "uwot",</code></p>
+<p><code>                            n.dims.use = 40,</code></p>
+<p><code>                            uwot.metric = "euclidean",</code></p>
+<p><code>                            n.seed = 1)</code></p>
+<p><code>&gt; Seurat_rpca.UMAP&lt;-get_umap.result(Human_HSPC)</code></p>
+<p><code>&gt; saveRDS(Seurat_rpca.UMAP,file="Seurat_rpca.UMAP.rds")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="44">
+<li>
+<b>Integrate data using Scanorama.</b> SingCellaR implements a wrapper function for Scanorama integration (<a href="#bib10">Hie et al., 2019</a>). Scanorama can be performed using the ‘runScanorama’ function. After the integration, the standard PCA and UMAP analyses from Scanorama integration will be performed to obtain the embedding.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; runScanorama(Human_HSPC)</code></p>
+<p><code>&gt; runPCA(Human_HSPC,use.scanorama.integrative.matrix = T,use.components = 40)</code></p>
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                            dim_reduction_method = "pca",</code></p>
+<p><code>                            umap_method = "uwot",</code></p>
+<p><code>                            n.dims.use = 40,</code></p>
+<p><code>                            uwot.metric = "euclidean",</code></p>
+<p><code>                            n.seed = 1)</code></p>
+<p><code>&gt; Scanorama.UMAP&lt;-get_umap.result(Human_HSPC)</code></p>
+<p><code>&gt; saveRDS(Scanorama.UMAP,file="Scanorama.UMAP.rds")</code></p>
+</div>
+<ol start="45">
+<li>
+<b>Integrate data using Limma batch correction method.</b> To perform Limma analysis (<a href="#bib21">Ritchie et al., 2015</a>), SingCellaR provides the ‘remove_unwanted_confounders’ wrapper function to regress out the unwanted source of variation. We illustrate below for regressing out the effect from the library size, donor, and batch.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; remove_unwanted_confounders(Human_HSPC,</code></p>
+<p><code>    residualModelFormulaStr="∼UMI_count+donor+batch")</code></p>
+<p><code>&gt; runPCA(Human_HSPC,use.regressout.data = T)</code></p>
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                          dim_reduction_method = "pca”,</code></p>
+<p><code>                          umap_method = "uwot",</code></p>
+<p><code>                          n.dims.use = 40,</code></p>
+<p><code>                          uwot.metric = "euclidean",</code></p>
+<p><code>                          n.seed = 1)</code></p>
+<p><code>&gt; Limma.UMAP&lt;-get_umap.result(Human_HSPC)</code></p>
+<p><code>&gt; saveRDS(Limma.UMAP,file="Limma.UMAP.rds")</code></p>
+</div>
+<ol start="46">
+<li>
+<b>Assign a cell type to single cells using the AUCell analysis.</b> In this step, we will perform AUCell analysis (<a href="#bib1">Aibar et al., 2017</a>) with seven lineage signature genes including HSC/MPP, myeloid, lymphoid, erythroid, megakaryocytic, eosinophil/basophil/mast, and endothelial progenitor cells. This step will identify the cell types that can be used for benchmarking distinct integrative methods. We assume that cells with high AUCell scores, high expression of signature genes, indicate strong ground truth of the assigned cell type. Therefore, we would expect that the same cell type should be aggregated well together when applying integrative methods.
+<div class="textbox">
+<p><code>&gt; library(AUCell)</code></p>
+<p><code>&gt; exprMatrix &lt;- get_umi_count(Human_HSPC)</code></p>
+<p><code>&gt; human_HSPCs_cells_rankings &lt;- AUCell_buildRankings(exprMatrix,</code></p>
+<p><code>                                                                    nCores=4,</code></p>
+<p><code>                                                                    plotStats=TRUE)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>exprMat:</b> The raw expression count matrix. This can be retrieved from the SingCellaR object using the ‘get_umi_count’ function.</li>
+<li>
+<b>nCores:</b> The number of cores to use for parallel processing. The maximum number of cores is dependent on the user’s device. Default value is 1.</li>
+<li>
+<b>plotStats</b>: If set to TRUE (default), the expression statistics will be summarized and plotted in the histogram and boxplots.
+<div class="note">
+<span class="note-title">Note:</span> This step may be time-consuming. The user is advised to save the output of this step using the following code:</div>
+<div class="textbox">
+<p><code>&gt; save(human_HSPCs_cells_rankings,</code></p>
+<p><code>      file="./Human_HSPC_rankings.AUCells.rdata")</code></p>
+</div>
+Next, the AUCell analysis will be performed using the ‘Run_AUCell’ function.
+<div class="textbox">
+<p><code>&gt; human_HSPCs.AUCells.score &lt;- Run_AUCell(Human_HSPC,</code></p>
+<p><code>        AUCell_buildRankings.file = "Human_HSPC_rankings.AUCells.rdata",</code></p>
+<p><code>        geneSets.gmt.file = "./Human_genesets/human.signature.genes.v1.gmt")</code></p>
+</div>
+The following parameters are required:</li>
+<li>
+<b>AUCell_buildRankings.file:</b> The input file name from the AUCell rankings.</li>
+<li>
+<b>geneSets.gmt.file:</b> The GMT file name that contains gene sets. To explore the AUCell scores on UMAP plots, the user can run UMAP analysis using different types of integrative methods. This step is to identify the AUCell cut-off score for a particular cell type. The example below shows the ‘plot_umap_label_by_AUCell_score’ function that will be used to plot the myeloid AUCell scores (<a href="#fig3">Figure 3</a>A).
+<div class="textbox">
+<p><code>&gt; SingCellaR::runUMAP(Human_HSPC,</code></p>
+<p><code>                          useIntegrativeEmbeddings = T,</code></p>
+<p><code>                          integrative_method = "supervised_harmony",</code></p>
+<p><code>                          umap_method = "uwot",</code></p>
+<p><code>                          n.dims.use = 40,</code></p>
+<p><code>                          uwot.metric = "euclidean",</code></p>
+<p><code>                          n.seed = 1)</code></p>
+<p><code>&gt;plot_umap_label_by_AUCell_score(Human_HSPC,</code></p>
+<p><code>AUCell_gene_set_name=c("Myeloid"),Human_HSPC.AUCells.Score,AUCell_cutoff=0.1</code></p>
+<p><code>5,point.size = 0.5)</code></p>
+</div>
+Next, cells with high AUCell scores (e.g., &gt; 0.2 or &gt; 0.15) for each cell type will be assigned.
+<div class="textbox">
+<p><code>&gt; Human_HSPC.CellType&lt;-Human_HSPC.AUCells.Score</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType&lt;-""</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$HSPC_MPP &gt;0.2]&lt;-"HSC_MPP"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Erythroid &gt;0.15]&lt;-"Erythroid"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Myeloid &gt;0.15]&lt;-"Myeloid"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Lymphoid &gt;0.15]&lt;-"Lymphoid"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Megakaryocyte &gt;0.15]&lt;-</code></p>
+<p><code>"Megakaryocyte"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Eosinophil_Basophil_Mast &gt;</code></p>
+<p><code>0.15]&lt;-"Eo_Ba_Mast"</code></p>
+<p><code>&gt; Human_HSPC.CellType$CellType[Human_HSPC.CellType$Endothelial_cells &gt; 0.15]&lt;-</code></p>
+<p><code>"Endothelial_cell"</code></p>
+</div>
+The user can explore the number of cells with high AUCell scores for each cell type using the function below and the Human_HSPC.CellType data frame object will be saved for use as the reference to perform benchmarking explained in the next step.
+<div class="textbox">
+<p><code>&gt; table(Human_HSPC.CellType$CellType)</code></p>
+<p><code>&gt; saveRDS(Human_HSPC.CellType,file="Human_HSPC.CellType_from_AUC_High.rds")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Benchmarking the integration methods</div>
+<p>(A) The UMAP plot shows AUCell scores of the cells calculated using myeloid signature genes.</p>
+<p>(B) LISI analysis on different integrative methods. X-axis represents the cLISI score and y-axis represents the iLISI score. The more accurate integration should result in a higher iLISI score and cLISI score close to 1.</p>
+<p>(C) Boxplot of kBET average acceptance rate score for each integrative method.</p>
+</figcaption>
+</figure>
+<ol start="47">
+<li>
+<b>Benchmark distinct integrative methods using LISI and kBET methods.</b> Next, we assess whether single cells with identified cell types derived from the AUCell analysis are clustered well across covariate variables (e.g., batch and donor). SingCellaR provides the wrapper functions for a Local Inverse Simpson’s Index (LISI) (<a href="#bib14">Korsunsky et al., 2019</a>) and <i>k</i>-nearest-neighbor batch-effect test (kBET) (<a href="#bib4">Buttner et al., 2019</a>) to measure LISI and kBET scores across different integrative methods. First, the ‘runLISI’ function is performed as shown below. This function will plot LISI scores across different integrative methods (<a href="#fig3">Figure 3</a>B).
+<div class="textbox">
+<p><code>&gt; library(lisi)</code></p>
+<p><code>&gt; reference.celltypes&lt;-"Human_HSPC.CellType_from_AUC_High.rds"</code></p>
+<p><code>&gt; integrative.umaps&lt;-c("supervised_harmony.UMAP.rds",</code></p>
+<p><code>                            "harmony.UMAP.rds",</code></p>
+<p><code>                            "Seurat_rpca.UMAP.rds",</code></p>
+<p><code>                            "Scanorama.UMAP.rds",</code></p>
+<p><code>                            "Limma.UMAP.rds")</code></p>
+<p><code>&gt; method.names&lt;-c("Supervised Harmony","Harmony","Seurat_rpca","Scanorama",</code></p>
+<p><code>                      "Limma")</code></p>
+<p><code>&gt; runLISI(lisi_label1="donor",lisi_label2="CellType",</code></p>
+<p><code>            reference.celltypes.rds.file=reference.celltypes,</code></p>
+<p><code>            integrative.umap.rds.files=integrative.umaps,</code></p>
+<p><code>            integrative.method.names=method.names,IsShowPlot = T)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>lisi_label1:</b> The covariate variable name of interest such as batch or donor. Default value is donor.</li>
+<li>
+<b>lisi_label2:</b> The variable name that represents ground truth or high AUC score cell type. Default value is CellType.</li>
+<li>
+<b>reference.celltype.rds.file:</b> The RDS file name that contains cell type information.</li>
+<li>
+<b>integrative.umap.rds.files:</b> The RDS file names that contain UMAP coordinate information generated by different integrative methods.</li>
+<li>
+<b>integrative.method.names:</b> The integrative method names that represent in the same order as in integrative.umap.rds.files.</li>
+<li>
+<b>IsShowPlot:</b> If set to TRUE (default), the iLISI and cLISI scores will be plotted. Second, the ‘runKBET’ function is performed as shown below. This function will calculate kBET scores across different integrative methods and return a data frame that can be used for plotting.
+<div class="textbox">
+<p><code>&gt; library(kBET)</code></p>
+<p><code>&gt; reference.celltypes&lt;-"Human_HSPC.CellType_from_AUC_High.rds"</code></p>
+<p><code>&gt; integrative.umaps&lt;-c("supervised_harmony.UMAP.rds",</code></p>
+<p><code>                            "harmony.UMAP.rds",</code></p>
+<p><code>                            "Seurat_rpca.UMAP.rds",</code></p>
+<p><code>                            "Scanorama.UMAP.rds",</code></p>
+<p><code>                            "Limma.UMAP.rds")</code></p>
+<p><code>&gt; method.names&lt;-c("Supervised Harmony",</code></p>
+<p><code>                      "Harmony",</code></p>
+<p><code>                      "Seurat_rpca",</code></p>
+<p><code>                      "Scanorama",</code></p>
+<p><code>                      "Limma")</code></p>
+<p><code>&gt;kBET_result&lt;-runKBET(covariate_variable_name="donor",</code></p>
+<p><code>              reference.celltypes.rds.file=reference.celltypes,</code></p>
+<p><code>              integrative.umap.rds.files=integrative.umaps,</code></p>
+<p><code>              integrative.method.names=method.names,</code></p>
+<p><code>              n.sample=1000)</code></p>
+</div>
+The following parameters are required:</li>
+<li>
+<b>Covariate_variable_name:</b> The covariate variable name of interest such as batch or donor. Default value is donor.</li>
+<li>
+<b>reference.celltype.rds.file:</b> The RDS file name that contains cell type information.</li>
+<li>
+<b>integrative.umap.rds.files:</b> The RDS file names that contain UMAP coordinate information generated by different integrative methods.</li>
+<li>
+<b>integrative.method.names:</b> The integrative method names that represent in the same order as in integrative.umap.rds.files.</li>
+<li>
+<b>n.sample:</b> The downsample size of data points used in kBET analysis. Default value is 1,000.
+<div class="note">
+<span class="note-title">Note:</span> This step may be time-consuming, depending on the number of cells downsampled for kBET analysis.</div>
+Next, kBET scores across integrative methods will be plotted using the ‘ggplot’ function (<a href="#fig3">Figure 3</a>C).
+<div class="textbox">
+<p><code>&gt; level_order &lt;- factor(kBET_result$Method, level = c('Supervised Harmony',</code></p>
+<p><code>'Harmony', 'Seurat_rpca','Scanorama','Limma'))</code></p>
+<p><code>&gt; ggplot(kBET_result, aes(x=level_order, y=AcceptanceRate, color=Method)) +</code></p>
+<p><code>        + geom_boxplot()+theme_classic()+theme(axis.title.x=element_blank())</code></p>
+</div>
+In this step, we illustrate how to benchmark integrative results generated from different methods using the wrapper functions for LISI and kBET analyses implemented in SingCellaR. We show the objective measurement of integration for each method using iLISI and cLISI scores (<a href="#fig3">Figure 3</a>B) and kBET average acceptance rate score (<a href="#fig3">Figure 3</a>C). The user can observe from the plots that Supervised Harmony shows higher kBET and iLISI scores, and cLISI score is close to 1, indicating better data integration for this HSPC dataset compared to other methods described in (<a href="#bib23">Roy et al., 2021</a>). Therefore, the integration result from Supervised Harmony will be used for further downstream analyses.</li>
+</ol>
+</li>
+</ol>
+<ol start="48">
+<li>
+<b>Visualize selected features and cell lineages on low dimensional space.</b> Here, we will assess whether the data integration was performed successfully. To this end, we annotate the UMAP by sample ID, donor type, sequencing batch, and lineage signature genes. After running the following codes, we observe that cells are clustered by cell lineage, while sample ID, donor type and sequencing batch effects are successfully corrected. These indicate that data integration and batch correction was effective in eliminating batch effect, while enabling functionally related cell to be clustered in close proximity.
+<ol type="a">
+<li>Annotate UMAP plot by sample ID (<a href="#fig4">Figure 4</a>A).
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_a_feature_of_interest(Human_HSPC,</code></p>
+<p><code>                                              feature = "sampleID",</code></p>
+<p><code>                                              point.size = 0.5,</code></p>
+<p><code>                                              mark.feature = F)</code></p>
+</div>
+</li>
+<li>Annotate UMAP plot by donor (<a href="#fig4">Figure 4</a>B).
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_a_feature_of_interest(Human_HSPC,</code></p>
+<p><code>                                                      feature = "donor",</code></p>
+<p><code>                                                      point.size = 0.5,</code></p>
+<p><code>                                                      mark.feature = F)</code></p>
+</div>
+</li>
+<li>Annotate UMAP plot by sequencing batch (<a href="#fig4">Figure 4</a>C).
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_a_feature_of_interest(Human_HSPC,</code></p>
+<p><code>                                              feature = "batch",</code></p>
+<p><code>                                              point.size = 0.5,</code></p>
+<p><code>                                              mark.feature = F)</code></p>
+</div>
+The following parameters are required:
+<ol type="i">
+<li>
+<b>feature:</b> The feature to annotate on UMAP plot. The feature name should match the column name of the cell metadata.</li>
+<li>
+<b>point.size:</b> Size of the data points on UMAP. Default value is 1.</li>
+<li>
+<b>mark.feature</b>: If set to TRUE (default), the feature name will be shown on the plot.</li>
+</ol>
+</li>
+<li>Annotate UMAP plot by lineages genes (<a href="#fig4">Figure 4</a>D).
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_multiple_gene_sets(Human_HSPC,</code></p>
+<p><code>        gmt.file = "./Human_genesets/human.signature.genes.v1.gmt",</code></p>
+<p><code>        show_gene_sets = c("Erythroid",</code></p>
+<p><code>        "Myeloid","Lymphoid","Megakaryocyte"),</code></p>
+<p><code>        custom_color = c("red","cyan","orange","purple"),</code></p>
+<p><code>        isNormalizedByHouseKeeping = F,</code></p>
+<p><code>        point.size = 1)</code></p>
+</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Visualization of UMAP generated from the integration of whole datasets</div>
+<p>(A–D) UMAP plots showing superimposition of (A) sample IDs; (B) donors; (C) sequencing batches; and (D) the expression of lineage gene sets. Yellow – lymphoid cells; Cyan – myeloid cells; Red – erythroid cells; Purple – megakaryocytic cells; Gray – HSPCs that do not (or lowly) express lineage signature genes.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="49">
+<li>Detect and assign clusters.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; identifyClusters(Human_HSPC,</code></p>
+<p><code>                        useIntegrativeEmbeddings = T,</code></p>
+<p><code>                        integrative_method = "supervised_harmony",</code></p>
+<p><code>                        n.dims.use = 40,</code></p>
+<p><code>                        knn.metric = "euclidean",</code></p>
+<p><code>                        n.neighbors = 30)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Information in this step and the required parameters have been detailed in step 25 with the additional ‘integrative_method’ parameter specified to indicate the data integration and batch correction method used in step 40.</div>
+<ol start="50">
+<li>Visualize clusters on low dimensional space. (<a href="#fig5">Figure 5</a>A).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Cell clustering and annotation</div>
+<p>(A) The UMAP plot of 57,489 cells labeled with distinct 21 clusters, identified using the Louvain community-detection clustering method.</p>
+<p>(B) The heatmap showing positive gene set enrichment scores from GSEA analysis comparison of each cluster against the rest of clusters. The heatmap is generated using the function ‘plot_heatmap_for_fGSEA_all_clusters’. The x-axis represents the identified clusters depicted in (A). The y-axis represents the list of curated hematopoietic gene signatures.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_clusters(Human_HSPC,</code></p>
+<p><code>                                    show_method = "louvain",</code></p>
+<p><code>                                    mark.clusters = T)</code></p>
+</div>
+<ol start="51">
+<li>
+<b>Identify cluster-specific genes.</b> This step will perform differential gene expression analysis to identify marker genes per each cluster.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; findMarkerGenes(Human_HSPC,cluster.type = "louvain")</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> See details in step 27. This step will take time to run on the fully integrated datasets depending on the number of cells and identified clusters.</div>
+<ol start="52">
+<li><b>Save the integrated R object for further analyses.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; save(Human_HSPC,</code></p>
+<p><code>            file="./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The user can save the integrative SingCellaR_Int object for further downstream analyses.</div>
+<h3 id="sec2.5">Cell type annotation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5–2 h</div>
+<p>The aim of cell type annotation is to assign a cell type identity to each cluster. The expression of selected marker genes can be visualized and explored across the different clusters, either using UMAP, dotplot, heatmap, or violin plots (<a href="#bib24">Satija et al., 2015</a>). Nevertheless, it is only feasible to explore a small number of gene markers using these approaches. Moreover, closely related cell populations with overlapping or subtle differences in transcriptomic profiles can be better resolved using gene sets, rather than individual genes. To more systematically and objectively annotate the clusters, SingCellaR implements a GSEA-based cell type annotation approach whereby cluster-specific ranked genes are subjected to GSEA analysis using a comprehensive list of curated gene sets. Using this approach, for each cluster, the list of genes previously included for differential expression analysis using findMarkerGenes is ranked from the most up-regulated to most down-regulated. Next, the individual genes in each curated gene set are assessed for enrichment in this ranked list of genes. Gene sets that are found higher up in the ranked list of genes are considered to be more enriched in a given cluster (<a href="#bib27">Subramanian et al., 2005</a>). This assessment of gene set enrichment is implemented by the fgsea (<a href="#bib13">Korotkevich et al., 2021</a>) package. These curated gene sets encompass 75 hematopoietic cell types and are available at Zenodo: <a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a> in GMT file format and are also available in Table S3 from the original publication (<a href="#bib23">Roy et al., 2021</a>).</p>
+<ol start="53">
+<li>Load the SingCellaR package.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+</div>
+<ol start="54">
+<li>Load the integrated R object generated from step 52.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load(file = "./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="55">
+<li>
+<b>Generate the pre-ranked genes.</b> For each cluster, differential gene expression analysis is performed (<a href="#bib6">Giustacchini et al., 2017</a>) against all other clusters and the resulting genes are ranked based on their log2 fold change multiplied by -log10 of the adjusted <i>P</i>-value. This is to yield a more robust ranking compared to using the log2 fold change alone for the genes for GSEA. Here, the ‘identifyGSEAPrerankedGenes_for_all_clusters’ function is performed to provide a suitable format for GSEA analysis and includes all possible expressed genes above the lower cut-off parameters defined using the min.expFraction and min.log2FC arguments.
+<div class="textbox">
+<p><code>&gt; pre_rankedGenes_for_GSEA &lt;-</code></p>
+<p><code>    identifyGSEAPrerankedGenes_for_all_clusters(Human_HSPC,</code></p>
+<p><code>                                                          cluster.type = "louvain")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>cluster.type</b>: The clustering method name.</li>
+<li>
+<b>fishers_exact_test</b>: The cut-off <i>p</i>-value. Default value is 0.1.</li>
+<li>
+<b>min.expFraction</b>: The fraction of expressing cells, above which, the gene will be included for GSEA. Default value is 0.01.</li>
+<li>
+<b>min.log2FC</b>: The log2 fold change, above which, the gene will be included for GSEA. Default value is 0.1.
+<div class="note">
+<span class="note-title">Note:</span> The processing time of this step depends on the number of cells and clusters. The user is advised to save the output of this step using the following code:</div>
+<div class="textbox">
+<p><code>&gt; save(pre_rankedGenes_for_GSEA,</code></p>
+<p><code>    file="./Human_HSPCs_preRankedGenes_for_GSEA.rdata")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="56">
+<li>
+<b>Perform GSEA.</b> For each cluster, the ranked genes are subjected to GSEA to assess the enrichment for all curated hematopoietic gene sets.
+<div class="textbox">
+<p><code>&gt; fgsea_Results &lt;- Run_fGSEA_for_multiple_comparisons(</code></p>
+<p><code>        GSEAPrerankedGenes_list = pre_rankedGenes_for_GSEA,</code></p>
+<p><code>        gmt.file = "./Human_genesets/human.hematopoiesis.signature.genes.gmt")</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>GSEAPrerankedGenes_list:</b> The object containing the ranked genes for each cluster generated from step 55.</li>
+<li>
+<b>gmt.file:</b> Curated gene sets in GMT file format.
+<div class="note">
+<span class="note-title">Note:</span> Here, we curated gene sets encompassing 75 hematopoietic signatures, but the user can also generate other customized gene sets in GMT file format as the input for GSEA. Each line of the GMT file represents one gene set. Specifically, the first column represents the name of the gene set, the second column represents the description of the gene set, and the third column onwards represents the genes that constitute the gene set, whereby each column represents one gene. The GMT file should be saved in tab-delimited format.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="57">
+<li>
+<b>Visualize GSEA results.</b> A heatmap is used to observe and compare enrichment scores of each gene set (rows) across all clusters (columns). This visualization allows the user to annotate a cell type identity and cell states to each cluster based on the degree of enrichment of the curated gene sets. (<a href="#fig5">Figure 5</a>B).
+<div class="textbox">
+<p><code>&gt; plot_heatmap_for_fGSEA_all_clusters(fgsea_Results,</code></p>
+<p><code>                              isApplyCutoff = TRUE,</code></p>
+<p><code>                              use_pvalues_for_clustering=T,</code></p>
+<p><code>                              show_NES_score = T,</code></p>
+<p><code>                              fontsize_row = 5,</code></p>
+<p><code>                              adjusted_pval = 0.10,</code></p>
+<p><code>                              show_only_NES_positive_score = T,</code></p>
+<p><code>                              format.digits = 3,</code></p>
+<p><code>                              clustering_method = "ward.D",</code></p>
+<p><code>                              clustering_distance_rows = "euclidean",</code></p>
+<p><code>                              clustering_distance_cols = "euclidean",</code></p>
+<p><code>                              show_text_for_ns = F)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>isApplyCutoff:</b> If set to TRUE, only the normalized enrichment scores (NES) of gene sets with adjusted <i>P</i>-values below the user-defined values in ‘adjusted_pval’ argument will be displayed on the heatmap. Default is FALSE.</li>
+<li>
+<b>use_pvalues_for_clustering:</b> If set to TRUE (default), the -log10(<i>P</i>-values) will be used instead of NES to cluster rows and/or columns.</li>
+<li>
+<b>show_NES_score:</b> If set to TRUE (default), NES will be displayed on the heatmap.</li>
+<li>
+<b>fontsize_row:</b> The font size of the gene set names along the rows of the heatmap. Default value is 5.</li>
+<li>
+<b>adjusted_pval:</b> The value, below which, NES will be displayed on the heatmap. The default value is 0.25.</li>
+<li>
+<b>show_only_NES_positive_score</b>: If set to TRUE, only NES &gt; 0 will be displayed on the heatmap. Default is FALSE.</li>
+<li>
+<b>format.digits:</b> The number of significant digits to be used for numeric display on the heatmap. Default value is 2.</li>
+<li>
+<b>clustering_method</b>: The clustering method for clustering the rows and/or columns. Default is "complete".</li>
+<li>
+<b>clustering_distance_rows:</b> The distance metric to use when clustering the rows. Default is "euclidean".</li>
+<li>
+<b>clustering_distance_cols:</b> The distance metric to use when clustering the columns. Default is "euclidean".</li>
+<li>
+<b>show_text_for_ns</b>: If set to TRUE (default), non-significant (ns) NES will be displayed on the heatmap.</li>
+</ol>
+</li>
+</ol>
+<ol start="58">
+<li>
+<b>Visualize selected canonical marker genes using UMAP.</b> One or more individual genes can be plotted on UMAP using the ‘plot_umap_label_by_genes’ function (<a href="#fig6">Figure 6</a>A).
+<div class="textbox">
+<p><code># HSC/MPP</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("AVP","HLF","CLEC9A"))</code></p>
+<p><code># Myeloid progenitor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("ELANE","MPO","AZU1"))</code></p>
+<p><code># Erythroid progenitor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("KLF1","CNRIP1","APOE"))</code></p>
+<p><code># Megakaryocytic progenitor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("PF4","GP9","SELP"))</code></p>
+<p><code># B lymphoid progenitor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("DNTT","CD79A","VPREB1"))</code></p>
+<p><code># Dendritic precursor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("SPIB","IRF8","MPEG1"))</code></p>
+<p><code># Eosinophil/Basophil/Mast progenitor</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("CLC","HDC","IL5RA"))</code></p>
+<p><code># Endothelial cells</code></p>
+<p><code>&gt; plot_umap_label_by_genes(Human_HSPC,gene_list = c("OIT3","MMRN2","LYVE1"))</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>gene_list:</b> A vector of one or more gene names to plot.</li>
+</ol>
+</li>
+</ol>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Gene expression of canonical lineage signatures and marker gene identification for each cluster</div>
+<p>(A) UMAP plots of known lineage marker genes for HSC/MPP. Red – highly expressed and blue – lowly expressed.</p>
+<p>(B) Bubble plots of known lineage marker gene expression for each cluster. The size of the dots represents the percentage of expressing cells as indicated within the dot. The x-axis represents the identified clusters.</p>
+</figcaption>
+</figure>
+<ol start="59">
+<li>
+<b>Visualize selected canonical marker genes using bubble plot</b> (<a href="#fig6">Figure 6</a>B). One or more individual genes can be plotted using the ‘plot_bubble_for_genes_per_cluster’ function. Each gene will be represented on each row of the output.
+<div class="textbox">
+<p><code>&gt; marker.genes &lt;- c("AVP","HLF","CLEC9A",</code></p>
+<p><code>                          "PF4","GP9","SELP",</code></p>
+<p><code>                          "KLF1","CNRIP1","APOE",</code></p>
+<p><code>                          "ELANE","MPO","AZU1",</code></p>
+<p><code>                          "DNTT","CD79A","VPREB1",</code></p>
+<p><code>                          "SPIB","IRF8","MPEG1",</code></p>
+<p><code>                          "CLC","HDC","IL5RA",</code></p>
+<p><code>                          "OIT3","MMRN2","LYVE1")</code></p>
+<p><code>&gt; plot_bubble_for_genes_per_cluster(Human_HSPC,</code></p>
+<p><code>                                              cluster.type = "louvain",</code></p>
+<p><code>                                              gene_list = marker.genes,</code></p>
+<p><code>                                              show.percent = TRUE)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>cluster.type:</b> The clustering method name used to identify and assign the cell clusters.</li>
+<li>
+<b>gene_list:</b> A vector of one or more gene names to plot.</li>
+<li>
+<b>show.percent:</b> If set to TRUE, the percentage of expressing cells for respective genes in each cluster are displayed on the dotplot. Default is FALSE.</li>
+</ol>
+</li>
+</ol>
+<ol start="60">
+<li>
+<b>Visualize identified marker genes for each cluster using heatmap.</b> One or more individual genes can be plotted using a heatmap with the ‘plot_heatmap_for_marker_genes’ function. Each gene is represented on each row of the output.
+<div class="textbox">
+<p><code>&gt; plot_heatmap_for_marker_genes(Human_HSPC,</code></p>
+<p><code>                                          cluster.type = "louvain",</code></p>
+<p><code>                                          n.TopGenes = 8)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>cluster.type:</b> The name of the clustering method used to identify and assign the cell clusters.</li>
+<li>
+<b>n.TopGenes:</b> The number of top genes for each cluster to plot. Default value is 5.</li>
+</ol>
+</li>
+</ol>
+<ol start="61">
+<li>
+<b>Export top marker genes for each cluster.</b> The top marker genes with statistical analysis results can be exported to the text file format.
+<div class="textbox">
+<p><code>&gt; export_marker_genes_to_table(Human_HSPC,</code></p>
+<p><code>                                        cluster.type = "louvain",</code></p>
+<p><code>                                        n.TopGenes = 100,</code></p>
+<p><code>                                        min.log2FC = 0.5,</code></p>
+<p><code>                                        min.expFraction = 0.3,</code></p>
+<p><code>                                        write.to.file =</code></p>
+<p><code>    "./Human_HSPC_marke_genes_per_cluster.txt")</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>cluster.type:</b> The clustering method name used to identify and assign the cell clusters.</li>
+<li>
+<b>n.TopGenes:</b> The number of top genes for each cluster. Default value is 5.</li>
+<li>
+<b>min.log2FC:</b> The log2FC value, above which, genes will be included. Default value is 0.5.</li>
+<li>
+<b>min.expFraction:</b> The fraction of expressing cells, above which, genes will be included. Default value is 0.3.</li>
+<li>
+<b>write.to.file:</b> The file path to be exported.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.6">AUCell analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 h</div>
+<p>The user can calculate the enrichment of specific gene sets (e.g., lineage signature and cell cycle genes) assigned for an individual cell. We incorporated AUCell score analysis (<a href="#bib1">Aibar et al., 2017</a>) into SingCellaR to assign and define high-confident lineage-specific cells. This cell-level enrichment analysis enables us to validate our cell type annotation and check for the presence of heterogeneous cell populations within a given cluster. This can be further used to compare differential abundance of different cell lineages across developmental stages.</p>
+<ol start="62">
+<li>
+<b>Load SingCellaR and required R packages.</b> Here, the user can load the integrated R object saved from step 52.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+<p><code>&gt; library(AUCell)</code></p>
+<p><code>&gt; library(ggplot2)</code></p>
+<p><code>&gt; library(DAseq)</code></p>
+<p><code>&gt; source('./utilis.R')</code></p>
+</div>
+<ol start="63">
+<li>Load the integrated R object generated from step 52.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load(file = "./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="64">
+<li>
+<b>Build AUCell gene rankings.</b> The user will have to create the ranked gene list using the function ‘AUCell_buildRankings’ implemented in AUCell package.
+<div class="textbox">
+<p><code>&gt; set.seed(2021)</code></p>
+<p><code>&gt; exprMatrix &lt;- get_umi_count(Human_HSPC)</code></p>
+<p><code>&gt; human_HSPCs_cells_rankings &lt;- AUCell_buildRankings(exprMatrix,</code></p>
+<p><code>                                                                    nCores=4,</code></p>
+<p><code>                                                          plotStats=TRUE)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>exprMat:</b> The raw expression count matrix. This can be retrieved from the SingCellaR object using the ‘get_umi_count’ function.</li>
+<li>
+<b>nCores:</b> The number of cores to use for parallel processing. The maximum number of cores is dependent on the user’s device. Default value is 1.</li>
+<li>
+<b>plotStats:</b> If set to TRUE (default), the expression statistics will be summarized and plotted in the histogram and boxplots.
+<div class="note">
+<span class="note-title">Note:</span> This step may be time-consuming. The user is advised to save the output of this step using the following code:</div>
+<div class="textbox">
+<p><code>&gt; save(human_HSPCs_cells_rankings,</code></p>
+<p><code>  +file="./Human_HSPC_rankings.AUCells.rdata")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="65">
+<li>
+<b>Calculate AUCell scores.</b> AUCell scores for each cell will be computed using the ranked genes from the previous step for the provided hematopoietic gene sets.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; set.seed(2021)</code></p>
+<p><code>&gt; human_HSPCs.AUCells.score &lt;- Run_AUCell(Human_HSPC,</code></p>
+<p><code>        AUCell_buildRankings.file = "Human_HSPC_rankings.AUCells.rdata",</code></p>
+<p><code>        geneSets.gmt.file = "./Human_genesets/human.signature.genes.v1.gmt")</code></p>
+</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> The user is advised to save the AUCell scores for further analysis.</div>
+<div class="textbox">
+<p><code>&gt; save(human_HSPCs.AUCells.score,</code></p>
+<p><code>        file="./human_HSPCs.AUCells.score.rdata")</code></p>
+</div>
+<ol start="66">
+<li>
+<b>Visualize AUCell scores.</b> The user can visualize AUCell scores for a given gene signature on specific clusters on the UMAP embedding. Here, we will use HSC/MPP gene signature on cluster 1 as an example (<a href="#fig7">Figure 7</a>A). We observe HSC/MPP gene signature to be uniformly enriched across majority of cells from this cluster. This is consistent with our cluster-level GSEA results that indicate cluster 1 is enriched for several HSC and MPP gene sets.
+<div class="textbox">
+<p><code>&gt; plot_umap_label_by_AUCell_score(Human_HSPC,</code></p>
+<p><code>                                          AUCell_gene_set_name = "HSPC_MPP",</code></p>
+<p><code>                                          AUCell_score = human_HSPCs.AUCells.score,</code></p>
+<p><code>                                          selected.limited.clusters = "cl1",</code></p>
+<p><code>                                          IsLimitedAUCscoreByClusters = T,</code></p>
+<p><code>                                          AUCell_cutoff = 0.15)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>AUCell_gene_set_name:</b> The name of the gene signature to plot. The signature name specified here must be the same as the gene signature name in the GMT file provided in step 65.</li>
+<li>
+<b>AUCell_score:</b> The R object created from computing AUCell scores in step 65.</li>
+<li>
+<b>selected.limited.clusters:</b> Cells in selected cluster IDs will be displayed with the AUCell scores.</li>
+<li>
+<b>IsLimitedAUCscoreByClusters:</b> If set to TRUE, the AUCell scores will only be displayed for selected clusters as specified using the ‘selected.limited.clusters’ argument. Default is FALSE.</li>
+<li>
+<b>AUCell_cutoff:</b> The AUCell score threshold, above which, the scores will be displayed. The higher the score threshold, the more stringent the threshold. Default is 0.
+<div class="note">
+<span class="note-title">Note:</span> AUCell cutoff score is arbitrary. To explore the AUCell cutoff score for each gene signature, the user can plot the score distribution using ggplot2 and manually explore the suitable threshold.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="67">
+<li>
+<b>Differential abundance testing.</b> We use DAseq (<a href="#bib34">Zhao et al., 2021</a>) to perform pairwise comparisons for cellular abundance in different tissues across developmental stages. We have incorporated the DAseq analysis into the ‘run_DAseq_comparison’ function. Here, we will show the differential abundance of cell populations between eFL and FL (<a href="#fig7">Figure 7</a>B) as an example. Erythroid progenitors are enriched in FL, whereas lymphoid and myeloid progenitors are predominantly derived from BM samples. Marked differences are also observed for megakaryocytic progenitors whereby these cells are mainly from eFL.
+<div class="textbox">
+<p><code>&gt; run_DAseq_comparison(Human_HSPC,</code></p>
+<p><code>                              groupA = "eFL",</code></p>
+<p><code>                              groupB = "FL",</code></p>
+<p><code>                              labels.1 = c("eFL_1","eFL_2"),</code></p>
+<p><code>                              labels.2 = c("FL_1","FL_2"),</code></p>
+<p><code>                              path = "./",</code></p>
+<p><code>                              outputname = "eFL_vs_FL.pdf")</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>groupA</b> and <b>groupB:</b> The group names for integrated samples (e.g., eFL, FL, FBM, and PBM) or an individual sample name.</li>
+<li>
+<b>labels.1</b> and <b>labels.2:</b> The sample IDs of groupA and groupB, respectively.</li>
+<li>
+<b>path:</b> The folder path to save the output file.</li>
+<li>
+<b>outputname:</b> The output file name.</li>
+</ol>
+</li>
+</ol>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. UMAP plots overlaid with computed scores from AUCell and differential abundance analyses</div>
+<p>(A) The UMAP plot shows AUCell scores of the cells calculated using the HSC/MPP signature genes. Cells with the AUCcell score greater than 0.15 within cluster 1 are highlighted with gradient colors from low (black) to high (red) scores.</p>
+<p>(B) The UMAP plot shows the differential abundance scores from the logistic classifier prediction calculated from DAseq analysis of pairwise comparison between eFL <i>vs.</i> FL. Cells in red are predicted to be more abundant in eFL, whereas cells in blue indicate higher abundance in FL. Cells in gray do not have substantially different abundance score.</p>
+</figcaption>
+</figure>
+<h3 id="sec2.7">Trajectory analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–1.5 h</div>
+<p>From the annotation of cell types assigned in the cell type annotation steps, the user can further investigate the direction of cellular differentiation trajectories. The user can trace immature to more differentiated cell populations and understand the functional relationship between different cell populations in terms of cellular maturity. It is noteworthy that current trajectory analysis requires the user to identify the starting point (immature cell state), in this case, HSC/MPP. Hence, the cell annotations inferred from previous steps will be helpful to infer the primitive cell clusters. SingCellaR supports two approaches of trajectory analysis, namely force-directed graph (FDG) (<a href="#bib11">Jacomy et al., 2014</a>) and diffusion map (<a href="#bib8">Haghverdi et al., 2015</a>). We will also perform Monocle3 analysis (<a href="#bib29">Trapnell et al., 2014</a>), a pseudotime-based method (<a href="#bib8">Haghverdi et al., 2015</a>) to infer cellular trajectories.</p>
+<h3 id="sec2.8">Method 1: Force-directed graph analysis</h3>
+<ol start="68">
+<li><b>Load SingCellaR package.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+</div>
+<ol start="69">
+<li><b>Load the integrated R object generated from step 52.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load(file = "./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="70">
+<li>
+<b>Run force-directed graph analysis.</b> The user can use the ‘runFA2_ForceDirectedGraph’ function to build the force-directed graph layout (embeddings). The layout can be annotated using various features, including cell lineage signature genes. Here, we use the Supervised harmony embeddings to generate force-directed graph layout.
+<div class="textbox">
+<p><code>&gt; runFA2_ForceDirectedGraph(Human_HSPC,</code></p>
+<p><code>                                    useIntegrativeEmbeddings = T,</code></p>
+<p><code>                                    integrative_method = "supervised_harmony",</code></p>
+<p><code>                                    knn.metric = "euclidean",</code></p>
+<p><code>                                    n.dims.use = 40,</code></p>
+<p><code>                                    n.neighbors = 5,</code></p>
+<p><code>                                    n.seed = 35,</code></p>
+<p><code>                                    fa2_n_iter = 1000)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>useIntegrativeEmbeddings:</b> If set to TRUE, the data integration or batch correction embeddings will be used in conjunction with ‘integrative_method’ argument. Default is FALSE.</li>
+<li>
+<b>integrative_method:</b> The data integration or batch correction method name.</li>
+<li>
+<b>knn.metric:</b> The distance metric.</li>
+<li>
+<b>n.dims.use:</b> The number of PCs from ‘integrative_method’. If ‘useIntegrativeEmbedding’ is set to FALSE, the PCA analysis result is used. Default value is 30.</li>
+<li>
+<b>n.neighbors:</b> The number of neighboring cells.</li>
+<li>
+<b>n.seed:</b> The random number generator. Default value is 1.</li>
+<li>
+<b>fa2_n_iter:</b> The number of iterations for analyzing the ‘networkx’ graph. Default value is 1,000.</li>
+</ol>
+</li>
+</ol>
+<ol start="71">
+<li>Visualize trajectories by Louvain clustering (<a href="#fig8">Figure 8</a>A).
+<div class="textbox">
+<p><code>&gt; plot_forceDirectedGraph_label_by_clusters(Human_HSPC, show_method =</code></p>
+<p><code>"louvain")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>show_method</b>: The clustering method name.</li>
+</ol>
+</li>
+</ol>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1530-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Differentiation trajectory analysis using the combination of SingCellaR and Monocle3</div>
+<p>(A and B) The force-directed graph displays 21 of Louvain clusters and (B) with superimposition of lineage gene scores for four lineage gene sets. Yellow – lymphoid cells; Cyan – myeloid cells; Red – erythroid cells; Purple – megakaryocytic cells; Gray – HSPCs that do not (or lowly) express lineage signature genes.</p>
+<p>(C and D) Diffusion maps of 21 Louvain clusters and with lineage gene scores in (D).</p>
+<p>(E and F) UMAP plots with identified clusters and trajectory paths using Monocle3 (E) and overlaid with pseudotime analysis scores (F).</p>
+<p>(G) Force-directed graph (FDG) with superimposition of pseudotime analysis scores.</p>
+<p>(H) Gene expression of selected lineage marker genes along pseudotime from HSC to erythroid trajectory representing across tissues.</p>
+<p>(I) The gene expression of chosen erythroid lineage genes, <i>GATA1</i> and <i>KLF1</i>, along the pseudotime of HSC to erythroid trajectory.</p>
+</figcaption>
+</figure>
+<ol start="72">
+<li>Visualize trajectories by using multiple lineages gene sets (<a href="#fig8">Figure 8</a>B).
+<div class="textbox">
+<p><code>&gt; plot_forceDirectedGraph_label_by_multiple_gene_sets(Human_HSPC,</code></p>
+<p><code>        gmt.file = "./Human_genesets/human.signature.genes.v1.gmt",</code></p>
+<p><code>        show_gene_sets = c("Erythroid","Myeloid","Lymphoid",</code></p>
+<p><code>                            "Megakaryocyte"),</code></p>
+<p><code>        custom_color = c("red","cyan","orange","purple"),</code></p>
+<p><code>      isNormalizedByHouseKeeping = F,</code></p>
+<p><code>      edge.size=0,</code></p>
+<p><code>      edge.color = "#FFFFFF",</code></p>
+<p><code>      vertex.size = 0.2,</code></p>
+<p><code>      showEdge = F,</code></p>
+<p><code>      showLegend = T)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>gmt.file:</b> Path to the file containing the gene signatures in GMT format.</li>
+<li>
+<b>show_gene_sets:</b> The vector of gene signature names to show on the plot. The names must be the same names as found in the ‘gmt.file’.</li>
+<li>
+<b>custom_color:</b> The assigned colors for gene signatures in ‘show_gene_set’.</li>
+<li>
+<b>isNormalizedByHouseKeeping:</b> When set to TRUE (default), the gene expression values of each gene signature specified will be normalized by the housekeeping genes. The housekeeping genes are defined as the top 100 genes with the highest total gene expression values across all cells.</li>
+<li>
+<b>edge.size:</b> The size of the edges connecting the nodes. Default value is 0.2.</li>
+<li>
+<b>edge.color:</b> The color of the edges. Default color is gray.</li>
+<li>
+<b>vertex.size:</b> The size of the nodes. Default value is 1.5.</li>
+<li>
+<b>showEdge:</b> When set to TRUE (default), the edges will be displayed.</li>
+<li>
+<b>showLegend:</b> When set to TRUE (default), the legend will be displayed.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.9">Method 2: Diffusion map analysis</h3>
+<ol start="73">
+<li>Load SingCellaR and destiny R packages.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+<p><code>&gt; library(destiny)</code></p>
+</div>
+<ol start="74">
+<li>Load the integrated R object generated from step 52.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load(file = "./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="75">
+<li>
+<b>Run diffusion map analysis.</b> The user can use the ‘runDiffusionMap’ function to generate the diffusion map layout (embeddings). The layout can be annotated using various features, including cell lineage signature genes. We will use the Supervised harmony embeddings to generate the diffusion map layout.
+<div class="textbox">
+<p><code>&gt; runDiffusionMap(Human_HSPC,</code></p>
+<p><code>                        useIntegrativeEmbeddings = T,</code></p>
+<p><code>                        integrative_method = "supervised_harmony",</code></p>
+<p><code>                        n.dims.use = 40,</code></p>
+<p><code>                        n.seed = 10)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>useIntegrativeEmbeddings:</b> If set to TRUE, the data integration or batch correction embeddings will be used in conjunction with ‘integrative_method’ argument. Default is FALSE.</li>
+<li>
+<b>integrative_method:</b> The data integration or batch correction method name.</li>
+<li>
+<b>n.dims.use:</b> The number of PCs from ‘integrative_method’. If ‘useIntegrativeEmbedding’ is set to FALSE, the PCA result will be used. Default value is 30.</li>
+<li>
+<b>n.seed:</b> The random number generator. Default value is 1.</li>
+</ol>
+</li>
+</ol>
+<ol start="76">
+<li>Visualize trajectories by Louvain clustering (<a href="#fig8">Figure 8</a>C).
+<div class="textbox">
+<p><code>&gt; plot_diffusionmap_label_by_clusters(Human_HSPC, show_method = "louvain")</code></p>
+</div>
+The following parameter is required:
+<ol type="a">
+<li>
+<b>show_method</b>: The clustering method name.</li>
+</ol>
+</li>
+</ol>
+<ol start="77">
+<li>Visualize trajectories by multiple lineages genes (<a href="#fig8">Figure 8</a>D).
+<div class="textbox">
+<p><code>&gt; plot_diffusionmap_label_by_multiple_gene_sets(Human_HSPC,</code></p>
+<p><code>        gmt.file = "./Human_genesets/human.signature.genes.v1.gmt",</code></p>
+<p><code>        show_gene_sets = c("Erythroid","Myeloid","Lymphoid","Megakaryocyte",</code></p>
+<p><code>                            "Endothelial_cells"),</code></p>
+<p><code>        custom_color = c("red","cyan","orange","purple","green"),</code></p>
+<p><code>        isNormalizedByHouseKeeping = F)</code></p>
+</div>
+The following parameters are required:
+<ol type="a">
+<li>
+<b>gmt.file:</b> Path to the file containing the gene signatures in GMT format.</li>
+<li>
+<b>show_gene_sets:</b> The vector names of gene signatures to show in the plot. The names must be the same names as found in the gmt.file.</li>
+<li>
+<b>custom_color:</b> The assigned colors for gene signatures in ‘show_gene_set’.</li>
+<li>
+<b>isNormalizedByHouseKeeping:</b> When set to TRUE (default), the gene expression values of the individual genes of each gene signature specified will be normalized by the housekeeping genes. The housekeeping genes are defined as the top 100 genes with the highest total gene expression values across all cells.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.10">Method 3: Monocle3 analysis</h3>
+<ol start="78">
+<li>Load SingCellaR and required R packages.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; library(SingCellaR)</code></p>
+<p><code>&gt; library(monocle3)</code></p>
+<p><code>&gt; library(ggplot2)</code></p>
+<p><code>&gt; library(ComplexHeatmap)</code></p>
+<p><code>&gt; library(circlize)</code></p>
+<p><code>&gt; library(RColorBrewer)</code></p>
+<p><code>&gt; source('./utilis.R')</code></p>
+</div>
+<ol start="79">
+<li>Load the integrated R object generated from step 52.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; load(file = "./Human_HSPC_All.SingCellaR.rdata")</code></p>
+</div>
+<ol start="80">
+<li>
+<b>Prepare input files for Monocle3.</b> The required objects include the expression matrix of raw counts, cell cluster metadata, and gene metadata.</li>
+</ol>
+<div class="textbox">
+<p><code># Expression matrix</code></p>
+<p><code>&gt; cells.used &lt;- Human_HSPC@sc.clusters$Cell</code></p>
+<p><code>&gt; umi &lt;- get_umi_count(Human_HSPC)</code></p>
+<p><code>&gt; used.umi &lt;- umi[,cells.used]</code></p>
+<p><code>&gt; expression_matrix &lt;- used.umi</code></p>
+<p><code>&gt; dim(expression_matrix) # check the dimension of object</code></p>
+<p><code># Cell cluster metadata</code></p>
+<p><code>&gt; cell_metadata &lt;- Human_HSPC@sc.clusters</code></p>
+<p><code>&gt; rownames(cell_metadata) &lt;- cell_metadata$Cell</code></p>
+<p><code># Gene metadata</code></p>
+<p><code>&gt; gene_annotation &lt;- as.data.frame(rownames(used.umi))</code></p>
+<p><code>&gt; colnames(gene_annotation) &lt;- "gene_short_name"</code></p>
+<p><code>&gt; rownames(gene_annotation) &lt;- gene_annotation$gene_short_name</code></p>
+</div>
+<ol start="81">
+<li><b>Create Monocle3 object.</b></li>
+</ol>
+<div class="textbox">
+<p><code>&gt; cds &lt;- new_cell_data_set(expression_data = expression_matrix,</code></p>
+<p><code>                                  cell_metadata = cell_metadata,</code></p>
+<p><code>                                  gene_metadata = gene_annotation)</code></p>
+</div>
+<ol start="82">
+<li>
+<b>Integrate Monocle3 and SingCellaR results.</b> Monocle3 normalizes the raw gene counts, and then performs PCA. The user can run the default workflow as suggested by Monocle3 tutorial. In this step, we will replace Monocle3’s UMAP embeddings and add cluster information derived from the SingCellaR object.</li>
+</ol>
+<div class="textbox">
+<p><code># Pre-process Monocle3 object</code></p>
+<p><code>&gt; cds &lt;- preprocess_cds(cds,num_dim = 100,method = "PCA")</code></p>
+<p><code>&gt; cds &lt;- align_cds(cds)</code></p>
+<p><code># Substitute Monocle3's embeddings with SingCellaR's embeddings</code></p>
+<p><code>&gt; embeddings &lt;- &gt;Human_HSPC@SupervisedHarmony.embeddings</code></p>
+<p><code>&gt; cds@int_colData@listData$reducedDims$Aligned &lt;- embeddings</code></p>
+<p><code># Nonlinear dimension reduction</code></p>
+<p><code>&gt; cds &lt;- reduce_dimension(cds,</code></p>
+<p><code>                                reduction_method = "UMAP",</code></p>
+<p><code>                                  umap.min_dist = 0.3,</code></p>
+<p><code>                                  preprocess_method = "Aligned")</code></p>
+<p><code># Identify and assign clusters</code></p>
+<p><code>&gt; cds &lt;- cluster_cells(cds,</code></p>
+<p><code>                            reduction_method = "UMAP",</code></p>
+<p><code>                              k = 30,</code></p>
+<p><code>                              cluster_method = "louvain")</code></p>
+<p><code># Substitute Monocle3's UMAP embeddings with SingCellaR's embedding</code></p>
+<p><code>&gt; newcds&lt;- cds # change monocle3 objects name</code></p>
+<p><code>&gt; SingCellaR.umap &lt;-,c("Cell","UMAP1","UMAP2")]</code></p>
+<p><code>&gt; Human_HSPC@umap.result[monocle3.umap &lt;- newcds@int_colData$reducedDims$UMAP</code></p>
+<p><code>&gt; umap &lt;- SingCellaR.umap[match(rownames(monocle3.umap),SingCellaR.umap$Cell),]</code></p>
+<p><code>&gt; rownames(umap) &lt;- umap$Cell</code></p>
+<p><code>&gt; umap$Cell &lt;- NULL</code></p>
+<p><code>&gt; newcds@int_colData$reducedDims$UMAP &lt;- umap</code></p>
+<p><code># Substitute Monocle3's cluster identity with SingCellaR's cluster identity</code></p>
+<p><code>&gt; anno.clusters &lt;- Human_HSPC@sc.clusters$louvain_cluster</code></p>
+<p><code>&gt; names(anno.clusters) &lt;- Human_HSPC@sc.clusters$Cell</code></p>
+<p><code>&gt; newcds@clusters$UMAP$clusters &lt;- anno.clusters</code></p>
+</div>
+<ol start="83">
+<li>
+<b>Generate trajectory graph and order cells by pseudotime.</b> To learn the cell differentiation trajectories, the user will use the ‘learn_graph’ function provided by Monocle3. By default, Monocle3 uses a 'self-defined' node to perform the pseudotime analysis. Thus, the user will need to define the root node, i.e., the most immature cluster. To identify the root node, the user can use the ‘get_earliest_principal_node’ function. Based on the previous analyses, the user can select ‘cl1’, the HSC/MPP cluster, as the starting point of the trajectory.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; newcds &lt;- learn_graph(newcds)</code></p>
+<p><code># Apply function to retrieve root node</code></p>
+<p><code>&gt; root.nodes &lt;- get_earliest_principal_node(newcds,cluster = "cl1")</code></p>
+<p><code># Order cells by pseudotime relative to root node</code></p>
+<p><code>&gt; newcds &lt;- order_cells(newcds, root_pr_nodes = root.nodes)</code></p>
+<p><code># Save R object</code></p>
+<p><code>&gt; save(newcds,file = "./Human_HSPC_monocle3.rdata")</code></p>
+</div>
+<ol start="84">
+<li>
+<b>Visualize trajectory paths on UMAP</b> (<a href="#fig8">Figure 8</a>E).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_cells(newcds,</code></p>
+<p><code>                  group_label_size = 5,</code></p>
+<p><code>                  color_cells_by = "louvain_cluster",</code></p>
+<p><code>                  show_trajectory_graph = T,</code></p>
+<p><code>                  label_roots = T,</code></p>
+<p><code>                  label_cell_groups = T,</code></p>
+<p><code>                  label_groups_by_cluster = T,</code></p>
+<p><code>                  label_leaves = F,</code></p>
+<p><code>                  label_branch_points = F)</code></p>
+</div>
+<ol start="85">
+<li>
+<b>Visualize pseudotime on UMAP</b> (<a href="#fig8">Figure 8</a>F).</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; plot_cells(newcds,</code></p>
+<p><code>                  color_cells_by = "pseudotime",</code></p>
+<p><code>                  show_trajectory_graph = F,</code></p>
+<p><code>                  label_roots = T,</code></p>
+<p><code>                  label_cell_groups=F,</code></p>
+<p><code>                  label_leaves=F,</code></p>
+<p><code>                  label_branch_points=F,</code></p>
+<p><code>                  graph_label_size=1.5,</code></p>
+<p><code>                  group_label_size=4,</code></p>
+<p><code>                  cell_size=1.5)</code></p>
+</div>
+<ol start="86">
+<li>
+<b>Visualize pseudotime on SingCellaR FDG</b> (<a href="#fig8">Figure 8</a>G). Before plotting FDG, the user can remove the endothelial cells (cl17).</li>
+</ol>
+<div class="textbox">
+<p><code># Remove endothelial cell cluster</code></p>
+<p><code>&gt; sc.clusters &lt;- Human_HSPC@sc.clusters[!(Human_HSPC@sc.clusters$louvain_cluster == "cl17"),]</code></p>
+<p><code>&gt; fa2 &lt;- Human_HSPC@fa2_graph.layout</code></p>
+<p><code>&gt; fa2.used &lt;- fa2[rownames(fa2) %in% sc.clusters$Cell,]</code></p>
+<p><code># Extract the pseudotime information</code></p>
+<p><code>&gt; new_data &lt;- data.frame(pseudotime = pseudotime(newcds,reduction_method = "UMAP"))</code></p>
+<p><code>&gt; new_data$Cell &lt;- rownames(new_data)</code></p>
+<p><code>&gt; new_data &lt;- new_data[new_data$Cell %in% rownames(fa2.used),]</code></p>
+<p><code># Integrate pseudotime with FDG embeddings</code></p>
+<p><code>&gt; fa2.used &lt;- fa2.used[match(new_data$Cell,rownames(fa2.used)),]</code></p>
+<p><code>&gt; colnames(fa2.used) &lt;- c("FDG1","FDG2")</code></p>
+<p><code>&gt; fa2.dat &lt;- cbind(fa2.used,new_data)</code></p>
+<p><code># Plot FDG</code></p>
+<p><code>&gt; ggplot(data = fa2.dat,aes(x = FDG1,y = FDG2)) +</code></p>
+<p><code>      geom_point(size = 0.05,aes(color = pseudotime)) +</code></p>
+<p><code>      scale_color_viridis_c(name = 'Pseudotime',option = "C")+</code></p>
+<p><code>      theme_classic() +</code></p>
+<p><code>      xlab("FDG1") +</code></p>
+<p><code>      ylab("FDG2")</code></p>
+</div>
+<ol start="87">
+<li>
+<b>Visualize the expression of selected genes along the paths.</b> We plot erythroid lineage genes as the example.
+<ol type="a">
+<li>Add developmental stages information to the metadata.
+<div class="textbox">
+<p><code># Retrieve UMAP coordinates and annotate with cluster information</code></p>
+<p><code>&gt; sc.clusters &lt;-Human_HSPC@sc.clusters</code></p>
+<p><code>&gt; umap.results &lt;- Human_HSPC@umap.result</code></p>
+<p><code>&gt; umap.results &lt;- merge(umap.results,sc.clusters, by = "Cell")</code></p>
+<p><code>### Add developmental stage information</code></p>
+<p><code>&gt; umap.results$stage[umap.results$sampleID %in% c("1_eFL_1","1_eFL_2")]&lt;- "eFL"</code></p>
+<p><code>&gt; umap.results$stage[umap.results$sampleID %in% c("1_ABM_1")]&lt;- "ABM"</code></p>
+<p><code>&gt; umap.results$stage[umap.results$sampleID %in% c("1_FL_1","1_FL_2")]&lt;- "FL"</code></p>
+<p><code>&gt; umap.results$stage[umap.results$sampleID %in% c("1_FBM_1","1_FBM_2")]&lt;- "FBM"</code></p>
+<p><code>&gt; umap.results$stage[umap.results$sampleID %in% c("1_PBM_1","1_PBM_2")]&lt;- "PBM"</code></p>
+</div>
+</li>
+<li>Define the path for the erythroid lineage based on the FDG, diffusion map, and Monocle3. We selected the path ‘cl1-cl7-cl12-cl3’ for the erythroid lineage.
+<div class="textbox">
+<p><code>&gt; Ery.path &lt;- c("cl1","cl7","cl12","cl3")</code></p>
+</div>
+</li>
+<li>Extract cells from the erythroid trajectory for all stages.
+<div class="textbox">
+<p><code>&gt; umap.results.Ery &lt;- umap.results[umap.results$louvain_cluster %in% Ery.path,]</code></p>
+<p><code>&gt; cells.eFL &lt;- umap.results.Ery$Cell[umap.results.Ery$stage == "eFL"]</code></p>
+<p><code>&gt; cells.FL &lt;- umap.results.Ery$Cell[umap.results.Ery$stage == "FL"]</code></p>
+<p><code>&gt; cells.FBM &lt;- umap.results.Ery$Cell[umap.results.Ery$stage == "FBM"]</code></p>
+<p><code>&gt; cells.PBM &lt;- umap.results.Ery$Cell[umap.results.Ery$stage == "PBM"]</code></p>
+<p><code>&gt; cells.ABM &lt;- umap.results.Ery$Cell[umap.results.Ery$stage == "ABM"]</code></p>
+</div>
+</li>
+<li>Extract genes known to be involved in the erythroid trajectory based on the pseudotime.
+<div class="textbox">
+<p><code>&gt; genes.E &lt;- c("FAM178B","TRIB2","BLVRB","RHAG","PNMT",</code></p>
+<p><code>                  "APOE","APOC1","S100A6","KLF1","PVT1",</code></p>
+<p><code>                  "KCNH2","EPOR","MYH10","S100A4",</code></p>
+<p><code>                  "MYL4","EMP3","CYTOR","CNRIP1","GATA1","SMIM1")</code></p>
+<p><code>&gt; matrix &lt;- newcds@assays@data$counts</code></p>
+<p><code>&gt; pt.matrix&lt;-</code></p>
+<p><code>      matrix[match(genes.E,rowData(newcds)[,1]),order(pseudotime(newcds))]</code></p>
+</div>
+</li>
+<li>Extract gene expression matrix for each group of cells.
+<div class="textbox">
+<p><code>&gt; pt.matrix.eFL &lt;- ExtractMatrix(pt.matrix = pt.matrix,genes = genes.E,path =</code></p>
+<p><code>      Ery.path,selected.cells = cells.eFL)</code></p>
+<p><code>&gt; pt.matrix.FL &lt;- ExtractMatrix(pt.matrix = pt.matrix,genes = genes.E,path =</code></p>
+<p><code>      Ery.path,selected.cells = cells.FL)</code></p>
+<p><code>&gt; pt.matrix.FBM &lt;- ExtractMatrix(pt.matrix = pt.matrix,genes = genes.E,path =</code></p>
+<p><code>      Ery.path,selected.cells = cells.FBM)</code></p>
+<p><code>&gt; pt.matrix.PBM &lt;- ExtractMatrix(pt.matrix = pt.matrix,genes = genes.E,path =</code></p>
+<p><code>      Ery.path,selected.cells = cells.PBM)</code></p>
+<p><code>&gt; pt.matrix.ABM &lt;- ExtractMatrix(pt.matrix = pt.matrix,genes = genes.E,path =</code></p>
+<p><code>      Ery.path,selected.cells = cells.ABM)</code></p>
+</div>
+</li>
+<li>Plot gene expression heatmap along the path of the different developmental stages (<a href="#fig8">Figure 8</a>H).
+<div class="textbox">
+<p><code>&gt; ht1 &lt;- plot_development_heatmap(pt.matrix.eFL,subtitle = "eFL")</code></p>
+<p><code>&gt; ht2 &lt;- plot_development_heatmap(pt.matrix.FL,subtitle = "FL")</code></p>
+<p><code>&gt; ht3 &lt;- plot_development_heatmap(pt.matrix.FBM,subtitle = "FBM")</code></p>
+<p><code>&gt; ht4 &lt;- plot_development_heatmap(pt.matrix.PBM,subtitle = "PBM")</code></p>
+<p><code>&gt; ht5 &lt;- plot_development_heatmap(pt.matrix.ABM,subtitle = "ABM")</code></p>
+<p><code>&gt; ht.full &lt;- ht1+ht2+ht3+ht4+ht5</code></p>
+<p><code>&gt; ht.full</code></p>
+</div>
+</li>
+<li>Extract gene expression from downsampled cells along the path from different developmental stages and pseudotime from ‘newcds’ object from step 83.
+<div class="textbox">
+<p><code>&gt; Ery.eFL &lt;- ExtractCells(selected.cells = cells.eFL)</code></p>
+<p><code>&gt; Ery.FL &lt;- ExtractCells(selected.cells = cells.FL)</code></p>
+<p><code>&gt; Ery.FBM &lt;- ExtractCells(selected.cells = cells.FBM)</code></p>
+<p><code>&gt; Ery.PBM &lt;- ExtractCells(selected.cells = cells.PBM)</code></p>
+<p><code>&gt; Ery.ABM &lt;- ExtractCells(selected.cells = cells.ABM)</code></p>
+<p><code>&gt; matrix &lt;- newcds@assays@data$counts</code></p>
+<p><code>&gt; matrix.total &lt;-Matrix::colSums(matrix)</code></p>
+<p><code>&gt; norm.matrix &lt;-(t(t(matrix)/matrix.total))∗10000</code></p>
+<p><code>&gt; expr.eFL &lt;- norm.matrix[genes.E,Ery.eFL]</code></p>
+<p><code>&gt; expr.eFL &lt;- reshape2::melt(as.matrix(expr.eFL))</code></p>
+<p><code>&gt; colnames(expr.eFL) &lt;- c("Gene","Cell","NormUMI")</code></p>
+<p><code>&gt; expr.eFL$Stage &lt;- "eFL"</code></p>
+<p><code>&gt; expr.FL &lt;- norm.matrix[genes.E,Ery.FL]</code></p>
+<p><code>&gt; expr.FL &lt;- reshape2::melt(as.matrix(expr.FL))</code></p>
+<p><code>&gt; colnames(expr.FL) &lt;- c("Gene","Cell","NormUMI")</code></p>
+<p><code>&gt; expr.FL$Stage &lt;- "FL"</code></p>
+<p><code>&gt; expr.FBM &lt;- norm.matrix[genes.E,Ery.FBM]</code></p>
+<p><code>&gt; expr.FBM &lt;- reshape2::melt(as.matrix(expr.FBM))</code></p>
+<p><code>&gt; colnames(expr.FBM) &lt;- c("Gene","Cell","NormUMI")</code></p>
+<p><code>&gt; expr.FBM$Stage &lt;- "FBM"</code></p>
+<p><code>&gt; expr.PaedBM &lt;- norm.matrix[genes.E,Ery.PBM]</code></p>
+<p><code>&gt; expr.PaedBM &lt;- reshape2::melt(as.matrix(expr.PaedBM))</code></p>
+<p><code>&gt; colnames(expr.PaedBM) &lt;- c("Gene","Cell","NormUMI")</code></p>
+<p><code>&gt; expr.PaedBM$Stage &lt;- "PBM"</code></p>
+<p><code>&gt; expr.AdultBM &lt;- norm.matrix[genes.E,Ery.ABM]</code></p>
+<p><code>&gt; expr.AdultBM &lt;- reshape2::melt(as.matrix(expr.AdultBM))</code></p>
+<p><code>&gt; colnames(expr.AdultBM) &lt;- c("Gene","Cell","NormUMI")</code></p>
+<p><code>&gt; expr.AdultBM$Stage &lt;- "ABM"</code></p>
+<p><code>&gt; expr.Ery &lt;- rbind(expr.eFL,expr.FL,expr.FBM,expr.PaedBM,expr.AdultBM)</code></p>
+</div>
+</li>
+<li>Extract the pseudotime information from Monocle3 results.
+<div class="textbox">
+<p><code>&gt; pseudotime &lt;- as.data.frame(pseudotime(newcds))</code></p>
+<p><code>&gt; colnames(pseudotime) &lt;- "pseudotime"</code></p>
+<p><code>&gt; pseudotime$Cell &lt;- rownames(pseudotime)</code></p>
+<p><code>&gt; pseudotime$pseudotime[pseudotime$pseudotime %in% "Inf"] &lt;- 0</code></p>
+<p><code>&gt; pseudotime &lt;- pseudotime[order(pseudotime$pseudotime,decreasing = F),]</code></p>
+</div>
+</li>
+<li>Merge gene expression data with pseudotime analysis results.
+<div class="textbox">
+<p><code>&gt; expr.Ery &lt;- merge(expr.Ery,pseudotime,by = "Cell",)</code></p>
+</div>
+</li>
+<li>Visualize selected erythroid gene expression along the path (<a href="#fig8">Figure 8</a>I).
+<div class="textbox">
+<p><code>&gt; plot_genes(data = expr.Ery,genes = "GATA1")</code></p>
+<p><code>&gt; plot_genes(data = expr.Ery,genes = "KLF1")</code></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The step-by-step protocols describe an analysis pipeline used in a recent publication (<a href="#bib23">Roy et al., 2021</a>). Here, we introduce SingCellaR as a tool to facilitate various data analyses and visualization of scRNA-seq data. We expect the outcomes from the pipelines can help reduce data analysis complications, speed up, and generate robust results. We summarize the expected outputs described in <a href="#tbl1">Table 1</a>.</p>
+<table id="tbl1">
+<caption>Table 1. The summary of expected outputs from the protocols</caption>
+<thead>
+<tr>
+<th>Key step</th>
+<th>Step</th>
+<th>Output definition</th>
+<th>Output file; Figure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SingCellaR installation</td>
+<td>1–3</td>
+<td>Following these steps, a user should understand the installation processes of R packages. The protocols can help users successfully install SingCellaR and its dependencies on personal computers or high-performance workstation/computing clusters. We describe the possible issues for installing required Python modules in the R environment in the <a href="#troubleshooting">troubleshooting</a> section. At the end of the step, we expect the user to run the command library(SingCellaR) successfully in the R terminal.</td>
+<td> </td>
+</tr>
+<tr>
+<td>Processing scRNA-seq for an individual sample</td>
+<td>4–12</td>
+<td>These steps are for the initial analysis of an individual sample. The output files consist of nine SingCellaR objects generated from each sample. These files are used for the downstream data integration. We show the process to select high-quality cells using multiple QC plots, and we perform data normalization and identification of highly variable genes. We expect the user to inspect the QC of cells when applied using distinct cut-off parameters.</td>
+<td>eFL_1.SingCellaR.rdata,eFL_2.SingCellaR.rdata,FL_1.SingCellaR.rdata,FL_2.SingCellaR.rdata,FBM_1.SingCellaR.rdata,FBM_2.SingCellaR.rdata,PBM_1.SingCellaR.rdata,PBM_2.SingCellaR.rdata,ABM_1.SingCellaR.rdata; <a href="#fig1">Figure 1</a>
+</td>
+</tr>
+<tr>
+<td>Integrating biological replicates</td>
+<td>13–29</td>
+<td>These steps describe the general procedures to integrate individual R objects derived from five developmental stages (eFL, FL, FBM, PBM, and ABM). The integration of two eFL samples from two donors is demonstrated. We show the SingCellaR’s functions to perform standard scRNA-seq analyses. All output files generated from these steps are available at Zenodo:<a href="https://doi.org/10.5281/zenodo.5879071">https://doi.org/10.5281/zenodo.5879071</a>.</td>
+<td>eFL_All.SingCellaR.rdata, FL_All.SingCellaR.rdata, FBM_All.SingCellaR.rdata, PBM_All.SingCellaR.rdata, ABM_1.SingCellaR.rdata; <a href="#fig2">Figure 2</a>
+</td>
+</tr>
+<tr>
+<td>Integrating samples from all tissue types</td>
+<td>30–52</td>
+<td>We show SingCellaR’s functionalities to support data integration from all samples. From these steps, the user should observe different results of applying distinct integrative methods implemented in SingCellaR. We demonstrate wrapper functions for Supervised Harmony, Harmony, Seurat and Scanorama integration, and Limma batch correction. We describe the benchmarking technique of different integrative results using AUCell analysis with LISI and kBET methods. The user should observe the objective measurement of integration from the plots to indicate the performance of each method for the integration of HSPC datasets.</td>
+<td>supervised_harmony.UMAP.rds,harmony.UMAP.rds,Seurat_rpca.UMAP.rds,Scanorama.UMAP.rds,Limma.UMAP.rds,human_HSPC_rankings.AUCells.rdata,Human_HSPC.CellType_from_AUC_High.rds,Human_HSPC_All.SingCellaR.rdata; <a href="#fig3">Figures 3</a>, <a href="#fig4">4</a>, and <a href="#fig5">5</a>A</td>
+</tr>
+<tr>
+<td>Cell type annotation</td>
+<td>53–61</td>
+<td>These steps describe how to use functions implemented in SingCellaR to annotate cell types. SingCellaR implements a GSEA-based approach using a comprehensive list of curated gene sets and visualization of marker genes to annotate cell types.</td>
+<td>Human_HSPCs_preRankedGenes_for_GSEA.rdata Human_HSPC_marke_genes_per_cluster.txt; <a href="#fig5">Figures 5</a>B and <a href="#fig6">6</a>
+</td>
+</tr>
+<tr>
+<td>AUCell analysis</td>
+<td>62–67</td>
+<td>SingCellaR implements AUCell analysis to assign and define high-confident lineage-specific cells. We validate cell-type annotation and compare the differential abundance of different cell lineages across developmental stages using the wrapper function for DAseq analysis.</td>
+<td>Human_HSPC_rankings.AUCells.rdata, human_HSPCs.AUCells.score.rdata,eFL_vs_FL.pdf; <a href="#fig7">Figure 7</a>
+</td>
+</tr>
+<tr>
+<td>Trajectory analysis</td>
+<td>68–87</td>
+<td>We describe three distinct approaches, Force-directed graph, Diffusion map, and Monocle3, to infer cellular trajectories. We show how to transfer the results from SingCellaR to be analyzed in Monocle3.</td>
+<td><a href="#fig8">Figure 8</a></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">The table shows a short description of protocol steps, output description, and expected output files and figures.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>SingCellaR requires signature gene sets to perform the cell type annotation analysis. Thus, the user would have to compile and curate customized gene sets for the relevant system of interest. In this protocol, we provide 75 gene sets curated from previous studies relevant to hematopoiesis. SingCellaR still lacks 'automatic object transformation' to interact with other existing packages, such as Seurat. However, SingCellaR uses the SingleCellExperiment object, the standard object for storing single-cell experimental data in R. Therefore, the gene expression matrix and cell metadata can be extracted simply from the SingleCellExperiment object. This issue will be improved when SingCellaR is updated to the next version to support more interactions with other packages and ensure compatibility with relevant R packages incorporated in SingCellaR.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>The user may encounter the following error when executing the function ‘runFA2_ForceDirectedGraph’:</p>
+<p>Error in runFA2_ForceDirectedGraph(Human_HSPC,useIntegrativeEmbeddings = T, :</p>
+<p>The fa2 python module is not installed!. Please install using pip (pip install fa2)</p>
+<p>There are two potentially problems: the fa2 package is not installed; and the R environmental path for FA2 module in python is not found by R.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>FA2 installation.</p>
+<p>The fa2 package can be installed as suggested in the <a href="#sec2.1">SingCellaR installation</a> section.</p>
+<p>Conda environment is recommended by using ‘conda_create’ function after loading the reticulate package.</p>
+<div class="note">
+<span class="note-title">Note:</span> The fa2 package is not compatible with python 3.9 or higher versions.</div>
+<p>python version configuration.</p>
+<p>The user can use the following code to configure the python path:</p>
+<div class="textbox">
+<p><code>### Set the python version into R environment.</code></p>
+<p><code>use_python("/miniconda3/envs/r-reticulate/bin/python")</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The user must change the python path as shown here to Conda-specific path found in the user’s computer.</div>
+<div class="textbox">
+<p><code>### Open ‘∼/.Renviron’ in the terminal and add the following code:</code></p>
+<p><code>RETICULATE_PATH="/miniconda3/envs/r-reticulate/bin/python"</code></p>
+<p><code>### Restart R session and then use below code to check:</code></p>
+<p><code>Sys.which("python")</code></p>
+<p><code>"/miniconda3/envs/r-reticulate/bin/python" should be shown on the console.</code></p>
+</div>
+<p>The user can refer to Python version configuration tutorial in the reticulate R package found in this URL: <a href="https://rstudio.github.io/reticulate/articles/versions.html">https://rstudio.github.io/reticulate/articles/versions.html</a>.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>The user may find this error when performing the runScanorama(Human_HSPC) function:</p>
+<p>“Error in runScanorama(Human_HSPC) : The scanorama python module is not installed!. Please install using pip ('pip install scanorama')”</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>The scanorama package can be installed as suggested in the SingCellaR installation section. The Python environment configuration can be found in Problem 1.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>UMAP/FDG plots may show different rotations from this protocol. This is caused by different software versions for generating plots and the seed number setting.</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>This can be solved by setting a seed number (n.seed parameter) found in runUMAP and runFA2_ForceDirectedGraph functions.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>The user may encounter running time and memory issues when performing the AUCell_buildRankings function for a large-scale dataset.</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>The user can use the alternative function named ‘Build_AUCell_Rankings_Fast’ to speed up running time and use less memory for ranking gene expression for each cell.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>The kBET score is used to benchmark the integration results from different integrative methods. The user may encounter slightly different kBET scores from this protocol. This is due to the different seed number settings and the number of subsampling cells for kBET analysis. More running time and memory will be used if the user sets the high number of the downsample size in kBET analysis.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>This issue can be solved by setting the seed number prior to running kBET using the ‘set.seed’ function. The user can subsample and fix the number of cells for the kBET analysis using the n.sample parameter described in the ‘runKBET’ function.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Aibar, S., González-Blas, C.B., Moerman, T., Imrichova, H., Hulselmans, G., Rambow, F., Marine, J.-C., Geurts, P., Aerts, J., and van den Oord, J. (2017). SCENIC: single-cell regulatory network inference and clustering. Nat. Methods <i>14</i>, 1083-1086. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref1">View at publisher</a></p>
+<p id="bib2">Amezquita, R.A., Lun, A.T.L., Becht, E., Carey, V.J., Carpp, L.N., Geistlinger, L., Marini, F., Rue-Albrecht, K., Risso, D., Soneson, C., et al. (2020). Orchestrating single-cell analysis with bioconductor. Nat. Methods <i>17</i>, 137-145. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref2">View at publisher</a></p>
+<p id="bib3">Aran, D., Looney, A.P., Liu, L., Wu, E., Fong, V., Hsu, A., Chak, S., Naikawadi, R.P., Wolters, P.J., Abate, A.R., et al. (2019). Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage. Nat. Immunol. <i>20</i>, 163-172. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref3">View at publisher</a></p>
+<p id="bib4">Buttner, M., Miao, Z., Wolf, F.A., Teichmann, S.A., and Theis, F.J. (2019). A test metric for assessing single-cell RNA-seq batch correction. Nat. Methods <i>16</i>, 43-49. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref4">View at publisher</a></p>
+<p id="bib5">Gao, C., Liu, J., Kriebel, A.R., Preissl, S., Luo, C., Castanon, R., Sandoval, J., Rivkin, A., Nery, J.R., Behrens, M.M., et al. (2021). Iterative single-cell multi-omic integration using online learning. Nat. Biotechnol. <i>39</i>, 1000-1007. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref5">View at publisher</a></p>
+<p id="bib6">Giustacchini, A., Thongjuea, S., Barkas, N., Woll, P.S., Povinelli, B.J., Booth, C.A., Sopp, P., Norfo, R., Rodriguez-Meira, A., and Ashley, N. (2017). Single-cell transcriptomics uncovers distinct molecular signatures of stem cells in chronic myeloid leukemia. Nat. Med. <i>23</i>, 692-702. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref6">View at publisher</a></p>
+<p id="bib7">Granja, J.M., Klemm, S., McGinnis, L.M., Kathiria, A.S., Mezger, A., Corces, M.R., Parks, B., Gars, E., Liedtke, M., and Zheng, G.X. (2019). Single-cell multiomic analysis identifies regulatory programs in mixed-phenotype acute leukemia. Nat. Biotechnol. <i>37</i>, 1458-1465. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref7">View at publisher</a></p>
+<p id="bib8">Haghverdi, L., Buettner, F., and Theis, F.J. (2015). Diffusion maps for high-dimensional single-cell analysis of differentiation data. Bioinformatics <i>31</i>, 2989-2998. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref8">View at publisher</a></p>
+<p id="bib9">Hao, Y., Hao, S., Andersen-Nissen, E., Mauck, W.M., Zheng, S., Butler, A., Lee, M.J., Wilk, A.J., Darby, C., Zager, M., et al. (2021). Integrated analysis of multimodal single-cell data. Cell <i>184</i>, 3573-3587.e3529. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref9">View at publisher</a></p>
+<p id="bib10">Hie, B., Bryson, B., and Berger, B. (2019). Efficient integration of heterogeneous single-cell transcriptomes using Scanorama. Nat. Biotechnol. <i>37</i>, 685-691. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref10">View at publisher</a></p>
+<p id="bib11">Jacomy, M., Venturini, T., Heymann, S., and Bastian, M. (2014). ForceAtlas2, a continuous graph layout algorithm for handy network visualization designed for the Gephi software. PLoS One <i>9</i>, e98679. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref11">View at publisher</a></p>
+<p id="bib12">Johnson, W.E., Li, C., and Rabinovic, A. (2007). Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics <i>8</i>, 118-127. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref12">View at publisher</a></p>
+<p id="bib13">Korotkevich, G., Sukhov, V., Budin, N., Shpak, B., Artyomov, M.N., and Sergushichev, A. (2021). Fast gene set enrichment analysis. Preprint at bioRxiv. <a class="external-link" href="https://doi.org/10.1101/060012">https://doi.org/10.1101/060012</a></p>
+<p id="bib14">Korsunsky, I., Millard, N., Fan, J., Slowikowski, K., Zhang, F., Wei, K., Baglaenko, Y., Brenner, M., Loh, P.-r., and Raychaudhuri, S. (2019). Fast, sensitive and accurate integration of single-cell data with harmony. Nat. Methods <i>16</i>, 1289-1296. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref14">View at publisher</a></p>
+<p id="bib15">MacParland, S.A., Liu, J.C., Ma, X.-Z., Innes, B.T., Bartczak, A.M., Gage, B.K., Manuel, J., Khuu, N., Echeverri, J., and Linares, I. (2018). Single cell RNA sequencing of human liver reveals distinct intrahepatic macrophage populations. Nat. Commun. <i>9</i>, 1-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref15">View at publisher</a></p>
+<p id="bib16">McInnes, L., Healy, J., and Melville, J. (2018). Umap: uniform manifold approximation and projection for dimension reduction. Preprint at arXiv. <a class="external-link" href="https://doi.org/10.48550/arXiv.1802.03426">https://doi.org/10.48550/arXiv.1802.03426</a></p>
+<p id="bib18">Picelli, S., Faridani, O.R., Bjorklund, A.K., Winberg, G., Sagasser, S., and Sandberg, R. (2014). Full-length RNA-seq from single cells using Smart-seq2. Nat. Protoc. <i>9</i>, 171-181. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref18">View at publisher</a></p>
+<p id="bib19">Pliner, H.A., Shendure, J., and Trapnell, C. (2019). Supervised classification enables rapid annotation of cell atlases. Nat. Methods <i>16</i>, 983-986. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref19">View at publisher</a></p>
+<p id="bib20">Psaila, B., Wang, G., Rodriguez-Meira, A., Li, R., Heuston, E.F., Murphy, L., Yee, D., Hitchcock, I.S., Sousos, N., O'Sullivan, J., et al. (2020). Single-cell analyses reveal megakaryocyte-biased hematopoiesis in myelofibrosis and identify mutant clone-specific targets. Mol. Cell <i>78</i>, 477-492.e478. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref20">View at publisher</a></p>
+<p id="bib21">Ritchie, M.E., Phipson, B., Wu, D., Hu, Y., Law, C.W., Shi, W., and Smyth, G.K. (2015). Limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. <i>43</i>, e47. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref21">View at publisher</a></p>
+<p id="bib22">Rodriguez-Meira, A., Buck, G., Clark, S.A., Povinelli, B.J., Alcolea, V., Louka, E., McGowan, S., Hamblin, A., Sousos, N., Barkas, N., et al. (2019). Unravelling intratumoral heterogeneity through high-sensitivity single-cell mutational analysis and parallel RNA sequencing. Mol. Cell <i>73</i>, 1292-1305.e1298. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref22">View at publisher</a></p>
+<p id="bib23">Roy, A., Wang, G., Iskander, D., O’Byrne, S., Elliott, N., O’Sullivan, J., Buck, G., Heuston, E.F., Wen, W.X., and Meira, A.R. (2021). Transitions in lineage specification and gene regulatory networks in hematopoietic stem/progenitor cells over human development. Cell Rep. <i>36</i>, 109698. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref23">View at publisher</a></p>
+<p id="bib24">Satija, R., Farrell, J.A., Gennert, D., Schier, A.F., and Regev, A. (2015). Spatial reconstruction of single-cell gene expression data. Nat. Biotechnol. <i>33</i>, 495-502. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref24">View at publisher</a></p>
+<p id="bib25">Shao, X., Liao, J., Lu, X., Xue, R., Ai, N., and Fan, X. (2020). scCATCH: automatic annotation on cell types of clusters from single-cell RNA sequencing data. iScience <i>23</i>, 100882. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref25">View at publisher</a></p>
+<p id="bib26">Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W.M., Hao, Y., Stoeckius, M., Smibert, P., and Satija, R. (2019). Comprehensive integration of single-cell data. Cell <i>177</i>, 1888-1902.e1821. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref26">View at publisher</a></p>
+<p id="bib27">Subramanian, A., Tamayo, P., Mootha, V.K., Mukherjee, S., Ebert, B.L., Gillette, M.A., Paulovich, A., Pomeroy, S.L., Golub, T.R., Lander, E.S., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc. Natl. Acad. Sci. U S A <i>102</i>, 15545-15550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref27">View at publisher</a></p>
+<p id="bib28">Tran, H.T.N., Ang, K.S., Chevrier, M., Zhang, X., Lee, N.Y.S., Goh, M., and Chen, J. (2020). A benchmark of batch-effect correction methods for single-cell RNA sequencing data. Genome Biol. <i>21</i>, 1-32. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref28">View at publisher</a></p>
+<p id="bib29">Trapnell, C., Cacchiarelli, D., Grimsby, J., Pokharel, P., Li, S., Morse, M., Lennon, N.J., Livak, K.J., Mikkelsen, T.S., and Rinn, J.L. (2014). The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. Nat. Biotechnol. <i>32</i>, 381-386. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref29">View at publisher</a></p>
+<p id="bib30">Wolf, F.A., Angerer, P., and Theis, F.J. (2018). SCANPY: large-scale single-cell gene expression data analysis. Genome Biol. <i>19</i>, 15. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref30">View at publisher</a></p>
+<p id="bib31">Wolock, S.L., Lopez, R., and Klein, A.M. (2019). Scrublet: computational identification of cell doublets in single-cell transcriptomic data. Cell Syst. <i>8</i>, 281-291.e289. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref31">View at publisher</a></p>
+<p id="bib32">Xiang, R., Wang, W., Yang, L., Wang, S., Xu, C., and Chen, X. (2021). A comparison for dimensionality reduction methods of single-cell RNA-seq data. Front. Genet. <i>12</i>, 646936. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref32">View at publisher</a></p>
+<p id="bib33">Zhang, A.W., O'Flanagan, C., Chavez, E.A., Lim, J.L.P., Ceglia, N., McPherson, A., Wiens, M., Walters, P., Chan, T., Hewitson, B., et al. (2019). Probabilistic cell-type assignment of single-cell RNA-seq for tumor microenvironment profiling. Nat. Methods <i>16</i>, 1007-1015. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref33">View at publisher</a></p>
+<p id="bib34">Zhao, J., Jaffe, A., Li, H., Lindenbaum, O., Sefik, E., Jackson, R., Cheng, X., Flavell, R.A., and Kluger, Y. (2021). Detection of differentially abundant cell subpopulations in scRNA-seq data. Proc. Natl. Acad. Sci. U S A <i>118</i>. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00146-0/sref34">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Supat Thongjuea (<a href="mailto:supat.thongjuea@imm.ox.ac.uk">supat.thongjuea@imm.ox.ac.uk</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<ul>
+<li>SingCellaR open-source codes, cellranger pipeline outputs, R codes and pre-processed R objects for this protocol are available and maintained on GitHub and Zenodo listed in the <a href="#key-resources-table">key resources table</a>.</li>
+<li>Any additional information required to reanalyze the data reported in this paper is available from the lead contact upon request.</li>
+</ul>
+<h3>Acknowledgments</h3>
+<p>The authors would like to thank the members of WIMM Haematopoietic Stem Cell Biology (HSCB) laboratory for their helpful comments in the installation and utilization of SingCellaR. G.W. was supported by a <a href="https://doi.org/10.13039/501100000289">CRUK</a> Senior Cancer Research Fellowship to A.J.M., an Oxford Centre for Haematology Pump Priming Award, and a Medical Science Division Pump Priming award (009800) by the Nuffield Benefaction for Medicine and the Wellcome Institutional Strategic Support Fund (ISSF). W.X.W. was supported by the <a href="https://doi.org/10.13039/501100014748">Clarendon Fund</a> and Oxford-Radcliffe Scholarship in conjunction with WIMM Prize PhD Studentship. A.J.M. was supported by a Medical Research Council (MRC) Senior Clinical Fellowship and a CRUK Senior Cancer Research Fellowship. A.R. was supported by a Bloodwise Clinician Scientist Fellowship (grants 14041 and 17001), Wellcome Trust Clinical Research Career Development Fellowship (216632/Z/19/Z), MRC Discovery award (MRCDA 0816-11), Lady Tata Memorial International Fellowship, and EHA-<a href="https://doi.org/10.13039/100001422">ASH</a> Translational Research Training in Hematology Fellowship. B.P. was supported by a Wellcome Clinical Research Career Development Fellowship, a LAB282 award, an Oxford BRC Senior Research Fellowship, and a Cancer Research UK Advanced Clinician Scientist Fellowship. S.T. was supported by Oxford-Bristol Myers Squibb (BMS) Fellowship.</p>
+<h3>Author contributions</h3>
+<p>G.W. and W.X.W. designed and performed bioinformatic analyses and wrote the manuscript. A.J.M., A.R., B.P., and S.T. conceptualized the project. S.T. designed and developed the SingCellaR software and wrote the manuscript. All authors read and approved the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

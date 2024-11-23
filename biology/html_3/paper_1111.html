@@ -1,0 +1,645 @@
+<article>
+<section>
+<h1 id="header">Techno-economic assessment of emerging CO<sub>2</sub> electrolysis technologies</h1>
+<p><time datetime="2021-10-22">Published: October 22, 2021</time></p>
+<p>Magda H. Barecka,<sup><a href="#aff1">1</a>,<a href="#fn1">6</a>,<a href="#fn2">7</a>,<a href="#cor1">*</a></sup> Joel W. Ager,<sup><a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a></sup> and Alexei A. Lapkin<sup><a href="#aff1">1</a>,<a href="#aff5">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Cambridge Centre for Advanced Research and Education in Singapore, CARES Ltd. 1 CREATE Way, CREATE Tower #05-05, 138602 Singapore, Singapore</p>
+<p id="aff2"><sup>2</sup>Department of Materials Science and Engineering, University of California at Berkeley, Berkeley, CA 94720, USA</p>
+<p id="aff3"><sup>3</sup>Berkeley Educational Alliance for Research in Singapore, Ltd. (BEARS), 1 CREATE Way, CREATE Tower #11-01, Singapore 138602, Singapore</p>
+<p id="aff4"><sup>4</sup>Lawrence Berkeley National Laboratory, Berkeley, CA 94720, USA</p>
+<p id="aff5"><sup>5</sup>Department of Chemical Engineering and Biotechnology, University of Cambridge, Cambridge CB3 0AS, UK</p>
+<p id="fn1"><sup>6</sup>Technical contact</p>
+<p id="fn2"><sup>7</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:mb2363@cam.ac.uk">mb2363@cam.ac.uk</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:aal35@cam.ac.uk">aal35@cam.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100889">10.1016/j.xpro.2021.100889</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Recycling of waste CO<sub>2</sub> to bulk chemicals has a tremendous potential for the decarbonization of the chemical industry. Quantitative analysis of the prospects of this technology is hindered by the lack of flexible techno-economic assessment (TEA) models that enable evaluation of the processing costs under different deployment scenarios. In this protocol, we explain how to convert literature data into metrics useful for evaluation of the emerging electrolysis technologies, derive TEA models, and illustrate their use with a CO<sub>2</sub>-to-ethylene example.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102514">Barecka et al. (2021a)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Evaluation of the operational and investment costs for CO<sub>2</sub> electrolysis</li>
+<li>Tool is applicable for low- and high-temperature electrolysis</li>
+<li>Guidelines for selection of experimental data to include in the model</li>
+<li>Recommended for the evaluation of CO2R system scale-up potential</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Scope of the model</h3>
+<p>This protocol is a method for systematic techno-economic evaluation of CO<sub>2</sub> electrolysis (CO2R) operating at scales meaningful for the decarbonization of the chemical industry (defined also by some researchers as “defossilization” [<a href="#bib22">Schneider 2021</a>]). The model is applicable to CO2R incorporating gas-diffusion electrodes (GDE) or solid-oxide electrolyzers, both of which allow for achievement of current densities sufficiently high to yield an industrially viable electrolysis processes (<a href="#bib6">Burdyny and Smith 2019</a>). The main focus of this protocol is providing a tool for the assessment of the deployment of the CO<sub>2</sub> electrolysis as an add-on to the existing chemical production processes (defined recently as Carbon Capture On-Site Recycling [<a href="#bib2">Barecka et al., 2021a</a>]). Running CO<sub>2</sub> electrolysis as an on-site recycling within the operational plants was discussed as economically feasible in the current market and capable of supporting large scale CO2R deployment by giving an economic incentive to run electrolysis on significant scales (<a href="#bib2">Barecka et al., 2021a</a>). Nevertheless, the modeling method presented here is applicable to all CO<sub>2</sub> electrolysis systems, both integrated in chemical plants and stand-alone, and we strongly encourage the reader to use this model to evaluate CO2R performance for different applications. Use of the protocol is illustrated by a CO<sub>2</sub>-to-ethylene (C<sub>2</sub>H<sub>4</sub>) electrolyzer example, noting that reduction of CO<sub>2</sub> to products containing two or more atoms of carbon (C2+) is the most complex example among different electrolysis systems discussed in the paper deploying this method. Excel tool related to this paper and available at <a href="https://data.mendeley.com/datasets/2jpy5233nb/1">https://doi.org/10.17632/2jpy5233nb.1</a> contains also an example of calculations for CO<sub>2</sub>-to-syngas high-temperature electrolysis system.</p>
+<h3 id="sec1.2">Structure of the model</h3>
+<p>Detailed modeling of any CO2R system is challenging due to the low maturity of CO<sub>2</sub> electrolysis and the current lack of large-scale application examples. Therefore, to derive metrics meaningful for TEA of emerging technologies, we instead define a system-level model, representing a CO2R reactor with all related equipment, and identify the key inputs and outputs of the system based on the analysis of experimental data, engineering approximations and basic chemical process design rules. <a href="#fig1">Figure 1</a> provides an overview of the proposed methodology.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Overview of the techno-economic assessment methodology proposed in this protocol, blue boxes depict subsequent calculation steps, whereas gray dotted-line boxes define necessary data inputs</div>
+<p>For discussion of the best practices of results reporting, we recommend guidelines published by <a href="#bib31">Zimmermann et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.3">Comparison to the existing TEA models for CO2R</h3>
+<p>Techno-economic models (TEA) for CO<sub>2</sub> electrolysis, both already published and the one proposed here, are derived from classical approaches used in chemical engineering based on the estimation of the difference between the cost of manufacturing and projected revenue (<a href="#bib23">Seider et al., 2017</a>; <a href="#bib9">Farris 2010</a>). Complex TEA approaches for carbon capture and utilization have been discussed thoroughly in conceptual terms (<a href="#bib31">Zimmermann et al., 2020</a>). Looking specifically at CO<sub>2</sub> electrolysis field, previous contributions on TEA for CO2R were mostly focused on determining the range of operational parameters under which the CO2R technology can begin to be considered as economically attractive, or investigating which of the potential electrolysis products can be most interesting for CO2R based stand-alone plants (<a href="#bib28">Verma et al., 2016</a>; <a href="#bib24">Spurgeon and Kumar 2018</a>; <a href="#bib7">Bushuyev et al., 2018</a>; <a href="#bib15">Luna et al., 2019</a>; <a href="#bib14">Jouny et al., 2018</a>). Several benchmarks identified in previously published TEA, such as e.g., current density and overpotential, are being now achieved in the laboratory demonstrations.</p>
+<p>Hence, we find it insightful to look into TEA again, reformulate the models with more detailed process data available and democratize their use through a Protocol contribution that has not been proposed before in this area. In contrast to the state-of-the-art approaches, we do not build-up the analysis on the assumption of best case scenarios for the Faradaic efficiency or selective production of one product only (<a href="#bib14">Jouny et al., 2018</a>). Instead, we report here guidance on how to extract the experimental data and consider the process complexity as accurately as possible. We aim at supporting the researchers in understanding the prospects of CO<sub>2</sub> electrolysis for e.g., specific catalyst or application. The Protocol can be also used to generate data for assessments of CO<sub>2</sub> electrolysis technology performance (stream compositions, energy requirements etc.) that can be used as an input to other TEA methods.</p>
+<p>Furthermore, provided protocol is currently the only tool applicable for the evaluation of CO<sub>2</sub> electrolysis used for both purposes of retrofitting an existing chemical plant or stand-alone CO<sub>2</sub>-based manufacturing. We anticipate that upon progress in the field, this tool will be applicable for the evaluation of the further process improvements and support large-scale adoption of CO<sub>2</sub> electrolysis.</p>
+<h3 id="sec1.4">Proposed timing</h3>
+<p>The actual time necessary to realize each calculation step will depend strongly on the prior knowledge of the user regarding e.g., price indicators for renewable electricity, chemicals and CO<sub>2</sub> taxes. We therefore provide timing interval of each step, where its lower bound corresponds to the scenario where the user already has all economic data and only needs to feed this data to the model. The upper bound of the timing interval includes an approximate time necessary to research the market prices and determine the input data.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Dataset on CO<sub>2</sub> emissions market</td>
+<td><a href="#bib2">Barecka et al., (2021a)</a></td>
+<td><a href="https://doi.org/10.1016/j.isci.2021.102514">https://doi.org/10.1016/j.isci.2021.102514</a></td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Techno-economic model for evaluation of CO<sub>2</sub> electrolysis</td>
+<td>This paper</td>
+<td>This paper</td>
+</tr>
+<tr>
+<td>Excel file containing techno-economic model, version used Microsoft® Excel® 2016 MSO 16.0.4266.1001 32-bit</td>
+<td><a href="#bib4">Barecka et al., (2021c)</a></td>
+<td><a href="https://doi.org/10.17632/2jpy5233nb.1">https://doi.org/10.17632/2jpy5233nb.1</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Download the TEA tool</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼5 min</div>
+<p>The techno-economic model discussed in this paper is deposited on Mendeley Data server <a href="https://doi.org/10.17632/2jpy5233nb.1">https://doi.org/10.17632/2jpy5233nb.1</a>. To facilitate the use of the tool outside of the research community and make the economic assessment transparent to stakeholders across different fields, we embedded the calculations into an Excel file (version used: Microsoft® Excel® 2016 MSO 16.0.4266.1001 32-bit).</p>
+<h3 id="sec2.2">Define requirements toward CO2R system</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min–4 h</div>
+<p>This example focuses on the use of CO2R as a retrofit of the existing chemical plants, which emit waste CO<sub>2</sub> streams that can be converted back to raw materials by means of electrolysis (general concept is depicted in <a href="#fig2">Figure 2</a>). Therefore, in the first place the requirements for CO<sub>2</sub> recycling inputs/outputs are defined in the context processes where CO2R is envisioned to be embedded.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Conceptual depiction of Carbon Capture On-Site Recycling (CCSR): CO<sub>2</sub> emissions from a chemical plant, usually vented to the atmosphere, are instead sent to a CO2R reactor and converted to products reverted to the main production process, all in the same chemical plant</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In the case of use of the protocol for stand-alone plants, please see “<a href="#troubleshooting">Troubleshooting</a>: How to use the protocol for stand-alone plants?”; if the user is seeking to compare CO<sub>2</sub> utilization alternatives, check section “Troubleshooting: How to use the protocol to compare carbon utilization techniques?”.</div>
+<ol>
+<li>Define the chemical plant where CO2R is to be integrated:
+<ol type="a">
+<li>In the exemplary deployment of the protocol, we focus on deployment of a CO<sub>2</sub> electrolyzer as a part of an ethylene oxide (EO) production plant (for more details of the concept see the paper deploying this protocol (<a href="#bib2">Barecka et al., 2021a</a>) or another report on technical details of CO<sub>2</sub> electrolysis integration into ethylene oxide plants (<a href="#bib3">Barecka et al., 2021b</a>).</li>
+</ol>
+</li>
+<li>Define requirements for the input stream:
+<ol type="a">
+<li>The availability of waste CO<sub>2</sub> stream for recycling (CO<sub>2</sub> flowrate to be converted by the designed system) at a given chemical plant.
+<ol type="i">
+<li>In this example, we set it to 103 mol/s of high-purity CO<sub>2</sub> stream (as a typical waste stream of CO<sub>2</sub> available at middle-size ethylene oxide plants). Based on reports on industrial CO<sub>2</sub> emissions (<a href="#bib1">Bains et al., 2017</a>), this stream typically contains 98–100% CO<sub>2</sub> and is free of typical impurities to CO<sub>2</sub> electroreduction (See <a href="#limitations">Limitations</a> section for further details).</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Define the requirements behind the output streams:
+<ol type="a">
+<li>Intended use of CO2R products.
+<ol type="i">
+<li>In EO plants: recycling CO2R products stream to the main reactor producing EO.</li>
+</ol>
+</li>
+<li>Targeted products.
+<ol type="i">
+<li>Ethylene (starting material for EO production).</li>
+</ol>
+</li>
+<li>Potential of other CO2R products for recycling.
+<ol type="i">
+<li>CO2R systems reported so far do not demonstrate 100% selectivity towards the desired product, so it is necessary to consider whether other minor products of electrolysis can be used at the target application process. Based on EO production requirements, recycled CO2R products stream can flexibly include some unreacted CO<sub>2</sub>, CO and H<sub>2</sub> (see (<a href="#bib3">Barecka et al., 2021b</a>) for details).</li>
+</ol>
+</li>
+<li>Potential for use of CO2R by-product (oxygen).
+<ol type="i">
+<li>Oxygen can be recycled back to EO reactor as it is typically used for ethylene oxidation to EO.</li>
+</ol>
+</li>
+<li>Potential limitations in CO2R products use.
+<ol type="i">
+<li>In a hypothetical case, converting a large CO<sub>2</sub> stream available at a given site could yield a stream of CO2R products could be larger than the demand for these products. In case of recycling of CO<sub>2</sub> within the chemical plants, this scenario is not foreseen as CO<sub>2</sub> streams available for conversion are far lower than plant capacities and the demand for feedstocks (see (<a href="#bib2">Barecka et al., 2021a</a>)). However, if a chemical process could valorize only a limited stream of CO2R products, then this must be considered as a constraint and a system converting only a part of CO<sub>2</sub> emissions should be designed in such case.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Define available waste heat streams. In case if such streams are available at the chemical plant, they can be used as an input to high-temperature electrolysis unit. However, high-temperature (∼800°C) electrocatalysts are reported to yield efficiently products containing only one atom of carbon, so is not applicable for ethylene production and hence not considered in this example.</div>
+<h3 id="sec2.3">Extract experimental data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼<b>2–20 h</b>
+</div>
+<p>After formulating the requirements towards CO2R system, applicable electrocatalysts need to be identified and experimental data extracted for further modeling. These steps describe how to select experimental data for representative modeling of the CO<sub>2</sub> electrolysis technology:</p>
+<p>Reactions observed on the cathode and anode side.</p>
+<p>Faradaic efficiency (FE; selectivity of the system to deliver the product of interest).</p>
+<p>Current density (size of the electrolyzer required for conversion of certain flowrate of CO<sub>2</sub>).</p>
+<p>Full cell voltage (energy requirement for CO<sub>2</sub> electrolysis).</p>
+<p>Catalyst stability (demonstrates if the catalyst is promising for industrial applications).</p>
+<p>CO<sub>2</sub> conversion (influences the overall efficiency of the system).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is not always possible to accurately extract all parameters mentioned above from a single report. Literature offers a wide variety of reports on electrocatalysts, typically focusing on laboratory-scale experiments targeting better understanding of the material properties. While these studies provide crucial insights into the basic science behind the electrolysis and solid data on FE or achievable current densities, they frequently do not optimize full cell voltage, CO<sub>2</sub> conversion, or the long-term stability. Thus, it is crucial to critically compare several reports to derive metrics that will be representable for large-scale optimized CO<sub>2</sub> electrolysis systems. Building TEA models based on, e.g., non-optimized full cell voltages observed in the laboratory test, may lead to the misleading conclusion that the technology is not of commercial interest.</div>
+<ol start="4">
+<li>Determine experimental data for the input of the process model:
+<ol type="a">
+<li>Choose the catalyst of interest.
+<ol type="i">
+<li>We focused on optimizing ethylene production, thus we revised ethylene-selective Cu-based GDE catalysts.</li>
+</ol>
+</li>
+<li>Reactions observed on the cathode and anode side.</li>
+<li>Faradaic efficiency towards all products delivered by CO2R unit.
+<ol type="i">
+<li>Here, we extracted the data on catalyst selectivity (FE) and current density from the report of <a href="#bib27">Vennekoetter et al., 2019</a>. Data in similar ranges was demonstrated in several publications (<a href="#bib10">García de Arquer et al., 2020</a>; <a href="#bib34">Ma et al., 2020b</a>; <a href="#bib8">Dinh et al., 2018</a>).
+<div class="note">
+<span class="note-title">Note:</span> We recommend to review if FE reported for all products are equal to 100%. In case of total FE slightly exceeding 100%, e.g., 102%, the numbers should be normalized to 100% to account for the potential experimental error and avoid overestimation of the product flow. If the total FE is lower than 100%, some of CO<sub>2</sub> electrolysis products might not be reported; identification of these products is crucial for the design of the overall CO2R system.</div>
+</li>
+</ol>
+</li>
+<li>Full cell-voltage.
+<ol type="i">
+<li>Value of 2.4 V has been already demonstrated by <a href="#bib8">Dinh et al. (2018)</a>, though based on the developments in the fuel design field, further optimization of this value is projected to be possible (<a href="#bib32">Sazali et al., 2020</a>) and we selected 2 V for further modeling.</li>
+</ol>
+</li>
+<li>Long-term stability.
+<ol type="i">
+<li>Long-term stability test confirms feasibility of 150 h of interrupted CO<sub>2</sub> -to-ethylene electrolysis (<a href="#bib8">Dinh et al., 2018</a>). While industrial applications require scaling this value up by ca. 30 times (to several months), reported stability is promising enough to envision large-scale applications (see <a href="#limitations">Limitations</a> section).</li>
+</ol>
+</li>
+<li>CO<sub>2</sub> conversion.
+<ol type="i">
+<li>CO<sub>2</sub> conversion is infrequently reported in research papers; similarly, as for the full cell voltage we assumed that a value coming from single report focusing on one-pass efficiency of CO<sub>2</sub> conversion (22.5%) has a potential to be optimized to 50%, assumed in this model.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>Summary of the data selected here for modeling of CO<sub>2</sub>-to-ethylene electrolyzer is given in <a href="#tbl1">Table 1</a> and included in the model (see cells B11-B25; C23-25; D23-25 in the Excel spreadsheet), another Excel tab includes the example of CO<sub>2</sub>-to-syngas. Presented data search approach could be used to any potential product of CO<sub>2</sub> electrolysis, see “<a href="#troubleshooting">Troubleshooting</a>: How to use the protocol for recently discovered products of CO2R?” for further explanations on how to adjust the calculations for other molecules.</p>
+<table id="tbl1">
+<caption>Table 1. Summary of the data selected here for modeling of CO<sub>2</sub>-to-ethylene electrolyzer in the provided example</caption>
+<thead></thead>
+<tbody>
+<tr>
+<td rowspan="3">Reactions on the cathode side</td>
+<td><math> <mrow> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mo>+</mo> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>+</mo> <mn>2</mn> <msup> <mi>e</mi> <mo>−</mo> </msup> <mo>↔</mo> <mi>C</mi> <mi>O</mi> <mo>+</mo> <mn>2</mn> <mi>O</mi> <msup> <mi>H</mi> <mo>−</mo> </msup> </mrow> </math></td>
+</tr>
+<tr>
+<td><math> <mrow> <mn>2</mn> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mo>+</mo> <mn>8</mn> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>+</mo> <mn>12</mn> <msup> <mi>e</mi> <mo>−</mo> </msup> <mo>↔</mo> <msub> <mi>C</mi> <mn>2</mn> </msub> <msub> <mi>H</mi> <mn>4</mn> </msub> <mo>+</mo> <mn>12</mn> <mi>O</mi> <msup> <mi>H</mi> <mo>−</mo> </msup> </mrow> </math></td>
+</tr>
+<tr>
+<td><math> <mrow> <mn>2</mn> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>+</mo> <mn>2</mn> <msup> <mi>e</mi> <mo>−</mo> </msup> <mo>↔</mo> <msub> <mi>H</mi> <mn>2</mn> </msub> <mo>+</mo> <mn>2</mn> <mi>O</mi> <msup> <mi>H</mi> <mo>−</mo> </msup> </mrow> </math></td>
+</tr>
+<tr>
+<td>Reactions on the anode side</td>
+<td><math> <mrow> <mn>4</mn> <mi>O</mi> <msup> <mi>H</mi> <mo>−</mo> </msup> <mo>↔</mo> <msub> <mi>O</mi> <mn>2</mn> </msub> <mo>+</mo> <mn>2</mn> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>+</mo> <mn>2</mn> <msup> <mi>e</mi> <mo>−</mo> </msup> </mrow> </math></td>
+</tr>
+<tr>
+<td>Reactions overall (simplified)</td>
+<td>
+<math> <mrow> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mo>↔</mo> <mi>C</mi> <mi>O</mi> <mo>+</mo> <mn>0.5</mn> <mspace></mspace> <msub> <mi>O</mi> <mn>2</mn> </msub> </mrow> </math><math> <mrow> <mn>2</mn> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mo>+</mo> <mn>2</mn> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>↔</mo> <msub> <mi>C</mi> <mn>2</mn> </msub> <msub> <mi>H</mi> <mn>4</mn> </msub> <mo>+</mo> <mn>3</mn> <mspace></mspace> <msub> <mi>O</mi> <mn>2</mn> </msub> </mrow> </math><math> <mrow> <msub> <mi>H</mi> <mn>2</mn> </msub> <mi>O</mi> <mo>↔</mo> <msub> <mi>H</mi> <mn>2</mn> </msub> <mo>+</mo> <mn>0.5</mn> <mspace></mspace> <msub> <mi>O</mi> <mn>2</mn> </msub> </mrow> </math>
+</td>
+</tr>
+<tr>
+<td>Faradaic efficiency to C<sub>2</sub>H<sub>4</sub> (normalized)</td>
+<td>88.7%</td>
+</tr>
+<tr>
+<td>Faradaic efficiency to CO (normalized)</td>
+<td>3.8%</td>
+</tr>
+<tr>
+<td>Faradaic efficiency to H<sub>2</sub> (normalized)</td>
+<td>7.5%</td>
+</tr>
+<tr>
+<td>Total current density</td>
+<td>0.3 A/cm<sup>2</sup>
+</td>
+</tr>
+<tr>
+<td>Full cell voltage</td>
+<td>2 V</td>
+</tr>
+<tr>
+<td>Stability</td>
+<td>150 h.</td>
+</tr>
+<tr>
+<td>CO<sub>2</sub> conversion</td>
+<td>50%</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Verify at this step if any compounds were identified to have a poisoning effect on the electrocatalysts considered and if these compounds can be potentially present, even in minor quantities, in the CO<sub>2</sub> stream available for conversion. Presence of such molecules might preclude the direct use of CO<sub>2</sub> recycling without impurities removal. In the case of CO2R integration within EO process, we did not identify such compounds. Report by <a href="#bib2">Barecka et al. (2021a)</a> lists several other large-scale processes where poisoning compounds were not identified within emitted CO<sub>2</sub> streams.</div>
+<h3 id="sec2.4">Define CO2R system inputs and outputs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–4 h</div>
+<p>This step describes how to define the boundaries of the CO2R system. <a href="#fig3">Figure 3</a> provides a general overview of CO2R reactor with related unit operations and provides an identification of the inputs and outputs on a system level. Based on identified main process requirements (refer to “Define the requirements towards CO2R system”) and the electrochemical system selected (refer to “Extract experimental data”), the general CO2R scheme is reviewed in this step to define which streams are relevant for the studied case.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Overview of the CO2R reactor with possible related unit operations</div>
+<p>Continuous lines depict mass streams being inputs (blue) and outputs (green) of the system, dotted lines depict energy stream (yellow- electric energy, red- thermal energy for heating, gray-thermal energy for cooling).</p>
+</figcaption>
+</figure>
+<ol start="5">
+<li>Define inlet streams relevant for the considered system:
+<ol type="a">
+<li>Feed for CO2R reaction.
+<ol type="i">
+<li>In the provided example, inputs to the system are: CO<sub>2</sub> and water.</li>
+</ol>
+</li>
+<li>Energy supply to CO2R reactor.
+<ol type="i">
+<li>Low-temperature (∼20°C–50°C) electrolysis requires only electric energy input.</li>
+</ol>
+</li>
+<li>Cooling duties.
+<ol type="i">
+<li>For low-temperature electrolysis, we assume that the electric energy supplied to the system and not consumed during the reaction will be dissipated as heat and needs to be removed.</li>
+</ol>
+</li>
+<li>Need for catholyte/anolyte make-up.
+<ol type="i">
+<li>Due to the lack of data on the need for catholyte or anolyte refreshment, we assume that both catholyte and anolyte streams can be recycled continuously, only upon addition of the water consumed by CO<sub>2</sub> electroreduction reaction (quantified as water input).
+<div class="critical">
+<span class="critical-title">Critical:</span> Prospects for recycling of catholyte and anolyte on a large-scale are not yet fully understood. If basic electrolytes are deployed, such as potassium or sodium hydroxide solutions, capture of CO<sub>2</sub> into carbonate/bicarbonate salts is inevitable and the electrolyte would potentially need to be refreshed; however, there no insights into how often that should happen. There are studies demonstrating that captured CO<sub>2</sub> could also degas into CO<sub>2</sub> at the anode side (<a href="#bib16">Ma et al., 2020a</a>), resulting in CO<sub>2</sub> material losses and need for separation step of CO<sub>2</sub> from the oxygen stream produced at the anode. However, most recent contributions in CO2R field consider reactor design with no liquid catholyte at all (“zero-gap assembly” [<a href="#bib27">Vennekoetter et al., 2019</a>]), cascade reactors (<a href="#bib19">Ozden et al., 2021</a>) or deploy acidic catholyte (<a href="#bib11">Huang et al., 2021</a>). These strategies solve the problem of CO<sub>2</sub> capture and degassing at the anode and yield a system with no/ fully recyclable electrolytes. Hence, we anticipate that in large scale deployment of CO2R there will be no significant cost behind electrolyte recycling and no need to separate CO<sub>2</sub> and oxygen at the anode side.</div>
+</li>
+</ol>
+</li>
+<li>Energy for media pumping.
+<ol type="i">
+<li>Energy requirement for pumping of the catholyte and anolyte stream is not considered, as based on detailed analysis for large-scale hydrogen electrolysis, this input is minor (<a href="#bib18">Mayyas et al., 2019</a>).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Define outlet streams relevant for the considered system:
+<ol type="a">
+<li>Gaseous streams on cathode side.
+<ol type="i">
+<li>Ethylene and other CO2R by-products</li>
+</ol>
+</li>
+<li>Liquid streams on cathode side.
+<ol type="i">
+<li>There were no liquid products reported for the catalytic system considered in this paper.
+<div class="note">
+<span class="note-title">Note:</span> In case of liquid products being considered, we recommend to carefully review the selected reactor arrangement. In case of systems deploying solid instead of liquid electrolytes, a concentrated stream of liquid product can be obtained with no need for further separations (<a href="#bib29">Xia et al., 2019</a>) and these systems are the most promising for large-scale application of CO2R to liquid products. On the contrary, recovery of liquid products from strongly basic or acidic catholyte would require additional experimental insights, as so far no energy efficient techniques were proposed for this separation problem.</div>
+</li>
+</ol>
+</li>
+<li>Output stream on anode side.
+<ol type="i">
+<li>Oxygen, pure (assumed no need for nitrogen sweep to remove oxygen produced at the anode).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.5">Calculate mass and energy streams</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min–2 h</div>
+<p>This step describes how to quantify mass and energy process streams defined in the previous step. Where necessary, we use several engineering approximations necessary to obtain a system-level overview of the technology performance.</p>
+<ol start="7">
+<li>Input stoichiometric coefficients for production of oxygen, consumption of CO<sub>2</sub> and net consumption of water (based on the overall reactions defined in “Extract experimental data”; Excel cells E23-G25).</li>
+<li>Input enthalpies of formation (necessary for calculation of energy balance) and molar masses required for unit conversion (cells H23-I29).</li>
+<li>
+<b>Optional</b>: Calculate the energy requirement for heating up of the CO<sub>2</sub> electrolysis feed stream. This is necessary only for high-temperature (∼800°C) electrolysis in solid-oxide cells (e.g., used for production of syngas). This step should be skipped for low-temperature (∼20°C–50°C) ethylene production.
+<ol type="a">
+<li>Input the temperature of CO<sub>2</sub> and water available for conversion; temperature of CO<sub>2</sub> and water/steam required for electrolysis and heat capacities of all compounds (cells B35-B43).</li>
+<li>Define any waste heat streams available at the plant which can be used for feed pre-heating (cell B44).</li>
+<li>Estimate the total energy requirement as a product of mass flowrates, heat capacities and differences between available CO<sub>2</sub>/water temperature and required temperature. Subtract the waste heat available for the pre-heating (cell B45).</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>Estimate the composition of the product stream.
+<ol type="a">
+<li>Convert FE to mass/molar concentrations.
+<ol type="i">
+<li>Research papers on electrolysis usually report the selectivity of studied systems based on FE, which needs first to be converted to molar flow basis (n extracted from <a href="#fd1">Equation 1</a>). At first, product flowrate n in mol/cm<sup>2</sup> s is calculated from FE definition (<a href="#fd1">Equation 1</a>); cells B54-B56.
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <mi>F</mi> <mi>E</mi> <mo>=</mo> <mfrac> <mrow> <mi>z</mi> <mo>⋅</mo> <mover> <mi>n</mi> <mo>˙</mo> </mover> <mo>⋅</mo> <mi>F</mi> </mrow> <mi>j</mi> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+where FE is Faradaic efficiency, z is the number of electrons transferred (defined within reactions on the cathode side), n is the flowrate of the product, F is Faraday constant, j the current density.</li>
+</ol>
+</li>
+<li>Calculate the flow of CO<sub>2</sub> reacted (in mol/cm<sup>2</sup> s) to obtain defined products (from stoichiometric coefficients defined in step 7; cells C54-C56.</li>
+<li>Estimate the size of the electrolyzer (<a href="#fd2">Equation 2</a>); cells D54.
+<p id="fd2" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2)</mtext></mtd> <mtd> <mrow> <mi>e</mi> <mi>l</mi> <mi>e</mi> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>o</mi> <mi>r</mi> <mi>e</mi> <mi>d</mi> <mi>u</mi> <mi>c</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mspace></mspace> <mi>r</mi> <mi>e</mi> <mi>a</mi> <mi>c</mi> <mi>t</mi> <mi>o</mi> <mi>r</mi> <mspace></mspace> <mi>a</mi> <mi>r</mi> <mi>e</mi> <mi>a</mi> <mspace></mspace> <mrow> <mo>(</mo> <mi>c</mi> <msup> <mi>m</mi> <mn>2</mn> </msup> <mo>)</mo> </mrow> <mo>=</mo> <mspace></mspace> <mfrac> <mrow> <mi>a</mi> <mi>v</mi> <mi>a</mi> <mi>i</mi> <mi>l</mi> <mi>a</mi> <mi>b</mi> <mi>l</mi> <mi>e</mi> <mspace></mspace> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mspace></mspace> <mrow> <mo>(</mo> <mfrac> <mrow> <mi>m</mi> <mi>o</mi> <mi>l</mi> </mrow> <mi>s</mi> </mfrac> <mo>)</mo> </mrow> <mo>⋅</mo> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>n</mi> <mi>v</mi> <mi>e</mi> <mi>r</mi> <mi>s</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> </mrow> <mrow> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>n</mi> <mi>v</mi> <mi>e</mi> <mi>r</mi> <mi>t</mi> <mi>e</mi> <mi>d</mi> <mspace></mspace> <mi>d</mi> <mi>u</mi> <mi>r</mi> <mi>i</mi> <mi>n</mi> <mi>g</mi> <mspace></mspace> <mi>r</mi> <mi>e</mi> <mi>a</mi> <mi>c</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mspace></mspace> <mrow> <mo>(</mo> <mfrac> <mrow> <mi>m</mi> <mi>o</mi> <mi>l</mi> </mrow> <mrow> <mi>s</mi> <mo>⋅</mo> <mi>c</mi> <msup> <mi>m</mi> <mn>2</mn> </msup> </mrow> </mfrac> <mo>)</mo> </mrow> </mrow> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+</li>
+<li>Based on the size of electrolyzer, estimate the flow of products in mol/s (flow in mol/cm<sup>2</sup> s is multiplied by the size of electrolyzer); cells E54-E57.</li>
+<li>Verify if the composition of the product flow is meeting the requirements defined in step 2. If not, there might be a need to separately design and model a separation/purification unit for specific application. In the example presented in this protocol, there is no need for further separations.</li>
+<li>Calculate the flow of oxygen produced at the anode based on the main products flowrates and stoichiometric coefficients of oxygen production; cells G54-G56.</li>
+<li>Calculate the flow of water consumed by the electrolysis, multiplying main products flowrates by stoichiometric coefficients for water consumption production; cell H54-H56.</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Calculate energy streams:
+<ol type="a">
+<li>Calculate the amount of energy consumed by the electrolysis as a difference between the enthalpy of products and the enthalpy of reactants; cells I54-I56.</li>
+<li>Convert the energy requirement obtained in J/mol to V (<a href="#fd3">Equation 3</a>); cell J54-J56.
+<p id="fd3" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 3)</mtext></mtd> <mtd> <mrow> <msub> <mi>E</mi> <mrow> <mi>Δ</mi> <msup> <mi>H</mi> <mn>0</mn> </msup> </mrow> </msub> <mo>=</mo> <mi>Δ</mi> <msup> <mi>H</mi> <mn>0</mn> </msup> <mrow> <mo>(</mo> <mi>F</mi> <mi>E</mi> <mo>)</mo> </mrow> <mo>/</mo> <mrow> <mo>(</mo> <mi>z</mi> <mi>F</mi> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+where <math> <mrow> <msub> <mi>E</mi> <mrow> <mi>Δ</mi> <msup> <mi>H</mi> <mn>0</mn> </msup> </mrow> </msub> </mrow> </math>is the voltage equivalent of enthalpy, <math> <mrow> <mi>Δ</mi> <msup> <mi>H</mi> <mn>0</mn> </msup> </mrow> </math> is the sum of standard enthalpies of reaction for all electrolysis products.</li>
+<li>Assess the total current required for the operation (I) based on the main product flowrate (in mol/s); cell B65.
+<p id="fd4" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 4)</mtext></mtd> <mtd> <mrow> <mi>I</mi> <mo>=</mo> <mspace></mspace> <mfrac> <mrow> <mi>n</mi> <mo>⋅</mo> <mi>z</mi> <mo>⋅</mo> <mi>F</mi> </mrow> <mrow> <mi>F</mi> <mi>E</mi> </mrow> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+</li>
+<li>Assess the total energy input to the electrolyzer (P) as a product of current and voltage (U); cell B66.</li>
+<li>Compute the sum of energy consumed by CO<sub>2</sub> electroreduction as a sum of energies estimated in steps 11 a-b (cell B67).</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Asses the cooling duty:
+<ol type="a">
+<li>The difference between the energy supplied to the reactor (full cell voltage) and consumed by the reaction will be dissipated by heat (cell B68). We assume here a worst-case scenario that this energy must be entirely removed, imposing an additional cost on cooling (to be assessed later in the TEA part); cell B69.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The assumption on the need for removal of heat from the electrolyzer is only valid for low-temperature systems, such as ethylene production system considered in this example.</div>
+<h3 id="sec2.6">Evaluate CO2R operational costs (Opex)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–20 h</div>
+<p>This step focuses on translating the system-level process evaluation into TEA metrics describing the performance of CO<sub>2</sub> electrolysis process.</p>
+<ol start="13">
+<li>Select a range of prices to consider based on the envisioned location of CO<sub>2</sub> electrolysis project. Cost coefficients are necessary for bulk chemicals produced by the system, electrical energy powering the process and CO<sub>2</sub> taxes. In this protocol example, we considered price indicators listed in table below (<a href="#tbl2">Table 2</a>).
+<table id="tbl2">
+<caption>Table 2. Summary of price indicators considered in the example of CO<sub>2</sub> to ethylene conversion embedded in ethylene oxide plants</caption>
+<thead>
+<tr>
+<th>Electricity costs (per kWh)</th>
+<th>0.01</th>
+<th>$/kWh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electricity costs (per MJ)</td>
+<td>0.003</td>
+<td>$/MJ</td>
+</tr>
+<tr>
+<td>CO<sub>2</sub> (waste CO<sub>2</sub> stream already available at a chemical plant)</td>
+<td>0</td>
+<td>$/kg</td>
+</tr>
+<tr>
+<td>C<sub>2</sub>H<sub>4</sub>
+</td>
+<td>1.15</td>
+<td>$/kg</td>
+</tr>
+<tr>
+<td>Oxygen</td>
+<td>0.06</td>
+<td>$/kg</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>1.43·10<sup>−3</sup>
+</td>
+<td>$/kg</td>
+</tr>
+<tr>
+<td>Cooling cost</td>
+<td>6.25·10<sup>−7</sup>
+</td>
+<td>$/MJ</td>
+</tr>
+<tr>
+<td>CO<sub>2</sub> taxes</td>
+<td>0</td>
+<td>$/kg CO<sub>2</sub>
+</td>
+</tr>
+<tr>
+<td colspan="3">For specific deployment at ethylene oxide (EO) plants</td>
+</tr>
+<tr>
+<td>Density of CO<sub>2</sub> emissions for EO production<sup><a href="#tblfn1">a</a></sup>
+</td>
+<td>0.38</td>
+<td>kg CO<sub>2</sub>/kg of EO</td>
+</tr>
+<tr>
+<td>Plant capacity kta</td>
+<td>330</td>
+<td>kta</td>
+</tr>
+<tr>
+<td>Plant capacity in kg/s</td>
+<td>11.46</td>
+<td>kg prod/s</td>
+</tr>
+<tr>
+<td>Ethylene oxide price</td>
+<td>1.08</td>
+<td>$/kg</td>
+</tr>
+</tbody>
+</table>
+<p id="tblfn1" class="table-footnote"><sup>a</sup>amount of CO<sub>2</sub> directly emitted per 1 kg of EO produced.</p>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Price indicators given below are an example for the current low-cost photovoltaic energy projects (<a href="#bib5">Bellini 2021</a>), operating on scales sufficient for fulfillment of CO2R energy requirements. The costs of chemicals are averaged from most recent reports by ICIS (<a href="#bib12">Independent Commodity Intelligence Services, 2019</a>). See Supplemental Information attached to the paper deploying this protocol (<a href="#bib2">Barecka et al., 2021a</a>) for references for prices for other chemicals. Price indicators are provided here for illustration purposes and we encourage the reader to test the protocol with the indicators representative for their economy. A comprehensive summary of renewable energy prices was published by the International Energy Agency (2020).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Cost indicators for electricity prices and CO<sub>2</sub> taxes have a critical impact on the results of TEA; therefore, following points shall be revised: (1) is a low-cost source of intermittent, surplus renewable energy available to power the process? The article deploying this protocol (<a href="#bib2">Barecka et al., 2021a</a>) discusses how CO<sub>2</sub> recycling can make use of the low-cost intermittent energy and switch on/off upon electricity availability and what are the technical and economic aspects of integration of intermittent power sources. It is recommended to explore the opportunities for low-cost electricity. (2) Several economies deploy the yearly limit on levies-free CO<sub>2</sub> emissions; check if the industry where CO<sub>2</sub> recycling is planned to be embedded is indeed above this limit before assuming a CO<sub>2</sub> tax.</div>
+<ol start="14">
+<li>Calculate the value generated by products of electrolysis, multiplying the mass flows of products (ethylene and oxygen) by cost indicators and assumed utilization of the product; B95.
+<div class="note">
+<span class="note-title">Note:</span> Given the lack of reports on large-scale deployment of CO<sub>2</sub> electroreduction, we assumed only 50% of utilization of oxygen to account for e.g., potential losses through the purge system. On the contrary, for the gas product leaving the reactor we assumed 100% of utilization as the entire stream will be directed to further processing units, without any separation step that could potentially lead to material losses.</div>
+</li>
+</ol>
+<ol start="15">
+<li>Assess the savings through avoidance of CO<sub>2</sub> taxes. By using the CO<sub>2</sub> stream to feed the electrolysis unit, a chemical plant integrating CO2R reduces CO<sub>2</sub> emissions to the atmosphere and consequently does not pay (or pays less) taxes for CO<sub>2</sub> emissions. Assessed by multiplication of the CO<sub>2</sub> feed stream, CO<sub>2</sub> conversion rate and CO<sub>2</sub> tax cost indicator; cell B96.</li>
+<li>Calculate the operational costs of running CO<sub>2</sub> electroreduction, which for the system defined in this example include: cost of the energy input to the reactor, cost of cooling, and cost of water; cell B97.
+<div class="note">
+<span class="note-title">Note:</span> There is no cost behind CO<sub>2</sub> feed as a concentrated CO<sub>2</sub> stream is already available at EO plants, however the attached calculation tool does allow for assumption of purchase costs for CO<sub>2</sub> (Excel cell B78). For solid oxide electrolysis systems there is no cooling duty to consider. Instead, required heating, described in step 9, must be added.</div>
+</li>
+</ol>
+<ol start="17">
+<li>Asses the net value generated by CO2R by subtracting electrolysis operational costs from the value of product stream and the savings through avoidance of CO<sub>2</sub> taxes; cell B98.</li>
+<li>Assess the savings in the relationship to the operational costs of the chemical plant where CO2R will be deployed (here, reduction of the operational costs of EO production will be considered).
+<ol type="a">
+<li>Relate the operational costs of CO2R to the flowrate of CO<sub>2</sub> recycled (divide the operational costs by CO<sub>2</sub> flowrate available and its and conversion); cell B102.</li>
+<li>Similarly, relate the value of the CO2R products stream to the flowrate of CO<sub>2</sub> recycled; cell B103.</li>
+<li>Assess the potential for the reduction of EO production costs (<a href="#fd6">Equation 6</a>); cell B104.
+<p id="fd6" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 6)</mtext></mtd> <mtd> <mrow> <mi>E</mi> <mi>O</mi> <mspace></mspace> <mi>p</mi> <mi>r</mi> <mi>o</mi> <mi>d</mi> <mi>u</mi> <mi>c</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>s</mi> <mi>t</mi> <mi>s</mi> <mspace></mspace> <mi>r</mi> <mi>e</mi> <mi>d</mi> <mi>u</mi> <mi>c</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mo>=</mo> <mspace></mspace> <mo>(</mo> <mo>−</mo> <mi>r</mi> <mi>e</mi> <mi>c</mi> <mi>y</mi> <mi>c</mi> <mi>l</mi> <mi>i</mi> <mi>n</mi> <mi>g</mi> <mspace></mspace> <mi>o</mi> <mi>p</mi> <mi>e</mi> <mi>r</mi> <mi>a</mi> <mi>t</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mi>a</mi> <mi>l</mi> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>s</mi> <mi>t</mi> <mi>s</mi> <mo>+</mo> <mi>v</mi> <mi>a</mi> <mi>l</mi> <mi>u</mi> <mi>e</mi> <mspace></mspace> <mi>o</mi> <mi>f</mi> <mspace></mspace> <mi>t</mi> <mi>h</mi> <mi>e</mi> <mspace></mspace> <mi>r</mi> <mi>e</mi> <mi>c</mi> <mi>y</mi> <mi>c</mi> <mi>l</mi> <mi>i</mi> <mi>n</mi> <mi>g</mi> <mspace></mspace> <mi>s</mi> <mi>t</mi> <mi>r</mi> <mi>e</mi> <mi>a</mi> <mi>m</mi> <mo>+</mo> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mi>t</mi> <mi>a</mi> <mi>x</mi> <mi>e</mi> <mi>s</mi> <mo>⋅</mo> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mi>c</mi> <mi>o</mi> <mi>n</mi> <mi>v</mi> <mi>e</mi> <mi>r</mi> <mi>s</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mo>)</mo> <mo>⋅</mo> <mspace></mspace> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mi>e</mi> <mi>m</mi> <mi>i</mi> <mi>s</mi> <mi>s</mi> <mi>i</mi> <mi>o</mi> <mi>n</mi> <mi>s</mi> <mspace></mspace> <mi>d</mi> <mi>e</mi> <mi>n</mi> <mi>s</mi> <mi>i</mi> <mi>t</mi> <mi>y</mi> <mo>)</mo> <mo>/</mo> <mo>(</mo> <mi>E</mi> <mi>O</mi> <mspace></mspace> <mi>p</mi> <mi>r</mi> <mi>i</mi> <mi>c</mi> <mi>e</mi> <mo>)</mo> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.7">Evaluate CO2R investment costs (Capex)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–20 h</div>
+<p>Given the lack of commercially available large-scale CO<sub>2</sub> electrolyzers, we propose to assess the capital costs based on a detailed analysis of the cost structure for the most similar commercial systems available: water proton-exchange membrane (PEM) electrolyzers. Following analysis is based on the most recent report by the National Renewable Energy Laboratory (<a href="#bib18">Mayyas et al., 2019</a>). The cost model covers all system components related to the catalyst (Platinum and Iridium are considered for water splitting), electrolyzer stack and balance-of-the plant incorporating all systems necessary to operate an electrochemical reactor such as power supply, liquid and gas circulation systems, piping, valves and instrumentation, control and safety-related systems.</p>
+<p>Further steps will specify how to select the most representative cost indicators and recalculate the costs from USD/kW to USD/m<sup>2</sup> of electrolyzer, being a more useful benchmark of CO2R assessments.</p>
+<ol start="19">
+<li>Select the targeted scale of electrolyzers production.
+<ol type="a">
+<li>NREL reports the costs of production of electrolyzer systems based on future demand and provides the price indicators for production between 10- 50 000 electrolyzers per year (Excel cells B111-K111).</li>
+<li>We anticipate that given the wide range of markets attractive for CO<sub>2</sub> electrolysis (see <a href="#bib2">Barecka et al., 2021a</a>), global demand for 50 000 electrolyzers per year can reflect the upcoming market situation. Hence, we selected this scenario in the Excel file (K111).</li>
+</ol>
+</li>
+<li>Based on the selected scale of production, cost indicator for the catalyst membrane, other components of the stack, and balance of the plant are listed in the subsequent cells.</li>
+<li>Review the data and correct if there are basis to assume differences as opposed to the NREL model, e.g., if the catalyst used is significantly more expensive than Platinum and Iridium. In the example provided in this paper, we consider Cu catalyst and Ni on the anode side, both of which are of comparable cost with Pt and Ir. Therefore, in this example, we considered that the overall catalysts costs are similar to PEM electrolysis.</li>
+<li>Recalculate cost indicator for the reference PEM hydrogen electrolyzer from USD/kW to USD/m<sup>2</sup> using the formula in <a href="#fd7">Equation 7</a>. For the reference hydrogen electrolyzer, the current density was 0.17 A/cm<sup>2</sup> and cell voltage 1.7 V.</li>
+</ol>
+<p id="fd7" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 7)</mtext></mtd> <mtd> <mrow> <mi>C</mi> <msub> <mi>O</mi> <mn>2</mn> </msub> <mspace></mspace> <mi>e</mi> <mi>l</mi> <mi>e</mi> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>o</mi> <mi>l</mi> <mi>y</mi> <mi>z</mi> <mi>e</mi> <mi>r</mi> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>s</mi> <mi>t</mi> <mo>=</mo> <mi>r</mi> <mi>e</mi> <mi>f</mi> <mi>r</mi> <mi>e</mi> <mi>r</mi> <mi>e</mi> <mi>n</mi> <mi>c</mi> <mi>e</mi> <mspace></mspace> <mi>c</mi> <mi>o</mi> <mi>s</mi> <mi>t</mi> <mspace></mspace> <mrow> <mo>(</mo> <mfrac> <mi>$</mi> <mrow> <mi>k</mi> <mi>W</mi> </mrow> </mfrac> <mo>)</mo> </mrow> <mo>⋅</mo> <mi>c</mi> <mi>u</mi> <mi>r</mi> <mi>r</mi> <mi>e</mi> <mi>n</mi> <mi>t</mi> <mspace></mspace> <mi>d</mi> <mi>e</mi> <mi>n</mi> <mi>s</mi> <mi>i</mi> <mi>t</mi> <mi>y</mi> <mrow> <mo>(</mo> <mfrac> <mi>A</mi> <mrow> <mi>c</mi> <msup> <mi>m</mi> <mn>2</mn> </msup> </mrow> </mfrac> <mo>)</mo> </mrow> <mo>⋅</mo> <mi>c</mi> <mi>e</mi> <mi>l</mi> <mi>l</mi> <mspace></mspace> <mi>v</mi> <mi>o</mi> <mi>l</mi> <mi>t</mi> <mi>a</mi> <mi>g</mi> <mi>e</mi> <mspace></mspace> <mrow> <mo>(</mo> <mi>V</mi> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<ol start="23">
+<li>Multiply the reference cost indicator in USD/m<sup>2</sup> by total area of the CO2R electrolyzer computed before in Excel cell D54 and the installation factor of 1.2.</li>
+</ol>
+<h3 id="sec2.8">Evaluate technology profitability</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–4 h</div>
+<p>There exists a wide variety of metrics used to relate the projected investment costs and the value generated by the project into one comparative number, such as payback time, return on investment, net present value and others. Choice of these metrics will depend on the specific deployment of this protocol. For instance, business negotiations towards technology industrial deployment will require metrics useful for the commercial partners, whereas the general understanding of CO2R prospects and guiding the further research uses more intuitive benchmarks. The technology assessment method presented here allows for extraction of data enabling to calculate any of profitability metrics. We illustrate the protocol use with the most widely adopted one: the time required to recover the investment into the project, defined in economic terms as breakeven time, and colloquially used as “return on investment period”. For calculation of other profitability metrics useful in chemical engineering applications, we refer the reader to literature (<a href="#bib20">Peters et al., 2003</a>).</p>
+<ol start="24">
+<li>Evaluate the return on investment (ROI) period by dividing the electrolyzer system costs by the net value generated by CO2R annually (Excel cell B99). In case of negative results, see “<a href="#troubleshooting">Troubleshooting</a>: Can the ROI be negative?”.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<h3 id="sec3.1">Sensitivity analysis</h3>
+<p>Presented calculation method enables to obtain single values for the most important economic performance metrics such as e.g., net value generated by CO<sub>2</sub> electrolysis process or the return on investment. To understand the market conditions necessary for CO2R deployment, presented TEA should be performed around a wide range of economic parameters. As the electricity prices and CO<sub>2</sub> taxes have a key influence on CO<sub>2</sub> electrolysis costs, these parameters should be varied first to observe their influence on: 1) Return on investment (ROI), which depends strongly on the net value generated by electrolysis; 2) Potential for the reduction of production costs for the target chemical (in our example-ethylene oxide). This metric is meaningful for the case of integration of CO<sub>2</sub> recycling into an existing chemical plant.</p>
+<p>Results for the above mentioned metrics determine whereas the process has a potential for an economically viable operation in the given region, under the available electricity prices and justifies further insights into other sources of potential uncertainties. Regardless of the project investments costs, if the electricity price is very far from the economically viable region, CO2R will not be profitable in the given economy, as the cost of running CO2R will exceed the value of produced chemicals.</p>
+<p><a href="#fig4">Figure 4</a> presents the outcomes of an exemplary sensitivity analysis (see Excel cells A124-I148), computed over a wide range of electricity prices and CO<sub>2</sub> taxes for the case of CO<sub>2</sub> recycling to ethylene at ethylene oxide plants. The range of electricity prices (0.01–0.45 USD/kWh) corresponds to the price with no battery storage in many economies (<a href="#bib13">International Energy Agency 2020</a>), whereas the range of CO<sub>2</sub> taxes covers from zero up to the highest taxes reported (<a href="#bib25">The World Bank 2020</a>). The results indicate that the recycling process has a potential to be economically viable for electricity prices between 0.01–0.045 USD/kWh, as the ROI period is in a reasonable range of several years. Electricity price exceeding 0.045 USD/kWh yields a non-viable process under the assumed price of ethylene. Furthermore, it is possible to reduce the operational costs at ethylene oxide plants by means of CO<sub>2</sub> recycling if the electricity is available for less than 0.045 USD/kWh (in the worst-case, absence of CO<sub>2</sub> taxes). Max. reduction of the operational costs by CO2R is projected to be around 12% (in presence of CO<sub>2</sub> taxes). For further analysis of CO<sub>2</sub> taxes influence, see “<a href="#troubleshooting">Troubleshooting</a>: Why CO<sub>2</sub> tax has only a minor influence on TEA?”.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Sensitivity analysis results</div>
+<p>(A) ROI for the analyzed CO<sub>2</sub> electrolysis process and (B) how much of the manufacturing costs of a considered chemical (here: ethylene oxide) can be reduced upon integration of CO<sub>2</sub> electrolysis within the chemical plant, as a function of the price of electricity powering the process and CO<sub>2</sub> taxation level.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.2">Uncertainty analysis</h3>
+<p>Results of the presented modeling depend strongly on the range of technical parameters that are either derived from experimental demonstrations and do have a margin for improvement upon scale-up, either are coming from engineering approximations for similar systems, as well as on the prices of bulk chemicals, which are highly volatile. We therefore propose to perform an uncertainty analysis to assess the influence of the variation following parameters on the net value generated by CO<sub>2</sub> recycling: 1) Cell voltage: assumed 2V, varies +20%. 2) Faradaic efficiency for ethylene (desired product) production: varies +-10% (yielding 100% efficiency). 3) Ethylene price varies +-20%. 4) Oxygen price varies +-20%. 5) CO<sub>2</sub> tax: up to 119 USD/t of CO<sub>2</sub> emitted.</p>
+<p>To compute the uncertainty analysis results, we created described above scenario with the Excel sheet (found under Data – What-if-Analysis – Scenario Manager), so that the user can generate uncertainty reports for new systems/economic data automatically. <a href="#fig5">Figure 5</a> depicts the results of the analysis (stored in Uncertainty &amp; Statistical anal. Tab) solved for an exemplary case of energy costing 0.03 USD/kWh.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Uncertainty analysis, where several technical and economic parameters are varied to observe their influence on the ROI of the modeled CO2R reactor</div>
+<p>Assumed energy price: 0.03 $/kWh, investment cost based on cost coefficients for scaled-up technology.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantitative-and-statistical-analysis">Quantitative and statistical analysis</h2>
+<p>Sensitivity and uncertainty analysis presented in previous sections are based on variation of one factor at a time, which is very insightful for the determination of key factors underlying the process economics. However, once the technology becomes more mature and estimates on the technology performance are more precise, it is worthy to vary different factors at the same time and observe their collective influence on the profitability metrics. To understand the statistical trends around the techno-economic assessments, we propose to generate larger data sets by varying the parameters identified in the uncertainty analysis along with the electricity price. We used the attached Excel tool to compute dataset (see Excel Uncertainty &amp; Statistical analysis Tab) by using an automated Scenario manager function. The results are illustrated in <a href="#fig6">Figure 6</a> with a boxplot displaying the minimum, the maximum, the sample median, and the first and third quartiles for the value of return on investment. Illustrated statistical metrics were chosen due to their usefulness for the visualization of both the center and the spread of the data points. Readers interested in alternative methods for uncertainty and sensitivity assessment are encouraged to explore further literature guidelines (<a href="#bib30">Zimmermann et al., 2020</a>; <a href="#bib26">van der Spek et al., 2019</a>; <a href="#bib21">Rubin et al., 2021</a>).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1111-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Statistical trends for the possible variation of ROI</div>
+<p>Minimum, maximum, the sample median, and the first and third quartiles for the possible variation of the ROI of the CO2R electrolysis unit derived from the uncertainty analysis for a) possibly highest projected investment cost, b) investment cost projected upon technology scale-up. Energy prices were varied here along with different technical parameters assumed in this study (see in text description and the Excel file) to simulate the effect on the ROI and obtain statistical trends.</p>
+</figcaption>
+</figure>
+<p><a href="#fig6">Figure 6</a> presents the results of the statistical analysis for two scenarios: a) assuming the investment cost for the early applications of CO2R, corresponding to low TRL (technology readiness level) (the highest investment cost benchmark), b) assuming the investment cost for the widely adopted and scaled-up technology, high TRL level (lower investment cost benchmark). Results of this analysis suggest that under low energy prices (here 0.02–0.03 USD/kWh), potential uncertainties around the technology performance are not likely to significantly affect the ROI period for both low and high TRL levels. However, with a higher electricity costs, uncertainties are rising significantly. Similar trends are observed for both scenarios regarding the investment cost for electrolyzer, and the ROI is proportionally lower upon the investment costs projected for the scaled-up technology.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The presented TEA method is designed to support the general understanding of the applicability and the potential profits generated by CO<sub>2</sub> electrolysis; hence, we concentrate only on key contributors to the cost structure and deliberately simplify certain elements of CO2R reactor and the components around it. The calculations are based on a forward-looking assumption that CO2R process metrics demonstrated in the laboratory environment will be feasible to obtain on a large-scale, upon completion of necessary scale-up efforts. These efforts shall particularly address demonstrating long-terms stability of the reactor system and its capacity to deal with potential impurities in the feed CO<sub>2</sub> stream.</p>
+<p>Presented calculations steps are especially applicable within (but not limited to) recycling of CO<sub>2</sub> inside the chemical plants where (i) CO<sub>2</sub> stream available for conversion is free of the impurities to the catalyst considered and (ii) the gas product mixture can be further used without the need for separation into pure compounds streams. Other deployment scenarios necessitate additional consideration of CO<sub>2</sub> purification costs and required product separation, which is described under the troubleshooting section.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1: How to use the protocol for stand-alone plants (steps 1–3)?</h3>
+<p>Modeling of CO<sub>2</sub> electrolysis as a stand-alone plant (not integrated within an existing chemical plant) is a simplified case of use of this protocol, as there is no need to consider the interconnections between the existing manufacture and new CO<sub>2</sub> electrolysis units (steps 1–3). Instead, the user needs to define available CO<sub>2</sub> sources and the target compound to be produced (e.g., ethylene, syngas; see Excel tabs for examples).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>The user needs to adjust the feed CO<sub>2</sub> flowrate (Excel cell B11) to obtain the desired flowrate of product (Excel cell E54), consider the cost of purchase of CO<sub>2</sub> (Excel cell B78), as well as review the price indicators for CO<sub>2</sub> electrolysis products (Excel cell B79-84) considering the emerging distribution costs. In stand-alone deployment scenario, CO2R products will likely need to be either transported to another plant or directly to the end user, resulting in the need for establishing a supply chain around the CO2R unit. These costs will strongly depend on the intended use and local market, hence require detailed assessments on case-by-case basis.</p>
+<p>Further, the user needs to consider the requirements on CO2R product stream composition, as there might be a need to separate the CO2R products (e.g., ethylene) from the rest of the outlet gas stream containing mainly CO<sub>2</sub>. Choice of the particular separation set-up will strongly depend on the CO2R products final application and needs to be designed also on case-by-case basis. Provided protocol helps to understand the potential outputs of scale-up CO2R process and will therefore serve to facilitate the design of separation steps and guide related experimental efforts.</p>
+<h3 id="sec6.3">Problem 2: How to use the protocol for recently discovered products of CO2R (step 4)?</h3>
+<p>While the attached calculation tool covers the most commonly reported products of CO<sub>2</sub> electrolysis (see Excel tabs), the community is looking forward to future discovery and scale-up of elegant routes for obtaining more complex chemical molecules directly from CO<sub>2</sub>.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>In case of analyzing new CO2R products, the user needs to provide experimental data such Faradaic efficiency, full cell voltage, current density and to extend the table “Compounds data and electrocatalysts characterization” (Excel cells A21-I29), as well as basic data such as the number of electrons transferred for each reaction, reaction stoichiometric coefficients, enthalpy of formation and molar mass. The structure of the model makes it deployable across different ranges of compounds, as far as accurate price indicators are provided.</p>
+<h3 id="sec6.5">Problem 3: How to use the protocol to compare carbon utilization techniques (step 24)?</h3>
+<p>CO<sub>2</sub> electrolysis is one among several techniques proposed for valorization of CO<sub>2</sub> to chemicals and fuels and we anticipate that experts in other utilization techniques (e.g., chemical conversion) might seek to compare these routes to CO<sub>2</sub> electrolysis-based method.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>To ensure a representative comparison, data computed from proposed model should be used for benchmarking against systems that use same feedstocks and deliver the same flowrates and quality of outputs (see definition in Excel cells B11 and E54-61). In such case, this protocol can be used to derive metrics such as e.g., net value generated by electrolysis process (Excel cell B99), return on investment (Excel cell K119) and compare against any other carbon utilization technique.</p>
+<h3 id="sec6.7">Problem 4: Can the ROI be negative (step 24)?</h3>
+<p>The operational costs of running CO<sub>2</sub> electrolysis depend strongly on the electric energy prices, hence, if the cost of energy necessary to deliver to the reactor exceeds the value of generated products (e.g., ethylene), the ROI is negative, meaning that the investment will not be economically viable under the assumed price indicators.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Developing of long-term fixed price contracts with the renewable energy suppliers will be necessary for securing stable operational costs and reasonable ROI. Our exemplary data set shows that energy price between 0.02$–0.03$/kWh can secure viable ethylene production costs and ROI.</p>
+<h3 id="sec6.9">Problem 5: Why CO<sub>2</sub> tax has only a minor influence on TEA (related to expected outcomes sensitivity analysis)?</h3>
+<p>Provided example of CO2R deployment in EO plants might surprise the user in terms of limited influence of CO<sub>2</sub> tax on CO2R process economics (e.g., max. potential for operational costs reduction is around 10% with no CO<sub>2</sub> taxes and 12% upon highest CO<sub>2</sub> levies). This is directly related to the CO<sub>2</sub> emissions density (how much of CO<sub>2</sub> is emitted at the chemical plant per kg of final product). For EO plant, emissions density is around 0.38 kg of CO<sub>2</sub>/kg of EO, falling relatively low in comparison to e.g., ammonia production (1.3 kg CO<sub>2</sub>/kg of NH<sub>3</sub>). Furthermore, note that we assume that the price of chemical (e.g., EO) raises to cover the emerging CO<sub>2</sub> taxes (Excel cell B130, B139).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>In economies with a high CO<sub>2</sub> taxation level, it might be more profitable to envision CO2R integration in plants with higher CO<sub>2</sub> emission density. For the overview of plants where CO2R can be used, refer to the article deploying this method (<a href="#bib2">Barecka et al., 2021a</a>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bains, P., Psarras, P., and Wilcox, J. (2017). CO 2 capture from the industry sector. Prog. Energy Combustion Sci. <i>63</i>, 146-172. <a class="external-link" href="https://doi.org/10.1016/j.pecs.2017.07.001">https://doi.org/10.1016/j.pecs.2017.07.001</a></p>
+<p id="bib2">Barecka, M.H., Ager, J.W., and Lapkin, A.A. (2021a). Carbon neutral manufacturing via on-site CO2 recycling. iScience. 102514. <a class="external-link" href="https://doi.org/10.1016/j.isci.2021.102514">https://doi.org/10.1016/j.isci.2021.102514</a></p>
+<p id="bib3">Barecka, M.H., Ager, J.W., and Lapkin, A.A. (2021b). Economically viable CO 2 electroreduction embedded within ethylene oxide manufacturing. Energy Environ. Sci. <i>14</i>, 1530-1543. <a class="external-link" href="https://doi.org/10.1039/D0EE03310C">https://doi.org/10.1039/D0EE03310C</a></p>
+<p id="bib4">Barecka, M.H., Ager, J.W., and Lapkin, A.A. (2021c). Techno-economic evaluation of CO2 electrolysis Excel tool. Mendeley Data. . <a class="external-link" href="https://doi.org/10.17632/2jpy5233nb.1">https://doi.org/10.17632/2jpy5233nb.1</a></p>
+<p id="bib5">Bellini, E. (2021). Saudi Arabia’s Second PV Tender Draws World Record Low Bid of $0.0104/kWh (PV Magazine). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref5">View at publisher</a></p>
+<p id="bib6">Burdyny, T. and Smith, W.A. (2019). CO 2 reduction on gas-diffusion electrodes and why catalytic performance must be assessed at commercially-relevant conditions. Energy Environ. Sci. <i>12</i>, 1442-1453. <a class="external-link" href="https://doi.org/10.1039/C8EE03134G">https://doi.org/10.1039/C8EE03134G</a></p>
+<p id="bib7">Bushuyev, O.S., Luna, P.d., Dinh, C.T., Tao, L., Saur, G., van de Lagemaat, J., Kelley, S.O., and Sargent, E.H. (2018). What should We make with CO2 and how can We make it?. Joule <i>2</i>, 825-832. <a class="external-link" href="https://doi.org/10.1016/j.joule.2017.09.003">https://doi.org/10.1016/j.joule.2017.09.003</a></p>
+<p id="bib8">Dinh, C.-T., Burdyny, T., Kibria, M.G., Seifitokaldani, A., Gabardo, C.M., García de Arquer, P.F., Kiani, A., Edwards, J.P., De Luna, P., Bushuyev, O.S., et al. (2018). CO2 electroreduction to ethylene via hydroxide-mediated copper catalysis at an abrupt interface. Science <i>360</i>, 783-787. <a class="external-link" href="https://doi.org/10.1126/science.aas9100">https://doi.org/10.1126/science.aas9100</a></p>
+<p id="bib9">Farris, P.W. (2010). Marketing metrics. The Definitive Guide to Measuring Marketing Performance. 2nd Ed (FT Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref9">View at publisher</a></p>
+<p id="bib10">García de Arquer, P.F., Dinh, C.-T., Ozden, A., Wicks, J., McCallum, C., Kirmani, A.R., Dae-Hyun, N., Gabardo, C., Seifitokaldani, A., Wang, X., et al. (2020). CO2 electrolysis to multicarbon products at activities greater than 1 A cm-2. Science <i>367</i>, 661-666. <a class="external-link" href="https://doi.org/10.1126/science.aay4217">https://doi.org/10.1126/science.aay4217</a></p>
+<p id="bib11">Huang, J.E., Li, F., Ozden, A., Rasouli, S.A., García de Arquer, P.F., Liu, S., Zhang, S., Luo, M., Wang, X., Lum, Y., et al. (2021). CO2 electrolysis to multicarbon products in strong acid. Science <i>372</i>, 1074-1078. <a class="external-link" href="https://doi.org/10.1126/science.abg6582">https://doi.org/10.1126/science.abg6582</a></p>
+<p id="bib12">Independent Commodity Intelligence Services (2019). Asia Chemicals Outlook 2019. Europe Chemicals Outlook 2019 (US Chemicals Outlook). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref12">View at publisher</a></p>
+<p id="bib13">International Energy Agency (2020). Levelised cost of electricity calculator. <a class="external-link" href="https://www.iea.org/articles/levelised-cost-of-electricity-calculator">https://www.iea.org/articles/levelised-cost-of-electricity-calculator</a></p>
+<p id="bib14">Jouny, M., Luc, W., and Jiao, F. (2018). General techno-economic analysis of CO<sub>2</sub> electrolysis systems. Ind. Eng. Chem. Res. <i>57</i>, 2165-2177. <a class="external-link" href="https://doi.org/10.1021/acs.iecr.7b03514">https://doi.org/10.1021/acs.iecr.7b03514</a></p>
+<p id="bib15">Luna, P.d., Hahn, C., Higgins, D., Jaffer, S.A., Jaramillo, T.F., and Sargent, E.H. (2019). What would it take for renewably powered electrosynthesis to displace petrochemical processes?. Science. . <a class="external-link" href="https://doi.org/10.1126/science.aav3506">https://doi.org/10.1126/science.aav3506</a></p>
+<p id="bib16">Ma, M., Clark, E.L., Therkildsen, K.T., Dalsgaard, S., Chorkendorff, I., and Seger, B. (2020a). Insights into the carbon balance for CO 2 electroreduction on Cu using gas diffusion electrode reactor designs. Energy Environ. Sci. <i>13</i>, 977-985. <a class="external-link" href="https://doi.org/10.1039/d0ee00047g">https://doi.org/10.1039/d0ee00047g</a></p>
+<p id="bib34">Ma, W., Xie, S., Liu, T., Fan, Q., Ye, J., Sun, F., Jiang, Z., Zhang, Q., Cheng, J., and Wang, Y. (2020b). Electrocatalytic reduction of CO<sub>2</sub> to ethylene and ethanol through hydrogen-assisted C–C coupling over fluorine-modified copper. Nature Catalysis <i>3</i>, 478-487. <a class="external-link" href="https://doi.org/10.1038/s41929-020-0450-0">https://doi.org/10.1038/s41929-020-0450-0</a></p>
+<p id="bib18">Mayyas, A., Ruth, M., Pivovar, B., Bender, G., and Wipke, K. (2019). (National Renewable Energy Laboratory). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref18">View at publisher</a></p>
+<p id="bib19">Ozden, A., Wang, Y., Li, F., Luo, M., Sisler, J., Thevenon, A., Rosas-Hernandez, A., Burdyny, T., Lum, Y., Yadegari, H., et al. (2021). Cascade CO2 electroreduction enables efficient carbonate-free production of ethylene. Joule <i>5</i>, 706-719. <a class="external-link" href="https://doi.org/10.1016/j.joule.2021.01.007">https://doi.org/10.1016/j.joule.2021.01.007</a></p>
+<p id="bib20">Peters, M.S., Timmerhaus, K.D., and West, R.E. (2003). Plant Design and Economics for Chemical Engineers. 5th Ed (McGraw-Hill (McGraw-Hill chemical engineering series). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref20">View at publisher</a></p>
+<p id="bib21">Rubin, E.S., Berghout, N., Booras, G., Fout, T., Garcia, M., Nazir, S.M., Ramirez, A., Roussanaly, S., and Van der Spek, M. (2021). Toward improved cost guidelines for Advanced low-carbon technologies. SSRN J. . <a class="external-link" href="https://doi.org/10.2139/ssrn.3818896">https://doi.org/10.2139/ssrn.3818896</a></p>
+<p id="bib32">Sazali, N., Wan Salleh, W.N., Jamaludin, A.S., and Mhd Razali, M.N. (2020). New Perspectives on Fuel Cell Technology: A Brief Review. Membranes <i>10</i>, 99. <a class="external-link" href="https://doi.org/10.3390/membranes10050099">https://doi.org/10.3390/membranes10050099</a></p>
+<p id="bib22">Schneider, T. (2021). Ways to defossilization. MTZ Worldw <i>82</i>, 14-15. <a class="external-link" href="https://doi.org/10.1007/s38313-021-0658-7">https://doi.org/10.1007/s38313-021-0658-7</a></p>
+<p id="bib23">Seider, W.D., Lewin, D.R., Seader, J.D., Widagdo, S., Gani, R., and Ng, K.M. (2017). Product and Process Design Principles. Synthesis, Analysis and Evaluation. Fourth Edition (Wiley). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00595-5/sref23">View at publisher</a></p>
+<p id="bib24">Spurgeon, J.M. and Kumar, B. (2018). A comparative technoeconomic analysis of pathways for commercial electrochemical CO 2 reduction to liquid products. Energy Environ. Sci. <i>11</i>, 1536-1551. <a class="external-link" href="https://doi.org/10.1039/C8EE00097B">https://doi.org/10.1039/C8EE00097B</a></p>
+<p id="bib25">The World Bank (2020). Carbon pricing Dashboard. <a class="external-link" href="https://carbonpricingdashboard.worldbank.org/map_data">https://carbonpricingdashboard.worldbank.org/map_data</a></p>
+<p id="bib26">van der Spek, M., Roussanaly, S., and Rubin, E.S. (2019). Best practices and recent advances in CCS cost engineering and economic analysis. Int. J. Greenhouse Gas Control <i>83</i>, 91-104. <a class="external-link" href="https://doi.org/10.1016/j.ijggc.2019.02.006">https://doi.org/10.1016/j.ijggc.2019.02.006</a></p>
+<p id="bib27">Vennekoetter, J.-B., Sengpiel, R., and Wessling, M. (2019). Beyond the catalyst: how electrode and reactor design determine the product spectrum during electrochemical CO2 reduction. Chem. Eng. J. <i>364</i>, 89-101. <a class="external-link" href="https://doi.org/10.1016/j.cej.2019.01.045">https://doi.org/10.1016/j.cej.2019.01.045</a></p>
+<p id="bib28">Verma, S., Kim, B., Jhong, H.-R.M., Ma, S., and Kenis, P.J.A. (2016). A Gross-margin model for defining technoeconomic benchmarks in the electroreduction of CO2. ChemSusChem <i>9</i>, 1972-1979. <a class="external-link" href="https://doi.org/10.1002/cssc.201600394">https://doi.org/10.1002/cssc.201600394</a></p>
+<p id="bib29">Xia, C., Zhu, P., Jiang, Q., Pan, Y., Liang, W., Stavitski, E., Alshareef, H.N., and Wang, H. (2019). Continuous production of pure liquid fuel solutions via electrocatalytic CO2 reduction using solid-electrolyte devices. Nat. Energy <i>4</i>, 776-785. <a class="external-link" href="https://doi.org/10.1038/s41560-019-0451-x">https://doi.org/10.1038/s41560-019-0451-x</a></p>
+<p id="bib30">Zimmermann, A., Muller, L., Wang, Y., Langhorst, T., Wunderlich, J., Marxen, A., Armstrong, K., Buchner, G., Kätelhön, A., Bachmann, M., et al. (2020). Techno-Economic Assessment &amp; Life Cycle Assessment Guidelines for CO2 Utilization (Version 1.1). Technical Report. Global CO2 initiative. 1-185. <a class="external-link" href="https://doi.org/10.3998/2027.42/16257">https://doi.org/10.3998/2027.42/16257</a></p>
+<p id="bib31">Zimmermann, A.W., Wunderlich, J., Müller, L., Buchner, G.A., Marxen, A., Michailos, S., Armstrong, K., Naims, H., McCord, S., Styring, P., et al. (2020). Techno-economic assessment guidelines for CO2 utilization. Front. Energy Res. . <a class="external-link" href="https://doi.org/10.3389/fenrg.2020.00005">https://doi.org/10.3389/fenrg.2020.00005</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Magda H. Barecka, <a href="mailto:mb2363@cam.ac.uk">mb2363@cam.ac.uk</a>.</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The Excel calculation too that includes all models generated or analyzed during this study was deposited on Mendely Data server (<a href="https://doi.org/10.17632/2jpy5233nb.1">https://doi.org/10.17632/2jpy5233nb.1</a>) and referenced in KRT section. The data on CO<sub>2</sub> emissions market, which was used to illustrate the applicability of the model, is deposited with the paper of (<a href="#bib2">Barecka et al., 2021a</a>), see also <a href="#key-resources-table">key resources table</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/501100001381">National Research Foundation</a> (NRF), Prime Minister's Office, Singapore, under its Campus for Research Excellence and Technological Enterprise (CREATE) programme through the eCO2EP project NRF2016-ITC001-005 operated by the Cambridge Centre for Advanced Research and Education in Singapore (CARES) and the Berkeley Educational Alliance for Research in Singapore (BEARS). The contribution of Andres J. Sanz Guillen to the enrichment of the visual content is gratefully acknowledged.</p>
+<h3>Author contributions</h3>
+<p>M.H.B. devised the concept of on-site CO<sub>2</sub> recycling, developed the techno-economic models, visualized the data, and wrote the original manuscript; J.W.A and A.A.L acquired funding for the project, administered the project, supervised the project, and reviewed and edited the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors filed patent applications US 62/987,369 and US 63/036,477 for CO<sub>2</sub> recycling in ethylene-based plants. There are no other conflicts of interest to declare.</p>
+</section>
+</article>

@@ -1,0 +1,2197 @@
+<article>
+<section>
+<h1 id="header">Integrated single-cell sequencing of 5-hydroxymethylcytosine and genomic DNA using scH&amp;G-seq</h1>
+<p><time datetime="2021-12-17">Published: December 17, 2021</time></p>
+<p>Alex Chialastri,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup> Chatarin Wangsanuwat,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a></sup> and Siddharth S. Dey<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn3">6</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Chemical Engineering, University of California Santa Barbara, Santa Barbara, CA 93106, USA</p>
+<p id="aff2"><sup>2</sup>Center for Bioengineering, University of California Santa Barbara, Santa Barbara, CA 93106, USA</p>
+<p id="aff3"><sup>3</sup>Neuroscience Research Institute, University of California Santa Barbara, Santa Barbara, CA 93106, USA</p>
+<p id="fn1"><sup>4</sup>These authors contributed equally</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="fn3"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:alexchialastri@ucsb.edu">alexchialastri@ucsb.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:sdey@ucsb.edu">sdey@ucsb.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.101016">10.1016/j.xpro.2021.101016</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The asymmetric distribution of 5-hydroxymethylcytosine (5hmC) between two DNA strands of a chromosome enables endogenous reconstruction of cellular lineages at an individual-cell-division resolution. Further, when integrated with data on genomic variants to infer clonal lineages, this combinatorial information accurately reconstructs larger lineage trees. Here, we provide a detailed protocol for single-cell 5-hydroxymethylcytosine and genomic DNA sequencing (scH&amp;G-seq) to simultaneously quantify 5hmC and genomic DNA from the same cell to reconstruct lineage trees at a single-cell-division resolution.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.crmeth.2021.100060">Wangsanuwat et al., 2021</a>.</p>
+
+
+
+
+<div class="highlights">
+
+
+</div>
+<div class="graphical-abstract">
+
+
+</div>
+<div class="highlights">
+
+
+</div>
+<div class="graphical-abstract">
+
+
+</div>
+<div class="highlights">
+
+
+</div>
+<div class="graphical-abstract">
+
+
+</div>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>scH&amp;G-seq enables quantification of 5hmC and genomic DNA (gDNA) from the same cell</li>
+<li>Strand-specific 5hmC enables reconstructing trees at a single-cell-division resolution</li>
+<li>Genomic variants allow identification of clonal subtrees within a lineage tree</li>
+<li>Integrated 5hmC and gDNA detection improves prediction accuracy of larger lineage trees</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1237-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This protocol for scH&amp;G-seq (Single-cell 5-<u>h</u>ydroxymethylcytosine and <u>g</u>enomic DNA sequencing) was recently developed in a publication to simultaneously quantify 5hmC and genomic DNA from a single cell (<a href="#bib9">Wangsanuwat et al., 2021</a>). scH&amp;G-seq builds upon scAba-Seq (<a href="#bib5">Mooijman et al., 2016</a>), where the addition of restriction enzymes BseRI and/or AluI enables sequencing of genomic DNA together with 5hmC in single cells. BseRI was selected because it generates the same overhang after digestion of genomic DNA as AbaSI, which is used to detect 5hmC. In addition, the recognition sequence of BseRI is devoid of CpG, eliminating ambiguity in assigning reads to genomic DNA or 5hmC. Thus, both genomic DNA-derived reads and 5hmC-derived reads can be separated computationally post-sequencing while being ligated and amplified from the same double-stranded adapter. AluI was selected to increase the coverage of the genome, as described previously (<a href="#bib6">Rooijers et al., 2019</a>). As digestion with AluI leaves a blunt end, an additional blunt double-stranded adapter is required to capture genomic DNA reads derived from AluI. The AluI double-stranded adapters and AbaSI/BseRI double-stranded adapters use different sets of unique barcodes. This protocol provides step-by-step instructions for performing scH&amp;G-seq using both BseRI and AluI simultaneously. It also includes modifications to the protocol if only one of the two enzymes are used. Finally, scH&amp;G-seq can be performed on any cell type that can be sorted by fluorescence-activated cell sorting (FACS) and has 5hmC in its genome.</p>
+<p>The scH&amp;G-seq protocol is completed over several days. Day 1 in the table below is the day a sorted 384-well plate containing single cells is thawed from −80°C for use in the scH&amp;G-seq protocol. Use the table below to plan your experimental timeline.</p>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Protocol steps</th>
+<th>Performed on day</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Restriction digestion of genomic DNA</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Stripping chromatin from genomic DNA</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Glucosylation of 5hmC sites in the genome</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Protease treatment to degrade T4-BGT</td>
+<td>3</td>
+</tr>
+<tr>
+<td>AbaSI digestion</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Ligating double-stranded adapters to fragmented genomic DNA molecules</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Pooling single cells and DNA cleanup</td>
+<td>5</td>
+</tr>
+<tr>
+<td>
+<i>In vitro</i> transcription and amplified RNA clean-up</td>
+<td>5 &amp; 6</td>
+</tr>
+<tr>
+<td>Illumina library preparation from amplified RNA</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Computational pipeline to analyze scH&amp;G-seq sequencing</td>
+<td>7 and beyond</td>
+</tr>
+</tbody>
+</table>
+<p>Before starting the experiment, prepare double-stranded adapters, add Vapor-Lock to 384-well plates, and culture the cells of interest.</p>
+<h3 id="sec1.1">Prepare double-stranded adapters</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 h</div>
+<p>The barcoded double-stranded adapters used for ligation in this protocol are generated by phosphorylating one of the DNA strands followed by the annealing of two single-stranded DNA molecules: top and bottom strand primer. The double-stranded adapters are then diluted down to their working concentration. All pipetting steps here are performed manually.</p>
+<ol>
+<li>Phosphorylate the bottom strand of each barcoded adapter (for both AbaSI/BseRI and AluI)
+<ol type="a">
+<li>Perform reaction in a 96-well plate. Keep each barcoded bottom strand primer in a separate well.
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Phosphorylation mix</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T4 Ligase buffer (10×)</td>
+<td>1×</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>ATP (10 μM)</td>
+<td>0.5 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>T4 Polynucleotide Kinase (10,000 units/mL)</td>
+<td>1.25 units/μL</td>
+<td>2.5 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>4.5 μL</td>
+</tr>
+<tr>
+<td>Barcoded bottom strand primer (100 μM)</td>
+<td>50 μM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal, and briefly spin the plate down at 2500 rpm. Then incubate as follows:
+<table id="undtbl3">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNA phosphorylation</td>
+<td>37°C</td>
+<td>1 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation</td>
+<td>65°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Maintain thermocycler lid at 75°C. The total volume per well will be 20 μL.</p>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Anneal top and bottom strand primers to generate double-stranded adapters.
+<ol type="a">
+<li>Perform this step in a 96-well plate. Add a top strand primer to each well containing the corresponding bottom strand primer that was phosphorylated in step 1.</li>
+<li>Before removing the seal from the plate, allow the plate to cool to 4°C in the thermocycler, then briefly spin the plate down at 2500 rpm.</li>
+<li>Add to step 1:
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Annealing mix</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T4 Ligase buffer (10×)</td>
+<td>1×</td>
+<td>3 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>17 μL</td>
+</tr>
+<tr>
+<td>Barcoded top strand primer (100 μM)</td>
+<td>20 μM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>30 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>As described in the table below, the thermocycler is preheated to 95°C, and once it has reached this temperature, insert the plate and advance to the next step. Incubate the plate for 5 min at 95°C, then decrease temperature by 1°C per minute till the plate reaches 20°C (Maintain thermocycler lid at 105°C). The total volume per well will be 50 μL.
+<table id="undtbl5">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preheating</td>
+<td>95°C</td>
+<td colspan="2">Forever (advance to next step when the plate is inserted into the thermocycler)</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Gradual cooling</td>
+<td>−1°C from previous</td>
+<td>1 min</td>
+<td>74</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>20°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The barcoded double-stranded adapters are now double-stranded and are at a stock concentration of 20 μM.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Dilute the double-stranded adapters to a concentration of 1 μM.
+<ol type="a">
+<li>In a new 96-well plate, for each barcoded double-stranded adapter, combine 5 μL of the 20 μM stock (step 2) with 95 μL of nuclease-free water. The total volume per well will be 100 μL. This 96-well plate now contains 1 μM phosphorylated double-stranded adapters.</li>
+</ol>
+</li>
+<li>Further dilute the double-stranded adapters. Take the 1 μM phosphorylated double-stranded adapters from step 3 and follow the steps below to dilute them to their corresponding working concentrations in a total volume of 100 μL per well.
+<ol type="a">
+<li>For all scH&amp;G-seq strategies, the working concentration of the random 2-nucleotide 3′ overhang phosphorylated double-stranded adapters (that is, for ligating to AbaSI/BseRI generated fragments) is 75 nM. Make a new 96-well plate for this working concentration. To do this, for each barcoded double-stranded adapter, combine 7.5 μL of 1 μM stock (step 3) with 92.5 μL of nuclease-free water. The total volume per well will be 100 μL. The adapter sequences have been described in detail previously (<a href="#bib5">Mooijman et al., 2016</a>).</li>
+<li>The working concentration of the blunt phosphorylated double-stranded adapters (that is, for ligating to AluI generated fragments) is 64 nM. Make a new 96-well plate for this working concentration. To do this, for each barcoded double-stranded adapter, combine 6.4 μL of 1 μM stock (step 3) with 93.6 μL of nuclease-free water. The total volume per well will be 100 μL. The adapter sequences have been described in detail previously (<a href="#bib6">Rooijers et al., 2019</a>; <a href="#bib4">Markodimitraki et al., 2020</a>).</li>
+</ol>
+</li>
+<li>Seal all the plates with a Greiner multiwell plate seal, and briefly spin the plates down at 2500 rpm.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> When preparing phosphorylated double-stranded adapters, it is critical that each barcoded adapter remains separate and that they are not accidentally mixed or contaminated. Always use new tips for all steps. To avoid errors, it is recommended that barcode 1 go in well A1, barcode 2 in A2, barcode 3 in A3…etc. of the 96-well plate.</div>
+<div class="note">
+<span class="note-title">Note:</span> To expedite the above process, use a 12-channel pipette when handling the barcoded double-stranded adapters and for making dilutions. Mix the solution well by pipetting up and down at least 10 times at each stage. All primers and double-stranded adapters can be stored long term at −20°C.</div>
+<div class="note">
+<span class="note-title">Note:</span> The bottom strand primer refers to the primer that will ligate to the free 3′ end of genomic DNA after enzymatic digestion. The top strand primer refers to the primer that will ligate to the free 5′ end of genomic DNA after enzymatic digestion.</div>
+<h3 id="sec1.2">Add Vapor-Lock to 384-well plates</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min per plate</div>
+<p>To avoid evaporation of small volumes of aqueous solutions added in later steps, Vapor-Lock is added to each well of a 384-well plate. All pipetting at this step is performed manually.</p>
+<ol start="6">
+<li>Add 4 μL of Vapor-Lock to each well of a 384-well plate.
+<ol type="a">
+<li>A 12-channel pipette can be used for dispensing. To do this, use a serological pipette to dispense Vapor-Lock into a disposable pipetting reservoir. Typically, 5.5 mL of Vapor-Lock is needed to make 3 plates.</li>
+</ol>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Avoid touching the tips containing Vapor-Lock onto the top of the plate as this will result in a small amount of oil on the surface of the plate, considerably reducing the ability of the Greiner multiwell plate seal to effectively seal the plate.</div>
+<div class="note">
+<span class="note-title">Note:</span> The same pipette tips can be used to fill 2 plates with Vapor-Lock. Use new tips if any of the tips touch any other surface that could be contaminated with RNases.</div>
+<div class="note">
+<span class="note-title">Note:</span> PCR safe mineral oil can be used as a cheaper alternative to Vapor-Lock. The Vapor-Lock or mineral oil is added manually to avoid introducing oil into the liquid-handling robot. In this protocol, we prepared double-stranded adapters in 96-well plates and Vapor-Lock in 384-well plates, but scH&amp;G-seq can be performed in just 96-well or 384-well plates.</div>
+<h3 id="sec1.3">Culture H9 cell line</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2+ weeks</div>
+<p>The cells of interest are grown under the desired experimental conditions, and when ready they are isolated for scH&amp;G-seq. As an example here, H9 human embryonic stem cells are grown.</p>
+<ol start="8">
+<li>On ice, dilute the Matrigel in DMEM/F-12 according to the lot specific dilution factor. Then precoat a 6-well dish with the diluted Matrigel (1 mL/well). Incubate the plate at 20°C–25°C for 1 h for same day use or wrap in parafilm and store at 4°C for up to 1 week. Aspirate off superfluous liquid before plating cells.</li>
+<li>Thaw a vial containing 1 million H9 cells. Put 70% of the cells into one Matrigel coated well and the other 30% into another Matrigel coated well of a 6-well dish.
+<ol type="a">
+<li>Over the next few days continue culturing the well that looks healthier and grows at the appropriate rate. Healthy colonies have smooth edges and are round, containing closely packed cells with a high nucleus to cytoplasm ratio.</li>
+</ol>
+</li>
+<li>Fill each well with 2 mL of pre-warmed mTeSR1.</li>
+<li>Refresh the media daily and wash with 1× DPBS if cell debris is visible.</li>
+<li>When cells reach approximately 70% confluency (this should take 5–7 days), and before colonies begin to combine, passage the cells using the cell dissociation reagent Versene.
+<ol type="a">
+<li>Aspirate the media and wash with 1× DPBS</li>
+<li>Add 1 mL of Versene to each well that requires passage.</li>
+<li>Incubate the plate at 37°C for 3–5 min.</li>
+<li>Aspirate Versene gently. The colonies should still be attached to the plate and should be visible to the unaided eye.</li>
+<li>Use a P1000 pipette to slowly add cell culture media onto the colonies, removing them from the plate. Do not use the pipette tip to scratch the colonies off the plate.</li>
+<li>Pipette up and down to create clumps of cells. Be gentle to prevent a single-cell suspension. During pipetting, avoid the formation of air bubbles.</li>
+<li>Passage the cells in small clumps. Typically, one well at approximately 70% confluency can be passed into 6–12 new Matrigel coated wells.</li>
+<li>Add up to 2 mL of media per well and disperse the clumps of cells evenly throughout the well.</li>
+</ol>
+</li>
+<li>Continue to grow the cells for at least one more passage, or until the cells are ready for single cell collection by FACS according to your experimental procedure. For H9 cells grown here, cells are ready for FACS sorting when they reach approximately 70% confluency and before colonies begin to combine.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Pipetting with the appropriate amount of force to create small clumps of H9 cells is critical. Creating a single-cell suspension of H9 cells during passage will result in substantial cell death. Passaging in large clumps will result in the new plate quickly becoming overgrown. When initially attempting the protocol, it is recommended to err on the side of passaging cells in larger clumps and checking cell growth often.</div>
+<div class="note">
+<span class="note-title">Note:</span> Replace the cell culture steps as appropriate. It is critical that the resulting cells can be sorted by FACS and that the cells contain detectable levels of 5hmC.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>TrypLE Select Enzyme (1×), no phenol red</td>
+<td>Thermo Fisher Scientific</td>
+<td>12563011</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum</td>
+<td>Thermo Fisher Scientific</td>
+<td>10437028</td>
+</tr>
+<tr>
+<td>Vapor-Lock</td>
+<td>Qiagen</td>
+<td>981611</td>
+</tr>
+<tr>
+<td>T4 Polynucleotide Kinase</td>
+<td>New England BioLabs</td>
+<td>M0201S</td>
+</tr>
+<tr>
+<td>Propidium iodide solution</td>
+<td>Sigma-Aldrich</td>
+<td>P4864-10ML</td>
+</tr>
+<tr>
+<td>FACS test tube with a cell strainer snap cap</td>
+<td>Fisher Scientific</td>
+<td>08-771-23</td>
+</tr>
+<tr>
+<td>Deoxynucleotide (dNTP) Solution Mix</td>
+<td>New England BioLabs</td>
+<td>N0447L</td>
+</tr>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>New England BioLabs</td>
+<td>B7004S</td>
+</tr>
+<tr>
+<td>Qiagen Protease</td>
+<td>Qiagen</td>
+<td>19155</td>
+</tr>
+<tr>
+<td>T4 Phage β-glucosyltransferase (T4-BGT)</td>
+<td>New England BioLabs</td>
+<td>M0357L</td>
+</tr>
+<tr>
+<td>AbaSI</td>
+<td>New England BioLabs</td>
+<td>R0665S</td>
+</tr>
+<tr>
+<td>T4 DNA Ligase</td>
+<td>New England BioLabs</td>
+<td>M0202M</td>
+</tr>
+<tr>
+<td>Adenosine 5′-Triphosphate</td>
+<td>New England BioLabs</td>
+<td>P0756L</td>
+</tr>
+<tr>
+<td>Agencourt AMPure XP</td>
+<td>Beckman Coulter</td>
+<td>A63880</td>
+</tr>
+<tr>
+<td>Agencourt RNAClean XP</td>
+<td>Beckman Coulter</td>
+<td>A63987</td>
+</tr>
+<tr>
+<td>SuperScript II Reverse Transcriptase</td>
+<td>Thermo Fisher Scientific</td>
+<td>18064014</td>
+</tr>
+<tr>
+<td>RNaseOUT Recombinant Ribonuclease Inhibitor</td>
+<td>Thermo Fisher Scientific</td>
+<td>10777019</td>
+</tr>
+<tr>
+<td>NEBNext High-Fidelity 2× PCR Master Mix</td>
+<td>New England BioLabs</td>
+<td>M0541L</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>Sigma-Aldrich</td>
+<td>I8896-50ML</td>
+</tr>
+<tr>
+<td>Recombinant Ribonuclease Inhibitor</td>
+<td>Clontech</td>
+<td>2313A</td>
+</tr>
+<tr>
+<td>AluI</td>
+<td>New England BioLabs</td>
+<td>R0137S</td>
+</tr>
+<tr>
+<td>BseRI</td>
+<td>New England BioLabs</td>
+<td>R0581S</td>
+</tr>
+<tr>
+<td>Potassium acetate solution</td>
+<td>Sigma-Aldrich</td>
+<td>95843-100ML-F</td>
+</tr>
+<tr>
+<td>Trizma acetate (Tris-acetate)</td>
+<td>Sigma-Aldrich</td>
+<td>93337-25G</td>
+</tr>
+<tr>
+<td>Magnesium acetate solution</td>
+<td>Sigma-Aldrich</td>
+<td>63052-100ML</td>
+</tr>
+<tr>
+<td>Ethylenediaminetetraacetic acid solution</td>
+<td>Sigma-Aldrich</td>
+<td>03690-100ML</td>
+</tr>
+<tr>
+<td>Gibco DPBS, no calcium, no magnesium</td>
+<td>Thermo Fisher Scientific</td>
+<td>14-190-144</td>
+</tr>
+<tr>
+<td>mTeSR1</td>
+<td>Stemcell Technologies</td>
+<td>85850</td>
+</tr>
+<tr>
+<td>Gibco Versene solution</td>
+<td>Thermo Fisher Scientific</td>
+<td>15-040-066</td>
+</tr>
+<tr>
+<td>Corning Matrigel hESC-qualified matrix</td>
+<td>Thermo Fisher Scientific</td>
+<td>08-774-552</td>
+</tr>
+<tr>
+<td>DMEM/F-12, GlutaMAX supplement</td>
+<td>Thermo Fisher Scientific</td>
+<td>10565018</td>
+</tr>
+<tr>
+<td>Nuclease-free Water (not DEPC-Treated)</td>
+<td>Thermo Fisher Scientific</td>
+<td>4387936</td>
+</tr>
+<tr>
+<td>Absolute Ethanol, 200 proof, Molecular Biology Grade</td>
+<td>Thermo Fisher Scientific</td>
+<td>T038181000</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>MEGAscript T7 Transcription Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>AMB13345</td>
+</tr>
+<tr>
+<td>Bioanalyzer High Sensitivity DNA Analysis</td>
+<td>Agilent</td>
+<td>5067-4626</td>
+</tr>
+<tr>
+<td>Bioanalyzer High Sensitivity RNA Analysis (RNA 6000 Pico)</td>
+<td>Agilent</td>
+<td>5067-1513</td>
+</tr>
+<tr>
+<td>Qubit Assay Tubes</td>
+<td>Thermo Fisher Scientific</td>
+<td>Q32856</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS Assay Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Q32854</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>scH&amp;G-seq sequencing data of H9 cells</td>
+<td><a href="#bib9">Wangsanuwat et al., 2021</a></td>
+<td>GEO: GSE131678</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>Human: H9</td>
+<td>WiCell</td>
+<td>WA09</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>AbaSI adapters (Random 2-nucleotide 3′ overhang double-stranded adapters)</td>
+<td><a href="#bib5">Mooijman et al., 2016</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Random hexamer primer (for aRNA reverse transcription)</td>
+<td><a href="#bib1">Hashimshony et al., 2016</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Illumina sequencing primers</td>
+<td><a href="#bib1">Hashimshony et al., 2016</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>AluI adapters (blunt end double-stranded adapters)</td>
+<td><a href="#bib6">Rooijers et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>TruSeq Small RNA PCR Primers (RNA PCR Primers, RP1 and RPI1-RPI48)</td>
+<td>Integrated DNA Technologies</td>
+<td>Published by Illumina</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>scPECLR (MATLAB)</td>
+<td><a href="#bib9">Wangsanuwat et al., 2021</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>scH&amp;G-seq analysis</td>
+<td>This Paper</td>
+<td><a href="https://github.com/alexchialastri/scH-G-seq">https://github.com/alexchialastri/scH-G-seq</a></td>
+</tr>
+<tr>
+<td>Burrows-Wheeler Aligner (BWA)</td>
+<td><a href="#bib2">Li and Durbin (2009)</a></td>
+<td>Version 0.7.15</td>
+</tr>
+<tr>
+<td>Perl</td>
+<td>perl.org</td>
+<td>Version 5.10.1</td>
+</tr>
+<tr>
+<td>Linux operating system</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Human genome</td>
+<td>UCSC Genome Browser</td>
+<td>hg19</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Nanodrop II (low volume liquid handling robot)</td>
+<td>BioNex Solutions</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>2100 Bioanalyzer instrument</td>
+<td>Agilent</td>
+<td>G2939BA</td>
+</tr>
+<tr>
+<td>Qubit 2.0 Fluorometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Q32866</td>
+</tr>
+<tr>
+<td>Sony SH800 cell sorter</td>
+<td>Sony Biotechnology</td>
+<td>SH800S</td>
+</tr>
+<tr>
+<td>Centrifuge 5810R (refrigerated and plate compatible)</td>
+<td>Eppendorf</td>
+<td>2231000771</td>
+</tr>
+<tr>
+<td>Vacufuge plus</td>
+<td>Eppendorf</td>
+<td>022820109</td>
+</tr>
+<tr>
+<td>Greiner multiwell plate sealers</td>
+<td>Sigma-Aldrich</td>
+<td>Z617601-100EA</td>
+</tr>
+<tr>
+<td>RNaseZap RNase Decontamination Solution</td>
+<td>Thermo Fisher Scientific</td>
+<td>AM9782</td>
+</tr>
+<tr>
+<td>C1000 Touch Thermal Cycler with 384-Well Reaction Module</td>
+<td>Bio-Rad Laboratories</td>
+<td>1851138</td>
+</tr>
+<tr>
+<td>Eppendorf 5331 MasterCycler Gradient Thermal Cycler</td>
+<td>Eppendorf</td>
+<td>5331</td>
+</tr>
+<tr>
+<td>VWR 96-Well PCR and Real Time PCR Plates</td>
+<td>VWR</td>
+<td>82006-704</td>
+</tr>
+<tr>
+<td>Hard-Shell 384-Well PCR Plates, thin wall, skirted, clear/clear</td>
+<td>Bio-Rad Laboratories</td>
+<td>HSP3801</td>
+</tr>
+<tr>
+<td>Thermo Scientific BioLite Multidishes and Microwell Plate</td>
+<td>Fisher Scientific</td>
+<td>12-556-004</td>
+</tr>
+<tr>
+<td>PR Series Analytical Balance</td>
+<td>Ohaus</td>
+<td>PR124</td>
+</tr>
+<tr>
+<td>DynaMag-2 Magnet (Magnetic Stand)</td>
+<td>Thermo Fisher Scientific</td>
+<td>12321D</td>
+</tr>
+<tr>
+<td>Disposable Pipetting Reservoirs</td>
+<td>VWR</td>
+<td>89094-664</td>
+</tr>
+<tr>
+<td>Pipetman M Multichannel P12x20M, 1–20 μL</td>
+<td>Gilson</td>
+<td>F81028</td>
+</tr>
+<tr>
+<td>10 μL-XL Aerosol barrier, low retention pipet tips</td>
+<td>VWR</td>
+<td>10017-062</td>
+</tr>
+<tr>
+<td>20 μL Aerosol barrier, low retention pipet tips</td>
+<td>VWR</td>
+<td>10017-066</td>
+</tr>
+<tr>
+<td>300 μL Aerosol barrier, low retention pipet tips</td>
+<td>VWR</td>
+<td>10017-088</td>
+</tr>
+<tr>
+<td>1250 μL Aerosol barrier, low retention pipet tips</td>
+<td>VWR</td>
+<td>10017-092</td>
+</tr>
+<tr>
+<td>Low-profile 0.2 mL 8-tube strips without caps (used with nanodrop II liquid handling robot)</td>
+<td>Bio-Rad Laboratories</td>
+<td>TLS0801</td>
+</tr>
+<tr>
+<td>0.2 mL strip tubes (12 tubes per strip)</td>
+<td>Fisher Scientific</td>
+<td>AB-1112</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>For high-throughput processing, the Nanodrop II low-volume liquid-handling robot was used unless otherwise noted. For dispensing reagents into the 384-well plate, the “dispense plate discrete stop” program built into the Nanodrop II robot was used. When dispensing reagents, 100 μL (12.5 μL per dispensing tip) of additional master mix is needed to account for the dead volume in the dispensing reservoir. For dispensing double-stranded adapters, the “dispense plate in-the-well” program built into the Nanodrop II robot was used, and between each dispense step the tips were washed three times with the pre-programed “Eject Wash Rinse” program to prevent inadvertently mixing barcoded double-stranded adapters.</p>
+<div class="note">
+<span class="note-title">Note:</span> Any liquid-handling robot with the ability to dispense into 384-well plates down to 200 nL volumes can be used. For manual pipetting, aerosol barrier, low retention pipet tips should be used to reduce losses and the possibility of cross contamination. Additionally, handling all materials in a PCR workstation can also reduce the chances of cross contamination. Finally, clean all surfaces and items (including gloves) using 70% ethanol followed by RNaseZap to reduce the chances of cross contamination.</div>
+<table id="undtbl6">
+<caption>aRNA fragmentation buffer</caption>
+<thead>
+<tr>
+<th>Fragmentation buffer</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-acetate (0.5 M, pH 8.1)</td>
+<td>200 mM</td>
+<td>4 mL</td>
+</tr>
+<tr>
+<td>Potassium acetate (5 M)</td>
+<td>500 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Magnesium acetate (1 M)</td>
+<td>150 mM</td>
+<td>1.5 mL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>3.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 20°C–25°C indefinitely.</p>
+<div class="note">
+<span class="note-title">Note:</span> To ensure that the aRNA fragmentation buffer remains RNase-free, split the Tris-acetate into two parts. Use a pH probe to measure the exact amount of hydrochloric acid or sodium hydroxide required to balance the pH of one of the Tris-acetate aliquots to 8.1. Discard this aliquot, and to the other aliquot, add the measured amount of acid or base. Do not use the pH probe on this aliquot as it could result in RNase contamination.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>In the protocol below, we provide details of performing scH&amp;G-seq and the corresponding data processing steps to analyze the Illumina sequencing data (<a href="#fig1">Figure 1</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1237-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Schematic of scH&amp;G-seq</div>
+<p>In scH&amp;G-seq, cells of interest are first sorted into 384-well plates containing the lysis buffer. Next, AluI and/or BseRI are added to digest genomic and mitochondrial DNA. Following this step, protease treatment is used to strip off chromatin. Thereafter, 5hmC marks in the genome are glucosylated by T4-BGT and then protease treatment is used to degrade T4-BGT. Genomic DNA marked by modified 5hmC sites are then cut by AbaSI, which is followed by ligation with AbaSI-/BseRI-specific and AluI-specific double-stranded adapters. Next, single cells are pooled and amplified by <i>in vitro</i> transcription. Finally, after reverse transcription (RT) and PCR amplification, the Illumina libraries are ready for sequencing.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In each reaction mix table, the final concentration for each reagent added is calculated based on its concentration in the final solution volume in the 384-well plate rather than its concentration in the mix being added.</div>
+<h3 id="sec3.1">Prepare plates for FACS by adding lysis buffer</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Add a lysis buffer to each well of a 384-well plate. This step is performed prior to FACS to ensure that once single cells are sorted into this solution, they are lysed and the plate can be stored at −80°C until processed.</p>
+<ol>
+<li>To each well of a Vapor-Lock containing 384-well plate, add the lysis buffer as described below using a liquid handling robot:</li>
+</ol>
+<table id="undtbl7">
+<thead>
+<tr>
+<th>Lysis buffer</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IGEPAL CA-630 (1%)</td>
+<td>0.0875%</td>
+<td>17.5 nL</td>
+</tr>
+<tr>
+<td>Recombinant RNase Inhibitor (40 Units/μL)</td>
+<td>0.93 units/μL</td>
+<td>4.67 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>177.83 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>200 nL</b></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Seal the 384-well plates with a Greiner multiwell plate seal, and briefly spin the plate down at 2500 rpm. Always keep plates on ice except when directly handling them.</li>
+</ol>
+<h3 id="sec3.2">Isolate and FACS sort single cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–6 h (depending on the number of plates sorted)</div>
+<p>To make a single cell suspension of H9 cells (or cells of interest) and to sort one cell into each well of a 384-well plate, proceed as follows:</p>
+<ol start="3">
+<li>Wash cells twice with 2 mL of 1× DPBS.</li>
+<li>Add 0.5 mL of TrypLE select (1×) solution to one well of a 6-well plate and incubate the plate at 37°C until cells begin to lift (3–5 min).</li>
+<li>Add serum-containing media to neutralize the TrypLE solution, collect the cells in a new 15 mL conical centrifuge tube and spin the tube at 300 <i>g</i> for 5 min to pellet the cells.</li>
+<li>Aspirate the medium and resuspend the pellet in 1 mL of 1× DPBS. Make a single-cell suspension by gently triturating with a P1000 pipette. Always keep the tube on ice except when handling it.
+<ol type="a">
+<li>Add propidium iodide (PI) to distinguish between live and dead cells, thereby increasing the capture efficiency. The final concentration of PI should be between 1 and 50 μg/mL.</li>
+<li>Filter cells using a FACS test tube with a cell strainer snap cap to remove large cellular clumps. After filtration, sort cells from this test tube.</li>
+</ol>
+</li>
+<li>Set up the FACS machine to sort single cells into a 384-well plate.
+<ol type="a">
+<li>If you are unsure whether the microfluidics of the FACS machine was cleaned prior to use, clean the instrument with 10% bleach. For the Sony SH800 cell sorter, follow the Bleach Cleaning wizard in the sorter software.</li>
+<li>Set the sample area to 4°C and, if possible, set the collection area on the FACS machine to 4°C as well.</li>
+<li>Use an empty 384-well plate sealed with a Greiner multiwell plate seal to perform a mock sort. Do this by dispensing 50 droplets of sheath fluid onto the seal covering the plate. Check that the droplets are centered on the wells of the plate. If they are not, adjust the alignment and re-perform the mock sort. Perform this mock sort on one fourth of all wells spread across the plate to ensure that the plate is properly aligned.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Accurate alignment of droplets on the 384-well plate is needed for successfully sorting single cells into the plate.</div>
+<ol start="8">
+<li>Once the 384-well plate is well-aligned, sort a single cell into each well of the 384-well plate. Identify single cells using forward scatter and backscatter (or side scatter depending on the sorter).</li>
+<li>After sorting a plate, seal it with a Greiner multiwell plate seal, and briefly spin the plate down at 2500 rpm. If sorting multiple plates, place the sorted plate on ice (or transfer to −80°C freezer) and sort the next plate following the same protocol.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Leave a few wells unsorted as a negative control. Sequencing results from these negative wells will behave similar to poorly sorted wells. If you get a significant number of sequencing reads that map to these negative wells, it indicates genomic DNA contamination.</div>
+<div class="note">
+<span class="note-title">Note:</span> mTeSR1 does not contain serum. If serum containing media is unavailable, neutralize the TrypLE solution with a 5% fetal bovine serum solution in 1× DPBS.</div>
+<div class="note">
+<span class="note-title">Note:</span> Gentle pipetting is important to make a single cell suspension but over pipetting can reduce cell viability and increase cellular debris.</div>
+<div class="note">
+<span class="note-title">Note:</span> Single cells have a smaller forward scatter area and width when compared to doublets, but a similar forward scatter height. Additionally, single cells display higher forward scatter and lower back scatter than cellular debris. A high proportion of your cells should be viable single cells. Viable cells should contain no emission from propidium iodide.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After sorting, plates can be stored at −80°C until ready to continue. Stored plates have similar success in generating high-quality Illumina libraries, even for plates that have been stored for up to 1 year.</div>
+<h3 id="sec3.3">Restriction digestion of genomic DNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>Genomic DNA is digested with the enzyme(s) of choice to sequence the genome in scH&amp;G-seq. Simultaneous digestion with both BseRI and AluI is described here, but the options for digesting with only one of the two enzymes are also discussed.</p>
+<ol start="10">
+<li>Incubate the plate for 5 min at 65°C and then return it to 4°C or ice.</li>
+</ol>
+<ol start="11">
+<li>Digest genomic DNA simultaneously with both BseRI and AluI by adding the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>BseRI and AluI digestion master mix:
+<table id="undtbl8">
+<thead>
+<tr>
+<th>BseRI and AluI digestion</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>BseRI (5,000 units/mL)</td>
+<td>0.18 units/μL</td>
+<td>25 nL</td>
+</tr>
+<tr>
+<td>AluI (10,000 units/mL)</td>
+<td>0.18 units/μL</td>
+<td>12.5 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>392.5 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+<li>Incubate in a thermocycler as follows:
+<table id="undtbl9">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genomic DNA digestion</td>
+<td>37°C</td>
+<td>1 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation</td>
+<td>80°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+The total volume per well will be 700 nL (excluding Vapor-Lock).
+<div class="optional">
+<span class="optional-title">Optional:</span> If only BseRI is used, replace the digestion mix in step 11a with the following mix. Perform steps 11b and 11c as described above.</div>
+<table id="undtbl10">
+<thead>
+<tr>
+<th>BseRI digestion</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>BseRI (5,000 units/mL)</td>
+<td>0.36 units/μL</td>
+<td>50 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>380 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="optional">
+<span class="optional-title">Optional:</span> If only AluI is used, replace the digestion mix in step 11a with the following mix. Perform steps 11b and 11c as described above.</div>
+<table id="undtbl11">
+<thead>
+<tr>
+<th>AluI digestion</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>AluI (10,000 units/mL)</td>
+<td>0.36 units/μL</td>
+<td>25 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>405 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="optional">
+<span class="optional-title">Optional:</span> If the goal is to detect only 5hmC and no genomic DNA, replace the digestion mix in step 11a with the following mix. Perform step 11b as described above but skip step 11c.</div>
+<table id="undtbl12">
+<thead>
+<tr>
+<th>No genomic digestion</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>430 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Digestion of genomic DNA here is performed prior to stripping off chromatin to maximize reads derived from mitochondrial DNA. Mitochondrial reads can be useful for clonal lineage reconstruction as regions of the mitochondrial genome have higher rates of mutation compared to genomic DNA (<a href="#bib7">Wallace, 1994</a>; <a href="#bib3">Ludwig et al., 2019</a>; <a href="#bib10">Xu et al., 2019</a>).</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Stripping chromatin from genomic DNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>Protease is added to remove chromatin, enabling the genome-wide detection of 5hmC.</p>
+<ol start="12">
+<li>If no Qiagen protease solution is available, starting from the lyophilized powder make a fresh Qiagen protease solution at a concentration of 100 μg/μL in nuclease-free water.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make the Qiagen protease solution under RNase-free conditions. A sterile pipette tip can be used instead of a traditional spatula to scoop out the lyophilized powder, while maintaining RNase-free conditions.</div>
+<div class="note">
+<span class="note-title">Note:</span> Qiagen protease solution can be stored at −20°C for up to one month.</div>
+<ol start="13">
+<li>Add the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>Protease master mix:
+<table id="undtbl13">
+<thead>
+<tr>
+<th>Protease I</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>180 nL</td>
+</tr>
+<tr>
+<td>Qiagen Protease (100 μg/μL)</td>
+<td>2.4 μg/μL</td>
+<td>60 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>1,560 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1.8 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+<li>Perform the following:
+<table id="undtbl14">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protease digestion</td>
+<td>50°C</td>
+<td>16 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation I</td>
+<td>75°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation II</td>
+<td>80°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per well will be 2.5 μL.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Plates can be stored for 12 h at 4°C.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.5">Glucosylation of 5hmC sites in the genome</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>AbaSI has approximately 1,000 times more affinity for detecting 5hmC compared to 5-methylcytosine (5mC), but it has nearly 10,000 times greater affinity towards detecting beta-glucosyl-5-hydroxymethylated cytosine (5ghmC) compared to 5mC (<a href="#bib8">Wang et al., 2011</a>). Therefore, to significantly improve the specificity of 5hmC detection, T4 Phage β-glucosyltransferase (T4-BGT) is added to convert 5hmC sites in the genome to 5ghmC.</p>
+<ol start="14">
+<li>Convert 5hmC to 5ghmC by adding the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>BGT master mix:
+<table id="undtbl15">
+<thead>
+<tr>
+<th>BGT</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>50 nL</td>
+</tr>
+<tr>
+<td>UDP-Glucose (50×)</td>
+<td>1×</td>
+<td>60 nL</td>
+</tr>
+<tr>
+<td>T4-BGT (10,000 units/mL)</td>
+<td>0.33 units/μL</td>
+<td>100 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>290 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin down the plate at 2500 rpm.</li>
+<li>Perform the following:
+<table id="undtbl16">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Glucosylation</td>
+<td>37°C</td>
+<td>16 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per well will be 3 μL.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Plates can be stored for 12 h at 4°C.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.6">Protease treatment to degrade T4-BGT</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<p>Protease is added to the reaction mixture to degrade T4-BGT.</p>
+<ol start="15">
+<li>If no Qiagen protease solution is available, make a fresh Qiagen protease solution at 100 μg/μL concentration in nuclease-free water as described in step 12.</li>
+<li>Degrade T4-BGT by adding the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>Protease master mix:
+<table id="undtbl17">
+<thead>
+<tr>
+<th>Protease II</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>50 nL</td>
+</tr>
+<tr>
+<td>Qiagen protease (100 μg/μL)</td>
+<td>0.57 μg/μL</td>
+<td>20 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>430 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+<li>Perform the following:
+<table id="undtbl18">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protease digestion</td>
+<td>50°C</td>
+<td>3 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation I</td>
+<td>75°C</td>
+<td>20 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation II</td>
+<td>80°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per well will be 3.5 μL.
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Plates can be stored for 12 h at 4°C.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.7">AbaSI digestion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>AbaSI is added to selectively cut genomic DNA downstream of 5hmC and 5ghmC sites, leaving a 2-nucleotide 3′ overhang.</p>
+<ol start="17">
+<li>Cut genomic DNA downstream of 5hmC and 5ghmC sites by adding the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>AbaSI digestion master mix:
+<table id="undtbl19">
+<thead>
+<tr>
+<th>AbaSI digestion</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 4 (10×)</td>
+<td>1×</td>
+<td>50 nL</td>
+</tr>
+<tr>
+<td>AbaSI (10,000 units/mL)</td>
+<td>0.25 units/μL</td>
+<td>100 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>350 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 nL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+<li>Perform the following:
+<table id="undtbl20">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AbaSI digestion</td>
+<td>25°C</td>
+<td>1.5 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat inactivation</td>
+<td>65°C</td>
+<td>25 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per well will be 4 μL.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.8">Ligating double-stranded adapters to fragmented genomic DNA molecules</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The double-stranded adapters are ligated to genomic DNA fragments cut by AluI, BseRI, and AbaSI. These adapters are specific for each enzyme and uniquely barcoded so that single cells can be pooled downstream in the protocol. The adapters also contain a part of the Illumina read 1 adapter sequence and a T7 promoter sequence.</p>
+<ol start="18">
+<li>Add 200 nL of the 64 nM blunt phosphorylated double-stranded adapter to each well of the 384-well plate using a liquid handling robot. Use one unique adapter per well (<a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1237-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Dispensing double-stranded adapters from 96-well plates to a 384-well plate</div>
+<p>Both AbasI-/BseRI-specific double-stranded adapters and AluI-specific double-stranded adapters are dispensed from 96-well plates to a 384-well plate containing cells of interest. The double-stranded adapter in well A1 of the 96-well plate is dispensed into wells A1, A2, B1, and B2 of the 384-well plate. Similarly, the double-stranded adapter in well A2 of the 96-well plate is dispensed into wells A3, A4, B3, and B4 of the 384-well plate and so on. The color scheme in the figure above indicates how double-stranded adapters in 96-well plates are dispensed into a 384-well plate containing single cells. After ligation, the single cells in the 384-well plate are pooled into four microcentrifuge tubes, with each tube containing 96 single cells with distinct barcodes.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>After adding the double-stranded adapter, seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+</ol>
+</li>
+<li>Add 200 nL of the 75 nM random 2-nucleotide 3′ overhang phosphorylated double-stranded adapter to each well of the 384-well plate using a liquid handling robot. Use one unique adapter per well (<a href="#fig2">Figure 2</a>).
+<ol type="a">
+<li>After adding the double-stranded adapter, seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+</ol>
+</li>
+<li>Ligate the adapters to the fragmented genomic DNA molecules by adding the following mix to each well of the 384-well plate using a liquid handling robot.
+<ol type="a">
+<li>T4 DNA ligase master mix:
+<table id="undtbl21">
+<thead>
+<tr>
+<th>Ligation</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T4 DNA ligase buffer (10×)</td>
+<td>0.2×</td>
+<td>100 nL</td>
+</tr>
+<tr>
+<td>T4 DNA ligase (2,000,000 units/mL)</td>
+<td>28 units/μL</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>ATP (10 mM)</td>
+<td>0.8 mM</td>
+<td>400 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>30 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>600 nL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Seal the plate with a Greiner multiwell plate seal and briefly spin the plate down at 2500 rpm.</li>
+<li>Perform the following:
+<table id="undtbl22">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ligation</td>
+<td>16°C</td>
+<td>16 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per well will be 5 μL. The combined concentration of NEBuffer 4 and T4 DNA ligase buffer is 1×.
+<div class="critical">
+<span class="critical-title">Critical:</span> The cells that you want to pool together must have uniquely barcoded double-stranded adapters added at this step. Do not add more than one barcoded double-stranded adapter of each adapter type to a single reaction well.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Wash the tips of the robot three times with the pre-programed “Eject Wash Rinse” program after each adapter dispenses to prevent inadvertently mixing the double-stranded adapters.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Document the double-stranded adapters used for each cell. 5hmC derived (from AbaSI) and BseRI derived genomic DNA reads will have the same barcode for a given cell, while AluI derived genomic DNA reads will have another set of barcodes. AbaSI/BseRI barcodes and AluI barcodes for the same cell will later be matched during data processing. Without this documentation, it will not be possible to pair the 5hmC derived reads, and the BseRI and AluI derived reads to the same cell.</div>
+<div class="note">
+<span class="note-title">Note:</span> ATP and the T4 DNA ligase buffer, which contains ATP, degrade with multiple freeze thaw cycles. Aliquot these components as necessary to limit the number of freeze thaw cycles.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> If AluI is not used to digest genomic DNA, do not add the blunt phosphorylated double-stranded adapters (skip step 18). In addition, replace the ligation mix (step 20a) with the following mix shown below. Thereafter, perform steps 20b and 20c as described above.</div>
+<table id="undtbl23">
+<thead>
+<tr>
+<th>Ligation</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T4 DNA ligase buffer (10×)</td>
+<td>0.2×</td>
+<td>100 nL</td>
+</tr>
+<tr>
+<td>T4 DNA ligase (2,000,000 units/mL)</td>
+<td>28 units/μL</td>
+<td>70 nL</td>
+</tr>
+<tr>
+<td>ATP (10 mM)</td>
+<td>0.8 mM</td>
+<td>400 nL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>230 nL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>800 nL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Plates can be stored at −20°C until ready to continue.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.9">Pooling single cells and DNA cleanup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>Each well containing distinctly barcoded DNA molecules from an individual cell in the 384-well plate is pooled together manually. A standard 1× DNA bead cleanup is performed to exchange the buffer.</p>
+<ol start="21">
+<li>Use a manual pipette (a 12-channel P20 is recommended) to pool cells that are uniquely barcoded (both AbaSI/BseRI barcodes and AluI barcodes) into a 1.5 mL microcentrifuge tube. Each well of the 384-well plate should contain a total volume of 9 μL (4 μL Vapor-Lock and 5 μL of aqueous solution) (<a href="#fig2">Figure 2</a>).
+<ol type="a">
+<li>Depending on the numbers of AbaSI/BseRI and AluI barcodes used, more than one 1.5 mL microcentrifuge tube might be required to pool cells from the entire plate. For example, if 96 AbaSI/BseRI barcodes and 96 AluI barcodes were distributed over a 384-well plate, four 1.5 mL microcentrifuge tubes will be required to pool cells.</li>
+<li>To pool a plate formatted as described in <a href="#fig2">Figure 2</a>, for the first barcoded set of 96 cells, pool all odd rows and odd columns. Use a 12-channel P20 pipette to aspirate all liquid from wells A1, A3, A5…A23, then eject the liquid into a 12-tube PCR strip.</li>
+<li>Return to the plate and aspirate wells C1, C3, C5…C23, then eject the liquid into the same 12-tube PCR strip.</li>
+<li>Continue this pattern until the odd columns of row O have been transferred into the same 12-tube PCR strip. The same tips can be used throughout this process but should be discarded after transferring the odd columns of row O.</li>
+<li>Transfer the material from the 12-tube PCR strip into a 1.5 mL microcentrifuge tube. The pooling of one set of 96 uniquely barcoded cells are now complete.</li>
+<li>Repeat this process using new tips, a new 12-tube PCR strip and a new 1.5 mL microcentrifuge tube to pool all even rows and odd columns. This will result in the second set of 96 uniquely barcoded cells.</li>
+<li>Repeat this process using new tips, a new 12-tube PCR strip and a new 1.5 mL microcentrifuge tube to pool all odd rows and even columns. This will result in the third set of 96 uniquely barcoded cells.</li>
+<li>Repeat this process again using new tips, a new 12-tube PCR strip and a new 1.5 mL microcentrifuge tube to pool all even rows and even columns. This will result in the fourth set of 96 uniquely barcoded cells. At this point the 384-well plate has been distributed into 4 libraries and each library has its own 1.5 mL microcentrifuge tube.</li>
+</ol>
+</li>
+<li>Spin the tubes at 5,000 <i>g</i> for 1 min. The mixture should separate into two distinct phases.</li>
+<li>Use a P200 pipette to remove as much of the upper oil phase as possible.</li>
+<li>Next, use a P1000 pipette to quickly plunge through any of the remaining oil phase and transfer the aqueous phase to a new tube.
+<ol type="a">
+<li>The pipette should go through the oil phase only once to collect all the solution in the aqueous phase. If the oil and aqueous phases begin to mix prior to complete separation of the aqueous phase, repeat steps 22–24.</li>
+<li>The samples are not amplified at this point. To minimize sample loss, collect as much of the aqueous layer as possible, and ideally leave behind less than 10 μL of the aqueous phase. It is best practice to not aspirate any of the oil phase as it can complicate step 25.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Minimize transferring the oil phase during the phase separation. The presence of oil makes the DNA bead cleanup step more challenging as the beads become hydrophobic and do not dry easily. While the presence of oil does not affect the quality of the final Illumina libraries, it can increase handling time during the bead cleanup step. Therefore, if some oil is still present in the aqueous phase after the transfer in step 24, repeat steps 22–24 to remove the oil.</div>
+<ol start="25">
+<li>Measure the volume transferred to the new tubes with a P1000 pipette and perform a 1× AMPure XP magnetic bead cleanup by adding the same volume of the magnetic bead solution as the sample.
+<div class="note">
+<span class="note-title">Note:</span> Prior to use, allow the magnetic bead solution to reach 20°C–25°C and vortex the magnetic bead solution well.</div>
+<ol type="a">
+<li>Mix the beads and sample thoroughly and then incubate at 20°C–25°C for 30 min.</li>
+<li>Move the tube to a magnetic stand. Wait till the beads form a pellet.</li>
+<li>Discard the supernatant.</li>
+<li>Wash the pellet twice with freshly made (up to 7 days) 80% ethanol, ensuring that it covers the entire bead pellet.</li>
+<li>While still leaving the tube on the magnetic stand, allow the pellet to dry with the tube’s lid left open for approximately 3–10 min. The beads are dry when a slight color change appears. Do not over-dry the beads. Once minor cracking of the beads is visible, move to the next step.</li>
+<li>Remove the tube from the magnetic stand and elute DNA with 30 μL of nuclease-free water.</li>
+<li>Mix well and wait 15 min before placing the tube on the magnetic stand.</li>
+<li>After the beads form a pellet, transfer the supernatant to a new tube. The supernatant now contains the unamplified DNA molecules.
+<div class="critical">
+<span class="critical-title">Critical:</span> The samples have not been amplified at this point, so minimizing material loss is critical during the elution step (step 25.h). Try to transfer at least 29 μL in step 25.h.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="26">
+<li>Use a vacufuge at 20°C–25°C to reduce the sample volume from 30 μL to 6.4 μL.
+<ol type="a">
+<li>If the sample does not reduce to 6.4 μL, see <a href="#sec7.1">troubleshooting 1</a>.
+<div class="critical">
+<span class="critical-title">Critical:</span> Each 1.5 mL microcentrifuge tube should contain pooled DNA molecules from individual cells with unique AbaSI/BseRI barcodes and AluI barcodes. For example, if 96 cells are pooled into the same 1.5 mL microcentrifuge tube, 96 unique AbaSI/BseRI barcodes and 96 unique AluI barcodes are required.</div>
+<div class="note">
+<span class="note-title">Note:</span> When using a vacufuge, if the sample volume reduces to less than 6.4 μL, add nuclease-free water to bring the volume back up to 6.4 μL.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Samples can be stored at −20°C until ready to continue.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.10">
+<i>In vitro</i> transcription and amplified RNA clean-up</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p><i>In vitro</i> transcription (IVT) is used to amplify the barcoded DNA molecules, generating amplified RNA (aRNA). Next, ExoSAP-IT is used to remove any excess primers. The aRNA is then fragmented to a suitable length (200–1000 nucleotides) for sequencing. Finally, a standard 0.825× RNA bead cleanup is performed to exchange the buffer.</p>
+<ol start="27">
+<li>The MEGAscript T7 transcription kit is used for this step. To each pooled sample containing 6.4 μL of barcoded DNA molecules add:
+<ol type="a">
+<li>IVT master mix:
+<table id="undtbl24">
+<thead>
+<tr>
+<th>IVT (MEGAscript T7 transcription kit)</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ATP solution</td>
+<td>n/a</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td>CTP solution</td>
+<td>n/a</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td>GTP solution</td>
+<td>n/a</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td>UTP solution</td>
+<td>n/a</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td>T7 reaction buffer (10×)</td>
+<td>1×</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td>T7 enzyme mix</td>
+<td>n/a</td>
+<td>1.6 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>9.6 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume per sample will be 16 μL containing 1× T7 reaction buffer.</li>
+<li>Perform the following:
+<table id="undtbl25">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IVT</td>
+<td>37°C</td>
+<td>13 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The samples are now amplified and contain aRNA.
+<div class="critical">
+<span class="critical-title">Critical:</span> As IVT takes 13 h to complete, it is likely that this step will be performed at the end of the day and the samples will be held at 4°C. While aRNA is stable at 4°C for several hours, it is recommended to either store aRNA at −20°C for short-term storage (a few days) or proceed to the next step within a few hours after the IVT step is complete.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="28">
+<li>Add 6 μL of ExoSAP-IT and incubate the samples for 15 min at 37°C.</li>
+<li>aRNA fragmentation
+<ol type="a">
+<li>Preheat a thermocycler to 94°C.</li>
+<li>Add 5.5 μL of fragmentation buffer to the samples while on ice.</li>
+<li>Immediately transfer the sample tubes to the thermocycler at 94°C for exactly 2 min.</li>
+<li>Immediately place sample tubes back on ice.</li>
+<li>Add 2.75 μL of 0.5 M EDTA to stop fragmentation.</li>
+<li>Add 19.75 μL of nuclease-free water. The total volume should now be 50 μL.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Due to the time-sensitive nature of the aRNA fragmentation step, it is recommended to handle only 2–3 tubes at one time.</div>
+<ol start="30">
+<li>Briefly spin down the tubes and transfer the solution to a new 1.5 mL microcentrifuge tube.</li>
+<li>Perform a standard 0.825× RNA bead cleanup, eluting in 22 μL of water.
+<ol type="a">
+<li>This step is similar to step 25.</li>
+<li>Add 41.25 μL of RNAClean XP magnetic beads to the fragmented aRNA. Incubate the sample for 15 min and then transfer to a magnetic stand.</li>
+<li>Once the beads form a pellet, discard the supernatant and wash the pellet twice with freshly made 80% ethanol.</li>
+<li>Dry the beads on the magnetic stand by leaving the cap of the tube open (3–10 min). Remove the tube from the magnetic stand and elute the fragmented aRNA in 22 μL of nuclease-free water.</li>
+<li>Allow the fragmented aRNA to elute from the beads for 10 min before placing the tube on the magnetic stand. Once the beads form a pellet, transfer the supernatant to a new tube.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> All surfaces and items must be RNase-free. Use RNaseZap to wipe down all equipment, surfaces, and gloved hands. RNase contamination can lead to library preparation failure.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> At the completion of this section, an Agilent RNA 6000 Pico chip can be run to check the size distribution of the fragmented aRNA (<a href="#fig3">Figures 3</a>A and 3B).</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Samples can be stored at −80°C until ready to continue. In the following steps, not all aRNA will be used. The remaining aRNA can be stored at −80°C to generate additional Illumina libraries in the future if necessary.</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1237-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Expected size distribution of aRNA and Illumina library in scH&amp;G-seq</div>
+<p>(A and B) Representative bioanalyzer plot for aRNA run on an Agilent RNA 6000 Pico chip. More material amplified RNA is typically observed when all three enzymes AbaSI, BseRI, and AluI are used (A), compared to when AbaSI is used alone (B).</p>
+<p>(C) Representative bioanalyzer plot for a scH&amp;G-seq Illumina library run on an Agilent high-sensitivity DNA chip. A majority of the library should be within the 200–1000 base pair range. Fluorescence units ([FU]) on the y-axis correlates with the amount of RNA/DNA in the sample.</p>
+</figcaption>
+</figure>
+<h3 id="sec3.11">Illumina library preparation from amplified RNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>In this section, aRNA is reverse transcribed using random hexamer primers with overhangs that contain part of the Illumina read 2 adapter sequence. The reverse transcribed single-stranded DNA now contains parts of the Illumina read 1 and read 2 adapters at the two ends of the molecules. Next, these molecules are amplified by PCR, and the full Illumina adapter sequences are introduced using overhangs in the PCR primers. Two 0.825× DNA bead cleanups are performed to remove primers and dimers, and to exchange the buffer. The size distribution and concentration of the final Illumina libraries are then quantified using an Agilent Bioanalyzer and Qubit fluorometer, respectively.</p>
+<ol start="32">
+<li>Reverse transcription of aRNA
+<ol type="a">
+<li>To 5 μL of the aRNA from step 31, add:
+<table id="undtbl26">
+<thead>
+<tr>
+<th>Reverse transcription part 1</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random hexamer primer (20 μM)</td>
+<td>3.07 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>dNTP (10 mM)</td>
+<td>0.77 mM</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1.5 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume will be 6.5 μL.</li>
+<li>Perform the following:
+<table id="undtbl27">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heat denature the aRNA</td>
+<td>65°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Immediately place the samples directly on ice.</li>
+<li>Add the remaining reverse transcription mix:
+<table id="undtbl28">
+<thead>
+<tr>
+<th>Reverse transcription part 2</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First strand buffer (5×)</td>
+<td>0.95×</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>DTT (0.1 M)</td>
+<td>9.52 mM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>RNaseOUT (40 Units/μL)</td>
+<td>1.90 Units/μL</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>SuperScript II (200 Units/μL)</td>
+<td>9.52 Units/μL</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>4 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume will be 10.5 μL.</li>
+<li>Perform the following:
+<table id="undtbl29">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial extension</td>
+<td>25°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Reverse transcription</td>
+<td>42°C</td>
+<td>1 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Final hold</td>
+<td>4°C</td>
+<td colspan="2">forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="33">
+<li>PCR amplification
+<ol type="a">
+<li>Transfer 5.25 μL of the reverse transcribed aRNA from step 32 to a new PCR tube and store the other half at −20°C for later use in case the number of PCR cycles performed here turns out to be non-optimal.</li>
+<li>Each sample should receive its own indexed RNA PCR Primer (RPI1-RPI48) so that it can be multiplexed with other samples in one Illumina sequencing lane if desired.</li>
+<li>To 5.25 μL of the reverse transcribed aRNA, add the following PCR mix:
+<table id="undtbl30">
+<thead>
+<tr>
+<th>PCR mix</th>
+<th>Final concentration</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RNA PCR primer (RP1) (10 μM)</td>
+<td>0.40 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>RNA PCR primer (Choose one from RPI1-48) (10 μM)</td>
+<td>0.40 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>NEBNext high-fidelity PCR mix (2×)</td>
+<td>0.99×</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>5.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>The total volume is now 25.25 μL.</li>
+<li>Perform the following (Note that the thermocycler is preheated to 98°C, and once it has reached this temperature, insert the sample and advance to the next step):
+<table id="undtbl31">
+<thead>
+<tr>
+<th colspan="4">Thermocycler conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preheating</td>
+<td>98°C</td>
+<td colspan="2">Forever (advance to the next step when the PCR tubes are placed in the thermocycler)</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">8–14 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="34">
+<li>Briefly spin down the tubes to collect all the liquid to the bottom of the tube. Add 24.75 μL of nuclease-free water. Transfer the solution in each PCR tube to a new 1.5 mL microcentrifuge tube.</li>
+<li>Perform a 0.825× AMPure XP magnetic bead cleanup, eluting in 50 μL of nuclease-free water.
+<ol type="a">
+<li>This cleanup is similar to the one described in step 25.</li>
+<li>Add 41.25 μL of AMPure XP magnetic beads to 50 μL of the PCR product. Incubate the sample for 15 min. Transfer the tube to a magnetic stand.</li>
+<li>Once the beads form a pellet, discard the supernatant. Wash the pellet twice with freshly made 80% ethanol.</li>
+<li>Dry the beads on the magnetic stand by leaving the cap of the tube open for 3–10 min. Remove the tube from the magnetic stand and elute in 50 μL of nuclease-free water.</li>
+<li>Allow the DNA to elute from the beads for 10 min before placing the tube on the magnetic stand. Once the beads form a pellet, transfer the supernatant to a new tube.</li>
+</ol>
+</li>
+<li>Perform a second 0.825× AMPure XP magnetic bead cleanup, eluting in 15 μL of nuclease-free water.
+<ol type="a">
+<li>This cleanup is the same as step 35, except that the final elution volume is 15 μL.</li>
+</ol>
+</li>
+<li>Determine the fragment size distribution of the Illumina library using an Agilent high-sensitivity DNA kit following the manufacturer’s recommendations. 1 μL of each sample is loaded on a high-sensitivity DNA chip.
+<ol type="a">
+<li>If the Illumina library does not show a size distribution similar to <a href="#fig3">Figure 3</a>C, see <a href="#sec7.3">troubleshooting 2</a>, <a href="#sec7.5">3</a>, <a href="#sec7.7">4</a>, and <a href="#sec7.9">5</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The bioanalyzer plot should show that greater than 90% of the product library has a size distribution between 200 and 1000 bp. There should be little to no primer (&lt;100 bases) or dimer peaks (∼120 bases) present. If there is a substantial primer and/or dimer peaks present, or if a significant percentage of the library is greater than 1000 bp, see <a href="#sec7.3">troubleshooting 2</a> and <a href="#sec7.5">3</a>.</div>
+<ol start="38">
+<li>If the bioanalyzer results warrant continuation, quantify the concentration of the Illumina library using the Qubit dsDNA high-sensitivity assay by following the manufacturer’s recommendations. 1 μL of the Illumina library is used to estimate the concentration.
+<ol type="a">
+<li>If the sample concentration is above the lower limit of detection for the Qubit dsDNA high-sensitivity assay, the concentration is typically sufficient for Illumina sequencing.</li>
+<li>The concentration will vary depending on the number of PCR cycles, but concentrations are typically in the range of 0.5–4 ng/μL. Low Qubit concentrations might reflect that many of the cells in the library have failed to amplify and may not produce high-quality data.</li>
+</ol>
+</li>
+<li>Combine Illumina libraries with distinct multiplexed barcodes added during the PCR step (step 33). Sequence on an Illumina platform to a depth of approximately 0.5–1 million reads per cell. For the analysis pipeline presented below, sequencing should contain at least 76 cycles on read 1. No custom Illumina sequencing primers are required.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> During PCR (step 33), one of the primers is universal (RP1) and is added to all samples. To multiplex multiple samples on the same Illumina sequencing lane, the other primer (RPI1, RPI2, … RPI48) is unique to each sample.</div>
+<div class="note">
+<span class="note-title">Note:</span> 9 PCR cycles were found to be sufficient for making successful Illumina libraries containing 48 H9 cells.</div>
+<div class="note">
+<span class="note-title">Note:</span> These Illumina libraries can be sequenced without any custom primers, and they can be multiplexed with any TruSeq-based Illumina sequencing library.</div>
+<div class="note">
+<span class="note-title">Note:</span> While the steps 25, 35, and 36 are for cleanup of DNA molecules, the cleanup in step 31 is for RNA molecules. Make sure to use the correct magnetic beads (AMPure XP <i>vs.</i> RNAClean XP) accordingly.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Samples can be stored at −20°C after the reverse transcription or PCR step (prior to or after AMPure XP magnetic bead cleanup).</div>
+<h3 id="sec3.12">Computational pipeline to analyze scH&amp;G-seq sequencing results</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<p>Sequencing results are processed into output files that provide 5hmC and genomic/mitochondrial DNA locations in each cell. Each read type – AbaSI, BseRI, and AluI derived reads – is partitioned into different files. Each file contains a list of unique locations detected (with duplicate reads removed) with the following format: cell barcode number, chromosome, mapped genomic location, and DNA strand information. The DNA strand information column is replaced with a unique molecule identifier (UMI) for the AluI derived file. All scripts and barcodes used can be found at GitHub <a href="https://github.com/alexchialastri/scH-G-seq">https://github.com/alexchialastri/scH-G-seq</a>. The associated scH&amp;G-seq sequencing data for H9 cells can be found at GEO: GSE131678.</p>
+<ol start="40">
+<li>Process reads derived from AbaSI (5hmC) and BseRI (genomic/mitochondrial DNA). These reads have the same barcode (which is a different set from AluI derived reads) and are deconvoluted using the following steps:
+<ol type="a">
+<li>Sequenced reads (read 1) are trimmed to 76 bases.
+<ol type="i">
+<li><code>perl MakeFastqShorter.pl -Input InputFastqFileName.fastq -LengthMake 76</code></li>
+</ol>
+</li>
+<li>Trimmed reads containing AbaSI/BseRI barcodes are extracted.
+<ol type="i">
+<li><code>perl ExtractingAbaReads_96BC_SimultanousWithAluI_UserInput.pl -START_DIR ./ -FASTQ_R1 InputFastqFileName-Trimed-76.fastq -BARCODES aba_barcodes.csv -ALUIBARCODES ALUI.txt</code></li>
+</ol>
+</li>
+<li>Read 1 is then mapped using Burrows Wheels Aligner (BWA).
+<ol type="i">
+<li><code>bwa aln -q 0 -n 0.04 -k 2 -l 200 -t 6 -B 6 hg19.fa InputFastqFileName-Trimed-76-AbaSI-BseRI.fastq &gt; Read1OutputFileName.sai</code></li>
+<li><code>bwa samse -n 100 hg19.fa Read1OutputFileName.sai InputFastqFileName-Trimed-76-AbaSI-BseRI.fastq &gt; Read1OutputFileName.sam</code></li>
+</ol>
+</li>
+<li>The resulting mapped output sam file is then converted to the final processed AbaSI and BseRI files based on the recognition site of each restriction enzyme.
+<ol type="i">
+<li><code>perl process_scaba_with_BseRI_AnyInput.pl hg19.fa Read1OutputFileName.sam aba_barcodes.csv</code></li>
+<li><code>perl Aba_or_BseRI_FabaToText.pl Read1OutputFileName-ABA.faba</code></li>
+<li><code>perl Aba_or_BseRI_FabaToText.pl Read1OutputFileName-BseRI.faba</code></li>
+</ol>
+</li>
+<li>The final output file Read1OutputFileName-ABA.txt contains 5hmC locations detected in single cells and Read1OutputFileName-BseRI.txt contains BseRI-derived genomic/mitochondrial DNA locations detected in the same single cells.</li>
+</ol>
+</li>
+<li>Deconvolute and process AluI-derived reads.
+<ol type="a">
+<li>Sequenced reads (read 1) are trimmed to 76 bases using the MakeFastqShorter.pl Perl script. Skip this step if step 40.a was performed.
+<ol type="i">
+<li><code>perl MakeFastqShorter.pl -Input InputFastqFileName.fastq -LengthMake 76</code></li>
+</ol>
+</li>
+<li>Trimmed reads containing AluI barcodes are extracted.
+<ol type="i">
+<li><code>perl ExtractingAluIReads_UserInput_NoBarcodeCollisions.pl -FASTQ_R1 InputFastqFileName-Trimed-76.fastq -ALUI_BC ALUI.txt -ABASI_BC aba_barcodes.csv</code></li>
+</ol>
+</li>
+<li>Read 1 is then mapped using Burrows Wheels Aligner (BWA).
+<ol type="i">
+<li><code>bwa aln -q 0 -n 0.04 -k 2 -l 200 -t 6 -B 13 hg19.fa InputFastqFileName-Trimed-76-AluI.fastq &gt; Read1AluIOutputFileName.sai</code></li>
+<li><code>bwa samse -n 100 hg19.fa Read1AluIOutputFileName.sai InputFastqFileName-Trimed-76-AluI.fastq &gt; Read1AluIOutputFileName.sam</code></li>
+</ol>
+</li>
+<li>The resulting mapped output sam file is then converted to the final processed AluI file based on its recognition site.
+<ol type="i">
+<li><code>perl Identifying_AluI_Sites_withUMI_SCdata_ForkedAdapters.pl Read1AluIOutputFileName.sam Read1AluIOutputFileName-se_MappedReads.txt Read1AluIOutputFileName-se_correctpos_stringent.txt</code></li>
+<li><code>perl SimplifyData.pl Read1AluIOutputFileName-se_correctpos_stringent.txt Read1AluIOutputFileName-se_correctpos_stringent_simplified.txt ALUI.txt</code></li>
+<li><code>sort -k1,1n -k2,2V -k3,3n Read1AluIOutputFileName-se_correctpos_stringent_simplified.txt &gt; Read1AluIOutputFileName-se_correctpos_stringent_simplified_sort.txt</code></li>
+<li><code>perl RemoveDup.pl Read1AluIOutputFileName-se_correctpos_stringent_simplified_sort.txt Read1AluIOutputFileName-se_correctpos_stringent_simplified_sort_rmdup.txt</code></li>
+</ol>
+</li>
+<li>The final output file Read1AluIOutputFileName-se_correctpos_stringent_simplified_sort_rmdup.txt has AluI-derived genomic/mitochondrial DNA locations detected in single cells.</li>
+</ol>
+</li>
+<li>Note that AluI-derived reads and AbaSI/BseRI-derived reads have different barcodes. By keeping track of which AluI and AbaSI/BseRI barcodes were added to a given cell (noted in steps 18–20), the corresponding reads derived from AluI and AbaSI/BseRI can be assigned to the same cell.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Only single-end sequencing is required. Replace InputFastqFileName.fastq with the fastq file name from your experiment.</div>
+<div class="note">
+<span class="note-title">Note:</span> Prior to mapping, index the genome using BWA version 0.7.15. Follow the steps outlined in the BWA manual to create an indexed genome.</div>
+<div class="note">
+<span class="note-title">Note:</span> BWA parameters in steps 40.c and 41.c can be adjusted as appropriate. However, “-B” parameter indicating the barcode length should be kept as 6 and 13, respectively.</div>
+<div class="note">
+<span class="note-title">Note:</span> The names of output files can be adjusted as appropriate, as long as the names of files generated in steps 40 and 41 remain distinct.</div>
+<div class="note">
+<span class="note-title">Note:</span> For the pipeline processing BseRI and AbaSI derived reads, the resulting text files will indicate chromosome X as 23, chromosome Y as 24, and mitochondrial-based reads as chromosome 25. The following scripts will also work on the mouse genome (or any organism with less than 22 autosomes) and will still result in the same naming convention for the sex chromosomes and mitochondrial-based reads. Organisms with more than 22 autosomes will require slight modification to line 65 of process_scaba_with_BseRI_AnyInput.pl to account for more chromosomes. For the pipeline processing AluI derived reads, the resulting text files will identify the sex chromosomes as chromosome X and Y, and the mitochondrial-based reads as chromosome M.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> After mapping the fastq files, samtools can be used to quantify the mapping efficiency using the flagstat tool on both sam files. Samtools can also be used to convert the sam file into a compressed bam file for long term data storage.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> After completing this protocol, follow the steps described for single-cell Probabilistic Endogenous Cellular Lineage Reconstruction (scPECLR) in <a href="#bib9">Wangsanuwat et al., 2021</a> to reconstruct cellular lineages.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Prior to sequencing, the bioanalyzer plot should show a size distribution that contains greater than 90% of the Illumina library between 200 and 1000 bp. There should be little to no primer (&lt;100 bases) or dimer peaks (∼120 bases). The bioanalyzer plot for the Illumina library should be similar to that shown in <a href="#fig3">Figure 3</a>C. The concentration of the Illumina library can vary but it should be high enough to be detected on the Qubit dsDNA high-sensitivity assay with 1 μL of sample. Successfully sequenced cells typically result in several orders of magnitude more sequencing reads compared to barcodes that were not used (negative controls), or cells that were poorly sorted (<a href="#fig4">Figure 4</a>A). Nearly all cells that have high read counts derived from one enzymatic digestion also have high read counts from the other enzymatic digestion(s) (<a href="#fig4">Figure 4</a>B).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1237-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Expected sequencing metrics in scH&amp;G-seq</div>
+<p>(A) The number of AluI-derived reads detected in successfully sequenced cells is several orders-of-magnitude higher than poorly sequenced cells. The red dotted line shows a cutoff between successfully and poorly sequenced cells.</p>
+<p>(B) When AbaSI, BseRI, and AluI are used, high counts are simultaneously detected for reads that derive from all three enzymes in successfully sequenced cells. The grey dotted lines show a cutoff between successfully and poorly sequenced cells.</p>
+<p>(C and D) Using either BseRI or a combination of AluI and BseRI enables the detection of BseRI-derived reads from genomic DNA (C) and mitochondrial DNA (D) compared to control.</p>
+<p>(E and F) Using either AluI or a combination of AluI and BseRI enables the detection of AluI-derived reads from genomic DNA (E) and mitochondrial DNA (F). As cells in the control sample received no AluI adapter, it has no associated AluI-derived reads, and is therefore not shown in these two panels.</p>
+<p>(G) Using BseRI, AluI, or AluI and BseRI, in combination with AbaSI results in the detection of 5hmC sites in the genome. “<i>A</i>”, “<i>B</i>”, “<i>AB</i>”, and “<i>N</i>” denote libraries made using AluI, BseRI, AluI and BseRI, and neither AluI and BseRI, respectively. All conditions shown here include the use of AbaSI for the detection of 5hmC.</p>
+</figcaption>
+</figure>
+<p>In the example shown in <a href="#fig4">Figure 4</a>, scH&amp;G-seq was performed using BseRI (B), AluI (A), both enzymes (AB), or neither enzyme (N), along with AbaSI. As expected, genomic and mitochondrial BseRI-derived reads were detected in conditions B and AB (<a href="#fig4">Figures 4</a>C and 4D). Similarly, genomic and mitochondrial AluI-derived reads were detected in conditions A and AB (<a href="#fig4">Figures 4</a>E and 4F). In all conditions, high levels of AbaSI-derived reads were identified, demonstrating that in all these conditions 5hmC can be detected (<a href="#fig4">Figure 4</a>G).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Strand-specific 5hmC can be used to infer cellular lineages at an individual cell division resolution. Further, sequencing of genomic and mitochondrial DNA can be used to identify copy number variations (CNV) and single-nucleotide polymorphisms (SNP) that together with strand-specific 5hmC can be used to reconstruct larger lineage trees. The detailed methods can be found in <a href="#bib9">Wangsanuwat et al., 2021</a>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Certain cell types contain low levels of 5hmC and in these cases successful detection of this mark may be challenging in single cells. However, for applications related to reconstructing lineage trees, it is only necessary to quantify the relative levels of 5hmC between the two strands of a chromosome; therefore, in these cases, the absolute levels of 5hmC in a cell does not impact the accuracy of lineage reconstruction (<a href="#bib5">Mooijman et al., 2016</a>; <a href="#bib9">Wangsanuwat et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Prior to IVT, the sample does not reduce to a volume of 6.4 μL, even after several minutes in the vacufuge (step 26).</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>This problem most likely occurs because the sample contains a layer of oil, reducing the efficiency of evaporation. Return the sample to the vacufuge, and spin for an additional 10 min at 20°C–25°C. If no evaporation occurs, use the 30°C temperature mode on the vacufuge and continue spinning for an additional 10 min. If this fails, transfer the liquid to a new 1.5 μL microcentrifuge tube and continue spinning at 30°C. If necessary, a short vacufuge spin of less than 10 min at a temperature of 45°C can also be attempted. If the issue persists, continue with the protocol by proportionally scaling up all reagents of the IVT reaction, aRNA fragmentation and the aRNA bead cleanup. IVT has been successfully performed with an initial volume as high as 10 μL.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>After running the Agilent high-sensitivity DNA kit on the bioanalyzer, a significant amount of material and/or peaks are observed at sizes less than 200 bp (step 37).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Perform an additional 0.825× AMPure XP magnetic bead cleanup and elute in 15 μL of nuclease-free water. Then rerun the Illumina library on the bioanalyzer using the Agilent high-sensitivity DNA kit.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>After running the Agilent high-sensitivity DNA kit on the bioanalyzer, a significant amount of material is observed at sizes greater than 1000 bp (step 37).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Starting from the 5.25 μL of saved reverse transcribed aRNA (step 33.a), perform PCR with 2–3 less cycles. Continue to follow the protocol and re-evaluate the Illumina library on the bioanalyzer using the Agilent high-sensitivity DNA kit.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>After running the Agilent high-sensitivity DNA kit on the bioanalyzer, a very limited amount of material or no material is observed (step 37).</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>Starting from the 5.25 μL of saved reverse transcribed aRNA (step 33.a), perform PCR with 3 more cycles. Continue to follow the protocol and re-evaluate the Illumina library on the bioanalyzer using the Agilent high-sensitivity DNA kit. If there is still a very limited amount of material, run an Agilent RNA 6000 Pico chip on the aRNA following the manufacturer’s recommendations to determine if the ligated genome DNA molecules were successfully amplified by IVT. If no material is observed on the Agilent RNA 6000 Pico chip, restart the protocol by processing a new plate (starting from step 10).</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Continued issues with generating high-quality Illumina libraries based on the bioanalyzer plots and the previous troubleshooting steps have not worked after multiple attempts (step 37).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>If none of the plates from a given FACS sort have been verified to work, restart by sorting single cells again into 384-well plates (starting from step 1). Replace reagents with new nuclease-free aliquots. If issues persist, lower the double-stranded adapter concentration by a factor of two. Lower double-stranded adapter concentrations typically produce high-quality Illumina libraries on the bioanalyzer at the expense of sequencing complexity. If issues persist, try sorting 100 cells into each well of a 384-well plate and perform scH&amp;G-seq as described above to determine if single-cell sorting and/or handling of limited starting material is the problem.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Hashimshony, T., Senderovich, N., Avital, G., Klochendler, A., de Leeuw, Y., Anavy, L., Gennert, D., Li, S., Livak, K.J., Rozenblatt-Rosen, O., et al. (2016). CEL-Seq2: sensitive highly-multiplexed single-cell RNA-Seq. Genome Biol. <i>17</i>, 77. <a class="external-link" href="https://doi.org/10.1186/s13059-016-0938-8">https://doi.org/10.1186/s13059-016-0938-8</a></p>
+<p id="bib2">Li, H. and Durbin, R. (2009). Fast and accurate short read alignment with Burrows–Wheeler transform. Bioinformatics <i>25</i>, 1754-1760. <a class="external-link" href="https://doi.org/10.1093/bioinformatics/btp324">https://doi.org/10.1093/bioinformatics/btp324</a></p>
+<p id="bib3">Ludwig, L.S., Lareau, C.A., Ulirsch, J.C., Christian, E., Muus, C., Li, L.H., Pelka, K., Ge, W., Oren, Y., Brack, A., et al. (2019). Lineage tracing in humans enabled by mitochondrial mutations and single-cell genomics. Cell <i>176</i>, 1325-1339.e22. <a class="external-link" href="https://doi.org/10.1016/j.cell.2019.01.022">https://doi.org/10.1016/j.cell.2019.01.022</a></p>
+<p id="bib4">Markodimitraki, C.M., Rang, F.J., Rooijers, K., de Vries, S.S., Chialastri, A., de Luca, K.L., Lochs, S.J.A., Mooijman, D., Dey, S.S., and Kind, J. (2020). Simultaneous quantification of protein–DNA interactions and transcriptomes in single cells with scDam&amp;T-seq. Nat. Protoc. <i>15</i>, 1922-1953. <a class="external-link" href="https://doi.org/10.1038/s41596-020-0314-8">https://doi.org/10.1038/s41596-020-0314-8</a></p>
+<p id="bib5">Mooijman, D., Dey, S.S., Boisset, J.C., Crosetto, N., and van Oudenaarden, A. (2016). Single-cell 5hmC sequencing reveals chromosome-wide cell-to-cell variability and enables lineage reconstruction. Nat. Biotechnol. <i>34</i>, 852-856. <a class="external-link" href="https://doi.org/10.1038/nbt.3598">https://doi.org/10.1038/nbt.3598</a></p>
+<p id="bib6">Rooijers, K., Markodimitraki, C.M., Rang, F.J., de Vries, S.S., Chialastri, A., de Luca, K.L., Mooijman, D., Dey, S.S., and Kind, J. (2019). Simultaneous quantification of protein–DNA contacts and transcriptomes in single cells. Nat. Biotechnol. <i>37</i>, 766-772. <a class="external-link" href="https://doi.org/10.1038/s41587-019-0150-y">https://doi.org/10.1038/s41587-019-0150-y</a></p>
+<p id="bib7">Wallace, D.C. (1994). Mitochondrial DNA sequence variation in human evolution and disease. Proc. Natl. Acad. Sci. <i>91</i>, 8739-8746. <a class="external-link" href="https://doi.org/10.1073/pnas.91.19.8739">https://doi.org/10.1073/pnas.91.19.8739</a></p>
+<p id="bib8">Wang, H., Guan, S., Quimby, A., Cohen-Karni, D., Pradhan, S., Wilson, G., Roberts, R.J., Zhu, Z., and Zheng, Y. (2011). Comparative characterization of the PvuRts1I family of restriction enzymes and their application in mapping genomic 5-hydroxymethylcytosine. Nucleic Acids Res. <i>39</i>, 9294-9305. <a class="external-link" href="https://doi.org/10.1093/nar/gkr607">https://doi.org/10.1093/nar/gkr607</a></p>
+<p id="bib9">Wangsanuwat, C., Chialastri, A., Aldeguer, J.F., Rivron, N.C., and Dey, S.S. (2021). A probabilistic framework for cellular lineage reconstruction using integrated single-cell 5-hydroxymethylcytosine and genomic DNA sequencing. Cell Rep. Methods <i>2020</i>, 100060. <a class="external-link" href="https://doi.org/10.1016/j.crmeth.2021.100060">https://doi.org/10.1016/j.crmeth.2021.100060</a></p>
+<p id="bib10">Xu, J., Nuno, K., Litzenburger, U.M., Qi, Y., Corces, M.R., Majeti, R., and Chang, H.Y. (2019). Single-cell lineage tracing by endogenous mutations enriched in transposase accessible mitochondrial DNA. eLife <i>8</i>, 480202. <a class="external-link" href="https://doi.org/10.7554/eLife.45105">https://doi.org/10.7554/eLife.45105</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Siddharth S. Dey (<a href="mailto:sdey@ucsb.edu">sdey@ucsb.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique materials or reagents.</p>
+<h4>Data and code availability</h4>
+<p>The raw and processed single-cell sequencing data have been deposited at GEO and are publicly available as of the date of publication. The accession number is listed in the <a href="#key-resources-table">key resources table</a>.</p>
+<p>The codes required to analyze sequencing data produced in this protocol have been deposited at GitHub and are publicly available as of the date of publication. The GitHub link is listed in the <a href="#key-resources-table">key resources table</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank the Biological Nanostructures Laboratory in the California NanoSystems Institute (CNSI) for Illumina sequencing, supported by UCSB and the UC Office of the President. Computational work was supported by the Center for Scientific Computing at CNSI and Materials Research Laboratory (MRL) at UCSB: an <a href="https://doi.org/10.13039/100000001">NSF</a> MRSEC (DMR-1720256) and NSF CNS-1725797. A.C., C.W., and S.S.D were supported by a CNSI Challenge Grant (8-447810-69085), <a href="https://doi.org/10.13039/100000002">NIH</a> R01HD099517, and NIH R01HG011013.</p>
+<h3>Author contributions</h3>
+<p>A.C., C.W., and S.S.D. conceived scH&amp;G-seq; A.C. performed experiments and analyzed the results; A.C., C.W., and S.S.D. wrote the manuscript. S.S.D. supervised the study and acquired funding.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

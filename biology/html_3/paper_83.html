@@ -1,0 +1,825 @@
+<article>
+<section>
+<h1 id="header">Super-STORM: Molecular Modeling to Achieve Single-molecule Localization with STORM Microscopy</h1>
+<p><time datetime="2020-04-17">Published: April 17, 2020</time></p>
+<p>Zhichao Fan,<sup><a href="#aff1">1</a>,<a href="#aff4">4</a>,<a href="#fn2">7</a>,<a href="#cor1">*</a></sup> Zbigniew Mikulski,<sup><a href="#aff2">2</a></sup> Sara McArdle,<sup><a href="#aff2">2</a></sup> Prithu Sundd,<sup><a href="#aff3">3</a></sup> and Klaus Ley<sup><a href="#aff1">1</a>,<a href="#aff5">5</a>,<a href="#fn1">6</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Division of Inflammation Biology, La Jolla Institute for Immunology, 9420 Athena Circle Drive, La Jolla, CA 92037, USA</p>
+<p id="aff2"><sup>2</sup>Microscopy Core Facility, La Jolla Institute for Immunology, 9420 Athena Circle Drive, La Jolla, CA 92037, USA</p>
+<p id="aff3"><sup>3</sup>Pittsburgh Heart, Lung and Blood Vascular Medicine Institute, University of Pittsburgh School of Medicine, Pittsburgh, PA 15261, USA</p>
+<p id="aff4"><sup>4</sup>Department of Immunology, School of Medicine, UConn Health, Farmington, CT 06030, USA</p>
+<p id="aff5"><sup>5</sup>Department of Bioengineering, University of California San Diego, 9500 Gilman Drive, La Jolla, CA 92093, USA</p>
+<p id="fn1"><sup>6</sup>Lead Contact</p>
+<p id="fn2"><sup>7</sup>Techical Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:zfan@uchc.edu">zfan@uchc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:klaus@lji.org">klaus@lji.org</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2019.100012">10.1016/j.xpro.2019.100012</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol introduces the SuperSTORM technique, combining stochastic optical reconstruction microscopy (STORM) and molecular modeling. SuperSTORM is optimized for acquiring and processing STORM images of neutrophil integrins but can be used for any cell-surface molecule with known structure and antibody-binding site(s). SuperSTORM identifies molecular cut-offs for eliminating multiple blinks of STORM imaging, determines colocalization, identifies clusters, and reveals molecular orientations and distributions. This protocol extends STORM imaging to cells in microfluidic systems. Improved resolution is achieved by using biomolecule-inherent parameters.</p>
+<p>For complete information on the generation and use of this protocol, please refer to the paper by <a href="#bib4">Fan et al. (2019)</a>.</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>SuperSTORM combines STORM and molecular modeling to improve resolution</li>
+<li>SuperSTORM identifies molecular cut-offs to find individual protein molecules</li>
+<li>SuperSTORM reveals clusters, molecular orientations and distributions</li>
+<li>SuperSTORM works with any STORM microscope</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<h3>Molecular Modeling Prep Work</h3>
+<ol>
+<li>Find crystal structures of your molecules in PDB; here, we used Integrin α<sub>X</sub>β<sub>2</sub> ectodomain, PDB 3K6S (<a href="#fig1">Figure 1</a>)</li>
+<li>Model in proper orientation and conformation (for example, top view, by CCP4MG)</li>
+<li>If you are using antibodies, make F(ab) or scFv fragments (Pierce Fab Preparation Kit).</li>
+</ol>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Integrin α<sub>X</sub>β<sub>2</sub> Ectodomain</div>
+<p>PDB 3K6S (<a href="https://www.rcsb.org/structure/3k6s">https://www.rcsb.org/structure/3k6s</a>). α<sub>X</sub> and β<sub>2</sub> chains are labeled as dark and light blue, respectively.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> This makes your probe smaller (more precise location) and eliminates possible interactions with Fc receptors on your cells.</div>
+<ol start="4">
+<li>Find epitopes</li>
+<li>Model antibody (F(ab) or scFv) to epitopes</li>
+<li>Label your antibody F(ab)s</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The distance estimation using site-directed fluorochrome labeling will be more accurate than random.</div>
+<ol type="a">
+<li>There are site-directed methods for antibody or F(ab) labeling. In this case, you should know the fluorochrome labeling site, which will guide your further estimation. If you use N-hydroxysuccinimide ester-reactive fluorochrome labeling, and you know the sequence of the F(ab), you will know which residues were labeled.</li>
+<li>If you know the sequence of the antibody or F(ab) you used, the labeling sites can be predicted (primary amines, –NH<sub>2</sub>) when using N-hydroxysuccinimide ester-reactive fluorochrome labeling.</li>
+<li>The antibody or F(ab) labeling should be considered random in your distance estimation if the antibody or F(ab) is labeled by N-hydroxysuccinimide ester-reactive fluorochrome labeling and if you don’t know the sequence of the antibody or F(ab).</li>
+<li>Suggested fluorochromes: Several fluorochromes have been tested for STORM imaging. In our experience (<a href="#bib4">Fan et al., 2019</a>), Dylight 550 and 650 are useful. AlexaFluor 647 (<a href="#bib5">Huang et al., 2008</a>), AlexaFluor 555 (<a href="#bib5">Huang et al., 2008</a>), and Atto-488 (<a href="#bib6">Johnson et al., 2016</a>) are also compatible with STORM imaging.</li>
+</ol>
+<ol start="7">
+<li>Modeling:</li>
+</ol>
+<ol type="a">
+<li>If the antibody or F(ab) was labeled randomly, model fluorochrome positions in the same F(ab) (recommended 100,000 pairs of random spatial positions, get 100,000 values of distance).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The size of an F(ab) from the top-view is known, e.g., 4 nm × 7 nm. Randomly generate two dots (x = RANDBETWEEN (0,400)/100, y = RANDBETWEEN (0,700)/100, in Excel). The distance of the two dots can be calculated as ((x<sub>1</sub>-x<sub>2</sub>)<sup>2</sup>+(y<sub>1</sub>-y<sub>2</sub>)<sup>2</sup>)<sup>0.5</sup>.</div>
+<ol start="2" type="a">
+<li>If site-directed, the distance between fluorochromes in the same F(ab) is known based on the structure.</li>
+<li>Model distance distribution of antibody signals bound to adjacent molecules (recommended 8 orientations, 8 directions of adjacency, 1,000 simulations for each condition for a total of 64,000 simulations, PatternForge).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> PatternForge is a PowerPoint/Excel based half-manual method (<a href="#fig2">Figure 2</a>, Supplemental Dataset 1). Relative locations of the two Fabs are determined in PowerPoint (<a href="#fig2">Figure 2</a>). The values of distance and orientations can be measured in PowerPoint (Positions and rotations of your objects). These values were used in the Excel spreadsheet for the random simulations (<a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Mmc1.xlsx">Supplemental Dataset 1</a>)</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. PatternForge</div>
+<p>Sixty-four ways that two bent-high affinity β2 integrin molecules may be oriented (eight directions, in rows, and eight orientations, in columns). The simulation of each condition is included in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Mmc1.xlsx">Supplemental Dataset 1</a>.</p>
+</figcaption>
+</figure>
+<ol start="8">
+<li>Superimpose the distributions from step 7 to find the cut-off for eliminating multiple blinks from the same F(ab). Example is shown in <a href="#fig3">Figure 3</a>.</li>
+<li>Eliminate multiple blinks from same F(ab) by using the merging function of ThunderSTORM (MultiBlink Eliminator), which is an open-source plugin in FIJI-ImageJ (<a href="#bib7">Ovesný et al., 2014</a>). The remaining blinks represent your F(ab) molecules.</li>
+<li>Identify the molecular cut-off for the clusters at 99% (distance that covers 99% of all distances as determined in step 7c). Note that this cut-off will depend on the size of your molecule and the orientation and position of the F(ab) or scFv.</li>
+<li>ClusterFinder: Find multiple-blinks-eliminated events within clusters by Imaris plugin software (calculating spot-to-spot closest distance). Events with a distance lower than the cut-off from step 10 are considered to be in a cluster.</li>
+<li>If you have more than one F(ab), label the second one with a different fluorochrome and repeat steps 7-11 for the next antibody</li>
+<li>Finding pairs: If you label your molecule with more than one Fab, you will want to know whether the signal comes from the same or adjacent molecules.</li>
+<li>Determine the distance distribution between two antibodies or Fabs (labeled by different fluorochromes) when bound to the SAME molecule (100,000 random simulations, PatternForge)</li>
+<li>Determine the distance distribution between two antibodies or Fabs (labeled by different fluorochromes) when bound to ADJACENT molecules (recommended 8 orientations, 8 directions of adjacency, 1000 random simulations for each for a total of 64,000 simulations, PatternForge)</li>
+<li>Superimpose the distributions from 14 and 15 to determine the molecular cut-off for pairs, where the two distributions cross over. You will need this in the data analysis.</li>
+</ol>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Molecular Cut-Off</div>
+<p>Distance distributions of localizations emanating from the same mAb24 Fab (open) or mAb24 Fabs bound to adjacent integrin molecules (filled), based on simulations of 64,000 randomly oriented integrin molecules. Adopted from <a href="#fig3">Figure 3</a>F in Fan et al., 2019.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> A cut-off below the effective resolution produces unreliable data.</div>
+<ol start="17">
+<li>Find pairs by the custom algorithm (Pairfinder, Github)</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Pairfinder is an algorithm in MATLAB. In the algorithm, import the x and y location of the two channels and give a value of cut-off (Step 16). It will provide a list of pairs (x and y location of each channel).</div>
+<ol start="18">
+<li>Molecular orientations: to learn your molecular orientations, get the distance distribution of your molecules in the experimental data with the Imaris plugin software (calculating spot-to-spot closest distances).</li>
+</ol>
+<ol type="a">
+<li>Procedures: Open Imaris – Plugin “Image Processing” –</li>
+<li>“Create Spots From File” to generate “Spots” in Imaris from your datasheet –</li>
+<li>select the “Spots” of your data –</li>
+<li>In the “Tools” tab, select “Spots to Spots Closest Distance” – “Spots Statistics” – “Center” –</li>
+<li>After calculation, select “Statistics” tab – “Detailed” and export the data of “DistMin.”</li>
+</ol>
+<ol start="19">
+<li>Compare the distance distribution from the experimental data to the following distributions:</li>
+</ol>
+<ol type="a">
+<li>Random (Distribution from 8 orientations, all 64 conditions)</li>
+<li>Face-to-face (Distribution from face-to-face conditions)</li>
+<li>Parallel (Distribution from parallel conditions)</li>
+<li>Back-to-back (Distribution from back-to-back conditions)</li>
+<li>Use the Kolmogorov-Smirnov test to determine whether two distributions are different from each other. Using the p value may be too sensitive when comparing the distribution of experimental data to a simulated distribution. The D value, which represents the maximum distance between the cumulative distribution functions, is a better parameter to assess the fit. After comparing with the experimental data, consider the simulated distribution with the smallest D value a match.</li>
+</ol>
+<h3>Microfluidic Prep Work (Optional)</h3>
+<ol start="20">
+<li>Construct a microfluidic flow chamber that meets your needs (volume, shear stress, number of channels). A polydimethylsiloxane (PDMS) chip with a #1.5 glass coverslip is recommended.</li>
+<li>Calibrate your microfluidic device by adjusting input and output pressures, calculating and measuring flow rates.</li>
+<li>Calibrate your activation and fixation times based on cell transit at the desired shear stress. Mix the stimulus or fixing buffer with FITC and record your cell behavior (e.g., arrest) and the fluorescence of FITC. This determines the time at which the cell will arrest after the FITC appears for the stimulus or fixing buffer, respectively. If the fixing time is shorter than the stimulation time, then the difference (e.g., 12 s in <a href="#bib4">Fan et al., 2019</a>) will be used in the sample preparation: add the fixing buffer 12 s after adding the stimulus. If the fixing time is longer than the stimulation time, more optimization is needed (lower concentration of stimulus or higher concentration of fixing buffer).</li>
+</ol>
+<h3>Flow Cytometry Prep Work</h3>
+<ol start="23">
+<li>Assess the purification and viability of the isolated or cultured cells. Assess the purity by the cell-specific markers, such as CD66b<sup>+</sup>Siglec-8<sup>-</sup> for human neutrophils; assess the viability by staining, for example with Ghost Dyes<sup>TM</sup>.</li>
+</ol>
+<ol type="a">
+<li>Wash isolated neutrophils with PBS twice and resuspended them in PBS at a concentration around 10<sup>7</sup> cells per mL;</li>
+<li>Stain cells with Ghost Dye<sup>TM</sup> Red 710 (1:1000) for 30 min on ice;</li>
+<li>Wash cells with PBS plus 2% FBS and 1 mM EDTA twice and resuspend them in this buffer;</li>
+<li>Add human Fc-blocker into the cell suspension (1:100);</li>
+<li>Stain cells with anti-CD66b-FITC (1 μg·mL<sup>−1</sup>) and anti-Siglec-8-PE (1 μg·mL<sup>−1</sup>) for minutes on ice;</li>
+<li>Wash cells with PBS twice and assessed by flow cytometry;</li>
+<li>The purity of human neutrophils (CD66b<sup>+</sup>Siglec-8<sup>-</sup>) is ∼97% (<a href="#fig4">Figure 4</a>A);</li>
+<li>The viability of isolated neutrophils (Ghost Dye<sup>TM</sup> Red 710 negative) is ∼99% (<a href="#fig4">Figure 4</a>B).</li>
+</ol>
+<ol start="24">
+<li>Determine the site density of your epitopes on your cells, using calibration beads (Quantum Simply Cellular, Bangs Laboratories). You will need to know the number of molecules per μm<sup>2</sup> of surface area.</li>
+</ol>
+<ol type="a">
+<li>There are beads with five graded antibody binding capacities (ABC; 0, 14601, 72536, 204074, and 363264);</li>
+<li>Stain beads with the same antibody you used for cell staining, such as FITC-Rat anti-mouse IgG1 (5 μg·mL<sup>−1</sup> for beads with 0, 14601, and 72536 ABC; 10 μg/mL for beads with 204074 ABC; 15 μg/mL for beads with 363264 ABC) for 10 min at 22-24°C;</li>
+<li>Wash beads twice with PBS and access the fluorescence intensity by flow cytometry. The correlations of ABC and median fluorescence intensity (MFI) is shown in <a href="#fig4">Figure 4</a>C (ABC = MFI × 94.5);</li>
+<li>Add human Fc-blocker into the cell suspension (1:100);</li>
+<li>Stain cells with the antibody of the molecule you interested;</li>
+<li>For example, isolated neutrophils (2 × 10<sup>6</sup> mL<sup>−1</sup>) were stained with KIM127 (mouse anti-human IgG1, 10 μg/mL) for 5 min at 22-24°C;</li>
+<li>Stimulate cells with 200 ng·mL<sup>−1</sup> IL-8 for 30 s at 22-24°C and directly fixed cells with 1% PFA on ice for 10 min;</li>
+<li>Wash cells twice with PBS plus 2% FBS and 1 mM EDTA twice and resuspend them in this buffer;</li>
+<li>Stain cells with FITC-Rat anti-mouse IgG1 antibody (10 μg/mL) for 10 min at 22-24°C;</li>
+<li>Wash cells twice with PBS and access the fluorescence intensity by flow cytometry. Use the equation above in step c to calculate the number of KIM127 epitopes on a cell.</li>
+</ol>
+<ol start="25">
+<li>Determine the maximum duration of the experiment during which the cells would still be alive and not activated for your assay (within 6 hours for human neutrophils in RPMI-1640 plus 2% HSA at 22-24°C)</li>
+</ol>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Flow Cytometry Prep Work</div>
+<p>(A) Dot plot showing the purity of human neutrophil isolation assessed by staining of CD66b and Siglec-8.</p>
+<p>(B) Dot plot showing the viability of isolated human neutrophils assessed by staining of Ghost Dye<sup>TM</sup>. EtOH killed cells were served as a positive control (left plot).</p>
+<p>(C) Linear correlations of the antibody binding capacity (ABC) and the median fluorescence intensity (MFI) of calibration beads.</p>
+<p>(D) Histogram showing the expression of CD11b on neutrophil surface before (gray) and after (green) fMLP stimulation. Isotype control is shown as the open black curve.</p>
+<p>(E) Histogram showing the expression of L-selectin on neutrophil surface before (gray) and after (red) fMLP stimulation. Isotype control is shown as the open black curve. In this example, viability was 99% (B), CD11b upregulation by fMLP was &gt; 3-fold (D) and L-selectin was expressed by all resting neutrophils (E). This indicates healthy neutrophils.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure your cells are alive and not activated, using appropriate markers (CD11b and L-selectin for neutrophils).</div>
+<ol type="a">
+<li>Stimulate isolated neutrophils with 1 μM fMLP or vehicle control for 10 min at 22-24°C and directly fixed cells with 1% PFA on ice for 10 min.</li>
+<li>Wash cells twice with PBS plus 2% FBS and 1 mM EDTA twice and resuspend them in this buffer.</li>
+<li>Add human Fc-blocker into the cell suspension (1:100).</li>
+<li>Stain cells with anti-CD11b-FITC or anti-L-selectin-FITC (10 μg·mL<sup>−1</sup> each) for 15 min at 22-24°C. Isotype controls were used to assess the background fluorescence;</li>
+<li>Wash cells twice with PBS and access the fluorescence intensity by flow cytometry.</li>
+<li>For neutrophils that were not activated, the increase of CD11b surface expression (<a href="#fig4">Figure 4</a>D) and L-selectin shedding (<a href="#fig4">Figure 4</a>E) should be observed.</li>
+<li>Make sure the cells can be activated and inhibited as planned</li>
+<li>Find a suitable cell surface marker. We find abundant GPI-linked proteins to work best, e.g., CD16 for human neutrophils.</li>
+<li>Find the appropriate concentration of antibodies/F(ab)s to label molecules of interest. The concentration is determined by the staining saturation assay using flow cytometry.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-human β2 integrin (clone mAb24) Fab</td>
+<td>Biolegend</td>
+<td>Customized</td>
+</tr>
+<tr>
+<td>Anti-human β2 integrin (clone KIM127)</td>
+<td>Lymphocyte Culture Center at the University of Virginia</td>
+<td>Customized</td>
+</tr>
+<tr>
+<td>Anti-human CD11b (FITC, clone ICRF44)</td>
+<td>Biolegend</td>
+<td>Cat# 301330</td>
+</tr>
+<tr>
+<td>Anti-human L-selectin (PE, DREG-56)</td>
+<td>Biolegend</td>
+<td>Cat# 304806</td>
+</tr>
+<tr>
+<td>Anti-human CD66b (FITC, clone G10F5)</td>
+<td>Biolegend</td>
+<td>Cat# 305104</td>
+</tr>
+<tr>
+<td>Anti-human Siglec-8 (PE, clone 7C9)</td>
+<td>Biolegend</td>
+<td>Cat# 347104</td>
+</tr>
+<tr>
+<td>anti-human CD16 (AF488, clone 3G8)</td>
+<td>Biolegend</td>
+<td>Cat# 302019</td>
+</tr>
+<tr>
+<td>anti-human CD16 (AF647, clone 3G8)</td>
+<td>Biolegend</td>
+<td>Cat# 302020</td>
+</tr>
+<tr>
+<td>Anti-human β2 integrin (AF488, clone mAb24)</td>
+<td>Biolegend</td>
+<td>Cat# 363404</td>
+</tr>
+<tr>
+<td>anti-human CD14 (BV421, clone M5E2)</td>
+<td>Biolegend</td>
+<td>Cat# 325627</td>
+</tr>
+<tr>
+<td>Rat anti-mouse IgG1 (FITC, clone RMG1-1)</td>
+<td>Biolegend</td>
+<td>Cat# 406606</td>
+</tr>
+<tr>
+<td colspan="3">Biological Samples</td>
+</tr>
+<tr>
+<td>Human blood from healthy donors</td>
+<td>LJI</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>Recombinant human P-selectin-Fc</td>
+<td>R&amp;D Systems</td>
+<td>Cat# 137-PS-050</td>
+</tr>
+<tr>
+<td>Recombinant human ICAM-1 -Fc</td>
+<td>R&amp;D Systems</td>
+<td>Cat# 720-IC-050</td>
+</tr>
+<tr>
+<td>Recombinant human IL-8</td>
+<td>R&amp;D Systems</td>
+<td>Cat# 208-IL-010</td>
+</tr>
+<tr>
+<td>Recombinant human CCL2</td>
+<td>Biolegend</td>
+<td>Cat# 571402</td>
+</tr>
+<tr>
+<td>Recombinant human TNF-α</td>
+<td>Biolegend</td>
+<td>Cat# 570102</td>
+</tr>
+<tr>
+<td>Casein blocking buffer</td>
+<td>Thermo Fisher</td>
+<td>Cat# 37528</td>
+</tr>
+<tr>
+<td>Fluorescein (FITC)</td>
+<td>Thermo Fisher</td>
+<td>Cat# 46425</td>
+</tr>
+<tr>
+<td>CellTracker Orange CMRA</td>
+<td>Thermo Fisher</td>
+<td>Cat# C34551</td>
+</tr>
+<tr>
+<td>CellTrace Violet</td>
+<td>Thermo Fisher</td>
+<td>Cat# C34557</td>
+</tr>
+<tr>
+<td>CellMask DeepRed</td>
+<td>Thermo Fisher</td>
+<td>Cat# C10046</td>
+</tr>
+<tr>
+<td>Ghost Dye<sup>TM</sup> Red 710</td>
+<td>Tonbo Biosciences</td>
+<td>Cat# 13-0871-T500</td>
+</tr>
+<tr>
+<td>Polymorphprep</td>
+<td>Cosmo Bio</td>
+<td>Cat# AXS-1114683</td>
+</tr>
+<tr>
+<td>Ficoll-Paque Plus</td>
+<td>GE Healthcare</td>
+<td>Cat# 17144003</td>
+</tr>
+<tr>
+<td>Human Serum Albumin (HSA)</td>
+<td>Gemini</td>
+<td>Cat# 800-120</td>
+</tr>
+<tr>
+<td>Paraformaldehyde</td>
+<td>Thermo Fisher</td>
+<td>Cat# 28906</td>
+</tr>
+<tr>
+<td>Glutaraldehyde</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# G5882-10X1ML</td>
+</tr>
+<tr>
+<td>Mercaptoethanolamine</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# M9768-5G</td>
+</tr>
+<tr>
+<td>Glucose Oxidase from Aspergillus niger</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 49180</td>
+</tr>
+<tr>
+<td>Catalase from bovine liver</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# C9322</td>
+</tr>
+<tr>
+<td>Nanodiamond (100 nm Carboxylated Red FND,~3ppm NV,1 mg/mLin DI water,10 ml)</td>
+<td>Adamasnano</td>
+<td>Cat# NDNV100nmHi10ml</td>
+</tr>
+<tr>
+<td colspan="3">Critical Commercial Assays</td>
+</tr>
+<tr>
+<td>Pierce™ Fab Preparation Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat# 44985</td>
+</tr>
+<tr>
+<td>DyLight™ 550 Microscale Antibody Labeling Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat# 84531</td>
+</tr>
+<tr>
+<td>DyLight™ 650 Microscale Antibody Labeling Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat# 84536</td>
+</tr>
+<tr>
+<td>Quantum Simply Cellular anti-Mouse</td>
+<td>Bangs Laboratories</td>
+<td>Cat# 810</td>
+</tr>
+<tr>
+<td>EasySep™ Human Monocyte Enrichment Kit without CD16 Depletion</td>
+<td>StemCell</td>
+<td>Cat# 19058</td>
+</tr>
+<tr>
+<td>Endothelial SingleQuots Kit</td>
+<td>Lonza</td>
+<td>Cat# CC-4176</td>
+</tr>
+<tr>
+<td colspan="3">Deposited Data</td>
+</tr>
+<tr>
+<td>Raw data of E<sup>-</sup>H<sup>+</sup> α<sub>X</sub>β<sub>2</sub> integrin crystal structure</td>
+<td>Protein Data Bank</td>
+<td>PDB: 4NEH</td>
+</tr>
+<tr>
+<td>Raw data of Fab crystal structure</td>
+<td>Protein Data Bank</td>
+<td>PDB: 3HI6</td>
+</tr>
+<tr>
+<td>Raw data of E<sup>-</sup>H<sup>-</sup> α<sub>X</sub>β<sub>2</sub> integrin crystal structure</td>
+<td>Protein Data Bank</td>
+<td>PDB: 3K6S</td>
+</tr>
+<tr>
+<td>Raw data of H<sup>+</sup> α<sub>IIB</sub>β<sub>3</sub> integrin crystal structure</td>
+<td>Protein Data Bank</td>
+<td>PDB: 3FCU</td>
+</tr>
+<tr>
+<td>Electron microscopy image of E<sup>+</sup>H<sup>+</sup> β<sub>2</sub> integrin</td>
+<td><a href="#bib11">Chen et al., 2012</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Electron microscopy images of E<sup>-</sup> and E<sup>+</sup> β<sub>2</sub> integrin</td>
+<td><a href="#bib14">Chen et al., 2010</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Experimental Models: Cell Lines</td>
+</tr>
+<tr>
+<td>Hybridoma of KIM127</td>
+<td>ATCC</td>
+<td>Cat# CRL-2838</td>
+</tr>
+<tr>
+<td>HUVEC</td>
+<td>ATCC</td>
+<td>Cat# CRL-1730</td>
+</tr>
+<tr>
+<td>Primary human neutrophils</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Primary human monocytes</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and Algorithms</td>
+</tr>
+<tr>
+<td>FIJI-ImageJ2</td>
+<td><a href="#bib12">Rueden et al., 2017</a></td>
+<td>imagej.net/ImageJ2</td>
+</tr>
+<tr>
+<td>Imaris 9.0</td>
+<td>Bitplane</td>
+<td><a href="https://imaris.oxinst.com/">https://imaris.oxinst.com/</a></td>
+</tr>
+<tr>
+<td>Nikon STORM software</td>
+<td>Nikon</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Thunder STORM</td>
+<td><a href="#bib7">Ovesny et al., 2014</a></td>
+<td><a href="http://github.com/zitmen/thunderstorm">github.com/zitmen/thunderstorm</a></td>
+</tr>
+<tr>
+<td>CCP4MG</td>
+<td><a href="#bib13">McNicholas et al., 2011</a></td>
+<td><a href="http://www.ccp4.ac.uk/MG">www.ccp4.ac.uk/MG</a></td>
+</tr>
+<tr>
+<td>Prism 7</td>
+<td>GraphPad</td>
+<td><a href="http://graphpad.com">graphpad.com</a></td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td>MathWorks</td>
+<td><a href="http://www.mathworks.com/products/matlab.html">www.mathworks.com/products/matlab.html</a></td>
+</tr>
+<tr>
+<td>Pairfinder</td>
+<td>Custom Algorithm on Github</td>
+<td><a href="https://github.com/saramcardle/Image-Analysis-Scripts/blob/master/Super%20Resolution/MutualNearestNeighbors.m">https://github.com/saramcardle/Image-Analysis-Scripts/blob/master/Super%20Resolution/MutualNearestNeighbors.m</a></td>
+</tr>
+<tr>
+<td>NanoHills</td>
+<td>Custom Algorithm on Github</td>
+<td><a href="https://github.com/saramcardle/Image-Analysis-Scripts/blob/master/Super%20Resolution/TirfZforStorm_commented.m">https://github.com/saramcardle/Image-Analysis-Scripts/blob/master/Super%20Resolution/TirfZforStorm_commented.m</a></td>
+</tr>
+<tr>
+<td>PowerPoint (for PatternForge)</td>
+<td>Microsoft Office</td>
+<td><a href="https://www.office.com/">https://www.office.com/</a></td>
+</tr>
+<tr>
+<td>Excel (for PatternForge)</td>
+<td>Microsoft Office</td>
+<td><a href="https://www.office.com/">https://www.office.com/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Roswell Park Memorial Institute (RPMI) medium 1640 without phenol red</td>
+<td>Thermo Fisher</td>
+<td>Cat# 11835055</td>
+</tr>
+<tr>
+<td>phosphate-buffered saline (PBS) without Ca<sup>2+</sup> and Mg<sup>2+</sup>
+</td>
+<td>Thermo Fisher</td>
+<td>Cat# 10010049</td>
+</tr>
+<tr>
+<td>Phenol Red Free Endothelial Cell Growth Basal Medium</td>
+<td>Lonza</td>
+<td>Cat# CC-3129</td>
+</tr>
+<tr>
+<td>μ-Slide VI 0.5 Glass Bottom chambers</td>
+<td>ibidi</td>
+<td>Cat#</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and Equipment</h2>
+<h3>Equipment</h3>
+<ul>
+<li>Microfluidic device</li>
+</ul>
+<p>The assembly of the microfluidic devices used in this study and the coating of coverslips with recombinant human P-selectin-Fc and ICAM-1-Fc has been described previously (<a href="#bib3">Fan et al., 2016</a>; <a href="#bib10">Sundd et al., 2012</a>; <a href="#bib9">Sundd et al., 2011</a>; <a href="#bib8">Sundd et al., 2010</a>; <a href="#bib18">Sun et al., 2020</a>). Briefly, cleaned coverslips were coated with P-selectin-Fc (2 μg ml-1) and ICAM-1-Fc (10 μg ml-1) for 2 hours and then blocked for 1 hour with casein (1%) at 22-24°C. After coating, coverslips were sealed to polydimethylsiloxane (PDMS) chips by magnetic clamps to create flow chamber channels ∼29 μm high and ∼300 μm across. By modulating the pressure between the inlet well and the outlet reservoir, 6 dyn cm<sup>−2</sup> wall shear stress was applied in all experiments.</p>
+<ul>
+<li>STORM microscope</li>
+</ul>
+<p>Images were captured using a 100 × 1.49 NA Apo total internal reflection fluorescence (TIRF) objective with TIRF (80° incident angle) illumination on a Nikon Ti super-resolution microscope. Images were collected on an ANDOR IXON3 Ultra DU897 EMCCD camera using the multicolor sequential mode setting in the NIS-Elements AR software (Nikon Instruments Inc., NY). Power of the 488, 561, and 647-nm lasers was adjusted to 50% to enable collection of between 100 and 300 blinks per 256 × 256 pixel camera frame in the center of the field at appropriate threshold settings for each channel. The collection was set to 20,000 frames, yielding 1–2 million molecules.</p>
+<ul>
+<li>Workstation for image processing</li>
+</ul>
+<p>Due to the large raw data files and heavy workload in image processing, a workstation installed with proper software listed above is required.</p>
+<p>Hardwares of the workstation used in (<a href="#bib4">Fan et al., 2019</a>):</p>
+<p>CPU: Intel - Xeon E5-1650 V4 3.6 GHz 6-Core Processor</p>
+<p>CPU Cooler: Phanteks - PH-TC12DX 68.5 CFM CPU Cooler</p>
+<p>Motherboard: Gigabyte - GA-X99-Designare EX ATX LGA2011-3</p>
+<p>Memory: 2 × Kingston - ValueRAM 32 GB (1 × 32 GB) Registered DDR4-2133</p>
+<p>Storage: SanDisk - X400 1 TB M.2-2280 Solid State Drive</p>
+<p>Hitachi - Ultrastar He8 8 TB 3.5” 7200RPM Internal Hard Drive</p>
+<p>Video Card: MSI - GeForce GTX 1080 8 GB Video Card</p>
+<h3>Recipes in <a href="#bib4">Fan et al., 2019</a>
+</h3>
+<ul>
+<li>Protein coating: human P-selectin-Fc (2 μg·ml<sup>-1</sup>) and ICAM-1-Fc (10 μg·ml<sup>-1</sup>) for 2 hours and then blocked for 1 hour with casein (1%) at 22-24°C.</li>
+<li>Medium for the neutrophil suspension: RPMI-1640 without phenol red plus 2% HSA.</li>
+<li>Antibody/F(ab) concentration in staining: mAb24-F(ab)-DL550 (5 μg·ml<sup>-1</sup>), KIM127-F(ab)-DL650 (5 μg·ml<sup>-1</sup>)</li>
+<li>Stimulation and fixation: IL-8 (10 ng·ml<sup>−1</sup>) for 12 s and then 8% PFA for 5 min.</li>
+<li>STORM buffer: 50 mM Tris pH 8.0, 10 mM NaCl, 10% Glucose, 0.1 M Mercaptoethanolamine (Cysteamine Sigma-Aldrich), 56 U/mL Glucose Oxidase (from Aspergillus niger, Sigma-Aldrich), and 340 U/mL Catalase (from bovine liver, Sigma-Aldrich)</li>
+</ul>
+<h3>Alternates</h3>
+<ul>
+<li>Other microscopes are compatible with single-molecule localization imaging (different vendors or in-house).</li>
+<li>Other demonstrated formula of STORM buffer.</li>
+<li>Other demonstrated dyes compatible with STORM, for example Alexa Fluor 647, Alexa Fluor 555, Atto 488.</li>
+<li>0.01% Glutaraldehyde may be introduced into the fixation buffer to stabilize the membrane morphology.</li>
+<li>Flow chamber: Another flow chamber may be used in the experiments, such as vacuum-sealed PDMS microfluidic chip on a μ-Slide 2 Well Glass Bottom Chamber (ibidi).</li>
+<li>Fiducial markers: Besides nanodiamonds, fluorescent microspheres (diameter ≤ 200 nm, multiple fluorochrome-labeled) can be used as fiducial markers. The advantage of microspheres is that they are cheaper and might be brighter than nanodiamonds in some channels, such as a 647-nm laser. However, microspheres will be photobleached during the image acquisition and are less accurate than nanodiamonds due to uneven labeling of different fluorochromes.</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<h3>Assemble the Microfluidic Device</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼3 h</div>
+<ol>
+<li>Coat the coverslip of the microfluidic device with the biological molecules of interest, for example, coat 2 μg·mL<sup>−1</sup> human P-selectin-Fc and 10 μg·mL<sup>−1</sup> human ICAM-1-Fc for 2 hours at 22-24°C on a 25 mm diameter round coverslip as in Fan et al., 2019.</li>
+<li>Coat nanodiamonds, 100 nm diameter fiducial markers together with proteins in step 1. 1:500 dilution from the original concentration.</li>
+<li>Block with 1% casein for 30 min at 22-24°C.</li>
+<li>Wash twice with PBS.</li>
+<li>Assemble the flow chamber under buffer to avoid buffer-air interfaces (<a href="#fig5">Figure 5</a>)</li>
+<li>Prepare Petri dishes (50 mm diameter) with a hole in the bottom (15 mm diameter).</li>
+</ol>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Microfluidic Set Up</div>
+<p>The PDMS microfluidic chip is sealed on top of a 1.5# 25mm-diameter coverglass by magnetic clamp to form nine parallel microfluidic channels with a height of 29 μm and a width of 300 μm. The coverglass is coated with adhesion molecules (2 μg·mL<sup>−1</sup> P-selectin, 10 μg·mL<sup>−1</sup> ICAM-1) to support leukocyte rolling and adhesion. The shear stress is generated by modulating the water-level between inlet and outlet reserves.</p>
+</figcaption>
+</figure>
+<h3>Cell Isolation and Labeling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼1–1.5 hours</div>
+<div class="note">
+<span class="note-title">Note:</span> This can be performed during the 2-hour coating of coverslips.</div>
+<ol start="7">
+<li>Isolate cells from culture, blood or tissue. Polymorphoprep was used for the isolation of human neutrophils from blood in Fan et al., 2019. Wash with PBS without Ca<sup>2+</sup> and Mg<sup>2+</sup> twice.</li>
+<li>Resuspend the cells in RPMI-1640 without phenol red plus 2% HSA.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Culture media may vary for different cell types.</div>
+<ol start="9">
+<li>Add cell surface label by membrane dyes (a, b) or evenly distributed surface molecules (c)</li>
+</ol>
+<ol type="a">
+<li>CellMask Green, CellMask Orange, CellMask Deep Red</li>
+<li>DiO, DiI, DiD</li>
+<li>A fluorescently labeled antibody/F(ab) to an abundant GPI-anchored cell surface antigen, such as CD16 on neutrophils as in Fan et al., 2019. Cells were stained with AF488-anti-CD16 antibody (1 μg·mL<sup>−1</sup>) for 10 min at 22-24°C, washed twice with PBS, and resuspended in RPMI-1640 without phenol red plus 2% HSA.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In most cases, an abundant GPI-anchored cell surface antigen is the best to label cell surface due to minimum bleed through. However, it may be hard to find a homogenously distributed molecule for the cell type of interest. Membrane dyes in a and b might be too bright and may interfere with STORM imaging, especially that short-wavelength dyes may bleed through to long-wavelength channels. Using a lower concentration of the membrane dyes may be helpful. Using a long-wavelength dye (CellMask Deep Red or DiD) may avoid the bleed through but will occupy the best STORM imaging channel (AlexaFluor 647 or Dylight 650).</div>
+<ol start="4" type="a">
+<li>Wash with PBS without Ca<sup>2+</sup> and Mg<sup>2+</sup> twice after staining. Then resuspend the cells in RPMI-1640 without phenol red plus 2% HSA.</li>
+</ol>
+<ol start="10">
+<li>Label the molecules of interest: Integrin extension (E<sup>+</sup>) and high affinity (H<sup>+</sup>) were reported by F(ab) fragments of KIM127 and mAb24, respectively. Cells (5 × 10<sup>6</sup> mL<sup>−1</sup>) were incubated with KIM127 and mAb24 F(ab) fragments (5 μg mL<sup>−1</sup> each) at 22-24°C for 3 min and perfused into the microfluidic chamber without F(ab) separation.</li>
+</ol>
+<ol type="a">
+<li>Label the molecules before the fixation to avoid any epitope loss by the fixation.</li>
+<li>There is an increase of integrin activation epitopes upon IL-8 stimulation during neutrophil rolling and arrest. There may also be a change in expression (number of molecules). This may require additional controls, like a F(ab) that binds the molecule of interest independent of its conformation.</li>
+<li>For molecules that do not change their level of expression, label the molecules of interest in the appropriate condition. Wash cells before perfusing into the flow chamber to reduce the background of unspecific binding on the coverslip.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Potential pause point up to 2 hours</div>
+<h3>Sample Preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼1 hour</div>
+<ol start="11">
+<li>Add cells (5 × 10<sup>6</sup> ml<sup>-1</sup>) to the reservoir of the microfluidic device (cell concentration may vary depending on the cell type and microfluidic device)</li>
+<li>Apply pressure to start the flow.</li>
+<li>Add activator (for example, IL-8 for human neutrophils, 10 ng·mL<sup>−1</sup>, 12 s in <a href="#bib4">Fan et al., 2019</a>) The process of neutrophil rolling and arrest is shown in <a href="#fig6">Figure 6</a>.</li>
+<li>Add fixation buffer (for example, add the same volume of 16% PFA to the reservoir, final concentration 8% in <a href="#bib4">Fan et al., 2019</a>) for 5 min, keep perfusing while observing cells using a bright-field microscope.</li>
+<li>Wash for 5 min using the same buffer in which the cells are suspended, without any air bubbles.</li>
+</ol>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Neutrophil Rolling and Arrest</div>
+<p>Representative bright-field images showing the process of neutrophil rolling and arrest on the substrate of P-selectin/ICAM-1/IL-8 under a shear stress of 6 dyn·cm<sup>-2</sup>. Scale bar is 10 μm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> This avoids generating an interface that could detach the cells.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Add your labeled antibodies/F(ab)s to the perfusate for 5 minutes to saturate the labeling.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Wash for 5 min with the same buffer in which the cells are suspended.</div>
+<ol start="16">
+<li>Disassemble microfluidic device</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Glue the coverslip into the hole of the Petri dish with Super Glue (Gorilla) to avoid any leakage or movement/drifting, and cells face up.</div>
+<ol start="17">
+<li>Fill the Petri dish with 2 mL PBS.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Up to 24 hours</div>
+<h3>STORM Imaging</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼3–4 hours</div>
+<ol start="18">
+<li>Transfer the sample to the microscope, for example Nikon Ti super-resolution inverted microscope, equipped with a 100x 1.49 NA Plan Apo TIRF oil objective and an ANDOR IXON3 Ultra DU897 EMCCD camera (The EM gain we used was 300 in the Nikon system), field of view 82 × 82 μm<sup>2</sup>, should contain about 3-7 cells, TIRF mode at 80 degrees incident angle.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Replace PBS with 2 mL freshly made STORM buffer in the Petri dish.</div>
+<ol start="19">
+<li>Acquire one TIRF image (<a href="#fig7">Figure 7</a>A) at each wavelength (low laser power (typical 0.5%–2%) and 200 ms exposure time, typically one for the surface marker, 2 for molecules of interests, and an optional one to distinguish different cell subtypes)</li>
+</ol>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. TRIF and STORM Images of Integrin Activation</div>
+<p>Representative images of KIM127 (magenta) and mAb24 (cyan) on the footprint of an IL-8 triggered arrest neutrophil on the substrate of P-selectin/ICAM-1. (A) TIRF image, adopted from <a href="#fig1">Figure 1</a>A in Fan et al., 2019. (B) Pointillism map of the localization data from the STORM acquisition, adopted from <a href="#fig2">Figure 2</a>A in Fan et al., 2019. Scale bar is 1 μm.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> laser power and exposure time may vary due to different microscopy setup. A setting giving a signal-to-noise ratio larger than 5 should be applied.</div>
+<ol start="20">
+<li>Acquire raw images from the exact same field of view (high laser power, typically 50%, and 10ms exposure time), typically 20,000 frames per channel, in the two channels (back and forth) imaging the fluorochromes that were used to label the molecules of interest</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> laser power and exposure time may vary due to different microscopy setup. You want to use high power to put all the fluorochromes in the dark state so they can “blink” well. You want to have a very short exposure time so two “blinks” within the diffraction limit (∼200-300 nm) will not be “on” in the same frame. In our study (<a href="#bib4">Fan et al., 2019</a>), the power of the 488, 561, and 647-nm lasers was adjusted to 50% to enable collection of between 100 and 300 blinks per 256 × 256-pixel camera frame in the center of the field at appropriate threshold settings for each channel. The number of frames acquired may vary from 10,000 to 60,000. It is advisable to test different numbers of frames and determine where the image stops improving. There are several quantitative metrics for determining the number of acquisition frames (<a href="#bib1">Culley et al., 2018</a>; Endesfelder et al., 2014).</div>
+<ol start="21">
+<li>During step 20, apply an automatic drifting correction (implemented in the Nikon N-STORM software) using fiducial markers (nanodiamonds in Assemble the microfluidic device step 2)</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Most vendors have their own drifting correction software implemented.</div>
+<ol start="22">
+<li>Determine the localization of molecules using 2D Gaussian fitting (implemented in the Nikon software)</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The effective lateral resolution needs to be smaller than the size of the molecule studied.</div>
+<ol start="23">
+<li>Generate and store data sheets of all STORM localizations, which can be shown as a pointillism map (<a href="#fig7">Figure 7</a>B).</li>
+<li>Register the TIRF image from step 19 with the STORM positions</li>
+</ol>
+<ol type="a">
+<li>Take advantage of the fiducial markers</li>
+<li>Generate a STORM image using ThunderSTORM: “Visualization” – “Visualization options” – “Normalized Gaussian” – “Lateral Uncertainty” = λ/2/N.A. (λ is the excitation wavelength) – “OK”</li>
+<li>Register the TIRF image with the STORM image using bUnwrapJ Plugins in FIJI-ImageJ.</li>
+</ol>
+<ol start="25">
+<li>Convert TIRF signal to distance map using NanoHills (Github)</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> (time unlimited)</div>
+<h3>Analysis of STORM Images</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> (∼3–4 hours for each dataset)</div>
+<ol start="26">
+<li>Sample data is available in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Mmc2.zip">Supplemental Dataset 2</a>.</li>
+<li>Eliminate multiple blinks from each F(ab) or scFv using the molecular cut-off in Molecular modeling prep work steps 8-9</li>
+<li>Identify clusters using the molecular cut-off from Molecular modeling prep work step 11</li>
+<li>Identify pairs using the molecular cut-off from Molecular modeling prep work step 17</li>
+<li>Calculate the distance distributions for each of the conformations your antibodies/F(ab)s report using Imaris Plugin software (in <a href="#bib4">Fan et al., 2019</a>, we had 3 visible conformations: E<sup>+</sup>H<sup>−</sup>, E<sup>−</sup>H<sup>+</sup>, E<sup>+</sup>H<sup>+</sup>. E<sup>−</sup>H<sup>−</sup> was invisible because we used no conformation-independent antibody)</li>
+<li>Compare measured distributions, for example to</li>
+</ol>
+<ol type="a">
+<li>Random</li>
+<li>Face-to-face</li>
+<li>Parallel</li>
+<li>Back-to-back</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected Outcomes</h2>
+<p>Sample data is available in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/83-Mmc2.zip">Supplemental Dataset 2</a>.</p>
+<p>Number of molecules after eliminating multiple blinks: This is an estimation of the number of molecules expressed on the cell footprint within TIRF range (about 150 nm vertical distance from coverslip). This number can be used for a quantitative comparison of the molecular/conformation expression between control and experimental groups.</p>
+<p>Number and proportion of molecules in clusters: This is a parameter that shows the clustering of molecules of interest.</p>
+<p>Number, size, and ellipticity of clusters: This shows the morphology parameters of clusters.</p>
+<p>Number of colocalization pairs: This reflects the colocalization of molecules and can be expressed as a percentage of all molecules detected.</p>
+<p>Student’s t test, Mann-Whitney test, and one-way ANOVA test are suitable for the above data. Which test to use depends on the number of samples per group and the number of groups being compared to each other.</p>
+<p>Distance distribution of molecules: This is useful to investigate the spatial orientation of molecules after comparing with simulated data of different patterns (random, face-to-face, parallel, and back-to-back). This distribution can be compared using the Kolmogorov-Smirnov test. The median distance of the distribution is another parameter to compare, using a t test or one-way ANOVA test based on the number of groups.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>For molecules without structure information or antibodies without mapped epitopes, SuperSTORM cannot be used. The limits of current STORM technique dictate that no more than three channels can be used for super-resolution images. Different dyes behave differently. Dye switching experiments can control for this. STORM only works on fixed cells.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem</h3>
+<p>Impropriate coating concentration of fiducial markers in STORM imaging.</p>
+<h3>Potential Solution</h3>
+<p>Try different coating concentration to get a good density of fiducial markers during imaging. Normally, one field-of-view should have 10-20 fiducial markers.</p>
+<h3>Problem</h3>
+<p>Fiducial markers are too bright or dim during the acquisition.</p>
+<h3>Potential Solution</h3>
+<p>Try different microscopy setting to optimize the brightness of your fiducial markers. They should not be too bright to out-range the limits of the camera. They should not be too dim to identify (Signal-to-noise ratio should be more than 10). Please change to a different kind of fiducial marker if it does not meet your requirement.</p>
+<h3>Problem</h3>
+<p>Drifting during the STORM acquisition.</p>
+<h3>Potential Solution</h3>
+<p>You can acquire 1,000 test frames to assess the drifting of your image using fiducial markers. Drifting should be less than 50 nm during the 1,000 frames. This data is also useful to test your software of drifting correction. If drifting is too severe, please try using the air table, changing the location of your microscope, or avoiding temperature changes of the sample to resolve the problem.</p>
+<h3>Problem</h3>
+<p>Fluorochromes do not blink.</p>
+<h3>Potential Solution</h3>
+<p>Coat the coverslip with fluorochromes or fluorochrome-labeled antibodies and try different microscopy settings (mainly the laser power) to get blinking. Blinking means you should see one excitation spot, and then it should be dark immediately in the next frame. Choose a condition where the blinks are not too dense – less than 300 spots per field-of-view. Change the microscope setting or use a different fluorochrome to get blinks.</p>
+<h3>Problem</h3>
+<p>Fluorochromes are too bright or dim.</p>
+<h3>Potential Solution</h3>
+<p>Try different settings to optimize the brightness. The brightness of one blink should be more than 1,000 photon counts. The brightness Gaussian of all your blinks should have a peak around 3,000-4,000 photon counts. Change the microscope setting or use a different fluorochrome to adjust the brightness.</p>
+<h3>Problem</h3>
+<p>Fluorochromes are photobleach too fast.</p>
+<h3>Potential Solution</h3>
+<p>The laser setting should be chosen to ensure that the number of blinks does no decrease over the number of frames acquired (minimal photobleaching). Use more amount of the STORM buffer to get less photobleaching.</p>
+<h3>Problem</h3>
+<p>Background noise is too high.</p>
+<h3>Potential Solution</h3>
+<p>Dirt on the coverslip may fluoresce. Thus, coverslip cleaning is very important for STORM imaging. Use 1 M NaOH solution to clean the coverslip (22-24°C, 20 min).</p>
+<h3>Problem</h3>
+<p>Difficulty in disassembling the flow chamber and gluing it to the Petri dish</p>
+<h3>Potential Solution</h3>
+<p>This step is the transition step from sample preparation to STORM imaging. To keep the STORM stable, avoid any residual flow in the chamber during imaging. Thus, the flow chamber needs to be disassembled.</p>
+<p>During the disassembling, it is critical to have some medium remaining in the inlet well, so the medium will flow onto the coverslip. The coverslip should never become dry (the buffer-air interface immediately denatures proteins). Disassemble the flow chamber while immersed in PBS to prevent the coverslip from sticking onto the PDMS chip.</p>
+<p>After disassembling, vacuum out most liquid on your coverslip beside the sample region. To glue the coverslip onto a Petri dish with a hole, the area of gluing needs to be dry.</p>
+<p>Use Super Glue, not tape or nail polish to glue the coverslip onto the Petri dish. Only super glue is strong enough to avoid excessive drifting during imaging.</p>
+<h3>Problem</h3>
+<p>No blinking during imaging.</p>
+<h3>Potential Solution</h3>
+<p>The possible reason causing “no blinking” is that you don’t have enough STORM buffer on your sample. Make sure the volume of STORM buffer on your sample is more than 0.5 mL.</p>
+<p>Some fluorochromes will not blink, such as FITC, PE, most fluorescent proteins.</p>
+<p>You may also want to check your staining by TIRF imaging or flow cytometry.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib14">Chen, X., Xie, C., Nishida, N., Li, Z., Walz, T., Springer, T.A., 2010. Requirement of open headpiece conformation for activation of leukocyte integrin alphaXbeta2. Proceedings of the National Academy of Sciences of the United States of America <i>107</i>, 14727–14732.</p>
+<p id="bib11">Chen, X., Yu, Y., Mi, L.Z., Walz, T., Springer, T.A., 2012. Molecular basis for complement recognition by integrin alphaXbeta2. Proceedings of the National Academy of Sciences of the United States of America <i>109</i>, 4586–4591.</p>
+<p id="bib1">Culley, S., Albrecht, D., Jacobs, C., Pereira, P.M., Leterrier, C., Mercer, J., and Henriques, R. (2018). Quantitative mapping and minimization of super-resolution optical imaging artifacts. Nat. Methods <i>15</i>, 263-266.</p>
+<p id="bib2">Endesfelder, U., Malkusch, S., Fricke, F., and Heilemann, M. (2014). A simple method to estimate the average localization precision of a single-molecule localization microscopy experiment. Histochem. Cell Biol. <i>141</i>, 629-638.</p>
+<p id="bib3">Fan, Z., McArdle, S., Marki, A., Mikulski, Z., Gutierrez, E., Engelhardt, B., Deutsch, U., Ginsberg, M., Groisman, A., and Ley, K. (2016). Neutrophil recruitment limited by high-affinity bent β2 integrin binding ligand in cis. Nat. Commun. <i>7</i>, 12658.</p>
+<p id="bib4">Fan, Z., Kiosses, W.B., Sun, H., Orecchioni, M., Ghosheh, Y., Zajonc, D.M., Arnaout, M.A., Gutierrez, E., Groisman, A., Ginsberg, M.H., et al. (2019). High-Affinity Bent beta2-Integrin Molecules in Arresting Neutrophils Face Each Other through Binding to ICAMs In cis. Cell Rep. <i>26</i>, 119-130.e115.</p>
+<p id="bib5">Huang, B., Jones, S.A., Brandenburg, B., and Zhuang, X. (2008). Whole-cell 3D STORM reveals interactions between cellular structures with nanometer-scale resolution. Nat. Methods <i>5</i>, 1047-1052.</p>
+<p id="bib6">Johnson, J.L., He, J., Ramadass, M., Pestonjamasp, K., Kiosses, W.B., Zhang, J., and Catz, S.D. (2016). Munc13-4 Is a Rab11-binding protein that regulates Rab11-positive vesicle trafficking and docking at the plasma membrane. J. Biol. Chem. <i>291</i>, 3423-3438.</p>
+<p id="bib13">McNicholas, S., Potterton, E., Wilson, K.S., Noble, M.E., 2011. Presenting your structures: the CCP4mg molecular-graphics software. Acta crystallographica Section D, Biological crystallography <i>67</i>, 386–394.</p>
+<p id="bib7">Ovesný, M., Křížek, P., Borkovec, J., Svindrych, Z., and Hagen, G.M. (2014). ThunderSTORM: a comprehensive ImageJ plug-in for PALM and STORM data analysis and super-resolution imaging. Bioinformatics <i>30</i>, 2389-2390.</p>
+<p id="bib12">Rueden, C.T., Schindelin, J., Hiner, M.C., DeZonia, B.E., Walter, A.E., Arena, E.T., Eliceiri, K.W., 2017. ImageJ2: ImageJ for the next generation of scientific image data. BMC bioinformatics <i>18</i>, 529.</p>
+<p id="bib18">Sun, H., Fan, Z., Gingras, A.R., Lopez-Ramirez, M.A., Ginsberg, M.H., and Ley, K. (2020). Frontline Science: A flexible kink in the transmembrane domain impairs beta2 integrin extension and cell arrest from rolling. Journal of leukocyte biology <i>107</i>, 175-183.</p>
+<p id="bib8">Sundd, P., Gutierrez, E., Pospieszalska, M.K., Zhang, H., Groisman, A., and Ley, K. (2010). Quantitative dynamic footprinting microscopy reveals mechanisms of neutrophil rolling. Nat. Methods <i>7</i>, 821-824.</p>
+<p id="bib9">Sundd, P., Gutierrez, E., Petrich, B.G., Ginsberg, M.H., Groisman, A., and Ley, K. (2011). Live cell imaging of paxillin in rolling neutrophils by dual-color quantitative dynamic footprinting. Microcirculation <i>18</i>, 361-372.</p>
+<p id="bib10">Sundd, P., Gutierrez, E., Koltsova, E.K., Kuwano, Y., Fukuda, S., Pospieszalska, M.K., Groisman, A., and Ley, K. (2012). ‘Slings’ enable neutrophil rolling at high shear. Nature <i>488</i>, 399-403.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Supplemental Information</h3>
+<p>Supplemental Information can be found online at <a href="https://doi.org/10.1016/j.xpro.2019.100012">https://doi.org/10.1016/j.xpro.2019.100012</a>.</p>
+<h3>Acknowledgements</h3>
+<p>This research was supported by funding from the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a>, USA (HL078784, R01HL145454) and WSA postdoctoral fellowship and the Career Development Award from the <a href="https://doi.org/10.13039/100000968">American Heart Association</a>, USA (16POST31160014 and 18CDA34110426).</p>
+<h3>Author Contributions</h3>
+<p>Experiments were designed by Z.F. and K.L. Most experiments were performed by Z.F. Structural modeling was performed by Z.F. Image processing was performed by Z.F., Z.M., and S.M. Data analysis was performed by Z.F. Custom coding was done by S.M. and P.S. The manuscript was written by K.L. and Z.F. The project was supervised by K.L. All authors discussed the results and commented on the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

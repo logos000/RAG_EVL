@@ -1,0 +1,1075 @@
+<article>
+<section>
+<h1 id="header">Efficient acquisition of tens of thousands of short tandem repeats in single-cell whole-genome-amplified DNA</h1>
+<p><time datetime="2021-09-17">Published: September 17, 2021</time></p>
+<p>Liming Tao,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor1">*</a></sup> Zipora Marx,<sup><a href="#aff1">1</a></sup> Ofir Raz,<sup><a href="#aff1">1</a></sup> and Ehud Shapiro<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Computer Science and Applied Mathematics, Weizmann Institute of Science, Rehovot 761001, Israel</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:liming.tao@weizmann.ac.il">liming.tao@weizmann.ac.il</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:ehud.shapiro@weizmann.ac.il">ehud.shapiro@weizmann.ac.il</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100828">10.1016/j.xpro.2021.100828</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Short tandem repeats (STRs) are highly abundant in the human genome, but existing approaches for accurate genotyping of STRs are limited. Here, we describe a protocol for duplex molecular inversion probes for high-throughput and cost-effective STR enrichment. We have successfully tested panels targeting as many as 50K STRs in several thousands of genomic samples (e.g., HeLa cells, Du145 cells, leukemia cells, melanoma cells). However, because the protocol is plate based, the sample size is limited to a few thousand.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00534-7/sref1">Tao et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>This protocol enable us to enrich tens of thousands of STR from single-cell WGA</li>
+<li>The protocol can easily deployed in any labs with generic equipment</li>
+<li>The highly mutable STR panel is generic across human samples</li>
+<li>The panels are highly customizable to include SNV targets like cancer hotspots and flexible from dozens of targets to over 50K targets; probes for different panels can be combined in one reaction</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1019-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the specific steps for using whole genome amplified genomic DNA (REPLI-g Mini Kit, Qiagen) from Du145 single cells for the 12K OM6 STR panel presented in our Cell Reports Methods paper (<a href="#bib1">Tao et al., 2021</a>) (Custom Array). However, we have also used this protocol for primary cells such as melanoma, leukemia, T-cells, Macrophages, <i>etc.</i> and other whole genome amplification kits such as REPLI-g Single Cell Kit, Ampli1WGA kit, MALBAC single cell WGA kit etc.</p>
+<h3 id="sec1.1">Duplex MIP preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [2 days]</div>
+<p>Prepare the duplex molecular inversion probes for a 12K panel of selected human STRs, OM6, to enrich these targets from the single cell WGA DNA in the following steps.</p>
+<ol>
+<li>KOD Hot Start Real Time Custom PCR Mix 5<b>×</b> (KOD 5<b>×</b> Custom Mix)
+<ol type="a">
+<li>Prepare SYBR 100<b>×</b> by mixing 10 μL from stock SYBR green I (Lonza, 10,000<b>×</b>) and 990 μL Dimethyl Sulfoxide (DMSO) (Sigma).</li>
+<li>Prepare 2 mL KOD 5<b>×</b> Custom Mix according to the table below.</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>KOD 5× custom mix (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td> </td>
+<td> </td>
+<td>0.27</td>
+</tr>
+<tr>
+<td>KOD Buffer 10<b>×</b> (Merck)</td>
+<td>10<b>×</b>
+</td>
+<td>5<b>×</b>
+</td>
+<td>2.5</td>
+</tr>
+<tr>
+<td>MgSO<sub>4</sub> 25 mM (Merck)</td>
+<td>25 mM</td>
+<td>7.5 mM</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>dNTP 25 mM each (Bioline)</td>
+<td>25 mM</td>
+<td>7.5 mM</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>KOD Enzyme 1 U/μL (Merck)</td>
+<td>1 U/μL</td>
+<td>0.1 U/μL</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>SYBR 100<b>×</b> (Lonza)</td>
+<td>100<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>0.025</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>PreAmp PCR (8 reactions)
+<ol type="a">
+<li>Dilute the synthesized oligo pool (Custom Array, Inc.) to 1 ng/μL to prepare PCR template.</li>
+<li>Amplification primers designed to bind universal adapters are used for PreAmp PCR in LightCycler 480 (LC480, Roche) as shown below:<br> OM4_Mly_F: GTCTATGAGTGTGGAGTCGTTGC OM4_Mly_R: CTAGCTTCCTGATGAGTCCGATG
+<div class="note">
+<span class="note-title">Note:</span> SYBR in KOD 5<b>×</b> Custom Mix can be used to track the amplification for real time PCR.</div>
+PreAmp PCR Mix:
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>1× PreAmp PCR mix (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template</td>
+<td>1 ng/μL</td>
+<td>0.2 ng/μL</td>
+<td>1.8</td>
+</tr>
+<tr>
+<td>OM4_Mly_F primer</td>
+<td>10 pmol/μL</td>
+<td>0.3 pmol/μL</td>
+<td>1.35</td>
+</tr>
+<tr>
+<td>OM4_Mly_R primer</td>
+<td>10 pmol/μL</td>
+<td>0.3 pmol/μL</td>
+<td>1.35</td>
+</tr>
+<tr>
+<td>KOD 5<b>×</b> Custom Mix</td>
+<td>5<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>9</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td> </td>
+<td> </td>
+<td>31.5</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>45</td>
+</tr>
+</tbody>
+</table>
+PreAmp PCR program:
+<table id="undtbl3">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>120 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>20 s</td>
+<td rowspan="3">18 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>70°C</td>
+<td>5 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>70°C</td>
+<td>50 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Purify PreAmp PCR product by MinElute PCR purification kit (Qiagen).</li>
+<li>Measure concentration by Qubit dsDNA HS Assay Kit (Life Technologies).</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Production PCR (48 reactions). <a href="#sec5.5">Troubleshooting 3</a>
+<ol type="a">
+<li>Dilute purified PreAmp PCR product to 1 ng/μL for template.</li>
+<li>96 well plate production PCR is performed according to the setup below. Amplification is tracked by SYBR present in the KOD 5<b>×</b> Custom Mix.
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>1× production PCR (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template</td>
+<td>1 ng/μL</td>
+<td>0.2 ng/μL</td>
+<td>1.8</td>
+</tr>
+<tr>
+<td>OM4_Mly_F primer</td>
+<td>10 pmol/μL</td>
+<td>0.3 pmol/μL</td>
+<td>1.35</td>
+</tr>
+<tr>
+<td>OM4_Mly_R primer</td>
+<td>10 pmol/μL</td>
+<td>0.3 pmol/μL</td>
+<td>1.35</td>
+</tr>
+<tr>
+<td>KOD 5<b>×</b> Custom Mix</td>
+<td>5<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>9</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td> </td>
+<td> </td>
+<td>31.5</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>45</td>
+</tr>
+</tbody>
+</table>
+Production PCR program
+<table id="undtbl5">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>95°C</td>
+<td>120 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>20 s</td>
+<td rowspan="3">12 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>70°C</td>
+<td>5 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>70°C</td>
+<td>50 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>PCR product are pooled and purified by MinElute columns (Qiagen).</li>
+<li>Elute with 45 μL ddH<sub>2</sub>O per column.</li>
+<li>Pool all purified products.</li>
+<li>Measure the DNA concentration of the final pool by loading 1 μL of the pool onto a NanoDrop spectrophotometer (Thermo Scientific).</li>
+<li>Dilute the pool to ∼30 ng/μL based on measured concentration.</li>
+<li>Retain 20 μL of sample to evaluate size distribution in Step 6. Carry the rest forward in Step 4.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Digest the diluted DNA. <a href="#sec5.7">Troubleshooting 4</a>
+<ol type="a">
+<li>Combine diluted DNA with MlyI following the table below
+<table id="undtbl6">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>1× with MlyI mix (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diluted DNA (30 ng / uL)</td>
+<td>30 ng/μL</td>
+<td>25.2 ng/μL</td>
+<td>84</td>
+</tr>
+<tr>
+<td>10<b>×</b> NEB Smarter Buffer</td>
+<td>10<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>10</td>
+</tr>
+<tr>
+<td>MlyI</td>
+<td>10 U/μL</td>
+<td>0.6 U/μL</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate the mixture at 37°C overnight, deactivate at 80°C for 20 min, and store at 4°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Prepare final duplex MIP pool.
+<ol type="a">
+<li>Purify digested DNA by MinElute column.</li>
+<li>Pool elution samples into one tube.</li>
+<li>Measure concentration using by Qubit dsDNA HS (High Sensitivity) assay kit according to the manufacturer's protocol.</li>
+</ol>
+</li>
+<li>Perform quality control on digested product size distribution. Run digested and undigested samples (Step 4b) on Tape Station (Agilent). The final duplex MIP pool should be ∼105 bp, and undigested sample from step (4b) should be ∼150 bp. (<a href="#fig1">Figure1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1019-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Duplex MIPs quality control</div>
+</figcaption>
+</figure>
+</li>
+<li>Based on length of 105 bp and the concentration, the final duplex MIPs pool is diluted to 80 nM (80 fmol/μL) stock solution, equivalent to 5.8 ng/μL. Dilute further to 8 nM as working solution. Store both stock and working solutions at −20°C.</li>
+</ol>
+<h3 id="sec1.2">Whole-genome-amplified genomic DNA preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [15 min]</div>
+<p>Single-cell WGA DNA is prepared by selected kit in advance. Here we just describe thawing of the single cell WGA DNA for the following step.</p>
+<ol start="8">
+<li>Clean the bench with 70% Ethanol. Take out a plate of whole genome amplified genomic DNA from −20 freezer.</li>
+<li>Thaw at room temperature.</li>
+<li>Shake on a bench top mixer, quickly spin down (approximately 30 s) at 500 rpm.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep the plate well sealed to avoid cross contamination.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Betaine solution</td>
+<td>Sigma</td>
+<td>Cat#5MB0306 1VL</td>
+</tr>
+<tr>
+<td>KOD enzyme</td>
+<td>Merck</td>
+<td>Cat# 71086</td>
+</tr>
+<tr>
+<td>dNTP Set</td>
+<td>Bioline</td>
+<td>Cat#BIO-39049</td>
+</tr>
+<tr>
+<td>SYBR 100<b>×</b>
+</td>
+<td>Lonza</td>
+<td>Cat#50513</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA Polymerase</td>
+<td>NEB</td>
+<td>Cat#NEB-M0530L</td>
+</tr>
+<tr>
+<td>Ampligase 10<b>×</b> Reaction Buffer</td>
+<td>Epicentre</td>
+<td>Cat#A1905B</td>
+</tr>
+<tr>
+<td>Ampligase DNA Ligase W/O Buffer</td>
+<td>Epicentre</td>
+<td>Cat#A3210K</td>
+</tr>
+<tr>
+<td>Exonuclease I (<i>E. coli</i>)</td>
+<td>NEB</td>
+<td>Cat#M0293L</td>
+</tr>
+<tr>
+<td>Exonuclease III (<i>E. coli</i>)</td>
+<td>NEB</td>
+<td>Cat#M0206L</td>
+</tr>
+<tr>
+<td>RecJf</td>
+<td>NEB</td>
+<td>Cat#M0264L</td>
+</tr>
+<tr>
+<td>Exonuclease T</td>
+<td>NEB</td>
+<td>Cat#M0265L</td>
+</tr>
+<tr>
+<td>T7 Exonuclease</td>
+<td>NEB</td>
+<td>Cat#M0263L</td>
+</tr>
+<tr>
+<td>Lambda Exonuclease</td>
+<td>NEB</td>
+<td>Cat#M0262L</td>
+</tr>
+<tr>
+<td>NEBNext Ultra II Q5 MasterMix</td>
+<td>NEB</td>
+<td>Cat#M0544L</td>
+</tr>
+<tr>
+<td>MinElute PCR Purification Kit</td>
+<td>QIAGEN</td>
+<td>Cat#28006</td>
+</tr>
+<tr>
+<td>Qubit® dsDNA HS Assay Kit</td>
+<td>Thermo Fisher</td>
+<td>Cat#Q32854</td>
+</tr>
+<tr>
+<td>Agencourt Ampure XP Beads</td>
+<td>Beckman Coulter</td>
+<td>Cat#A63881</td>
+</tr>
+<tr>
+<td>2% Agarose, dye-free, BluePippin, 100–600,</td>
+<td>Sage</td>
+<td>Cat#BDF2010</td>
+</tr>
+<tr>
+<td>TapeStation ScreenTape</td>
+<td>Agilent</td>
+<td>Cat#5067-5582</td>
+</tr>
+<tr>
+<td>TapeStation Reagents</td>
+<td>Agilent</td>
+<td>Cat#5067-5583</td>
+</tr>
+<tr>
+<td>MiSeq Reagent Kits v2</td>
+<td>Illumina</td>
+<td>Cat#MS-102-2002</td>
+</tr>
+<tr>
+<td>MiSeq Reagent Nano Kit v2 (300-cycles)</td>
+<td>Illumina</td>
+<td>Cat#MS-103-1001</td>
+</tr>
+<tr>
+<td>NextSeq 500/550 High Output Kit v2.5 (300 Cycles)</td>
+<td>Illumina</td>
+<td>Cat#20024908</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Sequencing data</td>
+<td>ArrayExpress</td>
+<td>E-MTAB-6411</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>DU145 cell line</td>
+<td>ATCC</td>
+<td>DU 145ATCC® HTB-81™</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Oligopool</td>
+<td>GenScript</td>
+<td>OM6(<a href="#bib1">Tao et al., 2021</a>)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">STR target enrichment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [2 days]</div>
+<p>In this step, we enrich all the designed targets from every single cell WGA DNA in 96 well plates.</p>
+<ol>
+<li>Hybridization
+<ol type="a">
+<li>Make Hybridization Mix with 200–500 ng of single cell WGA DNA (∼2 μL) per reaction. Note that single cell WGA product concentration is generally 100–200 ng/μL in our hands.
+<ol type="i">
+<li>For large scale experiments, prepare Hybridization Master Mix according to the following table without WGA DNA. Distribute 8μL Hybridization Master Mix per well of a 96-well plate. Add 2 μL DNA or ddH<sub>2</sub>O to each well and mix by liquid handling system (Evoware, Tecan) or manually.
+<table id="undtbl7">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>1× hybridization mix (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single Cell WGA DNA</td>
+<td>100 ng/μL</td>
+<td>20 ng/μL</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Duplex MIPs</td>
+<td>8 fmol/μL</td>
+<td>0.8 fmol/μL</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Ampligase Buffer</td>
+<td>10<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Betaine</td>
+<td>5M</td>
+<td>0.9 M</td>
+<td>1.8</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td> </td>
+<td> </td>
+<td>4.2</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+<li>Place the reaction plate into a PCR machine with 100°C lid temperature. Heat at 98°C for 3 min and ramp the temperature at 0.01°C per second to 56°C.Then, incubate at 56°C for 17 h. An example in our PCR machine is shown below.
+<table id="undtbl8">
+<thead>
+<tr>
+<th>Step</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>97.9°C</td>
+<td>3 min</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="3">2</td>
+<td>97.9°C</td>
+<td rowspan="3">15 s</td>
+<td rowspan="3">
+<b>×</b>420</td>
+</tr>
+<tr>
+<td>decrease as slow as 0.1ºC/sec</td>
+</tr>
+<tr>
+<td>decrease by 0.1°C/sec every cycle</td>
+</tr>
+<tr>
+<td>3</td>
+<td>56°C</td>
+<td>17 h</td>
+<td> </td>
+</tr>
+<tr>
+<td>4</td>
+<td>56°C</td>
+<td>Pause for adding gap filing mix</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Gap filling
+<ol type="a">
+<li>Prepare Gap Filling Mix half an hour before hybridization finishes. See table below.
+<table id="undtbl9">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock con.</th>
+<th>Final conc.</th>
+<th>1× gap filling Mix(μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dNTP</td>
+<td>2 mM</td>
+<td>0.3 mM</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>NAD</td>
+<td>10 mM</td>
+<td>2 mM</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Betaine</td>
+<td>5M</td>
+<td>1.1 M</td>
+<td>2.2</td>
+</tr>
+<tr>
+<td>Ampligase buffer</td>
+<td>10<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Ampligase</td>
+<td>5 U/μL</td>
+<td>0.5 U/μL</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Phusion</td>
+<td>2 U/μL</td>
+<td>0.8 U/μL</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td> </td>
+<td> </td>
+<td>1.9</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Keep the mix at 56°C on a heat block</li>
+<li>Transfer reaction plate from the PCR machine to a 56°C heat block when the hybridization step is finished.</li>
+<li>Add 10 μL of Gap Filling Mix to each well, carefully mix by pipette, seal tightly and quickly return plate to the PCR machine.</li>
+<li>Run a 4-h 56°C incubation, deactivate for 20 min at 68°C, then keep at 4°C until next step.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After the gap filling step, the reaction plate can be stored at 4°C fridge for up to two days.</div>
+<ol start="3">
+<li>Digestion of linear DNA:
+<ol type="a">
+<li>Prepare Digestion Mix 15 min before gap filling ends.
+<table id="undtbl10">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock con. (U/μL)</th>
+<th>Final conc. (U/μL)</th>
+<th>1× digestion mix (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exo I</td>
+<td>20</td>
+<td>3.5</td>
+<td>0.175</td>
+</tr>
+<tr>
+<td>exo III</td>
+<td>100</td>
+<td>18</td>
+<td>0.18</td>
+</tr>
+<tr>
+<td>exo T7</td>
+<td>10</td>
+<td>4</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>exo T</td>
+<td>5</td>
+<td>0.4</td>
+<td>0.08</td>
+</tr>
+<tr>
+<td>RecJf</td>
+<td>30</td>
+<td>3</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>lambda exo</td>
+<td>10</td>
+<td>0.2</td>
+<td>0.02</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td> </td>
+<td> </td>
+<td>1.045</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Retrieve reaction plate from PCR machine. Note: take care when removing cover.</li>
+<li>Add 2 μL of the Digestion Mix to each well and mix.</li>
+<li>Spin down the reaction plate and seal.</li>
+<li>Incubate at 37°C for 60 min, 80°C for 10 min and 95°C for 5 min.</li>
+</ol>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> the reactions can be stored at −20°C for at least 2<u>x</u> months after the digestion step.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Seal the plate tight, avoid evaporation.</div>
+<h3 id="sec2.2">Library preparation and sequencing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [4 days]</div>
+<p>Illumina sequencing adapters and unique barcode per cell are added by a barcoding PCR. Then all the samples are pooled into one tube in equal volume and then equal molecular concentration. The pools are size selected by Blue Pippin to remove dimmers and by products. library pools passed quality control are sequenced on MiSeq or NextSeq with default illumine sequencing primers.</p>
+<ol start="4">
+<li>Sample specific barcoding PCR
+<ol type="a">
+<li>Note the structure of the dual-index Illumina barcoding primers used in the experiments:
+<ol type="i">
+<li>i5-index-primer: AATGATACGGCGACCACCGAGATCTACAC[i5-8bp-index]ACACTCTTTCCCTACACGACGCTCTTCCG;</li>
+<li>i7-index-primer: CAAGCAGAAGACGGCATACGAGAT[i7-8bp-index]GTGACTGGAGTTCAGACGTGTGCTCTTCCG;</li>
+</ol>
+</li>
+<li>2 μL product from the previous step (step 3) are amplified with a pair of unique barcoding primers for each sample in a reaction as shown below.
+<table id="undtbl11">
+<thead>
+<tr>
+<th>Reagents</th>
+<th>Stock conc.</th>
+<th>Final conc.</th>
+<th>1× (μl)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template</td>
+<td>NA</td>
+<td>NA</td>
+<td>2</td>
+</tr>
+<tr>
+<td>dual-index Illumina primers</td>
+<td>5 pmol/μL each</td>
+<td>0.5 pmol/μL each</td>
+<td>2</td>
+</tr>
+<tr>
+<td>NEBNext Ultra II Q5 Master Mix</td>
+<td>2<b>×</b>
+</td>
+<td>1<b>×</b>
+</td>
+<td>10</td>
+</tr>
+<tr>
+<td>SYBR 100<b>×</b>
+</td>
+<td>10<b>×</b>
+</td>
+<td>0.5<b>×</b>
+</td>
+<td>1</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td> </td>
+<td> </td>
+<td>5</td>
+</tr>
+<tr>
+<td>Total Volume</td>
+<td> </td>
+<td> </td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl12">
+<caption>Barcoding PCR program</caption>
+<thead>
+<tr>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>98°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">
+<b>×</b>5 cycle</td>
+</tr>
+<tr>
+<td>56°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>65°C</td>
+<td>45 s</td>
+</tr>
+<tr>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="2">
+<b>×</b>15 cycle</td>
+</tr>
+<tr>
+<td>65°C</td>
+<td>75 s</td>
+</tr>
+<tr>
+<td>65°C</td>
+<td>5 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>4°C</td>
+<td>Hold</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<ol start="5">
+<li>Sample pooling and Purification for Diagnostic Sequencing
+<ol type="a">
+<li>Clean up barcoded PCR product in a 96-well plate using 0.8<b>×</b> AMPure XP SPRI magnetic beads (Beckman Coulter) according to manufactory’s manual by Tecan liquid handling system, eluted in 40 μL ddH2O.</li>
+<li>Pool equal volumes (usually take 2 ul) of purified samples manually.</li>
+<li>Concentrate the pool by MinElute according to manufacturer instructions, elute with 35 μL ddH2O.</li>
+</ol>
+</li>
+<li>Size Selection for Diagnostic Sequencing
+<ol type="a">
+<li>Retain 3 ul of the concentrated pool for quality control in step 5.</li>
+<li>Run 30 μL of the concentrated pool on a lonza 2% V1 cassette BluePippin (Sage Science) with setting range 240–340 bp according to manufactory’s protocol. Agarose gel extraction in the range of 240–340 bp can serve as an alternative.</li>
+<li>Purify size-selected elution by MinElute, elute with 15 μL ddH2O.</li>
+<li>Measure concentration by Qubit dsDNA HS (High Sensitivity) assay kit. <a href="#sec5.1">Troubleshooting 1</a>
+</li>
+<li>Inspect size distribution of the concentrated pool before and after size selection using a Tape Station dsDNA chip (<a href="#fig2">Figure 2</a> is a reuse of panel 1 in Supplementary Figure 1 from our <i>Cell Reports Methods</i> paper (<a href="#bib1">Tao et al., 2021</a>) and confirms a single peak around 300 bp. <a href="#sec5.3">Troubleshooting 2</a>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1019-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Quality control of sequencing library</div>
+</figcaption>
+</figure>
+</li>
+<li>Dilute size-selected pool to make 12 μL of 4 nM (4 fmol/μL) library for Illumina NGS calculated based on the concentration and average size reported by the Tape Station.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Diagnostic sequencing (∼17 h for sequencing, ∼2 h for analysis) <a href="#sec5.9">Troubleshooting 5</a>
+<ol type="a">
+<li>Sequence at 10 pM loading concentration. We recommend to run on a 300 cycle MiSeq Nano flow cell in pair end mode. Set Read1 and Read2 as 151, and both Index1 and Index2 reads as 8. Minimum read length we have tested is 125 <b>×</b> 2 pair end to allow sequencing through the repeat regions of most STRs in our design. Default sequencing primers suffice for sequencing.</li>
+<li>Following bcl2fastq demultiplexing, merge overlapping Read1 and Read2 with the following command:
+<div class="textbox">
+<p>    <code>&gt;pear -v 40 -m 300 -f fastq1 -r fastq2 -o</code></p>
+<p><code>pear_files_prefix</code></p>
+</div>
+</li>
+<li>Map merged reads against customized STR reference (as shown in <a href="#fig3">Figure 3</a>) of all amplicons with bowtie2, each appearing multiple times, once with every possible STR length.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1019-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. MS reads mapping</div>
+<p>Each read is mapped to a specific target locus according to its flanking regions.</p>
+</figcaption>
+</figure>
+<div class="textbox">
+<p>    <code>&gt;bowtie2 -x index_files_prefix -U merged_fastq |</code></p>
+<p><code>samtools view -bS - | samtools sort -o</code></p>
+<p><code>sorted_assignment_bam</code></p>
+</div>
+</li>
+<li>For more details, parallel execution and integration to the clineage analysis system, please see the codes at: <a href="https://github.com/shapirolab/clineage/blob/master/sequencing/analysis/full_msv/full_msv.py">https://github.com/shapirolab/clineage/blob/master/sequencing/analysis/full_msv/full_msv.py</a>
+</li>
+<li>Extract the total number of reads per sample from “sorted_assignment_bam” with pysam.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Balancing reads per sample
+<ol type="a">
+<li>Calculate the scaling volume for each sample based on the total number of reads extracted from the diagnostic sequencing result to equalize the read coverage per sample. For example, sample A got 500 reads, sample B got 1000 reads in the diagnostic sequencing, to equalize the read coverage in the following production sequencing, we can pool 2 ul sample A with 1 ul sample B.</li>
+<li>According to the scaling volume, pool purified samples from step (5a) manually or by Echo550, then concentrate by miniElute, elute in 35μL ddH2O.</li>
+<li>Prepare production sequencing library for pooled samples as in step (6).</li>
+</ol>
+</li>
+<li>Production sequencing (∼29 h for sequencing)</li>
+</ol>
+<p>The minimum reads per samples is 1M, and the minimum read length is 125 <b>×</b> 2 pair end. We recommend to sequence up to 200 samples on one NextSeq500 high output flow cell with 151<b>×</b>2 pair-end run parameters according to manufactory manual and relying on default sequencing primers. Set both Index1 and Index2 as 8. Load at 1.8–2.2 pM concentration. (<a href="#fig3">Figure 3</a>)</p>
+<div class="optional">
+<span class="optional-title">Optional:</span> If the production sequencing doesn’t generate enough reads for some samples (i.e over 1M reads for samples enriched with the OM6 panel), another round of NextSeq could be conducted using the same library for these samples. Consider Hiseq or NovaSeq platforms for large scale projects.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>We expect to get and ∼150 bp precursors size and ∼110 bp probe size after digestion as shown in <a href="#fig1">Figure1</a>. The sequencing ready library size after size selection and purification should be ∼300 bp as detected by Tape Station and no/minimum primer dimmers 170–240, see <a href="#fig2">Figure 2</a>.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Poor quality of whole genome amplified genomic DNA may prevent hybridization, gap fill, and full library preparation. The protocol is plate-based, so the sample size is limited to a few thousand.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>The sequencing library after size selection by Blue Pippin resulting DNA concentration is too low to load on Illumina sequencer. [Step 6d]</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Increase the pooling volume per sample from 2 ul to 5 ul for the Blue Pippin loading pool. Use the same elution volume 40 ul to increase the original DNA amount loaded in Blue Pippin.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Primer dimers at 170–240 bp are still presenting in significant ratio to the desired library peak around 300 bp in diagnostic libraries detected by Tape Station after size selection by Blue Pippin.[Step 6e]</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Check the quality of single cell WGA DNA by size and concentration, make sure to use good quality WGA DNA for the majority of samples.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Significant by product in large size more than 300 bp detected by Tape Station presented in probe production PCR.[Step 3 ]</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>Check the template concentration used in production PCR, make sure to dilute it to 1 ng/ul; reduce the production PCR cycles to 10 or 11.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Significant undigested probes ∼150 bp remains in the Tape Station quality control step.[Step 4]</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>Check the concentration of the input precursor again to make sure &lt;30 ng/ul concentration used in digestion reaction; With the same digestion setting, digest the probes again, and purify by Mini Elute, run quality control by Tape Station.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Low sequencing quality presented by the illumina sequencer, including low passing filter clusters, low Q30. [Step 7]</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>Consider the sequencing complexity in both the amplicon region and index region, especially when handling small panel (&lt;100 targets) and small scale of samples (&lt;20). Spike in 20% PhiX in such cases could help improve the overall sequencing quality.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Tao, L., Raz, O., Marx, Z., Gosh, M., Huber, S., Greindl-Junghans, J., Biezuner, T., Amir, S., Milo, L., Adar, R., et al. (2021). Retrospective cell lineage reconstruction in Humans using short tandem repeats. Cell Rep. Methods <i>1</i>, 100054. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00534-7/sref1">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact: Ehud Shapiro: <a href="mailto:ehud.shapiro@weizmann.ac.il">ehud.shapiro@weizmann.ac.il</a></p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The data supporting the current study are subject to the rules of regulations of the ethical committee of the Weizmann Institute of Sciences. Requests for data should be directed to the lead contact, Ehud Shapiro: <a href="mailto:ehud.shapiro@weizmann.ac.il">ehud.shapiro@weizmann.ac.il</a></p>
+<p>For further details regarding the computational analysis, parallel execution, and the cell lineage system, please see: <a href="https://github.com/shapirolab/clineage">https://github.com/shapirolab/clineage</a></p>
+<h3>Acknowledgments</h3>
+<p>L.T. was partially supported by VATAT postdoctoral fellowship from <a href="https://doi.org/10.13039/501100005385">Israel’s Council for Higher Education Planning and Budgeting Committee</a>. E.S. is the incumbent of The Harry Weinrebe Professorial Chair of Computer Science and Biology. the <a href="https://doi.org/10.13039/100011102">European Union grants</a>: ERC-2008-AdG (Project No: 233047), and ERC-2014-AdG (Project No: 670535); <a href="https://doi.org/10.13039/501100003977">the Israel Science Foundation</a> grants: Individual Research Grant (Grant No: 456/13) and Joint Broad-ISF Research Grants: 422/14 and 2012/15; the IMOH-EU-ERA-NET (3-12497) grant; the Kenneth and Sally Leafman Appelbaum Discovery Fund; <a href="https://doi.org/10.13039/100011541">National Cancer Institute</a> Fund (P50 CA121974); and the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (VUMC 38347)</p>
+<h3>Author contributions</h3>
+<p>L.T and E.S conceived the project; L.T and Z.M designed and performed the experiments. O.R and L.T analyzed the data. L.T and Z.M wrote the protocol. E.S supervised the study.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

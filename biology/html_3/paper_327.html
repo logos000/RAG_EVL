@@ -1,0 +1,1464 @@
+<article>
+<section>
+<h1 id="header">Mapping protein networks in yeast mitochondria using proximity-dependent biotin identification coupled to proteomics</h1>
+<p><time datetime="2020-12-18">Published: December 18, 2020</time></p>
+<p>Roger Salvatori,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">5</a></sup> Wasim Aftab,<sup><a href="#aff3">3</a>,<a href="#aff4">4</a>,<a href="#fn1">5</a></sup> Ignasi Forne,<sup><a href="#aff3">3</a></sup> Axel Imhof,<sup><a href="#aff3">3</a>,<a href="#cor1">*</a></sup> Martin Ott,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">7</a>,<a href="#cor2">**</a></sup> and Abeer Prakash Singh<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">6</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biochemistry and Biophysics, Stockholm University, Stockholm 10691, Sweden</p>
+<p id="aff2"><sup>2</sup>Department of Medical Biochemistry and Cell Biology, University of Gothenburg, Gothenburg 40530, Sweden</p>
+<p id="aff3"><sup>3</sup>BioMedical Center, Faculty of Medicine, Ludwig Maximilians University of Munich, Planegg-Martinsried 82152, Germany</p>
+<p id="aff4"><sup>4</sup>Graduate School for Quantitative Biosciences (QBM), Ludwig Maximilians University of Munich, Munich 81377, Germany</p>
+<p id="fn1"><sup>5</sup>These authors contributed equally</p>
+<p id="fn2"><sup>6</sup>Technical Contact</p>
+<p id="fn3"><sup>7</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:imhof@lmu.de">imhof@lmu.de</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:martin.ott@gu.se">martin.ott@gu.se</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:abeer.singh@gu.se">abeer.singh@gu.se</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100219">10.1016/j.xpro.2020.100219</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Proximity-dependent biotin identification (BioID) permits biotinylation of proteins interacting directly, indirectly, or just localized in proximity of a protein of interest (bait). Here, we describe how BioID coupled to proteomics and network biology can be used to map protein proximities in yeast mitochondria, aiding in visualization of complex protein-protein interaction landscapes.</p>
+<p>For complete information on the use and execution of this protocol, please refer to <a href="#bib19">Singh et al., 2020</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Generation of cells with a chromosomal C-terminal BirA∗ tagged protein for BioID</li>
+<li>Biotin labeling and denaturing protein purification for mass spectrometry</li>
+<li>Automated quantitative analyses of proteomic data using R programming</li>
+<li>Generation of detailed networks to illustrate protein-protein proximities</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/327-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Here we describe a proximity labeling technique optimized for studying proteins in yeast mitochondria. Importantly, BioID (<i>bio</i>tin <i>id</i>entification) permits the identification of transiently interacting proteins and also proteins located in vicinity of the bait, which may not be co-purified by conventional pull down experiments (<a href="#bib15">Roux et al., 2012</a>; <a href="#bib17">Sears et al., 2019</a>). Generally, BioID is based on the biotinylation performed by a mutated form of a biotin ligase of bacterial origin, BirA. The modified version of BirA used in BioID (BirA∗) carries a mutation (R118G), which consents promiscuous biotinylation of the proteins included within the labeling radius, calculated to be about 10 nm (<a href="#bib1">Choi-Rhee et al., 2004</a>; <a href="#bib10">Kim et al., 2014</a>). There are four essential aspects of this optimized protocol. First, the targeted protein is only present as a BirA∗-fused variant expressed from the authentic promotor. This excludes non-assembled (and hence non-physiological forms of the proteins) that can disturb the analyses; this is in turn important to detect proximity interactions of proteins assembled into functional complexes. Second, to increase sensitivity and specificity, mitochondria are prepared prior to isolation of the biotinylated proteins. Third, proteins are purified under stringent denaturing conditions (which again decreases the likelihood to purify intact complexes), resulting in increased specificity. Fourth, subsequent mass spectrometric and bioinformatics analyses are streamlined for facile visualization and coherent statistical treatment.</p>
+<h3 id="sec1.1">Primer design and PCR for homologous recombination mediated C-terminal BirA∗ tagging</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The coding sequence of BirA∗ was inserted into a pYM28 or a pYM29 plasmid backbone, permitting C-terminal tagging of the proteins of interest, following well-described procedures (<a href="#bib8">Janke et al., 2004</a>). Importantly, the tagged protein is expressed at authentic expression levels, avoiding undesired secondary effects caused by its overexpression. The two plasmids, which are available from Addgene (Addgene IDs: 160290 and 160291), contain cassettes for auxotrophic selection on media lacking histidine or tryptophan, respectively (<a href="#fig1">Figure 1</a>A). The BirA∗ is expressed fused to the native protein, separated by a short linker (CGTACGCTGCAGGTCGACLRTLQVDDYKDDDDKTRGGGGSGGGGS), which permits flexibility between the protein and the BirA∗-tag, ensuring full native activity of the bait protein and efficient biotinylation coverage (<a href="#bib11">Osellame et al., 2016</a>). Moreover, the linker contains a FLAG tag allowing for detection via western blotting or immunofluorescence. The PCR cassette that is used to transform yeast will finally contain a S3 sequence, the linker, the BirA∗ coding sequence followed by a stop codon and a terminator, the <i>HIS3</i> or <i>TRP1</i> gene with their respective promoter and terminator, and the S2 sequence (<a href="#fig1">Figure 1</a>B).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/327-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Construction of a plasmid for C-terminal BirA∗-tagging of a protein of interest</div>
+<p>(A) The sequence encoding BirA∗ tag was inserted into the plasmid pYM28 carrying an <i>HIS3</i> auxotrophic marker.</p>
+<p>(B) A segment of the plasmid including linker sequence, BirA∗ coding sequence, stop codon, and the auxotrophic marker is amplified by PCR. Then, this DNA segment is inserted by homologous recombination into the genomic DNA, thereby fusing BirA∗ to the C terminus of the protein of interest.</p>
+</figcaption>
+</figure>
+<ol>
+<li>Primer design</li>
+</ol>
+<p>Primers must contain at their 5′ ends homologous sequences to the gene of interest. More specifically, the forward primer must contain an overhang of about 40–51 nucleotides ending at the penultimate codon of the open reading frame and followed by S3 sequence (5′-CGTACGCTGCAGGTCGAC-3′). The reverse primer features the S2 sequence (5′-ATCGATGAATTCGAGCTCG-3′) at the 3′ end and, at 5′ end, an overhang downstream (at least 70 bp) of the stop codon of the protein of interest. The size of the overhang should be about 40–51 nucleotides. Hence, following homologous recombination, the native stop codon of the gene of interest is replaced by <b>5</b>′<b>-S3 sequence → linker → BirA∗ → STOP → terminator→ HIS/TRP selection marker → S2-3</b>′ sequence.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the region between the stop codon and the reverse primer binding site does not contain promotor/terminator sequences of adjacent genes. Typically, if the region is &gt;200 bp further from the ORF of the adjacent gene, that would be considered appropriate for homologous recombination. For tagging of Mrpl4 we used Forward primer “Mrpl4_S3”: 5′-AAATACTTGAAACAGCTAATTCATGCAAGCTCCGTGGAGCAAGCAACTGCA<u>cgtacgctgcaggtcgac</u>-3′ and Reverse primer “Mrpl4_S2”: 5′-GAATACATACAGCGTATAGCTATATAAAGGTGTATGTATGTGTGTATGTAT<u>atcgatgaattcgagctcg</u>-3′. The underlined bases correspond to the S3 and S2 sequences.</div>
+<ol start="2">
+<li>Set up the PCR reaction as follows.</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Component</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5× Q5 reaction buffer</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>10 mM dNTPs</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>10 μM forward primer</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>10 μM reverse primer</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>Template plasmid</td>
+<td>Equivalent to 50 ng</td>
+</tr>
+<tr>
+<td>Q5 high-fidelity DNA polymerase</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>To 100 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Run the PCR on the following cycling conditions.</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>PCR cycling conditions</th>
+<th> </th>
+<th> </th>
+<th> </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Steps</td>
+<td>Temperature</td>
+<td>Time</td>
+<td>Cycles</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td>30 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>55°C–60°C</td>
+<td>30 s</td>
+<td> </td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td> </td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>12°C</td>
+<td>Infinity</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> This protocol is for Q5 polymerase (NEB).</div>
+<ol start="4">
+<li>PCR product purification</li>
+</ol>
+<p>Use any of the commercially available PCR clean-up kits for this step. The PCR product is dissolved in sterile deionized H<sub>2</sub>O and ready for transfection.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-BirA∗</td>
+<td>Novus Biological</td>
+<td>NBP2-59938</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Lithium acetate</td>
+<td>Sigma</td>
+<td>L6883</td>
+</tr>
+<tr>
+<td>PEG (poly ethylene glycol)</td>
+<td>Sigma</td>
+<td>P4338</td>
+</tr>
+<tr>
+<td>SSDNA (deoxyribonucleic acid sodium salt from salmon testes)</td>
+<td>Sigma</td>
+<td>D1626</td>
+</tr>
+<tr>
+<td>Tryptone/peptone</td>
+<td>Roth</td>
+<td>8952.5</td>
+</tr>
+<tr>
+<td>Yeast extract</td>
+<td>Serva</td>
+<td>24540.03</td>
+</tr>
+<tr>
+<td>Dextrose</td>
+<td>Sigma</td>
+<td>G8270</td>
+</tr>
+<tr>
+<td>Galactose</td>
+<td>Roth</td>
+<td>4987.7</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>VWR</td>
+<td>24387.292</td>
+</tr>
+<tr>
+<td>Ponceau staining</td>
+<td>Sigma</td>
+<td>P3504</td>
+</tr>
+<tr>
+<td>Skim milk powder</td>
+<td>Sigma</td>
+<td>70166</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>Sigma</td>
+<td>E5134</td>
+</tr>
+<tr>
+<td>PMSF</td>
+<td>Applichem</td>
+<td>A0999,0025</td>
+</tr>
+<tr>
+<td>Sorbitol</td>
+<td>Roth</td>
+<td>6213.2</td>
+</tr>
+<tr>
+<td>Zymolyase 20T</td>
+<td>Amsbio</td>
+<td>120491-1</td>
+</tr>
+<tr>
+<td>Biotin</td>
+<td>Sigma</td>
+<td>B4639</td>
+</tr>
+<tr>
+<td>Streptavidin magnetic beads</td>
+<td>Thermo Fisher Scientific</td>
+<td>88817</td>
+</tr>
+<tr>
+<td>16-tube SureBeads magnetic rack</td>
+<td>Bio-Rad</td>
+<td>1614916</td>
+</tr>
+<tr>
+<td>Sequencing grade modified trypsin</td>
+<td>Promega</td>
+<td>V5111</td>
+</tr>
+<tr>
+<td>Benzonase nuclease</td>
+<td>Merck</td>
+<td>E1014-5KU</td>
+</tr>
+<tr>
+<td>3M Empore SDB-RPS extraction disks (2241)</td>
+<td>Sigma</td>
+<td>66886-U</td>
+</tr>
+<tr>
+<td>LC-MS grade water</td>
+<td>Merck</td>
+<td>1.15333.1000</td>
+</tr>
+<tr>
+<td>Acetonitrile (ACN)</td>
+<td>Merck</td>
+<td>1.00029.1000</td>
+</tr>
+<tr>
+<td>Methanol (MeOH)</td>
+<td>Roth</td>
+<td>AE71.1</td>
+</tr>
+<tr>
+<td>Isopropanol (ISO)</td>
+<td>Roth</td>
+<td>AE73.1</td>
+</tr>
+<tr>
+<td>Ammonia solution (25% wt/vol; NH<sub>4</sub>OH)</td>
+<td>Merck</td>
+<td>5330030050</td>
+</tr>
+<tr>
+<td>Acetic acid (AcOH)</td>
+<td>Roth</td>
+<td>3738.1</td>
+</tr>
+<tr>
+<td>Trifluoroacetic acid (TFA)</td>
+<td>Thermo Scientific</td>
+<td>85183</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>ECL detection kit WesternBright Quantum</td>
+<td>advansta</td>
+<td>K-12042-D10</td>
+</tr>
+<tr>
+<td>ECL detection kit WesternBright Sirius</td>
+<td>advansta</td>
+<td>K-12043-D10</td>
+</tr>
+<tr>
+<td>AttractSPEDisks Tips SDB-RPS-200 μL-T1-96/pk</td>
+<td>AFFINISEP</td>
+<td>Tips-RPS-M.T1.200.96</td>
+</tr>
+<tr>
+<td>16-gauge Kel-F hub needle</td>
+<td>Hamilton</td>
+<td>90516</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw data and partially processed files for Mrpl4 and Cbp3 BioIDs</td>
+<td>This study</td>
+<td><a href="https://github.com/wasimaftab/BioID_Proteomics">https://github.com/wasimaftab/BioID_Proteomics</a></td>
+</tr>
+<tr>
+<td>Raw data of western blotting (Mendeley)</td>
+<td>This study</td>
+<td><a href="https://doi.org/10.17632/pw4f8w65pk.1">https://doi.org/10.17632/pw4f8w65pk.1</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>
+<i>S. cerevisiae</i>: strain MOY646 <i>Mat α; ura3-1; trp1Δ 2; leu2-3,112; his3-11,15; ade2-1; can1-100 nuc1::URA3</i>
+</td>
+<td><a href="#bib9">Kehrein et al., 2015</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>S. cerevisiae</i>: strain MOY1258 <i>Mat α; ura3-1; trp1Δ 2; leu2-3,112; his3-11,15; ade2-1; can1-100 nuc1::URA3 Mrpl4BirA∗::HIS3</i>
+</td>
+<td><a href="#bib19">Singh et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>S. cerevisiae</i>: strain MOY1392 <i>Mat α; ura3-1; trp1Δ 2; leu2-3,112; his3-11,15; ade2-1; can1-100 nuc1::URA3 CBP3BirA∗::HIS3</i>
+</td>
+<td><a href="#bib16">Salvatori et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>S. cerevisiae</i>: strain MOY1242 <i>Mat α; ura3-1; trp1Δ 2; leu2-3,112; his3-11,15; ade2-1; can1-100 nuc1::URA3 KGD4BirA∗::HIS3</i>
+</td>
+<td><a href="#bib19">Singh et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Mrpl4_S3</td>
+<td>Merck</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Mrpl4_S2</td>
+<td>Merck</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pYM28-BirA∗</td>
+<td><a href="#bib16">Salvatori et al., 2020</a></td>
+<td>160290</td>
+</tr>
+<tr>
+<td>pYM29-BirA∗</td>
+<td><a href="#bib16">Salvatori et al., 2020</a></td>
+<td>160291</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Cytoscape</td>
+<td><a href="#bib18">Shannon et al., 2003</a></td>
+<td><a href="https://cytoscape.org">https://cytoscape.org</a></td>
+</tr>
+<tr>
+<td>Statistical data analysis pipeline</td>
+<td>This study</td>
+<td><a href="https://github.com/wasimaftab/BioID_Proteomics">https://github.com/wasimaftab/BioID_Proteomics</a></td>
+</tr>
+<tr>
+<td>Microsoft Excel</td>
+<td>Microsoft Corporation</td>
+<td><a href="https://products.office.com/en/excel">https://products.office.com/en/excel</a></td>
+</tr>
+<tr>
+<td>MaxQuant (MQ)</td>
+<td>Max Plank institute of Biochemistry</td>
+<td><a href="https://www.maxquant.org/">https://www.maxquant.org/</a></td>
+</tr>
+<tr>
+<td>R</td>
+<td>The R Project for Statistical Computing</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>Rstudio</td>
+<td>RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston</td>
+<td>
+<a href="http://www.rstudio.com/">http://www.rstudio.com/</a>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">LC-MS setup</h3>
+<h4 id="sec2.1.1">Nanospray column</h4>
+<p>Pulled fused-silica 15-cm-length capillary from New Objective (FS360-75-8-N-20-C15, 360 μm × 75 μm, 8±1-μm i.d. tip), packed in-house with C18 material (ReproSil-Pur, 120 Å, C18-AQ, 2.4 μm; Dr. Maisch, cat. no. r124aq). Commercial columns with similar features can also be used.</p>
+<h4 id="sec2.1.2">Column oven for nanospray columns</h4>
+<p>Sonation, cat. no. PRSO-V1 or PRSO-V2 (40°C–50°C).</p>
+<h4 id="sec2.1.3">LC system</h4>
+<p>Ultimate 3000 RSLCnano systems (Thermo Fisher Scientific) operated at 300 nL/min, with buffer A 0.1% (v/v) formic acid and buffer B 80% (v/v) ACN/0.1% (v/v) formic acid and the gradient (interval in minutes/% buffer B) 0/4, 5/4, 55/50, 56/90, 61/90, 62/4, 90/4. Other LC systems capable of operating at nl/min range can be used as well.</p>
+<h4 id="sec2.1.4">Mass spectrometer</h4>
+<p>Q Exactive HF (Thermo Fisher Scientific). Other mass spectrometer capable of Data-Dependent Acquisition (DDA) with sufficiently high resolution and scan speed, like LTQ-Orbitrap Elite and Velos series, Orbitrap Tribid instruments, or TOF instruments can be used as well. Operate the Q Exactive HF in DDA positive mode with a survey full scan MS spectra (from m/z 375–1,600) acquired with resolution R = 60,000 at m/z 400 (AGC target of 3 × 10<sup>6</sup>, maximum ion time 60 ms). The 10 most intense peptide ions with charge states between 2 and 5 are sequentially isolated to a target value of 1 × 10<sup>5</sup>, R = 60,000 at m/z 400, maximum ion time 60 ms, isolation window 2.0 m/z and fragmented at 27% normalized collision energy. Typical mass spectrometric conditions are: spray voltage, 1.5 kV; no sheath and auxiliary gas flow; heated capillary temperature, 300°C; ion selection threshold, 33.000 counts, S-lens RF level 50.</p>
+<h4 id="sec2.1.5">Stock solution preparation</h4>
+<table id="undtbl3">
+<caption>YP media</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (g/L)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bacto tryptone</td>
+<td>20 g/L</td>
+<td>20 g</td>
+</tr>
+<tr>
+<td>Yeast extract</td>
+<td>10 g/L</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Up to 1 L</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> autoclave the same day after preparation. YP can be stored at room temperature for long term.</div>
+<table id="undtbl4">
+<caption>HR Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Polyethylene glycol 50%</td>
+<td>33% v/w</td>
+<td>240 μL</td>
+</tr>
+<tr>
+<td>Lithium acetate 1 M</td>
+<td>100 mM</td>
+<td>36 μL</td>
+</tr>
+<tr>
+<td>Salmon sperm (SS) DNA 10 mg/mL</td>
+<td>138.88 ng/μL</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>DNA cassette</td>
+<td>2.7 ng/μL</td>
+<td>1 μg</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Up to 360 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>360 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> autoclave the polyethylene glycol 50% solution, and sterile filter the Lithium acetate 1 M solution before use. All reagents can be stored at room temperature except for SS DNA, which is stored at −20°C.</div>
+<table id="undtbl5">
+<caption>2× SDS sample buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl 1 M, pH 6.8</td>
+<td>100 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>SDS</td>
+<td>4%</td>
+<td>2 g</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>20%</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>Bromophenol blue</td>
+<td>0.2%</td>
+<td>10 mg</td>
+</tr>
+<tr>
+<td>DTT 4 M</td>
+<td>100 mM</td>
+<td>1.25 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Up to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Can be stored at −20°C for long time.</div>
+<table id="undtbl6">
+<caption>TBS</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl pH 8.0</td>
+<td>500 mM</td>
+<td>60.5 g</td>
+</tr>
+<tr>
+<td>Sodium chloride</td>
+<td>1.5 M</td>
+<td>87.6 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>N/A</td>
+<td>Up to 1 L</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>1 L</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Can be stored at room temperature for up to 1 year.</div>
+<table id="undtbl7">
+<caption>MP1 buffer (2 mL/ g of wet cells)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris (unadjusted buffer) 1 M</td>
+<td>100 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>1,4-dithiothreitol 4 M</td>
+<td>10 mM</td>
+<td>0.25 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>89.75 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Used when made fresh.</div>
+<table id="undtbl8">
+<caption>MP2 buffer (6.7 mL/g of wet cells)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sorbitol 2.4 M</td>
+<td>1.2 M</td>
+<td>125 mL</td>
+</tr>
+<tr>
+<td>Zymolyase</td>
+<td>3 mg/g of wet weight of cells</td>
+<td>120 mg</td>
+</tr>
+<tr>
+<td>KPi 1 M, pH 7.4</td>
+<td>20 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>120 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>250 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Used when made fresh.</div>
+<table id="undtbl9">
+<caption>Homogenization buffer (13.4 mL/g of wet cells)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl 1 M, pH 7.4</td>
+<td>10 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>PMSF 200 mM</td>
+<td>1 mM</td>
+<td>2.5 mL</td>
+</tr>
+<tr>
+<td>EDTA 0.5 M, pH 8</td>
+<td>1 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Sorbitol 2.4 M</td>
+<td>0.6 M</td>
+<td>125 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>366.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Used when made fresh.</div>
+<table id="undtbl10">
+<caption>SH buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES-KOH 1 M, pH 7.4</td>
+<td>20 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Sorbitol 2.4 M</td>
+<td>600 mM</td>
+<td>12.5 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>36.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Used when made fresh.</div>
+<table id="undtbl11">
+<caption>RIPA buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl, pH 7.5</td>
+<td>50 mM</td>
+<td>6.057 g</td>
+</tr>
+<tr>
+<td>Sodium chloride</td>
+<td>150 mM</td>
+<td>8.766 g</td>
+</tr>
+<tr>
+<td>Tergitol (NP-40)</td>
+<td>1% w/v</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>1 mM</td>
+<td>0.292 g</td>
+</tr>
+<tr>
+<td>EGTA</td>
+<td>1 mM</td>
+<td>0.380 g</td>
+</tr>
+<tr>
+<td>SDS</td>
+<td>0.1% w/v</td>
+<td>1 g</td>
+</tr>
+<tr>
+<td>Roche Protease cocktail inhibitor</td>
+<td>1 tablet every 50 mL of buffer</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Sodium deoxycholate</td>
+<td>0.5% w/v</td>
+<td>5 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Up to 1,000 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>1,000 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Can be stored at 4°C for up to 4 months. Add Protease cocktail inhibitor fresh before use.</div>
+<table id="undtbl12">
+<caption>TAP buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES-KOH pH 8.0</td>
+<td>50 mM</td>
+<td>2.98 g</td>
+</tr>
+<tr>
+<td>KCl</td>
+<td>100 mM</td>
+<td>1.86 g</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>10% v/v</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>2 mM</td>
+<td>0.146 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Up to 250 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>250 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Can be stored at 4°C for up to 4 months.</div>
+<table id="undtbl13">
+<caption>ABC buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ammonium bicarbonate</td>
+<td>50 mM</td>
+<td>197 mg</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>N/A</td>
+<td>Up to 50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Make fresh before use. Can be used up till 24 h.</div>
+<table id="undtbl14">
+<caption>StageTip conditioning buffer 2</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Methanol</td>
+<td>30% v/v</td>
+<td>3 mL</td>
+</tr>
+<tr>
+<td>Trifluoroacetic acid</td>
+<td>0.2% v/v</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>LC-MS grade H<sub>2</sub>O</td>
+<td>N/A</td>
+<td>6.98 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="caution">
+<span class="caution-title">Caution:</span> TFA solutions are corrosive. Prepare the solutions in a fume hood and handle with gloves. Make fresh before use.</div>
+<table id="undtbl15">
+<caption>StageTip conditioning buffer 3/Stagetip wash buffer 2</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trifluoroacetic acid</td>
+<td>0.2% v/v</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>LC-MS grade H<sub>2</sub>O</td>
+<td>N/A</td>
+<td>9.98 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="caution">
+<span class="caution-title">Caution:</span> TFA solutions are corrosive. Prepare the solutions in a fume hood and handle with gloves. Make fresh before use.</div>
+<table id="undtbl16">
+<caption>StageTip wash buffer 1</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trifluoroacetic acid</td>
+<td>1% v/v</td>
+<td>0.1 μL</td>
+</tr>
+<tr>
+<td>Isopropanol</td>
+<td>99% v/v</td>
+<td>9.9 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="caution">
+<span class="caution-title">Caution:</span> TFA solutions are corrosive. Prepare the solutions in a fume hood and handle with gloves. Make fresh before use.</div>
+<table id="undtbl17">
+<caption>StageTip elution buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACN</td>
+<td>80% v/v</td>
+<td>8 mL</td>
+</tr>
+<tr>
+<td>NH<sub>4</sub>OH (25%, HPLC grade)</td>
+<td>1.25% v/v</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>LC-MS grade H<sub>2</sub>O</td>
+<td>N/A</td>
+<td>1.500 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="caution">
+<span class="caution-title">Caution:</span> This buffer must be prepared fresh. Otherwise, the pH will begin to increase due to the high volatility of NH<sub>4</sub>OH, and its elution strength will decrease.</div>
+<table id="undtbl18">
+<caption>MS loading buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (mM or μM)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACN</td>
+<td>2% v/v</td>
+<td>0.2 mL</td>
+</tr>
+<tr>
+<td>Trifluoroacetic acid</td>
+<td>0.3% v/v</td>
+<td>30 μL</td>
+</tr>
+<tr>
+<td>LC-MS grade H<sub>2</sub>O</td>
+<td>N/A</td>
+<td>9.77 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>N/A</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="caution">
+<span class="caution-title">Caution:</span> TFA solutions are corrosive. Prepare the solutions in a fume hood and handle with gloves. Make fresh before use.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Tagging the protein of interest via homologous recombination</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 days</div>
+<p>This step is required to genomically tag BirA∗ to the C-terminal of the protein of interest, using transfection mediated homologous recombination. Tagging is confirmed by Western blotting using anti-BirA antibody.</p>
+<ol>
+<li>Grow the yeast cell line of interest for 12–16 h in YP + 2% dextrose.</li>
+<li>Dilute the culture to 0.2 OD in YP + 2% dextrose and incubate under shaking at 30°C until the culture reaches an OD of ∼1.0.</li>
+<li>Harvest 1.5 mL of cells by spinning at 3,000 × <i>g</i> for 5 min at ∼21°C.</li>
+<li>Remove supernatant.</li>
+<li>Resuspend cells in 1 mL of sterile water and spin at 3,000 × <i>g</i> for 5 min at ∼21°C.</li>
+<li>Remove supernatant.</li>
+<li>Perform PCR-tagging via homologous recombination.
+<ol type="a">
+<li>Resuspend the cells in 100 mM lithium acetate and shake them for 10 min at 30°C.</li>
+<li>Pellet the cells at 3,000 × <i>g</i> for 5 min and resuspend them by vortexing in 360 μL of HR buffer that includes the DNA fragment for homologous recombination.</li>
+<li>Incubate the cells at 42°C for 45 min under constant shaking.</li>
+<li>Spin down the cells at 3,000 × <i>g</i> at ∼21°C for 5 min, remove supernatant and resuspend them in 1 mL of YP + 2% dextrose.</li>
+<li>Incubate the cells for 1 h at 30°C under constant shaking.</li>
+<li>Spin down the cells at 3,000 × <i>g</i> at ∼21°C for 5 min and resuspend them in 100 μL of water, and spread them on an appropriate selective agar plate.</li>
+</ol>
+</li>
+<li>After three days (∼72 h), single-cell colonies should emerge on the plate.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> the plates can be stored at 4°C for up to 2 weeks.</div>
+<ol start="9">
+<li>pick single colonies and streak them on a fresh selection plate and let them grow at 30°C for 36–48 h.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> the plates can be stored at 4°C for up to 2 weeks.</div>
+<ol start="10">
+<li>Inoculate the clones in YP + 2% dextrose and let them grow for 12–16 h at 30°C under constant shaking.</li>
+<li>Perform protein extraction.
+<ol type="a">
+<li>Harvest 1 OD of cells and spin them down.</li>
+<li>Resuspend the cells in 0.2 mL of 0.1 M NaOH and incubate at ∼21°C for 5 min.</li>
+<li>Spin the cells down at 3,000 × <i>g</i> for 5 min at ∼21°C and remove supernatant.</li>
+<li>Resuspend the cells in 30 μL of 1× SDS sample buffer.</li>
+<li>Boil the sample at 95°C for 5 min.</li>
+</ol>
+</li>
+<li>Load the sample on an SDS-PAGE gel.</li>
+<li>Run the gel according to the manufacturer instructions.</li>
+<li>Transfer the protein on a nitrocellulose membrane.</li>
+<li>Stain the membrane with Ponceau S to confirm transfer.</li>
+<li>Block the membrane with 5% skim milk powder in TBS for 1 h at ∼21°C.</li>
+<li>Decorate the membrane with the anti-BirA antibody (Diluted 1:500 in 5% skim milk powder in TBS) on a shaker for 12–16 h at 4°C.</li>
+<li>Wash the membrane three times with TBS.</li>
+<li>Expose the membrane to the anti-mouse secondary antibody conjugated to HRP (Diluted 1:3,000 in 5% skim milk powder in TBS) for 1 h at ∼21°C.</li>
+<li>Wash the membrane three times with TBS.</li>
+<li>Incubate the membrane with ECL mix and check for correct BirA∗ tagging of the protein of interest.</li>
+</ol>
+<h3 id="sec3.2">Labeling cells with biotin and extracting crude mitochondria</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>In this step, biotin labeling of BirA∗-tagged cells and subsequently extract crude mitochondria is performed.</p>
+<div class="note">
+<span class="note-title">Note:</span> Perform three biological replicates for each strain.</div>
+<ol start="22">
+<li>Grow the cell line containing the BirA∗-tagged version of the protein of interest in YP + 2% glycerol or galactose supplemented with 50 μM biotin.
+<ol type="a">
+<li>Start the culture in 20 mL in YP + 2% glycerol or galactose and grow 12–16 h at 30°C under shaking.</li>
+<li>Increase the culture volume to 200 mL by supplementing YP + 2% glycerol or galactose.</li>
+<li>Bring the volume to 2 liters, add biotin powder into the culture to reach a final concentration of 50 μM and let the culture grow for ∼15 h at 30°C under shaking.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to harvest the cells for mitochondrial extraction when they are in logarithmic growth phase. The duplication time might be influenced by the strain’s genetic background. In our hands, starting a 2 liters culture with an OD<sub>600</sub>∼ 0.025–0.05 typically results on an OD ∼1.5 after 15 h.</div>
+<ol start="23">
+<li>When the OD<sub>600</sub> is ∼1.5, harvest the cells by centrifuging at 3,000 × <i>g</i> for 5 min at ∼21°C.</li>
+<li>Remove supernatant.</li>
+<li>Resuspend the cells with water.</li>
+<li>Spin down the cells at 2,900 × <i>g</i> at ∼21°C for 5 min. Remove supernatant.</li>
+<li>Weight the wet cell pellet, expected to be around 6 grams for a 2 liters culture harvested at OD<sub>600</sub> ∼1.5.</li>
+<li>Resuspend the cells in MP1 buffer and incubate at 30°C for 10 min under shaking.</li>
+<li>Spin down the cells at 2,900 × <i>g</i> at 21°C for 5 min and wash them with 1.2 M sorbitol.</li>
+<li>Spin down the cells at 2,900 × <i>g</i> at 21°C for 5 min and resuspend them in MP2 buffer for 1 h at 30°C under shaking.</li>
+<li>Disrupt the cells with a tight-fitting glass Dounce homogenizer.
+<ol type="a">
+<li>Spin down the cells at 3,000 × <i>g</i> at 4°C for 5 min and resuspend them in half of the required homogenization buffer.</li>
+<li>Dounce 10 times.</li>
+<li>Spin down the homogenate for 5 min at 2,900 × <i>g</i> at 4°C and save the supernatant at 4°C.</li>
+<li>Resuspend the pellet with the second half of homogenization buffer.</li>
+<li>Dounce 10 times.</li>
+<li>Spin down the homogenate for 5 min at 2,900 × <i>g</i> at 4°C and add this supernatant to the one saved before.</li>
+</ol>
+</li>
+<li>Spin down the total supernatant at 2,900 × <i>g</i> for 5 min at 4°C.</li>
+<li>Transfer the supernatant in a fresh bottle.</li>
+<li>Spin down the supernatant at 17,500 × <i>g</i> for 15 min at 4°C and discard the supernatant.</li>
+<li>The pellet contains crude mitochondrial extract. Resuspend them in SH buffer (∼10 mg/mL) and fast freeze in liquid nitrogen followed by storage at −80°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> mitochondria can be stored at −80°C for up to 1 year.</div>
+<h3 id="sec3.3">Purification of biotinylated proteins</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>In this step, total biotinylated proteins from the mitochondrial extract are purified using streptavidin magnetic beads and digested on-bead by trypsin. The peptides are then prepared for subsequent analysis by mass spectrometry.</p>
+<ol start="36">
+<li>Thaw mitochondria (3 mg of total protein per biological replicate) on ice or at 4°C.</li>
+<li>Spin down the mitochondria for 10 min at 10,000 × <i>g</i> at 4°C.</li>
+<li>Remove the supernatant and solubilize the mitochondria in 300 μL of 1% SDS, and incubate for 5 min at 50°C. Please see critical point below.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This step is important as it will extract and denature all the proteins. This will reduce non-specific binding of proteins to streptavidin magnetic beads (step 43).</div>
+<ol start="39">
+<li>Dilute the mitochondrial lysate by adding 2,700 μL of RIPA buffer supplemented with 500 U of Benzonase and incubate for 30 min on ice (4°C).</li>
+<li>Clarify the mitochondrial lysate by spinning at 16,000 × <i>g</i> for 5 min at 4°C.</li>
+<li>Transfer the supernatant into a fresh 15 mL tube.</li>
+<li>In the meanwhile, equilibrate streptavidin magnetic beads equivalent to 60 μL of beads slurry (to reach 50 μg protein/μL beads slurry) with 1 mL of RIPA buffer.</li>
+<li>Spin down the beads, remove the supernatant, and transfer the equilibrated beads into the 15 mL tube with the mitochondrial lysate.</li>
+<li>Incubate on a rotary shaker for 3 h at 4°C.</li>
+<li>After the incubation, remove the supernatant (not bound fraction) by either centrifugation at 3,000 × <i>g</i> for 5 min at ∼21°C or by using a magnet.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure all the beads have been spun to the bottom of the tube as a pellet. Presence of beads in the supernatant will give a brown tinge to the solution.</div>
+<ol start="46">
+<li>Add 1 mL of RIPA buffer to wash the beads.</li>
+<li>Transfer the beads in a fresh 1.5 mL tube and load onto a magnetic rack.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The magnet will attract the beads to one side of the tube.</div>
+<ol start="48">
+<li>Remove the RIPA buffer by carefully pipetting.</li>
+<li>Wash again with 1 mL of RIPA buffer.</li>
+<li>Wash the beads twice with 1 mL of TAP lysis buffer.</li>
+<li>Wash the beads three times with 1 mL of freshly made ABC buffer.</li>
+<li>Resuspend the beads with 200 μL of ABC buffer.</li>
+<li>Add 1 μg of sequencing grade modified trypsin.</li>
+<li>Incubate the tubes for 12–16 h at 37°C under constant shaking.</li>
+<li>Add an additional 1 μg of sequence grade modified trypsin to the bead mixture, and incubate for 3 h at 37°C under constant shaking.</li>
+<li>Harvest the elution (clear supernatant without the beads).</li>
+<li>Resuspend the beads twice in 150 μL of ABC buffer, and harvest the supernatant.</li>
+<li>Merge the three supernatants together (total volume= 500 μL).</li>
+<li>Ensure the high purity of the elution by keeping the tubes on the magnetic rack for 5 min, and transferring the elutions in a new tube.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The elutions can be stored at −80°C for weeks before proceeding to the next step.</div>
+<ol start="60">
+<li>Lyophilize the elutions by solvent removal in a SpeedVac vacuum concentrator.</li>
+<li>Resuspend the digested proteins in 30 μL of 0.1% TFA and incubate for 10 min at 4°C.</li>
+<li>Check the pH. It should be between 2 and 3, otherwise adjust with 1% TFA.</li>
+<li>Prepare StageTips with 2 layers of SDB-RPS per sample by piercing the SDB-RPS extraction disk with a 16-gauge Kel-F Hub Needle (90516 from Hamilton) and pushing the plugs down with a 1 mm OD metal wire into a 200 μL pipette tip, as described previously (<a href="#bib13">Rappsilber et al., 2007</a>). Commercial alternatives are also available (Tips-RPS-M.T1.200 from Affinisep).</li>
+<li>Pre-equilibrate the StageTips sequentially with 50 μL ACN, 50 μL of Conditioning Buffer 2 and 50 μL of Conditioning Buffer 3 by centrifugation for 5–8 min at 1,500 × <i>g</i> at ∼21°C, or until no liquid remains in the StageTip.</li>
+<li>Load each sample into a StageTip.</li>
+<li>Wash the StageTips sequentially with Wash Buffer 1 and Wash Buffer 2 by centrifugation for 5–8 min at 1,500 × <i>g</i> at ∼21°C, or until no liquid remains in the StageTip.</li>
+<li>Elute the peptides with 60 μL of elution buffer and collect the peptides into a clean low protein binding tube by centrifugation for 5 min at 500 × <i>g</i> at ∼21°C, or until no liquid remains in the StageTip.</li>
+<li>Lyophilize the elutions by solvent removal in a vacuum concentrator for 30 min at 45°C, or until ∼2 μL remains.</li>
+<li>Add 15 μL of MS loading buffer (2% ACN, 0.3% TFA) and resuspend by sonication.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The samples can be stored at −80°C for weeks before proceeding to the next step.</div>
+<h3 id="sec3.4">Mass spectrometry and MaxQuant analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–3 days</div>
+<p>In this step, the samples are processed by mass spectrometry and the raw data is analyzed by MaxQuant.</p>
+<ol start="70">
+<li>Place the samples in the LC autosampler cooled to 4–8°C and analyze 5 μL of each sample using the LC-MS setup as described in Material and Equipment.</li>
+<li>Analyze the raw BioID data using MaxQuant (<a href="#bib2">Cox and Mann, 2008</a>; <a href="#bib20">Tyanova et al., 2016</a>) and perform the downstream bioinformatics analysis as described below.</li>
+<li>Specify the parameters used for searching label-free BioID data using MaxQuant. Typical parameters for MQ 1.6.15.0 are described in the mqpar.xml file (<a href="https://github.com/wasimaftab/BioID_Proteomics/Example/MQ_param">https://github.com/wasimaftab/BioID_Proteomics/Example/MQ_param</a>). See (<a href="#bib20">Tyanova et al., 2016</a>) for more details on MaxQuant settings.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The raw files of the proteomic results that we present in this manuscript was processed using MQ v1.5.2.8. Therefore, users attempting to reproduce the results with later versions of MQ might get slightly different results.</div>
+<h3 id="sec3.5">Statistical quantification and generation of volcano plots</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30–60 min</div>
+<p>In this step, two-group statistical quantification analysis is done on the Maxquant output data using a code developed using R programming. The code also generates volcano plots for easy visualization. To implement this analysis in your workflow, refer to the <a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a> section for a step-by-step description.</p>
+<h3 id="sec3.6">Generation of protein-proximity networks</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30–60 min</div>
+<p>In this step, fold-change enrichments from multiple BioID analyses are combined to create a bait-prey-edge table that can be visually analyzed as a network in Cytoscape.</p>
+<ol start="73">
+<li>Generating bait-prey-edge table
+<ol type="a">
+<li>If you run multiple two-group comparisons, you will end up creating multiple "<i>Results_timestamp</i>" folders. Inside each "<i>Results_timestamp</i>" folder there will be one "<i>timestamp_final_data.tsv</i>" file.</li>
+<li>Create a folder in your preferred location and copy those "timestamp_final_data.tsv" into that folder.</li>
+<li>Run the "<i>automate_nw_tab_gen.R</i>" code in RStudio by clicking <b>Source</b> and select the folder where you copied the .tsv files (see <i>Example/Limma_output/Final_tsvs</i> folder).</li>
+<li>The code will first ask users to specify a log fold-change cutoff. Then, for every .tsv file in that folder, it will print a list of iBAQ/LFQ column names and ask you to enter a bait name from that list. Here assumption is that iBAQ/LFQ columns will contain bait names.</li>
+<li>Using that information, the code will create a virtual list of bait-prey interactions that have fold change ≥ cutoff (e.g., 1.5) and p &lt; 0.05.</li>
+<li>After that, the code will print a message if that file is processed successfully.</li>
+<li>Finally, when all .tsv files are processed successfully, code will concatenate those virtual lists into a single one, print top 10 rows that list and save all the proximity interactions as "Links.xlsx" in the same directory where you copied .tsv files earlier (see Example/Limma_output/Final_tsvs/Links.xlsx).</li>
+<li>To visualize a bait-prey interaction network, open Cytoscape and click File → Import → Network from File… and load "Links.xlsx."</li>
+<li>For “Bait” select Meaning: “Source Node” and Data type: “String.” For “Prey” select Meaning: “Target Node” and Data type: “String.” For “Fold change” select Meaning: “Edge attribute” and Data type: “Floating point.” Click “OK.”</li>
+<li>Click Edit → Remove Self-Loops… to remove self-interactions involving baits.</li>
+<li>The network displayed represents Bait-prey undirected network which can be customized depending on the user preference.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Tutorials for navigating through Cytoscape applications are available on GitHub by following this link: <a href="https://github.com/cytoscape/cytoscape-tutorials/wiki">https://github.com/cytoscape/cytoscape-tutorials/wiki</a> .This section of the protocol was tested on Windows 10 (64 bit) using Cytoscape 3.7.2.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Bait-prey edge table can also be generated manually in Microsoft Excel. The above code automates the process and eliminates the risk of human error.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Mitochondria contain proteins of dual genetic sources, and a small genome present in the mitochondrial matrix that is responsible for the production of a few key subunits of the oxidative phosphorylation system. Hence, assembly of respiratory chain complexes I, III, and IV requires expression of nuclear and mitochondrial encoded genes. To avoid accumulation of non-assembled subunits, the activities of both genetic systems need to be coordinated, which occurs by feedback loops that regulate mitochondrial translation. This translational control in mitochondria depends on the action of nuclear encoded factors called translational activators (<a href="#bib12">Ott et al., 2016</a>). The best studied translation feedback loops adjust translation of <i>COB</i> and <i>COX1</i>, two mRNAs coding for the cytochrome <i>b</i> subunit of complex III and subunit Cox1 of complex IV, respectively. The conserved Cbp3-Cbp6 complex interacts with newly synthesized cytochrome <i>b</i> to support its assembly and maturation (<a href="#bib4">Gruschke et al., 2011</a>; <a href="#bib5">Gruschke et al., 2012</a>). At the same time, the occupancy of Cbp3-Cbp6 with cytochrome <i>b</i> sets the levels of cytochrome <i>b</i> production. In cases where assembly proceeds, Cbp3-Cbp6 will dissociate from cytochrome <i>b</i> to stimulate a new round of <i>COB</i> mRNA translation (<a href="#bib5">Gruschke et al., 2012</a>; <a href="#bib7">Hildenbeutel et al., 2014</a>). To this end, free Cbp3-Cbp6 interacts with the tunnel exit of the mitochondrial ribosome to liberate <i>COB</i> mRNA and induce its translation (<a href="#bib16">Salvatori et al., 2020</a>). These results prompted the question whether mitochondrial ribosomes are specifically equipped with factors supporting the biogenesis of select mitochondrial encoded proteins.</p>
+<p>In order to test this hypothesis, we used the above protocol to perform C-terminal BirA∗ tagging for Cbp3, Mrpl4, a mitoribosomal protein located at the rim of the polypeptide tunnel exit (<a href="#bib3">Gruschke et al., 2010</a>), and Kgd4, used as control (<a href="#fig2">Figure 2</a>A). Kgd4 is a soluble protein of the alpha ketoglutarate dehydrogenase complex present in the mitochondrial matrix (<a href="#bib6">Heublein et al., 2014</a>) and not directly involved in mitochondrial gene expression. In a pilot experiment, we purified biotinylated proteins from strains containing the BirA∗-tag on Mrpl4 and Kgd4 (<a href="#fig2">Figure 2</a>B). This led to the co-purification of Kgd2, a subunit of the mitochondrial alpha ketoglutarate dehydrogenase, in the case of Kgd4-BirA∗, and of Cbp3 in the case of Mrpl4-BirA∗. This latter observation confirms a previous finding obtained by chemical crosslinking showing that Cbp3 is found in close proximity to Mrpl4 (<a href="#bib4">Gruschke et al., 2011</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/327-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. BioIDs of Mrpl4 and Cbp3 and generation of proximity interactome network</div>
+<p>(A) Western blots showing successful tagging of Mrpl4 and Kgd4 with BirA∗ by immunodecorating with anti-Mrpl4 and anti-Kgd4 antibody, respectively. Immunodecoration with anti-Cox2 shows that mitochondrial translation is not impacted in the BirA∗-tagged cell lines.</p>
+<p>(B) During purification of biotinylated proteins, instead of tryptic digestion, SDS-loading dye was added to the beads and boiled at 95°C for 20 min under shaking to elute the proteins. The lysate (T), unbound fraction (U), and elutions (E) were separated by SDS-PAGE followed by western blotting.</p>
+<p>(C and D) Volcano plots of Mrpl4 and Cbp3 individual BioIDs.</p>
+<p>(E) The enrichment data obtained from (C) and (D) were used to create a bait-prey network in Cytoscape; each protein is shown as a node, connect by red lines (edges) that are quantitatively color-mapped. ∗, cross-reactive bands; i<sub>L</sub>, long isoform of Kgd4; i<sub>S</sub>, short isoform of Kgd4.</p>
+</figcaption>
+</figure>
+<p>Then, we applied BioID coupled to proteomics to determine Mrpl4 and Cbp3 proximity interactomes. As previously (<a href="#bib19">Singh et al., 2020</a>), we used Kgd4 as a contrasting bait to eliminate background, non-specific biotinylation and performed quantitative analysis. The results are presented in the two-side volcano plots, and the hits are considered significant if they have a fold-change enrichment of ≥1.5 and p &lt;0.05 (<a href="#fig2">Figures 2</a>C and 2D). The BioID analyses of Kgd4 indeed revealed proximity to Kgd2 and Kgd1, two catalytic subunits of the alpha ketoglutarate dehydrogenase, further confirming that Kgd4 is part of the complex (<a href="#fig2">Figures 2</a>C and 2D, left side). Moreover, the proximity interactome of Mrpl4 contained Cbp3-Cbp6 together with ribosomal proteins and other respiratory chain assembly factors (<a href="#fig2">Figure 2</a>C, right side). Likewise, BioID analyses revealed the localization of various respiratory chain assembly factors in vicinity to Cbp3 (<a href="#fig2">Figure 2</a>D, right side). Finally, we created a protein-proximity network by merging the two BioIDomes into a bait-prey network (<a href="#fig2">Figure 2</a>E). This includes the significant hits from both Mrpl4 and Cbp3 BioIDs, revealing the common hits between the two baits. By combining multiple BioIDs, we can declutter complex biological processes into a comprehensive and elegant network that can aid in generating novel mechanistic insights, as previously demonstrated (<a href="#bib19">Singh et al., 2020</a>).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>The code performs two-group comparison in proteomics data available in GITHUB repository: <a href="https://github.com/wasimaftab/BioID_Proteomics">https://github.com/wasimaftab/BioID_Proteomics</a>.</p>
+<ol>
+<li>The pipeline depicted in <a href="#fig3">Figure 3</a> is implemented in R programming language and the needed libraries are installed automatically.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/327-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Statistical data analysis pipeline</div>
+<p>This pipeline implements statistical analysis of proteomic data in proteingroups.txt file obtained from MaxQuant search. First, data are cleaned by removing non-mitochondrial proteins. Then, after log transformation, the missing values are imputed. Finally, after employing an empirical Bayes method, moderated t statistics are computed, resulting in shrinkage of a protein’s variance toward a pooled estimate, thereby providing stable inference.</p>
+</figcaption>
+</figure>
+</li>
+<li>Make sure you have mitochondrial proteins (identified with UniProt ID) in your proteingroups.txt file otherwise the code will terminate with a message. For the list of experimentally determined mitochondrial proteins, See Mitochondrial_Proteins folder: <a href="https://github.com/wasimaftab/BioID_Proteomics/tree/master/Mitochondrial_Proteins">https://github.com/wasimaftab/BioID_Proteomics/tree/master/Mitochondrial_Proteins</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The code can be modified for BioID analysis in other organisms, e.g., humans. To do so, replace the list of yeast mitochondrial proteins in <a href="https://github.com/wasimaftab/BioID_Proteomics/blob/master/Mitochondrial_Proteins/Experimentally_Determined_Mitochondrion_Proteins.txt">https://github.com/wasimaftab/BioID_Proteomics/blob/master/Mitochondrial_Proteins/Experimentally_Determined_Mitochondrion_Proteins.txt</a> with the most recent list of experimentally determined mitochondrial proteins for the organism (e.g., MitoCarta3.0 for humans (<a href="#bib14">Rath et al., 2020</a>)).</div>
+<ol start="3">
+<li>First, we recommend to install RStudio v1.3.959 or higher and R v4.0.2 or higher in Windows OS. Then, run the <i>limma_main.R</i> code in RStudio by clicking <b>Source</b> in the latest version of RStudio and select a MaxQuant outputted <i>proteingroups.txt</i> file with either iBAQ/LFQ values (see <i>Example/MQ_output/proteinGroups_example.txt</i>). For our analysis we used iBAQ values. <i>limma_helper_functions.R</i>, the file containing the helper functions must be in the same directory as the <i>limma_main.R.</i>
+</li>
+<li>There are two modes: use either full data or remove exclusive proteins before analysis. Proteins that have zero intensities in all the replicates of one group are defined as “exclusive proteins.” For example, a set of three “exclusively enriched” proteins in bait “Mrpl4” is defined in <a href="#tbl1">Table 1</a>:
+<table id="tbl1">
+<caption>Table 1. Example of exclusively enriched proteins</caption>
+<thead>
+<tr>
+<th>iBAQ.Mrpl4_1</th>
+<th>iBAQ.Mrpl4_2</th>
+<th>iBAQ.Mrpl4_3</th>
+<th>iBAQ.Kgd4_1</th>
+<th>iBAQ.Kgd4_2</th>
+<th>iBAQ.Kgd4_3</th>
+<th>id</th>
+<th>UniProt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>114070</td>
+<td>80945</td>
+<td>134780</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>99</td>
+<td>P40156</td>
+</tr>
+<tr>
+<td>2198400</td>
+<td>998140</td>
+<td>760490</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>107</td>
+<td>Q02888</td>
+</tr>
+<tr>
+<td>91675</td>
+<td>94831</td>
+<td>106500</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>112</td>
+<td>P46943</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>Proteins that do not participate in the two groups comparison are saved in the results folder as tsv files with their iBAQ/LFQ intensities.</p>
+<ol start="5">
+<li>The code is interactive, and it will help users to provide the correct names as input for bait and control as it appears in the proteingroups.txt file columns. Part of the name (case insensitive) is also accepted. It will then ask users if they want to median normalize their data prior to two-group comparison. if the median normalization is chosen, the code will boxplot (in RStudio “Plots” panel) the data before and after normalization. We did not choose to normalize as our replicates were highly consistent (see <a href="#fig4">Figure 4</a>). However, in case the replicate medians are not consistent it is recommended to median normalize them before performing two-group comparison. The code will also plot the data distribution (histogram) before and after missing value imputation.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/327-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Mrpl4 replicates before median normalization</div>
+<p>Medians (using iBAQ values) of the three Mrpl4 replicates after data filtering and log transformation are 20.15, 20.28, 20.42, respectively, indicating the high data consistency and low inter replicate variability.</p>
+</figcaption>
+</figure>
+</li>
+<li>After a successful run, the code will create a volcano plot in html format and a tsv file containing final data inside a folder called "Results_timestamp" with the current system "timestamp" in the same directory where the limma_main.R file is present. Two such sample result folders can be found in <i>Example/Limma_output</i> folder: <a href="https://github.com/wasimaftab/BioID_Proteomics/tree/master/Example/Limma_output">https://github.com/wasimaftab/BioID_Proteomics/tree/master/Example/Limma_output</a> .</li>
+<li>The plot can be visualized in any browser and saved as png file.</li>
+<li>In addition, the code will save “exclusively enriched” proteins (if any) in control and bait replicates with corresponding LFQ/iBAQ values in the "Results_timestamp" folder.</li>
+</ol>
+<p>The code was tested on 64 bit Windows 10 Enterprise (1909), Rstudio v1.3.959, R v4.0.2, and using the packages shown in <a href="#tbl2">Table 2</a>.</p>
+<table id="tbl2">
+<caption>Table 2. List of packages required (installed automatically)</caption>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dplyr</td>
+<td>≥0.8.3</td>
+</tr>
+<tr>
+<td>stringr</td>
+<td>≥0.4.0</td>
+</tr>
+<tr>
+<td>MASS</td>
+<td>≥7.3–5.4</td>
+</tr>
+<tr>
+<td>plotly</td>
+<td>≥4.9.0</td>
+</tr>
+<tr>
+<td>htmlwidgets</td>
+<td>≥0.3</td>
+</tr>
+<tr>
+<td>limma</td>
+<td>≥3.42.0</td>
+</tr>
+<tr>
+<td>qvalue</td>
+<td>≥2.8.0</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Since the missing values are imputed randomly (from normal distribution), users can see minute change in numbers associated with fold change and p values across multiple runs of the pipeline. However, the major patterns in the data do not change.</div>
+<div class="note">
+<span class="note-title">Note:</span> The statistical data analysis pipeline relies on the user input for bait and control names, which should match the corresponding column names in the proteingroups.txt file. Therefore, name the samples carefully before submitting to mass spec to get a smoother data analysis. As an example, we named the three replicates of Mrpl4 as “Mrpl4_1”, “Mrpl4_2,” “Mrpl4_3”. Then, while running “<i>limma-main.R</i>,” we entered Mrpl4 as bait name and the R code was able to acquire data for all the 3 replicates of Mrpl4 without any ambiguity.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>BioID is a powerful tool to identify proteins localized in proximity of a bait. However, the size of the BirA∗ tag (∼38 kDa) might compromise the localization and the function of the bait protein. For example, the import in mitochondria could be affected. Hence, it is of high importance to verify the subcellular localization and the functionality of the tagged bait. Moreover, BirA∗ biotinylates primary amines. As consequence, if a nearby protein has no exposed primary amines, it will not be biotinylated and hence will not be detected by mass spectrometry.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Tagging BirA∗ to a bait protein may disrupt its molecular functioning. By utilizing non-functional bait proteins, we may identify false positive proximity interactions and/or miss genuine interactors. Hence, the resultant network would not reflect the true physiological context and the data may be considered unreliable and misleading.</p>
+<h3 id="sec7.2">Potential solution 1</h3>
+<p>It is important to test the molecular functioning of the BirA∗-tagged bait by a robust and quick assay. In the case of Mrpl4 and Cbp3, a loss of their function would result in the loss of cellular respiration. Hence, we assayed for respiratory growth of the cell lines under non-fermentable carbon source, i.e., glycerol, and proceeded ahead with only those cell lines that displayed no growth defects.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>While running the statistical data analysis pipeline described in "<a href="#quantification-and-statistical-analysis">Quantification and statistical analysis</a>", user might encounter the following error: Error in plot.new() : figure margins too large</p>
+<p>This happens when the plot pane has very little/no area to plot. Once you hit this error, code does not proceed further and gets killed.</p>
+<h3 id="sec7.4">Potential solution 2</h3>
+<p>To solve this problem, user needs to increase the area in RStudio plot pane. The issue and its potential solution are presented in a video in the following link:</p>
+<p><a href="https://github.com/wasimaftab/BioID_Proteomics/tree/master/Troubleshooting/plot_issue.webm">https://github.com/wasimaftab/BioID_Proteomics/tree/master/Troubleshooting/plot_issue.webm</a></p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Choi-Rhee, E., Schulman, H., and Cronan, J.E. (2004). Promiscuous protein biotinylation by <i>Escherichia coli</i> biotin protein ligase. Protein Sci. <i>13</i>, 3043-3050.</p>
+<p id="bib2">Cox, J. and Mann, M. (2008). MaxQuant enables high peptide identification rates, individualized p.p.b.-range mass accuracies and proteome-wide protein quantification. Nat. Biotechnol. <i>26</i>, 1367-1372.</p>
+<p id="bib3">Gruschke, S., Gröne, K., Heublein, M., Hölz, S., Israel, L., Imhof, A., Herrmann, J.M., and Ott, M. (2010). Proteins at the polypeptide tunnel exit of the yeast mitochondrial ribosome. J. Biol. Chem. <i>285</i>, 19022-19028.</p>
+<p id="bib4">Gruschke, S., Kehrein, K., Römpler, K., Gröne, K., Israel, L., Imhof, A., Herrmann, J.M., and Ott, M. (2011). Cbp3-Cbp6 interacts with the yeast mitochondrial ribosomal tunnel exit and promotes cytochrome b synthesis and assembly. J. Cell Biol. <i>193</i>, 1101-1114.</p>
+<p id="bib5">Gruschke, S., Römpler, K., Hildenbeutel, M., Kehrein, K., Kühl, I., Bonnefoy, N., and Ott, M. (2012). The Cbp3-Cbp6 complex coordinates cytochrome b synthesis with bc(1) complex assembly in yeast mitochondria. J. Cell Biol. <i>199</i>, 137-150.</p>
+<p id="bib6">Heublein, M., Burguillos, M.A., Vögtle, F.N., Teixeira, P.F., Imhof, A., Meisinger, C., and Ott, M. (2014). The novel component Kgd4 recruits the E3 subunit to the mitochondrial alpha-ketoglutarate dehydrogenase. Mol. Biol. Cell <i>25</i>, 3342-3349.</p>
+<p id="bib7">Hildenbeutel, M., Hegg, E.L., Stephan, K., Gruschke, S., Meunier, B., and Ott, M. (2014). Assembly factors monitor sequential hemylation of cytochrome b to regulate mitochondrial translation. J. Cell Biol. <i>205</i>, 511-524.</p>
+<p id="bib8">Janke, C., Magiera, M.M., Rathfelder, N., Taxis, C., Reber, S., Maekawa, H., Moreno-Borchart, A., Doenges, G., Schwob, E., Schiebel, E., et al. (2004). A versatile toolbox for PCR-based tagging of yeast genes: new fluorescent proteins, more markers and promoter substitution cassettes. Yeast <i>21</i>, 947-962.</p>
+<p id="bib9">Kehrein, K., Schilling, R., Möller-Hergt, B.V., Wurm, C.A., Jakobs, S., Lamkemeyer, T., Langer, T., and Ott, M. (2015). Organization of mitochondrial gene expression in two distinct ribosome-containing assemblies. Cell Rep. <i>10</i>, 843-853.</p>
+<p id="bib10">Kim, D.I., Birendra, K.C., Zhu, W., Motamedchaboki, K., Doye, V., and Roux, K.J. (2014). Probing nuclear pore complex architecture with proximity-dependent biotinylation. Proc. Natl. Acad. Sci. U S A <i>111</i>, E2453-E2461.</p>
+<p id="bib11">Osellame, L.D., Singh, A.P., Stroud, D.A., Palmer, C.S., Stojanovski, D., Ramachandran, R., and Ryan, M.T. (2016). Cooperative and independent roles of the Drp1 adaptors Mff, MiD49 and MiD51 in mitochondrial fission. J. Cell Sci. <i>129</i>, 2170-2181.</p>
+<p id="bib12">Ott, M., Amunts, A., and Brown, A. (2016). Organization and regulation of mitochondrial protein synthesis. Annu. Rev. Biochem. <i>85</i>, 77-101.</p>
+<p id="bib13">Rappsilber, J., Mann, M., and Ishihama, Y. (2007). Protocol for micro-purification, enrichment, pre-fractionation and storage of peptides for proteomics using StageTips. Nat. Protoc. <i>2</i>, 1896-1906.</p>
+<p id="bib14">Rath, S., Sharma, R., Gupta, R., Ast, T., Chan, C., Durham, T.J., Goodman, R.P., Grabarek, Z., Haas, M.E., Hung, W.H.W., et al. (2020). MitoCarta3.0: an updated mitochondrial proteome now with sub-organelle localization and pathway annotations. Nucleic Acids Res. <a href="https://doi.org/10.1093/nar/gkaa1011">https://doi.org/10.1093/nar/gkaa1011</a></p>
+<p id="bib15">Roux, K.J., Kim, D.I., Raida, M., and Burke, B. (2012). A promiscuous biotin ligase fusion protein identifies proximal and interacting proteins in mammalian cells. J. Cell Biol. <i>196</i>, 801-810.</p>
+<p id="bib16">Salvatori, R., Kehrein, K., Singh, A.P., Aftab, W., Möller-Hergt, B.V., Forne, I., Imhof, A., and Ott, M. (2020). Molecular wiring of a mitochondrial translational feedback loop. Mol. Cell <i>77</i>, 887-900.e5.</p>
+<p id="bib17">Sears, R.M., May, D.G., and Roux, K.J. (2019). BioID as a tool for protein-proximity labeling in living cells. Methods Mol. Biol. <i>2012</i>, 299-313.</p>
+<p id="bib18">Shannon, P., Markiel, A., Ozier, O., Baliga, N.S., Wang, J.T., Ramage, D., Amin, N., Schwikowski, B., and Ideker, T. (2003). Cytoscape: a software environment for integrated models of biomolecular interaction networks. Genome Res. <i>13</i>, 2498-2504.</p>
+<p id="bib19">Singh, A.P., Salvatori, R., Aftab, W., Aufschnaiter, A., Carlström, A., Forne, I., Imhof, A., and Ott, M. (2020). Molecular connectivity of mitochondrial gene expression and OXPHOS biogenesis. Mol. Cell <i>79</i>, 1051-1065 e1010.</p>
+<p id="bib20">Tyanova, S., Temu, T., and Cox, J. (2016). The MaxQuant computational platform for mass spectrometry-based shotgun proteomics. Nat. Protoc. <i>11</i>, 2301-2319.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact Martin Ott (<a href="mailto:martin.ott@gu.se">martin.ott@gu.se</a>).</p>
+<h4>Materials availability</h4>
+<p>Yeast strains generated in this study are available by contacting Martin Ott. Plasmids used in the study are available on Addgene, ID: 160290 and 160291.</p>
+<h4>Data and code availability</h4>
+<p>The code required to perform statistical analysis on the BioID LC-MS data and to automate creation of Bait-Prey network from the analyzed datasets is available on GitHub repository: <a href="https://github.com/wasimaftab/BioID_Proteomics">https://github.com/wasimaftab/BioID_Proteomics</a>.</p>
+<p>Mendeley dataset for western blots: <a href="https://doi.org/10.17632/pw4f8w65pk.1">https://doi.org/10.17632/pw4f8w65pk.1</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank members of our laboratories for stimulating discussions and Marc Wirth (LMU Munich, Germany) for help with mass spectrometric analyses. This work was supported by grants from the <a href="https://doi.org/10.13039/501100004359">Swedish Research Council</a>, the Carl Tryggers Foundation, and the <a href="https://doi.org/10.13039/501100004063">Knut and Alice Wallenberg Foundation</a>. A.P.S. was a recipient of a postdoctoral stipend from the Wenner-Gren Foundations (Stockholm, Sweden). Proteomic analysis was performed at the Protein Analysis Unit (ZfP) of Ludwig Maximilians University of Munich, a registered research infrastructure of <a href="https://doi.org/10.13039/501100001659">Deutsche Forschungsgemeinschaft</a> (DFG; RI-00089).</p>
+<h3>Author Contributions</h3>
+<p>R.S., A.P.S., W.A., and I.F. performed the experiments and analyzed the data (together with A.I. and M.O.). A.P.S and M.O. designed and supervised the project. R.S., A.P.S., W.A., I.F., and M.O. wrote the manuscript with input from the other authors. All authors discussed results from experiments and commented on the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

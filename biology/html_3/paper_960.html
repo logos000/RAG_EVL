@@ -1,0 +1,696 @@
+<article>
+<section>
+<h1 id="header">Construction of transcriptional regulatory networks using total RNA-seq data</h1>
+<p><time datetime="2021-08-27">Published: August 27, 2021</time></p>
+<p>Philippe Chouvarine<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#cor1">*</a></sup> and Georg Hansmann<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Pediatric Cardiology and Critical Care, Hannover Medical School, Hannover 30625, Germany</p>
+<p id="aff2"><sup>2</sup>Competence Network for Congenital Heart Defects (CNCHD), Berlin, Germany</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:chouvarine.philippe@mh-hannover.de">chouvarine.philippe@mh-hannover.de</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:georg.hansmann@gmail.com">georg.hansmann@gmail.com</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100769">10.1016/j.xpro.2021.100769</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Total RNA sequencing allows capturing of long non-coding and circular RNA along with mRNA. Additional sequencing of micro RNA (miRNA), using libraries with shorter fragments, provides the means to characterize miRNA-driven transcriptional regulation. Here, we present a protocol for processing total RNA and miRNA sequencing data to quantify circular RNA, long non-coding RNA, mRNA, and miRNA. Further, the protocol combines the quantification data with miRNA target annotation to construct likely transcriptional regulatory networks, which can be validated in the subsequent studies.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref6">Chouvarine et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>A network of likely transcriptional regulatory interactions based on total RNA/miRNA-seq</li>
+<li>Circular RNA interactions can be analyzed in high-coverage total RNA-seq datasets</li>
+<li>Functional labels can be added to the whole network or subnetworks of interest</li>
+<li>Existing datasets can be reanalyzed for new transcriptomic insights</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/960-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">RNA sequencing</h3>
+<p>Total RNA-Sequencing should be performed using a ribosomal depletion protocol. For sample preparation, we recommend using TruSeq transcriptome libraries following established protocols from Illumina. For sequencing, we recommend at least 100 million 100 bp paired-end reads per sample for total RNA libraries and 20 million 50bp single-end reads per sample for miRNA libraries. External datasets or older in-house datasets are recommended to be of comparable coverage. Lower total RNA coverage may result in poor detection of circular RNA (circRNA), however most long non-coding RNA (lncRNA) would still be adequately detected at lower coverage rates, e.g., 40 million reads per sample.</p>
+<h3 id="sec1.2">Software setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 h</div>
+<p>To facilitate automated installation of most Linux based software used in this protocol the following Miniconda script can be used. The download links for a few programs not included in this script are in the <a href="#key-resources-table">key resource table</a>.</p>
+<p><code>conda install -c bioconda fastqc</code></p>
+<p><code>conda install -c bioconda multiqc</code></p>
+<p><code>conda install -c bioconda bwa</code></p>
+<p><code>conda install -c bioconda samtools</code></p>
+<p><code>conda install -c bioconda picard</code></p>
+<p><code>conda install -c bioconda prinseq</code></p>
+<p><code>conda install -c bioconda ngs-bits # includes SeqPurge</code></p>
+<p><code>conda install -c bioconda star</code></p>
+<p><code>conda install -c bioconda rsem</code></p>
+<p><code>conda install -c bioconda cytoscape # Can also be installed on Windows</code></p>
+<h3 id="sec1.3">Data preprocessing and quality control</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<div class="note">
+<span class="note-title">Note:</span> The command line examples in this protocol include placeholders {…} that should be customized by the user. In all cases, please refer to the command line manuals of the corresponding tools.</div>
+<div class="note">
+<span class="note-title">Note:</span> Some command line arguments are mandatory (universally applicable) in all situations for a particular step in the protocol. These mandatory arguments are shown in bold font and explained in the notes following the examples.</div>
+<ol>
+<li>Initial quality control
+<ol type="a">
+<li>Analyze the quality of the sequenced reads for each sample using fastqc. (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a>)<br> <code>fastqc {input fasta file} –o data</code>
+<div class="note">
+<span class="note-title">Note:</span> The –o flag specifies the output directory. Multiple input files can be analyzed, for example, by putting this command in a for loop within a script.</div>
+</li>
+<li>To create a single quality report for all samples, merge the fastqc results using multiqc. (<a href="#bib8">Ewels et al., 2016</a>)<br> <code>multiqc data/</code>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This step also applies to miRNA-seq (no further preprocessing is needed for miRNA data unless quality issues are detected, which then should be resolved by either contacting the sequencing center or filtration of poor quality reads, e.g., using prinseq-lite.pl.(<a href="#bib16">Schmieder and Edwards, 2011</a>)</div>
+<ol start="2">
+<li>Removal of ribosomal contamination sequences
+<ol type="a">
+<li>Download ribosomal cDNA FASTA sequences from Ensembl Biomart (https://<a href="http://www.ensembl.org/biomart/martview">www.ensembl.org/biomart/martview</a>) by selecting “Ensembl Genes 104”; selecting your reference genome (e.g., GRCh38.p13); setting filters to Gene type: ribozyme, rRNA, rRNA_pseudogene; and setting Attributes to “Gene Stable ID” and “cDNA sequences” (this option appears after selecting the Sequences radio button).</li>
+<li>Using the resulting FASTA file, create a BWA (<a href="#bib11">Li and Durbin, 2009</a>) reference database.<br> <code>bwa index -a bwtsw {fasta file with reference sequences}</code>
+</li>
+<li>Align reads from all samples to the database. <code>bwa mem -t 12 <b>-M -R</b> "@RG\tID:{sample_id}\tSM: {sample_id}\tPL:illumina\tLB: {sample_id}\tPU: {sample_id}" {reference bwa DB} {input fasta_1.fq} {input fasta_2.fq} &gt; {sample_id.rRNA.pe.sam}</code>
+<div class="note">
+<span class="note-title">Note:</span> This step is useful to assess ribosomal depletion (the quality of the libraries prepared by the sequencing center). Moreover, once rRNA reads are removed after a quick BWA alignment, it should speed up and improve quality of the transcriptomic alignment using STAR.</div>
+<div class="note">
+<span class="note-title">Note:</span> The arguments M (Mark shorter split hits as secondary) and R (read group header line) are necessary for compatibility with picard-tools (see Preprocessing step 2.d).</div>
+</li>
+<li>Extract the unaligned reads for further processing using samtools (<a href="#bib12">Li et al., 2009</a>) and picard-tools (<a href="http://broadinstitute.github.io/picard/">http://broadinstitute.github.io/picard/</a>)</li>
+</ol>
+</li>
+</ol>
+<p><code>samtools view -u <b>-f 12 -F 256</b> -h -S {sample_id.rRNA.pe.sam} | java -jar picard-tools-1.77/SamToFastq.jar INPUT=/dev/stdin FASTQ={input fasta_1.fq} SECOND_END_FASTQ={input fasta_2.fq}</code></p>
+<div class="note">
+<span class="note-title">Note:</span> the required flags –f 12 –F 256 used together result in output of a pair of PE reads, both of which are unmapped. The piped picard SamToFastq command converts the unaligned SAM file into a pair of Fastq files, which are free of ribosomal contaminants.</div>
+<ol start="3">
+<li>Remove adapter sequences using SeqPurge with default parameters.(<a href="#bib18">Sturm et al., 2016</a>)</li>
+</ol>
+<p><code>SeqPurge -in1 {input file1}.fastq.gz -in2 {input file2 with reverse reads}.fastq.gz -out1 {outfile1}.fastq.gz -out2 {outfile2}.fastq.gz</code></p>
+<ol start="4">
+<li>Trim and filter reads using Prinseq.(<a href="#bib16">Schmieder and Edwards, 2011</a>)</li>
+</ol>
+<p>For example, in our study we used:</p>
+<p><code>prinseq-lite.pl -fastq {input file1} -fastq2 {input file2 with reverse reads} -out_good {sample name}.fil -out_bad null -log {sample name}.log -min_qual_score</code> <code>1</code><code>0 -ns_max_n 2 -noniupac -trim_qual_left 20 -trim_qual_right 20 -min_len 30</code></p>
+<p>Please refer to the manual for details on the command line arguments.</p>
+<ol start="5">
+<li>Repeat step 1 to verify whether additional preprocessing may be required. For example, adapter contamination may still be present, quality distribution may not meet the desired standard, any other sequencing artifacts reported by FastQC as problematic, may require a clarification from the sequencing facility.</li>
+<li>Create STAR (<a href="#bib7">Dobin et al., 2013</a>) reference database for read alignment (using the FASTA and GTF files acquired from ENCODE: ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.primary_assembly.genome.fa.gz and ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.primary_assembly.annotation.gtf.gz)</li>
+</ol>
+<p><code>STAR --runThreadN 8 --runMode genomeGenerate --genomeDir {directory for STAR reference DB} --genomeFastaFiles GRCh38.primary_assembly.genome.fa --sjdbGTFfile gencode.v38.primary_assembly.annotation.gtf <b>--sjdbOverhang 99</b></code></p>
+<div class="note">
+<span class="note-title">Note:</span> The --sjdbOverhang flag should be set to the read length of each paired end minus 1 (i.e., 99 for 100 bp PE reads). This parameter specifies how many bases can be concatenated from the donor and acceptor sides of a junction, i.e., up to 99 on one side and as few as one on the other side. Thus, the generated reference will be able to handle any split reads (split by a junction) of length up to 100 bases.</div>
+<ol start="7">
+<li>Create STAR reference database for miRNA alignment (using the same input files, but a different <b>–</b>sjdbOverhang value).</li>
+</ol>
+<p><code>STAR --runThreadN 8 --runMode genomeGenerate –genomeDir {directory for miRNA STAR reference DB} --genomeFastaFiles GRCh38.primary_assembly.genome.fa --sjdbGTFfile gencode.v38.primary_assembly.annotation.gtf <b>--sjdbOverhang 1</b></code></p>
+<div class="note">
+<span class="note-title">Note:</span> for miRNA alignment reference database, splice junction references are effectively excluded using <b>--sjdbOverhang 1</b>, while still utilizing the GTF file for miRNA annotation.</div>
+<ol start="8">
+<li>Prepare RSEM (<a href="#bib10">Li and Dewey, 2011</a>) reference database using the same FASTA and GTF input files.</li>
+</ol>
+<p><code>rsem-prepare-reference --gtf gencode.v38.primary_assembly.annotation.gtf GRCh38.primary_assembly.genome.fa RSEM/GRCh38_p13</code></p>
+<ol start="9">
+<li>Run the STARchip (<a href="https://starchip.readthedocs.io/en/latest/">https://starchip.readthedocs.io/en/latest/</a>) setup script using the same FASTA and GTF input files. STARchip is the program designed to identify circular RNA (and fusions).</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Human RV tissue (10–50 mg) was used for total RNA and miRNA extraction according to the TRIzol protocol (TRIzol, Life Technologies).</td>
+<td>(<a href="#bib6">Chouvarine et al., 2021</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>RNAlater®-ICE Frozen Tissue Transition Solution</td>
+<td>Ambion</td>
+<td>Cat. No. AM7030</td>
+</tr>
+<tr>
+<td>TRIzol™ Reagent</td>
+<td>Invitrogen</td>
+<td>Cat. No. 15596026</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Total RNA sequencing</td>
+<td>(<a href="#bib6">Chouvarine et al, 2021</a>)</td>
+<td>Controlled access via National Register for Congenital Heart Defects, Berlin, Germany (<a href="mailto:ubauer@kompetenznetz-ahf.de">ubauer@kompetenznetz-ahf.de</a>)</td>
+</tr>
+<tr>
+<td>Total RNA sequencing (alternative dataset for testing)</td>
+<td>(<a href="#bib14">Ogoyama et al., 2021</a>)</td>
+<td>SRA: SRP298758</td>
+</tr>
+<tr>
+<td>miRNA sequencing</td>
+<td>(<a href="#bib6">Chouvarine et al, 2021</a>)</td>
+<td>Controlled access via National Register for Congenital Heart Defects, Berlin, Germany (<a href="mailto:ubauer@kompetenznetz-ahf.de">ubauer@kompetenznetz-ahf.de</a>)</td>
+</tr>
+<tr>
+<td>miRNA sequencing (alternative dataset for testing)</td>
+<td>(<a href="#bib14">Ogoyama et al., 2021</a>)</td>
+<td>SRA: SRP298758</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>FastQC (V0.10.1)</td>
+<td>Unpublished</td>
+<td><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a></td>
+</tr>
+<tr>
+<td>MultiQC (v1.10.1)</td>
+<td>(<a href="#bib8">Ewels et al., 2016</a>)</td>
+<td><a href="https://multiqc.info/">https://multiqc.info/</a></td>
+</tr>
+<tr>
+<td>BWA (0.7.12-r1039)</td>
+<td>(<a href="#bib11">Li and Durbin, 2009</a>)</td>
+<td><a href="https://github.com/lh3/bwa">https://github.com/lh3/bwa</a></td>
+</tr>
+<tr>
+<td>SAMtools (v. 1.7)</td>
+<td>(<a href="#bib12">Li et al., 2009</a>)</td>
+<td><a href="http://www.htslib.org/download/">http://www.htslib.org/download/</a></td>
+</tr>
+<tr>
+<td>Picard-tools (v. 1.77)</td>
+<td>Unpublished</td>
+<td><a href="https://broadinstitute.github.io/picard/">https://broadinstitute.github.io/picard/</a></td>
+</tr>
+<tr>
+<td>PRINSEQ (v. 0.20.4)</td>
+<td>(<a href="#bib16">Schmieder and Edwards, 2011</a>)</td>
+<td><a href="https://sourceforge.net/projects/prinseq/files/">https://sourceforge.net/projects/prinseq/files/</a></td>
+</tr>
+<tr>
+<td>SeqPurge (v. 2020_03-159-g5c8b2e82)</td>
+<td>(<a href="#bib18">Sturm et al., 2016</a>)</td>
+<td><a href="https://github.com/imgag/ngs-bits">https://github.com/imgag/ngs-bits</a></td>
+</tr>
+<tr>
+<td>STAR (v. 2.7.5a)</td>
+<td>(<a href="#bib7">Dobin et al., 2013</a>)</td>
+<td><a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a></td>
+</tr>
+<tr>
+<td>RSEM (v1.3.0)</td>
+<td>(<a href="#bib10">Li and Dewey, 2011</a>)</td>
+<td><a href="https://deweylab.github.io/RSEM/">https://deweylab.github.io/RSEM/</a></td>
+</tr>
+<tr>
+<td>STARChip (v. 1.3e)</td>
+<td>(<a href="#bib2">Akers et al., 2018</a>)</td>
+<td><a href="https://starchip.readthedocs.io/en/latest/">https://starchip.readthedocs.io/en/latest/</a></td>
+</tr>
+<tr>
+<td>Cytoscape (v. 3.7.2)</td>
+<td>(<a href="#bib17">Shannon et al., 2003</a>)</td>
+<td><a href="https://cytoscape.org/">https://cytoscape.org/</a></td>
+</tr>
+<tr>
+<td>FactoMineR R package (v. 2.4)</td>
+<td>(<a href="#bib9">Lê et al., 2008</a>)</td>
+<td><a href="http://factominer.free.fr/more/reference.html">http://factominer.free.fr/more/reference.html</a></td>
+</tr>
+<tr>
+<td>DESeq2 R package (v. 1.30.1)</td>
+<td>(<a href="#bib13">Love et al., 2014</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">https://bioconductor.org/packages/release/bioc/html/DESeq2.html</a></td>
+</tr>
+<tr>
+<td>EDASeq R package (v. 2.24.0)</td>
+<td>(<a href="#bib15">Risso et al., 2011</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/EDASeq.html">https://bioconductor.org/packages/release/bioc/html/EDASeq.html</a></td>
+</tr>
+<tr>
+<td>Gene filtering procedure to increase detection power of differential expression analysis</td>
+<td>(<a href="#bib3">Bourgon et al., 2010</a>)</td>
+<td><a href="https://www.pnas.org/content/107/21/9546">https://www.pnas.org/content/107/21/9546</a></td>
+</tr>
+<tr>
+<td>Enrichr</td>
+<td>(<a href="#bib4">Chen et al., 2013</a>)</td>
+<td><a href="https://amp.pharm.mssm.edu/Enrichr/">https://amp.pharm.mssm.edu/Enrichr/</a></td>
+</tr>
+<tr>
+<td>TargetScan 7.1</td>
+<td>(<a href="#bib1">Agarwal et al., 2015</a>)</td>
+<td><a href="http://www.targetscan.org/vert_71/">http://www.targetscan.org/vert_71/</a></td>
+</tr>
+<tr>
+<td>miRDB</td>
+<td>(<a href="#bib5">Chen and Wang, 2020</a>)</td>
+<td><a href="http://mirdb.org/index.html">http://mirdb.org/index.html</a></td>
+</tr>
+<tr>
+<td>Perl scripts for subtraction of circRNA counts from total RNA</td>
+<td>(<a href="#bib6">Chouvarine et al., 2021</a>)</td>
+<td><a href="https://github.com/pch-code/circ-scripts">https://github.com/pch-code/circ-scripts</a></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> It is not critical to use the specified software versions. Currently, the latest versions would provide the same functionality.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Read alignment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 days (depending on the number of samples and computing capacity)</div>
+<p>This major step results in three sets of read alignments applicable for three types of RNA: mRNA/lncRNA, circRNA, and miRNA.</p>
+<ol>
+<li>Transcriptome read alignment using STAR</li>
+</ol>
+<p><code>STAR --runThreadN 20 --runMode alignReads --twopassMode Basic --outSAMattrRGline ID:{sample name} LB:lib1 PL:ILLUMINA PU:unit1 SM:{sample name} –genomeDir Reference/Human/Genecode_GRCh38.p13/STAR_100bp --sjdbGTFfile Reference/Human/Genecode_GRCh38.p13/gencode.v34.primary_assembly.annotation.gtf --<b>sjdbOverhang 99</b> --readFilesIn {input fasta_1.fq.gz} {input fasta_2.fq.gz} --outFileNamePrefix ./Alignments/$outfile<b>. --quantMode TranscriptomeSAM --outSAMtype BAM SortedByCoordinate</b></code></p>
+<div class="note">
+<span class="note-title">Note:</span> The alignment parameters for transcriptome alignment are according to the recommendations in the STAR manual.</div>
+<ol start="2">
+<li>Chimeric read alignment using STAR (for circRNA detection)</li>
+</ol>
+<p><code>STAR --runThreadN 20 --genomeDir Reference/Human/Genecode_GRCh38.p13/STAR_100bp --readFilesIn {input fasta_1.fq.gz} {input fasta_2.fq.gz} --outFileNamePrefix Alignments_chim/{sample name}/ <b>--outReadsUnmapped Fastx --quantMode GeneCounts --chimSegmentMin 15 --chimJunctionOverhangMin 15 --outSAMstrandField intronMotif --readFilesCommand zcat --outSAMtype BAM Unsorted</b></code></p>
+<div class="note">
+<span class="note-title">Note:</span> the chimeric alignment parameters are according to the recommendations in the STARChip manual (<a href="https://starchip.readthedocs.io/en/latest/">https://starchip.readthedocs.io/en/latest/</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> chimeric alignments happen when a read or a pair of reads align to two distinct genomic segments (on different chromosomes, different strands, or far apart) indicative of a structural variation, e.g., a circle. The chimSegmentMin parameter indicates that either of the two segments in the chimeric alignment must be at least 15 bases. The chimJunctionOverhangMin parameter specifies that reads with less than 15 bases overhanging the chimeric junction should not be considered.</div>
+<ol start="3">
+<li>miRNA read alignment</li>
+</ol>
+<p><code>STAR --outSAMattrRGline ID:{sample name} LB:lib1 PL:ILLUMINA PU:unit1 SM:{sample name} --readFilesIn {input fasta.fq.gz} --outFileNamePrefix ./Alignments/{sample name} --runThreadN 20 --genomeDir Reference/Human/Genecode_GRCh38.p13/STAR_sRNA_ENCODE --sjdbGTFfile Reference/Human/Genecode_GRCh38.p13/GENCODE_miRNA_subset.gtf <b>--alignEndsType EndToEnd --outFilterMismatchNmax 1 --outFilterMultimapScoreRange 0 --quantMode TranscriptomeSAM GeneCounts --outReadsUnmapped Fastx --outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 10 --outSAMunmapped Within --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 16 --alignSJDBoverhangMin 1000 --alignIntronMax 1 --outWigType wiggle --outWigStrand Stranded --outWigNorm RPM</b></code></p>
+<div class="note">
+<span class="note-title">Note:</span> The miRNA alignment parameters are according the ENCODE protocol for miRNA-seq read alignment using STAR aligner (<a href="https://www.encodeproject.org/documents/b4ec4567-ac4e-4812-b2bd-e1d2df746966/@@download/attachment/ENCODE_miRNA-seq_STAR_parameters_v2.pdf">https://www.encodeproject.org/documents/b4ec4567-ac4e-4812-b2bd-e1d2df746966/@@download/attachment/ENCODE_miRNA-seq_STAR_parameters_v2.pdf</a>).</div>
+<h3 id="sec2.2">Feature read counting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This major step identifies total read counts for each feature. Since gene read counts will contain a mixture of mRNA and circRNA reads, they should be separated. This major step estimates the circRNA read counts for each detected circRNA and subtracts them from the total RNA counts to estimate mRNA read counts for the corresponding genes.</p>
+<ol start="4">
+<li>Run RSEM to perform initial feature read counting</li>
+</ol>
+<p><code>rsem-calculate-expression --no-bam-output -p 12 --alignments --paired-end Alignments/{file name}.Aligned.toTranscriptome.out.bam {path to RSEM reference DB} {outfile}</code></p>
+<div class="note">
+<span class="note-title">Note:</span> For miRNA alignments, running RSEM is not necessary. Instead the read counts should be extracted from the ∗.ReadsPerGene.out.tab files generated by STAR.</div>
+<ol start="5">
+<li>Estimate circRNA counts and calculate other feature counts
+<ol type="a">
+<li>Run STARchip with default parameters using the chimeric alignments from step 2.
+<div class="note">
+<span class="note-title">Note:</span> Below are the instructions from the manual for our in-house pipeline, also included in the Github repository (<a href="https://github.com/pch-code/circ-scripts/">https://github.com/pch-code/circ-scripts/</a>) to estimate the circRNA read counts and to correct the initial read counts by subtracting the circRNA read counts. This correction does not apply to the miRNA read counts.</div>
+</li>
+<li>Create a bed file of merged exonic coordinates and flanking introns based on the circRNA isoform coordinates (will use it to get exact GC and length for DESeq).
+<ol type="i">
+<li>MakeExonBedForMerging.pl -i {Main.gtf to create the ∗.exonsByGene.bed file}<br> Using a rat genome example. Convert the main gtf file into a bed file.<br> <code>perl MakeExonBedForMerging.pl -i Rattus_norvegicus.Rnor_6.0.96.gtf -o Rattus_norvegicus.Rnor_6.0.96.exonsByGene.bed</code><br> The output looks like this:
+<table id="undtbl1">
+<thead></thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>396700</td>
+<td>396905</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>397780</td>
+<td>397788</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>399062</td>
+<td>399070</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>399557</td>
+<td>399827</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>400256</td>
+<td>401059</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>401912</td>
+<td>402136</td>
+<td>ENSRNOG00000046319:AABR07000046.1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Merge using bedops:<br> <code>cut -f4 Rattus_norvegicus.Rnor_6.0.96.exonsByGene.bed | sort | uniq | awk -F'_' '{ system("grep "$1" Rattus_norvegicus.Rnor_6.0.96.exonsByGene.bed | bedops --merge - "); print $0; }' &gt; Rattus_norvegicus.Rnor_6.0.96.MergedExonsByGene.txt</code><br> The output looks like this (coordinates for each exon followed by a line with gene ID and gene symbol):
+<table id="undtbl2">
+<thead></thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>230660664</td>
+<td>230660669</td>
+</tr>
+<tr>
+<td>2</td>
+<td>230660675</td>
+<td>230662084</td>
+</tr>
+<tr>
+<td colspan="3">ENSRNOG00000000001:AABR07013255.1</td>
+</tr>
+<tr>
+<td colspan="3">……</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Make merged CircRNA.bed file from Rattus_norvegicus.Rnor_6.0.96.MergedExonsByGene.txt <code>perl GetExonsAndFlankingIntronsRegionsPerAnnotatedCircRNA.pl -i Rattus_norvegicus.Rnor_6.0.96.MergedExonsByGene.txt -c circRNA.5reads.1ind.annotated -o circRNAExonicCoords.txt</code>
+<div class="note">
+<span class="note-title">Note:</span> -i here is the output of step ii.</div>
+The output looks like this:
+<table id="undtbl3">
+<thead></thead>
+<tbody>
+<tr>
+<td>chr10</td>
+<td>101667886</td>
+<td>101667980</td>
+<td>ENSG00000107829:FBXW4:chr10:101667886:101676436</td>
+</tr>
+<tr>
+<td>chr10</td>
+<td>101672915</td>
+<td>101673047</td>
+<td>ENSG00000107829:FBXW4:chr10:101667886:101676436</td>
+</tr>
+<tr>
+<td>chr10</td>
+<td>101673488</td>
+<td>101673673</td>
+<td>ENSG00000107829:FBXW4:chr10:101667886:101676436</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+<li>Create a file with circRNA counts<br> <code>bedtools nuc -fi ∼/Reference/Rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa -bed circRNAExonicCoords.txt &gt; MergedIntervalsGC.txt</code><br> <code>echo -e "Gene\tgc\tlength" &gt; CircRNA_GC_Len.txt &amp;&amp; awk '{print $4"\t"$6"\t"$13}' MergedIntervalsGC.txt | grep "ENS" &gt;&gt; CircRNA_GC_Len.txt</code><br> <code>perl AddExonLengths_WeightedAvgGC_Annot.pl -i CircRNA_GC_Len.txt -o CollapsedCircRNA_GC_Len.txt # this will also create AnnotatedCircRNA_Counts.txt</code><br> The output contains circRNA coordinates in the first column and read counts for each sample in the subsequent columns.</li>
+<li>Create a file with chromosomal coordinates for the identified circRNA<br> <code>perl makeBed.pl -i AnnotatedCircRNA_Counts.txt -o circRNA.bed</code><br> The output contains circRNA coordinates:
+<table id="undtbl4">
+<thead></thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>16724062</td>
+<td>16730140</td>
+<td>Crebrf:ENSRNOG00000020769</td>
+</tr>
+<tr>
+<td>10</td>
+<td>51724607</td>
+<td>51739115</td>
+<td>Myocd:ENSRNOG00000003669</td>
+</tr>
+<tr>
+<td>1</td>
+<td>116642079</td>
+<td>116660509</td>
+<td>Ube3a:ENSRNOG00000015734</td>
+</tr>
+<tr>
+<td>1</td>
+<td>126573474</td>
+<td>126583015</td>
+<td>Tm2d3:ENSRNOG00000011290</td>
+</tr>
+<tr>
+<td colspan="4">…</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Run RSEM with the --output-genome-bam and --sampling-for-bam parameters. This will generate a genome-level BAM with each read mapped to a single location (${outfile}.genome.bam)</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><code>for file in Alignments_transcriptome/{sample name}.Aligned.toTranscriptome.out.bam</code></li>
+<li>
+<code>do</code>
+<ul>
+<li><code>outfile=${file%%.Aligned.toTranscriptome.out.bam}</code></li>
+<li><code>outfile=${outfile##Alignments_transcriptome/}</code></li>
+<li><code>rsem-calculate-expression --output-genome-bam --sampling-for-bam -p 12 --alignments --paired-end --strandedness reverse</code></li>
+</ul>
+</li>
+<li>
+<code>done</code>
+<ol start="6" type="a">
+<li>Use the files created in steps d. and e. to generate circRNA coverage files</li>
+</ol>
+</li>
+<li><code>for file in ∗.genome.bam</code></li>
+<li>
+<code>do</code>
+<ul>
+<li><code>outfile=${file%%.genome.bam}</code></li>
+<li><code>bedtools coverage -abam $file -b circRNA.bed &gt; $outfile.cov.txt</code></li>
+</ul>
+</li>
+<li>
+<code>done</code>
+<ol start="7" type="a">
+<li>Calculate median insert size for every sample. Copy all output to a subfolder. It will be used to estimate percentage of circRNA in the next step.</li>
+</ol>
+</li>
+</ul>
+<p>Median insert size is will be passed to EstCircCounts_FragCountNormByExonicLen.pl in step h.</p>
+<ul>
+<li><code>for file in ∗.genome.bam</code></li>
+<li>
+<code>do</code>
+<ul>
+<li><code>outfile=${file%%.genome.bam}</code></li>
+<li><code>java -jar picard.jar CollectInsertSizeMetrics I=$file</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<code>done</code>
+<ol start="8" type="a">
+<li>Estimate counts and percentages of each circRNA isoform:<br> <code>perl EstCircCounts_FragCountNormByExonicLen.pl -i circRNARegions_TotalRNACov -c AnnotatedCircRNA_Counts.txt -s circs5.1.investigate.consensus –m {average median insert size for PE reads across all samples} –r {read length of PE reads} -o EstCircRNAProportions.txt</code><br> -i is the directory with the Total coverages<br> -c created in step c. (AnnotatedCircRNA_Counts.txt)<br> -m median insert size is calculated in step g.</li>
+<li>Subtract the estimated circRNA counts from the total RNA counts:</li>
+</ol>
+</li>
+</ul>
+<p><code>perl SubtractTheCircCounts.pl -t {TotalRNA counts file}.OrigNames.txt -c EstCircRNAProportions.txt.circCounts.txt -o mRNACounts.txt</code></p>
+<div class="note">
+<span class="note-title">Note:</span> The {TotalRNA counts file}.OrigNames.txt, contains total RNA counts (gene level read counts generated by RSEM, in which the first line is a header and the subsequent lines contain Ensembl Gene ID in the first column and read counts for each sample in the following columns).</div>
+<p>The file can be prepared using:</p>
+<p><code>perl PrepareCountsForDESeq_FromRSEM.pl -i counts_file_list_in_Group1 -j counts_file_list_in_Group2 -n Group1Name -m Group2Name -o out_for_DESeq.txt</code></p>
+<h3 id="sec2.3">Principal component analysis (PCA) for detection of outlier samples</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>This major step outlines how to perform PCA to exclude outlier samples whose abnormal expression may indicate overlooked phenotypical features excluding such samples from further analysis.</p>
+<div class="note">
+<span class="note-title">Note:</span> Read counts can be a) converted to variance stabilized input values for PCA (step 3) and b) used as input for differential expression analysis (step 4). In our study (<a href="#bib6">Chouvarine et al., 2021</a>) we used GC-bias correction as implemented in the EDASeq R package.(<a href="#bib15">Risso et al., 2011</a>) This tool can be integrated with DESeq2 as described in the EDASeq manual. In this case, the GC annotation for each gene is downloaded from Ensembl BioMart. An alternative simpler approach would be to use DESeq2 without the GC-bias correction.</div>
+<ol start="6">
+<li>Exclude features with the average read count across all samples ≤ 10.</li>
+</ol>
+<p><code>filter &lt;- apply(countsTable,1,function(x) mean(x)&gt;10)</code></p>
+<p><code>countsTable = countsTable[filter,]</code></p>
+<ol start="7">
+<li>Run the DESeq2/EDAseq R packages (as described in the EDASeq manual) applying the withinLaneNormalization function. (optional)</li>
+</ol>
+<p>Briefly, the dataOffset object is created to pass the GC normalized counts to DESeq2:</p>
+<p><code>dataOffset &lt;- withinLaneNormalization(data,"GC", which="full", offset=TRUE)</code></p>
+<div class="note">
+<span class="note-title">Note:</span> the data object was created using the newSeqExpressionSet function on the counts table that also includes a GC column, added by merging an annotation table containing Ensembl Gene ID, GC-content, and other columns of interest (can be obtained from BioMart).</div>
+<p><code>dds &lt;- DESeqDataSetFromMatrix(countData = counts(dataOffset),</code></p>
+<p><code>colData = pData(dataOffset),</code></p>
+<p><code>design = ∼ conditions)</code></p>
+<p><code>normFactors &lt;- exp(-1 ∗ offst(dataOffset))</code></p>
+<p><code>normFactors &lt;- normFactors / exp(rowMeans(log(normFactors)))</code></p>
+<p><code>normalizationFactors(dds) &lt;- normFactors</code></p>
+<ol start="8">
+<li>Acquire variance stabilized data.</li>
+</ol>
+<p><code>vsd &lt;- vst(dds, blind=FALSE)</code></p>
+<ol start="9">
+<li>Run PCA using the FactoMineR and factoextra R packages.(<a href="#bib9">Lê et al., 2008</a>) or any other preferred PCA package</li>
+</ol>
+<p><code>pca_Pat = PCA(tvsd_df, scale.unit = F, quali.sup=1:5, graph = TRUE)</code></p>
+<div class="note">
+<span class="note-title">Note:</span> tvsd_df contains transposed matrix with variance stabilized data t(vsd) and additional annotation, e.g., case-control group. In this example, Columns 1 through 5 (specified in quali.sup) contain annotation and are not used for dimensionality reduction.</div>
+<ol start="10">
+<li>Display combinations of the first three components using the fviz_pca_ind function (assuming that the factoextra package is used for PCA visualization) to visualize potential outlier samples.</li>
+</ol>
+<p><code>fviz_pca_ind(pca_Pat, col.ind = tvsd_df$Gr, label="ind", palette = c("#00AFBB", "#FC4E07"), addEllipses = TRUE, legend.title = "Groups", repel = TRUE, title="Individuals by disease - PC1 vs PC2")</code></p>
+<p><code>fviz_pca_ind(pca_Pat, axes=c(1,3), col.ind = tvsd_df$Gr, label="ind", palette = c("#00AFBB", "#FC4E07"), addEllipses = TRUE, legend.title = "Groups", repel = TRUE, title="Individuals by disease - PC1 vs PC3")</code></p>
+<h3 id="sec2.4">Differential expression analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>This major step should be separately applied to all types of RNA (mRNA, lncRNA, circRNA, and miRNA) to identify their differential expression for the groups in the study.</p>
+<ol start="11">
+<li>Run DESeq2 as described in the previous step, but this time generate differential expression output with FDR-adjusted P-values.</li>
+</ol>
+<p><code>dds &lt;- DESeq(dds)</code></p>
+<p><code>res &lt;- results(dds)</code></p>
+<div class="note">
+<span class="note-title">Note:</span> By default, the DESeq function performs Wald test, which is appropriate in most cases (when two levels of a factor are compared, e.g., case vs. control). Another available method provided by this function is “LRT” (likelihood ratio test), which is appropriate for simultaneous comparison of multiple levels of a factor, e.g., multiple time points.</div>
+<div class="note">
+<span class="note-title">Note:</span> The results function has an important parameter independentFiltering set to True by default. It applies the gene filtering procedure developed by Bourgon et al.(<a href="#bib3">Bourgon et al., 2010</a>) to improve the detection power. We recommend to not change this setting and perform the gene filtering procedure. RNAs with FDR-adjusted P values &lt; 0.05 after filtration will be considered significantly differentially expressed.</div>
+<h3 id="sec2.5">Construction of circRNA/lncRNA-miRNA-mRNA network</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This major step identifies targets of miRNAs and combines them in a regulatory network.</p>
+<ol start="12">
+<li>Identify gene targets for differentially expressed miRNA using miRDB(<a href="#bib5">Chen and Wang, 2020</a>) as the source of gene targets, considering all targets with the miRDB Target Score ≥ 50 as significant.</li>
+</ol>
+<p>This step can be achieved either using the Target Mining tool provided by the miRDB website or by downloading the entire dataset from the website (<a href="http://mirdb.org/download/miRDB_v6.0_prediction_result.txt.gz">http://mirdb.org/download/miRDB_v6.0_prediction_result.txt.gz</a>) and setting up a database query.</p>
+<ol start="13">
+<li>Using TargetScan 7.1(<a href="#bib1">Agarwal et al., 2015</a>), identify lncRNA and circRNA targets based on the number of occurrences of matching 6-mers, 7-mers, and 8-mers. The affinity score is calculated as Score = 0.43∗ N<sub>8mer_1a</sub> + 0.25∗ N<sub>7mer_m8</sub> + 0.19∗ N<sub>7mer_1a</sub> + 0.07∗ N<sub>6mer.</sub> Here, 8mer_1a is a site with an exact match to positions 2–8 of the mature miRNA (the seed) followed by an 'A', 7mer_m8 is a site with exact match to positions 2–8 of the mature miRNA (the seed + position 8), 7mer_1a is a site with an exact match to positions 2–7 of the mature miRNA (the seed) followed by an 'A', 6mer is a site with an exact match to positions 2–6 of the mature miRNA (the seed + position 6) followed by an 'A'. All matches with the score ≥ 1 will be considered significant. The scores can also be used to set the line thickness parameter in Cytoscape (see Step 15).</li>
+</ol>
+<p>Calculating the scores as specified above can be automated using our script (<a href="https://github.com/pch-code/TargetScanScore/blob/main/scoreTargets.pl">https://github.com/pch-code/TargetScanScore/blob/main/scoreTargets.pl</a>) that takes TargetScan output as input:</p>
+<p><code>perl scoreTargets.pl -i {output from TargetScan} -o out</code></p>
+<ol start="14">
+<li>Select the differentially expressed mRNA, lncRNA, and circRNA identified in step 11 that are either on the gene target list (step 12) or the lncRNA/circRNA target list (step 13). The selected interactions will be the basis for competitive endogenous RNA interaction network focusing on differential expression regulation for a particular condition (compared to normal). Optionally, for a more focused view, we can select only those molecules whose differential expression is in the opposite direction compared to differential expression of the miRNAs targeting them.</li>
+<li>Using the miRNA-target interactions identified in Step 14, create a network in Cytoscape.(<a href="#bib17">Shannon et al., 2003</a>) The interactions can be added to a ∗.sif file for creation of the network structure. Each line in a ∗.sif file represents a connection (edge) between two nodes (i.e., miRNA and its target). An exhaustive list of such interactions fully describes the likely competing endogenous RNA interaction network in a form of a graph. Log2(fold change) gene expression values can be used for coloring the nodes (passed to Cytoscape in a separate table). Line thickness can be used to indicate the strength of the interactions based on the corresponding target/affinity scores (passed to Cytoscape in a separate table).</li>
+</ol>
+<h3 id="sec2.6">Functional annotation of the network</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This major step outlines potential sources of annotation for the network created in the previous major step.</p>
+<div class="note">
+<span class="note-title">Note:</span> Upon creation of the desired network (step 15), functional annotation labels can be added to visualize biological significance of individual nodes or a group of nodes. We recommend using a combination of automated annotation tools, such as Enrichr,(<a href="#bib4">Chen et al., 2013</a>) and manual annotation based on literature search and expert knowledge of the scientists involved in the project. In our study, automated annotation was primarily based on pathway and GO overrepresentation analyses of DEGs using the online resource Enrichr with the NCATS BioPlanet pathway annotation (<a href="https://ncats.nih.gov/pubs/features/bioplanet">https://ncats.nih.gov/pubs/features/bioplanet</a>).</div>
+<ol start="16">
+<li>(Assuming Enrichr is used) generate a gene list as input. For a particular network, a gene list of selected nodes can be generated in Cytoscape.</li>
+<li>Submit the gene list to the form on the Enrichr website.</li>
+<li>Select the Pathways menu and the annotation source, e.g., BioPlanet. Download the results as a table.</li>
+<li>Select the Ontologies menu and the annotation source, e.g., GO Biological Process. Download the results as a table.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The overrepresentation analysis obtained in steps 18 and 19 is based on Fisher exact test and correction of the resulting p-values for multiple testing as implemented in Enrichr. Pathways with the adjusted p-value &lt; 0.05 can be considered significantly overrepresented by DEGs.</div>
+<ol start="20">
+<li>Add the functional labels manually in Cytoscape, using the graphical user interface.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Standard command line processing tools used in this protocol produce output in the format described in the corresponding software manuals. The output formats of the online tools, i.e., Ensembl BioMart, miRDB, and Enrichr, are described in the corresponding online documentation.</p>
+<p><a href="#fig1">Figure 1</a> illustrates the quality control step based on PCA output generated in step 3. Visual inspection of the original data (<a href="#fig1">Figure 1</a>A) suggested that Control.7 is a likely outlier. Inspection of the clinical data confirmed Control.7 as the outlier. <a href="#fig1">Figure 1</a>B shows the PCA output generated using the final cohort of the study, after the outlier sample was removed.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/960-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Principle component analysis (PCA) of individual samples allows finding potential outlier samples</div>
+<p>(A) PCA graph of the first three components with the outlier (Control.7).</p>
+<p>(B) PCA graph of the first three components after removal of the outlier.</p>
+</figcaption>
+</figure>
+<p>The expected output from steps 15–20 is presented in <a href="#fig2">Figure 2</a>. Depending on the size of the network, it may be desirable to output only a subset of the network. This can be done in Cytoscape by creating a subnetwork of selected nodes.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/960-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. An example of competing endogenous RNA network with functional annotation labels</div>
+<p>The network appearance is customizable in Cytoscape using the data obtained by following the steps described in this protocol.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Poor experimental design and/or sample quality can result in preparation of poor quality sequencing data, presence of outlier samples, and batch effects. In our protocol and the <a href="#troubleshooting">troubleshooting</a> section below, we describe quality control steps and measures to mitigate these issues. However, if these problems are severe and the final quality control shows failure of the mitigation steps, then the protocol cannot be applied.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Read contamination, presence of poor quality sequencing reads, presence of adapter sequences (preprocessing step 1).</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Step 2 of the <a href="#sec1.3">data preprocessing and quality control</a> section describes how to remove ribosomal sequences. The same procedure can be applied to remove any other contaminating sequences. Poor quality reads should be trimmed or filtered out (see step 3 in the preprocessing section). Adapter sequences should normally be removed during preprocessing (preprocessing step 4). However, if their presence is still detected, they can be removed using alternative software (e.g., Cutadapt, <a href="https://cutadapt.readthedocs.io/en/stable/">https://cutadapt.readthedocs.io/en/stable/</a>) in which the adapter sequences are specified as input parameters.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Failed ribosomal depletion during the library preparation (preprocessing Step 2).</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Preprocessing step 2 may show that ribosomal sequences constitute the majority of the sequenced reads. In this case, after removal of the ribosomal sequences, the remaining read coverage may be insufficient for further processing (inability to detect lowly expressed genes/isoforms and circRNAs). Since this problem cannot be addressed programmatically, the affected library should be constructed and sequenced again.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Poor sample selection may result in presence of outlier samples (step 10).</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>As described in the <a href="#expected-outcomes">expected outcomes</a> section the PCA quality control step should detect any outlier samples that should be removed if the sample selection mistake is confirmed by clinical, demographic, or other data.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Presence of batch effects (step 10).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>We recommend planning the experiments, sequencing, and data processing as uniformly as possible to avoid any potential batch effects. However, if interpretation of the PCA plots points at potential batch effects, which can be traced to a particular factor (source of batch effects), e.g., multiple sample preparation dates, multiple technicians, sequencing flow cell or lane specificity, etc., then we recommend to apply the removeBatchEffect function from the limma R package:</p>
+<p><code>assay(vsd) &lt;- limma::removeBatchEffect(assay(vsd), vsd$batch, design=∼Condition)</code></p>
+<p>Redrawing the PCA plots after removal of the batch effect should indicate whether the problem has been addressed.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Due to various levels of ribosomal contamination or other technical artifacts, the depth of sequencing may vary between the samples. This difference in coverage will result in different effect sizes that would still yield the desired statistical power, e.g., ≥0.8. In the worst-case scenario, such difference can be specific to the groups (case and control).</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>To avoid interpretation of unreliable differential expression results not reaching the desired statistical power, the effect size (fold change) threshold can be set to filter out genes with the fold change below the calculated threshold. This effect size calculation based on predetermined coverage, sample size, coefficient of variation, false positive rate, and power can be performed using the rnapower function form the RNASeqPower R package. For example, rnapower(depth=15, n=10, cv=0.1, alpha=0.05, power=0.8) returns fold the change cutoff of 1.41. Please refer to the manual for description of the variables.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Agarwal, V., Bell, G.W., Nam, J.W., and Bartel, D.P. (2015). Predicting effective microRNA target sites in mammalian mRNAs. Elife <i>4</i>, e05005. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref1">View at publisher</a></p>
+<p id="bib2">Akers, N.K., Schadt, E.E., and Losic, B. (2018). STAR chimeric post for rapid detection of circular RNA and fusion transcripts. Bioinformatics <i>34</i>, 2364-2370. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref2">View at publisher</a></p>
+<p id="bib3">Bourgon, R., Gentleman, R., and Huber, W. (2010). Independent filtering increases detection power for high-throughput experiments. Proc. Natl. Acad. Sci. U S A <i>107</i>, 9546-9551. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref3">View at publisher</a></p>
+<p id="bib4">Chen, E.Y., Tan, C.M., Kou, Y., Duan, Q., Wang, Z., Meirelles, G.V., Clark, N.R., and Ma'ayan, A. (2013). Enrichr: interactive and collaborative HTML5 gene list enrichment analysis tool. BMC Bioinformatics <i>14</i>, 128. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref4">View at publisher</a></p>
+<p id="bib5">Chen, Y. and Wang, X. (2020). miRDB: an online database for prediction of functional microRNA targets. Nucleic Acids Res. <i>48</i>, D127-D131. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref5">View at publisher</a></p>
+<p id="bib6">Chouvarine, P., Photiadis, J., Cesnjevar, R., Scheewe, J., Bauer, U.M.M., Pickardt, T., Kramer, H.H., Dittrich, S., Berger, F., and Hansmann, G. (2021). RNA expression profiles and regulatory networks in human right ventricular hypertrophy due to high pressure load. iScience <i>24</i>, 102232. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref6">View at publisher</a></p>
+<p id="bib7">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref7">View at publisher</a></p>
+<p id="bib8">Ewels, P., Magnusson, M., Lundin, S., and Kaller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics <i>32</i>, 3047-3048. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref8">View at publisher</a></p>
+<p id="bib9">Lê, S., Josse, J., and Husson, F. (2008). FactoMineR: An R package for multivariate analysis. J. Stat. Softw. <i>25</i>, 1-18. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref9">View at publisher</a></p>
+<p id="bib10">Li, B. and Dewey, C.N. (2011). RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome. BMC Bioinformatics <i>12</i>, 323. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref10">View at publisher</a></p>
+<p id="bib11">Li, H. and Durbin, R. (2009). Fast and accurate short read alignment with Burrows-Wheeler transform. Bioinformatics <i>25</i>, 1754-1760. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref11">View at publisher</a></p>
+<p id="bib12">Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R., and Genome Project Data Processing, S. (2009). The Sequence Alignment/Map format and SAMtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref12">View at publisher</a></p>
+<p id="bib13">Love, M.I., Huber, W., and Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. <i>15</i>, 550. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref13">View at publisher</a></p>
+<p id="bib14">Ogoyama, M., Ohkuchi, A., Takahashi, H., Zhao, D., Matsubara, S., and Takizawa, T. (2021). LncRNA H19-derived miR-675-5p accelerates the invasion of extravillous trophoblast cells by inhibiting GATA2 and subsequently activating matrix metalloproteinases. Int. J. Mol. Sci. <i>22</i>, 1237. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref14">View at publisher</a></p>
+<p id="bib15">Risso, D., Schwartz, K., Sherlock, G., and Dudoit, S. (2011). GC-content normalization for RNA-Seq data. BMC Bioinformatics <i>12</i>, 480. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref15">View at publisher</a></p>
+<p id="bib16">Schmieder, R. and Edwards, R. (2011). Quality control and preprocessing of metagenomic datasets. Bioinformatics <i>27</i>, 863-864. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref16">View at publisher</a></p>
+<p id="bib17">Shannon, P., Markiel, A., Ozier, O., Baliga, N.S., Wang, J.T., Ramage, D., Amin, N., Schwikowski, B., and Ideker, T. (2003). Cytoscape: a software environment for integrated models of biomolecular interaction networks. Genome Res. <i>13</i>, 2498-2504. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref17">View at publisher</a></p>
+<p id="bib18">Sturm, M., Schroeder, C., and Bauer, P. (2016). SeqPurge: highly-sensitive adapter trimming for paired-end NGS data. BMC Bioinformatics <i>17</i>, 208. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00475-5/sref18">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Georg Hansmann (<a href="mailto:georg.hansmann@gmail.com">georg.hansmann@gmail.com</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate any software, except for Perl/bash scripts for subtracting circRNA read counts from the total RNA read count data, which are deposited to <a href="https://github.com/pch-code/circ-scripts">https://github.com/pch-code/circ-scripts</a>. Sequencing data are not publicly available due to consent restrictions. Upon request, the data can be made available via controlled access (National Register for Congenital Heart Defects, Berlin, Germany). Alternatively, a publically available dataset (NCBI SRA accession SRP298758) can be used for testing.</p>
+<h3>Acknowledgments</h3>
+<p>This study was supported by the German Research Foundation (<a href="https://doi.org/10.13039/501100001659">DFG</a>; HA4348/6-2 KFO311 to G.H.). G.H. receives additional funding from the German Research Foundation (<a href="https://doi.org/10.13039/501100001659">DFG</a>; HA4348/2-2), the <a href="https://doi.org/10.13039/501100002347">Federal Ministry of Education and Research</a> (BMBF ViP+ program 03VP08053; BMBF 01KC2001B), and the European Pediatric Pulmonary Vascular Disease Network (<a href="http://www.pvdnetwork.org">www.pvdnetwork.org</a>). The Competence Network for Congenital Heart Defects and the National Register for Congenital Heart Defects have received funding from the <a href="https://doi.org/10.13039/501100002347">Federal Ministry of Education and Research</a>, grant number 01GI0601 (until 2014), and the <a href="https://doi.org/10.13039/100010447">DZHK</a> (German Center for Cardiovascular Research; as of 2015).</p>
+<h3>Author contributions</h3>
+<p>P.C. performed the data analysis and wrote the manuscript. G.H. generated the hypotheses, developed the experimental design and concept of the study, performed RNA extraction and bioanalysis, and obtained funding. Both authors critically read and approved the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

@@ -1,0 +1,1041 @@
+<article>
+<section>
+<h1 id="header">Generation of hypoxia-sensing chimeric antigen receptor T cells</h1>
+<p><time datetime="2021-08-13">Published: August 13, 2021</time></p>
+<p>Paris Kosti,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#fn4">7</a></sup> Karen I. Larios-Martinez,<sup><a href="#aff1">1</a>,<a href="#fn2">5</a></sup> John Maher,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn3">6</a></sup> and James N. Arnold<sup><a href="#aff1">1</a>,<a href="#fn3">6</a>,<a href="#fn5">8</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Cancer and Pharmaceutical Sciences, King’s College London, Faculty of Life Sciences and Medicine, Guy’s Campus, London SE1 1UL, UK</p>
+<p id="aff2"><sup>2</sup>Department of Immunology, Eastbourne Hospital, Kings Drive, Eastbourne, East Sussex BN21 2UD, UK</p>
+<p id="aff3"><sup>3</sup>Department of Clinical Immunology and Allergy, King’s College Hospital NHS Foundation Trust, Denmark Hill, London SE5 9RS, UK</p>
+<p id="fn1"><sup>4</sup>Present address: Department of Oncology, Ludwig Institute for Cancer Research Lausanne, Lausanne University Hospital and University of Lausanne, Lausanne, Switzerland</p>
+<p id="fn2"><sup>5</sup>These authors contributed equally</p>
+<p id="fn3"><sup>6</sup>These authors contributed equally</p>
+<p id="fn4"><sup>7</sup>Technical contact</p>
+<p id="fn5"><sup>8</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:james.n.arnold@kcl.ac.uk">james.n.arnold@kcl.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100723">10.1016/j.xpro.2021.100723</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Exploiting hypoxia in solid malignancies to restrict expression of chimeric antigen receptors (CARs) on engineered T cells to the tumor microenvironment overcomes the risk of on-target off-tumor toxicity and minimizes tonic signaling, which promotes CAR T cell exhaustion. This protocol summarizes the synthetic biology underlying the development of a stringent oxygen-sensitive CAR for <i>in vitro</i> and <i>in vivo</i> preclinical characterization.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib2">Kosti et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Hypoxia can be exploited as a selective signal for tumor-specific CAR expression</li>
+<li>A protocol to enable stringent hypoxia-dependent CAR expression</li>
+<li>A dual oxygen-sensing expression system that is both dynamic and tunable</li>
+<li>An approach to provide a safety switch for non-tumor selective CAR targets</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<div class="note">
+<span class="note-title">Note:</span> This protocol describes the steps taken to express a generic chimeric antigen receptor (CAR) under a ‘dual oxygen-sensing’ expression system termed ‘HypoxiCAR’ using a Moloney murine leukemia (MoMLV) retroviral vector, SFG, as a means to achieve selective CAR and/or transgene expression in the tumor microenvironment when transduced into T cells. Although the approach can be expected to be applicable to other transgene carrier vectors (for example lentiviral vectors) and immune cell types, these have not been directly explored or optimized.</div>
+<div class="note">
+<span class="note-title">Note:</span> Experimental results of the ‘single’ and ‘dual’ oxygen-sensing system used with a CAR, which are presented in this protocol, refer to a pan-ErbB-specific CAR designated T1E28z. T1E28z is a CD28-containing second generation CAR with specificity for eight distinct ErbB dimers found in many cancer types (<a href="#bib1">Davies et al., 2012</a>). Target recognition is achieved using the T1E peptide, which is a pan-ErbB ligand derived from transforming growth factor-α and epidermal growth factor (<a href="#bib9">Stortelers et al., 2002</a>). Selective expansion of retrovirus-engineered T1E28z<sup>+</sup> T cells is achieved by co-expression of the CAR with the 4αβ receptor in a bicistronic single cassette separated from the CAR by a T2A sequence. 4αβ is a chimeric cytokine receptor in which the ectodomain of the IL-4 receptor α subunit has been fused to the transmembrane and endodomain of the shared IL-2/15 receptor β chain (<a href="#bib11">Wilkie et al., 2010</a>). Addition of IL-4 to T cells that co-express T1E28z and 4αβ (combination dubbed ‘T4’) permits the selective enrichment of only the gene-modified cells (<a href="#bib11">Wilkie et al., 2010</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> Oxygen-sensing, as described here, relies on Hypoxia inducible factor (HIF)1α stabilization in the cell of interest when placed under limiting oxygen concentrations (typically &lt;5% O<sub>2</sub>). Various cells/cell lines respond differently to changes in oxygen tension, and changes in HIF1α levels upon hypoxia exposure may consequently vary. Therefore, if the cell of interest is not a T cell, it is suggested to measure HIF1α levels under normoxic and hypoxic conditions in the cell/cell line to ensure that HIF1α is both completely degraded under conditions of normoxia and also efficiently stabilized under conditions of hypoxia. This can be assessed using a western blot approach.</div>
+<div class="note">
+<span class="note-title">Note:</span> As examples for the protocol below we present data generated using the T-47D estrogen receptor positive breast cancer cell line and/or primary human T cells (isolated and cultured as described below). HIF1α levels in T-47D and human T cells are very low/non-detectable in normoxia and are significantly stabilized upon 18 h exposure to 0.1% O<sub>2</sub> (data not shown).</div>
+<div class="note">
+<span class="note-title">Note:</span> For assessing the transduction efficiency of the CAR T cells, one potential option is to use quantitative-PCR. The primers designed amplify a sequence within the <i>Thosea Asigna</i> (T2A) (<a href="#bib10">Szymczak et al., 2004</a>) ribosomal skip peptide cDNA (that is incorporated into the T4 construct to allow post-translational cleavage of the CAR and 4αβ elements) and a host cell genomic reference which was within the <i>TBP</i> gene, which encodes human TATA box binding protein. The user should evaluate if the T2A primer set is suitable for their construct (if a T2A sequence has or could be used) or alternatively design primers for their transgene of interest.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-human CD3ε Brilliant Violet 421 (clone SK7, 1:100 dilution)</td>
+<td>BioLegend</td>
+<td>Cat# 344834; RRID:AB_2565675</td>
+</tr>
+<tr>
+<td>Anti-human CD8α Alexa Fluor 488 (clone RPA-T8, 1:100 dilution)</td>
+<td>BioLegend</td>
+<td>Cat# 301021; RRID:AB_2561281</td>
+</tr>
+<tr>
+<td>Anti-Human CD4 PE (clone RPA-T4, 1:100 dilution)</td>
+<td>eBioscience</td>
+<td>Cat# 12-0049-42, RRID:AB_1582249</td>
+</tr>
+<tr>
+<td>Anti-Human/Primate EGF Biotinylated (reconstituted 1 mg/mL PBS, used 1:100 dilution)</td>
+<td>R&amp;D Systems</td>
+<td>Cat# BAF236; RRID:AB_356307</td>
+</tr>
+<tr>
+<td>Streptavidin APC (1:100 dilution)</td>
+<td>BioLegend</td>
+<td>Cat# 405207</td>
+</tr>
+<tr>
+<td>7-aminoactinomycin D (reconstituted 1 mg/mL PBS, used 1:1000 dilution)</td>
+<td>Cayman Chemical Company</td>
+<td>Cat# 11397</td>
+</tr>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>Stbl3 <i>E. coli</i>
+</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# C737303</td>
+</tr>
+<tr>
+<td colspan="3">Biological samples</td>
+</tr>
+<tr>
+<td>Human blood/T-cells</td>
+<td>Healthy volunteers</td>
+<td>West of Scotland Research Ethics Committee 3 (REC reference 18/WS/0047)</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Ficoll-Paque PLUS</td>
+<td>GE Healthcare</td>
+<td>Cat# GE17-1440-02</td>
+</tr>
+<tr>
+<td>RPMI 1640</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 11875093</td>
+</tr>
+<tr>
+<td>IMDM</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 21980032</td>
+</tr>
+<tr>
+<td>DMEM</td>
+<td>BioScience</td>
+<td>Cat# BE12-604Q</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# F7524-500ML</td>
+</tr>
+<tr>
+<td>Human Serum</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# H4522-100ML</td>
+</tr>
+<tr>
+<td>LB Broth, Miller</td>
+<td>Fisher Bio Reagents</td>
+<td>Cat# BP9723-500</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Invitrogen</td>
+<td>Cat# AM9938</td>
+</tr>
+<tr>
+<td>T4 DNA ligase</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# EL0011</td>
+</tr>
+<tr>
+<td>RetroNectin recombinant human fibronectin fragment</td>
+<td>Takara</td>
+<td>Cat# T100B</td>
+</tr>
+<tr>
+<td>Dynabeads human T-Activator CD3/CD28</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 11131D</td>
+</tr>
+<tr>
+<td>Restriction endonucleases</td>
+<td>New England Biolabs</td>
+<td>Various, as per this paper</td>
+</tr>
+<tr>
+<td>FuGENE HD Transfection Reagent</td>
+<td>Promega</td>
+<td>Cat# E2311</td>
+</tr>
+<tr>
+<td>Recombinant Human IL-4</td>
+<td>PeproTech</td>
+<td>Cat# 200-04</td>
+</tr>
+<tr>
+<td>Proleukin (aldesleukin), human recombinant IL-2</td>
+<td>Clinigen Group</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>KiCqStart SYBR green qPCR ReadyMix, with ROX</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# KCQS02</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>TaqMan Gene Expression Assay</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 4331182</td>
+</tr>
+<tr>
+<td>QIAGEN Plasmid Mini, Midi and Maxi Kits</td>
+<td>QIAGEN</td>
+<td>Cat# 12125, 12145, 12163</td>
+</tr>
+<tr>
+<td>QIAGEN DNeasy Blood &amp; Tissue Kit</td>
+<td>QIAGEN</td>
+<td>Cat# 69506</td>
+</tr>
+<tr>
+<td>Pan T Cell Isolation Kit, human</td>
+<td>Miltenyi Biotec</td>
+<td>Cat# 130-096-535</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Cell lines</td>
+</tr>
+<tr>
+<td>T-47D</td>
+<td>ATCC</td>
+<td>Cat# HTB-133</td>
+</tr>
+<tr>
+<td>HEK293T</td>
+<td>ATCC</td>
+<td>Cat# CRL-3216; RRID:CVCL_0063</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Synthetic DNA gene fragments</td>
+<td>Integrated DNA Technologies</td>
+<td>Various, sequences shown <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Mmc1.extension">Figures S1</a> and <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Mmc1.extension">S2</a>
+</td>
+</tr>
+<tr>
+<td>TTTGGTGTTTGCTTCAGTCAG</td>
+<td>Integrated DNA Technologies</td>
+<td>Fwd TBP primer for quantitative PCR</td>
+</tr>
+<tr>
+<td>ATACCTAGAAAACAGGAGTTGCTCA</td>
+<td>Integrated DNA Technologies</td>
+<td>Rev TBP primer for quantitative PCR</td>
+</tr>
+<tr>
+<td>CGGAGAAAGCGCAGC</td>
+<td>Integrated DNA Technologies</td>
+<td>Fwd T2A primer for quantitative PCR</td>
+</tr>
+<tr>
+<td>GGGTCCGGGGTTCTCTT</td>
+<td>Integrated DNA Technologies</td>
+<td>Rev T2A primer for quantitative PCR</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>SFG CBG99Luc-P2A-EGFP</td>
+<td>This study</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>SFG HRE9 CBG99luc-ODD401-603-P2A-GFP</td>
+<td>This study</td>
+<td>P20; HypoxiLuc reporter</td>
+</tr>
+<tr>
+<td>SFG 4αβ-2A-T1E-CD28-CD3z-ODD</td>
+<td>This study</td>
+<td>P22</td>
+</tr>
+<tr>
+<td>SFG HRE9 4αβ-2A-T1E-CD28-CD3z</td>
+<td>This study</td>
+<td>P26</td>
+</tr>
+<tr>
+<td>SFG HRE9 4αβ-2A-T1E-CD28-CD3z-ODD</td>
+<td>This study</td>
+<td>P23; HypoxiCAR</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>FlowJo v.10 Software</td>
+<td>Tree Star</td>
+<td><a href="https://www.flowjo.com/">https://www.flowjo.com/</a></td>
+</tr>
+<tr>
+<td>Prism 9</td>
+<td>GraphPad</td>
+<td><a href="https://www.graphpad.com/scientific-software/prism/">https://www.graphpad.com/scientific-software/prism/</a></td>
+</tr>
+<tr>
+<td>SnapGene</td>
+<td>GSL Biotech</td>
+<td><a href="https://www.snapgene.com/">https://www.snapgene.com/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Hypoxia Incubator Chamber</td>
+<td>STEMCELL Technologies</td>
+<td>Cat# 27310</td>
+</tr>
+<tr>
+<td>Peq-Pam 3 Plasmid</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>RDF Plasmid (encodes RD114 envelope)</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>MicroAmp™ Optical 96-Well Reaction Plate</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# n8010560</td>
+</tr>
+<tr>
+<td>Adhesive PCR Plate Seals</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AB0558</td>
+</tr>
+<tr>
+<td>Gas cylinders</td>
+<td>BOC</td>
+<td>Custom - using variable O<sub>2</sub> as indicated<sub>,</sub> 5% CO<sub>2</sub> and N as balance</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table>
+<thead>
+<tr>
+<th>R5 medium (store at 4°C)</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RPMI 1640</td>
+<td>-</td>
+<td>475 mL</td>
+</tr>
+<tr>
+<td>Human serum</td>
+<td>5%</td>
+<td>25 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>I10 medium (store at 4°C)</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IMDM</td>
+<td>-</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td>Fetal bovine serum</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>D10 medium (store at 4°C)</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td>-</td>
+<td>450 mL</td>
+</tr>
+<tr>
+<td>Fetal bovine serum</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Quantitative-PCR MasterMix (store −20°C)</th>
+<th>Final concentration</th>
+<th>Amount (for 20 μL reaction)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KiCqStart SYBR green qPCR ReadyMix (2×)</td>
+<td>1×</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Forward primer</td>
+<td>200 nM</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>Reverse primer</td>
+<td>200 nM</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Variable</td>
+<td>add to 20 μL</td>
+</tr>
+<tr>
+<td>Template</td>
+<td>5 ng/mL</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>20 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> In addition to SYBR Green, other DNA-binding dyes are available commercially which can be used such as EvaGreen dyes. Select your reagents according to your equipment availability.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Modifying a retroviral vector to contain a hypoxia-responsive promoter</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  +3 days (depending on sequencing service)</div>
+<p>This protocol describes how to modify the SFG retroviral vector to contain a hypoxia-responsive promoter. To achieve this, the enhancer region of the 3′ long terminal repeat (LTR) in the SFG vector is modified to contain a poly-hypoxia-responsive elements (HRE) sequence.</p>
+<div class="note">
+<span class="note-title">Note:</span> Modification should be targeted to the 3′ LTR as this will be replicated to the 5′ LTR position upon integration of the provirus genetic material into the recipient host cell DNA (<a href="#bib3">Levin et al., 2010</a>). HREs can be derived from genes that are upregulated in response to hypoxia (<a href="#bib4">Liu et al., 1995</a>). Here we use HREs from human erythropoietin gene (EPO; Gene ID: 2056). We utilized a nine tandem HRE construct which is incorporated into the 3′ LTR using the XhoI/EcoRI restriction endonuclease cleavage sites (<a href="#fig1">Figure 1</a>). Although increasing the number of tandem HREs are likely to further increase the strength of the promoter in hypoxia, a 9xHRE cassette was selected as it had an approximate base pair length to the enhancer region removed. However, it should be noted that the strength of the promoter is tunable, and the utilization of fewer HRE tandem repeats results in a weaker fold induction of the transgene (<a href="#fig2">Figure 2</a>A).</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Overview of the cloning steps to modify the promoter of a CAR</div>
+<p>(1) Identification of the locus on the vector to be modified. (2) Synthesize fragment containing the HRE repeats. (3) Use restriction endonucleases to double digest the SFG vector and the HRE fragment and recover DNA from gel using a DNA ladder to guide band identification. (4) Ligate SFG backbone (A) and HRE fragment (B).</p>
+</figcaption>
+</figure>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. A tandem-HRE promoter provides tuneable but leaky hypoxia induction of a transgene</div>
+<p>(A) Tandem HRE repeats (3× or 9×) were modified in the SFG vector encoding a reporter transgene of Click beetle luciferase (Luc) and enhanced green fluorescent protein (eGFP; schematic on the left) and transduced in T-47D cells. After exposure for 18 h under either hypoxic (0.1% O<sub>2</sub>) or normoxic (20% O<sub>2</sub>) conditions, cells were assessed for their respective luciferase activity, presented as fold induction between the two conditions (n = 4-8).</p>
+<p>(B) Human T cells were stably transduced with the indicated CAR constructs (schematic on the left) and exposed for 18 h under either hypoxic (0.1% O<sub>2</sub>) (H) or normoxic (20% O<sub>2</sub>) (N) conditions prior to assessment of their surface CAR expression/cell presented as median fluorescence intensity of staining/cell (MFI) using flow cytometry analyses (n = 3). RLU value recorded was divided by the relative transduction efficiency for each construct (to normalize to the respective transduction efficiency). Bars represent mean and error bars represent S.D. ∗ p&lt;0.05, ∗∗∗ p&lt;0.001, ∗∗∗∗ p&lt;0.0001.</p>
+</figcaption>
+</figure>
+<ol>
+<li>Identify the locus in the SFG 3′ LTR enhancer region to be replaced for a hypoxia-responsive promoter.</li>
+<li>Synthesize the HRE fragment with the desired number of tandem HRE repeats as a synthetic DNA fragment (the 9xHRE fragment sequence is shown in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Mmc1.extension">Figure S1</a>) with XhoI and EcoRI restriction sites flanked by at least 6 b.p. overhangs to allow efficient cleavage. These overhang b.p. are a random sequence, however, the extra b.p. should be chosen so that palindromes and primer dimers are not formed.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Synthetic DNA fragments can be ordered from Integrated DNA Technologies (IDT), GenScript, or others.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Besides synthetic DNA fragments other cloning methods can be used such as overlapping PCR and HiFI.</div>
+<ol start="3">
+<li>Double restriction endonuclease digest your construct containing the SFG backbone and your synthetic DNA fragment containing the HRE repeats.
+<ol type="a">
+<li>Set the following reaction for the vector and backbone in separate tubes:
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Component</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNA to be digested</td>
+<td>1 μg</td>
+</tr>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>5 μL (1×)</td>
+</tr>
+<tr>
+<td>XhoI</td>
+<td>1 μL (20 units)</td>
+</tr>
+<tr>
+<td>EcoRI-HF</td>
+<td>1 μL (20 units)</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Up to 50 μL</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Incubate at 37°C for 1 h.
+<div class="note">
+<span class="note-title">Note:</span> Enzyme volume should not exceed 10% of the total reaction volume to prevent non-specific restriction activity. For enzyme-specific digestion protocols refer to: <a href="http://nebcloner.neb.com/">http://nebcloner.neb.com/#!/redigest</a>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Add Gel Loading Dye, Purple (6×) to the digestion products; 10 μL for a standard 50 μL reaction.</li>
+<li>Run the digested sample containing loading dye on a 1% agarose gel containing 0.5 μg/mL ethidium bromide, for the duration needed to observe a clear separation of the 2 bands in the digested SFG vector backbone (<a href="#fig1">Figure 1</a>).</li>
+<li>Cut the individual bands of interest from your gel (<a href="#fig1">Figure 1</a>) using a scalpel on a UV light box.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Minimize the exposure of UV light on your gel while imaging on a UV light box to avoid DNA damage.</div>
+<ol start="7">
+<li>Recover the DNA from the excised gel bands using QIAquick Gel Extraction Kit, according to manufacturers’ handbook: <a href="https://www.qiagen.com/ch/products/discovery-and-translational-research/dna-rna-purification/dna-purification/dna-clean-up/qiaquick-gel-extraction-kit/">https://www.qiagen.com/ch/products/discovery-and-translational-research/dna-rna-purification/dna-purification/dna-clean-up/qiaquick-gel-extraction-kit/</a>
+</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Other kits are available, for example, Monarch® DNA Gel Extraction Kit.</div>
+<div class="note">
+<span class="note-title">Note:</span> At this stage, the SFG backbone fragment and the HRE fragment bear flanking compatible sticky ends that can be annealed.</div>
+<ol start="8">
+<li>Ligate the digested SFG backbone (7,516 b.p.) and the digested HRE synthetic DNA fragment (1,480 b.p.) together using T4 DNA Ligase, at a molar ratio of 3:1 insert to vector, according to manufacturers’ protocol: <a href="https://international.neb.com/protocols/0001/01/01/dna-ligation-with-t4-dna-ligase-m0202">https://international.neb.com/protocols/0001/01/01/dna-ligation-with-t4-dna-ligase-m0202</a>
+</li>
+<li>Transform One Shot™ Stbl3™ chemically competent <i>E. coli</i> with the ligation mix and spread transformed bacteria on a Luria broth (LB) agar plate containing 100 µg/mL ampicillin for selection as per manufacturers’ protocol: <a href="https://www.thermofisher.com/order/catalog/product/C737303">https://www.thermofisher.com/order/catalog/product/C737303#/C737303</a>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is recommended to perform a parallel control ligation in which nuclease-free water, in place of the insert, is added to SFG backbone. This control ligation mixture can then be transformed as described above and can serve as a negative control in the transformation reaction, thereby giving the background signal. Although the gel-purified SFG backbone is not expected to re-ligate as it is flanked by incompatible sticky ends (XhoI and EcoRI), this negative control reaction ensures that the SFG backbone was completely digested and specifically recovered from the gel. In principle, this control should be free of colonies, but in reality, it may have some amount of background (for example from contamination with uncut plasmid). Ideally, the SFG backbone and insert ligation should, at least, have substantially more colonies than the vector and water control ligation.</div>
+<ol start="10">
+<li>When bacterial colonies are visible on the LB agar plate, select a few colonies to grow up in 3 mL cultures of LB media containing 100 μg/mL ampicillin 16 h at 37°C, with agitation.</li>
+<li>Purify plasmid using a Mini Prep kit (Qiagen) and analyze the purified vectors by sequencing to confirm that the correct plasmid has been generated, from now on named SFG-HRE.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The resulting SFG-HRE construct, is leaky for the expression of transgenes (including a CAR) in normoxia (<a href="#fig2">Figure 2</a>), but is used as the base vector into which an oxygen-dependent degradation domain (ODD)-appended transgene is cloned to create the stringent dual hypoxia-dependent CAR expression system.</div>
+<h3 id="sec3.2">Modifying a CAR to contain an oxygen-dependent degradation domain</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  +3 days (depending on sequencing service)</div>
+<p>This section describes how to append an ODD to a CAR. This is achieved by directly fusing a human ODD (a.a. residues 401–603) from HIF-1α to the C-terminus of the CAR CD3ζ cytoplasmic domain (<a href="#fig3">Figure 3</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Overview of the cloning steps to append an ODD to a CAR</div>
+<p>(1) Identify locus on the vector (SFG-HRE) to be modified along with proximal unique restriction sites (in this case NcoI/XhoI). (2) Synthesize fragment containing the ODD flanked by sequence identical to the CAR sequence including the proximal restriction sites identified (NcoI/XhoI) and at least 6 additional random b.p. overhangs (to allow efficient restriction endonuclease cleavage) to either side. (3) Double digest the SFG-HRE CAR and the ODD-containing synthetic fragment and recover DNA from gel (fragments to be recovered from gel are indicated). (4) Ligate DNA fragments (A) and (B).</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> If space in the vector is limited, a smaller fragment of the ODD could be used (<a href="#fig4">Figure 4</a>A). In our initial optimization, we directly appended three potential human HIF-1α-derived ODD residues: a.a. residues 401–603, 530–603, and 530–653. All three ODDs resulted in a significant destabilization of the protein of interest under conditions of normoxia (<a href="#fig4">Figure 4</a>A) and conferred stabilization of the fusion partner in hypoxia (data not shown).</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. An ODD partially destabilizes a CAR in normoxic conditions</div>
+<p>(A) Three human HIF1α-derived ODD residues (a.a. residues 401–603, 530–603, and 530–653, schematic on left of Figure) were appended to the luciferase gene in the reporter SFG vector and transduced in T-47D cells. After exposure for 18 h under normoxia, cells were assessed for their respective luciferase activity, presented as RLU. (n = 3-7).</p>
+<p>(B) Human T cells were stably transduced with a SFG vector containing T4-CAR or T4-CAR-ODD (a.a. residues 401–603) (schematic on the left) and exposed for 18 h under either hypoxic (H) or normoxic (N) conditions prior to assessment of their surface CAR expression presented as percentage of normalized CAR expressing cells relative to the non-ODD appended CAR under conditions of normoxia using flow cytometry analyses (n=3). Values were normalized to the relative transduction efficiency of each construct as assessed by qPCR to enable accurate comparisons across constructs. Bars represent mean and error bars represent S.D. ∗∗: p&lt;0.01, ∗∗∗: p&lt;0.001, ∗∗∗∗: p&lt;0.0001.</p>
+</figcaption>
+</figure>
+<ol start="12">
+<li>Identify the locus on the vector (SFG-HRE) to be modified along with two proximal unique restriction sites (one upstream and one downstream as the multiple cloning site can vary). In our SFG-HRE CAR vector we chose to append the ODD on the C-terminus of the CAR directly after the CD3ζ intracellular domain, and selected the NcoI and XhoI in the multiple cloning site of the SFG vector as proximal unique restriction sites.</li>
+<li>Synthesize the ODD fragment to be appended to the C-terminus of the CAR as a synthetic DNA fragment (can modify sequence shown in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Mmc1.extension">Figure S2</a>).</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Different lengths of ODDs can be used as stated before (<a href="#fig4">Figure 4</a>A). Although not tested in this system, ODDs can be also placed at the N-terminus of a protein of interest (<a href="#bib8">Smirnova et al., 2010</a>) and/or linkers can be interposed between for flexibility and/or additional spacing from the fusion partner. Linkers may be used in case the ODD interferes with the function of its fusion partner.</div>
+<ol start="14">
+<li>Double restriction endonuclease digest your HRE-modified SFG vector and your synthetic DNA fragment containing the CAR-ODD using NcoI and XhoI enzymes.
+<ol type="a">
+<li>Set the following reaction for the fragment and vector in separate tubes:
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Component</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNA to be digested</td>
+<td>1 μg</td>
+</tr>
+<tr>
+<td>10× CutSmart Buffer</td>
+<td>5 μL (1×)</td>
+</tr>
+<tr>
+<td>NcoI-HF</td>
+<td>1 μL (20 units)</td>
+</tr>
+<tr>
+<td>XhoI</td>
+<td>1 μL (20 units)</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Up to 50 μL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Volumes and masses may be needed to optimize, depending on the construct being used.</div>
+</li>
+<li>Incubate at 37°C for 1 h.</li>
+</ol>
+</li>
+</ol>
+<ol start="15">
+<li>Repeat steps 4 to 11 on the SFG-HRE vector and CAR-ODD insert. The bands of interest are the digested SFG-HRE backbone (6,391 b.p.) and the digested ODD synthetic DNA fragment to be used as the insert (1,824 b.p.) (<a href="#fig3">Figure 3</a>). The resulting construct containing the dual hypoxia-sensing system (HRE promoter and ODD) will be referred to herein as ‘HypoxiCAR’.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The resulting HypoxiCAR construct can then be used for retrovirus production and transduction of T cells as described in the sections below.</div>
+<h3 id="sec3.3">Transfection - transient virus production</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7 days</div>
+<p>The step of transfection allows the introduction of plasmid DNA into eukaryotic cells. This protocol uses FuGENE Transfection Reagent, a non-liposomal formulation, to introduce DNA into HEK293T cells. This method results in transient expression of the vector for retrovirus production (<a href="#fig5">Figure 5</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Workflow of virus production</div>
+<p>(1) HEK 293T cells are seeded 1 day prior to transfection. (2) Transfection process is performed. (3) Media is replaced (optionally virus-containing supernatant can be harvested and used or stored as indicated). (4) 48 h viral supernatant is harvested. (5) 72 h viral supernatant is harvested. POI: plasmid of interest (i.e., HypoxiCAR construct); O/N: overnight 16 h culture.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> There are also other protocols to efficiently produce retroviral particles carrying the transgene of interest. Should such protocols already be established in users’ laboratory, if preferred, these can be used to generate transgene-carrier retrovirus.</div>
+<ol start="16">
+<li>At least four days before the transduction:
+<ol type="a">
+<li>Thaw a vial of HEK293T cells in the water bath at 37<sup>°</sup>C.
+<div class="note">
+<span class="note-title">Note:</span> Transfection can also be performed with HEK293T cells kept in culture. However low passages of this cell line often produce higher titers of transient virus, leading to higher transduction efficiencies.</div>
+</li>
+<li>Seed the content of the HEK293T vial (approximately 1 × 10<sup>7</sup> cells in 1 mL) in a T75 flask in 25 mL 37<sup>°</sup>C pre-warmed I10 medium.</li>
+<li>Place flask into incubator at 37°C and 5% CO<sub>2</sub>.</li>
+<li>Check for confluency on ensuing days.</li>
+</ol>
+</li>
+</ol>
+<ol start="17">
+<li>One day before the transfection:
+<ol type="a">
+<li>Prepare a suspension of HEK293T cells at 2.3 × 10<sup>5</sup> cells/ mL in I10.</li>
+<li>Add 11 mL of the HEK293T suspension to a 100 mm plate, for a total of 2.5 × 10<sup>6</sup> cells per plate.
+<div class="note">
+<span class="note-title">Note:</span> One plate is required per construct. One 100 mm plate of HEK293T cells will produce around 20 mL of viral supernatant (2 harvests), enough to transduce 4 × 10<sup>6</sup> human T cells. This step can be downscaled or upscaled as required.</div>
+</li>
+<li>Gently rock the plate to ensure aneven distribution of cells across the plate.</li>
+<li>Place plate into incubator.</li>
+</ol>
+</li>
+</ol>
+<ol start="18">
+<li>The day of the transfection, per 100 mm plate:
+<ol type="a">
+<li>In a 1.5 mL Eppendorf tube add 1.133 mL of IMDM media and 68 μL of FuGENE reagent.</li>
+<li>In another 1.5 mL Eppendorf tube mix the 5.6 μg RDF (RD114-encoding) envelope plasmid, 8.5 μg Peq-Pam-env (encoding gag and pol) and 8.5 μg of the vector plasmid of interest (ideally with a total volume of &lt;100 µL).</li>
+<li>Mix the contents of the tubes in steps 18a and 18b and incubate at 20°C–22°C for 15 min.</li>
+<li>Add the mixture dropwise to the HEK293T cell plate and gently rock the plate to evenly distribute the mixture.</li>
+<li>Place the plate back into the incubator.</li>
+</ol>
+</li>
+<li>Twenty four hours after transfection:
+<ol type="a">
+<li>Remove and discard media from the plate and replace with 11 mL of prewarmed fresh I10 media.</li>
+<li>Place plate back into the incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Replace the media gently, trying not to detach the transfected 293T cell monolayer.</div>
+<ol start="20">
+<li>Forty eight hours post transfection:
+<ol type="a">
+<li>Harvest the media (containing the viral particles produced) into a 50 mL Falcon tube and store at 4°C. Replace with 11 mL of warm fresh I10 media.</li>
+<li>Return the plate to the incubator.</li>
+</ol>
+</li>
+<li>Seventy two hours post transfection:
+<ol type="a">
+<li>Harvest the virus-containing media into a 50 mL Falcon tube and store at 4°C.</li>
+<li>Filter the harvested 48 and 72h media using a 0.45 μm sterile filter. The filtered viral supernatants can be used for T cell transduction or snap-frozen in liquid nitrogen and stored at −80°C until required.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Retrovirus titer gradually drops upon storage at 4°C and it is thus recommended not to store retrovirus at 4°C for extended time periods (more than 1 day) prior to use or freezing.</div>
+<div class="note">
+<span class="note-title">Note:</span> Virus-containing media supernatant harvested at 48 h or 72 h post-transfection can be also filtered separately on respective harvest day as indicated in 20 and 21 and used fresh or snap frozen for storage (if pooling of 48 h and 72 h viral supernatant is not desired).</div>
+<div class="note">
+<span class="note-title">Note:</span> Filtering viral supernatant using 0.45 μm sterile filters can cause significant viral particle loss. In place of this, the user can opt to centrifuge the virus-containing media at 500 × <i>g</i> for 5 mins to pellet any contaminating cells or debris and then remove the viral supernatant (being careful not to disturb any pelleted material) to a fresh tube before snap freezing or using fresh.</div>
+<h3 id="sec3.4">Peripheral blood mononuclear cell isolation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<p>This section describes how to isolate peripheral blood mononuclear cell (PBMCs) from human blood by Ficoll gradient centrifugation (<a href="#fig6">Figure 6</a>).</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Purification of T cells from peripheral blood mononuclear cells</div>
+<p>(1–6) Peripheral Blood Mononuclear Cell (PBMC) Isolation. (1) Peripheral blood withdrawal. (2–3) Ficoll density gradient centrifugation to separate blood components. (4) Harvest PBMC layer using sterile Pasteur pipette and transfer in RPMI. (5) PBMCs are washed twice in RPMI and resuspended in R5 media. (6) Cell counting. (7) Negative selection of T cells using magnetic beads. (8–10) T cells are counted and activated as shown.</p>
+</figcaption>
+</figure>
+<ol start="22">
+<li>Withdraw peripheral blood (typically 50 mL) from a healthy donor with informed consent.</li>
+<li>Transfer the blood from the collection tubes to 50 mL Falcon tubes.</li>
+<li>Dilute the blood 1:1 with RPMI media (in 50 mL Falcon tubes or another sterile vessel to accommodate the total volume).</li>
+<li>In another 50 mL Falcon tube, add 15 mL of Ficoll-Paque Plus.</li>
+<li>Carefully transfer 30 mL of the diluted blood to the Ficoll-Paque tubes as not to disturb the Ficoll layer.</li>
+<li>Centrifuge the 50 mL tubes at 750 × <i>g</i> for 30 min at 20°C (acceleration and brake set to 0) to separate the PBMC cell fraction.</li>
+<li>Transfer the PBMC layer, seen as an interface between the plasma and the Ficoll layer (<a href="#fig6">Figure 6</a>), using a sterile Pasteur pipette to a fresh 50 mL tube.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> After centrifugation, the layer above the PBMC fraction which contains plasma can be carefully removed using a Pasteur pipette to make the PBMC layer easier to harvest.</div>
+<ol start="29">
+<li>In the 50 mL tube containing the PBMCs, add RPMI media to a final volume of 50 mL and centrifuge at 500 × <i>g</i> for 5 min. The acceleration and brake can be set back to 9.</li>
+<li>Aspirate and discard the supernatant leaving the pelleted cells.</li>
+<li>If more than one tube has been used (due to the volume size), the pellets can be resuspended in RPMI and combined and the cells are once again brought up to a final volume of 50 mL of RPMI for a second wash.</li>
+<li>Centrifuge at 500 × <i>g</i> for 5 min.</li>
+<li>Aspirate and discard the supernatant.</li>
+<li>Resuspend the cell pellet in 10 mL of R5 media.</li>
+</ol>
+<h3 id="sec3.5">T-cell isolation and activation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>This protocol describes how to purify T cells from the PBMC fraction using human pan T cell isolation kit (Miltenyi Biotec), a MidiMACs separator and LS columns (Miltenyi Biotec) and how to activate purified T cells using CD3/CD28 Human T-Activator Dynabeads (Gibco) (<a href="#fig6">Figure 6</a>).</p>
+<ol start="35">
+<li>For T cell isolation:
+<ol type="a">
+<li>Count the cells from the PBMC fraction and proceed according to the manufacturers’ protocol: <a href="https://www.miltenyibiotec.com/US-en/products/pan-t-cell-isolation-kit-human.html">https://www.miltenyibiotec.com/US-en/products/pan-t-cell-isolation-kit-human.html#gref</a>
+</li>
+</ol>
+</li>
+<li>For T cell activation:
+<ol start="2" type="a">
+<li>Wash the CD3/CD28 Human T-Activator Dynabeads according to the manufacturers’ protocol: <a href="https://www.thermofisher.com/uk/en/home/references/protocols/proteins-expression-isolation-and-analysis/t-cell-activation-and-expansion/dynabeads-human-t-activator-cd3-cd28.html">https://www.thermofisher.com/uk/en/home/references/protocols/proteins-expression-isolation-and-analysis/t-cell-activation-and-expansion/dynabeads-human-t-activator-cd3-cd28.html</a>
+</li>
+<li>Resuspend the purified T cells at a concentration of 3 × 10<sup>6</sup> cells/mL in R5 media.</li>
+<li>Add Dynabeads Human T-Activator CD3/CD28 at a bead-to-cell ratio of 1:1.</li>
+<li>Seed 3 mL of the T cells containing the Dynabeads (3 × 10<sup>6</sup> cells/mL) per well on a TC-treated 6-well plate.</li>
+<li>Place plate into incubator.</li>
+</ol>
+</li>
+<li>After 24 h add recombinant human IL-2 at a final concentration of 100 IU/mL.</li>
+</ol>
+<h3 id="sec3.6">Retroviral-mediated T cell transduction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>This section describes the steps for retroviral-mediated transduction of human T cells. This method ensures the integration of the inserted coding DNA contained in the construct into the host T cell genome, thereby permitting stable expression of the transgene (<a href="#fig7">Figure 7</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Workflow of CAR T cell production</div>
+<p>(1) RetroNectin coating. (2) Transduction setup. (3) Incubation to allow viral infection of target cells. (4) Expansion/enrichment of T cells. (5) Transduction efficiency measurement via quantitative PCR for accurate quantification of transgene abundance in the target cell population. (6) Evaluation of T cell phenotype and function (<i>in vitro</i> and <i>in vivo</i>).</p>
+</figcaption>
+</figure>
+<ol start="38">
+<li>One day before the T cell transduction:
+<ol type="a">
+<li>Add 20 μg/mL RetroNectin (Takara Bio Inc.) to sterile PBS with a volume corresponding to 4 μg/cm<sup>2</sup> to a non-tissue culture treated 6-well plate (2 mL of RetroNectin in PBS solution per well of a 6-well plate). Use one well per construct of interest and one for non-transduced and/or mock transduced control.</li>
+<li>Place lid on plate and wrap edges with parafilm to prevent evaporation and incubate for 16 h at 4°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="39">
+<li>On the day of the T cell transduction:
+<ol type="a">
+<li>Take out the RetronNectin-coated plate from the fridge and aspirate the RetroNectin/PBS solution from the well.
+<div class="optional">
+<span class="optional-title">Optional:</span> Plates can be blocked using serum-containing media (2 mL per well) for 30 min at 20°C–22°C. Following blocking, media is removed.</div>
+</li>
+<li>Add 2 mL of either fresh or thawed (if frozen) virus from the previous steps and incubate for 4 h at 4°C.</li>
+<li>Remove the Dynabeads from the T cells. Harvest the cells into a tube and place the tube on a magnet for 2 min to separate the beads from the solution. Transfer the supernatant containing the cells to a new tube and count the cells.</li>
+<li>Take out the virus coated plate from the fridge and remove and discard the liquid supernatant from the well.</li>
+<li>Add 3 mL of fresh or snap-frozen virus and add 1 × 10<sup>6</sup> T cells in 1 mL R5 media per well.</li>
+<li>Place plate into incubator.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.7">CAR T-cell expansion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  +3 days (depending on the quantity of CAR T cells required)</div>
+<p>This section describes how to maintain and expand CAR T cells in culture (<a href="#fig7">Figure 7</a>).</p>
+<ol start="40">
+<li>Assess T cell growth every day after transduction.</li>
+<li>On the day after the T cell transduction:
+<ol type="a">
+<li>Add recombinant human IL-2 into the wells at a final concentration of 100 IU/mL.</li>
+<li>Place plate into incubator.</li>
+</ol>
+</li>
+</ol>
+<ol start="42">
+<li>Three days after T cell transduction:
+<ol type="a">
+<li>Gently harvest the T cells.</li>
+<li>Re-plate in a 6-well plate in fresh R5 supplemented with fresh IL-2 (100 IU/mL).
+<div class="note">
+<span class="note-title">Note:</span> For T cells transduced with the 4αβ chimeric receptor (that is specific to T4), instead of IL-2, T cells are enriched in culture following transduction using human IL-4 (Peprotech) at 30 ng/mL final concentration (<a href="#bib11">Wilkie et al., 2010</a>). In the absence of an enrichment approach, concentrated virus can be used to improve transduction efficiencies.</div>
+</li>
+<li>Place plate/flask into incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> CAR T cells ideally should be kept at a density of 1 × 10<sup>6</sup> cells/mL.</div>
+<ol start="43">
+<li>Every two to three days:
+<ol type="a">
+<li>If required, add R5 media and move cells into larger plates or flasks.</li>
+<li>Add 100 IU/mL of IL-2 into the cultures.</li>
+<li>Place plate/flask into incubator.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is recommended to count T cells every 2–3 days and adjust their concentration to 1 × 10<sup>6</sup> cells/mL using fresh IL-2-supplemented R5 to maintain an optimal cell state during expansion.</div>
+<h3 id="sec3.8">Assessment of HypoxiCAR T cell transduction efficiency via quantitative PCR</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>This section describes how to assess the transduction efficiency of HypoxiCAR T cells. Since the expression of HypoxiCAR is conditional and not constitutive, standard surface staining of the CAR and subsequent flow cytometry analysis would not permit an assessment of the transduction efficiency for this approach without exposure to hypoxia (for 18 h). Therefore, quantitative PCR can be used as an assessment to determine the efficiency of transduction. To undertake this analysis, it is necessary to have identified primer pairs that specifically amplify the transgene of interest or CAR (for T4 CAR we used primer pairs specific to the T2A ribosomal skip peptide sequence) and a reference genomic housekeeping gene for which we selected <i>TBP</i>. The primer pairs we used for this analysis are listed in <a href="#key-resources-table">key resources table</a>. These primers were used to measure stably integrated transgene abundance and hence transduction efficiency. In case T2A is absent from the SFG construct transduced (for example in non-bicistronic CAR-only SFG vectors), specific primers that bind either in the ORF (open reading frame) or in the SFG backbone can be designed and validated <i>in situ</i>. The advantage of using specific primers binding in the SFG backbone is that these can be used universally in any SFG vector transduced.</p>
+<ol start="44">
+<li>Extract genomic DNA from the T cell culture using a DNeasy Blood &amp; Tissue Kit (QIAGEN) according to manufacturers’ Quick Start protocol: <a href="https://www.qiagen.com/us/products/discovery-and-translational-research/dna-rna-purification/dna-purification/genomic-dna/dneasy-blood-and-tissue-kit/">https://www.qiagen.com/us/products/discovery-and-translational-research/dna-rna-purification/dna-purification/genomic-dna/dneasy-blood-and-tissue-kit/</a>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> DNA extraction should be performed at least 4 days after retroviral transduction (to ensure stable integration of the vector). It is important for qPCR for all samples to be analyzed to use the same starting quantity DNA. Using 100 ng per sample is recommended.</div>
+<ol start="45">
+<li>Thaw your primers and the KiCqStart SYBR Green qPCR ReadyMix with ROX Reagent.</li>
+<li>Set up your qPCR Master Mix as shown in ‘<a href="#materials-and-equipment">Materials and equipment</a>’ section, with all required components except sample template (genomic DNA). Vortex gently to mix reaction.</li>
+<li>Add your qPCR Master Mix to your reaction plate.</li>
+<li>Add your template (genomic DNA) to your reaction plate.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> In additional wells, add nuclease-free water in place of genomic DNA. This reaction will serve as a negative control for the qPCR assay.</div>
+<ol start="49">
+<li>Seal your reaction plate using an adhesive PCR Plate seal to prevent evaporation.</li>
+<li>Vortex gently to mix reaction.</li>
+<li>Centrifuge plate at 500 × <i>g</i> for 1 min to collect components at the bottom of the reaction tube.</li>
+<li>Place plate in an ABI 7900HT Fast Real Time PCR instrument (or equivalent compatible).</li>
+<li>Set your real time-PCR cycling conditions as follows:</li>
+</ol>
+<table id="undtbl4">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>5 s</td>
+<td rowspan="2">40 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>55°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>68°C</td>
+<td>10 s</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ol start="54">
+<li>Collect data from the machine.</li>
+<li>Data analysis uses the threshold cycle (C<sub>t</sub>) value of each sample. The C<sub>t</sub> value represents the cycle at which the qPCR product reaches the set threshold value and hence the amount of product present.</li>
+</ol>
+<p>Assumptions: This approach makes the assumption that there is equal transduction across the cell population. As opposed to flow cytometry-based quantification of transduction efficiency, the qPCR method does not provide single-cell information. Nevertheless, it provides a measurement of the abundance of the transgene (in comparison to the reference gene) in a given cell population. This value/abundance can be used to normalize data and make accurate comparisons between samples.</p>
+<h3 id="sec3.9">Hypoxia-response assessment via flow cytometry</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>This protocol explains how to assess the response of the HypoxiCAR to experimental hypoxia and also provides an alternative method to test transduction efficiency at the single cell level. This was performed using a hypoxic chamber followed by staining of the CAR and subsequent flow cytometry analysis.</p>
+<ol start="56">
+<li>Harvest T cells from the transduced and non-transduced cultures into 15 mL Falcon tubes. Assuming that the concentration of T cells is maintained at approximately 1 × 10<sup>6</sup> (as recommended in this protocol), harvest at least 2.5 mLs from each T cell culture.</li>
+<li>Centrifuge the tubes 500 × <i>g</i> for 5 min.</li>
+<li>Remove the supernatant.</li>
+<li>Resuspend T cells in 1 mL of R5 media.</li>
+<li>Count cells according to your own method.</li>
+<li>Adjust concentration of the cell suspension to 1 × 10<sup>6</sup> cells/mL.</li>
+<li>Add 1 mL of the cell suspension to a 24-well plate of your transduced constructs and non-transduced cells. Repeat this in another 24-well plate, to assess for both conditions, normoxia (20% O<sub>2,</sub> 5% CO<sub>2</sub>, N<sub>2</sub> balance) and experimental hypoxia (0.1% O<sub>2,</sub> 5% CO<sub>2</sub>, N<sub>2</sub> balance).</li>
+<li>Place one of the plates inside a hypoxic chamber, on top of the polycarbonate tray.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Place a 20 mm Petri dish containing 10–20 mL of sterile water in the chamber under the polycarbonate tray, to prevent excessive evaporation of cultures.</div>
+<ol start="64">
+<li>Place the lid on the base and close the chamber properly, by closing the ring clamp.</li>
+<li>Attach your system to the gas flow meter and gas cylinder (<a href="#fig8">Figure 8</a>). For reference you can also see this video: <a href="https://www.stemcell.com/technical-resources/the-hypoxia-chamber-how-to-assemble-and-purge-the-chamber.html">https://www.stemcell.com/technical-resources/the-hypoxia-chamber-how-to-assemble-and-purge-the-chamber.html</a>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Apparatus set up for hypoxic chamber to assess hypoxia-responsive CAR expression</div>
+<p>Schematic of the components needed and set up to perform the hypoxia-response CAR T cell assessment.</p>
+</figcaption>
+</figure>
+</li>
+<li>Open both clamps for the inlet and outlet tubing of the hypoxic chamber.</li>
+<li>Connect the bottom connection of the flow meter to the inlet tubing of the tank.</li>
+<li>Connect the tubing coming out from the flow meter to the tube inlet of the chamber.</li>
+<li>Open the gas cylinder valve.</li>
+<li>Open the regulator valve control clockwise to 8–10 psi.</li>
+<li>Adjust the flow meter to 25 L/min.</li>
+<li>Purge the chamber with a flow rate of 25 L/min for 4 min.</li>
+<li>Close the valve on the gas cylinder to prevent the gas flow.</li>
+<li>Immediately close both of the clamps for the inlet and outlet tubing for the hypoxic chamber.</li>
+<li>Disconnect the tubing from the chamber.</li>
+<li>Turn off the valve control.</li>
+<li>Place chamber into the incubator. Next to the chamber and inside the incubator place the normoxic plate.</li>
+<li>After 1 h, re-purge chamber by repeating steps 66–76.</li>
+<li>Place chamber into the incubator for at least 17 h.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For accurate comparison of hypoxia vs normoxia effect, it is recommended that the normoxic plate is placed next to the chamber when it is purged and re-purged prior to their return to the incubator. This is done to ensure that both plates are exposed to identical conditions (apart from O<sub>2</sub> concentration) during the period of the assay.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Cultures will remain in the chamber for at least 18 hours in total, to allow sufficient amount of CAR (or the oxygen-controlled protein of interest) to be expressed.</div>
+<ol start="80">
+<li>Take the hypoxic chamber out of the incubator.</li>
+<li>Open the outlet tubing clamp.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To make sure the chamber was properly sealed, a puff sound rather than a continuous flow should be audible when you open the outlet valve.</div>
+<ol start="82">
+<li>Open the hypoxic chamber by pulling the ring clamp to release the lid.</li>
+<li>Take 200 μL of the T cell suspension from the normoxic and hypoxic conditions and add them to respective wells of a 96-well plate or Eppendorf tube for antibody staining for flow cytometry.</li>
+<li>Spin the plate or tube at 500 × <i>g</i> for 5 min.</li>
+<li>Remove supernatant and resuspend in 200 μL FACs buffer (PBS, 1% FBS, 0.1% sodium azide).</li>
+<li>Proceed with your standard flow cytometry detection method for CAR expression using flow cytometry.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>It is expected that HypoxiCAR-transduced T cells will not express detectable CARs on their surface under conditions of normoxia (i.e., their CAR MFI in flow cytometry analysis should be the same or similar to non-transduced or mock-transduced T cells), while surface CAR expression in hypoxia-exposed HypoxiCAR T cells should significantly increase, potentially reaching the surface CAR expression seen in T cells transduced with the constitutive CAR construct in the same condition (i.e., hypoxia). A representative outcome histogram plot is shown in (<a href="#fig9">Figure 9</a>).</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. The dual oxygen-sensing expression system enables stringent oxygen-sensing CAR T cells</div>
+<p>Non-transduced human T cells or T cells stably transduced with the constitutive CAR or HypoxiCAR (HRE and ODD modifications) (schematic on the left) were exposed for 18 h in normoxic (20% O<sub>2</sub>) or hypoxic (0.1% O<sub>2</sub>) conditions prior to assessment of their surface CAR expression via flow cytometry. Representative histograms to show surface CAR expression on live (7AAD<sup>-</sup>) CD3<sup>+</sup> T cells. Representative of multiple experiments.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In a bicistronic vector system, the inherent leakiness of the HRE cassette alone (<a href="#fig2">Figure 2</a>), can be exploited to also drive expression of transgenes where it is desirable to have expression under normoxic conditions alongside a stringently regulated CAR, such as receptors which aid <i>ex vivo</i> selection (i.e 4αβ) or improve tumor targeting or penetration <i>in vivo</i>.</div>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the T cell donor there may be variability in the outcomes observed, however, the HypoxiCAR induction from normoxia to hypoxia coupled with the absent or very low HypoxiCAR expression in normoxia should be expected.</div>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Statistical significance was determined using GraphPad Prism 9 software. Statistical analysis of construct efficacy was performed using a one-way ANOVA followed by Tukey’s post hoc tests. Homoscedasticity of residual variance and normality assumptions were met.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Although hypoxia represents the main stimulus for HIF1α stabilization, there are other oxygen-independent factors that can stabilize HIF1α (<a href="#bib5">Majmundar et al., 2010</a>; <a href="#bib6">Palazon et al., 2014</a>) that may thereby trigger CAR stabilization in normoxic conditions. As such, cell exposure to such factors may confound results. Although, we did not observe any hypoxia-independent stabilization of HypoxiCAR, anecdotally, we did find leakiness in the system when HypoxiCAR T cell cultures became too confluent or the media turned orange-yellow in color, indicating a lower pH.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Poor transduction efficiency. Steps 16–39.</p>
+<h3 id="sec7.2">Potential solution 1</h3>
+<p>Too little virus may result in poor transduction efficiency and too much virus may result in toxicity in the target cell population which can also lead to poor transduction efficiencies. It is recommended to filter (0.45 μm) and concentrate virus by ultracentrifugation (24,000 × <i>g</i>, 2 h, 4°C) and subsequently titrate virus to identify the specific multiplicity of infection (MOI), or range of MOIs, that result in the optimal transduction efficiency in a specific target cell type.</p>
+<h3 id="sec7.3">Potential solution 2</h3>
+<p>Low transfection efficiency of HEK293T cells during viral production (leading to poor virus yield). To overcome this issue, use ‘high quality’ plasmids when performing transfection. High quality plasmids can be generated using plasmid extraction kits yielding transfection-ready high-quality DNA, such as the kits developed by Thermo Fisher Scientific or Qiagen, and by carefully following manufacturers’ instructions. High quality/purity DNA should be free from phenol, sodium chloride and endotoxins. DNA contaminants can kill the cells and salt can interfere with lipid complexing, decreasing transfection efficiency. Endotoxins (released in lysis step and can be co-purified with DNA) can also reduce transfection efficiency.</p>
+<p>Ensure that HEK293T cells are mycoplasma-free. It is also possible that the density of HEK293 T cells was too high or too low at time of transfection which generally results in poor transfection efficiency or poor viral production, respectively.</p>
+<h3 id="sec7.4">Potential solution 3</h3>
+<p>Ensure target T cells are healthy and actively dividing at the time of transduction. In the case of human primary T cells, ensure that cells are activated and the transduction procedure is performed at an optimal time post-activation, usually within 48 h. When T cells are actively proliferating, they are often observed as clusters under a light microscope.</p>
+<h3 id="sec7.5">Potential solution 4</h3>
+<p>The size of the vector can influence the viral yield. A solution to this is to minimize the size of the viral vector. The full HIF1α ODD domain is 203 a.a. and hence a large fragment to append on a CAR or to a protein of interest. This may negatively affect the capacity of the transgene to be packaged into functional viruses, as viruses have a limited cargo capacity. Investigators may consider using smaller ODD fragments or less HRE tandem repeats to reduce the size of the vector (<a href="#fig2">Figures 2</a>A and <a href="#fig4">4</a>A).</p>
+<h3 id="sec7.6">Problem 2</h3>
+<p>Leakiness in HypoxiCAR expression in normoxic <i>in vitro</i> culture. Steps 56–86.</p>
+<h3 id="sec7.7">Potential solution</h3>
+<p>When cells become overly confluent, robust cell metabolic processes and oxygen consumption in a concentrated area in the medium may result in intermittent pericellular hypoxia (<a href="#bib7">Place et al., 2017</a>) that may induce transient HIF1α stabilization and hence HypoxiCAR expression under normoxic culture conditions. Therefore, it is recommended to maintain cell cultures at an optimal cell density (for T cells around 1 × 10<sup>6</sup> cells/mL) to ensure ample oxygen supply in the media. As stated above, apart from hypoxia, there are other oxygen-independent factors that can stabilize HIF1α (<a href="#bib5">Majmundar et al., 2010</a>; <a href="#bib6">Palazon et al., 2014</a>) and hence may induce HypoxiCAR expression, however, we have not yet investigated whether and at what extent such factors affect HypoxiCAR expression.</p>
+<h3 id="sec7.8">Problem 3</h3>
+<p>Non-responsiveness of HypoxiCAR in hypoxia chamber. Steps 56–86.</p>
+<h3 id="sec7.9">Potential solution</h3>
+<p>To discriminate if the non-responsiveness of the HypoxiCAR T cells is CAR/donor related or due to incorrect purging or closing of the hypoxic chamber, the addition of a positive control could be considered. A retroviral packaging cell line which reliably undergoes induction of CAR or reporter expression in response to hypoxia could be used as a control. Also, it is recommended to carefully and accurately monitor oxygen levels in the hypoxia chamber, this can be done by placing an oxygen sensor spot inside the chamber and reading it through a polymer optical fiber (PreSens). Alternatively, an O<sub>2</sub> Control <i>In Vitro</i> Cabinet (COY lab products) or hypoxia incubator can be used, where oxygen levels are set as desired by the user and are continuously monitored and displayed on a screen.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Davies, D.M., Foster, J., van der Stegen, S.J.C., Parente-Pereira, A.C., Chiapero-Stanke, L., Delinassios, G.J., Burbridge, S.E., Kao, V., Liu, Z., Bosshard-Carter, L., et al. (2012). Flexible targeting of ErbB dimers that drive tumorigenesis by using genetically engineered T cells. Mol. Med. <i>18</i>, 565-576. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref1">View at publisher</a></p>
+<p id="bib2">Kosti, P., Opzoomer, J.W., Larios-Martinez, K.I., Henley-Smith, R., Scudamore, C.L., Okesola, M., Taher, M.Y.M., Davies, D.M., Muliaditan, T., Larcombe-Young, D., et al. (2021). Hypoxia-sensing CAR T cells provide safety and efficacy in treating solid tumors. Cell Reports Med. <i>2</i>, 100227. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref2">View at publisher</a></p>
+<p id="bib3">Levin, J.G., Mitra, M., Mascarenhas, A., and Musier-Forsyth, K. (2010). Role of HIV-1 nucleocapsid protein in HIV-1 reverse transcription. RNA Biol. <i>7</i>, 754-774. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref3">View at publisher</a></p>
+<p id="bib4">Liu, Y., Cox, S.R., Morita, T., and Kourembanas, S. (1995). Hypoxia regulates vascular endothelial growth factor gene expression in endothelial cells: Identification of a 5’ enhancer. Circ. Res. <i>77</i>, 638-643. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref4">View at publisher</a></p>
+<p id="bib5">Majmundar, A.J., Wong, W.J., and Simon, M.C. (2010). Hypoxia-Inducible Factors and the Response to Hypoxic Stress. Mol. Cell <i>40</i>, 294-309. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref5">View at publisher</a></p>
+<p id="bib6">Palazon, A., Goldrath, A.W., Nizet, V., and Johnson, R.S. (2014). HIF transcription factors, inflammation, and immunity. Immunity <i>41</i>, 518-528. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref6">View at publisher</a></p>
+<p id="bib7">Place, T.L., Domann, F.E., and Case, A.J. (2017). Limitations of oxygen delivery to cells in culture: An underappreciated problem in basic and translational research. Free Radic. Biol. Med. <i>113</i>, 311-322. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref7">View at publisher</a></p>
+<p id="bib8">Smirnova, N.A., Rakhman, I., Moroz, N., Basso, M., Payappilly, J., Kazakov, S., Hernandez-Guzman, F., Gaisina, I.N., Kozikowski, A.P., Ratan, R.R., et al. (2010). Utilization of an in vivo reporter for high throughput identification of branched small molecule regulators of hypoxic adaptation. Chem. Biol. <i>17</i>, 380-391. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref8">View at publisher</a></p>
+<p id="bib9">Stortelers, C., Van de Poll, M.L.M., Lenferink, A.E.G., Gadellaa, M.M., Van Zoelen, C., and Van Zoelen, E.J.J. (2002). Epidermal growth factor contains both positive and negative determinants for interaction with ErbB-2/ErbB-3 heterodimers. Biochemistry <i>41</i>, 4292-4301. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref9">View at publisher</a></p>
+<p id="bib10">Szymczak, A.L., Workman, C.J., Wang, Y., Vignali, K.M., Dilioglou, S., Vanin, E.F., and Vignali, D.A.A. (2004). Correction of multi-gene deficiency in vivo using a single ‘self-cleaving’ 2A peptide-based retroviral vector. Nat. Biotechnol. <i>22</i>, 589-594. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref10">View at publisher</a></p>
+<p id="bib11">Wilkie, S., Burbridge, S.E., Chiapero-Stanke, L., Pereira, A.C.P., Cleary, S., Van Der Stegen, S.J.C., Spicer, J.F., Davies, D.M., and Maher, J. (2010). Selective expansion of chimeric antigen receptor-targeted T-cells with potent effector function using interleukin-4. J Biol. Chem. <i>285</i>, 25538-25544. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00430-5/sref11">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact Dr James Arnold (<a href="mailto:james.n.arnold@kcl.ac.uk">james.n.arnold@kcl.ac.uk</a>).</p>
+<h4>Materials availability</h4>
+<p>Constructs and other reagents generated or described in this study will be made available from the Lead Contact for academic/non-commercial research purposes on request. Commercial use of the constructs generated, or derivatives, would be subject to a licensing agreement as intellectual property rights are in place.</p>
+<h4>Data and code availability</h4>
+<p>The datasets supporting this protocol, and constructs described or used in Figures, have not been deposited in a public repository but are available from the corresponding author upon request.</p>
+<h3>Supplemental Information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/909-Mmc1.pdf">Document S1. Figures S1 and S2</a></p>
+<h3>Acknowledgments</h3>
+<p>This work was funded by the <a href="https://doi.org/10.13039/100010663">European Research Council</a> (335326). P.K. was supported by the UK Medical Research Council (MR/N013700/1) and was a KCL member of the MRC Doctoral Training Partnership in Biomedical Sciences. K.I.L.-M. is supported from Consejo Nacional de Ciencia y Tecnologia (<a href="https://doi.org/10.13039/501100003141">CONACyT</a>) and Leucid Bio. Research was also supported by the <a href="https://doi.org/10.13039/501100000289">Cancer Research UK</a> King’s Health Partners Centre and Experimental Cancer Medicine Centre at King’s College London, and the <a href="https://doi.org/10.13039/501100000272">National Institute for Health Research</a> (NIHR) Biomedical Research Centre based at Guy's and St Thomas' NHS Foundation Trust and King’s College London. The views expressed are those of the authors and not necessarily those of the NHS, the NIHR or the Department of Health. The authors thank Dr Adam Ajina (KCL) for taking blood samples, and Dr David M. Davies for reading the manuscript and helpful discussion.</p>
+<h3>Author contributions</h3>
+<p>P.K., K.I.L.-M., J.M., and J.N.A. designed and optimized the approach, interpreted the data, and wrote the protocol.</p>
+<h3>Declaration of interests</h3>
+<p>J.M. is co-founder and chief scientific officer of Leucid Bio which is a spin-out company focused on development of cellular therapeutic agents. K.I.L.-M. is part funded by Leucid Bio. P.K., J.M., and J.N.A. are named inventors on a patent submitted in relation to this work.</p>
+</section>
+</article>

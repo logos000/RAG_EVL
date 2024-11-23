@@ -1,0 +1,963 @@
+<article>
+<section>
+<h1 id="header">Quantifying the global binding and target-search dynamics of epigenetic regulatory factors using live-cell single-molecule tracking</h1>
+<p><time datetime="2021-11-19">Published: November 19, 2021</time></p>
+<p>Kyle Brown,<sup><a href="#aff1">1</a></sup> Samantha Kent,<sup><a href="#aff1">1</a></sup> and Xiaojun Ren<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>University of Colorado Denver Chemistry Department, 1150 12th St., Denver, CO 80204, USA</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:xiaojun.ren@ucdenver.edu">xiaojun.ren@ucdenver.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100959">10.1016/j.xpro.2021.100959</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol provides instructions to track the global dynamics of single epigenetic regulatory factors in live cells. We describe an approach to generate cell lines that stably express HaloTag-fused proteins. We then use live-cell single-molecule tracking to obtain kinetic populations and residence times. The kinetic parameters obtained can be used to determine important aspects of transcriptional regulation such as target-search time, 3D free diffusion time, and number of non-specific sites sampled before reaching a specific site and compare behaviors across different nuclear environments.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref11">Kent et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Generate cell lines stably expressing HaloTag fusion genes</li>
+<li>Quantify global binding and target-search kinetics of epigenetic factors</li>
+<li>Map binding dynamics of epigenetic factors within transcriptional condensates</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1182-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Method for cell line generation</h3>
+<p>This protocol utilizes lentiviral transduction to produce a stably expressing cell line. This utilizes three plasmids, lentiviral envelope (pMD2.G), packaging (psPAX2), and transfer (modified pTRIPZ) plasmids. Other methods, such as the Flp-In system and MMLV retroviral transduction, for generation of a stable cell line can also be performed.</p>
+<h3 id="sec1.2">Culture cells for packaging and infection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–7 days</div>
+<ol>
+<li>Culture HEK293T cells in Dulbecco’s Modified Eagle (DMEM) supplemented with 10% FBS, 80.0 μM β-mercaptoethanol, 2.0 mM L-Glutamine, 0.1 mg/mL Penicillin-Streptomycin, 10.0 μg/mL Ciprofloxacin at 37°C in 5% CO<sub>2</sub>. The cells typically require 7 days of recovery if unfrozen from cryo-freezing. It is important to maintain plate confluency below 80% until ready for packaging.
+<div class="critical">
+<span class="critical-title">Critical:</span> over-confluency of HEK293T cells can result in a reduction in the packaging efficiency. Even distribution of cells is therefore critical for avoiding areas of high local confluency.</div>
+<ol type="a">
+<li>Split cells every 2 or 3 days or when 75–80% confluency is reached.</li>
+<li>Cell numbers should adequately (∼90%) occupy a 100 × 20 mm dish before they are ready for packaging.</li>
+<li>Healthy HEK293T cells have a shape reminiscent of an eye with a bulbous center and tapered ends and are mostly flat (<a href="#fig1">Figure 1</a>A). Look for these phenotypes before beginning the experiment.
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1182-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Phenotypes of HEK293T cells</div>
+<p>(A) Example image of healthy and unhealthy HEK293T cells. Green arrowhead indicates healthy cells while red arrowhead unhealthy ones. Scale bar, 400 μm.</p>
+<p>(B) Example image of HEK293T cells 12 h after packaging. Magenta arrowhead shows that cells start fusing after 12 h after packaging. Scale bar, 400 μm.</p>
+<p>(C) Example image of HEK293T cells 36 h after packaging. Yellow arrowhead exemplifies fused HEK293T cells. Scale bar, 400 μm.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Culture mouse embryonic stem (mES) cells in DMEM supplemented with 15% Fetal Bovine Serum, 80.0 μM β-mercaptoethanol, 2.0 mM L-Glutamine, 0.1 mg/mL Penicillin-Streptomycin, 1 × MEM Non-Essential Amino Acids, 10.0 μg/mL Ciprofloxacin, and 10<sup>3</sup> units/mL Leukemia Inhibitory Factor. mES cells require recovery time but grow much quicker than HEK293T cells and are ready for infection in 5 days after unfreezing. Maintain a plate confluency below 80% until ready for infection.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> other target cell types may be used, and biological relevance of your system should be considered when choosing cell type.</div>
+<h3 id="sec1.3">Construct imaging plates</h3>
+<p>To be cost effective, imaging dishes are made in the laboratory. Commercial cover-glass bottom culture dishes can also be used. Before seeding cells, imaging dishes are incubated with 0.2% gelatin at 37°C for 16 h.</p>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="3">
+<li>Drill a ½ inch hole in the center of a 35 × 10 mm dish using a powered drill with a tapered bit to allow for ease of penetration. Do not push with too much force as this can crack the plastic dish, instead allow the bit to heat the plastic and sink through.
+<ol type="a">
+<li>The lid should be kept intact.</li>
+<li>Plates should be carefully checked for cracks or other damage, particularly the area around the hole.</li>
+<li>Discard plates that have lost their integrity (i.e., cracked or partially shattered plates).</li>
+</ol>
+</li>
+<li>Clean the drilled plates. Having clean plates will ensure a tighter seal with epoxy.
+<ol type="a">
+<li>Wash and scrub with soap to remove any debris from drilling followed by ddH<sub>2</sub>O.</li>
+<li>Sonicate plates in ddH<sub>2</sub>O for 15 min and allow to dry.</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Clean 22 × 22 mm (Invitrogen) glass coverslip.
+<ol type="a">
+<li>Using tweezers or other tools, place glass coverslip in frosted glass housing filled with ddH<sub>2</sub>O.</li>
+<li>Sonicate in ddH<sub>2</sub>O for 15 min.</li>
+<li>Remove coverslip with tweezers and spray with methanol on both sides before drying with nitrogen gas.</li>
+<li>Flame-sterilize both sides of the coverslip briefly in the torch.
+<div class="note">
+<span class="note-title">Note:</span> if the glass coverslip remains in the flame for too long it will crack and cannot be used.</div>
+</li>
+<li>Place on a soft, lint-free surface such as a Kimwipe or a clean glass stand.</li>
+</ol>
+</li>
+</ol>
+<ol start="6">
+<li>Assemble imaging plates.
+<ol type="a">
+<li>Spread a minimal amount of 5-min epoxy (less than a pea size) on the bottom of the imaging plate, avoid getting any epoxy along the inner edge of the hole or the inside of the plate.</li>
+<li>Place a clean coverslip on the outside bottom of the plate such that the glass covers the hole in the dish and creates a slightly lowered circle. After contact has been made with epoxy, avoid shifting the coverslip to prevent epoxy spreading along the inside of the coverslip.</li>
+<li>Press the coverslip into the epoxy quickly and evenly across the surface of the plate to create a tight, complete seal around the edges of the drilled hole.
+<div class="note">
+<span class="note-title">Note:</span> The edges of the coverslip overlap with the raised lip of the plate bottom, requiring the corners of the coverslip to be broken off to create a tight, even seal.</div>
+</li>
+<li>Place upside down and air dry in a clean environment.</li>
+<li>Prior to use, UV sterilize both sides of the plate for 15 min. Incubate the inside of the plate with pure EtOH for 15 min and then wash twice with PBS.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>Store plates in a sterile environment such as the biosafety hood.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Imaging plates should only be used 2–3 times before being thrown away. For cleaning, plates are soaked in 1.5% LpH®se Nonsterile Disinfectant Cleaner for 15 min followed by extensive washing with hot water and distilled water. Then, plates are washed with Milli-Q water at least 5 times and then are soaked within Milli-Q water for 16–18 h. The cleaning process between trials should be thorough to prevent any cells or DNA from sticking to the surface of the glass as these traces can be seen at the resolution of single-molecule imaging.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>DH5α</td>
+<td>Life Technologies</td>
+<td>Cat#18265-017</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Doxycycline hyclate</td>
+<td>Sigma</td>
+<td>Cat#D9891</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum (FBS)</td>
+<td>VWR</td>
+<td>Cat#97068-085</td>
+</tr>
+<tr>
+<td>Dulbecco’s modified eagle’s medium</td>
+<td>Sigma</td>
+<td>Cat#D5796</td>
+</tr>
+<tr>
+<td>MEM NEAA</td>
+<td>Life technologies</td>
+<td>Cat#11140050</td>
+</tr>
+<tr>
+<td>Pen-Strep</td>
+<td>Life technologies</td>
+<td>Cat#15140122</td>
+</tr>
+<tr>
+<td>Ciprofloxacin</td>
+<td>Sigma</td>
+<td>Cat#17850</td>
+</tr>
+<tr>
+<td>L-Glutamine</td>
+<td>Life technologies</td>
+<td>Cat# 25030081</td>
+</tr>
+<tr>
+<td>β-mercaptoethanol</td>
+<td>Life technologies</td>
+<td>Cat# 21985-023</td>
+</tr>
+<tr>
+<td>FluoroBrite DMEM Live-cell Imaging Medium</td>
+<td>Life Technologies</td>
+<td>Cat#A1896701</td>
+</tr>
+<tr>
+<td>HaloTag® TMR Ligand</td>
+<td>Promega</td>
+<td>Cat#G8251</td>
+</tr>
+<tr>
+<td>Janelia Fluor® 549 HaloTag® Ligand</td>
+<td>Promega</td>
+<td>Cat#GA1110</td>
+</tr>
+<tr>
+<td>Janelia Fluor® 646 HaloTag® Ligand</td>
+<td>Promega</td>
+<td>Cat#GA1120</td>
+</tr>
+<tr>
+<td>Leukemia Inhibitor Factor</td>
+<td>Purified in lab according to (<a href="#bib7">Gearing et al., 1989</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hexadimethrine bromide (Polybrene)</td>
+<td>Sigma</td>
+<td>Cat#H9268</td>
+</tr>
+<tr>
+<td>Puromycin</td>
+<td>Sigma</td>
+<td>Cat#P8833</td>
+</tr>
+<tr>
+<td>HEPES</td>
+<td>Sigma</td>
+<td>Cat#H3375</td>
+</tr>
+<tr>
+<td>Doxycycline</td>
+<td>Sigma</td>
+<td>Cat#D9891</td>
+</tr>
+<tr>
+<td>Gelatin</td>
+<td>Sigma</td>
+<td>Cat#G1890</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>Sigma</td>
+<td>Cat#S3014</td>
+</tr>
+<tr>
+<td>NaH<sub>2</sub>PO<sub>4</sub>
+</td>
+<td>Sigma</td>
+<td>Cat#S3139</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HPO<sub>4</sub>
+</td>
+<td>Sigma</td>
+<td>Cat#S3264</td>
+</tr>
+<tr>
+<td>LpH®se Nonsterile Disinfectant Cleaner</td>
+<td>VWR</td>
+<td>Cat#16200-146</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Cell lines</td>
+</tr>
+<tr>
+<td>Human: HEK293T</td>
+<td><a href="#bib16">Tatavosian et al. (2018)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Mouse: PGK12.1</td>
+<td>(<a href="#bib20">Penny et al., 1996</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>Plasmid: pMD2.G</td>
+<td><a href="#bib19">Zhen et al. (2016)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Plasmid: pSPAX2</td>
+<td><a href="#bib19">Zhen et al. (2016)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Adobe Illustrator</td>
+<td>Adobe Inc</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Adobe Photoshop</td>
+<td>Adobe Inc</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ImageJ</td>
+<td>NIH</td>
+<td><a href="https://imagej.nih.gov/">https://imagej.nih.gov/</a></td>
+</tr>
+<tr>
+<td>Matlab</td>
+<td>MathWorks</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>OriginLab</td>
+<td>OriginLab Corporation</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SlideBook 6.0 Software</td>
+<td>3i</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Spot-On</td>
+<td><a href="#bib8">Hansen et al. (2018)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>U-track</td>
+<td><a href="#bib9">Jaqaman et al. (2008)</a></td>
+<td><a href="https://github.com/DanuserLab/u-track">https://github.com/DanuserLab/u-track</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Alpha Pan-Apochromat 100 × /1.40 Oil immersion Objective</td>
+<td>ZEISS, Germany</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Alpha Pan-Apochromat 100 × /1.46 Oil immersion Objective</td>
+<td>ZEISS, Germany</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Axio Observer D1 Microscope</td>
+<td>ZEISS, Germany</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Brightline® single-band laser filter set (Semrock; excitation filter: FF02-482/18-25, emission filter: FF01-525/45-25, and dichroic mirror: Di02-R488-25 × 36)</td>
+<td>Semrock</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Brightline® single-band laser filter set (Semrock; excitation filter: FF01-561/14, emission filter: FF01-609/54, and dichroic mirror: Di02-R561-25 × 36)</td>
+<td>Semrock</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Brightline® single-band laser filter set (Semrock; excitation filter: BLP01-635R-25, emission filter: FF01-640/14–25, and dichroic mirror: Di02-R635-25 × 36)</td>
+<td>Semrock</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Evolve 512 × 512 EMCCD camera</td>
+<td>Teledyne Photometrics; Tuscon, AZ</td>
+<td>Cat#1708265</td>
+</tr>
+<tr>
+<td>Single Channel Temperature Controller</td>
+<td>Warner Instruments</td>
+<td>Cat#TC-324</td>
+</tr>
+<tr>
+<td>Solid-State LaserStack™</td>
+<td>3i</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>TIRF laser microscope cube</td>
+<td>3i</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Source data for <a href="#fig4">Figures 4</a>A and 4B</td>
+<td>Generated in the lab</td>
+<td>Mendeley Data <a href="https://doi.org/10.17632/n2b5snj248.1">https://doi.org/10.17632/n2b5snj248.1</a>
+</td>
+</tr>
+<tr>
+<td>Source videos and images (Videos S1, S2, and S3, and images S1 and S2)</td>
+<td>Generated in the lab</td>
+<td>Mendeley Data <a href="https://doi.org/10.17632/c77d7ynbrn.1">https://doi.org/10.17632/c77d7ynbrn.1</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>All culture media can be stored at 4°C for a month or frozen at −20°C for one year. 2× HBSS buffer is aliquoted as 1.5 mL and can be stored in −20°C for 3 years. Solution A can be stored at 4°C or on ice for one hour.</p>
+<table id="undtbl1">
+<caption>Culture Media for mES Cells</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dulbecco’s modified eagle’s medium</td>
+<td>n/a</td>
+<td>500 mL</td>
+</tr>
+<tr>
+<td>Deactivated fetal bovine serum (100%)</td>
+<td>15%</td>
+<td>90 mL</td>
+</tr>
+<tr>
+<td>MEM NEAA (100X)</td>
+<td>1×</td>
+<td>6.0 mL</td>
+</tr>
+<tr>
+<td>Pen-Strep (10,000 Units/mL)</td>
+<td>100 Units/mL</td>
+<td>6.0 mL</td>
+</tr>
+<tr>
+<td>Ciprofloxacin (1 mg/mL)</td>
+<td>10 μg/mL</td>
+<td>6.0 mL</td>
+</tr>
+<tr>
+<td>L-Glutamine (200 mM, 100X)</td>
+<td>1×</td>
+<td>6.0 mL</td>
+</tr>
+<tr>
+<td>β-mercaptoethanol (50mM)</td>
+<td>80 μM</td>
+<td>1.0 mL</td>
+</tr>
+<tr>
+<td>LIF</td>
+<td>1000 Units/mL</td>
+<td>650 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td><b>615.6 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<caption>Culture Media for HEK293T Cells</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dulbecco’s modified eagle’s medium</td>
+<td>n/a</td>
+<td>500 mL</td>
+</tr>
+<tr>
+<td>Deactivated fetal bovine serum (100%)</td>
+<td>10%</td>
+<td>55 mL</td>
+</tr>
+<tr>
+<td>Pen-Strep (10,000 Units/mL)</td>
+<td>100 Units/mL</td>
+<td>5.5 mL</td>
+</tr>
+<tr>
+<td>Ciprofloxacin (1 mg/mL)</td>
+<td>10 μg/mL</td>
+<td>5.5 mL</td>
+</tr>
+<tr>
+<td>L-Glutamine (200 mM, 100X)</td>
+<td>1×</td>
+<td>5.5 mL</td>
+</tr>
+<tr>
+<td>β-mercaptoethanol (50mM)</td>
+<td>80 μM</td>
+<td>1.0 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td> </td>
+<td><b>572.5 mL</b></td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl3">
+<caption>Solution A Recipe</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration (μg or M)</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>psPAX2</td>
+<td>21 μg</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>pMD2.G</td>
+<td>10.5 μg</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>pTRIPZ</td>
+<td>21 μg</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>2.0 M CaCl<sub>2</sub>
+</td>
+<td>0.25 M</td>
+<td>132 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1050 μL</b></td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl4">
+<caption>2 × HBSS Recipe</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES</td>
+<td>50.0 mM</td>
+<td>2.98 g</td>
+</tr>
+<tr>
+<td>NaCl</td>
+<td>280 mM</td>
+<td>4.09 g</td>
+</tr>
+<tr>
+<td>NaH<sub>2</sub>PO4</td>
+<td>0.75 mM</td>
+<td>0.0225 g</td>
+</tr>
+<tr>
+<td>Na<sub>2</sub>HP04</td>
+<td>0.75 mM</td>
+<td>0.0268 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>0</td>
+<td>n/a</td>
+<td>250 mL</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Lentiviral transduction: packaging</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 days</div>
+<p>HEK293T cells are used to package the gene of interest and generate virus to use for infection of mES cells. Here, a 90% confluent plate of HEK293T cells is transfected with three plasmids: psPAX2, pMD2.G, and the gene of interest in the modified pTRIPZ.</p>
+<ol>
+<li>Seed HEK293T Cells for Packaging
+<ol type="a">
+<li>Cells should be split the day before transfection such that a 100 × 20 mm dish reaches 90% confluency (<math> <mrow> <mo>∼</mo> <mspace></mspace> <mn>3</mn> <mo>×</mo> <msup> <mn>10</mn> <mn>6</mn> </msup> </mrow> </math> cells) in 14 mL of complete HEK293T cell medium the following day.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Prepare transfection mixture using CaPO<sub>4</sub>
+<ol type="a">
+<li>Prepare Solution A. Refer to solution A Recipe for details. Actual plasmid volumes needed are concentration dependent and should be added as accurately as possible.
+<div class="note">
+<span class="note-title">Note:</span> psPAX-2 and pMD2.G are safe to handle when separate. However, after they have been combined and have entered cells, the production of virus will begin. At this point, all material in contact with virus should be treated with detergent and sterilized by UV light in class 2 biosafety cabinet before transferring to autoclave for sterilization.</div>
+</li>
+<li>Prepare 2× HBSS. Refer to 2× HBSS recipe for details. Adjust pH to 7.1 by dropwise adding 10 N NaOH. Add water to 250 mL. Filter-sterilize through 0.22 μm filter flask (Note: The pH is crucial for experimental success. The optimal pH should be between 7.05 and 7.12) (see <a href="#sec7.1">troubleshooting 1</a>).</li>
+<li>Add 1,050 μL of 2 × HBSS dropwise while vortexing such that the solution reaches roughly halfway up the side of a 15 mL Falcon tube. Wait at least 5 s between drops so that the addition takes around 3–5 min (see <a href="#sec7.3">troubleshooting 2</a>).
+<div class="note">
+<span class="note-title">Note:</span> the dropwise addition of HBSS is vitally important to prevent the formation of large DNA-ion particles. If these particles get too large, they cannot easily enter the cell and packaging efficiency is lowered.</div>
+</li>
+<li>Vortex solution at max speed for 1.5 min to ensure a proper mix.</li>
+<li>Incubate between 20°C–25°C for ∼10 min until a marginal turbidity is seen. Comparing the solution to a similar volume of water is helpful to discern this turbid.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> If the change in opacity can be easily seen, this generally indicates that these particles are too large. Paying close attention to phenomena rather than time passed will lead to higher packaging efficiency.</div>
+<ol start="3">
+<li>Plate the transfection mixture dropwise evenly over entire plate of cells. Breaking the plate into thirds and plating a 700 μL volume per section helps ensure an even distribution of Solution A.</li>
+<li>Look at the cells with a conventional light microscope. If black dots are seen, this is an indication that larger particles formed and there will likely be a lower packaging efficiency (see <a href="#sec7.5">troubleshooting 3</a>).</li>
+<li>Incubate at 37°C, 5% CO<sub>2</sub> for 12 h
+<ol type="a">
+<li>It is recommended to store cells within a separate tray or container inside the incubator to prevent any spread of virus.</li>
+</ol>
+</li>
+<li>After incubation look at cells under a light microscope and two major phenomena should be seen among a small fraction of cells: fusion of cells to form large colonies and cell bursting (<a href="#fig1">Figure 1</a>B). Medium will likely have changed to a yellowish color.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> At this stage, phenotypic changes should occur in only a subset of cells. If more than 10% of cells have already changed, the initial incubation of medium went for too long. Reduce to 10–11 h as necessary.</div>
+<ol start="7">
+<li>Remove medium into a separate container that has detergent (1.5–2.0% (V/V) LpH®se Nonsterile Disinfectant) added. Used pipettes should be placed in this container and filled with detergent-containing solution to ensure virus has been neutralized.</li>
+<li>Fill plate with fresh HEK293T culture medium and incubate for 5 min at 37°C, 5% CO<sub>2</sub>.</li>
+</ol>
+<p>Repeat steps 7 and 8 one more time, placing medium and used pipettes into detergent bottle.</p>
+<div class="note">
+<span class="note-title">Note:</span> Wash step is key for removing CaCl<sub>2</sub> from medium. This is necessary when infecting cells that are sensitive to changes in Ca<sup>2+</sup> concentration.</div>
+<ol start="9">
+<li>Add 12 mL fresh HEK293T culture medium.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> all virus-containing medium and any equipment that touched it should be treated with detergent and UV-sterilized in class 2 biosafety cabinet before transferring to autoclave for sterilization.</div>
+<ol start="10">
+<li>Incubate at 37°C, 5% CO<sub>2</sub> for 48 h. During this time, cells should continue to fuse and/or burst (<a href="#fig1">Figure 1</a>C). A successful packaging should have over 90% of cells fused or burst. Medium should maintain a normal color or turn a pink/orange color.</li>
+</ol>
+<h3 id="sec3.2">Lentiviral transduction: infection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7–10 days</div>
+<p>Viral titer from HEK293T cells is harvested. This is used to infect mES cells with the gene of interest by incorporating plasmid DNA into the genomic DNA of the cell with the aid of the polymer polybrene to interact with the negative surface of cells more easily. Cells that are integrated with the gene of interest are selected using puromycin (see a simplified plasmid map in <a href="#fig2">Figure 2</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1182-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. A simplified plasmid map showing puromycin selective marker</div>
+<p>Please note that some elements are not shown in the simplified plasmid, thus the shown elements in the figure are not proportional.</p>
+</figcaption>
+</figure>
+<ol start="11">
+<li>Create single-cell suspension of mES cells (transfer 20% of an 80% confluent 100 × 20 mm dish). It is important cells are single to increase surface area for virus to enter the cell and helps increase infection efficiency.
+<ol type="a">
+<li>Centrifuge to pellet cells (300 rcf, 5 min, 4°C).</li>
+<li>Remove medium and resuspend in 1.0 mL 5 × mES culture medium (or another nutrient-rich culture medium) in a 50 mL falcon tube.</li>
+</ol>
+</li>
+<li>Collect virus-containing medium from HEK293T cells. Use caution as the medium will be virus-rich at this point. PPE including an extra set of gloves and a lab coat is recommended.
+<ol type="a">
+<li>Centrifuge to remove any dead cells from medium (1,000 rcf, 5 min, 4°C.</li>
+<li>Transfer virus-containing medium to falcon tube containing mES cells. Since the transducing efficiency is very low for mES cells (typically below 5% of 1–3 million mES cells), the titration of viral tier is not necessary. However, if working with readily transducing cells, such as HeLa cells, titration may be necessary to avoid multiple copies of fusion genes integrating into the genome.</li>
+</ol>
+</li>
+<li>Add polybrene to a final concentration of 8 μg/mL.</li>
+<li>Incubate 6–8 h at 37°C, 5% CO<sub>2</sub>, resuspending the solution every 2 h to mix cells and ensure interaction with virus.
+<ol type="a">
+<li>Ensure the cap of 50 mL falcon tube is only loosely attached to allow airflow to cells during incubation</li>
+</ol>
+</li>
+<li>Plate entire solution onto a gelatinated 100 × 20 mm dish.</li>
+<li>Incubate at 37°C, 5% CO<sub>2</sub> for 12 h.
+<ol type="a">
+<li>Cells should continue to be stored separately from other cultures.</li>
+</ol>
+</li>
+<li>Remove medium by pipetting into a separate container with detergent to ensure any remaining virus is killed.</li>
+<li>Replace with 10 mL mES medium.</li>
+<li>Repeat every day until cells reach 60% confluency (typically 2–3 days). ES cells should not undergo any significant morphology changes during this time.</li>
+<li>Add 2.0 μg/mL puromycin for selection when replacing medium. If all cells are killed by 2.0 μg/mL puromycin within three days, this may be due to puromycin concentration used or a low viral titer (see <a href="#sec7.7">troubleshooting 4</a>).</li>
+<li>Once cells have been split and transferred to a culture dish, cells can be treated normally.
+<ol type="a">
+<li>i.e., medium can be removed via suction, pipettes used do not need to go into separate biohazard bags, and cells do not need to be stored separately.</li>
+</ol>
+</li>
+<li>Cells are selected for at least one week in the presence of puromycin. Then cells are maintained in the presence of 1.0 μg/mL puromycin.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> After cell death appears below 0. 1% and cells have a healthy morphology, a stable cell line has been created.</div>
+<div class="note">
+<span class="note-title">Note:</span> freezing cells in liquid nitrogen for later use is key for preserving cell lines.</div>
+<ol start="23">
+<li>mES cells should be split every 2–3 days, with a daily medium change to prevent any cell differentiation. The same circular morphology will be maintained if cells are healthy.</li>
+</ol>
+<h3 id="sec3.3">Single molecule tracking: population</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>Janelia Fluor® 549 (JF<sub>549</sub>) HaloTag® dye is utilized at the picomolar concentration to sparsely label molecules from protein of interest, typically 5–20 labeled molecules per frame. This can be achieved through varying dye concentrations or culturing cells in the presence of 0.1 ug/mL doxycycline or without doxycycline (see <a href="#sec7.9">troubleshooting 5</a>). This data is used to obtain the percent of chromatin-bound, confined diffusing, and freely diffusing molecules within the total molecular population.</p>
+<ol start="24">
+<li>Once cell line has reached stable expression after multiple passages, for the following 72 h culture the cells in the absence or presence of 0.1 ug/mL doxycycline.
+<ol type="a">
+<li>The day before splitting the cells for imaging, coat the bottom of the imaging plate with 0.2% gelatin.</li>
+<li>After 12–16 h, remove the gelatin and replace it with fresh gelatin.</li>
+<li>Before seeding cells into the imaging plates remove gelatin.</li>
+</ol>
+</li>
+<li>Seed the cells into multiple imaging plates with 0.5–0.7 million cells per plate.
+<ol type="a">
+<li>It is important that cells are seeded in a single-cell suspension and cells are plated in a monolayer for clear imaging.</li>
+</ol>
+</li>
+<li>Incubate the cells at 37°C with 5% CO<sub>2</sub> between 16 and 24 h. Longer culture duration leads mES cells to become multilayer.</li>
+<li>Gently remove the culture media by pipetting.</li>
+<li>Add fresh culture media with the addition of 50 pM JF<sub>549</sub> HaloTag® dye to obtain 5–20 labeled molecules per frame.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the cell type, the necessary concentration of ligand may vary. Concentrations ranging from 10–50 pM are frequently utilized for experiment (see <a href="#sec7.9">troubleshooting 5</a>).</div>
+<ol start="29">
+<li>Incubate for 15 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add fresh culture medium and incubate for 30 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add FluoroBrite DMEM live-cell imaging medium supplemented with 10% FBS into the imaging plate.</li>
+<li>Acquire images using an Axio Observer D1 (Zeiss, Germany) Total Internal Reflection (TIRF) microscope equipped with an Alpha Plan-apochromat 100 × /1.46 oil immersion objective (Zeiss, Germany) with an additional 2.5 × magnification was equipped on the emission pathway. A Solid-state Laser-stack (3i) was used to excite JF<sub>549</sub> at 552 nm. A Brightline® single-band laser filter set (Semrock; excitation filter: FF01-561/14, emission filter: FF01-609/54, and dichroic mirror: Di02-R561-25 3 36) was used for the excitation and emission spectra of JF<sub>549</sub>.</li>
+<li>Maintain cells at 37°C using a single-channel temperature controller (TC-324, Warner Instruments) and acquire all images within 90 min from taking cells out of 5% CO<sub>2</sub>.</li>
+<li>Focus on a single nucleus such that as many particles as possible are clear. Stably bound proteins are easier to identify and so the eye is drawn to them. Ensure that transiently bound particles are still visible (see <a href="#sec7.11">troubleshooting 6</a>).</li>
+<li>Take a stroboscopic video of the nuclei with the following conditions: intensification 200–700, number of frames 100, dark time (ms) 0 or 20, exposure time (ms) 30 or 10, laser power (mW) 7.5, TIRF angle 6.65–6.80.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> both TIRF angle and focus may need minor adjustments between each cell imaged as depth and curvature changes slightly between cells. Intensification adjustments ensure the final image is bright enough to be seen clearly after being exported.</div>
+<h3 id="sec3.4">Single molecule tracking: residence time</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>Cells cultured in 0.1 μg/mL doxycycline for 3 days were treated with JF<sub>549</sub> dye at the picomolar concentration level to label only a subset of molecules (between 5–20 for any given frame) and allow for accurate tracking of individual molecules. It is important to limit the number of molecules per frame because crossing tracks are difficult for algorithms to account for. This data is used to obtain the residence time of bound protein and fraction of specific and non-specific interactions.</p>
+<ol start="38">
+<li>Once cell line has reached stable expression after multiple passages, for the following 72 h culture the cells in the absence or presence of 0.1 ug/mL doxycycline.
+<ol type="a">
+<li>The day before splitting the cells for imaging, coat the bottom of the imaging plate with 0.2% gelatin.</li>
+<li>After 12–16 h, remove the gelatin and replace it with fresh gelatin.</li>
+<li>Before seeding cells into the imaging plates remove gelatin</li>
+</ol>
+</li>
+<li>Seed the cells into multiple imaging plates.
+<ol type="a">
+<li>It is important that cells are seeded in a single-cell suspension as one layer.</li>
+</ol>
+</li>
+<li>Incubate the cells at 37°C with 5% CO<sub>2</sub> between 16 and 24 h. Longer culture duration leads mES cells to become multilayer.</li>
+<li>Remove the culture media by pipetting.</li>
+<li>Add fresh culture media with the addition of 10–50 pM JF<sub>549</sub> HaloTag® Ligand to obtain 5–20 labeled molecules per frame.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the cell type and protein being studied, the concentration of ligand may vary. Manipulation of dye concentration will allow for sparse labelling of HT fused proteins that is required for residence time experiments.</div>
+<ol start="43">
+<li>Incubate for 15 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add fresh culture medium and incubate for 30 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add FluoroBrite DMEM live-cell imaging medium supplemented with 10% FBS into the imaging plate.</li>
+<li>Acquire images using an Axio Observer D1 (Zeiss, Germany) Total Internal Reflection (TIRF) microscope equipped with an Alpha Plan-apochromat 100 × /1.46 oil immersion objective (Zeiss, Germany) with an additional 2.5 × magnification was equipped on the emission pathway. A Solid-state Laser-stack (3i) was used to excite Janelia Fluor® 549 HaloTag® Ligand at 552 nm. A Brightline® single-band laser filter set (Semrock; excitation filter: FF01-561/14, emission filter: FF01-609/54, and dichroic mirror: Di02-R561-25 3 36) was used for the excitation and emission spectra of JF<sub>549</sub> and HaloTag® TMR ligand.</li>
+<li>Maintain cells at 37°C using a single-channel temperature controller (TC-324, Warner Instruments) and acquire all images within 90 min from taking cells out of 5% CO<sub>2</sub>.</li>
+<li>Focus on a single nucleus such that as many particles as possible are clear. Stably bound proteins are easier to identify and so the eye is drawn to them. Ensure that even transiently bound particles are still visible (see <a href="#sec7.13">troubleshooting 7</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> look for cells that are healthy and securely attached to the surface of the coverslip as any cell shifting during imaging will result in false movement and the video cannot be used.</div>
+<ol start="51">
+<li>Take a stroboscopic video of the nuclei with the following conditions: intensification 500–700, number of frames 400, dark time (ms) 170, exposure time (ms) 30, laser power (mW) 2.25, TIRF angle 6.65–6.80.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> both TIRF angle and focus may need minor adjustments between each cell imaged as depth and curvature changes slightly between cells. Intensification adjustments ensure the final image is bright enough to be seen clearly after being exported.</div>
+<h3 id="sec3.5">Single molecule tracking: particles within condensates</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<p>A combination of dyes is used to monitor the dynamics of molecules in condensates. HaloTag® TMR Ligand is utilized at the 20–50 nM concentration to stain condensates, and Janelia Fluor® 646 (JF<sub>646</sub>) dye is used at picomolar concentration to track a subset of molecules. Images are taken of condensates, then time lapse of molecular dynamics are captured immediately after. Immediately following, another image is taken of the condensates to check for cell movement during image acquisition. Appending these frames allows for location of condensates and tracks of individual molecules, enabling relationships between dynamics and condensates to be explored. This data is used to obtain angular dynamics, the percent of protein in condensates and bound fraction in condensates.</p>
+<ol start="52">
+<li>Once cell line has reached stable expression after multiple passages, for the following 72 h culture the cells in the absence or presence of 0.1 ug/mL doxycycline.
+<ol type="a">
+<li>The day before splitting the cells for imaging, coat the bottom of the imaging plate with 0.2% gelatin.</li>
+<li>After 12–16 h, remove the gelatin and replace it with fresh gelatin.</li>
+<li>Before seeding cells into the imaging plates remove gelatin.</li>
+</ol>
+</li>
+<li>Seed the cells into multiple imaging plates.
+<ol type="a">
+<li>It is important that cells are seeded in a single-cell suspension as one layer.</li>
+</ol>
+</li>
+<li>Incubate the cells at 37°C with 5% CO<sub>2</sub> overnight.</li>
+<li>Remove the culture media by pipetting.</li>
+<li>Add fresh culture media with the addition of 300 pM JF<sub>646</sub> for 15 min at 37°C away from light to obtain 5–20 labeled molecules per frame.
+<ol type="a">
+<li>Depending on the cell type, the concentration of ligand may vary.</li>
+</ol>
+</li>
+<li>Remove the culture media by pipetting.</li>
+<li>Add fresh culture media supplemented with 20 nM HaloTag® TMR Ligand and incubate for 15 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add fresh culture medium and incubate for 60 min at 37°C with 5% CO<sub>2</sub> covered from light.</li>
+<li>Remove the culture media by pipetting and discard it.
+<ol type="a">
+<li>Gently wash the cells once with PBS.</li>
+</ol>
+</li>
+<li>Add FluoroBrite DMEM live-cell imaging medium supplemented with 10% FBS into the imaging plate.</li>
+<li>Maintain cells at 37°C using a single-channel temperature controller (TC-324, Warner Instruments) and acquire all images within 90 min from taking cells out of 5% CO<sub>2</sub>.</li>
+<li>Acquire images using an Axio Observer D1 (Zeiss, Germany) Total Internal Reflection (TIRF) microscope equipped with an Alpha Plan-apochromat 100 × /1.46 oil immersion objective (Zeiss, Germany). Use a Brightline® single-band laser filter set (Semrock; excitation filter: FF01-561/14; emission filter: FF01-609/54, and dichroic mirror: Di02-R561-25 × 36) to visualize TMR ligand-bound proteins in living cells. Use a Brightline® single-band laser filter set (Semrock; excitation filter: BLP01-635R-25, emission filter: FF01-640/14-25, and dichroic mirror: Di02-R635-25 × 36) to visualize HaloTag® JF<sub>646</sub>-labe proteins.</li>
+<li>Focus on a single nucleus such that as many particles as possible are clear. Stably bound proteins are easier to identify and so the eye is drawn to them. Ensure that even transiently bound particles are still visible.</li>
+<li>Take an image to excite HaloTag® TMR to determine the distribution of HT-bound proteins.</li>
+<li>Take a video of the nucleus using HaloTag® JF<sub>646</sub> with the following conditions: intensification 300, number of frames 50, dark time (ms) 0, exposure time (ms) 30, laser power (mW) 30, TIRF angle 6.65–6.80.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> both TIRF angle and focus may need minor adjustments between each cell imaged as depth and curvature changes slightly between cells.</div>
+<ol start="68">
+<li>Take another image of HaloTag® TMR. This image is to ensure there is no shifting of the cell during video acquisition.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The goal of this protocol is to determine the target-search parameters of an epigenetic protein and evaluate molecular dynamics (<a href="#bib11">Kent et al., 2020</a>; <a href="#bib16">Tatavosian et al., 2018</a>; <a href="#bib1">Brown et al., 2021</a>). Individual molecules are tracked, and the tracks are linked. From this the bound fraction, diffusion coefficients, and residence time are extracted (<a href="#fig3">Figure 3</a>). Using these factors, the target-search parameters of a protein can be determined (<a href="#fig3">Figure 3</a>). To determine molecular dynamics in relation to condensates, image stacks tracking individual molecules are overlaid on live-cell images of nuclei with condensates. Motion of individual molecules are tracked and their location inside or outside of condensates is recorded. The angular distribution of molecules both inside and outside of condensates is quantified and compared (<a href="#bib11">Kent et al., 2020</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1182-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Schematic showing single-molecule imaging process and data analysis</div>
+<p>Image acquisition to determine kinetic fractions and diffusion coefficients involves short bursts of high intensity laser captured with a low camera integration time to limit the bias caused by motion blurring of fast-moving particles. Displacement histograms analyzed by Spot-on are used to extract fractions and diffusion coefficients (F<sub>1</sub> (D<sub>1</sub>), F<sub>2</sub> (D<sub>2</sub>), and F<sub>3</sub> (D<sub>3</sub>)), which represent chromatin-bound, confined, and free diffusion populations of total molecules within cells, respectively. To determine residence/dwell times of bound molecules, a long camera integration time with a low intensity laser is used to focus on molecules with lower diffusion coefficients. The dwell-time distribution after photobleaching correction is typically fitted by a two-component decay function, generating residence times (τ<sub>tb</sub> and τ<sub>sb</sub>) as well as stable and transient bound fractions (f<sub>1tb</sub> and f<sub>1sb</sub>) of total chromatin-bound molecules. F<sub>1tb</sub> and F<sub>1sb</sub>, which are the stable and transient bound fractions of total proteins within cells, can be described as <math> <mrow> <msub> <mi>F</mi> <mrow> <mn>1</mn> <mi>tb</mi> </mrow> </msub> <mo>=</mo> <msub> <mi>F</mi> <mn>1</mn> </msub> <mo>×</mo> <msub> <mi>f</mi> <mrow> <mn>1</mn> <mi>tb</mi> </mrow> </msub> </mrow> </math> and <math> <mrow> <msub> <mi>F</mi> <mrow> <mn>1</mn> <mi>sb</mi> </mrow> </msub> <mo>=</mo> <msub> <mi>F</mi> <mn>1</mn> </msub> <mo>×</mo> <msub> <mi>f</mi> <mrow> <mn>1</mn> <mi>sb</mi> </mrow> </msub> </mrow> </math>, respectively. <i>N</i><sub><i>trial</i></sub> , which is the average number of non-specific interactions by which one molecule undergoes before encountering a specific site, is defined as <math> <mrow> <msub> <mtext>N</mtext> <mtext>trial</mtext> </msub> <mo>=</mo> <mfrac> <mn>1</mn> <msub> <mtext>f</mtext> <mrow> <mn>1</mn> <mtext>sb</mtext> </mrow> </msub> </mfrac> </mrow> </math> . t<sub>3D</sub>, which is the average free time between two binding events, is denoted as <math> <mrow> <msub> <mtext>τ</mtext> <mrow> <mn>3</mn> <mtext>D</mtext> </mrow> </msub> <mo>=</mo> <mfrac> <mn>1</mn> <mrow> <msubsup> <mtext>k</mtext> <mtext>on</mtext> <mtext>sb∗</mtext> </msubsup> <msubsup> <mrow> <mo>+</mo> <mtext>k</mtext> </mrow> <mtext>on</mtext> <mtext>tb∗</mtext> </msubsup> </mrow> </mfrac> </mrow> </math>. The target-search time (<i>τ</i><sub><i>search</i></sub>), which is the time for locating a specific site, is described as <math> <mrow> <msub> <mtext>τ</mtext> <mtext>search</mtext> </msub> <msub> <mrow> <mo>=</mo> <mtext>N</mtext> </mrow> <mtext>trial</mtext> </msub> <mtext>×</mtext> <msub> <mtext>τ</mtext> <mrow> <mn>3</mn> <mtext>D</mtext> </mrow> </msub> <mo>+</mo> <mrow> <mo>(</mo> <mrow> <msub> <mtext>N</mtext> <mtext>trial</mtext> </msub> <mo>-</mo> <mn>1</mn> </mrow> <mo>)</mo> </mrow> <msub> <mtext>τ</mtext> <mtext>tb</mtext> </msub> </mrow> </math>. The relationship among F<sub>1sb</sub>, τ<sub>sb</sub>, and τ<sub>search</sub> is described as <math> <mrow> <msub> <mtext>F</mtext> <mrow> <mn>1</mn> <mtext>sb</mtext> </mrow> </msub> <mo>=</mo> <mfrac> <msub> <mtext>τ</mtext> <mtext>sb</mtext> </msub> <mrow> <msub> <mtext>τ</mtext> <mtext>search</mtext> </msub> <mo>+</mo> <msub> <mtext>τ</mtext> <mtext>sb</mtext> </msub> </mrow> </mfrac> </mrow> </math>.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>Population single-molecule tracking experiments sparsely label individual molecules and track their movement via stroboscopic bursts of short camera integration time (Video S1, see <a href="#key-resources-table">key resources table</a>). Ideally, 5–20 molecules should be labeled per frame as too many molecules are difficult for the algorithm to track. The tracking and linking are performed by the U-track algorithm (<a href="#bib9">Jaqaman et al., 2008</a>) and the parameters used are listed in <a href="#tbl1">Table 1</a>. Jump lengths of molecules between frames are used to calculate displacement. Kinetic fractions and diffusion coefficients of studied proteins are obtained by kinetically modeling the displacement histogram (<a href="#bib8">Hansen et al., 2018</a>; <a href="#bib14">Mazza et al., 2012</a>). An example displacement histogram is shown in <a href="#fig4">Figure 4</a>A (related source data in Table S1, see <a href="#key-resources-table">key resources table</a>). Residence single-molecule tracking experiments also sparsely label individual molecules, but long camera integration times are used to blur out molecules in motion (Video S2, see <a href="#key-resources-table">key resources table</a>), leaving slow-moving molecules still in focus (<a href="#bib18">Watanabe and Mitchison, 2002</a>; <a href="#bib4">Elf et al., 2007</a>). Because molecules in these image stacks display less movement, 5–20 molecules can be labeled per frame. The bound molecules are further selected based on apparent diffusion coefficients. The cumulative frequency distribution of dwell times is normalized for photobleaching and fitted to one- or two- component exponential decay function. This allows for measuring of residence times of protein studied, an example cumulative frequency distribution is shown in <a href="#fig4">Figure 4</a>B (related source data in Table S2, see <a href="#key-resources-table">key resources table</a>).</p>
+<table id="tbl1">
+<caption>Table 1. Single-molecule localization and tracking parameters used to analyze image stacks</caption>
+<thead></thead>
+<tbody>
+<tr>
+<td rowspan="2">Step 1: Detection</td>
+<td rowspan="2">Gaussian Mixture-Model Fitting</td>
+<td>Parameters</td>
+</tr>
+<tr>
+<td>Gaussian Standard Deviation = 1.7 pixelsCamera Bit Depth: 16<b>Local Maxima Detection:</b>Alpha-value for Comparison with Local Background = 0.05Do Not Check ‘‘Use Rolling Window Time-Averaging’’Do Not Check ‘‘Use Absolute Background’’Gaussian Fitting at Local Maxima:Check ‘‘Iterate to Estimate Gaussian Standard Deviation’’Maximum Number of Iterations = 10Check ‘‘Do Iterative Gaussian Mixture-Model Fitting’’Alpha values:Residuals = 0.05 Distance = 0.05Amplitude = 0.05 Final = 0Input and Output:Frames to Use = 1–100 for Population or 1–250 for Residence</td>
+</tr>
+<tr>
+<td rowspan="2">Step 2: Tracking</td>
+<td rowspan="2">Tracking Parameters</td>
+<td><b>Parameters:</b></td>
+</tr>
+<tr>
+<td>Problem Dimensionality = 2Maximum Gap to Close = 5 Frames for Population or 1 Frames for ResidenceMaximum Length of Track Segments from First Step = 1 FrameCheck ‘‘Do segment merging’’Check ‘‘Do segment splitting’’Do Not Check ‘‘ Plot histogram of gap lengths after gap closing’’Check ‘‘Show calculation progress in command line’’Do Not Check ‘‘Export tracking result to matrix format’’<b>Cost Functions:</b><b>Step 1: frame-to-frame linking:</b>Check ‘‘Allow direct motion position propagation’’Check ‘‘Allow instantaneous direction reversal’’Brownian Search Radius (in pixels):Lower Bound = 1Upper Bound = 20 for Population or 10 for ResidenceMultiplication Factor for Brownian Search Radius Calculation = 3Check ‘‘Use nearest neighbor distance to expand Brownian search radius’’Number of Frames for Nearest Neighbor Distance Calculation =20 for Population or 10 for Residence.Do Not Check ‘‘Plot histogram of linking distances’’<b>Step 2: gap closing, merging and splitting:</b><b>Brownian + Directed motion models</b>Brownian Search Radius (in pixels):Lower Bound = 1Upper Bound = 20 for Population or 10 for ResidenceMultiplication Factor for Brownian Search Radius Calculation = 3 search radius’’Number of Frames for Nearest Neighbor Distance Calculation =20 for Population and 10 for ResidenceHow to expand the Brownian search radius with gap length:Scaling Power in Fast Expansion Phase = 0.5Scaling Power in slow Expansion Phase = 0.01Gap length to transition from Fast to Slow Expansion = 5 for Population or 1 for ResidencePenalty for Increasing Gap Length = 1.5Check ‘‘In merging and splitting, consider ratio of intensities before and after merge/split:Ratio of Intensity: Min Allowed = 0.5 Max Allowed = 2Leave it Blank ‘‘Value of search Radius Lower Bound for Merging/Splitting (in pixels)’’Check ‘‘Allow direct motion position propagation’’Check ‘‘Allow instantaneous direction reversal’’Minimum Track Segment Lifetime for Classification as Linear or Random (in frames) = 5Multiplication Factor for Linear Search Radius Calculation = 3How to scale the linear motion search radius with time:Scaling Power in Fast Expansion Phase = 0.5Scaling Power in Slow Expansion Phase = 0.01Gap length to transition from Fast to Slow Expansion = 5 for Population or 1 for ResidenceMaximum Angle Between Linear Track Segments (in degree) = 30<b>Kalman Filter Functions</b>Kalman functions = Brownian + Directed motion modelsParameters:Do Not Check ‘‘Initial velocity estimate (in pixels/frame)’’Do Not Check ‘‘Reference point for initial velocity estimate (in pixels)’’Check ‘‘None of the two above’’Leave it Blank ‘‘Search Radius for first Iteration (in frames)’’</td>
+</tr>
+<tr>
+<td>Step 3: Track Analysis</td>
+<td>Motion Analysis</td>
+<td>
+<b>Motion analysis parameters:</b>Problem Dimensionality = 2Check ‘‘Check and analyze asymmetric tracks’’Alpha value for asymmetry determination = 0.1Alpha value for moment scaling spectrum analysis = 0.05Method for calculation the confinement radius: ‘‘mean positional standard deviation’’</td>
+</tr>
+</tbody>
+</table>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1182-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Representative data for analyzing kinetic fractions and residence time</div>
+<p>(A) Example of displacement histogram and source data.</p>
+<p>(B) Example of 1-D distribution of dwell times and source data.</p>
+</figcaption>
+</figure>
+<p>To determine angular distribution of molecular trajectories, freely diffusing molecules from population-style experiments were used. This was determined by analyzing diffusion coefficients of individual molecules and only selecting those above a certain cutoff. Molecular motion is monitored, and directional change of a particle is described as the relative angle between position vectors in consecutive steps. Epifluorescence images captured before and after molecular tracking are co-localized and those that do not show drift are used. Molecular trajectories are then manually mapped as either inside, outside, or transverse. Transverse trajectories did not undergo further analysis. An example appended image stack can be seen in Video S3 (see <a href="#key-resources-table">key resources table</a> ) as well as epifluorescence images before (Image S1, see <a href="#key-resources-table">key resources table</a>) and after (Image S2, see <a href="#key-resources-table">key resources table</a>) single-molecule tracking.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>(Related to steps 1–23) Utilizing this protocol requires the tagging of expressed proteins with either a fluorophore or self-labeling ligand which may potentially impact protein function. Biochemical and functional assays should be performed to validate whether fusion proteins retain their functions and biochemical characteristics. Stable integration of fusion gene into the cellular genome with tetracycline response elements can modulate the expression level of fusion proteins; however, endogenous proteins may functionally compete with exogenously targeted fusion proteins. Thus, endogenously tagging through CRISPR-Cas9 would be a viable alternative to lentiviral integration (<a href="#bib3">Cong et al., 2013</a>; <a href="#bib10">Jinek et al., 2013</a>).</p>
+<p>(Related to steps 37, 51, and 68) An important factor to obtain quality high-resolution images is signal-to-noise ratio. When using inclined excitation in the microscopic set-up (<a href="#bib17">Tokunaga et al., 2008</a>), there is some overlap between the excitation and emission pathways, which causes reduced signal-to-noise.</p>
+<p>(Related to single molecule tracking in general) It is important to note that proteins diffuse isotopically along the three-dimensional axes X, Y, and Z. The assumption that the XY projection data reflect the 3D diffusion of the molecules is made.</p>
+<p>(Related to steps 37, 51, and 68) Two factors are needed to be considered when analyzing kinetic fractions. The first one is that molecules will likely move out of the Z axial detection window (<a href="#bib12">Kues and Kubitscheck, 2002</a>). This has been corrected by the Spot-On (<a href="#bib8">Hansen et al., 2018</a>). The second one is “motion blur” by which proteins can move several pixels during a short exposure time. Motion blur is sensitive to the experimental conditions (<a href="#bib8">Hansen et al., 2018</a>; <a href="#bib16">Tatavosian et al., 2018</a>). Thus, it is necessary to optimize exposure time.</p>
+<p>(Related to single molecule tracking in general) For residence time and angular distribution experiments, cell drift, cell rotation, and movement of intracellular organelles and condensates are an issue that will skew results. Molecules can be assigned false diffusion coefficients or alteration of kinetic fractions can occur. As such, all videos must be checked for cell drift by comparing cell and/or condensate location in the beginning and end of the image stack. If cells or intracellular organelles and condensates move, the image stack must be discarded.</p>
+<p>(Related to measurements of residence times in general) To measure residence times, photobleaching is a major hurdle (<a href="#bib1">Brown et al., 2021</a>). A reduced laser intensity and a long interval time allow measuring binding events with long residence times (<a href="#bib18">Watanabe and Mitchison, 2002</a>; <a href="#bib4">Elf et al., 2007</a>). Due to the photobleaching, the reported residence times should be considered as “apparent” residence times (<a href="#bib1">Brown et al., 2021</a>). Since the slow-diffusing molecules might be chromatin-bound or confined movement populations (<a href="#bib6">Garcia et al., 2021b</a>), when analyzing residence times, the confined fractions should be excluded from the bound ones based on their difference in jump distances or diffusion coefficients (<a href="#bib6">Garcia et al., 2021b</a>; <a href="#bib14">Mazza et al., 2012</a>; <a href="#bib19">Zhen et al., 2016</a>). We consider molecules whose D<sub>m</sub> is greater than 0.10 μm<sup>2</sup>/s as chromatin-bound ones (<a href="#bib11">Kent et al., 2020</a>; <a href="#bib16">Tatavosian et al., 2018</a>; <a href="#bib19">Zhen et al., 2016</a>).</p>
+<p>(Related to measurements of residence times in general) Although low illumination intensities have been used to minimize photobleaching, photobleaching still prevents estimating true residence times of transcription regulatory factors (<a href="#bib13">Liu et al., 2018</a>; <a href="#bib5">Garcia et al., 2021a</a>). Thus, residence times should be considered as apparent residence times.</p>
+<p>(Related to measurements of residence times in general) For estimating apparent residence times, the cumulative frequency distributions of dwell times are typically decomposed with two-component exponential decay model, which assumes that proteins have three states: freely diffusing, short-lived, and long-lived (<a href="#bib14">Mazza et al., 2012</a>; <a href="#bib2">Chen et al., 2014</a>; <a href="#bib15">Suter, 2020</a>). The short- and long-lived populations are typically assigned as non-specifically and specifically bound ones, respectively. The power-law model, which assumes a continuous binding affinity of proteins to chromatin, fits distributions of dwell times better than the exponential model (<a href="#bib5">Garcia et al., 2021a</a>, <a href="#bib6">2021b</a>). However, it cannot obtain classic kinetic parameters that describe time-related biochemical processes (<a href="#bib1">Brown et al., 2021</a>). Given the continuous distribution of binding affinities, it is challenging to sample, unbiased, all binding events. Thus, control experiments such as using Tags (control for transient binding) and histone proteins (control for stable binding) should be performed. Additionally, using mutants with defects in binding is an exquisite control (<a href="#bib1">Brown et al., 2021</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>The pH value of 2× HBSS is critical for a successful packaging. Once made, 2× HBSS are aliquoted and stored in −20°C. Step 2b</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Given that the narrow working range of pH of 2× HBSS, it is recommended to have an accurate and precise pH meter for measuring the pH value. If a precise pH meter is not available, a pH range of 2× HBSS (pH from 7.0 to 7.2) should be made and then test their packing efficiency.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Addition of 2× HBSS is a vital step as it contributes largely to the final size of DNA particles, which dictates the ability of the cell to endocytose the particles. When viewed under a microscope if black spots are seen then particles are too large. Step 2c</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>To prevent local aggregation of DNA around HBSS droplets, increase the vortex speed and reduce the speed at which HBSS is added. Keeping the solution cold will help slow interaction and hence particle formation.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Under light microscopy, if black dots are observable, this typically indicates that particles are too large and the packaging efficiency is low. Step 4</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>This could be due to pH of HBBS and the preparation of transfection mixture, which are discussed above. The third possibility is the impurity of plasmid. Endotoxin-free plasmid DNA purification kit would help in this case.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>After adding puromycin, it is possible that cells are not viable. Step 21</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>If cells are not viable, it is possible that puromycin concentrations are too high. A killing curve for puromycin should be performed. Another possibility is the packaging efficiency is low. In this case, please refer to <a href="#sec7.1">problems 1</a>, <a href="#sec7.3">2</a>, and <a href="#sec7.5">3</a> and their solutions.</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>Achieving 5–20 molecules per imaging frame is challenging since the number of labeled molecules at a given frame depends on the total number of proteins with the nucleus and the dye concentration added. Step 28</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>To overcome this issue, cells are cultured in the absence (basal or leakage expression) or the presence of 0.1 μg/mL doxycycline. To avoid overexpression, cells with basal expression are first treated with 10–50 pM of JF<sub>549</sub> HaloTag® dye. If the number of labeled molecules is below 5 under this condition, cells cultured in the presence of doxycycline are then treated with a variety of dye concentrations to achieve 5–20 labeled molecules.</p>
+<h3 id="sec7.11">Problem 6</h3>
+<p>Because only a subset of molecules is labeled, bleaching during the focusing process is a challenge. Differential bleaching across fast- and slow-moving particles can alter the results of the experiment. Step 36</p>
+<h3 id="sec7.12">Potential solution</h3>
+<p>Focus on the cells as much as possible ahead of time using a dim light source that is not focused into a specific wavelength (such as a brightfield lamp) will allow for less time spent focusing when using the laser. This will result in less photobleaching prior to video acquisition.</p>
+<h3 id="sec7.13">Problem 7</h3>
+<p>Residence time experiments require taking videos of cells that last several minutes. Any shifting of the cells during this time makes videos unusable. As such, factors impacting cell health and ability to tightly stick to the glass surface are important to consider. Furthermore, tightly securing the temperature controller to the microscope stage and preventing the movement of any wires is also important. Step 50</p>
+<h3 id="sec7.14">Potential solution</h3>
+<p>Shifting of the plate during video acquisition can be caused by minor movements or shaking of the temperature controller. Thus, securely taping the controller and related wires to the microscope stage will help prevent this movement. Cells that are less tightly attached to the surface of the plate are more likely to shift. So, only perform residence time experiments when cells are healthy and imaging plates have been thoroughly cleaned. Consider using new imaging plates for these experiments.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Brown, K., Andrianakos, H., Ingersoll, S., and Ren, X. (2021). Single-molecule imaging of epigenetic complexes in living cells: insights from studies on Polycomb group proteins. Nucleic Acids Res. <i>49</i>, 6621-6637. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref1">View at publisher</a></p>
+<p id="bib2">Chen, J., Zhang, Z., Li, L., Chen, B.C., Revyakin, A., Hajj, B., Legant, W., Dahan, M., Lionnet, T., Betzig, E., et al. (2014). Single-molecule dynamics of enhanceosome assembly in embryonic stem cells. Cell <i>156</i>, 1274-1285. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref2">View at publisher</a></p>
+<p id="bib3">Cong, L., Ran, F.A., Cox, D., Lin, S., Barretto, R., Habib, N., Hsu, P.D., Wu, X., Jiang, W., Marraffini, L.A., and Zhang, F. (2013). Multiplex genome engineering using CRISPR/Cas systems. Science <i>339</i>, 819-823. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref3">View at publisher</a></p>
+<p id="bib4">Elf, J., Li, G.W., and Xie, X.S. (2007). Probing transcription factor dynamics at the single-molecule level in a living cell. Science <i>316</i>, 1191-1194. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref4">View at publisher</a></p>
+<p id="bib5">Garcia, D.A., Fettweis, G., Presman, D.M., Paakinaho, V., Jarzynski, C., Upadhyaya, A., and Hager, G.L. (2021a). Power-law behavior of transcription factor dynamics at the single-molecule level implies a continuum affinity model. Nucleic Acids Res. <i>49</i>, 6605-6620. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref5">View at publisher</a></p>
+<p id="bib6">Garcia, D.A., Johnson, T.A., Presman, D.M., Fettweis, G., Wagh, K., Rinaldi, L., Stavreva, D.A., Paakinaho, V., Jensen, R.A.M., Mandrup, S., et al. (2021b). An intrinsically disordered region-mediated confinement state contributes to the dynamics and function of transcription factors. Mol. Cell <i>81</i>, 1484-1498 e6. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref6">View at publisher</a></p>
+<p id="bib7">Gearing, D.P., Nicola, N.A., Metcalf, D., Foote, S., Willson, T.A., Gough, N.M., and Williams, R.L. (1989). Production of leukemia inhibitory factor in Escherichia-Coli by a novel procedure and its use in maintaining embryonic stem-cells in culture. Biotechnology <i>7</i>, 1157-1161. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref7">View at publisher</a></p>
+<p id="bib8">Hansen, A.S., Woringer, M., Grimm, J.B., Lavis, L.D., Tjian, R., and Darzacq, X. (2018). Robust model-based analysis of single-particle tracking experiments with spot-on. Elife <i>7</i>, e33125. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref8">View at publisher</a></p>
+<p id="bib9">Jaqaman, K., Loerke, D., Mettlen, M., Kuwata, H., Grinstein, S., Schmid, S.L., and Danuser, G. (2008). Robust single-particle tracking in live-cell time-lapse sequences. Nat. Methods <i>5</i>, 695-702. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref9">View at publisher</a></p>
+<p id="bib10">Jinek, M., East, A., Cheng, A., Lin, S., Ma, E., and Doudna, J. (2013). RNA-programmed genome editing in human cells. Elife <i>2</i>, e00471. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref10">View at publisher</a></p>
+<p id="bib11">Kent, S., Brown, K., Yang, C.H., Alsaihati, N., Tian, C., Wang, H., and Ren, X. (2020). Phase-separated transcriptional condensates accelerate target-search process revealed by live-cell single-molecule imaging. Cell Rep. <i>33</i>, 108248. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref11">View at publisher</a></p>
+<p id="bib12">Kues, T. and Kubitscheck, U. (2002). Single molecule motion perpendicular to the focal plane of a microscope: Application to splicing factor dynamics within the cell nucleus. Single Mol. <i>3</i>, 218-224. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref12">View at publisher</a></p>
+<p id="bib13">Liu, H., Dong, P., Ioannou, M.S., Li, L., Shea, J., Pasolli, H.A., Grimm, J.B., Rivlin, P.K., Lavis, L.D., Koyama, M., and Liu, Z. (2018). Visualizing long-term single-molecule dynamics in vivo by stochastic protein labeling. Proc. Natl. Acad. Sci. U S A <i>115</i>, 343-348. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref13">View at publisher</a></p>
+<p id="bib14">Mazza, D., Abernathy, A., Golob, N., Morisaki, T., and McNally, J.G. (2012). A benchmark for chromatin binding measurements in live cells. Nucleic Acids Res. <i>40</i>, e119. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref14">View at publisher</a></p>
+<p id="bib20">Penny, G.D., Kay, G.F., Shearown, S.A., Rastan, S., and Brockdorff, N. (1996). Requirement for Xist in X chromosome inactivation. Nature <i>379</i>. 131–7. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/opt9UwMbg4wBg">View at publisher</a></p>
+<p id="bib15">Suter, D.M. (2020). Transcription factors and DNA play hide and seek. Trends Cell Biol. <i>30</i>, 491-500. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref15">View at publisher</a></p>
+<p id="bib16">Tatavosian, R., Duc, H.N., Huynh, T.N., Fang, D., Schmitt, B., Shi, X., Deng, Y., Phiel, C., Yao, T., Zhang, Z., et al. (2018). Live-cell single-molecule dynamics of PcG proteins imposed by the DIPG H3.3K27M mutation. Nat. Commun. <i>9</i>, 2080. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref16">View at publisher</a></p>
+<p id="bib17">Tokunaga, M., Imamoto, N., and Sakata-Sogawa, K. (2008). Highly inclined thin illumination enables clear single-molecule imaging in cells. Nat. Methods <i>5</i>, 159-161. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref17">View at publisher</a></p>
+<p id="bib18">Watanabe, N. and Mitchison, T.J. (2002). Single-molecule speckle analysis of actin filament turnover in lamellipodia. Science <i>295</i>, 1083-1086. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref18">View at publisher</a></p>
+<p id="bib19">Zhen, C.Y., Tatavosian, R., Huynh, T.N., Duc, H.N., Das, R., Kokotovic, M., Grimm, J.B., Lavis, L.D., Lee, J., Mejia, F.J., et al. (2016). Live-cell single-molecule tracking reveals co-recognition of H3K27me3 and DNA targets polycomb Cbx7-PRC1 to chromatin. Elife <i>5</i>, e17667. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00665-1/sref19">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Dr. Xiaojun Ren (<a href="mailto:xiaojun.ren@ucdenver.edu">xiaojun.ren@ucdenver.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>This protocol did not generate any unique cell lines and reagents.</p>
+<h4>Data and code availability</h4>
+<p>Further information and requests for the raw datasets and code generated by this protocol should be directed to and will be fulfilled by the lead contact, Dr. Xiaojun Ren (<a href="mailto:xiaojun.ren@ucdenver.edu">xiaojun.ren@ucdenver.edu</a>).</p>
+<p>Source data for <a href="#fig4">Figures 4</a>A and 4B is available at Mendeley Data <a href="https://doi.org/10.17632/n2b5snj248.1">https://doi.org/10.17632/n2b5snj248.1</a>.</p>
+<p>Source videos and images (Videos S1, S2, and S3, and images S1 and S2) is available at Mendeley Data <a href="https://doi.org/10.17632/c77d7ynbrn.1">https://doi.org/10.17632/c77d7ynbrn.1</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/100000057">National Institute of General Medical Sciences</a> (NIGMS) (award R01GM135286 to X.R.), United States and the Office of Research Services (ORS) at the <a href="https://doi.org/10.13039/100010346">University of Colorado Denver</a>, United States.</p>
+<h3>Author contributions</h3>
+<p>K.B. wrote manuscript and performed experiments. S.K. wrote manuscript and performed experiments. X.R. wrote manuscript and designed experiments.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

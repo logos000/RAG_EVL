@@ -1,0 +1,719 @@
+<article>
+<section>
+<h1 id="header">High-Throughput Cell Death Assays with Single-Cell and Population-Level Analyses Using Real-Time Kinetic Labeling (SPARKL)</h1>
+<p><time datetime="2020-04-17">Published: April 17, 2020</time></p>
+<p>Jesse D. Gelles<sup><a href="#aff1">1</a>,<a href="#aff3">3</a>,<a href="#fn1">6</a>,<a href="#cor1">*</a></sup> and Jerry E. Chipuk<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a>,<a href="#aff5">5</a>,<a href="#fn2">7</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Oncological Sciences, Icahn School of Medicine at Mount Sinai, One Gustave L. Levy Place, New York, NY 10029, USA</p>
+<p id="aff2"><sup>2</sup>Department of Dermatology, Icahn School of Medicine at Mount Sinai, One Gustave L. Levy Place, New York, NY 10029, USA</p>
+<p id="aff3"><sup>3</sup>The Tisch Cancer Institute, Icahn School of Medicine at Mount Sinai, One Gustave L. Levy Place, New York, NY 10029, USA</p>
+<p id="aff4"><sup>4</sup>The Diabetes, Obesity, and Metabolism Institute, Icahn School of Medicine at Mount Sinai, One Gustave L. Levy Place, New York, NY 10029, USA</p>
+<p id="aff5"><sup>5</sup>The Graduate School of Biomedical Sciences, Icahn School of Medicine at Mount Sinai, One Gustave L. Levy Place, New York, NY 10029, USA</p>
+<p id="fn1"><sup>6</sup>Technical Contact</p>
+<p id="fn2"><sup>7</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:jesse.gelles@icahn.mssm.edu">jesse.gelles@icahn.mssm.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:jerry.chipuk@mssm.edu">jerry.chipuk@mssm.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100034">10.1016/j.xpro.2020.100034</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>High-throughput cytostatic and cell death assays are a critical component of pharmacological screens and mechanism-based interrogations into cellular biology. We developed a method for single-cell and population-level analyses using real-time kinetic labeling (abbreviated “SPARKL”) with non-toxic fluorescent probes and high-content live-cell imagers. The protocols herein detail the steps, specifics, and suggested utilization of the SPARKL method within several “label-and-go” zero-handling workflows.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib4">Gelles et al. (2019)</a>.</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>An optimized protocol for capturing the kinetics of cell death in real time</li>
+<li>Multi-parametric analyses of cell death kinetics for comparative studies</li>
+<li>Label-and-go multiplex workflows to characterize cell proliferation and death</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<h3>Determine the Appropriate Variant of SPARKL</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>SPARKL is a versatile method built upon live-cell microscopy and detection of fluorescent reporters. Investigators can characterize different aspects of cell death biology by selecting specific reporters and methods of analysis.</p>
+<ol>
+<li>Variant A: Simultaneous measurement of cell proliferation and death</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This Variant quantifies the number of total cells in addition to the dying cells. Use this Variant to normalize cell death data for total cell number or measure treatment-induced cytostatic effects.</div>
+<ol start="2">
+<li>Variant B: Single- or dual-labeling method for analysis of cell death kinetics</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This Variant quantifies dying cells by measuring distinct cell death phenotypes. Individually, or in tandem, reporters in this Variant characterize cell death kinetics for comparative analyses.</div>
+<ol start="3">
+<li>Variant C: Sequential labeling studies to study penetrance of a cell death response</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This Variant uses external software to track sequential labeling of individual cells for population analysis and statistics.</div>
+<h3>Determine Scan Parameters for the Experiment</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<ol start="4">
+<li>Objective magnification: a 10× objective is suggested as it will capture a large surface area while retaining resolution to capture cell morphology.</li>
+<li>Length of experiment: determined by cellular responses and treatments. 12−48 hours are suggested for cell death studies; 48−96 hours are suggested for proliferation studies.</li>
+<li>Scan frequency: determined by experimental question and anticipated results. Scan intervals are suggested to be 1−2 hours for cell death studies and 4−6 hours for proliferation studies.</li>
+<li>Plate format: we strongly recommend designing your experiments for a 96-well plate. Smaller wells prevent excessive consumption of reagents, reduce uneven cell distribution within the well, and increase throughput.</li>
+<li>Frames per well: we strongly recommend acquiring 1 frame per well. Additional frames will not significantly alter the data or statistical power if cells are seeded at appropriate densities. Utilizing technical replicates is a preferred design.</li>
+</ol>
+<h3>Optimize Cell Seeding Density</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 10 min</div>
+<p>SPARKL using an IncuCyte® imager is optimized and validated for immortalized and primary adherent cell lines. Due to the autofocus mechanism, cultures growing in 3D will require additional steps to optimize and may not be suitable with this protocol. Suspension cells which have been adhered to the bottom of the tissue culture plate can be analyzed using SPARKL with varying success. Refer to the limitations section for details regarding which cell types are suitable for this protocol.</p>
+<ol start="9">
+<li>Cell death assays are best accomplished when wells are 50−85% confluent. When cells are too confluent, it becomes difficult to segment fluorescent events and can result in miscounts; too few cells can affect statistical power of the data.</li>
+<li>Set up a preliminary experiment with cells at varying densities and monitor their confluency for the length of time of your intended experiment. Select the density which keeps your cellular population from becoming over-confluent but does not require sparse seeding.</li>
+<li>
+<b>Optional</b>: For experiments using suspension cell lines, coat the bottom of the tissue culture plate with a binding agent (e.g., collagen, poly-lysine) to adhere the cells. This will prevent them from leaving the focal plane or migrating during scans.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Attempting to scan cells which are too sparse can affect the autofocus mechanism of an IncuCyte® imager. Ensure that cells are seeded at appropriate densities and evenly distributed within the well.</div>
+<h3>Fluorescent Reporters and Channels</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> variable</div>
+<ol start="12">
+<li>Select reporters for each fluorescent channel</li>
+</ol>
+<ol type="a">
+<li>(Variant A) Green channel: SYTO21; Red channel: Annexin V-594 or YOYO3</li>
+<li>(Variant B/C) Green channel: Annexin V-488; Red channel: YOYO3</li>
+</ol>
+<ol start="13">
+<li>Set up a preliminary experiment using a titration of fluorescent reporters to determine the lowest concentration necessary to obtain robust and sustained signal. Refer to the “Create Processing Definition” section below.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Suggested concentrations of fluorescent reporters are usually optimized for flow cytometry where labeling occurs in larger volumes and is subsequently washed out. It is common that you will use reporters at much lower concentrations since they will be incubated in the culture media.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> (Variant A) SYTO21 is a cell-permeant, low-affinity cyanine nucleic acid stain. Therefore, mid- to high-range concentrations will interfere with DNA synthesis and result in cytostatic and cytotoxic behavior, respectively. At nanomolar concentrations (often between 10 and 100 nM), SYTO21 can effectively label cells in culture with no adverse effects on cell proliferation. Determine the ideal concentration of SYTO21 using a cell death reporter and confluency data (see “Create Processing Definition”) to ensure no cytotoxic or cytostatic effects.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> In lieu of commercially available Annexin V, recombinant Annexin V can be expressed, purified, and labeled in-house (detailed protocols can be found in <a href="#bib7">Logue et al. 2009</a> and in the Materials and Methods of <a href="#bib4">Gelles et al. 2019</a>).</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>ABT-737</td>
+<td>Selleck Chemicals</td>
+<td>Cat#: S1002</td>
+</tr>
+<tr>
+<td>Annexin V-488/594</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#: A13201, A13203</td>
+</tr>
+<tr>
+<td>Cycloheximide</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>mTNFα</td>
+<td>Peprotech</td>
+<td>Cat#: 315-01A</td>
+</tr>
+<tr>
+<td>Necrostatin-1</td>
+<td>Selleck Chemicals</td>
+<td>Cat#: S8037</td>
+</tr>
+<tr>
+<td>SYTO™ 21</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#: S7556</td>
+</tr>
+<tr>
+<td>YOYO™-3 Iodide</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#: Y3606</td>
+</tr>
+<tr>
+<td>zVAD-fmk</td>
+<td>Selleck Chemicals</td>
+<td>Cat#: S7023</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pProEx.Htb.annexinV</td>
+<td>Seamus Martin (Trinity College, Dublin, Ireland)</td>
+<td>NM_001154; <a href="#bib7">Logue et al., 2009</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Software and Algorithms</td>
+</tr>
+<tr>
+<td>Excel v16.16.9</td>
+<td>Microsoft</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ImageJ/Fiji v2.0.0-rc-69/1.52n</td>
+<td>National Institutes of Health</td>
+<td> </td>
+</tr>
+<tr>
+<td>IncuCyte® ZOOM v2018A</td>
+<td>Essen Biosciences</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Prism v8.1.1</td>
+<td>Graphpad Software</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>SPARKL_pipeline</td>
+<td>Jerry Chipuk (Icahn School of Medicine at Mount Sinai)</td>
+<td>
+<a href="https://doi.org/10.5281/zenodo.3458574">https://doi.org/10.5281/zenodo.3458574</a>; <a href="#bib4">Gelles et al., 2019</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>The code utilized in Variant C</td>
+<td>Jerry Chipuk (Icahn School of Medicine at Mount Sinai)</td>
+<td>
+<a href="https://github.com/ChipukLab/SPARKL_pipeline.git">https://github.com/ChipukLab/SPARKL_pipeline.git</a> (<a href="https://doi.org/10.5281/zenodo.3458574">https://doi.org/10.5281/zenodo.3458574</a>) under the GNU General Public License v3.0.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and Equipment</h2>
+<ul>
+<li>IncuCyte® ZOOM or S3, equipped with 10× or 20× objective</li>
+<li>(Variant A) Annexin V conjugated to Alexa Fluor 594 (purchased or self-generated)</li>
+<li>(Variant A) SYTO21 green fluorescent nucleic acid stain</li>
+<li>(Variant B/C) Annexin V conjugated to Alexa Fluor 488 (purchased or self-generated)</li>
+<li>(Variant B/C) YOYO3</li>
+<li>Microsoft Excel and/or Graphpad Prism</li>
+<li>(Variant C) ImageJ/Fiji</li>
+<li>(Variant C) Python 3.x</li>
+<li>(Variant C) SPARKL_pipeline.zip (<a href="#bib3">Gelles and Chipuk, 2019</a>)</li>
+</ul>
+<div class="alternatives"><span class="alternatives-title">Alternatives:</span></div>
+<ul>
+<li>The IncuCyte® brand imager can be replaced by a similar high-content live-cell imager, such as the IN Cell Analyzer (GE) or Cytation Multi-Mode Reader (BioTek/Agilent). However, the sections describing image analysis and object detection will no longer be applicable and users will have to use either ImageJ or the built-in software of that imager.</li>
+<li>YOYO3 can be replaced by a suitable, non-toxic cell-impermeant viability dye (e.g., SYTOX®)</li>
+<li>Low riboflavin culture media (&lt;0.2 mg/L) can reduce green background fluorescence</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> This method has been validated in several immortalized cell lines and primary cells. Most culturable adherent cell types should be compatible with this method provided they grown in a monolayer. While not validated herein, adherent cells requiring specific extracellular matrices should be compatible provided the cells seed in a single focal plane. Suspension cells and cells growing in 3D cultures have not been validated and may not be compatible with this method.</div>
+<div class="note">
+<span class="note-title">Note:</span> In addition to phase contrast, an IncuCyte® imager has a green LED (Ex: 460 [440,480] nm; Em: 524 [504,544] nm) and a red LED (Ex: 585 [565,605] nm; Em: 635 [625,705] nm). Therefore, choose fluorescent reporters which are optimized for these excitation and emission ranges. Avoid using common dyes which fluoresce in the deep-red range (e.g., Draq7) or which may have adverse effects on cells with prolonged incubation (e.g., 7-AAD or propidium iodide).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<h3>Seed Cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30–60 min</div>
+<p>This section describes how cells should be prepared.</p>
+<ol>
+<li>Trypsinize, or otherwise detach, the cells from the culture vessel and determine the concentration of cells.</li>
+<li>Dilute cells to an appropriate concentration for optimal seeding density. Ideally, plate cells at an approximate density of 30−50%, based on the proliferation rate of the cells and the duration of your planned experiment.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Assuming a 96-well plate format and 100 μL cultured per well, the seeding stock is generally in the range of 1−5×10<sup>4</sup> cells/mL (1000−5000 cells/well).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Seeding cells in an insufficient volume of media (approximately &lt;70 μL) can result in uneven cell attachment due to the meniscus of the media.</div>
+<ol start="3">
+<li>
+<b>Optional</b>: Aliquot, incubate, and aspirate a binding agent to the plate (e.g., collagen, poly-lysine, laminin) for cell types which do not readily adhere to tissue culture plates.</li>
+<li>Use a multichannel pipet and reagent reservoir to aliquot the seeding stock into the plate wells. We have found that a multichannel pipet is reliable for seeding an equivalent number of cells in each well and reducing variation.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure even and reproducible cell seeding between wells. An IncuCyte® imager detects the number of fluorescent objects within the field of view. The object count is proportional to the number of cells imaged by the machine and variable cell numbers can obfuscate data interpretation.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure an even distribution of cells within the wells. Crowding of cells in the center or periphery of a well will affect the number of cells captured within the field of view, which can hinder data collection, analysis, and interpretation. During seeding, avoid creating vortices with the pipet or by rocking the plate (<a href="#fig1">Figure 1</a>).</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Pipet-Induced Vortices Will Result in Uneven Seeding of Cells</div>
+<p>(A) Avoid ejecting against the corner of a well as this will cause cells to concentrate into the center of the well.</p>
+<p>(B) Avoid ejecting at an angle as the wall curvature will generate a circular vortex concentrating cells into the center of the well.</p>
+<p>(C) Place the pipet tip perpendicular to the wall of the well and gently eject the cell suspension to achieve an even distribution of cells.</p>
+</figcaption>
+</figure>
+<ol start="5">
+<li>Permit the cells to reattach and reach homeostasis for 16−24 hours.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The following steps will be conducted the next day once the cells have reattached.</div>
+<h3>Treat Cells</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.5−2 h</div>
+<p>This section describes preparing experimental conditions for the SPARKL workflow.</p>
+<ol start="6">
+<li>Prepare 2× labeling media stock. Measure a volume of complete media sufficient to aliquot 50 μL for each well containing cells (plus 5−10% excess for pipetting errors). Add fluorescent reporters to this stock to create a 2× solution.</li>
+<li>Prepare 2× treatment media stock. For each treatment condition, add perturbagens to a volume of culture media sufficient to aliquot 50 μL for sample wells (plus 5−10% excess for pipetting errors).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Every experiment should include a "rapid death" condition; this condition will report maximal death kinetics and signal for analysis. For apoptotic studies, co-treatment of either TNFα with cycloheximide or cycloheximide with ABT-737 (an inhibitor to anti-apoptotic BCL-2 family proteins) is well suited.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not use a treatment that causes extreme changes to cellular morphology as this will disrupt object quantification. For example, staurosporine (a pan-kinase inhibitor commonly used to induce apoptosis) results in cellular fragmentation and therefore is not suited for applications using SPARKL.</div>
+<ol start="8">
+<li>Aspirate culture media off of cells in small batches. We recommend diluting the vacuum force by attaching pipet tips to the aspirator, such as a P10 stacked on a P200 stacked on a P1000, which will minimize loss of cells during aspiration (<a href="#fig2">Figure 2</a>A). Cells do not need to be washed prior to adding labeling or treatment media.</li>
+</ol>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Replace Culture Media with Media Containing Labels and Perturbagens</div>
+<p>(A) In small batches, aspirate the culture media from wells. Stacking pipet tips will dilute the vacuum force and prevent cell loss.</p>
+<p>(B) Prepare phenol red-free labeling media with fluorescent labels and use a multichannel to aliquot 50% of the final volume into aspirated wells. Do this step rapidly to avoid cell desiccation.</p>
+<p>(C) Prepare phenol red-free treatment media containing the treatments for your experiment. Aliquot 50% of the final volume to the appropriate wells on top of labeling media.</p>
+</figcaption>
+</figure>
+<ol start="9">
+<li>Immediately following aspiration, aliquot the labeling media onto the cells to prevent them from desiccating. Using a multichannel pipet can reduce the time that cells are not in media (<a href="#fig2">Figure 2</a>B).</li>
+<li>Add treatment media to the appropriate wells. Avoid bubbles on the surface of the media (<a href="#fig2">Figure 2</a>C).</li>
+<li>Place the plate in the IncuCyte® imager and allow the plate to return to temperature prior to scanning (approximately 30 minutes). When the plate is colder than the temperature of the incubator, condensation will form on the plastic and will hinder autofocusing.</li>
+<li>Add the plate to the IncuCyte® software.</li>
+</ol>
+<ol type="a">
+<li>Add appropriate vessel to the corresponding tray.</li>
+<li>Define scanning pattern for plate.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> do not include wells with no cells!</div>
+<ol start="3" type="a">
+<li>Select channels: these protocols make use of phase, green, and red.</li>
+<li>Define spectral unmixing: this parameter is variant specific.</li>
+<li>Define scan schedule and frequency.</li>
+<li>
+<b>Optional</b>: Apply real-time analysis job. Requires a processing definition (see next step).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We suggest separating the labeling and treatment media stocks and aliquoting the labeling media first after removing the culture media. Since every well will use the same labels, it is faster to aliquot the labeling media, which will help prevent the cells from desiccating. Once the cells are covered in media, there is less of a rush to add the various treatments to the appropriate wells.</div>
+<div class="note">
+<span class="note-title">Note:</span> If labeling the plate lid, avoid writing directly over the wells. Markings above the well may affect autofocusing and cause cells to appear blurry.</div>
+<div class="note">
+<span class="note-title">Note:</span> Background fluorescence increases with media depth in the well. For a 96-well plate, we recommend always having a final volume of 100 μL per well, which should limit evaporation during the experiment while minimizing contributions to background signal.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> At this time, the experiment is underway and the cells are being imaged at regular intervals. If a processing definition already exists and was selected at run-time, the raw images will be analyzed for object detection and quantification. No further steps can be taken until the experiment ends.</div>
+<h3>Create Processing Definition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20−40 min</div>
+<p>This part of the protocol is specific to an IncuCyte® brand live-cell imager; analogous real-time imagers may or may not have their own built-in software for analysis. Generating a "processing definition" (the specific parameters for automated object detection within collected images) is required the first time you conduct an experiment. Once generated, this processing definition can be applied to future experiments in real-time (or previous experiments, retroactively). For more comprehensive instructions, consult the IncuCyte® Technical Note documents.</p>
+<div class="note">
+<span class="note-title">Note:</span> Processing definitions are specific to the cell type, fluorescent reporters, and magnification. Future experiments which change one of these components will require generating a new processing definition.</div>
+<ol start="13">
+<li>Make an Image Stack of representative frames.</li>
+</ol>
+<ol type="a">
+<li>Select frames from first and last timepoints as well as regularly spaced timepoints along the duration of your experiment.</li>
+<li>Include frames which represent the range of label strength and number of cells being labeled. Including a "rapid death" condition is highly recommended to gauge the range of signal intensity and set mask parameters appropriately.</li>
+</ol>
+<ol start="14">
+<li>Define analysis parameters for image correction and object detection (<a href="#fig3">Figure 3</a>). Do this for each channel being analyzed.</li>
+</ol>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Processing Definitions Normalize Images and Detect Fluorescent Objects</div>
+<p>(A) Top-hat processing determines background fluorescence and subtracts it across the image. This method for image processing is particularly useful for uneven background within the collected images.</p>
+<p>(B) Pixels above a threshold fluorescence will be considered a positive object. Adjusting the <i>edge sensitivity</i> and <i>area filter</i> parameters will improve the quantification of objects while excluding artifacts.</p>
+<p>Graphs and masks are illustrative and not quantitative.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Select <i>Top Hat.</i>
+</li>
+</ol>
+<ol type="i">
+<li>This setting considers the background trend across the image and subtracts it appropriately before determining fluorescent objects. This method results in more robust image normalization and object detection.</li>
+</ol>
+<ol start="2" type="a">
+<li>Adjust the <i>Radius.</i>
+</li>
+</ol>
+<ol type="i">
+<li>This determines the size of the sampling disk in Top Hat correction.</li>
+<li>Smaller radii are better for background elimination and normalization (∼30 μm).</li>
+<li>Avoid using a radius which is smaller than an object, which result in decreased sensitivity to detect positive fluorescent objects.</li>
+</ol>
+<ol start="3" type="a">
+<li>Adjust the <i>Threshold.</i>
+</li>
+</ol>
+<ol type="i">
+<li>This value determines the sensitivity for what is considered a positive object.</li>
+<li>Find a value which eliminates masking background but does not exclude objects.</li>
+</ol>
+<ol start="4" type="a">
+<li>Optimize Edge Segmentation.</li>
+</ol>
+<ol type="i">
+<li>This setting controls the sensitivity for segmenting masks for adjacent objects.</li>
+<li>We recommend setting this value at approximately -30 − -40.</li>
+</ol>
+<ol start="5" type="a">
+<li>Define mask filters to optimize object detection and quantification.</li>
+</ol>
+<ol type="i">
+<li>
+<i>Area</i>: set a minimum to gate out cell debris and non-specific labeling.</li>
+<li>
+<i>Mean Intensity</i>: set a minimum to gate out objects with heterogeneous labeling. This may be useful if large areas of the cell body label, but typically is not necessary to include.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Include the "Overlap" metric to quantify the number of objects displaying double positivity. This metric can be a useful quality control step to assess how proficiently objects will be detected in each channel. Additionally, this metric can be used in downstream analyses.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Now that the processing definition has been made, it can be applied to experiments retroactively as well as new experiments. Typically, the processing definition will be run on the initial experiment which generated the images for it. Once the IncuCyte® finishes processing the images, continue to the following section for steps on visualizing and processing the data.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected Outcomes</h2>
+<p>This section describes methods to analyze, visualize, interpret, and compare data generated with the SPARKL workflow. The steps included in this section are not specific to an IncuCyte® brand imager and can be adopted downstream of any live-cell imaging system.</p>
+<p>Images of cell labeling will be analyzed and object masks will be generated (<a href="#fig4">Figure 4</a>A). For each channel, export the quantification of objects. Import your data into graphing software and graph fluorescent events over time (<a href="#fig4">Figure 4</a>B). Use data from the "rapid death" control treatment to determine y-axis.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Expected Outcomes and Analyses for Kinetic Data Collected with SPARKL</div>
+<p>(A) SPARKL images cells at regular intervals and autonomously detects fluorescent objects within the images. (Top) Sample frames from MEFs instigated to die by TNFα and cycloheximide co-treatment labeling with Annexin V (green) followed by YOYO3 (red). (Bottom) Generated detection masks for Annexin V (magenta) and YOYO3 (cyan) fluorescent events. Scale bar, 50 μm.</p>
+<p>(B) Quantification of detection masks from data as in (A) are visualized as continuous graphs expressing cell death over time.</p>
+<p>(C) Area under the curve (AUC) calculated from (B) is a convenient method to illustrate differences between conditions.</p>
+<p>(D) The first derivative of data from (B) plots the rate of cell death at each time point. Treatments can be compared by the timepoint of maximal rate of cell death.</p>
+<p>(E) Non-linear fit analysis of data from (B) calculates parameters such as time-to-initial death (<i>t</i>′) and initial rate of death (<i>R</i><sub>D</sub>).</p>
+<p>Data and graphs reproduced from <a href="#bib4">Gelles et al. (2019)</a>.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is not sufficient to scale the y-axis arbitrarily or from experimental conditions.</div>
+<h3>Parameterize Kinetic Data for Comparative Analyses (Optional)</h3>
+<p>SPARKL generates rich datasets by capturing the kinetics of cell death. Data points are not limited to reporting static cell death values at a single timepoint. Here, we summarize several methods for comparing conditions in your experiment (further detailed in <a href="#bib4">Gelles et al., 2019</a>).</p>
+<ul>
+<li>Area under the curve (AUC).</li>
+</ul>
+<p>This is the simplest parameterization method. Several metrics of the kinetic data are compressed into a single parameter for comparison. AUC can be calculated using Prism or a similar program (<a href="#fig4">Figure 4</a>C).</p>
+<div class="note">
+<span class="note-title">Note:</span> AUC calculations are influenced by the amplitude of the curve, and therefore differential cell numbers in samples will affect this method of analysis. Only use this method in cells that have equivalent numbers (minimal proliferation differences) or that have been normalized as detailed in Variant A below.</div>
+<ul>
+<li>Derivatization.</li>
+</ul>
+<p>This parameterization method calculates the slope of kinetic data and provides the rate of death within the population. The derivative can be calculated using Prism or a similar program.</p>
+<p>Derivatized kinetic data can be shown over time and the maximal value depicts the time when the largest number of cells labeled with a cell death marker (<a href="#fig4">Figure 4</a>D). Similarly, quartiles of population death can be identified. For comparisons, data can be show as bar graphs depicting the time to quartile or maximal death.</p>
+<p>Data can also be shown as a histogram of cells dying over time. Data viewed this way is particularly useful for observing heterogeneity of cellular responses (depicted as "shelves" within the histogram).</p>
+<ul>
+<li>Non-linear fit analysis.</li>
+</ul>
+<p>This method fits your kinetic data and calculates parameters which can be compared across conditions. We have had the most success using a Lag One-Phase Exponential (LOPE) function for fit analyses. Fitting your data can be accomplished using Prism or a similar program.</p>
+<p>Data fit with a LOPE function generate two parameters: lag phase time (t′) and initial rate of death (R<sub>D</sub>). These parameters can be compared individually or together across conditions (<a href="#fig4">Figure 4</a>E).</p>
+<div class="note">
+<span class="note-title">Note:</span> LOPE functions assume that the time immediately following the lag phase is the greatest rate of death. This is not completely accurate and therefore comparison of the R<sub>D</sub> metric may not be informative in certain conditions.</div>
+<div class="note">
+<span class="note-title">Note:</span> LOPE functions will not be able to fit data in conditions with little, or no, cell death.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Rates of cell death may be more accurately modeled by a sigmoidal fit analysis if there is sufficient data to establish the plateaus. Conditions with rapid cell death typically cannot be fit with sigmoidal fits.</div>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and Statistical Analysis</h2>
+<p>This section will detail methods for multiplex analysis utilizing data from both fluorescent channels. These methods are not specific to an IncuCyte® brand imager and can be applied to data gathered and exported from any similar live-cell imaging system.</p>
+<h3>Variant A: Simultaneous Measurement of Cell Proliferation and Death</h3>
+<ol>
+<li>Seed and treat cells as described above.</li>
+</ol>
+<ul>
+<li>Green label: SYTO21</li>
+<li>Red label: Annexin V-594 or YOYO3</li>
+</ul>
+<ol start="2">
+<li>Apply your processing definition (either at run-time or retroactively) and analyze fluorescent events over time as detailed above.</li>
+<li>Import your data into graphing software and graph.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Green channel data (SYTO21) will quantify cell number. If cells are proliferating, this value will increase over time and generate a proliferation curve (<a href="#fig5">Figure 5</a>A).</div>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Expected Outcomes of Simultaneously Quantifying Cell Proliferation and Death (Variant A)</div>
+<p>(A) SYTO21 labels the cellular population for quantification of cell number and generation of proliferation curves.</p>
+<p>(B) The number of cell death events varies in wells with dissimilar numbers of cells.</p>
+<p>(C) Cell number quantified by SYTO21 can normalize cell death data from (B) into "percent death."</p>
+<p>Data and graphs reproduced from <a href="#bib4">Gelles et al. (2019)</a>.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Red channel data (Annexin V or YOYO3) will quantify dying cells.</div>
+<ol start="4">
+<li>
+<b>Optional</b>: Normalize cell death data to account for cell number variability.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Number of events is dependent on cell number. Therefore, variation in cell number between replicates, conditions, or cell types can obfuscate data and make comparative analysis difficult (<a href="#bib5">Hafner et al., 2016</a>). This step can normalize cell death values to account for cell number variation due to differential seeding, proliferation, or treatment-specific cytostatic effects (<a href="#fig5">Figure 5</a>B).</div>
+<div class="note">
+<span class="note-title">Note:</span> Depending on cells, treatment, imager sensitivity, and processing definitions, object detection and quantification may not be consistent across fluorescent channels. Therefore, we provide three different strategies to normalize cell death data and obtain a "percent death" metric (<a href="#fig5">Figure 5</a>C).</div>
+<ol type="a">
+<li>Method 1: Divide red data by green data.</li>
+</ol>
+<p>For a given well, divide the cell death data by the corresponding total cell data for each timepoint. Do this for each replicate before determining the mean or deviation.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is not sufficient to divide all cell death data by a single cell count (e.g., the first or last timepoint) or by the untreated control.</div>
+<div class="note">
+<span class="note-title">Note:</span> This is the simplest method and suited if the green and red channels detect and segment objects similarly.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> If this method results in values much greater than 100% cell death, then the channels are not detecting equally and you should attempt Method 2 below.</div>
+<ol start="2" type="a">
+<li>Method 2: Divide overlap data by green data.</li>
+</ol>
+<p>Instead of using data from the red channel, use overlap data. Calculate as described in Method 1. This method will only normalize SYTO21-positive cells.</p>
+<div class="note">
+<span class="note-title">Note:</span> This method is useful if there are more cell death objects than total cell objects. Disparate counts between channels can occur when object segmentation is complicated due cell clumping or changes in cellular morphology.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Loss of SYTO21 data over time will result in varying and inconsistent percentages. If cell number decreases over time, then attempt Method 3 below.</div>
+<ol start="3" type="a">
+<li>Method 3: Divide red data by normalized green data.</li>
+</ol>
+<p>Calculate the "percent death" values as described in Method 1 or Method 2. Calculate the normalization factor for the experiment: subtract the lowest SYTO21 value from the largest SYTO21 value and divide by 100. Consider values from the entire experiment. Divide each "percent death" by the normalization factor (these mathematical adjustments are detailed in <a href="#bib2">Gelles and Chipuk, 2016</a>).</p>
+<div class="note">
+<span class="note-title">Note:</span> This method will scale cell death data by the relative minimums and maximums.</div>
+<h3>Variant B: Single- or Dual-Labeling Method for Analysis of Cell Death Kinetics</h3>
+<ol>
+<li>Seed and treat cells as described above.</li>
+</ol>
+<ul>
+<li>Green label: Annexin V-488</li>
+<li>Red label: YOYO3</li>
+</ul>
+<ol start="2">
+<li>Apply your processing definition (either at run-time or retroactively) and analyze fluorescent events over time as detailed above.</li>
+<li>Import your data into graphing software and graph.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Green channel data (Annexin V) will quantify exposure of phosphatidylserine on the outer leaflet of the plasma membrane (<a href="#bib12">Tait et al., 1989</a>). Exposure of phosphatidylserine is a hallmark of apoptosis and demonstrates a cellular commitment to death (<a href="#bib6">Koopman et al., 1994</a>). Annexin V-positive cells can be considered "dying" cells (but biological processes are still being carried out).</div>
+<div class="note">
+<span class="note-title">Note:</span> Red channel data (YOYO3) will quantify cells which have lost plasma membrane integrity by entering the cell and binding DNA. Plasma membrane permeability occurs in necroptosis and as a late-stage event in apoptosis. YOYO3-positive cells can be considered "dead" since the cell is no longer viable following plasma membrane permeabilization.</div>
+<ol start="4">
+<li>
+<b>Optional:</b> Compare Annexin V and YOYO3 labeling to characterize cell death kinetics.</li>
+</ol>
+<p>The SPARKL dual-label workflow utilizes two cell death reporters that quantify distinct phenotypes. Comparing Annexin V and YOYO3 kinetic data may suggest which cell death pathway activates following treatment of your perturbagen (<a href="#fig6">Figure 6</a></p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Expected Outcomes for Differential Labeling of Dying Cells with Annexin V and YOYO3 (Variant B)</div>
+<p>(A) Cells undergoing apoptosis will label with Annexin V prior to labeling with YOYO3. For single-label experiments, Annexin V is the preferred label as it more accurately reflects the biology of apoptosis.</p>
+<p>(B) Cells undergoing non-apoptotic death (e.g., necroptosis) will label with YOYO3 prior to labeling with Annexin V. For single-label experiments, YOYO3 is the preferred label as it more accurately reflects the biology of necroptosis.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Death receptor-mediated apoptosis</li>
+</ol>
+<ul>
+<li>Annexin V: cells will exhibit rapid positivity prior to YOYO3 and contraction.</li>
+<li>YOYO3: cells will exhibit positivity shortly after Annexin V.</li>
+<li>Phenotype: cells will contract and form apoptotic bodies ("airbags").</li>
+<li>ABT-737: may increase cell death kinetics if cells have sufficient Type II signaling.</li>
+<li>zVAD-fmk: will decrease apoptotic cell death; if increased cell death is observed, cells may have engaged the necroptosis pathway.</li>
+</ul>
+<ol start="2" type="a">
+<li>Mitochondrial pathway of apoptosis</li>
+</ol>
+<ul>
+<li>Annexin V: cells will exhibit positivity prior to YOYO3 and contraction.</li>
+<li>YOYO3: cells will exhibit positivity after Annexin V following a lag phase.</li>
+<li>Phenotype: cells will contract and form apoptotic bodies ("airbags").</li>
+<li>ABT-737: will increase cell death kinetics.</li>
+<li>zVAD-fmk: will decrease apoptotic cell death.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> The length of time between Annexin V-labeling and YOYO3-labeling varies greatly between treatments and is indicative of underlying signal transduction. Characterizing this differential labeling can be quite informative and is detailed below in Variant C.</div>
+<ol start="3" type="a">
+<li>Necroptosis</li>
+</ol>
+<ul>
+<li>Annexin V: cells will exhibit slow positivity after YOYO3.</li>
+<li>YOYO3: cells will exhibit positivity before Annexin V or phenotypic changes.</li>
+<li>Phenotype: cells will not contract and will exhibit label positivity before any phenotypic changes.</li>
+<li>zVAD-fmk: will induce necroptosis.</li>
+<li>Necrostatin-1: will inhibit necroptosis by inhibiting RIP1.</li>
+<li>Ferroptosis</li>
+<li>Annexin V: cells will exhibit positivity with similar kinetics as YOYO3.</li>
+<li>YOYO3: cells will exhibit positivity with similar kinetics as Annexin V.</li>
+<li>Phenotype: cells will contract.</li>
+<li>Erastin: will induce ferroptosis.</li>
+<li>ABT-737: will have no effect on cell death kinetics.</li>
+<li>zVAD-fmk: will have no effect on cell death kinetics.</li>
+</ul>
+<h3>Variant C: Sequential Labeling Studies to Study Penetrance of a Cell Death Response</h3>
+<p>This Variant utilizes object masks generated from the IncuCyte® (or similar live-cell imager) and processes them with ImageJ/Fiji to cross reference objects between channels. The resulting data tracks the time to single- and double-positive signal for individual objects and can capture heterogeneous responses to perturbagen within isogenic cell populations (<a href="#bib9">Roux et al., 2015</a>). This Variant requires the "SPARKL_pipeline" script (see reference <a href="#bib3">Gelles and Chipuk, 2019</a>).</p>
+<ol>
+<li>Seed and treat cells as described above.</li>
+</ol>
+<ul>
+<li>Green label: Annexin V-488</li>
+<li>Red label: YOYO3</li>
+</ul>
+<ol start="2">
+<li>Apply your processing definition (either at run-time or retroactively) and analyze fluorescent events over time as detailed above.</li>
+<li>Export the detection masks for the green, red, and overlap channels.</li>
+</ol>
+<ol type="a">
+<li>For your conditions of interest, select a representative well from which to export the object masks. TIFF files are the preferred image type.</li>
+<li>Give the exported images a prefix that denotes the channel (e.g., "Green", "Red", or "Yellow"). Save these in a folder marked "Images".</li>
+</ol>
+<ol start="4">
+<li>Run the "SPARKL_pipeline" script from the command line on your computer.</li>
+</ol>
+<ul>
+<li>Mac: Open Terminal. Type "python3 " (space included). Either drag the script "main.py" into the window or type the path to the script. Hit enter to execute.</li>
+<li>PC: Open cmd.exe. Type "py " (space included). Either drag the script "main.py" into the window or type the path to the script. Hit enter to execute.</li>
+</ul>
+<ol start="5">
+<li>Provide the files when prompted and hit enter:</li>
+</ol>
+<ol type="a">
+<li>The ImageJ/Fiji macro is part of the pipeline package and is called "IJmacro.ijm".</li>
+<li>Identify the folder ("directory") containing image files from Step 3, which will be called "Images".</li>
+<li>Type the prefix given to the files from the channel representing the first signal. For example, in an apoptosis experiment using Annexin V and YOYO3, Annexin V is expected to be the first signal and would be from the green channel.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The substring must match the prefix given to the files when they were exported (e.g., "Green").</div>
+<ol start="4" type="a">
+<li>Type the prefix given to the files from the overlap channel.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The substring must match the prefix given to the files when they were exported (e.g., "Yellow").</div>
+<ol start="5" type="a">
+<li>Identify the file which will be used to identify regions of interest (ROI). This file is the overlap ("Yellow") file from the last timepoint being analyzed.</li>
+</ol>
+<ol start="6">
+<li>The script will open ImageJ/Fiji, convert the masks to binary, create image stacks, realign the images, compare with identified ROI, and record the frame at which the ROI became signal positive. Several files will be generated in the same folder containing the Images folder:</li>
+</ol>
+<ol type="a">
+<li>"outputGY.csv" – this file contains the data for graphing. It contains the time to single- and double-positive signal for each ROI.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the "GY" is taken from the prefixes you provided; if running a red analysis then the file will contain "RY".</div>
+<ol start="2" type="a">
+<li>"resultsGREEN.csv", "resultsYELLOW.csv" – these files contain the status of each ROI at each slice of the image stack. The "mean" refers to the number of pixels within the ROI that are labeled. A "mean" that is greater than zero indicates labeling of the ROI.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the file names will match the prefixes provided.</div>
+<ol start="3" type="a">
+<li>"ROI.tif" – an image of ROI masks taken from the file provided in Step 5e.</li>
+<li>"ROIset.zip" – ROI Manager data which can be uploaded into ImageJ if needed.</li>
+<li>"stackGREEN.tif", "stackYELLOW.tif" – these files are the image stacks created by ImageJ which can be used for additional ImageJ workflows.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> the file names will match the prefixes provided.</div>
+<ol start="7">
+<li>Graph the data from the "output" file.</li>
+</ol>
+<ol type="a">
+<li>Use data from "t1" and "Δt" to make a graph in Prism (or equivalent software).</li>
+<li>Plot the "Δt" data set as a "stacked" dataset with "t1". This will generate bar graphs displaying the timespans of each signal in sequence (<a href="#fig7">Figure 7</a>A).</li>
+<li>The data may be more easily visualized as a violin plot. Graphing "t1", "t2", and "Δt" as violin plots will report distribution quartiles and be more informative for comparisons between labeling kinetics and treatment conditions (<a href="#fig7">Figure 7</a>B).</li>
+</ol>
+<ol start="8">
+<li>
+<b>Optional:</b> The data represents the population of cells and therefore can be subjected to population statistics. Using a Mann-Whitney U test between labels or treatments can demonstrate statistical significance between population trends.</li>
+</ol>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/80-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Expected Outcomes for Single-Cell Sequential Labeling and Population Analysis (Variant C)</div>
+<p>(A) Tracking labeling kinetics for individual cells can characterize the mode of cell death and the heterogeneity of responses to a perturbagen.</p>
+<p>(B) Individual cell data from (A) can be visualized as population distributions for the time-to-label with each label. Green plot: time to Annexin V positivity; red plot: time to YOYO3 positivity; yellow plot: time to double positivity; lines denote quartiles.</p>
+<p>Illustrative data reproduced from <a href="#bib4">Gelles et al. (2019)</a>.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> It may be informative to run this Variant once using the data from the green channel and then again with data from the red channel. These analyses can reveal the sequential labeling kinetics on a population scale and may inform on underlying biology.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>This method has a few limitations.</p>
+<p>Microscopy used in SPARKL is optimized for adherent cells growing in a monolayer. Cells that grow in colonies or in a "cobble-stone" pattern may require more stringent optimization of the processing definitions or may not be suited for this workflow.</p>
+<p>Suspension cells are not optimized for the SPARKL workflow. One option is to coat the tissue culture plate with a binding agent (e.g., collagen, poly-lysine) and adhere the cells prior to imaging. However, clustering of suspension cells will make segmentation during detection more complicated.</p>
+<p>Quantification of dying cells requires apoptotic bodies to remain attached to the plate. Cell lines which detach from the plate surface during apoptosis will result in a loss of counts over time.</p>
+<p>The "SPARKL_pipeline" script utilized in Variant C is limited to detecting cells that exhibit double positivity at the final time point. Cells that only exhibit single positivity are not detected by this script and not quantified in the analysis.</p>
+<p>High-content live-cell imagers require robust fluorescent signal for detection. As a consequence, certain applications (e.g., transient transfection of fluorescent reporters) may not be detectable within these workflows.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem</h3>
+<p>My cells are all crowded in the center or the periphery of the well.</p>
+<h3>Potential Solution</h3>
+<p>This most likely happened due to pipet-generated vortices. Avoid ejecting into the corner of a well (<a href="#fig1">Figure 1</a>A) or at an angle as these will generate a vortex and pool your cells (<a href="#fig1">Figure 1</a>B). When seeding your cells, eject perpendicularly against the well wall and avoid excessive ejector force (<a href="#fig1">Figure 1</a>C).</p>
+<h3>Problem</h3>
+<p>Cells detach when I aspirate culture media and add labeling/treatment media.</p>
+<h3>Potential Solution</h3>
+<p>If your cell line detaches easily, you can add your treatment media to the culture media in lieu of aspirating and replacing the media. Seed your cells in a 90 μL volume (adjusting the culture dilution to plate an equivalent number of cells), make your treatment media as a 10× solution, and add 10 μL to the culture media for a final volume of 100 μL in each well. Remember to culture your cells in phenol red-free media.</p>
+<h3>Problem</h3>
+<p>In my first time point, my cells are dead and labeled with a cell death marker.</p>
+<h3>Potential Solution</h3>
+<p>Rapid and indiscriminate cell death labeling usually occurs due to the preparation of the cells. The most common reason is that cells desiccated after aspirating culture media. Treat wells in small batches to limit the amount of time a well is dry. Another reason could be that your cells were unable to condition the treatment media and became stressed. If your cells are sensitive to media changes, consider adding concentrated treatment media to the wells without aspirating the culture media.</p>
+<h3>Problem</h3>
+<p>My cells are not in focus.</p>
+<h3>Potential Solution</h3>
+<p>If your cells are out of focus for only the first time point, then the issue is condensation forming on the plate. Give the plate sufficient time to return to temperature before the first scan is scheduled to occur. If the same wells are out of focus throughout the experiment, there may be something on the lid. Remember to avoid writing on the top of the well If you label the lid.</p>
+<h3>Problem</h3>
+<p>My scanned images have very high fluorescent background or a halo effect.</p>
+<h3>Potential Solution</h3>
+<p>There will always be some degree of halo due to the plastic and media. Top-Hat analysis will correct for this and generate images with a more even background (<a href="#fig3">Figure 3</a>A). Background can be further diminished by doing the following: use phenol-red free media; use media without riboflavin; reduce the volume of treatment media.</p>
+<h3>Problem</h3>
+<p>My non-dying cells label with Annexin V.</p>
+<h3>Potential Solution</h3>
+<p>Some cell lines accumulate puncta of Annexin V-positivity in a death-independent manner. We believe this occurs when phosphatidylserine stochastically equilibrates to the outer leaflet of the plasma membrane and interacts with Annexin V in the media (<a href="#bib1">Devaux, 1991</a>). Normally, phosphatidylserine would be transferred back to the inner leaflet by resident flippases (<a href="#bib14">Segawa et al., 2014</a>), but the binding of Annexin V prevents this from occurring. These small puncta can easily be excluded during analysis by adding an area filter to your processing definition.</p>
+<h3>Problem</h3>
+<p>My cells are not labeling with Annexin V (including the "rapid death" control).</p>
+<h3>Potential Solution</h3>
+<p>There are a few reasons why cells may not label with Annexin V. 1) Confirm that treatment media has sufficient free Ca<sup>2+</sup> (1.5−2 mM) or supplement as needed (<a href="#bib8">Meers and Mealy, 1993</a>). 2) The cell type may not sufficiently expose phosphatidylserine during cell death – use a cell-impermeable dye instead (e.g., YOYO3). 3) The method of cell death may not result in robust phosphatidylserine exposure (e.g., necroptosis) – use a cell-impermeable dye instead.</p>
+<h3>Problem</h3>
+<p>The fluorescent intensity of YOYO3 decreases over time and I lose positive objects.</p>
+<h3>Potential Solution</h3>
+<p>DNA-binding viability dyes lose signal as DNA is cleaved and fragmented (particularly in apoptosis) (<a href="#bib13">van Engeland et al., 1998</a>). For experiments lasting several days, a decrease in YOYO3+ events is expected. If loss of signal over time confounds downstream analysis, consider a cell death label which is not dependent on DNA content.</p>
+<h3>Problem</h3>
+<p>Both my green and red data decrease over time.</p>
+<h3>Potential Solution</h3>
+<p>If both channels lose objects over time, then dead cells may be lifting off the plate and leaving the focal plane of the microscope. Most adherent cell lines remain on the plate after dying unless the vessel is agitated. Adhesion of dead cells may be increased by coating the plate (e.g., collagen, poly-ornithine, poly-lysine). Alternatively, try Variant A to normalize cell death data by total number of cells, which will account for any lost cells during the experiment.</p>
+<h3>Problem</h3>
+<p>The morphology of my dead cells causes them to be detected as several objects, so my dead cell counts are higher than the total cell counts (Variant A).</p>
+<h3>Potential Solution</h3>
+<p>First, try adjusting the segmentation parameter in the channel detecting cell death events as this may help reduce the number of extra counts for dying cells (<a href="#fig3">Figure 3</a>B, middle panel). Additionally, try using Method 3 to normalize your data. If this does not work, you may have to do a manual assessment of the cells in order to normalize your data. Alternatively, you could keep your data as events instead of normalizing.</p>
+<h3>Problem</h3>
+<p>Downstream data analysis is very noisy.</p>
+<h3>Potential Solution</h3>
+<p>Scan your plate more frequently to acquire more data and smooth the curve. You can also use a smoothing function (e.g., in Prism) for certain applications without compromising the data interpretation.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Devaux P.F. (1991). Static and dynamic lipid asymmetry in cell membranes. Biochemistry. <i>30</i>, 1163−1173.</p>
+<p id="bib2">Gelles J.D., Chipuk J.E. (2016). Robust high-throughput kinetic analysis of apoptosis with real-time high-content live-cell imaging. Cell Death Dis. <i>8</i>, e2758.</p>
+<p id="bib3">Gelles J.D., Chipuk J.E. (2019). Github.com/ChipukLab/SPARKL_pipeline. Zenodo 2019. <a href="http://doi.org/10.5281/zenodo.3458573">http://doi.org/10.5281/zenodo.3458573</a>.</p>
+<p id="bib4">Gelles J.D., Mohammed J.N., Santos L.C., Legarda D., Ting A.T., Chipuk J.E. (2019). Single-cell and population-level analyses using real-time kinetic labeling couples proliferation and cell death mechanisms. Dev. Cell. <i>51</i>, 277−291.</p>
+<p id="bib5">Hafner M., Niepel M., Chung M., Sorger P.K. (2016). Growth rate inhibition metrics correct for confounders in measuring sensitivity to cancer drugs. Nat. Methods <i>13</i>, 521-527.</p>
+<p id="bib6">Koopman G., Reutelingsperger C.P., Kuijten G.A., Keehnen R.M., Pals S.T., van Oers M.H. (1994). Annexin V for flow cytometric detection of phosphatidylserine expression on B cells undergoing apoptosis. Blood <i>84</i>, 1415-1420.</p>
+<p id="bib7">Logue S., Elgendy M., Martin S. (2009). Expression, purification and use of recombinant AV for the detection of apoptotic cells. Nat. Protoc. <i>4</i>, 1383−1395.</p>
+<p id="bib8">Meers P., Mealy T. (1993). Calcium-dependent annexin V binding to phospholipids: stoichiometry, specificity, and the role of negative charge. Biochemistry. <i>32</i>, 11711−11721</p>
+<p id="bib9">Roux J., Hafner M., Bandara S., Sims J.J., Hudson H., Chai D., Sorger P.K. (2015). Fractional killing arises from cell-to-cell variability in overcoming a caspase activity threshold. Mol. Syst. Biol. <i>11</i>, 803.</p>
+<p id="bib10">Schneider, C.A., Rasband, W.S., Eliceiri, K.W. (2012). NIH Image to ImageJ: 25 years of image analysis. Nat. Methods <i>9</i>, 671−675.</p>
+<p id="bib11">Schindelin, J., Arganda-Carreras, I., Frise, E. (2012). Fiji: an open-source platform for biological-image analysis. Nat. Methods <i>9</i>, 676−682.</p>
+<p id="bib14">Segawa, K., Kurata, S., Yanagihashi, Y., Brummelkamp, T.R., Matsuda, F., Nagata, S., 2014. Caspase-mediated cleavage of phospholipid flippase for apoptotic phosphatidylserine exposure. Science <i>344</i> (6188), 1164–1168. doi:10.1126/science.1252809.</p>
+<p id="bib12">Tait J.F., Gibson D., Fujikawa K. (1989). Phospholipid binding properties of human placental anticoagulant protein-I, a member of the lipocortin family. J. Biol. Chem. <i>264</i>, 7944−7949.</p>
+<p id="bib13">van Engeland M., Nieland L.J., Ramaekers F.C., Schutte B., Reutelingsperger C.P. (1998). Annexin V-affinity assay: a review on an apoptosis detection system based on phosphatidylserine exposure. Cytometry <i>31</i>, 1−9.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Acknowledgements</h3>
+<p>This work was supported by <a href="https://doi.org/10.13039/100000002">NIH</a> grants R01 CA157740 (J.E.C.), R01 CA206005 (J.E.C.), R01 CA253139 (J.E.C.), and F31 AA024681 (J.D.G.); the JJR Foundation; the William A. Spivak Fund; the Fridolin Charitable Trust; an <a href="https://doi.org/10.13039/100000048">American Cancer Society</a> Research Scholar Award; a <a href="https://doi.org/10.13039/100005189">Leukemia &amp; Lymphoma Society</a> Career Development Award; and an Irma T. Hirschl/Monique Weill-Caulier Trust Research Award. This work was also supported in part by two research grants (5FY1174 and 1FY13416) from the <a href="https://doi.org/10.13039/100000912">March of Dimes Foundation</a>, a Collaborative Pilot Award from the Melanoma Research Alliance, a Developmental Research Pilot Project Program within the Department of Oncological Sciences at the Icahn School of Medicine at Mount Sinai, and the Tisch Cancer Institute Cancer Center Support grant (P30 CA196521).</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization and Methodology: J.D.G.; Funding Acquisition and Writing: J.D.G. and J.E.C.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

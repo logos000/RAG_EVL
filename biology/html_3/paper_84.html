@@ -1,0 +1,375 @@
+<article>
+<section>
+<h1 id="header">Protocol for Dynamic Imaging of RNA in Living Cells by CRISPR-Cas13 System</h1>
+<p><time datetime="2020-04-24">Published: April 24, 2020</time></p>
+<p>Yang Wang,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> Liang-Zhong Yang,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a></sup> and Ling-Ling Chen<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>State Key Laboratory of Molecular Biology, Shanghai Key Laboratory of Molecular Andrology, CAS Center for Excellence in Molecular Cell Science, Shanghai Institute of Biochemistry and Cell Biology, University of Chinese Academy of Sciences, Chinese Academy of Sciences, 320 Yueyang Road, Shanghai 200031, China</p>
+<p id="aff2"><sup>2</sup>School of Life Science and Technology, ShanghaiTech University, 100 Haike Road, Shanghai 201210, China</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical Contact</p>
+<p id="fn3"><sup>5</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:wangyang2015@sibcb.ac.cn">wangyang2015@sibcb.ac.cn</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:linglingchen@sibcb.ac.cn">linglingchen@sibcb.ac.cn</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100037">10.1016/j.xpro.2020.100037</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This protocol uses endonuclease-dead, programmable RNA-guided RNA-targeting Cas13 RNases (d)Cas13 proteins fused with fluorescent proteins to visualize and track RNA dynamics in live cells. This protocol details several aspects of the procedure, including gRNA design, fluorescent protein selection, nuclear localization signal adjustment, raw data analysis, operation steps, and extended optional applications that have been successfully applied in the visualization of <i>NEAT1</i>, <i>SatIII</i>, <i>MUC4</i>, and <i>GCN4</i> RNAs.</p>
+<p>For complete information on the use and execution of this protocol, please refer to <a href="#bib1">Yang et al. (2019)</a>.</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>CRISPR-dCas13b is a user-friendly system for RNA imaging</li>
+<li>Tracking RNA with dPspCas13b and single gRNAs in living cells</li>
+<li>RNA-RNA/DNA labeling by orthogonal dCas13bs or combined with dCas9</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/84-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<h3>Design and Clone gRNAs into Vectors</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<ol>
+<li>Design appropriate targeting gRNAs; we recommend using <a href="http://crispr.mit.edu/">crispor.tefor.net</a> for preliminary selection of gRNA sequences with high specificity. The gRNA used for dPspCas13b and dPguCas13b does not require a specific protospacer flanking site. But we recommend to select the gRNA spacer with a guanine (G) in the 5′ end that will avoid introduction of a mismatch while adding an extra G to ensure the transcription efficiency. Further, the length of gRNA spacer between 20–27 nucleotides is recommended. Of note, among all examined lengths of gRNAs for <i>NEAT1</i>, the best gRNA lengths for labeling depend on the targeted regions on <i>NEAT1</i>, while the shorter ones generally work better. We typically try three gRNAs for an abundant RNA of interest in HeLa cells.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To avoid potential effect of CRISPR-dCas13 on targeting RNA localization and processing, do not design gRNAs that target functional sequence (such as known functional motifs or modules of an RNA of interest); perform RNA FISH of the same endogenous RNA in wild type cells as a reference; and perform co-staining of CRISPR dCas13-labeld RNA and FISH of the same endogenous RNA in cells to confirm signals by CRISPR-dCas13.</div>
+<ol start="2">
+<li>Clone each gRNA into expressing vectors containing antibiotic-resistance open reading frame.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Use dPspCas13b preferentially for single RNA visualization and tracking. There is no antibiotic-resistance open reading frame contained in the gRNA expressing vectors in our previous study (<a href="#bib1">Yang et al., 2019</a>), but an antibiotic-resistance containing vector will benefit the following antibiotic selection. Meanwhile, including several gRNAs in one expressing vectors as a multiplex is optional since co-expression of several gRNAs might benefit the targeting efficiency.</div>
+<h3>Generate Appropriate dCas13-FPs-NLS into Vectors</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 days</div>
+<ol start="3">
+<li>In the meantime, select appropriate copy numbers of fluorescent protein (FP) and nuclear localization signal (NLS) and clone them into expressing vectors containing antibiotic-resistance open reading frame. Based on the visualization of <i>NEAT1</i>, <i>SatIII</i>, <i>MUC4</i> and <i>GCN4</i> RNAs in live cells (<a href="#bib1">Yang et al., 2019</a>), we recommend dPspCas13b-3×EGFP-2×NLS for labeling nuclear RNAs, dPspCas13b-3×sfGFP-3×NLS or dPspCas13b-2×mNeonGreen-NLS for labeling cytoplasmic RNAs.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is not absolute necessary to use these three combinations of FPs and NLS to label nuclear or cytoplasmic RNAs. Different types and copies of FP and NLS could be tested for different RNAs and combinations of FP and NLS for dPguCas13b should be test separately. Meanwhile, plasmids including dPspCas13b and dPguCas13b proteins fused with FPs used in this protocol are capable of packaging lentivirus, which is optional to improve dCas13b-FP expression level.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>Lipofectamine 3000 Reagent</td>
+<td>Thermo</td>
+<td>Cat#: 21341</td>
+</tr>
+<tr>
+<td>DPBS</td>
+<td>Gibco</td>
+<td>Cat#: 14190136</td>
+</tr>
+<tr>
+<td>FluoroBrite<sup>TM</sup> DMEM</td>
+<td>Thermo</td>
+<td>Cat#: A1896701</td>
+</tr>
+<tr>
+<td>Dulbecco’s Modified Eagle medium (DMEM)</td>
+<td>Gibco</td>
+<td>Cat#: 11965118</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum (FBS)</td>
+<td>Gibco</td>
+<td>Cat#: 10099141</td>
+</tr>
+<tr>
+<td>Opti-MEM</td>
+<td>Gibco</td>
+<td>Cat#: 31985070</td>
+</tr>
+<tr>
+<td colspan="3">Experimental Models: Cell Lines</td>
+</tr>
+<tr>
+<td>HeLa</td>
+<td>ATCC</td>
+<td>Cat#: CCL-2</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pCMV-VSV-G</td>
+<td>Addgene</td>
+<td>Cat#: 8454</td>
+</tr>
+<tr>
+<td>pMD2.G</td>
+<td>Addgene</td>
+<td>Cat#: 12259</td>
+</tr>
+<tr>
+<td>PspCas13b crRNA backbone</td>
+<td>Addgene</td>
+<td>Cat#: 103854</td>
+</tr>
+<tr>
+<td>PguCas13b crRNA backbone</td>
+<td>Addgene</td>
+<td>Cat#: 103853</td>
+</tr>
+<tr>
+<td>dCas9 sgRNA backbone</td>
+<td>Addgene</td>
+<td>Cat#: 75390</td>
+</tr>
+<tr>
+<td>pHAGE-dPspCas13b-3×EGFP-2×NLS-IRES-puro</td>
+<td>Addgene</td>
+<td>Cat#: 132397</td>
+</tr>
+<tr>
+<td>pHAGE-dPspCas13b-3×sfGFP-3×NLS-IRES-puro</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pHAGE-dPspCas13b-2×mNeonGreen-NLS-IRES-puro</td>
+<td>Addgene</td>
+<td>Cat#: 132403</td>
+</tr>
+<tr>
+<td>pHAGE-dPspCas13b-3×mRuby3-2×NLS</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pHAGE-dPguCas13b-3×mRuby3-2×NLS</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pHAGE-TO-dCas9-mEmerald</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and Algorithms</td>
+</tr>
+<tr>
+<td>Fiji/ImageJ</td>
+<td>Fiji/ImageJ</td>
+<td><a href="https://imagej.net/Fiji/">https://imagej.net/Fiji/</a></td>
+</tr>
+<tr>
+<td>GraphPad Prism 8</td>
+<td>GraphPad Software</td>
+<td><a href="http://www.graphpad.com/scientific-software/prism/">http://www.graphpad.com/scientific-software/prism/</a></td>
+</tr>
+<tr>
+<td>gRNAs Design Tool</td>
+<td>CRISPR DESIGN</td>
+<td><a href="http://crispor.tefor.net">http://crispor.tefor.net</a></td>
+</tr>
+<tr>
+<td>Office365</td>
+<td>Microsoft</td>
+<td><a href="https://www.office.com">https://www.office.com</a></td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td>MathWorks</td>
+<td><a href="https://www.mathworks.com">https://www.mathworks.com</a></td>
+</tr>
+<tr>
+<td>softWoRx 6.5</td>
+<td>GE Healthcare</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>DeltaVision Elite imaging system</td>
+<td>GE Healthcare</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>35 mm no.1.5 glass-bottomed dishes</td>
+<td>Cellvis</td>
+<td>Cat#: D35-2001.5-N</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and Equipment</h2>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> We used Lipofectamine 3000 Reagent (Thermo) to perform transfection of plasmids, DeltaVision Elite imaging system (GE Healthcare) coupled with suites of live cells imaging system to obtain imaging data, but equivalent transfection method and imaging system can be used.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<h3>CRISPR-dCas13-FP/gRNA Delivery Method</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>The purpose of this step is to deliver expression vectors including gRNA and dPspCas13b-FP into cells. The transfected cells followed by selection with antibiotics (puromycin in this protocol) is optional if the transfection level is low.</p>
+<div class="note">
+<span class="note-title">Note:</span> A dozen gRNAs targeting <i>NEAT1</i>, <i>SatIII</i>, <i>MUC4</i> and <i>GCN4</i> have been tested with dPspCas13b (<a href="#bib1">Yang et al., 2019</a>).</div>
+<ol>
+<li>Plate cells in 12-well plates at approximately 30% confluency.</li>
+<li>Transfect dPspCas13b-FP and gRNA expressing vectors.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Cell density should reach 70%–80% confluency.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Plasmids transfection into cells should be performed within 24 h after cell plating to guarantee the cells are actively dividing.</div>
+<ol start="3">
+<li>Recover Lipofectamine 3000 Reagent and Opti-MEM medium to 25°C.</li>
+<li>Dilute 2 μL Lipofectamine 3000 in 50 μL Opti-MEM and mix well with a pipette.</li>
+<li>Dilute 2 μL P3000, 0.7 μg gRNA and 0.3 μg dPspCas13b-FP plasmids in 50 μL Opti-MEM and mix well with a pipette.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> We recommend labeling <i>NEAT1</i> with dPspCas13b in HeLa cells as a positive control due to the high expression and available proteins for positive signal confirmation (e.g., NONO, SFPQ, TDP43) when first set up CRISPR-dCas13b-FP labeling system in live cells. Additionally, mRNA <i>MUC4</i> is another optional positive control for labeling cytoplasmic RNAs.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> At step 5, we suggest the ratio of each gRNA plasmid and dPspCas13b-FP plasmid above 2:1. In our previous study (<a href="#bib1">Yang et al., 2019</a>), we transfected 0.2 μg dPspCas13b-EGFP, 0.4 μg g5′-1 and 0.4 μg g5′-2 (targeting <i>NEAT1</i>) to label <i>NEAT1</i> for cells in 12-well plate. Researchers could adjust the amount of transfected plasmids according to the requirements. In addition, to control artefactual and false-positive signal labeled by CRISPR-dPspCas13b, the positive gRNA control to label <i>NEAT1</i> (available) and negative control (non-targeting gRNA) should be tested simultaneously.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Beyond single RNA labeling and tracking, application of orthogonal dPspCas13b and dPguCas13b on dual-color imaging of different transcripts as well as combination of dPspCas13b and nuclease-deficient Cas9 (dCas9, dSpCas9 used in this protocol) for simultaneous visualization of genomic DNA and RNA transcripts are optional.</div>
+<ul>
+<li>At step 4, dilute 4 μL Lipofectamine 3000 in 50 μL Opti-MEM and mix well with a pipette.</li>
+<li>At step 5, for dual-color RNA-RNA imaging, dilute 4 μL P3000, 0.3 μg dPspCas13b-FP, 0.7 μg gRNA (Psp), 0.3 μg dPguCas13b-FP and 0.7μg gRNA (Pgu) plasmids in 50 μL Opti-MEM and mix well with a pipette (dPspCas13b-3×EGFP-2×NLS-IRES-puro, gNEAT1 and dPguCas13b-3×mRuby3-2×NLS, gSatIII for <i>NEAT1</i>, <i>SatIII</i> labeling are used in this protocol); for dual-color DNA-RNA labeling, dilute 4 μL P3000, 0.3 μg dPspCas13b-FP, 0.7 μg gRNA, 0.3 μg dCas9-FP and 0.7 μg sgRNA (dPspCas13b-3×mRuby3-2×NLS, gMUC4/gSatIII and dCas9-Emerald, sgMUC4/sgSatIII for <i>MUC4</i>/<i>SatIII</i> DNA and RNA labeling are used in this protocol) in 50 μL Opti-MEM and mix well with a pipette.</li>
+</ul>
+<ol start="6">
+<li>Add diluted plasmids to diluted P3000 reagent at 1:1 ratio and mix well with a pipette.</li>
+<li>Incubate for 15 min at 25°C (or room temperature).</li>
+<li>Add DNA-lipid complex dropwise and evenly into each well of the 12-well plates.</li>
+<li>Incubate cells for 8–12 h and refresh the medium (refresh the DNA-lipid containing medium will avoid the lipid toxicity), followed by plating into glass bottom dishes for microscopic observation.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Summary of recommended plasmids usage for different applications of CRSIPR-dCas13b on living cell imaging is provided in <a href="#tbl1">Table 1</a>.</div>
+<table id="tbl1">
+<caption>Table 1. Summary of Recommended Plasmids Usage for Different Applications of CRSIPR-dCas13b on Living Cell Imaging</caption>
+<thead>
+<tr>
+<th>Assay</th>
+<th>Plasmids Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single RNA labeling and tracking</td>
+<td>0.3 μg dPspCas13b-FP, 0.7 μg gRNA (Psp)</td>
+</tr>
+<tr>
+<td>Dual-color imaging of different RNA</td>
+<td>0.3 μg dPspCas13b-FP, 0.7 μg gRNA (Psp), 0.3 μg dPguCas13b-FP, 0.7μg gRNA (Pgu)</td>
+</tr>
+<tr>
+<td>Dual-color imaging of genomic DNA and RNA</td>
+<td>0.3 μg dPspCas13b-FP, 0.7 μg gRNA (Psp), 0.3 μg dCas9-FP, 0.7 μg sgRNA</td>
+</tr>
+</tbody>
+</table>
+<div class="optional">
+<span class="optional-title">Optional:</span> In order to increase the proportion of cell transfection, antibiotic selection is optional after step 8.</div>
+<div class="note">
+<span class="note-title">Note:</span> If take step of antibiotic selection, perform steps 10–12 listed below before transfection of dPspCas13b-FP and gRNA expressing vectors.</div>
+<ol start="10">
+<li>Plating cells in 24-well plates at approximately 30% confluency.</li>
+<li>Add increasing amounts of antibiotics (e.g., 0–10 μg puromycin in this protocol) to duplicate wells of cells plated in culture medium.</li>
+<li>Observe the cells under a light microscope after 24 h and choose appropriate concentration of the antibiotic (the duration of culture may be extended, depending on the cell line used).</li>
+<li>Perform transfection of dCas13-FP and gRNA vectors according to steps 1–8.</li>
+<li>Incubate cells for 8–12 h and refresh the DNA-lipid containing medium.</li>
+<li>Change the medium to fresh culture medium supplemented with antibiotic (1 μg/mL puromycin for HeLa in this protocol) after 24 h.</li>
+<li>Select for 24–48 h.</li>
+<li>After transfection and selection, collect the cells and passage into glass bottom dishes for the following microscopic observation.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Antibiotic selection should be performed when the transfection efficiency is low. In our previous study (<a href="#bib1">Yang et al., 2019</a>), gRNA expression vectors do not contain antibiotic resistance while dPspCas13b vectors do, thus, antibiotic selection is optional to select co-transfected cells. However, do not select for more than 2 days since transiently transfected plasmids are usually lost when cells divide. Additionally, package dPspCas13-FP into lentivirus for infection is also optional for some cell lines that are difficult to achieve desired level of protein expression by transfection.</div>
+<h3>Preparing Cells for Microscopy</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The purpose of this step is to prepare cells for observation under the microscope.</p>
+<ol start="18">
+<li>After 24 h transfection (or antibiotic selection), cells are transferred into 35 mm No.1.5 glass-bottomed dishes (Cellvis) at 50%–70% confluency.</li>
+<li>Wash cells with DPBS and exchange the medium with fresh FluoroBrite<sup>TM</sup> DMEM containing with 10% FBS (prewarmed to 37°C before used) while the cells confluency reaches 80%–100%, and place back in the incubator for 1 h before observation by microscope.</li>
+<li>Equilibrate the microscope to 37°C and 5% CO<sub>2</sub>.</li>
+<li>Make sure cameras are aligned prior to image acquisition, if necessary, align using a multicolor calibration slide.</li>
+<li>Identify suitable cells for imaging using dPspCas13b-FP channel.</li>
+<li>Image cells in the dPspCas13b-FP channel using suitable parameters according to each used microscope of application, and 50%T, 0.2 second and 0.2 μm z-step are set on DeltaVision Elite imaging system (GE Healthcare) in this protocol.</li>
+<li>Image processing based on used microscope, deconvolution plugin with softWoRx 6.5 is used in this protocol.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> In our experience, there are different FP expression and distribution patterns in cells under microscopic observation. For example, dPspCas13b-EGFP usually aggregates in the nucleolus with gNC (guide non-targeting control) (<a href="#bib1">Yang et al., 2019</a>). Importantly, however, off-target gRNA can lead to an evenly redistribution of dPspCas13b-EGFP in the nucleus, and effectual gRNA targeting <i>NEAT1</i> produces reliable <i>NEAT1</i> (paraspeckle) signals (<a href="#fig1">Figure 1</a>) (<a href="#bib1">Yang et al., 2019</a>).</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/84-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Examples of dPspCas13b-FP Distribution Patterns with Different gRNAs</div>
+<p>Top, representative images of dPspCas13b-3×EGFP expressed cells with different gRNAs: gNC (guide non-targeting control), gOT (off-target gRNA), gNEAT1 (<i>NEAT1</i> targeting gRNA). Bottom, line scans showing the relative intensity of the dotted lines in corresponding images. Arrows indicate the <i>NEAT1</i> positive signal.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> A high level of dPspCas13b-EGFP expression generally introduces high background. Thus, the expression level of dPspCas13b-EGFP in the examined cells should be considered; its comparably lower expression as well as its uniform distribution in each nucleus (such as gNEAT1 panel in <a href="#fig1">Figure1</a>) should be observed preferentially.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected Outcomes</h2>
+<p>In our experience, about 50% transfected HeLa cells show even distribution of dPspCas13b-EGFP. For positive signals of the interested RNAs (e.g., <i>NEAT1</i>, <i>SatIII</i>, <i>MUC4</i>), we set the criteria as signal to noise ratio (SNR) over 3. The RNAs of interest with an aggregation localization (e.g., <i>NEAT1</i>) or repeated sequence elements (e.g., <i>SatIII</i>, <i>MUC4</i>) are usually easy to be labeled by CRISPR-dPspCas13b. There is a positive correlation between the labeling efficiency/quality and the transfection efficiency.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and Statistical Analysis</h2>
+<p>All fluorescence imaging data is analyzed by Fiji/Image J.</p>
+<p>There are two indicators to evaluate whether this CRISPR-dPspCas13b mediated RNA imaging in live cell work well: co-localization and signal to noise ratio (SNR) analysis. Co-localization is used to confirm the specific signal; SNR is used to evaluate the effectiveness of this method.</p>
+<p>For co-localization analysis to ensure the positive signal of RNA, we suggest to co-express a known co-localized protein fused with another FP labeling in live cells or perform RNA Fluorescence <i>in situ</i> Hybridization (FISH) of the targeted RNA in fixed cells. Separate images into two channels of dPspCas13b-FP and the referred protein (or signals labeled by FISH). In the dPspCas13b-FP channel, select the nucleus region as the region of interest (ROI) for a nuclear RNA or the cytoplasmic region as the ROI for a cytoplasmic RNA. The parameters are set as below in Coloc 2 plugin: dPspCas13b-FP channel as channel 1, referred channel as channel 2, ROI in channel 1 as the ROI, threshold regression with bisection; PFS is set at 3.0 and costes randomisations is set at 10. After analyzed by Fiji/image J, the results are read out as Pearson’s R value with no threshold (<a href="#fig2">Figure 2</a>A).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/84-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. An Example of Quantification and Statistical Analysis</div>
+<p>Schematic for co-localization analysis (A) and SNR calculation (B) of NEAT1-dPspCas13b-EGFP in NONO-mRuby3-KI HeLa cells. KI, knock in.</p>
+</figcaption>
+</figure>
+<p>For SNR calculation of the labeled signals, select a circle with diameter of 3∼4 μm (about 10 folds over the resolution limit of used microscope) and the center of the spot (exclude spots of labeled signal) as background, calculate SNR with the formula: SNR=Psignal/Pbackground = (Max intensity of spots signal – Mean intensity of background GFP spot) / Std. dev. of background signal (<a href="#fig2">Figure 2</a>B).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Although CRISPR-dPspCas13b provides a user-friendly tool to realize quick and robust tracking in live cells for abundant RNAs, it has limitations. No current guidelines to design efficient gRNAs targeting an RNA of interest and conformation of some structurally functional RNAs might limit the application of this approach. The non-repeat-containing RNAs limit the number of dCas13-FP to be recruited by gRNAs. Diffused localized RNAs often suffer from low SNR targeting by dCas13-FP and gRNAs. Finite fluorescence intensity of this method also limits its applications combined with fluorescence recovery after photobleaching (FRAP), Structured Illumination Microscopy (SIM) and long-term live-cell imaging.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem</h3>
+<p>Low transfection efficiency of dPspCas13b-FP and gRNA observed in step 22</p>
+<h3>Potential Solution</h3>
+<p>We recommend cloning several gRNAs into one vector as a multiplex assembly with separated U6 promoters, this will benefit the co-expression of gRNAs. Meanwhile, dPspCas13b-FP can be packaged as lentivirus for infection and antibiotic selection. Cells or single-cell clone with stable, uniformly distributed and appropriate level of expression of dPspCas13b-FP can be further selected from these infected cells.</p>
+<h3>Problem</h3>
+<p>No convincing signals in step 23</p>
+<h3>Potential Solution</h3>
+<p>The gRNA used might not work well. Sometimes gRNA designed by the prediction tool doesn’t work well in the dPspCas13b-FP expressing cells. We recommend designing the gRNA spacer sequences that target to repeated sequences in an RNA of interest, if any; or according to the antisense oligos (ASOs) or shRNA sequences that effectively targeting an RNA of interest.</p>
+</section>
+<section>
+<h2 id="q-and-a">Q&amp;A</h2>
+<p class="question"><b>Q:</b> Can you shorten the gRNA further to allow for off-targeting within same RNA molecule to boost signal?</p>
+<p class="answer"><b>A:</b> We have not tested this directly. However, it remains highly likely that shorter gRNAs allow for better off-targeting by boosting signals of specific types of RNA.</p>
+<p class="question"><b>Q:</b> Is there an inducible Cas13 expression construct available to help modulate the signal and decrease noise?</p>
+<p class="answer"><b>A:</b> Inducible Cas13 expression might not benefit this labeling system a lot. Instead, we recommend that to achieve a low background of dCas13-FPs, you should transfect the minimum amount of constructs, which is a well-tested and easy approach.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Yang, L.Z., Wang, Y., Li, S.Q., Yao, R.W., Luan, P.F., Wu, H., Carmichael, G.G., and Chen, L.L. (2019). Dynamic imaging of RNA in living cells by CRISPR-Cas13 systems. Mol. Cell <i>76</i>, 981-997.e7.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Acknowledgements</h3>
+<p>This work was supported by the <a href="https://doi.org/10.13039/501100002367">Chinese Academy of Sciences</a> (XDB19020104), the <a href="https://doi.org/10.13039/501100002855">Ministry of Science and Technology of China</a> (2016YFA0100701), the <a href="https://doi.org/10.13039/100014717">National Natural Science Foundation of China</a> (31725009, 31830108, and 31861143025), and the <a href="https://doi.org/10.13039/100000011">Howard Hughes Medical Institute</a> (55008728).</p>
+<h3>Author Contributions</h3>
+<p>Y.W. and L.-Z.Y. wrote the manuscript, supervised by L.-L.C.</p>
+<h3>Declaration of Interests</h3>
+<p>L.-Z.Y., Y.W., and L.-L.C. have filed a patent for the dCas13b RNA labeling.</p>
+</section>
+</article>

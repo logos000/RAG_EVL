@@ -1,0 +1,595 @@
+<article>
+<section>
+<h1 id="header">FunGraph: A statistical protocol to reconstruct omnigenic multilayer interactome networks for complex traits</h1>
+<p><time datetime="2021-12-10">Published: December 10, 2021</time></p>
+<p>Ang Dong,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a></sup> Li Feng,<sup><a href="#aff1">1</a></sup> Dengcheng Yang,<sup><a href="#aff1">1</a></sup> Shuang Wu,<sup><a href="#aff1">1</a></sup> Jinshuai Zhao,<sup><a href="#aff1">1</a></sup> Jing Wang,<sup><a href="#aff1">1</a></sup> and Rongling Wu<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Center for Computational Biology, College of Biological Sciences and Technology, Beijing Forestry University, Beijing 100083, China</p>
+<p id="aff2"><sup>2</sup>Center for Statistical Genetics, Departments of Public Health Sciences and Statistics, The Pennsylvania State University, Hershey, PA 17033, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:rwu@phs.psu.edu">rwu@phs.psu.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100985">10.1016/j.xpro.2021.100985</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We describe a statistical protocol of how to reconstruct and dissect functional omnigenic multilayer interactome networks that mediate complex dynamic traits in a genome-wide association study (GWAS). This protocol, named FunGraph, can analyze how each locus affects phenotypic variation through its own direct effect and a complete set of indirect effects due to regulation by other loci co-existing in large-scale networks. FunGraph is applicable to any GWAS aimed to characterize the genetic architecture of dynamic phenotypic traits.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref12">Wang et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>TurboID enabled biotin-based proximity labeling protocol for <i>C. elegans</i>
+</li>
+<li>Experimental design guidelines for proximity labeling in <i>C. elegans</i>
+</li>
+<li>A step-by-step TurboID protocol from transgene design to protein identification</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Complex traits are of paramount importance to many fields of modern agriculture, biology, and biomedicine, but are also very difficult to study because of their complex genetic architecture. Traditional approaches based on reductionist thinking can identify individual key quantitative trait loci (QTLs) and have been instrumental for the identification of major QTLs for a variety of complex traits (<a href="#bib2">Bradbury et al., 2007</a>; <a href="#bib3">Burga et al., 2019</a>; <a href="#bib11">Thavamanikumar et al., 2013</a>). Because each complex trait needs a time to express, a mapping approach that captures the dynamic feature of complex traits, named as functional mapping (FunMap), has been developed and applied in a variety of genetic studies (<a href="#bib8">Ma et al., 2002</a>; <a href="#bib16">Wu and Lin, 2006</a>; <a href="#bib13">Wang et al., 2019</a>; <a href="#bib5">Li and Sillanpää, 2015</a>; <a href="#bib4">Camargo et al., 2018</a>). Thanks to the integration of biological principles underlying trait formation through mathematical equations, FunMap has proven itself to be biologically more relevant and statistically more powerful for QTL detection (<a href="#bib4">Camargo et al., 2018</a>; <a href="#bib6">Liu et al., 2010</a>; <a href="#bib7">Lyra et al., 2020</a>). However, increasing evidence shows that complex traits are controlled by a complete set of genes carried by an organism (<a href="#bib1">Boyle et al., 2017</a>). Thus, the best way to map complex traits is to coalesce all genes into an informative network that code all possible gene-gene interactions (<a href="#bib10">Sun et al., 2021</a>; <a href="#bib15">Wu and Jiang, 2021</a>). As an extension of FunMap, <a href="#bib12">Wang et al. (2021)</a> have more recently proposed a statistical method for reconstructing omnigenic multilayer interactome networks for dynamic traits from any large number of SNPs in a genetic mapping or association study.</p>
+<p>Here, we describe a detailed protocol for Wang et al.’s method, making it more accessible to general geneticists. We name this protocol FunGraph as the extension of FunMap to draw a more complete picture of genetic control mechanisms underlying complex traits. FunGraph includes a series of computational steps towards genetic mapping of complex traits, i.e., dynamic fitting of traits measured across time and space, FunMap of dynamic traits to detect significant QTLs and estimate genetic effect curves for each SNP, functional clustering of all SNPs into distinct modules based on their spatiotemporal similarity of genetic effect patterns, variable selection implemented to choose a set of the most significant SNPs that link with a given SNP, building and solving a system of nonlinear prey-predator ordinary differential equations (nLV ODEs), and reconstructing genetic networks using ODE parameters. We show each step by illustrating the results from a GWAS experiment of Euphrates poplar. Multilayer interactome networks inferred by FunGraph provide a tool to characterize the genetic architecture of dynamic complex traits.</p>
+<h3 id="sec1.1">Download and install required software and R packages</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [1 min]</div>
+<p>FunGraph package is available from github (see <a href="#key-resources-table">key resources table</a>). Basic knowledge about R scripting and modeling is required to understand this protocol. The following example (including data and scripts) is used to demonstrate the general framework of FunGraph.</p>
+<p>To install FunGraph, first install R package devtools through command:</p>
+<div class="textbox">
+<p><code>&gt;install.packages("devtools")</code></p>
+</div>
+<p>then use the command:</p>
+<div class="textbox">
+<p><code>&gt;devtools::install_github("cxzdsa2332/FunGraph/FunGraph_0.1.0")</code></p>
+<p><a href="#sec6.1">Troubleshooting 1</a></p>
+</div>
+<p>Alternatively, you can download the FunGraph_0.1.0.tar.gz file in the github repository and manually install FunGraph.</p>
+<p>Before the FunGraph is used in R, the package importation is necessary by the following command:</p>
+<div class="textbox">
+<p><code>&gt;library(FunGraph)</code></p>
+</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Genotype data for GWAS population</td>
+<td>This protocol</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Phenotypic data for GWAS population</td>
+<td>This protocol</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>R version 4.1.1</td>
+<td>R Project (R Core Team 2020)</td>
+<td><a href="https://www.r-project.org/">https://www.r-project.org/</a></td>
+</tr>
+<tr>
+<td>RStudio version 1.4.1717</td>
+<td>RStudio Team (2020)</td>
+<td><a href="http://www.rstudio.com/">http://www.rstudio.com/</a></td>
+</tr>
+<tr>
+<td>FunGraph</td>
+<td>This protocol</td>
+<td><a href="https://github.com/cxzdsa2332/FunGraph">https://github.com/cxzdsa2332/FunGraph</a></td>
+</tr>
+<tr>
+<td>mvtnorm R package version 1.1-2</td>
+<td>Alan Genz, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, TorstenHothorn (2021)</td>
+<td><a href="http://CRAN.R-project.org/package=mvtnorm">http://CRAN.R-project.org/package=mvtnorm</a></td>
+</tr>
+<tr>
+<td>Orthopolynom R package version 1.0-5</td>
+<td>Frederick Novomestky (2013)</td>
+<td><a href="https://CRAN.R-project.org/package=orthopolynom">https://CRAN.R-project.org/package=orthopolynom</a></td>
+</tr>
+<tr>
+<td>ggplot2 R package version 3.3.5</td>
+<td>Hadley Wickham (2016)</td>
+<td><a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a></td>
+</tr>
+<tr>
+<td>devtools R package version 2.4.2</td>
+<td>Hadley Wickham, Jim Hester and Winston Chang (2021)</td>
+<td><a href="https://CRAN.R-project.org/package=devtools">https://CRAN.R-project.org/package=devtools</a></td>
+</tr>
+<tr>
+<td>igraph R package version 1.2.6</td>
+<td>Csardi G, Nepusz T(2006)</td>
+<td><a href="https://igraph.org">https://igraph.org</a></td>
+</tr>
+<tr>
+<td>glmnet R package version 4.1-2</td>
+<td>Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010)</td>
+<td><a href="https://www.jstatsoft.org/v33/i01/">https://www.jstatsoft.org/v33/i01/</a></td>
+</tr>
+<tr>
+<td>Other</td>
+<td>a x86_64-w64-mingw32 platform with 16 Gb of memory, Intel Core i7-10700 processor and R version 4.1.1 as well as x86_64-pc-linux-gnu platform with 1Tb of memory, Intel Xeon CPU E7-8855 v4 processor and R version 3.6.3.</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>FunGraph in this protocol were run and tested on a x86_64-w64-mingw32 platform with 16 Gb of memory, Intel Core i7-10700 processor and R version 4.1.1 as well as x86_64-pc-linux-gnu platform with 1Tb of memory, Intel Xeon CPU E7-8855 v4 processor and R version 3.6.3.</p>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Each major calculation functions in FunGraph by default would write results to working directory for further analysis. However, it would be tedious to load every written result, user can simply save all temporary results at once:</div>
+<div class="textbox">
+<p><code>&gt;save.image("FunGraph.Rdata")</code></p>
+</div>
+<p>The previous session can be reloaded by command:</p>
+<div class="textbox">
+<p><code>&gt;load("FunGraph.Rdata ")</code></p>
+</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Data preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [4 h]</div>
+<p>Before running FunGraph, user need to provide genotypic and phenotypic datasets, and they should be cleaned and merged to exactly the same format of the example data. Phenotypic dataset contains control group and the treatment group, each with same sample id as row names and same column number to represent the times phenotypic data were measured. Genotypic data have sample id as columns and SNP id as row names, and two additional columns “Linkage” and “Genetic_Distances(cM)” represent which linkage groups a certain SNP belongs and the position of SNPs in linkage groups (in centimorgan) respectively, while lacking of them did not affect the following calculation.</p>
+<ol>
+<li>Organize the phenotypic data.
+<ol type="a">
+<li>Remove or replace missing values in the data.</li>
+<li>Log-transformed the phenotypic data by command log() if the number in the data vary widely is recommended, such as numbers differ by more than five order of magnitude.</li>
+</ol>
+</li>
+<li>Organize the genotype data.
+<ol type="a">
+<li>FunGraph only accept numeric value for calculation, SNP genotype data should be converted into 0,1,2 matrix.</li>
+<li>Replace missing value as 9.</li>
+</ol>
+</li>
+<li>Match the phenotypic and genotype data according to the same sample name. User can check the example genotypic and phenotypic datasets by following command:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;View(geno)</code></p>
+<p><code>&gt;View(pheno)</code></p>
+</div>
+<h3 id="sec3.2">Functional mapping</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [hours to days; computing resources and data size affect the overall timing]</div>
+<p>Bivariate Functional mapping (biFunMap) is crucial to this model, for it excavates how specific QTLs determines the complex trait expressed in various environments. The mean vector and covariance structure should be modeled according to the design of the experiment, and general steps are described as follows:</p>
+<ol start="4">
+<li>First plot mean curve to check initial parameters by type command: <a href="#sec6.3">Troubleshooting 2</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;get_mean_curve_plot(</code></p>
+<p><code>  pheno_df = pheno,</code></p>
+<p><code>  times = 1:14,</code></p>
+<p><code>  init_sd_par = c(0.95, 12, 1.02, 8))</code></p>
+</div>
+<p>pheno_df is phenotypic data, times is a vector of time point and init_sd_par is the initial parameters for biSAD covariance matrix</p>
+<ol start="5">
+<li>FunGraph already wrapped the mean curve modelling, covariance matrix modelling and likelihood ratio calculation into a function, use get_biFunMap_result to store these calculation results to an object named as “result1” or anything user prefer: <a href="#sec6.5">Troubleshooting 3</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;result1 &lt;- get_biFunMap_result(</code></p>
+<p><code>  geno_df = geno[,-1:-2],</code></p>
+<p><code>  pheno_df = pheno,</code></p>
+<p><code>  times = 1:14)</code></p>
+</div>
+<p>the input are the phenotypic and genotypic datasets, vector of time points and initial parameters for biSAD covariance matrix</p>
+<ol start="6">
+<li>The key of FunMap is modelling mean curve vector and covariance matrix by following two commands: <a href="#sec6.7">Troubleshooting 4</a>
+<ol type="a">
+<li>Model the mean vector of the growth curve.
+<div class="textbox">
+<p><code>&gt;get_mu(mu_par, times)</code></p>
+</div>
+mu_par is a vector with five number corresponding to the unknown parameters in modified logistic growth curve, and times is a vector of time point</li>
+<li>Model the covariance structure using command:
+<div class="textbox">
+<p><code>&gt;get_biSAD1(par, n)</code></p>
+</div>
+where par is the parameters to input, in this case par equal to init_sd_par we checked in previous step, and n is column number of the matrix.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>After calculation is finished, visualization is carried out by following two functions:
+<ol type="a">
+<li>The manhattan plot.
+<div class="textbox">
+<p><code>&gt;get_manh_plot(geno_df = geno, LR = result1$LR)</code></p>
+</div>
+the input is genotypic data with additional information and LR values which was calculated and stored in “result1”</li>
+<li>The genetic effect curve plot.
+<div class="textbox">
+<p><code>&gt;get_genetic_effect_plot(</code></p>
+<p><code>  genetic_effect = result1$genetic_effect,</code></p>
+<p><code>  number = 10)</code></p>
+</div>
+the input is calculated genetic effect data and the number of sub-plots for demonstration</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Permutation tests can be used to determine the genome-wide critical threshold by command get_permutation, but it is extremely time-consuming.</div>
+<div class="note">
+<span class="note-title">Note:</span> the mean vector of example script is modeled by modified logistic growth equation, and covariance structure by biSAD(1).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Always uses get_mean_curve_plot to check the initial parameters are sound for optimization before running the whole FunMap step.</div>
+<h3 id="sec3.3">Functional clustering</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [hours to days; computing resources and data size affect the overall timing]</div>
+<p>According to modularity theory (<a href="#bib9">Melo et al., 2016</a>), bivariate functional clustering (biFunClu) was introduced to cluster genetic effects into different functional modules (<a href="#bib14">Wang et al., 2012</a>). A hybrid of the EM and simplex algorithms were implanted to obtain the functional modules.</p>
+<p>By default, after running previous step, a file named “genetic_effect.csv” would be generated and shall be used in this step. Calculated genetic effect dataset is already stored in FunGraph, users can view this dataset by command: genetic_effect.</p>
+<ol start="8">
+<li>Perform bifunctional clustering, i.e., clustering SNPs based on their temporal genetic effects in two different environments
+<ol type="a">
+<li>Check the dataset for calculation, user can use dataset from previous step or manually provide it.
+<div class="textbox">
+<p><code>&gt;genetic_effect &lt;- result1$genetic_effect</code></p>
+<p><code>&gt;View(genetic_effect)</code></p>
+</div>
+</li>
+<li>Prepare all initial parameters for functional clustering.
+<div class="textbox">
+<p><code>&gt;input &lt;- get_init_par(</code></p>
+<p><code>  data = genetic_effect,</code></p>
+<p><code>  k = 5,</code></p>
+<p><code>  legendre_order = 4,</code></p>
+<p><code>  times = 1:14,</code></p>
+<p><code>  init_SAD_par = c(1.06,0.25, 1.15, 0.18))</code></p>
+</div>
+data is the dataset for cluster computation, and k is the number of clusters wanted, legendre_order is the order of Legendre Polynomials, times is time points and init_SAD_par is initial parameters for biSAD covariance matrix</li>
+<li>Perform functional clustering by command: <a href="#sec6.5">Troubleshooting 3</a>
+<div class="textbox">
+<p><code>&gt;c1&lt;-get_cluster(input = input, itermax = 100)</code></p>
+</div>
+input is result from 8.a, and itermax control the maximum number of iteration in EM algorithm</li>
+<li>Take a look at classification result:
+<div class="textbox">
+<p><code>&gt;get_cluster_base_plot(</code></p>
+<p><code>  clustered_data = c1$clustered_data[[1]])</code></p>
+</div>
+the input clustered_data directly from the get_cluster result</li>
+</ol>
+</li>
+</ol>
+<ol start="9">
+<li>Since we do not know the optimal number of clusters (k), we need to perform the above command for different values of k. For instance, by varying k from 1 to 10 clusters. The criteria of optimal k number was determined by BIC value, user can check it by command: <a href="#sec6.9">Troubleshooting 5</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;print(c1$BIC)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The mean vector of example script is modeled by Legendre Polynomials of order 4, and covariance structure by biSAD(1).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> When the Log-likelihood value changed drastically (e.g. from −20000 to −1000) in Functional Clustering using function get_cluster, an early stop for iteration should be made to prevent incorrect parameters estimation by setting “Delta” parameter in get_cluster function.</div>
+<h3 id="sec3.4">LASSO-based variable selection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [10 min]</div>
+<p>By viewing all genes that function as a dynamic system, any one gene may interact with other genes. However, it is impossible that each gene interacts with every other gene to form a fully interconnected network because this does not assure the system to be robust in response to environmental change. FunGraph implements a LASSO-based procedure to choose a small set of the most significant genes that links with a given gene across time points.</p>
+<ol start="10">
+<li>Lasso-based variable selection to select the most significant relevant Modules/SNPs from Modules/SNPs for Module i/SNPs i.
+<ol type="a">
+<li>First calculate the relationship between modules.
+<div class="textbox">
+<p><code>&gt;get_interaction(data, col, reduction = FALSE)</code></p>
+</div>
+the input data is the genetic effect data of modules, col is the number of rows, and reduction = FALSE means usually dimensionality reduction is not needed in performing variable selection between modules.</li>
+<li>Then the variable selection is performed within modules.
+<div class="textbox">
+<p><code>&gt;get_interaction(data, col, reduction = TRUE)</code></p>
+</div>
+the input data is the genetic effect data of SNPs in a certain module</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> The reduction = TRUE option can be FALSE in 10.b if there are no need for dimensionality reduction (e.g. the number of SNPs with in module is almost as same as the number of modules, usually less than 100).</div>
+<h3 id="sec3.5">ODE solving</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [hours to days; computing resources and data size affect the overall timing]</div>
+<p>A system of nLV ODEs are formulated according to evolutionary game theory (<a href="#bib12">Wang et al., 2021</a>), with the independent part describing the inner genetic effect of SNP i and the dependent part describing the influential genetic effect of other SNPs. Thereafter, the genetic network could be reconstructed through the decomposition of net genetic effect of each SNP.</p>
+<ol start="11">
+<li>Genetic network reconstructed for modules.
+<ol type="a">
+<li>Prepare genetic effect dataset for modules
+<div class="textbox">
+<p><code>&gt;module_data &lt;- get_module_data(</code></p>
+<p><code>  data_par = c1$curve_par,</code></p>
+<p><code>  times = 1:14)</code></p>
+</div>
+where data_par is the parameters of Legendre Polynomials to model mean genetic effect curve, and times is the time points</li>
+<li>Solve ODE between modules. <a href="#sec6.11">Troubleshooting 6</a>
+<div class="textbox">
+<p><code>&gt;module_ode1 &lt;- get_ode_par(</code></p>
+<p><code>  data = module_data[[1]],</code></p>
+<p><code>  times = 1:14,</code></p>
+<p><code>  order = 3,</code></p>
+<p><code>  reduction = FALSE,</code></p>
+<p><code>  parallel = FALSE)</code></p>
+</div>
+the input data is genetic effect matrix, times is time points, order is Legendre Polynomials order used in genetic effect decomposition, reduction is whether to use dimensionality reduction, and parallel is whether to use parallel calculation</li>
+<li>The result from 11.b need to be further processed.
+<div class="textbox">
+<p><code>&gt;module_net1 &lt;- get_all_net(module_ode1)</code></p>
+</div>
+the input is the result from 11.b</li>
+<li>Now the ODE result can be plotted as decomposition of genetic effect curve: <a href="#sec6.13">Troubleshooting 7</a>
+<div class="textbox">
+<p><code>&gt;get_decomposition_plot(</code></p>
+<p><code>  input1 = module_ode1, input2 = module_net1,</code></p>
+<p><code>  i = 1)</code></p>
+</div>
+this function needs 11.b and 11.c result, the third parameters i indicates which module used in plot</li>
+<li>Calculate maximum effect to control color used in network plot:
+<div class="textbox">
+<p><code>&gt;max_effect &lt;- cbind(</code></p>
+<p><code>  get_max_effect(module_net1),</code></p>
+<p><code>  get_max_effect(module_net1))</code></p>
+</div>
+get_max_effect use the result of get_all_net to calculate the maximum genetic effect value</li>
+<li>Finally, network can be reconstructed by command:
+<div class="textbox">
+<p><code>&gt;network_plot(</code></p>
+<p><code>  k = module_net1,</code></p>
+<p><code>  title = 'CK',</code></p>
+<p><code>  max_effect = max_effect,</code></p>
+<p><code>  save_plot = FALSE)</code></p>
+</div>
+k is the result of get_all_net, title indicate what plot title user want, max_effect directly from previous step and save_plot control whether to save PDF file.</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Genetic network reconstructed for SNPs is very similar to previous step.
+<ol type="a">
+<li>Extract genetic effect data of a module.
+<div class="textbox">
+<p><code>&gt;m1_ck &lt;- get_subset_data(</code></p>
+<p><code>  data = c1$clustered_data[[1]],</code></p>
+<p><code>  cluster = 1 )</code></p>
+</div>
+get_subset_data function selects the subset cluster by input the functional clustering result.</li>
+<li>Follow every step in 11.b-f, remember to use “&lt;-“ to assign result for SNPs to a different new name.</li>
+</ol>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> get_net_output can be used to export network attributes for Cytoscape visualization.</div>
+<h3 id="sec3.6">Reconstructing multilayer interactome networks</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [hours to days; computing resources and data size affect the overall timing]</div>
+<p>The salient feature of FunGraph is to organize hundreds of thousands or thousands of thousands of SNPs in a GWAS into a multilayer interaction network by classifying these SNPs into distinct modules. At the first layer is the interaction network among modules, reconstructed from the mean genetic effect curve of all SNPs within modules. The second-layer network is reconstructed from genetic effects curves of individual SNPs from a module. SNP networks, nested within a module, can map the fine-grained (microscopic) architecture of genetic interactions. In practice, if the size of a module is still too large for reconstructing its SNP network, we can further classify it into its submodules. Similarly, we classify a submodule into its multiple sub-submodules, and this procedure is repeated until the size of a unit is maneuverable.</p>
+<ol start="13">
+<li>Generally, a module that contains more than 500 SNPs is difficult for network visualization and should be further classified, user can check number of SNPs with in module by command:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt;table(table(c1$clustered_data[[1]]$cluster) )</code></p>
+</div>
+<ol start="14">
+<li>For a target module, classification and ODE solving can be easily done through abovementioned approaches.
+<ol type="a">
+<li>Select a module for further FunMap process.
+<div class="textbox">
+<p><code>&gt;m1_ck &lt;- get_subset_data(</code></p>
+<p><code>  data = c1$clustered_data[[1]],</code></p>
+<p><code>  cluster = 1 )</code></p>
+<p><code>&gt;input2 &lt;- get_init_par(</code></p>
+<p><code>  data = m1_ck,</code></p>
+<p><code>  k = 3,</code></p>
+<p><code>  legendre_order = 4,</code></p>
+<p><code>  times = 1:14)</code></p>
+<p><code>&gt;c2 &lt;- get_cluster(input = input2)</code></p>
+</div>
+</li>
+<li>Solve the ODE and reconstruct network for submodules.
+<div class="textbox">
+<p><code>&gt;submodule1_data &lt;- get_module_data(</code></p>
+<p><code>  data_par = c2$curve_par,</code></p>
+<p><code>  times = 1:14)</code></p>
+<p><code>&gt;submodule1_ode1 &lt;- get_ode_par(</code></p>
+<p><code>  data = submodule1_data [[1]],</code></p>
+<p><code>  times = 1:14,</code></p>
+<p><code>  order = 3)</code></p>
+<p><code>&gt;submodule1_net1 &lt;- get_all_net(submodule1_ode1)</code></p>
+<p><code>&gt;max_effect1 &lt;- cbind(</code></p>
+<p><code>  get_max_effect(submodule1_net1),</code></p>
+<p><code>  get_max_effect(submodule1_net1))</code></p>
+<p><code>&gt;network_plot(</code></p>
+<p><code>  k = submodule1_net1,</code></p>
+<p><code>  title = “Submodule1_CK”,</code></p>
+<p><code>  max_effect = max_effect1)</code></p>
+</div>
+</li>
+<li>Similarly, the SNP network can be reconstruction by the same functions.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The major calculation function get_biFunMap_result in Functional Mapping part should generate an R list object, involving overall curve fitting, LR scores, a set of estimated logistic growth equation parameters, and genetic effect curves for each SNP. Together with the plot functions get_mean_curve_plot, get_manh_plot and get_genetic_effect_plot, the results can be further plotted as <a href="#fig1">Figure 1</a>.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. The result of FunMap</div>
+<p>(A) get_mean_curve_plot function shows phenotypic data of roots fitted by a modified logistic growth equation cultured in salt-free (control) and salt-exposed (stress) media. Thick line are the mean growth trajectories of all individuals.</p>
+<p>(B) get_manh_plot plot the significance tests for SNPs across the whole chromosome by biFunMap. SNPs above the dashed line are considered as significant loci that affect root growth.</p>
+<p>(C) get_genetic_effect_plot generates randomly selected genetic effect curves of 12 SNPs under control (blue) and stress condition (red).</p>
+</figcaption>
+</figure>
+<p>The function get_cluster of Functional Clustering part should generate an R list object, involving all estimated parameters, the BIC value, and the classified modules of SNPs, by a slight modification of get_cluster_base_plot the results of Functional Clustering are showed in <a href="#fig2">Figure 2</a>.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. The result of functional clustering</div>
+<p>(A) Screenshot of output list object from get_cluster function with <i>L</i> = 5.</p>
+<p>(B) Classification results of genetic effect curves under control (blue) and stress conditions (red). BIC analysis detects 15 as the optimal number of modules (<i>L</i>)</p>
+</figcaption>
+</figure>
+<p>The function in ODE solving part already includes LASSO-based variable selection. An example variable selection result between modules is given by function get_interaction in vignette of FunGraph. The result R list contains the name of module, the coefficients of LASSO regression, and the relevant modules (<a href="#fig3">Figure 3</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The result of LASSO-based variable selection</div>
+<p>Screenshot of get_interaction result for LASSO-based variable selection (control condition data used).</p>
+</figcaption>
+</figure>
+<p>The get_ode_par funciton in ODE solving step would generate a list contain parameters of Legendre polynomials, variable selection results and some useful information. These outcomes can be plugged into get_decomposition_plot and network_plot functions for further visualization (<a href="#fig4">Figure 4</a>).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The result of ODE solving</div>
+<p>(A) Screenshot of get_ode_par and get_all_net results.</p>
+<p>(B) The combined plot returned by function get_decomposition_plot. Every net genetic effect of a certain module (SNPs) can be decomposed into its independent effect (red line) and dependent effects (green lines) received from other modules (SNPs).</p>
+<p>(C) The microscopic genetic network reconstructed for 135 SNPs in module 7 via command network_plot. The sizes of the circles equal to the total regulatory effect received. Arrow lines denote the interaction between SNPs, with thickness proportional to the strength of the interaction. Red lines and blue lines denote the up-regulation and down-regulation of one SNP for the next, respectively.</p>
+</figcaption>
+</figure>
+<p>From the result of FunMap, significant loci “nn_np_2890” was chosen to demonstrate multilayer interactome networks. This SNP belongs to module 13 which contains 548 SNPs, thereby module 13 was further classified into 8 submodules and a three-layer networks were constructed (<a href="#fig5">Figure 5</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1212-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The result of multilayer interactome networks. The first layer is the interaction network among modules, the second layer submodule network reconstructed from genetic effects curves of individual SNPs from module 13, and the third layer shows the microscopic SNP interaction within submodule 1.</div>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Multilayer interactome networks by FunGraph are reconstructed on the basis of dynamic genetic effects estimated from longitudinal data by FunMap. In practice, many genetic mapping or GWAS experiments do not measure phenotypic traits repeatedly over a series of time points. Thus, it is impossible to reconstruct multilayer networks for these experiments unless a new statistical model is developed to accommodate the static features of these data.</p>
+<p>The precision of network reconstruction depends on the number of time points (for ODE solving) and the estimation precision of dynamic genetic effects. If it is challenging to obtain high-density time points required for precise effect estimation, efforts should be made to increase the precision of trait phenotyping. For example, by producing multiple replicates, measurement noise can reduce, leading to increased phenotyping precision and heritability.</p>
+<p>FunGraph is based on the absolute size of overall genetic effects. However, genetic effects at individual loci can be better described by additive and/or dominant effects at individual SNPs, which may be positive or negative. How to incorporate both the magnitude and sign of genetic effects into nLV-based ODEs is not a trivial issue, but need to be resolved for better characterizing the genetic architecture of complex traits.</p>
+<p>The current FunGraph package only contain limited functions to model mean curve, covariance matrix and control and the treatment groups are required, which did not cover the full application range of FunGraph. Besides, the numeric optimization may meet difficulty when dealing with large dataset, when cluster number k in Functional Clustering step is large (e.g., k = 100) unexpected error may occur. More features in FunGraph package and better initial parameters choice, parameters estimation may add in future.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>When installing FunGraph, R return with error: dependencies ‘xxx’, ‘xxx’ are not available for package ‘FunGraph’</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Manually install missing dependencies packages ‘xxx’ through command:</p>
+<div class="textbox">
+<p><code>&gt;install.packages(‘xxx’)</code></p>
+</div>
+<h3 id="sec6.3">Problem 2</h3>
+<p>When running FunGraph, R return with error: singular gradient/initial value in 'vmmin' is not finite/non-finite value supplied by optim</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Usually it was caused by redundant information in dataset, just remove non-numeric content in datasets.</p>
+<p>Alternatively, column names of input dataset contain underscore, hash, dash and so on may results failure in matching column names in get_ode_par function.</p>
+<p>Another possible solution is to try different value for initial parameters, generally initial parameters for biSAD covariance matrix should between 0.1 to 10, and initial parameters for model logistic growth curve should be 0.1 to maximum observation phenotypic data.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>The calculation took too much time and/or estimated parameters are inaccurate (<a href="#tbl1">Table 1</a>).</p>
+<table id="tbl1">
+<caption>Table 1. The inaccurate inverse of a AR(1) covariance matrix (σ<sup>2</sup> = 2, ρ=0.4, t = 5) by default solve() function in R, number with ∗ should be 0</caption>
+<thead></thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>−0.4</td>
+<td>−2.33E−17∗</td>
+<td>0</td>
+<td>3.19E−18∗</td>
+</tr>
+<tr>
+<td>−0.4</td>
+<td>1.16</td>
+<td>−0.4</td>
+<td>0</td>
+<td>2.78E−18∗</td>
+</tr>
+<tr>
+<td>9.63E−35∗</td>
+<td>−0.4</td>
+<td>1.16</td>
+<td>−0.4</td>
+<td>2.78E−17∗</td>
+</tr>
+<tr>
+<td>−1.39E−18∗</td>
+<td>2.66E−17∗</td>
+<td>−0.4</td>
+<td>1.16</td>
+<td>−0.4</td>
+</tr>
+<tr>
+<td>3.47E−18∗</td>
+<td>2.78E−18∗</td>
+<td>5.55E−17∗</td>
+<td>−0.4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Parameters estimation for biFunMap and biFunClu can be improved through the manually given determinant and inverse for biSAD1 covariance matrix than the implanted solve() and det() functions in R, but it would be challenging and time consuming.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The value of BIC kept fluctuating with the increasement of k, therefore the optimal number of k is difficult to choose.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>The initial parameters were randomly given and may influent the outcome of BIC value depending on the dataset, for a certain k it is recommended to run several times and choose the minimal BIC value as the actual BIC value.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Calculation stopped when running get_ode_par.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>In the rare case that no connection can be found between target module/SNP and the rest dataset, get_interaction function would return with missing values NA. Users can either manually assign a most relevant dataset by cor() function, or skip this module/SNP</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>The intrinsic growth curves of certain genetic effect may not be positive (The estimated genetic effect data are all positive).</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>Try different ODE initial values in get_value funciton, regularization in estimating ODE parameters by modify ode_optimize function in source R code should also be a potential solution.</p>
+</section>
+<section>
+<h3 id="sec6.13">Quantification and statistical analysis</h3>
+<p>FunGraph is the extension of FunMap to reconstruct omnigenic interactome networks. As illustrated in the Graphic Abstract, FunGraph is constructed by several key steps as follows: (1) associating genotype data with phenotype data via FunMap, in which the temporal pattern of genetic effects exerted by each SNP is illustrated and significant SNPs (QTLs) are identified and annotated, (2) functional clustering of all SNP into distinct modules based on the similarity of their genetic effect patterns, where an optimal number of modules is determined according to information criteria, such as BIC, (3) LASSO-based variable selection that identifies a small set of the most significant entities (modules or SNPs) that link with a given entity, (4) solving ODEs that characterize independent and dependent genetic effects of each entity through which the estimated ODE parameters are used to describe the magnitudes and/or signs of these two effect components, and (5) reconstructing a multilayer omnigenic interactome network using graph software. The SNP-SNP interaction network codes a detailed roadmap of how each SNP (regardless of its significance according to FunMap) interacts with every other SNP to mediate phenotypic variation.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Boyle, E.A., Li, Y.I., and Pritchard, J.K. (2017). An expanded view of complex traits: from polygenic to omnigenic. Cell <i>169</i>, 1177-1186. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref1">View at publisher</a></p>
+<p id="bib2">Bradbury, P.J., Zhang, Z., Kroon, D.E., Casstevens, T.M., and Buckler, E.S. (2007). TASSEL: software for association mapping of complex traits in diverse samples. Bioinformatics <i>23</i>, 2633-2635. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref2">View at publisher</a></p>
+<p id="bib3">Burga, A., Ben-David, E., Vergara, T.L., Boocock, J., and Kruglyak, L. (2019). Fast genetic mapping of complex traits in <i>C. elegans</i> using millions of individuals in bulk. Nat. Commun. <i>10</i>, 1-10. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref3">View at publisher</a></p>
+<p id="bib4">Camargo, A.V., Mackay, I., Mott, R., Han, J., Doonan, J.H., Askew, K., Corke, F., Williams, K., and Bentley, A.R. (2018). Functional mapping of quantitative trait loci (QTLs) associated with plant performance in a wheat MAGIC mapping population. Front. Plant Sci. <i>9</i>, 887. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref4">View at publisher</a></p>
+<p id="bib5">Li, Z. and Sillanpää, M.J. (2015). Dynamic quantitative trait locus analysis of plant phenomic data. Trends Plant Sci. <i>20</i>, 822-833. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref5">View at publisher</a></p>
+<p id="bib6">Liu, G., Li, M., Wen, J., Du, Y., and Zhang, Y.-M. (2010). Functional mapping of quantitative trait loci associated with rice tillering. Mol. Genet. Genom. <i>284</i>, 263-271. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref6">View at publisher</a></p>
+<p id="bib7">Lyra, D.H., Virlet, N., Sadeghi-Tehran, P., Hassall, K.L., Wingen, L.U., Orford, S., Griffiths, S., Hawkesford, M.J., and Slavov, G.T. (2020). Functional QTL mapping and genomic prediction of canopy height in wheat measured using a robotic field phenotyping platform. J. Exp. Bot. <i>71</i>, 1885-1898. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref7">View at publisher</a></p>
+<p id="bib8">Ma, C.-X., Casella, G., and Wu, R. (2002). Functional mapping of quantitative trait loci underlying the character process: a theoretical framework. Genetics <i>161</i>, 1751-1762. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref8">View at publisher</a></p>
+<p id="bib9">Melo, D., Porto, A., Cheverud, J.M., and Marroig, G. (2016). Modularity: genes, development, and evolution. Annu. Rev. Ecol. Evol. Syst. <i>47</i>, 463-486. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref9">View at publisher</a></p>
+<p id="bib10">Sun, L., Dong, A., Griffin, C., and Wu, R. (2021). Statistical mechanics of clock gene networks underlying circadian rhythms. Appl. Phys. Rev. <i>8</i>, 021313. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref10">View at publisher</a></p>
+<p id="bib11">Thavamanikumar, S., Southerton, S.G., Bossinger, G., and Thumma, B.R. (2013). Dissection of complex traits in forest trees—opportunities for marker-assisted selection. Tree Genet. Genomes <i>9</i>, 627-639. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref11">View at publisher</a></p>
+<p id="bib12">Wang, H., Ye, M., Fu, Y., Dong, A., Zhang, M., Feng, L., Zhu, X., Bo, W., Jiang, L., and Griffin, C.H. (2021). Modeling genome-wide by environment interactions through omnigenic interactome networks. Cell Rep. <i>35</i>, 109114. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref12">View at publisher</a></p>
+<p id="bib13">Wang, H., Zhang, F., Zeng, J., Wu, Y., Kemper, K.E., Xue, A., Zhang, M., Powell, J.E., Goddard, M.E., and Wray, N.R. (2019). Genotype-by-environment interactions inferred from genetic effects on phenotypic variability in the UK Biobank. Sci. Adv. <i>5</i>, eaaw3538. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref13">View at publisher</a></p>
+<p id="bib14">Wang, Y., Xu, M., Wang, Z., Tao, M., Zhu, J., Wang, L., Li, R., Berceli, S.A., and Wu, R. (2012). How to cluster gene expression dynamics in response to environmental signals. Brief. Bioinform. <i>13</i>, 162-174. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref14">View at publisher</a></p>
+<p id="bib15">Wu, R. and Jiang, L. (2021). Recovering dynamic networks in big static datasets. Phys. Rep. <i>17</i>, 1-57. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref15">View at publisher</a></p>
+<p id="bib16">Wu, R. and Lin, M. (2006). Functional mapping—how to map and study the genetic architecture of dynamic complex traits. Nat. Rev. Genet. <i>7</i>, 229-237. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00691-2/sref16">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and request of resources should be directed to Rongling Wu (<a href="mailto:rwu@bjfu.edu.cn">rwu@bjfu.edu.cn</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>All data, analysis, and modeling code have been deposited to github: <a href="https://github.com/cxzdsa2332/FunGraph">https://github.com/cxzdsa2332/FunGraph</a></p>
+<h3>Acknowledgments</h3>
+<p>We thank the colleagues at the Center for Computational Biology at Beijing Forestry University for their contributions to this work.</p>
+<h3>Author contributions</h3>
+<p>A.D. wrote code, analyzed the data, and wrote the manuscript. L.F., D.Y., S.W., J.Z., and J.W. participated in model derivations and data analysis. R.W. supervised the project and wrote the manuscript with A.D.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

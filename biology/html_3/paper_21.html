@@ -1,0 +1,951 @@
+<article>
+<section>
+<h1 id="header">Protocol for Single-Molecule Fluorescence <i>In Situ</i> Hybridization for Intact Pancreatic Tissue</h1>
+<p><time datetime="2020-01-31">Published: January 31, 2020</time></p>
+<p>Lydia Farack<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup> and Shalev Itzkovitz<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Molecular Cell Biology, Weizmann Institute of Science, Rehovot, Israel</p>
+<p id="fn1"><sup>2</sup>Lead Contact</p>
+<p id="fn2"><sup>3</sup>Technical Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:lydia.farack@weizmann.ac.il">lydia.farack@weizmann.ac.il</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:shalev.itzkovitz@weizmann.ac.il">shalev.itzkovitz@weizmann.ac.il</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2019.100007">10.1016/j.xpro.2019.100007</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We describe an optimized smFISH protocol for the intact pancreas. The protocol is adapted from <a href="#bib9">Lyubimova et al. (2013)</a>, a generic tissue smFISH protocol that works for most tissues but not the pancreas. The main changes implemented include increasing the period of mRNA denaturation from 5 min to at least 3 h and increasing formamide concentrations from 10% to 30%. These modifications yield sensitive single mRNA visualization that is comparable to those achieved in other tissues using the standard protocol.</p>
+<p>For complete details on the use and execution of this protocol, please refer to Farack et al. (<a href="#bib3">2018</a>, <a href="#bib4">2019</a>).</p>
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>An optimized protocol for single-molecule transcript imaging in the intact pancreas</li>
+<li>Visualization of mRNA molecules with high sensitivity while preserving spatial information</li>
+<li>Enables to interrogate intact pancreatic tissue at any metabolic and pathological state</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+
+
+<section>
+<h2 id="before-you-begin">Before You Begin</h2>
+<h3>Definition of the Target Sequence</h3>
+<ol>
+<li>The RNA sequence of interest should ideally be sufficiently long so that 48 unique probes with a length of 20 bp can anneal to it. At least two bases should be present between neighboring probe binding sites (<a href="#bib13">Raj et al., 2008</a>).</li>
+<li>If possible, avoid the use of untranslated regions, tandem repeats, microsatellites and other repeating sequences from the target sequence when designing the probe set. The target sequence can be downloaded from the UCSC genome browser (<a href="https://genome.ucsc.edu/">https://genome.ucsc.edu/</a>).</li>
+<li>We used Mouse GRCm38/mm10 for our analysis. Search for the gene of interest and choose the appropriate splicing variant to download the genomic or mRNA sequence.</li>
+</ol>
+<h3>Design of the Library of Probe Oligonucleotides</h3>
+<ol>
+<li>The probe libraries can be designed using the Stellaris online Probes Designer (<a href="https://www.biosearchtech.com/products/rna-fish//">https://www.biosearchtech.com/products/rna-fish//</a>). The tool is publicly available. The registration is free of charge. Follow stepwise instructions to upload the target sequence, to enter the information on the origin of the sequence, to specify the masking level and to create the list of oligonucleotide probes. See <a href="#fig1">Figure 1</a>.</li>
+</ol>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Design of the Library of Probe Oligonucleotides</div>
+</figcaption>
+</figure>
+<ol start="2">
+<li>Probes can be ordered already coupled to the required fluorophore.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Probe libraries can be ordered uncoupled, which are delivered in higher quantities and allow coupling to different fluorophores. The protocol for coupling smFISH probe libraries to fluorophores is presented in great detail by Lyubimova et al. (<a href="#bib9">Lyubimova et al., 2013</a>). The selection of the fluorophore is dependent on the filter cubes of the microscope. Recommended fluorophores and filter cubes are listed in <a href="#tbl1">Table 1</a> and in the Key Resource Table.</div>
+<table id="tbl1">
+<caption>Table 1. Recommended Filter Cubes and Fluorophores for Coupled and Uncoupled Probe Libraries</caption>
+<thead>
+<tr>
+<th>Filter Cube</th>
+<th>Filter cube for TMR (Omega Optical)</th>
+<th>Custom filter cube for Alexa Fluor 594 (Omega Optical)</th>
+<th>Filter cube for Cy5.5 (Chroma Technology)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Excitation [nm]</td>
+<td>546</td>
+<td>590</td>
+<td>650</td>
+</tr>
+<tr>
+<td>Dichroic Filter [nm]</td>
+<td>555</td>
+<td>610</td>
+<td>680</td>
+</tr>
+<tr>
+<td>Emission [nm]</td>
+<td>580</td>
+<td>630</td>
+<td>710</td>
+</tr>
+<tr>
+<td><b>Coupled probe libraries (Stellaris, Biosearch Technologies)</b></td>
+<td><b>TAMRA</b></td>
+<td><b>CAL Fluor Red 610</b></td>
+<td><b>Quasar 670</b></td>
+</tr>
+<tr>
+<td>Excitation [nm]</td>
+<td>557</td>
+<td>590</td>
+<td>647</td>
+</tr>
+<tr>
+<td>Emission [nm]</td>
+<td>583</td>
+<td>610</td>
+<td>670</td>
+</tr>
+<tr>
+<td><b>Fluorophores for uncoupled probe libraries</b></td>
+<td><b>TMR (Molcular probes)</b></td>
+<td><b>Alexa Fluor 594 (Thermo Fisher)</b></td>
+<td><b>Cy5 (GE Healthcare)</b></td>
+</tr>
+<tr>
+<td>Excitation [nm]</td>
+<td>550</td>
+<td>590</td>
+<td>650</td>
+</tr>
+<tr>
+<td>Emission [nm]</td>
+<td>575</td>
+<td>617</td>
+<td>670</td>
+</tr>
+</tbody>
+</table>
+<h3>Cover Glass Preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h; overnight (4-16 h) to dry</div>
+<p>This part describes the preparation of cover glasses coated with poly-L-lysine. See <a href="#fig2">Figure 2</a>. This improves tissue mounting onto the cover glass.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Cover Glass Preparation</div>
+</figcaption>
+</figure>
+<ol>
+<li>Arrange cover glasses on the racks. Place the racks into a wash jar.</li>
+<li>Heat water to ∼45°C for the sonicator bath.</li>
+<li>Add 2% (vol/vol) RBS-35 (∼200 ml) to the wash jar to cover the cover glasses; place the jar into a sonicator bath, degas for 5 min and then sonicate it for 15 min.</li>
+<li>Pour off the 2% (vol/vol) RBS-35 and rinse the cover glasses with deionized or distilled water by filling the jar up and pouring the water out 5 times.</li>
+<li>Cover the coverslips with 100% ethanol and repeat the 15-min sonication.</li>
+<li>Repeat sonication for 15 min with fresh 100% ethanol.</li>
+<li>Pour the ethanol and separate the coverslips to let them air dry for 30 min. Use a kimwipe to absorb excessive liquid from the bottom of the rack.</li>
+<li>Place the racks with clean dry glasses into a clean dry jar, and cover the coverslips with 0.01% (wt/vol) poly-L-lysine solution. Incubate the glasses at room temperature (RT, 22-26°C) for 30 min.</li>
+<li>Take the racks out, absorb excessive liquid from the bottom of the rack with a kimwipe and air-dry the cover glasses overnight (4-16 h).</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> 4-16 h</div>
+<ol start="10">
+<li>Place the coverslips into a vacuum chamber for storage.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The optimal thickness of the coverslips can vary according to the requirements of different objective lenses. For the presented setup here the optimal thickness of the coverslip is 0.15 mm (glass no.1).</div>
+<h3>Tissue Dissection, Fixing, and Cryoprotection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h; overnight (8-16 h) incubation</div>
+<p>This step describes the protocol from tissue extraction from the mouse until it is fixed and ready for embedding. See <a href="#fig3">Figure 3</a>.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Tissue Dissection, Fixing, and Cryoprotection</div>
+</figcaption>
+</figure>
+<ol>
+<li>For a fast dissection of the pancreas, the pancreas can be dissected together with the spleen and mesentery, which can be removed after fixation. One option is to disconnect the duodenum at the superior part from the pancreas and pull out the intestine by gently releasing the mesentery from the intestine. Remove the gastric lobe of the pancreas from the stomach. Use the spleen and mesentery as a handle to take out the tissue. Be cautious not to injure the abdominal aorta. Transfer the tissue immediately to the ice cold and RNase-free fixative. If blood vessels were injured, rinse quickly in ice cold RNase-free 1X PBS, release the solution to a Kimwipe by touching a corner of the tissue to the Kimwipe. Transfer the tissue immediately to the fixative.</li>
+<li>Fix the tissue immediately after dissection in 30 mL of ice cold 3.7% formaldehyde (vol/vol) in RNase-free 1X PBS.</li>
+<li>Incubate at 4°C for 3 h with gentle agitation. The fixative penetration speed is :1 mm/h.</li>
+<li>Move the fixed tissue into pre-chilled cryoprotecting solution (30% sucrose in 3.7% formaldehyde/1X PBS) and incubate overnight (8-16 h) at 4°C with gentle agitation.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> 8-16 h</div>
+<h3>Preparation of Frozen Tissue Blocks</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 – 10 min/block</div>
+<p>This part describes the preparation of frozen tissue blocks for the mouse pancreas. See <a href="#fig4">Figure 4</a>.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Preparation of Frozen Blocks</div>
+</figcaption>
+</figure>
+<ol>
+<li>Label plastic molds for frozen block preparation with a permanent marker. If necessary, make marks on the mold to indicate the orientation of the tissue. Place the molds on ice, cover the bottom of the mold with the O.C.T. Compound. Prechill RNase-free 1X PBS in a Petri dish placed on ice. Place another empty, open Petri dish on ice for manipulating the tissue. Prepare pieces of dry ice (flat slabs <u>or pellets</u> are the most convenient) in an appropriate container. We use Styrofoam boxes with lids.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> A dry ice ethanol bath accelerates freezing but requires cautious handling.</div>
+<ol start="2">
+<li>Remove the tissue from the cryoprotection solution, quickly rinse it by dipping it in the dish containing cold RNase-free 1X PBS. Use two forceps to keep the tissue from clumping together. Hold a corner of the tissue on a Kimwipe to release excess liquid and then place the tissue on the empty dish on ice to remove the mesentery. The spleen may help to distinguish between splenic and duodenal lobe. Cut the tissue to smaller pieces, if required.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to keep the tissue cold at all times.</div>
+<ol start="3">
+<li>Place the tissue into the chilled molds filled with freezing medium. Mix the tissue gentle with OCT. Orient the tissue as required for the most efficient sectioning. Cover the tissue with OCT and fill up the mold.</li>
+<li>Freeze quickly by placing the mold on dry ice. Build a nest of dry ice to place the mold parallel to the ground. Allow it to stand on dry ice until the block is fully white and solid. Wrap the mold with the block in aluminum foil and label it. Store at −80°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Frozen blocks can be stored at −80 °C for years. However, after freezing, the block should never be allowed to thaw. For transport, keep the blocks on dry ice.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key Resources Table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, Peptides, and Recombinant Proteins</td>
+</tr>
+<tr>
+<td>Formaldehyde, 37% (w/v)</td>
+<td>J.T. Baker</td>
+<td>Cat# JT2106</td>
+</tr>
+<tr>
+<td>Formamide, deionized, nuclease-free</td>
+<td>Ambion</td>
+<td>Cat# AM9342</td>
+</tr>
+<tr>
+<td>Glucose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# G8270</td>
+</tr>
+<tr>
+<td>O.C.T. Compound Cryostat Embedding Medium</td>
+<td>Scigen</td>
+<td>Cat# 4586</td>
+</tr>
+<tr>
+<td>PBS, pH 7.4, RNase-free, 10X</td>
+<td>Ambion</td>
+<td>Cat# AM9625</td>
+</tr>
+<tr>
+<td>Proteinase K solution, 20 mg/mL</td>
+<td>Merck Millipore</td>
+<td>Cat# 124568</td>
+</tr>
+<tr>
+<td>SSC, RNase-free, 20X</td>
+<td>Ambion</td>
+<td>Cat# AM9763</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>J.T.Baker</td>
+<td>Cat# 4072</td>
+</tr>
+<tr>
+<td>Tris, 1 M, pH 8.0</td>
+<td>Ambion</td>
+<td>Cat# AM9856</td>
+</tr>
+<tr>
+<td>Tris-EDTA, pH 8.0 (TE)</td>
+<td>Ambion</td>
+<td>Cat# AM9849</td>
+</tr>
+<tr>
+<td>Water UltraPure Dnase/RNase-free Molecular Biology</td>
+<td>Bio-Lab</td>
+<td>Cat# <b>23217723</b>
+</td>
+</tr>
+<tr>
+<td>Ethanol, absolute</td>
+<td>J.T. Baker</td>
+<td>Cat# 8025</td>
+</tr>
+<tr>
+<td>RBS-35</td>
+<td>Sigma</td>
+<td>Cat# 83461</td>
+</tr>
+<tr>
+<td>Poly-L-lysine, 0.1% (w/v)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# P8920</td>
+</tr>
+<tr>
+<td>BSA, nuclease-free, 50 mg ml<sup>−1</sup>
+</td>
+<td>Ambion</td>
+<td>Cat# AM2616</td>
+</tr>
+<tr>
+<td>Dextran sulfate, sodium salt</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# D8906</td>
+</tr>
+<tr>
+<td>
+<i>Escherichia coli</i> tRNA</td>
+<td>Roche</td>
+<td>Cat# 10109550001</td>
+</tr>
+<tr>
+<td>Ribonucleoside vanadyl complex, 200 mM (RVC)</td>
+<td>New England Biolabs</td>
+<td>Cat# S1402S</td>
+</tr>
+<tr>
+<td>6-Carboxytetramethylrhodamine succinimidyl ester, TMR (Ex/Em: 550 nm/575 nm)</td>
+<td>Molcular probes</td>
+<td>Cat# C6123</td>
+</tr>
+<tr>
+<td>Alexa Fluor 594 carboxylic acid succinimidyl ester (Ex/Em: 590 nm/617 nm)</td>
+<td>Thermo Fisher</td>
+<td>Cat# A37572</td>
+</tr>
+<tr>
+<td>Cy5 succinimidyl ester (Ex/Em: 650 nm/670 nm)</td>
+<td>GE Healthcare</td>
+<td>Cat# PA25001</td>
+</tr>
+<tr>
+<td>TAMRA (Ex/Em: 557 nm/583 nm)</td>
+<td>Stellaris FISH Probe Designer,<br>Biosearch Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CAL Fluor Red 610 (Ex/Em: 590 nm/610 nm)</td>
+<td>Stellaris FISH Probe Designer,<br>Biosearch Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Quasar 670 (Ex/Em: 647 nm/670 nm)</td>
+<td>Stellaris FISH Probe Designer,<br>Biosearch Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Alexa Fluor™ 488 Phalloidin</td>
+<td>Thermo Fisher</td>
+<td>Cat# A12379</td>
+</tr>
+<tr>
+<td>Rhodamine Phalloidin</td>
+<td>Thermo Fisher</td>
+<td>Cat# R415</td>
+</tr>
+<tr>
+<td>Methanol</td>
+<td>Bio-Lab itd</td>
+<td>Cat# 13683501</td>
+</tr>
+<tr>
+<td>4′,6-Diamidino-2-phenylindole (DAPI)</td>
+<td>Molecular Probes</td>
+<td>Cat# D1306</td>
+</tr>
+<tr>
+<td>Catalase</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# C3515</td>
+</tr>
+<tr>
+<td>Glucose oxidase</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# G2133</td>
+</tr>
+<tr>
+<td>ProLong™ Gold Antifade Mountant</td>
+<td>Molecular Probes</td>
+<td>Cat# P36934</td>
+</tr>
+<tr>
+<td colspan="3"><b>Software and Algorithms</b></td>
+</tr>
+<tr>
+<td>Stellaris FISH Probe Designer</td>
+<td>Biosearch Technologies</td>
+<td><a href="https://www.biosearchtech.com/products/rna-fish/">https://www.biosearchtech.com/products/rna-fish/</a></td>
+</tr>
+<tr>
+<td>MATLAB R2016b</td>
+<td>MathWorks®</td>
+<td>
+<a href="https://www.mathworks.com">https://www.mathworks.com</a>/</td>
+</tr>
+<tr>
+<td>ImageM</td>
+<td><a href="#bib9">Lyubimova et al., 2013</a></td>
+<td> </td>
+</tr>
+<tr>
+<td>ImageJ 1.51 h</td>
+<td><a href="#bib15">Schindelin et al., 2012</a></td>
+<td><a href="https://imagej.nih.gov/ij/">https://imagej.nih.gov/ij/</a></td>
+</tr>
+<tr>
+<td>MetaMorph software</td>
+<td>Molecular Devices, Downington, PA</td>
+<td><a href="https://www.biocompare.com/19333-Image-Analysis-Software-Image-Processing-Software/78845-MetaMorphreg-Microscopy-Automation-Image-Analysis-Software/">https://www.biocompare.com/19333-Image-Analysis-Software-Image-Processing-Software/78845-MetaMorphreg-Microscopy-Automation-Image-Analysis-Software/</a></td>
+</tr>
+<tr>
+<td colspan="3"><b>Other</b></td>
+</tr>
+<tr>
+<td>Computer of minimum 4 GB RAM</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td rowspan="2">High sensitivity CCD camera/CMOS camera</td>
+<td>Photometrics</td>
+<td>Pixis 1024B</td>
+</tr>
+<tr>
+<td>Photometrics</td>
+<td>Prime 95B</td>
+</tr>
+<tr>
+<td>Immersion oil</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Inverted fluorescence microscope, Eclipse-Ti</td>
+<td>Nikon</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Microscope managing and imaging software</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Metal halide lamp</td>
+<td>Prior Lumen 220</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Motorized optical shutter (Sutter SMARTSHUTTER)</td>
+<td>Sutter Instruments</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Motorized stage controller (TI-S-E motorized stage)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Numerical aperture (NA) 1.4 objective, × 100</td>
+<td>Nikon</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Filter cube for Cy5.5 (Ex/DF/Em: 650 nm/680 nm/710 nm)</td>
+<td>Chroma Technology</td>
+<td>Cat# 41023</td>
+</tr>
+<tr>
+<td rowspan="3">Custom filter cube for Alexa Fluor 594; exciter, dichroic filter, emitter (Ex/DF/Em: 590 nm/610 nm/630 nm)</td>
+<td rowspan="3">Omega Optical</td>
+<td>Cat# 2017901-590DF10</td>
+</tr>
+<tr>
+<td>Cat# XF2014-610DRLP</td>
+</tr>
+<tr>
+<td>Cat# XF3028-630DF30</td>
+</tr>
+<tr>
+<td>Filter cube for TMR (Ex/DF/Em: 546 nm/555 nm/580 nm)</td>
+<td>Omega Optical</td>
+<td>Cat# XF204</td>
+</tr>
+<tr>
+<td>Cryostat</td>
+<td>Leica</td>
+<td>Cat# CM1950</td>
+</tr>
+<tr>
+<td>Desicator</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td rowspan="2">Gaskets: Silicone isolator</td>
+<td>Grace Biolabs</td>
+<td>Cat# JTR20-0.5</td>
+</tr>
+<tr>
+<td>Sigma Aldrich</td>
+<td>Ca# P24740</td>
+</tr>
+<tr>
+<td>Liquid blocker Super PAP pen narrow</td>
+<td>Bar-Naor Ltd.</td>
+<td>Cat# BN3525B</td>
+</tr>
+<tr>
+<td>Mini Incubator</td>
+<td>Labnet International, Inc.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Paint brush, fine</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Plastic molds for tissue embedding (size 22x22mm)</td>
+<td>Electron Microscopy Sciences</td>
+<td>Cat# 70182</td>
+</tr>
+<tr>
+<td rowspan="2">Rnase-free, low-retention pipette tips</td>
+<td>Labcon NA</td>
+<td>Cat# 1153-965</td>
+</tr>
+<tr>
+<td>Rainin Instrument – Mettler Toledo</td>
+<td>Cat# RT-L200F; RT-L1000F</td>
+</tr>
+<tr>
+<td>Sonicator</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Vacuum pump</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>BenchMixer, Vortex Mixer</td>
+<td>Benchmark Scientific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cover glass rack, for 22x22mm coverslips</td>
+<td>Bar – Naor</td>
+<td>Cat# BN721422-DL</td>
+</tr>
+<tr>
+<td>Cover glass wash jar</td>
+<td>Electron Microscopy Sciences</td>
+<td>Cat# 70312-23</td>
+</tr>
+<tr>
+<td>Dry ice</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Falcon tubes, 15 mL</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Falcon tubes, 50 mL</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Miscoscope cover glass, 22 × 22 mm, no. 1</td>
+<td>Thermo Scientific</td>
+<td>Cat# D10143263NR1</td>
+</tr>
+<tr>
+<td>Microscope glass slides</td>
+<td>Thermo Scientific</td>
+<td>Cat# J1800AMNZ</td>
+</tr>
+<tr>
+<td>Nutating mixer (Rocker 25)</td>
+<td>Labnet International, Inc.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Parafilm</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Round cover glasses, Menzel Gläser, 13 mm, no. 1</td>
+<td>VWR</td>
+<td>Cat# 630-2118</td>
+</tr>
+<tr>
+<td>Sharp-tip forceps size 5, 0.10x0.06 mm length</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Six-well plates</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Styrofoam boxes with lids</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tabletop centrifuge</td>
+<td>Eppendorf</td>
+<td>Cat# 5424R</td>
+</tr>
+<tr>
+<td>Tube rotator, ELMI Intelli – Mixer RM-2L</td>
+<td>ELMI</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Whatman filter paper</td>
+<td>GE Healthcare UK Limited</td>
+<td>Cat# 1001 090</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and Equipment</h2>
+<ul>
+<li>RBS-35, 2% (vol/vol): Combine 20 mL of RBS and 980 mL of distilled or deionized water. Store the solution at room temperature (RT, 22-26°C) for up to several months.</li>
+<li>Ethanol, 70% (vol/vol): Prepare with Dnase/RNase-free water.</li>
+<li>Poly-L-lysine: Combine 20 mL of 0.1% (wt/vol) poly-L-lysine solution and 180 mL of deionized or distilled, nuclease-free water. The solution should be prepared fresh.</li>
+<li>Formaldehyde, 3.7% (vol/vol): For a total volume of 100 ml, combine 80 mL of deionized, nuclease-free water, 10 mL of 37% formaldehyde (wt/vol) and 10 mL of 10X PBS. Freshly prepare the solution just before use.</li>
+</ul>
+<div class="critical">
+<span class="critical-title">Critical:</span> Formaldehyde should be handled in a fume hood while wearing protective gloves and a lab coat.</div>
+<ul>
+<li>Cryoprotecting solution: For a 50 mL solution combine 5 mL of 10X PBS, 5 mL of 37% (vol/vol) formaldehyde and 15 g of sucrose. Add deionized, nuclease-free water to a final volume of 50 ml. Incubate the solution with gentle agitation at room temperature (RT, 22-26°C) to allow the sucrose crystals to dissolve.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> Freshly prepare this solution just before use.</div>
+<ul>
+<li>Proteinase K working solution: Prepare the stock solution of 20mg/mL with nuclease-free water. Aliquote in small volumes of 25 μL and keep at −20°C. Prepare fresh before use the 1:1,000–1:2,000 dilutions of the stock solution in 2X SSC in nuclease-free water.</li>
+<li>Wash buffer (WB), 30% (vol/vol) formamide: For 150 mL WB combine 15 mL of 20X SSC, 45 mL of formamide and 90 mL of deionized, nuclease-free water.</li>
+</ul>
+<div class="note">
+<span class="note-title">Note:</span> Prepare the wash buffer fresh and store it in the dark for no more than 2 days.</div>
+<ul>
+<li>
+<i>E. coli</i> tRNA: Dissolve the powder in deionized, nuclease-free water to a concentration of 20 mg/mL. Divide the solution into 500 μL aliquots and store them at −20°C for up to several months.</li>
+<li>Ribonucleoside vanadyl complex: Incubate the purchased solution in a 65°C water bath for 10 min, divide it into 100 μL aliquots and store them at −20°C for up to several months.</li>
+<li>Hybridization buffer (HB), 30% formamide: For a total volume of 10 ml, use a 15 mL conical Falcon tube, combine 5.3 mL of nuclease-free water and 1 mL of nuclease-free 20X SSC. Add 1 g of dextran sulfate in small portions and vortex the mixture in between. Incubate it on a tube rotator until the dextran is fully dissolved (do not exceed 30 min of incubation). Add 3 mL of formamide, 500 μL of tRNA stock (20 mg ml<sup>−1</sup>), 100 μL of RVC stock (200 mM) and 40 μL of nuclease-free BSA stock (50 mg ml<sup>−1</sup>). Mix the buffer well by inverting the tube on a tube rotator for 2 min; vortex and divide the solution into 1 mL aliquots. Store the aliquots at −20°C for up to several months.</li>
+</ul>
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure to mix the hybridization buffer well.</div>
+<ul>
+<li>Glucose 10% (wt/vol): Dissolve 5 g of glucose in 50 mL of deionized, nuclease-free water. Store at 4°C for several days.</li>
+<li>GLOX buffer: For a total volume of 50 ml, combine 500 μL of Tris (1 M, pH 8.0), 5 mL of 20X SSC, 2 mL of 10% (wt/vol) glucose and 42.5 mL of deionized, nuclease-free water. This solution should be prepared fresh.</li>
+<li>DAPI working solution: Add 5 μL of DAPI (10 μg/mL stock, diluted in nuclease-free water) to 1 mL of 2X SSC or GLOX buffer (1:200 dilution). Use this solution immediately.</li>
+<li>GLOX buffer with phalloidin: As a membrane marker we use Alexa Fluor 488 phalloidin or rhodamine phalloidin, which are reconstituted in methanol (300 units phalloidin in 1.5 mL methanol). Add 2-4 μL of the reconstituted phalloidin to 1 mL of GLOX buffer. Freshly prepare this solution before use.</li>
+<li>Glucose oxidase, 100 × stock: Dissolve the enzyme in 50 mM sodium acetate (pH 5.2), to a concentration of 3.7 mg ml<sup>−1</sup> at 37°C for 1 h. Divide the solution into 10 μL aliquots and store them at −20°C for up to several months. Note, after diluting to 50 mM sodium acetate make sure the pH remains at 5.2. Take a sample to test the pH and do not bring the pH meter in contact with the stock solution to avoid RNase contamination.</li>
+<li>GLOX anti-bleach mounting medium: Add 1 μL of glucose oxidase (stock 3.7 mg ml<sup>−L</sup>) and 1 μL of catalase (vortex catalase suspension just before pipetting, do not spin) to 100 μL of GLOX buffer. This solution should be prepared fresh and used immediately. It can be stored at 4°C for several h.</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> ProLong Gold antifade reagent for mounting.</div>
+<ul>
+<li>Cryosectioning settings: Set the temperature of the cryostat chamber between −22°C and −25°C</li>
+</ul>
+<div class="critical">
+<span class="critical-title">Critical:</span> the sample must be kept frozen solid at all times.</div>
+<div class="note">
+<span class="note-title">Note:</span> Section thickness is set between 5 and 10 μm.</div>
+<div class="note">
+<span class="note-title">Note:</span> Section thickness greater than 10 μm may cause an increase in background fluorescence, when imaging with a wide-field microscope.</div>
+<ul>
+<li>Microscope and imaging: We use an inverted epifluorescence microscope (Eclipse Ti, Nikon), fitted with a high-quantum-efficiency cooled CCD camera or CMOS camera, motorized shutters, motorized stage, a metal halide lamp (Prior Lumen 220) as a light source and an × 100 high-NA oil-immersion objective. We use band-pass filter cubes optimized for imaging three separate fluorophores (Cy5, Alexa Fluor 594 and TMR; <a href="#tbl1">Table 1</a>) at the same time. Microscopy and imaging setup is controlled by Metamorph software (Molecular Devices) or NIS Elements (Nikon).</li>
+</ul>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Other epifluorescence microscopes can be used as well.</div>
+<div class="note">
+<span class="note-title">Note:</span> A sensitive, cooled, back-illuminated CCD camera (e.g., Photometrics Pixis 1024B) or CMOS camera (Photometrics Prime 95B) and a ×100 magnification objective with a high NA (&gt;1.3) are necessary for imaging.</div>
+<div class="note">
+<span class="note-title">Note:</span> The selection of the fluorophore depends on available filter cubes and their properties. We recommend the following set up (<a href="#tbl1">Table 1</a>). Common microscope set ups do not allow to distinguish between Alexa Fluor 594 and TMR or CAL Fluor Red 610 and TAMRA, respectively.</div>
+<div class="note">
+<span class="note-title">Note:</span> For low abundant transcripts the fluorophores Alexa Fluor 594/CAL Fluor Red 610 or Cy5/Quasar 670 are preferred over TMR/TAMRA.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-Step Method Details</h2>
+<h3>Cryosectioning, Fixation, and Permeabilization of the Sections</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1-2 h; 2 h incubation</div>
+<p>This step describes how to section the frozen tissue and then fix and permeabilize the sections. See <a href="#fig5">Figure 5</a>.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Cryosectioning</div>
+</figcaption>
+</figure>
+<ol>
+<li>Prepare the coverslips as outlined in BEFORE YOU BEGIN.</li>
+<li>Prepare dry ice in an appropriate container. We use Styrofoam boxes with lids.</li>
+<li>Set up the cryostat (Equipment Setup) and clean the stage. Use a new knife for sectioning.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep frozen blocks on dry ice. Do not let the blocks thaw or even soften.</div>
+<ol start="4">
+<li>Keep the prepared coverslips at room temperature (RT, 22-26°C). Cut 5- to 10-μm sections. A fine paint brush helps to keep the tissue sections in place. Mount them onto the coated coverslips. The frozen sections will immediately melt on the coverslip due to the temperature difference. Use sharp-ended forceps to pick up the coverslips. Let the sections air-dry for 5 min (1 min/1 μm).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The drying time is important to properly mount the tissue sample onto the coverslip. Insufficient drying may cause section detachment. To avoid RNA degradation, the drying time should not exceed 1 min/μm tissue.</div>
+<ol start="5">
+<li>Place the mounted sections facing up in a six-well plate on dry ice. Close the six-well plate and keep the lid of the ice box closed to avoid condensation caused by the room temperature. Keep the sections on dry ice until fixation.</li>
+<li>Prepare the fixative solution (3.7% formaldehyde (vol/vol) in RNase-free 1X PBS). Place the six-well plate with the tissue sections at room temperature for up to 1 min before adding 3-5 mL fixative to each well. Incubate the sections for 15 min at room temperature in a fume hood. See <a href="#fig6">Figure 6</a>.</li>
+</ol>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Fixation and Permeabilization of the Sections</div>
+</figcaption>
+</figure>
+<ol start="7">
+<li>Rinse the coverslips with RNase-free 1X PBS. Then replace with cold RNase-free 70% (vol/vol) ethanol. Incubate at 4°C for a minimum of 2 h before proceeding to hybridization.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> All washes can be done in 6-well plates. Solutions should be poured carefully on the side of a well to avoid tissue detachment from the coverslip. Make sure that the sections are always covered and do not dry out at any time.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The coverslips can be kept in 70% ethanol in a fridge for up to 3 days.</div>
+<h3>Optional Step: Proteinase K Digestion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min</div>
+<p>This part describes a treatment to enhance the permeability of probes into the tissue. It is recommended for cryosections &gt; 10 μm thickness. See <a href="#fig7">Figure 7</a>.</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7.</div>
+</figcaption>
+</figure>
+<ol>
+<li>Prewarm RNase-free 2X SSC in a 37°C water bath (for step 3 only) and add proteinase K.</li>
+<li>Rehydrate the sections by placing them into 2X SSC for 5 min at room temperature.</li>
+<li>Replace 2X SSC with prewarmed proteinase K working solution and incubate at 37°C for 10 min.</li>
+<li>Wash the sections with 2X SSC for 5 min.</li>
+</ol>
+<h3>RNA Denaturation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min; 3-5 h incubation</div>
+<p>This part describes the incubation with formamide containing wash buffer. See <a href="#fig8">Figure 8</a>.</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Critical Step: RNA Denaturation</div>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> The incubation with fresh wash buffer (30% formamide) for at least 3 h shows a dramatic improvement of smFISH signal for <i>in-situ </i> endocrine and exocrine pancreatic tissue.</div>
+<p>For studies on the exocrine pancreas, we recommend to extend incubation further to 5 h (<a href="#fig15">Figures 15</a> and <a href="#fig16">16</a>). Incubations can be extended to at least 8 h with no compromise in smFISH signal quality.</p>
+<ol>
+<li>Wash the sections with 2X SSC for 5 min.</li>
+<li>Replace the 2X SSC with 3-5 mL of freshly made wash buffer (with 30% formamide) and incubate at 30°C for for at least 3 h.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Handle formamide containing solutions in a fume hood.</div>
+<h3>Hybridization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 20 min; overnight (10-16 h) incubation</div>
+<p>This section describes the process of hybridization with the probe libraries. See <a href="#fig9">Figure 9</a>. Note there are two options for overnight hybridization. Option A is recommended when handling small tissue sections but necessitates a hydrophobic pen that dries fast and comes with the risk that the tissue will dry during the process. See <a href="#fig10">Figure 10</a>. For Option B, the coverslip is placed upside down on parafilm. See <a href="#fig11">Figure 11</a>.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Preparation of the Hybridization Mix</div>
+</figcaption>
+</figure>
+<ol>
+<li>Thaw the required quantity of hybridization buffer (150 μL per 22 × 22-mm coverslip).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Hybridization buffer contains formamide. Handle the buffer in a fume hood while wearing protective gloves.</div>
+<ol start="2">
+<li>In a 1.5 mL microcentrifuge tube combine the hybridization buffer and the coupled probes with a final concentration of 0.1 ng/μl (intermediate dilutions can be diluted in Tris-EDTA).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Keep probes protected from light.</div>
+<div class="note">
+<span class="note-title">Note:</span> Prepare an extra slide with a mock hybridization to distinguish between true smFISH and autofluorescent signal of the tissue.</div>
+<ol start="3">
+<li>Vortex vigorously and spin the mixture briefly.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Hybridization buffer is highly viscous and needs to be vortexed vigorously after adding the probes.</div>
+<ol start="4">
+<li>Add the hybridization mix on the sample (according to Option A or Option B).</li>
+</ol>
+<ol type="a">
+<li>Option A is recommended when handling small tissue sections (e.g., isolated islets), but necessitates a hydrophobic pen that dries immediately. This option is not recommended, if the handling time causes the tissue to dry along the process. See <a href="#fig10">Figure 10</a>.</li>
+</ol>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Option A</div>
+</figcaption>
+</figure>
+<ol type="i">
+<li>Discard the wash buffer and remove the remaining liquid with a Kimwipe without touching the tissue sections. Mark the borders around the tissue with a hydrophobic pen and proceed immediately to the next step.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Work fast, so that the tissue will not dry out.</div>
+<ol start="2" type="i">
+<li>Immediately add the hybridization mix directly on the tissue. Avoid air bubbles.</li>
+<li>Close the 6-well plate and incubate overnight at 30°C protected from light.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> From now on keep the tissue sections protected from light.</div>
+<ol start="2" type="a">
+<li>Option B is a good alternative to Option A. The benefit of this option is a low risk for the tissue to dry out but as a disadvantage it can cause tissue detachment from the coverslip. When handling small tissue samples (e.g., isolated islets) this option is not recommended. See <a href="#fig11">Figure 11</a>.</li>
+</ol>
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Option B</div>
+</figcaption>
+</figure>
+<ol type="i">
+<li>Spread a clean piece of parafilm on the bottom of a 15 cm Petri dish.</li>
+<li>For each sample pipette 150 μL of the hybridization mix on the parafilm.</li>
+<li>Take the coverslips from the wash wells with fine forceps, pat a corner and wipe the back with a Kimwipe.</li>
+<li>Place the coverslip section down onto the drop of the hybridization mix. Avoid air bubbles.</li>
+<li>Close the lid of the Petri dish and incubate overnight at 30°C protected from light.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> From now on keep the tissue sections protected from light.</div>
+<h3>Day 2: Washing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h 20 min</div>
+<p>This section describes the steps to wash off unbound probes, optionally to apply nuclear and membrane stains, and finally to mount the slides for imaging. See <a href="#fig12">Figure 12</a></p>
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. Washing</div>
+</figcaption>
+</figure>
+<ol>
+<li>Remove excessive hybridization mix.</li>
+</ol>
+<ol type="a">
+<li>Option A: Hold the 6-well plate in a ∼60° angle and the hybridization mix will from a drop on the lower wall of each well. Remove the mix with a Kimwipe without touching the tissue section.</li>
+<li>Option B: If the hybridization was performed on parafilm, carefully lift a corner of the parafilm so that the coverslip comes easily off from the hybridization solution (or pipette wash buffer to the edge of the coverslip to peel the parafilm off without damaging the sample). Place the coverslips back into a 6-well plate.</li>
+</ol>
+<ol start="2">
+<li>Wash twice in wash buffer for 15 min at 30°C.</li>
+<li>Prepare 50 mL GLOX buffer and GLOX buffer with 10 μg/mL DAPI working solution.</li>
+<li>Remove the wash buffer and add 5 mL of DAPI working solution to stain for nuclei. Incubate for 5 min at room temperature protected from light. Make sure the tissue is completely covered.</li>
+</ol>
+<h3>Optional Step</h3>
+<ol start="5">
+<li>If using phalloidin membrane staining, prepare fresh phalloidin in GLOX buffer. Replace DAPI with phalloidin solution and incubate for 15 min at room temperature protected from light.</li>
+</ol>
+<h3>Mounting</h3>
+<ol>
+<li>Replace with 3-5 mL GLOX buffer for each well and let stand for a few minutes before mounting. See <a href="#fig13">Figure 13</a>.</li>
+</ol>
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. Mounting</div>
+</figcaption>
+</figure>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Sections can be stored in GLOX buffer at 4 °C for few hours.</div>
+<ol start="2">
+<li>For mounting we recommend using 7 μL prolong gold antifade or 15 μL fresh GLOX anti-bleach mounting medium for each section.</li>
+<li>Prepare the mounting medium, circular coverslip, Kimwipe, and forceps. Put a gasket on a rectangular microscope slide. Lift the coverslip with the tissue section. Wipe the back of the coverslips and dry the edges with a Kimwipe and place it on the bench top.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> it is important to remove any excess liquid around the tissue sections. However, the tissue sections themselves should never dry out.</div>
+<ol start="4">
+<li>Place the mounting medium (7 μL prolong gold antifade or 10-15 μL fresh GLOX anti-bleach mounting medium) onto the sections; place a circular coverslip (13 mm diameter) on top of the sample. Avoid producing air bubbles in this process. For GLOX anti-bleach mounting medium use Whatman paper to suck off as much of the excess liquid as possible to avoid sliding the circular coverslip. For prolong gold use small amounts.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Moving or lifting the circular coverslip after placing it on top of the tissue sections can lead to tissue damage.</div>
+<div class="note">
+<span class="note-title">Note:</span> Prolong gold solution is highly viscous and excessive amounts cannot be reabsorbed.</div>
+<ol start="5">
+<li>Place the microscope glass with the gasket on top of the coverslip. Proceed to imaging.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Slides mounted with prolong gold can be frozen at −20 °C to image later. However, the best signal will be achieved when imaging directly after mounting. Slides mounted with GLOX mounting medium cannot be frozen and should be imaged the same day.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected Outcomes</h2>
+<p>We performed smFISH imaging on a Nikon-Ti inverted fluorescence microscope equipped with a 100 × oil-immersion objective and a Photometrics Pixis 1024 CCD camera/ Photometrics Prime 95B CMOS camera (see “Materials and Equipment”). The recommended image-plane pixel dimension is 0.13 μm. The <i>Z</i> spacing should be 0.3 μm or smaller. Imaging bit depth is set to 16 bit. Camera gain is set to default. See <a href="#fig14">Figure 14</a>.</p>
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Imaging</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Test the illumination time for each channel. Typical illumination times are 0.5–3 s for Cy5 and Alexa Fluor 594, 0.2–1 s for TMR, 50–500 ms for FITC and 50–100 ms for DAPI</div>
+<div class="note">
+<span class="note-title">Note:</span> Avoid excessive exposure times.</div>
+<div class="note">
+<span class="note-title">Note:</span> Transcripts are detected as diffraction limited spots. Gene expression is measured by dot number per volume. Genes with high transcripts number individual mRNA cannot be discerned (e.g. rRNA or insulin mRNA in beta cells). However, cytoplasmic intensity correlates with mRNA content (<a href="#bib7">Little et al., 2013</a>).</div>
+<div class="note">
+<span class="note-title">Note:</span> Autofluorescent signal appears in all channels (see <a href="#fig15">Figure 15</a>).</div>
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. Before and After Optimization of the smFISH Protocol for Pancreatic Tissue</div>
+<p>Serial cryosections of an intact mouse pancreas (8 week old, male, C57Bl6) were incubated with wash buffer for (A) 10 min with 15% formamide or (B) 5 h with 30% formamide prior to hybridizing with smFISH probes (gray) for Acly-mRNA and Actb-mRNA. Increased formamide concentration and prolonged incubation with wash buffer prior to probe hybridization reveals single-molecule transcripts in the intact mouse pancreas. Islets are marked by white dashed lines. For each image a close-up of a region (1,3) within an islet and (2,4) exocrine tissue reveals single-molecule resolution. (A-C) Merged images of both channels (Acly-mRNA/Alexa Fluor 594 in green; Actb-mRNA/Cy5.5 in red) reveal autofluorescent signal indicated by orange arrows. Autofluorescent dots tend to be bigger, are detected in multiple channels (e.g., Cy5.5 and Alexa Fluor 594) and are apparent after mock hybridization. DAPI-stained nuclei are in blue. Phalloidin in red indicates cell membranes. All scale bars: 10 μm. All slides were processed simultaneously except of indicated variations. Exposure time and microscope setup was maintained constant for all conditions. For each channel, the same threshold for brightness/contrast was applied. No further image modifications were performed. Images for further tested conditions are presented in <a href="#fig16">Figure 16</a>.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Strong smFISH signal for genes with high transcript number (e.g. rRNA or insulin mRNA in beta cells) can cause bleed through to other channels.</div>
+<p>We noticed that mRNA denaturation prior smFISH probe hybridization is critical for pancreatic tissue. Calibration experiments were performed with different formamide concentrations and incubation times. We noticed that each condition alone, increasing formamide concentration to 30% as well as prolonged incubation with wash buffer prior to hybridization, improves signal quality. However, the best smFISH signal and for the exocrine pancreas has been achieved when combining both conditions (<a href="#fig15">Figures 15</a> and <a href="#fig16">16</a>).</p>
+<figure id="fig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/21-Fig16.jpg" alt="Fig16.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 16. Protocol Calibration</div>
+<p>Serial cryosections of an intact mouse pancreas (8 week old, male, C57Bl6) were incubated with wash buffer containing either (A) 30% formamide (FA) or (B) 15% FA for 5 h, 3 h, 1 h, and 10 min prior to probe hybridization overnight. Total time of wash buffer incubation and hybridization was equal for all conditions. Sections were hybridized with smFISH probes (gray) for Acly-mRNA and Actb-mRNA. For each condition a close-up of a region of (1,2) endocrine cells within an islet or (3,4) exocrine tissue reveals single-molecule resolution. Merged images of both channels (Acly-mRNA/Alexa Fluor 594 in green; Actb-mRNA/Cy5.5 in red). The best signal-to-noise ratio was achieved after 5 h incubation with wash buffer containing 30% FA. The signal quality is reduced by both 15% FA and decreased incubation time. In particular the detection of mRNA in the exocrine tissue is diminished by shorter incubation. While transcripts of both genes Acly and Actb are detectable in endocrine cells already after 10 min and 30% FA, it remains undetectable in the exocrine tissue. The signal-to-noise ratio is compromised making automatic dot detection difficult. Notably, after 10 min with 15% FA only nuclear signal of Acly-mRNA is detectable. DAPI-stained nuclei are in blue. (1-4) Phalloidin in red indicates cell membranes. Scale bar: 10 μm. All slides were processed simultaneously except of indicated variations. Exposure time and microscope setup was maintained constant for all conditions. For each channel, the same threshold for brightness/contrast was applied. No further image modifications were performed.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>As with traditional smFISH, our technique has lower signal to noise ratio for very short transcripts, since it requires the specific accumulation of sufficient numbers of singly labeled probes. While smFISH has single-molecule resolution, discerning signal from non-specific fluorescent spots could be challenging for low expression genes. The method currently is limited in throughput allowing simultaneous imaging of up to three genes. Notably, the protocol modifications we introduced here, mainly prolonged incubations with higher concentrations of denaturation reagents prior to probe hybridization, could facilitate the optimal use of other <i>in situ</i> approaches for pancreatic tissue that could help overcome limitations of single-molecule resolution and low throughput. These approaches include emerging signal amplification technologies such as ClampFISH (<a href="#bib14"> Rouhanifard et al., 2018</a>), RNAscope (<a href="#bib18">Wang et al., 2012</a>), and SABER (<a href="#bib6">Kishi et al., 2019</a>) as well as technologies that enable higher throughput through combinatorial labeling of probe libraries and multiple rounds of hybridizations ( <a href="#bib2">Chen et al., 2015</a>; <a href="#bib8">Lubeck et al., 2014</a>; <a href="#bib10">Moffitt and Zhuang, 2016</a>; <a href="#bib16">Shaffer et al., 2017</a>; <a href="#bib17">Shah et al., 2016</a>). In combination with single-cell RNA sequencing smFISH is a powerful tool to obtain a transcriptome-wide view of mRNA localization in intact tissues (<a href="#bib5">Halpern et al., 2017</a>; <a href="#bib11">Moor et al., 2017</a>, <a href="#bib12">2018</a>).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Problem</h3>
+<p>There is no smFISH signal.</p>
+<h3>Potential Solutions</h3>
+<p>Make sure that your microscope is able to detect smFISH signal (see “Equipment setup,” “Microscope and imaging”). You can use tissues (e.g., liver or intestine) that are easier to handle to test the microscope.</p>
+<p>Start your calibration with smFISH probes for Insulin, Glucagon or Somatostatin. Transcripts of these genes are highly abundant and detected by intensity rather than by single dot resolution (<a href="#bib4">Farack et al., 2019</a>). These genes are already detectable following the standard tissue smFISH protocol. Further, microscopes with lower resolution are able to detect these transcripts. Continue with smFISH probes for highly expressed genes that have been validated before (<a href="#bib4">Farack et al., 2019</a>).</p>
+<h3>Problem</h3>
+<p>Unable to distinguish autofluorescent signal from real smFISH signal.</p>
+<h3>Potential Solution</h3>
+<p>Autofluorescent dots tend to be bigger, are detected in multiple channels, and are apparent after mock hybridization (<a href="#fig15">Figure 15</a>).</p>
+<h3>Problem</h3>
+<p>Combining the protocol for smFISH with immunofluorescence (IF).</p>
+<h3>Potential Solution</h3>
+<p>First, test the conditions for IF and smFISH separately before combining both methods. Perform the smFISH protocol until “Washing and Mounting” step 2. Pour off the wash buffer, quickly rinse with 2X SSC, and then proceed with the IF protocol. If possible, do not extend the incubation time of the primary antibody to 1h at RT and the secondary antibody to 0.5-1h at RT. Use nuclease-free reagents. If antigen retrieval (AGR) is required, perform it on the first day of the experiment directly after permeabilization with ethanol and then continue with the smFISH protocol for pancreatic tissue. In my hands, AGR reduces smFISH signal quality.</p>
+</section>
+<section>
+<h2 id="q-and-a">Q&amp;A</h2>
+<p class="question"><b>Q1.</b> I want to combine smFISH with immunofluorescence (IF). What should I do?</p>
+<p class="answer"><b>A1.</b> First, test the conditions for IF and smFISH separately before combining both methods. Perform the smFISH protocol until “Washing and Mounting” step 2. Pour off the wash buffer, quickly rinse with 2xSSC, and then proceed with the IF protocol. If possible, do not extend the incubation time of the primary antibody to 1h at RT and the secondary antibody to 0.5-1h at RT. Use nuclease-free reagents. If antigen retrieval (AGR) is required, perform it on the first day of the experiment directly after permeabilization with ethanol and then continue with the smFISH protocol for pancreatic tissue. In my hands, AGR reduces smFISH signal quality.</p>
+<p class="question"><b>Q2.</b> In most RNA FISH protocols, the wash step before hybridization is quite brief (5-15 min), mainly serving the purpose of buffer exchange. In theory, the sample will be in hybridization buffer for overnight (10-16 hours) anyway. Why is it critical for pancreatic tissue to denature the RNAs beforehand? Did you try using 30% formamide but without extended wash step?</p>
+<p class="answer"><b>A2</b>. We noticed that mRNA denaturation prior smFISH probe hybridization is critical for pancreatic tissue. Calibration experiments were performed with different formamide concentrations and incubation times. We noticed that each condition alone, increasing formamide concentration to 30% as well as prolonged incubation with wash buffer prior to hybridization, improves signal quality. However, the best smFISH signal and in particular for the exocrine pancreas has been achieved when combining both conditions (<a href="#fig15">Figure 15</a>, <a href="#fig16">16</a>).</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bahar Halpern, K., and Itzkovitz, S. (2016). Single molecule approaches for quantifying transcription and degradation rates in intact mammalian tissues. Methods <i>98</i>, 134-142.</p>
+<p id="bib2">Chen, K.H., Boettiger, A.N., Moffitt, J.R., Wang, S., and Zhuang, X. (2015). RNA imaging. Spatially resolved, highly multiplexed RNA profiling in single cells. Science <i>348</i>, aaa6090.</p>
+<p id="bib3">Farack, L., Egozi, A., and Itzkovitz, S. (2018). Single molecule approaches for studying gene regulation in metabolic tissues. Diabetes Obes. Metab. <i>20 (Suppl 2)</i>, 145-156.</p>
+<p id="bib4">Farack, L., Golan, M., Egozi, A., Dezorella, N., Bahar Halpern, K., Ben-Moshe, S., Garzilli, I., Tóth, B., Roitman, L., Krizhanovsky, V., and Itzkovitz, S. (2019). Transcriptional heterogeneity of beta cells in the intact pancreas. Dev. Cell <i>48</i>, 115-125.e4.</p>
+<p id="bib5">Halpern, K.B., Shenhav, R., Matcovitch-Natan, O., Tóth, B., Lemze, D., Golan, M., Massasa, E.E., Baydatch, S., Landen, S., Moor, A.E., et al. (2017). Single-cell spatial reconstruction reveals global division of labour in the mammalian liver. Nature <i>542</i>, 352-356.</p>
+<p id="bib6">Kishi, J.Y., Lapan, S.W., Beliveau, B.J., West, E.R., Zhu, A., Sasaki, H.M., Saka, S.K., Wang, Y., Cepko, C.L., and Yin, P. (2019). SABER amplifies FISH: enhanced multiplexed imaging of RNA and DNA in cells and tissues. Nat. Methods <i>16</i>, 533-544.</p>
+<p id="bib7">Little, S.C., Tikhonov, M., and Gregor, T. (2013). Precise developmental gene expression arises from globally stochastic transcriptional activity. Cell <i>154</i>, 789-800.</p>
+<p id="bib8">Lubeck, E., Coskun, A.F., Zhiyentayev, T., Ahmad, M., and Cai, L. (2014). Single-cell in situ RNA profiling by sequential hybridization. Nat. Methods <i>11</i>, 360-361.</p>
+<p id="bib9">Lyubimova, A., Itzkovitz, S., Junker, J.P., Fan, Z.P., Wu, X., and van Oudenaarden, A. (2013). Single-molecule mRNA detection and counting in mammalian tissue. Nat. Protoc. <i>8</i>, 1743-1758.</p>
+<p id="bib10">Moffitt, J.R., and Zhuang, X. (2016). rna imaging with multiplexed error-robust fluorescence in situ hybridization (MERFISH). Methods Enzymol. <i>572</i>, 1-49.</p>
+<p id="bib11">Moor, A.E., Golan, M., Massasa, E.E., Lemze, D., Weizman, T., Shenhav, R., Baydatch, S., Mizrahi, O., Winkler, R., Golani, O., et al. (2017). Global mRNA polarization regulates translation efficiency in the intestinal epithelium. Science <i>357</i>, 1299-1303.</p>
+<p id="bib12">Moor, A.E., Harnik, Y., Ben-Moshe, S., Massasa, E.E., Rozenberg, M., Eilam, R., Bahar Halpern, K., and Itzkovitz, S. (2018). Spatial reconstruction of single enterocytes uncovers broad zonation along the intestinal villus axis. Cell <i>175</i>, 1156-1167.e15.</p>
+<p id="bib13">Raj, A., van den Bogaard, P., Rifkin, S.A., van Oudenaarden, A., and Tyagi, S. (2008). Imaging individual mRNA molecules using multiple singly labeled probes. Nat. Methods <i>5</i>, 877-879.</p>
+<p id="bib14">Rouhanifard, S.H., Mellis, I.A., Dunagin, M., Bayatpour, S., Jiang, C.L., Dardani, I., Symmons, O., Emert, B., Torre, E., Cote, A., et al. (2018). ClampFISH detects individual nucleic acid molecules using click chemistry-based amplification. Nat. Biotechnol.</p>
+<p id="bib15">Schindelin, J., Arganda-Carreras, I., Frise, E., Kaynig, V., Longair, M., Pietzsch, T., Preibisch, S., Rueden, C., Saalfeld, S., Schmid, B., et al. (2012). Fiji: an open-source platform for biological-image analysis. Nat. Methods <i>9</i>, 676-682.</p>
+<p id="bib16">Shaffer, S.M., Dunagin, M.C., Torborg, S.R., Torre, E.A., Emert, B., Krepler, C., Beqiri, M., Sproesser, K., Brafford, P.A., Xiao, M., et al. (2017). Rare cell variability and drug-induced reprogramming as a mode of cancer drug resistance. Nature <i>546</i>, 431-435.</p>
+<p id="bib17">Shah, S., Lubeck, E., Zhou, W., and Cai, L. (2016). In situ transcription profiling of single cells reveals spatial organization of cells in the mouse hippocampus. Neuron <i>92</i>, 342-357.</p>
+<p id="bib18">Wang, F., Flanagan, J., Su, N., Wang, L.-C., Bui, S., Nielson, A., Wu, X., Vo, H.-T., Ma, X.-J., and Luo, Y. (2012). RNAscope: a novel in situ RNA analysis platform for formalin-fixed, paraffin-embedded tissues. J. Mol. Diagn. <i>14</i>, 22-29.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Acknowledgments</h3>
+<p>We thank Adi Egozi and Shani Ben-Moshe for valuable comments. S.I. is supported by the Henry Chanoch Krenter Institute for Biomedical Imaging and Genomics, The Leir Charitable Foundations, Richard Jakubskind Laboratory of Systems Biology, Cymerman-Jakubskind Prize, The Lord Sieff of Brimpton Memorial Fund, the <a href="https://doi.org/10.13039/501100001320">Wolfson Foundation</a> SCG, the <a href="https://doi.org/10.13039/501100008896">Wolfson Family Charitable Trust</a>, Edmond de Rothschild Foundations, the I-CORE program of the Planning and Budgeting Committee and the <a href="https://doi.org/10.13039/501100003977">Israel Science Foundation</a> (grants 1902/12 and 1796/12, the Israel Science Foundation grant no. 1486/16, the Broad Institute-Israel Science Foundation grant no. 2615/18, the <a href="https://doi.org/10.13039/100010663">European Research Council</a> (ERC) under the European Union’s Horizon 2020 research and innovation program (grant agreement no. 768956, the <a href="https://doi.org/10.13039/100007204">Bert L. and N. Kuggie Vallee Foundation</a>, and the <a href="https://doi.org/10.13039/100000011">Howard Hughes Medical Institute</a> (HHMI) international research scholar award.</p>
+<h3>Author Contributions</h3>
+<p>L.F. designed and performed the experiments, created all figures, and wrote the manuscript. S.I. supervised the study. All authors discussed the results and commented on the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

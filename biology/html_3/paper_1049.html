@@ -1,0 +1,1107 @@
+<article>
+<section>
+<h1 id="header">CloneSeq - Single-cell clonal 3D culture and analysis protocol</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Xue Sun,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor1">*</a></sup> Danny Bavli,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup> Chen Kozulin,<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> Alex Motzik,<sup><a href="#aff1">1</a></sup> Amnon Buxboim,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a></sup> and Oren Ram<sup><a href="#aff1">1</a>,<a href="#fn3">6</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biological Chemistry, Alexander Silberman Institute of Life Sciences, The Hebrew University, Jerusalem, Israel</p>
+<p id="aff2"><sup>2</sup>Alexander Grass Center for Bioengineering, Benin School of Computer Science and Engineering, Hebrew University of Jerusalem, Jerusalem, Israel</p>
+<p id="aff3"><sup>3</sup>Department of Cell and Developmental Biology, Hebrew University of Jerusalem, Givat Ram, Jerusalem, Israel</p>
+<p id="fn1"><sup>4</sup>These authors contributed equally</p>
+<p id="fn2"><sup>5</sup>Technical contact</p>
+<p id="fn3"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:xue.sun@mail.huji.ac.il">xue.sun@mail.huji.ac.il</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:danny.bavli@mail.huji.ac.il">danny.bavli@mail.huji.ac.il</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:oren.ram@mail.huji.ac.il">oren.ram@mail.huji.ac.il</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100794">10.1016/j.xpro.2021.100794</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>This CloneSeq protocol combines clonal expansion inside 3D hydrogel spheres and droplet-based RNA sequencing to resolve the limited sensitivity of single-cell approaches. CloneSeq can reveal rare subpopulations and support cellular stemness. CloneSeq can be adapted to different biological systems to discover rare subpopulations by leveraging clonal enhanced sensitivity. Important considerations include the hydrogel composition, adaptation of 3D cultured clones to the inDrops system, and inherent adhesive properties of the cells. CloneSeq is only validated for cell lines so far.</p>
+<p>For complete details on the use and execution of this protocol, please refer to (<a class="external-link" href="https://doi.org/10.1016/j.devcel.2021.04.026">Bavli et al., 2021</a>).</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Integrative mRNA sequencing of single clones shows enhanced sensitivity</li>
+<li>PEGDT-MALDEX hydrogel supports cancer cells and ESC clonal expansion</li>
+<li>CloneSeq identifies cancer-stem like subpopulation</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The method includes four steps:</p>
+<ol>
+<li>Capturing of single cells inside hydrogel spheres using a microfluidic device.</li>
+<li>Clonal expansion of single cells within the hydrogel spheres.</li>
+<li>Single-clone transcriptome barcoding in drops.</li>
+<li>Library preparation, sequencing and data processing.</li>
+</ol>
+<p>You will need a microfluidics setup, associated control software, and microfluidic devices for single cell encapsulation for 3D hydrogel culturing and for single-clone transcriptome barcoding.</p>
+<p>For 3D culture, you first need to choose the appropriate composition of hydrogel for your cell line. We have validated several different compositions of hydrogel. For the choice of hydrogel, you can check the manufacturer’s manual (<a href="https://www.cellendes.com/images/pdfs/manuals/manual_hydrogel.pdf">https://www.cellendes.com/images/pdfs/manuals/manual_hydrogel.pdf</a>) or use the flow chart below to help your decision (<a href="#fig1">Figure 1</a>). The protocol below describes the specific steps for embryonic stem cells (ESCs) culturing, which needs CD-Link. For other recipes that need PEG-Link, simply replace the CD-Link by PEG-Link (with the same volume).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Flowchart for the choice of hydrogel components</div>
+</figcaption>
+</figure>
+<p>For clonal expansion, you will need single cells captured in 3D hydrogel spheres from the step above, suitable cell culture plate, cell culture medium, and a cell culture incubator.</p>
+<p>Single-clone transcriptome barcoding and the following library preparation, next-generation sequencing, and data analysis steps are performed as described in the inDrops protocol (<a href="#bib5">Zilionis et al., 2017</a>), with modifications specified in the main text below.</p>
+<h3 id="sec1.1">Microfluidic device fabrication</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="5">
+<li>Follow the protocol reported previously (<a href="#bib3">Mazutis et al., 2013</a>) to manufacture the poly (dimethyl siloxane) (PDMS) devices with designs showed in <a href="#fig2">Figure 2</a>. The depths of the channels for Device I and II are 79.1 ± 1 μm and 123.6 μm ± 1 μm respectively. CAD files for the microfluidic devices can be found in <a href="#bib1">Bavli et al., 2021</a> Data S1. Ready-to-use microfluidic devices can be also obtained commercially (from Fluigent, ]<a href="https://www.fluigent.com/product/microfluidic-components-3/microfluidic-chip/">https://www.fluigent.com/product/microfluidic-components-3/microfluidic-chip/</a>, or BlackHole Lab, <a href="https://www.blackholelab-soft-lithography.com/su-8-photolithography-and-pdms-soft-lithography-products">https://www.blackholelab-soft-lithography.com/su-8-photolithography-and-pdms-soft-lithography-products</a>). For the surface treatment step, an alternative is to use a 200 μL pipette, and drop the Aquapel at the outlet of each device. The solution will be absorbed into the whole device by capillary forces.
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Design of microfluidic devices</div>
+<p>(A) Device I: single cell encapsulation device for PEGDT-MALDEX hydrogel culturing.</p>
+<p>(B) Device II: CloneSeq device for single-clone transcriptome barcoding in drops.</p>
+<p>The numbers indicate the inlets: (1) carrier oil inlet, (2) PEGDT mix, (3) MALDEX mix with cells, (4) outlet for collection, (5) single clone suspension, (6) RT lysis mix, (7) barcoding hydrogel bead.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<h3 id="sec1.2">Prepare hydrogel barcoding beads</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<ol start="6">
+<li>For polyacrylamide hydrogel bead production and barcoding on hydrogel beads please follow the protocol reported previously (<a href="#bib5">Zilionis et al., 2017</a>). We modified the barcode plates (eight 96-well plates) to expand barcode complexity by changing the length of barcode 1 to a variable length of 7 to 10 bases. The complete DNA oligonucleotide sequences can be found in <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Mmc1.xlsx">Table S1</a>.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Novec 7500 Engineered Fluid (HFE-7500 oil)</td>
+<td>3M</td>
+<td>Cat# Novec 7500</td>
+</tr>
+<tr>
+<td>Neat (un-dissolved) 008-FluoroSurfactant</td>
+<td>RAN Biotechnologies</td>
+<td>Cat# 008-FluoroSurfactant</td>
+</tr>
+<tr>
+<td>Methoxy PEG thiol (PEG-SH)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 729108</td>
+</tr>
+<tr>
+<td>1H, 1H, 2H, 2H-Perfluoro-1-Octanol (PFO)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 370533</td>
+</tr>
+<tr>
+<td>Dulbecco’s Modified Eagle’s Medium - high glucose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# D5671</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum (FBS)</td>
+<td>Biological Industries</td>
+<td>Cat# 04-007-1A</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin Solution (10 mg/mL)</td>
+<td>Biological Industries</td>
+<td>Cat# 03-031-1B</td>
+</tr>
+<tr>
+<td>L-Glutamine Solution (200 mM)</td>
+<td>Biological Industries</td>
+<td>Cat# 03-020-1B</td>
+</tr>
+<tr>
+<td>Sodium Pyruvate Solution (100 mM)</td>
+<td>Biological Industries</td>
+<td>Cat# 03-042-1B</td>
+</tr>
+<tr>
+<td>2-Mercaptoethanol (14.3 M)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# M3148</td>
+</tr>
+<tr>
+<td>ECM Gel</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# E1270</td>
+</tr>
+<tr>
+<td>3-D Life PEG-Link (PEGDT)</td>
+<td>Cellendes GmbH</td>
+<td>SKU: L50-1</td>
+</tr>
+<tr>
+<td>3-D Life CD-Link (MPEGDT)</td>
+<td>Cellendes GmbH</td>
+<td>SKU: L60-1</td>
+</tr>
+<tr>
+<td>3-D Life Mal-Dextran (MALDEX)</td>
+<td>Cellendes GmbH</td>
+<td>SKU: M92-3</td>
+</tr>
+<tr>
+<td>3-D Life RGD Peptide</td>
+<td>Cellendes GmbH</td>
+<td>SKU: 09-P-001</td>
+</tr>
+<tr>
+<td>3-D Life Dextranase</td>
+<td>Cellendes GmbH</td>
+<td>SKU: D10-1</td>
+</tr>
+<tr>
+<td>3-D Life 10<b>×</b> CB Buffer (pH 7.2)</td>
+<td>Cellendes GmbH</td>
+<td>SKU: B20-3</td>
+</tr>
+<tr>
+<td>Murine RNase inhibitor</td>
+<td>NEB</td>
+<td>Cat #M0314</td>
+</tr>
+<tr>
+<td>Gelatin solution, 2% in H<sub>2</sub>O</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #G1393</td>
+</tr>
+<tr>
+<td>1M Tris-HCl (pH 8.0)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #T2319</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #I8896</td>
+</tr>
+<tr>
+<td>PBS <b>×</b> 10</td>
+<td>Biological Industries</td>
+<td>Cat #02-023-5A</td>
+</tr>
+<tr>
+<td>0.5M EDTA, pH 8</td>
+<td>Biological Industries</td>
+<td>Cat #V4233</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #W4502</td>
+</tr>
+<tr>
+<td>OptiPrep Density Gradient Medium (Optiprep)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat #D1556</td>
+</tr>
+<tr>
+<td>Tween-20</td>
+<td>ENCOsc-29113</td>
+<td>Cat #SC-29113 sc-29113sc-29113sc-29113</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>SuperScript™ III Reverse Transcriptase Kit</td>
+<td>Invitrogen</td>
+<td>Cat# 18080-044</td>
+</tr>
+<tr>
+<td>NextSeq 500/550 High Output Kit v2.5 (75 Cycles)</td>
+<td>Illumina</td>
+<td>Cat# 20024906</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: cell lines</td>
+</tr>
+<tr>
+<td>Mouse: ES-R1 cells</td>
+<td>Prof. Eran Meshorer (The Hebrew University of Jerusalem, Israel)</td>
+<td>ATCC Cat# SCRC-1011, RRID:CVCL_2167</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Bowtie2</td>
+<td><a href="#bib2">Langmead et al., 2009</a></td>
+<td><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a></td>
+</tr>
+<tr>
+<td>Seurat v2.4</td>
+<td><a href="#bib4">Stuart et al., 2019</a></td>
+<td><a href="https://satijalab.org/seurat/">https://satijalab.org/seurat/</a></td>
+</tr>
+<tr>
+<td>A-I-O SOFTWARE</td>
+<td>Fluigent</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Microfluidic pressure control - LINEUP™ SERIES</td>
+<td>Fluigent</td>
+<td>LU-FEZ-0069; LU-FEZ-0345; LU-FEZ-1000; LU-FEZ-2000</td>
+</tr>
+<tr>
+<td>Hispec1 camera</td>
+<td>Fastec Imaging</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>ECLIPSE Ti2-U inverted microscope</td>
+<td>Nikon</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>High-Intensity UV Inspection Lamp</td>
+<td>Capitol Scientific</td>
+<td>Cat# 95-0127-01</td>
+</tr>
+<tr>
+<td>Magnetic stirring bar (2 × 2 mm)</td>
+<td>Spinbar</td>
+<td>Cat# 371210008</td>
+</tr>
+<tr>
+<td>Micro gear motor (for keeping cells suspended)</td>
+<td>Firgelli Automation</td>
+<td>Cat# FA-GM-6V-30</td>
+</tr>
+<tr>
+<td>pluriStrainer® Mini 70 μm (Cell Strainer)</td>
+<td>pluriSelect</td>
+<td>SKU 43–10070-40</td>
+</tr>
+<tr>
+<td>pluriStrainer® 40 μm (Cell Strainer)</td>
+<td>pluriSelect</td>
+<td>SKU 43–50040-51</td>
+</tr>
+<tr>
+<td>Eppendorf® Safe-Lock microcentrifuge tubes 1.5 Ml</td>
+<td>Merck</td>
+<td>Cat# T9661</td>
+</tr>
+<tr>
+<td>Eppendorf® Safe-Lock microcentrifuge tubes 2 mL</td>
+<td>Merck</td>
+<td>Cat# T2795</td>
+</tr>
+<tr>
+<td>Axygen® 96-well Polypropylene PCR Microplate, Half Skirt, Clear, Nonsterile</td>
+<td>Corning</td>
+<td>Ref# PCR-96M2-HS-C</td>
+</tr>
+<tr>
+<td>Nunc™ Cell-Culture Treated Multidishes – 48 well</td>
+<td>Thermo Fisher</td>
+<td>Cat# 150687</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Raw and analyzed data</td>
+<td>This paper</td>
+<td>GEO: GSE155888</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Barcode lists for CloneSeq - see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Mmc1.xlsx">Table S1</a>
+</td>
+<td><a href="#bib1">Bavli et al., 2021</a></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec8.1">Materials and equipment</h3>
+<table id="undtbl3">
+<caption>Gelatin 0.1%</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gelatin solution, 2% in H<sub>2</sub>O</td>
+<td>0.1%</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>95 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at room temperature (15°C–25°C) for a month.</div>
+<table id="undtbl4">
+<caption>PBS 1<b>×</b>
+</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PBS <b>×</b> 10</td>
+<td>1<b>×</b>
+</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>90 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at room temperature for a month.</div>
+<table id="undtbl5">
+<caption>ESC Medium</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DMEM</td>
+<td>n/a</td>
+<td>500 mL</td>
+</tr>
+<tr>
+<td>FBS</td>
+<td>15%</td>
+<td>75 mL</td>
+</tr>
+<tr>
+<td>L-Glutamine Solution (200 mM)</td>
+<td>2 mM</td>
+<td>6 mL</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin Solution (10 mg/mL)</td>
+<td>0.1 mg/mL</td>
+<td>6 mL</td>
+</tr>
+<tr>
+<td>Sodium Pyruvate Solution (100 mM)</td>
+<td>1 mM</td>
+<td>6 mL</td>
+</tr>
+<tr>
+<td>2-Mercaptoethanol (14.3 M)</td>
+<td>10 mM</td>
+<td>420 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>600 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store at 4°C for up to 1 month.</div>
+<table id="undtbl6">
+<caption>PEGDT mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gelatin (0.1%)</td>
+<td>n/a</td>
+<td>300 μL</td>
+</tr>
+<tr>
+<td>3-D Life 10<b>×</b> CB Buffer (pH 7.2)</td>
+<td>1<b>×</b>
+</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>3-D Life CD-Link (MPEGDT) (20 mM)</td>
+<td>2.45 mM</td>
+<td>67.5 μL</td>
+</tr>
+<tr>
+<td>3-D Life RGD Peptide (20 mM)</td>
+<td>2.45 mM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>PBS (1<b>×</b>)</td>
+<td>n/a</td>
+<td>122.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>550 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Pre-thaw the reagents on ice and store the mix on ice before use. Prepare in 1.5 mL Eppendorf safe-lock tube.</div>
+<table id="undtbl7">
+<caption>MALDEX mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gelatin (0.1%)</td>
+<td>n/a</td>
+<td>335 μL</td>
+</tr>
+<tr>
+<td>3-D Life 10<b>×</b> CB Buffer (pH 7.2)</td>
+<td>1<b>×</b>
+</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>3-D Life Mal-Dextran (MALDEX) (30 mM)</td>
+<td>2.45 mM</td>
+<td>45 μL</td>
+</tr>
+<tr>
+<td>Cell suspension</td>
+<td>n/a</td>
+<td>120 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>550 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Pre-thaw the reagents on ice and store the mix on ice before use. Prepare in 2 mL Eppendorf safe-lock tube.</div>
+<table id="undtbl8">
+<caption>Drop breaking solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HFE-7500 oil</td>
+<td>n/a</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td>PFO 97%</td>
+<td>12%</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>PEG-SH 1 g/mL</td>
+<td>25 mg/mL</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>PBS (1<b>×</b>)</td>
+<td>n/a</td>
+<td>280 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>800 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Make fresh PEG-SH solution, do not refreeze. Wear appropriate personal protective equipment and avoid contact with skin when handling PFO. Use it in a well-ventilated area.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Avoid direct contact with Novec 7500 Engineered Fluid it may cause respiratory, skin, and eye irritation.</div>
+<table id="undtbl9">
+<caption>RT lysis mix</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First-Strand Buffer (5<b>×</b>)</td>
+<td>1<b>×</b>
+</td>
+<td>60 μL</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630 (10%)</td>
+<td>0.3%</td>
+<td>9 μL</td>
+</tr>
+<tr>
+<td>dNTPs (25 mM)</td>
+<td>0.5 mM</td>
+<td>6 μL</td>
+</tr>
+<tr>
+<td>DTT (0.1 M)</td>
+<td>3 mM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Tris-HCl [pH 8.0] (1 M)</td>
+<td>20 mM</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>Murine RNase inhibitor</td>
+<td>1.3 U/μL</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>SuperScript III RT enzyme</td>
+<td>20 U/μL</td>
+<td>15 μL</td>
+</tr>
+<tr>
+<td>nuclease-free water</td>
+<td>n/a</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>150 μL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Pre-thaw the reagents on ice and store the mix on ice before use. Prepare in 1.5 mL Eppendorf safe-lock tube.</div>
+<table id="undtbl10">
+<caption>T<sub>10</sub>E<sub>0.1</sub>T<sub>0.1</sub> buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl [pH 8.0] (1 M)</td>
+<td>100 mM</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>EDTA 0.5 M</td>
+<td>0.1 mM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Tween-20 10%</td>
+<td>0.1%</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>nuclease-free water</td>
+<td>n/a</td>
+<td>49 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Store in room temperature for up to 6 months.</div>
+<table id="undtbl11">
+<caption>2% HFE oil</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HFE-7500 oil</td>
+<td>n/a</td>
+<td>2 g</td>
+</tr>
+<tr>
+<td>Neat (un-dissolved) 008-FluoroSurfactant</td>
+<td>2%</td>
+<td>98 g</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 g</b></td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Avoid direct contact with Novec 7500 Engineered Fluid it may cause respiratory, skin, and eye irritation.</div>
+<h3 id="sec8.2">Microfluidics setup</h3>
+<p>Droplet formation and cell encapsulation were performed using EZ pressure-derived pumps from the Microfluidic pressure control - LINEUP™ SERIES, controlled by the A-I-O software at pressures ranged from 69 mbar to 2000 mbar. For all experiments, cells were kept in a 2 mL safe-lock Eppendorf tube surrounded by ice and were gently agitated with a magnetic stirring bar placed inside the tube and rotated using a magnet attached to a rotating motor (cell mixer) to prevent sedimentation and clumping. The flow was visualized under an optical microscope at 10<b>×</b> magnification and imaged at 1000–2000 frames per second using a Hispec1 camera.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Syringe pumps could also be used in place of the pressure-derived pumps (e.g., Harvard Apparatus, cat. no. 702226)</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Single-cell encapsulation in PEGDT-MALDEX hydrogels</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>This section describes how to encapsulate single cells into MALDEX-PEGDT hydrogel using microfluidic devices.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Before starting, cool down a box of 20 μL tips at −20°C.</div>
+<ol>
+<li>Prepare MALDEX and PEGDT mix in a biological hood. Keep mixture on ice until use to prevent gelation.</li>
+<li>Prepare single cell suspension.
+<div class="note">
+<span class="note-title">Note:</span> We work with passage under 40, but it is recommended to use the lowest passage.</div>
+<ol type="a">
+<li>Harvest ESC cells from tissue culture plate, wash the cells with 1<b>×</b> PBS and centrifuge at 500 rcf for 5 min.</li>
+<li>Wash again the cells as previous step, resuspend cells in 5 mL 1<b>×</b> PBS.</li>
+<li>Pass cell suspension through a 40 μm cell strainer.</li>
+<li>Count and pellet 1<b>×</b>10<sup>6</sup> cells. Resuspend cells in 100 μL 1<b>×</b> PBS with 10% Optiprep.</li>
+<li>Add 20μL ECM with cold tips.</li>
+<li>Transfer cell suspension to MALDEX mix.</li>
+<li>Wash a magnetic stirring bar three times by 1<b>×</b> PBS. Put it in the MALDEX mix.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Prepare microfluidics setup. (<a href="#fig3">Figure 3</a>)
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Microfluidic setup for single cell encapsulation in PEGDT-MALDEX hydrogel sphere</div>
+<p>(A) Pressure controller. Use 2000 mbar pump for carrier oil inlet, 1000 mbar pump for PEGDT and MALDEX inlets.</p>
+<p>(B) Pressurized reservoir. Use 1.5 mL and 2 mL Safe-Lock tubes for PEGDT and MALDEX mix, respectively and use a 15 mL tube for 2% HFE-7500 oil.</p>
+<p>(C) Cell mixer. The yellow square shows a zoom in on the MALDEX mix. The tube is surrounded by an ice stand, and the cell mixer is working outside of the tube towards the bottom of the tube, to make the magnetic stirring bar agitate the cells and prevent sedimentation.</p>
+<p>(D) Flow sensor. Use Flow unit size M for all three inlets.</p>
+<p>(E) Microfluidic device for single cell encapsulation in PEGDT-MALDEX hydrogel sphere. A zoom in on the design, indicating the position of each inlet: (1) 2% HFE-7500 oil, (2) PEGDT mix, (3) MALDEX mix and (4) outlet for collection.</p>
+<p>(F) Collection tube. Use a 2 mL tube, placed in a cooling block.</p>
+<p>(G) Control software for the microscope, zoom in on the droplet-generation junction.</p>
+<p>(H) A-i-O software for flow control.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Install everything as shown in <a href="#fig3">Figure 3</a>. For more detailed instructions on the installation of the system, check the manual of Fluigent<sup>TM</sup> (<a href="https://www.fluigent.com/">https://www.fluigent.com/</a>).</li>
+<li>Put a microfluidic device under the microscope. Check its channels for imperfections. (For example, impurity in channels, or adjacent channels sticking together, etc.)</li>
+<li>Make sure there are at least 3 mL of 2% HFE-7500 oil in the pressurized reservoir 15 mL tube.</li>
+<li>Attach all reagents (lysis, barcodes, oil) and single cell suspension to the corresponding pressure controllers.
+<div class="critical">
+<span class="critical-title">Critical:</span> Make sure that the tubing reaches the bottom of the tubes</div>
+</li>
+<li>Connect the cell mixer to the power supply. Add ice to the ice stand for MALDEX mix.</li>
+<li>Prepare collection tubes: two 2 mL tubes, in a cooling block.</li>
+<li>Turn on the pressure controllers, open the A-i-O control software. Change all the flow rate units to μL/h. Set scale factors for different inlets: 4.3 for oil, 1.1 for MALDEX and 1 for PEGDT. For the use of A-i-O software, check the manual of Fluigent<sup>TM</sup> (<a href="https://www.fluigent.com/download/">https://www.fluigent.com/download/</a>)</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Run the microfluidic system.
+<ol type="a">
+<li>For each of the inlets, before connecting the tubing to the device, apply maximum pressure to push the liquid to the end of tubing, and then stop the pressure.</li>
+<li>Connect tubing to the microfluidic device according to the position shown in <a href="#fig3">Figure 3</a>.</li>
+<li>Put the outlet tubing into a collection tube.</li>
+<li>In the A-i-O software, press “edit mode”. Use "pressure mode" and set parameters as follows: oil 200 mbar, PEGDT 100 mbar, MALDEX 100mbar. Press “edit mode” again to start all inlets simultaneously.</li>
+<li>Wait until you see all the flows from the three inlets arrive at the junction and drops are formed properly.
+<div class="note">
+<span class="note-title">Note:</span> You are supposed to see a boundary at the junction, which indicates that both MALDEX and PEGDT arrived at the junction, as highlighted in <a href="#fig4">Figure 4</a>.</div>
+</li>
+<li>Change the flow rate as follows: oil 2000 μL/h, PEG 500 μL/h, DEX 500 μL/h. <a href="#sec6.11">Troubleshooting 1</a>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Single cell encapsulation in PEGCT-MALDEX hydrogel sphere</div>
+<p>Red arrows indicate boundary where PEGDT and MALDEX meet. Scale bar: 50 μm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Change to a new collection tube when the upper part of the collection gets to around 500 μL. (<a href="#fig5">Figure 5</a>A) The protocol is designed for two collections.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Hydrogel washing</div>
+<p>(A) The collection should have two phases: an upper pink phase that contains the hydrogel spheres, and a lower phase that contains oil.</p>
+<p>(B) After transferring the hydrogel to the drop breaking solution and mixing, the two phases of hydrogel and oil will separate again.</p>
+<p>(C) After the first wash with PBS, the solution has three phases, from top to bottom: PBS, hydrogel, and oil. The separation between PBS and hydrogel should be a straight line, and the separation between hydrogel and oil is a curved surface.</p>
+<p>(D) After the third wash, there should be only a small volume of oil left at the bottom of the tube, and the hydrogel spheres should be transparent. The arrows with different color indicate the three phases: blue – hydrogel, orange – oil, red – PBS.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Wash the hydrogel.
+<div class="critical">
+<span class="critical-title">Critical:</span> Perform the following steps in a biological hood.</div>
+<ol type="a">
+<li>Transfer the collection tubes to a 37°C incubator for at least 5 min to stabilize the formation of the hydrogel.</li>
+<li>Transfer the upper part of the collection to the drop breaking solution. Mix by gently inverting the tubes and incubate for exactly 1 min in the 37°C incubator. (<a href="#fig5">Figure 5</a>A)</li>
+<li>Discard the lower oil fraction and add 1 mL of PBS. (<a href="#fig5">Figure 5</a>B)</li>
+<li>Centrifuge at 250 rcf for 2.5 min. The hydrogel is the pink solid pellet in the middle. (<a href="#fig5">Figure 5</a>C) Discard the upper PBS fraction and the lower oil fraction.</li>
+<li>Wash two more times with 1 mL of 1<b>×</b> PBS. The hydrogel fraction is clear at the end (<a href="#fig5">Figure 5</a>D).</li>
+<li>Resuspend the beads in 500 μL pre-warmed ESC medium and transfer to a well in a 48-wells plate.
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> The hydrogel could also be seeded to a T25 tissue culture flask with 1.5 mL medium.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not use more than 500 μL cell medium per well, otherwise cells may lack oxygen.</div>
+</li>
+<li>Wash the collection tube with 500 μL pre-warmed ESC medium and transfer to a different well. Repeat twice. These diluted wells will facilitate the observation of individual clones under microscope. <a href="#sec6.3">Troubleshooting 2</a>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It will be normal to have some remnant of oil drops with hydrogels. They look like cells but in a shape of perfect circle while cells are usually not so perfect, as shown in <a href="#fig6">Figure 6</a>.</div>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Microscope photo of ESC in PEGDT-MALDEX hydrogel after encapsulation</div>
+<p>The big transparent spheres are PEGDT-MALDEX hydrogel spheres. They are about the size of 70 μm diameter. Red arrows indicate single cells in hydrogel spheres. Yellow arrows indicate oil drops. Scale bar: 50 μm.</p>
+</figcaption>
+</figure>
+<h3 id="sec2.2">Clone expansion in PEGDT-MALDEX hydrogels</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>This section describes how to culture single cells into clones in MALDEX-PEGDT hydrogel.</p>
+<ol start="6">
+<li>After collection, check the clone formation status every day. Change medium every day: Collect hydrogel spheres from all the three wells to a 1.5 mL tube, centrifuge at 250 rcf for 2.5 min, remove the old medium, wash once with 1<b>×</b> PBS, resuspend the hydrogel with the 500μL pre-warmed cell medium and transfer to a new well. The clones will attain desired size (15–20 cells per clone) after 3 days of culture. <a href="#sec6.5">Troubleshooting 3</a>
+</li>
+</ol>
+<h3 id="sec2.3">Barcoding of transcriptomes of single clones: System setup</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 h</div>
+<p>This section describes the encapsulation of single clones with a microfluidics device and capturing of transcriptomes. The protocol is based on inDrops protocol previously reported (<a href="#bib5">Zilionis et al., 2017</a>).</p>
+<ol start="7">
+<li>Prepare single clone suspension.
+<ol type="a">
+<li>Collect all the hydrogel spheres together with their culturing ESC medium to a 1.5 mL tube. Add dextranase by 1:20 dilution. Incubate at 37°C for 30 min to dissolve the PEGDT-MALDEX hydrogel.</li>
+<li>Gently mix the clone suspension then pass it through a 70 μm cell strainer.
+<div class="critical">
+<span class="critical-title">Critical:</span> Filtering is essential for a complete removal of hydrogel remnant.</div>
+</li>
+<li>Put the tube into a 37°C incubator. Let clones sink by gravity for 30 min. Gently remove the upper medium. Replace with 1 mL 1<b>×</b> PBS. <a href="#sec6.7">Troubleshooting 4</a>
+<div class="critical">
+<span class="critical-title">Critical:</span> Use a pipette instead of vacuum for the wash of clone suspensions, since the pellet is not well packed, and the use of vacuum may result in loss of clones.</div>
+</li>
+<li>Repeat PBS wash once, finally resuspend in 200 μL 1<b>×</b> PBS. Count 2 μL of the suspension using hemocytometer and get the concentration of clones.</li>
+<li>Resuspend clones in 1<b>×</b> PBS with 10% Optiprep to a final concentration of 10,000 clones/mL.</li>
+<li>Wash a magnetic stirring bar three times in 1<b>×</b> PBS. Put it in cell suspension.</li>
+</ol>
+</li>
+</ol>
+<ol start="8">
+<li>Prepare RT lysis mix.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> From this step operate in a UV-free zone. Either turn off the light or use a UV-filtered light source, because the barcode beads are sensitive to light.</div>
+<ol start="9">
+<li>Prepare hydrogel barcoding beads.
+<ol type="a">
+<li>Filter the hydrogel barcoding beads solution by a 70 μm strainer to remove aggregates and debris.</li>
+<li>Centrifuge the hydrogel barcoding beads solution at 1500 rcf for 1 min.</li>
+<li>Discard the buffer above the barcode beads pellet.</li>
+</ol>
+</li>
+</ol>
+<ol start="10">
+<li>Prepare microfluidics setup.
+<ol type="a">
+<li>Install everything as shown in <a href="#fig7">Figure 7</a>. For more detailed instructions on the installation of the system, check the manual of Fluigent<sup>TM</sup> (<a href="https://www.fluigent.com/">https://www.fluigent.com/</a>).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Microfluidic setup for CloneSeq</div>
+<p>(A) Pressure controller. Use 69 mbar pump for carrier oil inlet, 345 mbar pump for RT lysis mix, cell and barcode bead inlets.</p>
+<p>(B) Pressurized reservoir. Use 1.5 mL Eppendorf® Safe-Lock microcentrifuge tubes for RT lysis and hydrogel barcoding beads, 2 mL Eppendorf® Safe-Lock microcentrifuge tube for cell suspension, and 15 mL tube for 2% HFE-7500 oil.</p>
+<p>(C) Cell mixer. The yellow square shows a zoom in on the MALDEX mix. The tube is surrounded by an ice stand, and the cell mixer is working outside of the tube towards the bottom of the tube to make the magnetic stirring bar agitate the cells and prevent sedimentation.</p>
+<p>(D) Flow sensors. Use Flow unit size M for barcode, and size S for other inlets.</p>
+<p>(E) Microfluidic device for CloneSeq. A zoom in on the design indicates the position for each inlet: (1) 2% HFE-7500 oil, (2) outlet for collection, (3) outlet for collection, (4) single clone suspension and (5) RT lysis mix.</p>
+<p>(F) Collection plate. Place it in a cooling block.</p>
+<p>(G) Control software for the microscope, zoom in on the junction for the generation of droplets.</p>
+<p>(H) A-i-O software for flow control.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> In order to avoid blockage, we do not use the flow sensor for hydrogel barcode beads. But it is also possible to connect the flow sensor to monitor the flow rate.</div>
+</li>
+<li>Put a microfluidic device under the microscope. Check its channels for imperfections. (For example, impurity in channels, or adjacent channels sticking together, etc.)</li>
+<li>Make sure there are at least 2 mL 2% HFE-7500 oil in the pressurized reservoir 15 mL tube.</li>
+<li>Attach all reagents (lysis, barcodes, oil) and single clone suspension to the corresponding pressure controller. Make sure that the tubing reaches the bottom of the tubes.</li>
+<li>Connect the cell mixer to the power supply. Add ice to the ice stand for cells.</li>
+<li>Prepare collection plate: take a 96-well plate, for each sample prepare 4 wells for collection by adding 50 μL 2% HFE-7500 oil in the well.</li>
+<li>Turn on the pressure controllers, open the A-i-O control software. Change all the flow rate units to μL/h. Set scale factors for different inlets: 4.3 for oil, 1 for RT lysis mix and single clone suspension. For the use of A-i-O software, check the manual of Fluigent<sup>TM</sup> (<a href="https://www.fluigent.com/download/">https://www.fluigent.com/download/</a>)</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.4">Barcoding of transcriptomes of single clones: Cell encapsulation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 h</div>
+<ol start="11">
+<li>Run the microfluidic system.
+<ol type="a">
+<li>For each of the inlets, before connecting the tubing to the device, apply maximum pressure to push the liquid to the end of tubing, and then stop the pressure.</li>
+<li>Connect tubing to the microfluidic device according to the position shown in <a href="#fig7">Figure 7</a>. Put the outlet tubing into a collection tube.</li>
+<li>In A-i-O software, press “edit mode”. Use "pressure mode" and set parameters as follows: oil 69 mbar, lysis 27 mbar, cell 27 mbar, barcode 100 mbar. Press “edit mode” again to start all inlets simultaneously. Wait until you see all the inlets arrive at the junction and drops are formed.
+<div class="note">
+<span class="note-title">Note:</span> You are supposed to see a boundary between the cell suspension and RT lysis mix flows, like highlighted in <a href="#fig8">Figure 8</a>.</div>
+</li>
+<li>Keep oil and barcode inlets in pressure mode. Control them to achieve one barcode per droplet generated. Usually, the flow rate for oil will be around 350 μL/h and for barcode beads will be around 35–40 μL/h. To control cell and lysis flow, change to flow rate mode: cell 50–120 μL/h, lysis 70–120 μL/h. <a href="#sec6.9">Troubleshooting 5</a>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Single clone encapsulation for transcriptome barcoding in drops</div>
+<p>Red arrows indicate single clone and barcode beads. Yellow arrow indicates the separation line between cell suspension and RT lysis mix. Scale bar: 50 μm.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep lysis flow rate equal to the cell flow rate to ensure the transcriptome get enough RT reaction mix.</div>
+</li>
+<li>Take a short video to estimate encapsulation efficiency. Count the number of events of one clone and one barcode in one drop and divide by time. <a href="#sec6.11">Troubleshooting 6</a>
+</li>
+<li>After having stable drops, put the collection tube into collection well plate. Count the time of collection to estimate the number of events per collection. Collect around 350 clones per well.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The more events are collected, a greater sequencing depth will be needed in order to have enough reads per transcript. You can choose to collect more clones, but do not collect more than 10,000 events per collection. Otherwise, the chance of having two clones encapsulated with the same barcode will be too high.</div>
+<ol start="12">
+<li>Termination of the run.
+<ol type="a">
+<li>Stop the pump.</li>
+<li>Place the collection plate under UV lamp. Keep the plate about 3–5 cm under the lamp for 10 min.</li>
+<li>Recycle barcodes.
+<ol type="i">
+<li>Take a new 1.5 mL Eppendorf safe-lock tube, add 1 mL T<sub>10</sub>E<sub>0.1</sub>T<sub>0.1</sub> buffer.</li>
+<li>Push all the buffer through the tubing used for barcodes and collect the buffer with the tube containing the unused barcodes.</li>
+<li>Wrap the tube with aluminum foil.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec2.5">Barcoding of transcriptomes of single clones: Reverse transcription (RT) in drop</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="13">
+<li>Transfer the collection plate to a PCR machine and perform RT as follows:</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th colspan="4">RT conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cDNA synthesis</td>
+<td>50°C</td>
+<td>2 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>70°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> the cDNA can be stored at −20°C for up to 1 week.</div>
+<h3 id="sec2.6">Library preparation, sequencing, and data processing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 days</div>
+<ol start="14">
+<li>Follow the protocol reported previously (<a href="#bib5">Zilionis et al., 2017</a>) <a href="#sec6.13">Troubleshooting 7</a>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The encapsulated cells are expected to grow into a small clone after 3–7 days, based on the growth type of the module cell line. <a href="#fig9">Figure 9</a> presents an example of ESCs after 3 days of culture. Since the hydrogel is degradable by the metalloproteinases secreted by cells, in some cases the cells could escape from the hydrogel and seed the tissue culture plate. If more than 80% of the cells are inside of hydrogels, it won’t interfere the next step, because escaped cells will adherent to the plate and won’t be able to be collected. But if most of the hydrogels are degraded, consider that the composition of the hydrogel is wrong, check <a href="#sec6.3">Troubleshooting 2</a>.</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. ESCs in PEGDT-MALDEX hydrogel</div>
+<p>Left picture shows the cells after encapsulation into hydrogel, right picture shows clones developed after 3 days of culture. The round-shaped cells are clones well defined in hydrogels, and cells with dendrites are cells that escaped from the hydrogel and grew on the tissue culture plate. Scale bars: 50 μm.</p>
+</figcaption>
+</figure>
+<p>For the analysis of the clonal transcriptome, we have to remove the hydrogel first and extract the clones. After dextranase treatment, sinking and filtering, we obtain the single clone suspension ready for barcoding. As shown in <a href="#fig10">Figure 10</a>, the clones are expected to be intact. You may have some single cells as well, but after sinking they should be mostly removed.</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. ESC clones extracted from hydrogels</div>
+<p>Scale bars: 50 μm.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec4.1">Sequencing and UMI-based filtering</h3>
+<p>It is recommended to give the sequencing depth of 80 million reads per clone.</p>
+<ol>
+<li>Perform paired-end sequencing on Illumina NextSeq 500, with 45 bp for read 1 and 35 bp for read 2.</li>
+<li>Use read 1 to obtain the sample barcode and UMI sequences and map read 2 to a reference transcriptome.</li>
+<li>Filter the reads first based on the presence of two sample barcode components separated by the W1 adapter sequence in Read 1.</li>
+<li>Match barcodes for each read against a list of the 3842 pre-determined barcodes, and correct errors of up to two nucleotides mismatch. Discard reads with a barcode separated by more than two nucleotides from the reference list.</li>
+<li>Split the reads into barcode-specific files.</li>
+</ol>
+<h3 id="sec4.2">Single clone alignment</h3>
+<ol start="6">
+<li>Align the reads using Bowtie2(<a href="#bib2">Langmead et al., 2009</a>) to the ENSEMBL GRCm39 mouse reference transcriptome.</li>
+<li>Filter the alignments from Bowtie as follows: (1) For each read, retain at most one alignment per gene, across all isoforms, by choosing the alignment closest to the end of the transcript. (2) If a read aligns to multiple genes, exclude any alignments more than 400 bp away from the end of the transcript. This step results in an approximately 5% increase in the number of final UMI reads obtained, as compared to simply discarding any ambiguous read. (3) If a read still aligns to more than two genes after UMI filtering, exclude the read altogether.</li>
+</ol>
+<h3 id="sec4.3">PCA and UMAP analysis</h3>
+<p>Analyze scRNA-seq data with Seurat v2.4 package(<a href="#bib4">Stuart et al., 2019</a>).</p>
+<ol start="8">
+<li>Filter out the clones with less than 15,000 unique molecular identifiers for further analysis.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We have applied CloneSeq to human cancer cell line (PC9) and mouse ESCs (R1), and we used the same threshold for both of them. For special cell lines with extremely different copy numbers of transcriptome, we recommend testing different threshold at the first time.</div>
+<ol start="9">
+<li>Employ the global-scaling normalization method “LogNormalize” with a scale factor of 10,000.</li>
+<li>Identify highly variable genes by FindVariableFeatures() function with the following parameters: x.low.cutoff = 0.2, x.high.cutoff = 5, y.cutoff = 0.5, and y.high.cutoff = 10.</li>
+<li>Apply statistical approaches such as down sampling and linear transformation provided by Seurat package to overcome the confounders in the datasets, such as batch effect, cell alignment rate, alignment errors and clone sizes. Use ScaleData() function with default parameters.</li>
+<li>Perform linear dimensional reduction by RunPCA() on the scaled data with 15 principal components.</li>
+<li>Clusters cells by a graph-based clustering approach. First calculate the k-nearest neighbors (KNN) and then construct the KNN with FindNeighbors() function, use 15 principal components. Then apply a KNN modularity optimization-based clustering algorithm. Use FindClusters() function with resolution of 0.6.</li>
+<li>Run non-linear dimensional reduction. Use RunUMAP() with 15 principal components to generate UMAP for visualization.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>In the current protocol, we dissolve the hydrogel and profile intact clones. Hence, the CloneSeq is limited to cells that form cell-cell adhesions and remain physically connected outside the sphere. Secondly, the soft 3D-hydrogel microenvironment is highly supportive of the maintenance of a pluripotent state. Hence, using CloneSeq to study the exit from the pluripotent state would require adjustments and optimizations of the differentiation protocols.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>When using the flow rate mode during the encapsulation of cells in PEGDT-MALDEX hydrogel, the flow pressures for PEGDT and MALDEX inlets raise up dramatically in a short time. Or seeing that the drops are formed not at the junction but close to the outlet for collection (step 4).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>The hydrogel components start gelation in the tubing or in the microfluidic device, which cause an increase of the inner pressure in the tubing. You will need to remove the gelatinized part in the tubing. First, stop the run. Then, pull the tubing out from the device and push out some liquid. Finally change to a new device and restart the run.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>No hydrogel spheres seen under microscope after encapsulation (step 5).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>First, check the configuration of the microscope. Because the hydrogel spheres are transparent, it may be difficult to see the boundaries. Try to gently shake the well plate to see that the cells are moving with the surrounding hydrogel spheres. If you still do not see the hydrogels, it might be that the MALDEX and PEGDT were mixed in wrong proportions. Alternatively, the inlet preparation step or the microfluidic operation stage was flawed. Take 5 μL of each inlet and mix on a cover slip and mix it well, then wait 5 min at room temperature. If gelation is observed, then the proportion is correct.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Most of the cells die in the PEGDT-MALDEX hydrogel (step 6).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Change the recipe for the hydrogel components. Check the flow chart to help your decision (<a href="#fig1">Figure 1</a>).</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>No cell pellet after precipitation (step 7).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>The clones may be small in size. Centrifuge at 100 rcf for 3 min to help clones sink.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>No cells visible in the microfluidic device (step 11).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>The cells may clog in the tubing or at the entrance to the microfluidic device. First, stop the run. Then, pull the tubing out from the device and push out some liquid. Insert the tubing back to the device and restart the run. If still no cells are flowing, consider that the clone concentration may not have been calculated correctly. You can concentrate the clone suspension by centrifuging at 100 rcf for 3 min, remove some liquid from the top, and resuspend the cell suspension.</p>
+<h3 id="sec6.11">Problem 6</h3>
+<p>Most of cells are single, not in clones (step 11).</p>
+<h3 id="sec6.12">Potential solution</h3>
+<p>The clones may break during the preparation of the single clone suspension. Try to treat the clone suspension gently, or reduce the number of pipetting. If that does not help, do not use the cell mixer during the run to help keep the entirety of the clone.</p>
+<h3 id="sec6.13">Problem 7</h3>
+<p>In the analysis of the data, the outcome number of unique molecular identifier (UMI) per cell is lower than expected (∼50 k/cell) (step 14).</p>
+<h3 id="sec6.14">Potential solution</h3>
+<p>There are several possible reasons for the low nUMI:</p>
+<ol type="a">
+<li>Cell mixing occurred in the single clone encapsulation step. More than one barcode bead is encapsulated with a clone, so that each barcode is assigned with only a portion of the total transcriptome of the clone. This could happen either at the encapsulation stage, due to unregulated barcode pressure, or because of the merging of drops before or during the RT reaction. It is important to regulate the pressure to make sure only one barcode or less is encapsulated with a clone. You should also check the surfactant in the carrier oil, which is the key element to drop stability.</li>
+<li>The random hexamer used in the last RT before final PCR is not so “random”. In the last RT reaction random hexamers are used to generate libraries from all possible locations. But if the distribution of the hexamer sequences is not even, some locations of the template cDNA will not be reverse transcribed and eventually get lost in the final library. Consider changing your random hexamer to a fresh one.</li>
+<li>The cell type you used has a small amount of RNA. The amount of RNA is highly correlated to the size of the cell. If your cell is smaller than average, the number of transcripts that could be retrieved from it would be low. In this case, consider expanding the clones more to have transcripts to capture.</li>
+</ol>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bavli, D., Sun, X., Kozulin, C., Ennis, D., Motzik, A., Biran, A., Brielle, S., Alajem, A., Meshorer, E., Buxboim, A., et al. (2021). CloneSeq: A highly sensitive analysis platform for the characterization of 3D-cultured single-cell-derived clones. Dev. Cell <i>56</i>, 1-14. <a class="external-link" href="https://doi.org/10.1016/j.devcel.2021.04.026">https://doi.org/10.1016/j.devcel.2021.04.026</a></p>
+<p id="bib2">Langmead, B., Trapnell, C., Pop, M., and Salzberg, S.L. (2009). Ultrafast and memory-efficient alignment of short DNA sequences to the human genome. Genome Biol. <i>10</i>, R25. <a class="external-link" href="https://doi.org/10.1186/gb-2009-10-3-r25">https://doi.org/10.1186/gb-2009-10-3-r25</a></p>
+<p id="bib3">Mazutis, L., Gilbert, J., Ung, W.L., Weitz, D.A., Griffiths, A.D., and Heyman, J.A. (2013). Single-cell analysis and sorting using droplet-based microfluidics. Nat. Protoc. <i>8</i>, 870-891. <a class="external-link" href="https://doi.org/10.1038/nprot.2013.046">https://doi.org/10.1038/nprot.2013.046</a></p>
+<p id="bib4">Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W.M., Hao, Y., Stoeckius, M., Smibert, P., and Satija, R. (2019). Comprehensive integration of single-cell data. Cell <i>177</i>, 1888-1902.e21. <a class="external-link" href="https://doi.org/10.1016/j.cell.2019.05.031">https://doi.org/10.1016/j.cell.2019.05.031</a></p>
+<p id="bib5">Zilionis, R., Nainys, J., Veres, A., Savova, V., Zemmour, D., Klein, A.M., and Mazutis, L. (2017). Single-cell barcoding and sequencing using droplet microfluidics. Nat. Protoc. <i>12</i>, 44-73. <a class="external-link" href="https://doi.org/10.1038/nprot.2016.154">https://doi.org/10.1038/nprot.2016.154</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Oren Ram (<a href="mailto:oren.ram@mail.huji.ac.il">oren.ram@mail.huji.ac.il</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>The accession number for the data reported in this paper is GEO: <a href="http://GSE155888">GSE155888</a></p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1049-Mmc1.xlsx">Table S1. Barcode lists for CloneSeq, related to step 2</a></p>
+<h3>Acknowledgments</h3>
+<p>O.R. is supported by research grants from the <a href="https://doi.org/10.13039/100010663">European Research Council</a> (ERC, # 715260 SC-EpiCode), Israeli Center of Research Excellence (I-CORE) program, <a href="https://doi.org/10.13039/501100003977">Israel Science Foundation</a> (ISF, #1618/16), <a href="https://doi.org/10.13039/501100005155">Azrieli Foundation</a> Scholar Program for Distinguished Junior Faculty, and Nofar (65883) of the Israel Innovation authority. This project has received funding from the European Union’s <a href="https://doi.org/10.13039/100010661">Horizon 2020</a> research and innovation program under the Marie Skłodowska-Curie grant agreement No 765966 - EpiSyStem.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization and methodology, X.S., D.B., C.K., A.M., and O.R.; investigation, X.S., D.B., and C.K.; writing – original draft, X.S.; writing – review &amp; editing, C.K., D.B., and O.R.; visualization, X.S.; resources, funding acquisition, and supervision, O.R.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

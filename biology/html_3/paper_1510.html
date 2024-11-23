@@ -1,0 +1,429 @@
+<article>
+<section>
+<h1 id="header">A computational protein design protocol for optimization of the SARS-CoV-2 receptor-binding-motif affinity for human ACE2</h1>
+<p><time datetime="2022-03-18">Published: March 18, 2022</time></p>
+<p>Savvas Polydorides<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#cor1">*</a></sup> and Georgios Archontis<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Physics, University of Cyprus, Nicosia, Cyprus</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:phpgps1@ucy.ac.cy">phpgps1@ucy.ac.cy</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:archonti@ucy.ac.cy">archonti@ucy.ac.cy</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2022.101254">10.1016/j.xpro.2022.101254</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The present protocol describes the computational design of the SARS-CoV-2 receptor binding motif (RBD) to identify mutations that can potentially improve binding affinity for the human ACE2 (hACE2) receptor. We focus on four positions located at the interface with the hACE2 receptor in the RBD:hACE2 complex. We conduct the design with a high-throughput computational protein design (CPD) program, Proteus, incorporating an adaptive Monte Carlo (MC) protocol that promotes the selection of sequences with good binding affinities.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref12">Polydorides and Archontis (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>SARS-CoV-2 positions 455, 493, 494, and 501 at the interface with hACE2 are designed</li>
+<li>The design uses Proteus, a high-throughput computational protein design program</li>
+<li>A physics-based energy function ranks sequences and conformations</li>
+<li>An adaptive Monte Carlo protocol promotes the selection of good affinity sequences</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1510-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the specific steps for the computational design of the SARS-CoV-2 receptor binding motif with improved affinity for human ACE2.</p>
+<h3 id="sec1.1">The directory tree</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5–10 min</div>
+<ol>
+<li>The Proteus 3.0 CPD software is freely available for academic and government scientists from the website address <a href="https://proteus.polytechnique.fr">https://proteus.polytechnique.fr</a>. For a detailed description of Proteus and some recent applications refer to (<a href="#bib8">Mignon et al., 2020</a>). Download the software at a location on your computer. Extraction of the software creates the source directory, which contains the programs protX (a Fortran90 program for building the system and computing the interaction energies), protMC (a C Program that reads the interaction energy matrix (IEM) and performs the search in the sequence – structure space) and the following subdirectories: bin (shell, Python and Perl scripts); inp (input files to be used by protX); lib (protX stream and library files), protX/toppar (topology and parameter files for protX), rotamers (rotamer libraries), doc (documentation file) and tutorials (a set of complete applications).<br> The source directory path is stored in the environment variable <i>$CPD</i>. Organize the application main directory and subdirectories.
+<ol type="a">
+<li>Define a project directory named <i>$PROJ</i> and the subdirectories <i>$PROJ/APO</i> and <i>$PROJ/CMP</i> for the apo and complex states, respectively.</li>
+<li>Create the subdirectories <i>build, lib, matrix, protMC, reconstruct, MD</i> under both <i>$PROJ/APO</i> and <i>$PROJ/CMP.</i>
+</li>
+<li>Create the subdirectories <i>dat, out, err, local, local/Bsolv, local/Chis, local/EnrFltr, local/Mut and local/Rota</i> under each <i>matrix</i> subdirectory.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">The starting model</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–5 min</div>
+<ol start="2">
+<li>Download the crystallographic structure of the complex between the hACE2 receptor and the SARS-CoV-2 RBD from the Protein Data Bank archive, (PDB: 6M0J).</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> The necessary input for the design is a structural model for the apo and the complex state, e.g., the corresponding crystallographic coordinates. An initial preparation of the system might include the following steps: i) Starting from the crystallographic coordinates, prepare, solvate, equilibrate and run one or more MD simulations in explicit water, to relax the system and produce an ensemble of conformations at thermodynamic equilibrium. ii) Use the coordinates of one or more frames from the MD production stage as a starting model. This initial preparation could be performed with the CHARMM:GUI interface (website: <a href="https://www.charmm-gui.org">https://www.charmm-gui.org</a>, (<a href="#bib5">Jo et al., 2008</a>)). CHARMM-GUI provides the option to use various force fields, including the AMBER force field used in this study (see below).</div>
+<div class="note">
+<span class="note-title">Note:</span> The conformations of the MD trajectories can be grouped into clusters with respect to a similarity measure (e.g., the root-mean-square-difference (rmsd) of the protein backbone coordinates). With this criterion, the backbone coordinate rmsd between conformations in the same (different) cluster is below (above) a specified threshold. Thus, different clusters identify a set of representative, structurally distinct conformations. Clustering can be done with the Wordom program (<a href="#bib13">Seeber et al., 2011</a>).</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Crystal structure of SARS-CoV-2 spike receptor-binding domain bound with ACE2.</td>
+<td><a href="#bib6">Lan et al. (2020)</a></td>
+<td>
+<a href="https://www.rcsb.org/structure/6M0J">https://www.rcsb.org/structure/6M0J</a> PDB: 6M0J</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Proteus 3.0 for computational protein design</td>
+<td><a href="#bib8">Mignon et al. (2020)</a></td>
+<td><a href="https://proteus.polytechnique.fr">https://proteus.polytechnique.fr</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<ul>
+<li>
+<i>Software</i>
+<ul>
+<li>Python</li>
+<li>Perl</li>
+<li>GNU parallel shell tool</li>
+</ul>
+</li>
+<li>
+<i>Hardware</i>
+<ul>
+<li>Workstation with Linux distribution</li>
+<li>Computational cluster</li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Preparation of the molecular model for the design</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Preparation for the design involves building molecular models for the apo and complex states that are compatible with protX. As the first step, generate protein structure file (<i>allh_model.psf</i>) and a corresponding coordinate file (<i>allh_model.pdb</i>).</p>
+<ol>
+<li>Edit the coordinate file to:
+<ol type="a">
+<li>Remove any remote metal ions, crystallographic water molecules and other molecules, from the binding site.</li>
+<li>Build any missing heavy atoms using the CHARMM-GUI interface (<a href="#bib5">Jo et al., 2008</a>).</li>
+<li>Rename atoms, residues, disulfide bonds, titratable groups and terminal groups to match the Amber ff99SB force field (<a href="#bib4">Hornak et al., 2006</a>) <a href="#sec6.1">troubleshooting 1</a>.</li>
+<li>Name the hACE2 chain (segment identifier) “PROA” and the SARS-CoV-2 chain “PROB”.</li>
+<li>Renumber residues to ensure unique residue numbers for each chain. For example, numbering could start at 1,000 for PROA and 2,000 for PROB (PROA contains less than 1,000 residues).</li>
+<li>Copy the modified coordinate <i>file initial_structure.pdb</i> to the <i>$PROJ/APO/build</i> and <i>$PROJ/CMP/build</i> subdirectories.</li>
+</ol>
+</li>
+<li>Copy the file <i>$CPD/lib/parameters.str</i> to the subdirectory <i>$PROJ/lib.</i>
+</li>
+<li>Edit the file <i>parameters.str</i> to specify the main model parameters.
+<ol type="a">
+<li>Select the Amber ff99SB force field (<a href="#bib4">Hornak et al., 2006</a>).</li>
+<li>Set the Generalized Born (GB) flag and select the Hawkins-Cramer-Truhlar approximation of the GB solvation model (<a href="#bib3">Hawkins et al., 1995</a>). The GB is a many-body function since the GB atomic solvation radii depend on the entire protein geometry. The GB energy can become pairwise-decomposable via the “Native Environment Approximation,” which computes the solvation radius of a particular residue with the rest of the molecule kept in its wildtype sequence and native conformation. An exact treatment, referred to as the “Fluctuating Boundary Method” (FBM), is also available (<a href="#bib14">Villa et al., 2017</a>; <a href="#bib1">Archontis and Simonson, 2005</a>).</li>
+<li>To optimize the performance of the solvation energy, it is important to combine the selected solvation model with an appropriate value for the protein dielectric constant ɛ<sub>p</sub>. Optimized values can be found in references (<a href="#bib2">Gaillard and Simonson, 2017</a>; <a href="#bib7">Michael et al., 2017</a>). In the present work we set ɛ<sub>p</sub> to 6.8.</li>
+<li>Retain the default values of all other parameters, at this stage.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Instead of Amber ff99SB, the Charmm force field CHARMM19 (<a href="#bib9">Neria et al., 1996</a>) can be employed. A combination of the GB model with the Lazaridis-Karplus (LK) description of the nonpolar solvation contribution is also available.</div>
+<ol start="4">
+<li>Make copies of the protX input file <i>build.inp</i> and shell script <i>build.sh</i> from <i>$CPD/tutorials/tutorials/tuto_PDZ/build</i> to <i>$PROJ/build</i> subdirectory.</li>
+<li>Edit <i>build.inp</i> to set specific parameters of the system.</li>
+</ol>
+<div class="textbox">
+<p><code>! parameters for the specific application</code></p>
+<p><code>eval ($name = “model”)</code></p>
+<p><code>eval ($pdbfile = “initial_structure.pdb”)</code></p>
+<p><code>eval ($chaina = “PROA”)</code></p>
+<p><code>eval ($chainb = “PROB”) !this is chain E of the pdb file 6M0J</code></p>
+<p><code>! Define disulphide bridges between residues 379 and 432 (PDB</code></p>
+<p><code>numbering)</code></p>
+<p><code>patch DISU refe = “-” = (segid PROB and resid 379) refe = “+” =</code></p>
+<p><code>(segid PROB and resid 432) end</code></p>
+</div>
+<ol start="6">
+<li>Run protX using the script file <i>build.sh</i> to produce the coordinate file <i>allh_model.pdb</i> and the protein structure file <i>allh_model.psf</i> files in protX format.</li>
+</ol>
+<div class="textbox">
+<p><code>protX &lt; build.inp &gt; build.out</code></p>
+</div>
+<h3 id="sec3.2">Definition of the design regions and creation of a design molecule</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<p>At this stage, we setup the interaction energy matrix (IEM) calculation of the apo and complex systems. We partition each system into three groups: i) “fixed” residues, maintaining the same chemical type and conformation during design; ii) “inactive” residues that explore conformations from a discrete rotamer database; iii) “active” residues that change both chemical type and conformations (this is the target of the design). The partitioning is performed in the following steps:</p>
+<ol start="7">
+<li>In the <i>$PROJ/lib</i> subdirectory
+<ol type="a">
+<li>Edit the file <i>sele.str</i> to define the sequence/structure space of the design.
+<ol type="i">
+<li>Set the native rotamer flag in the <i>parameters.str</i> file to “1”, to include in the rotamer library of active and inactive groups the sidechain conformation(s) seen in the initial structural model (“native rotamers”).</li>
+<li>Define the active region to include positions 455, 493, 494 and 501 in the CoV-2 RBD.</li>
+<li>Select SARS-CoV-2/hACE2 residues within 15 Å of any atom hACE2/SARS-CoV-2 (excluding prolines and glycines) as the inactive region. With the crystallographic structure and the 15 Å cutoff, the resulting inactive region contains 53 SARS-CoV-2 and 108 hACE2 residues.</li>
+<li>By default, the entire protein backbone, terminal groups, cysteine residues forming disulphide bridges, glycine and proline residues and any remaining atoms not included in the previous selections are included in the fixed region.</li>
+</ol>
+</li>
+<li>Edit the file <i>mutation_space.dat</i> to define the list of amino acid types sampled at each active position. By default, we allowed positions 455, 493, 494 and 501 to sample 18 natural amino acid types (including the initial wild type): A, I, L, V, M, K, R, D, E, N, Q, C, S, T, F, Y, W and H(N<sub>δ</sub>). At a later stage we excluded bulky sidechains F, Y, W, H at position 501 due to steric repulsions <a href="#sec6.3">troubleshooting 2</a>.</li>
+<li>Edit the file <i>phia.str</i> to set the atomic surface area coefficients of nonpolar, polar, ionic, and aromatic atoms and the protein dielectric constant ɛ<sub>p</sub>. We employ the following values (<a href="#bib2">Gaillard and Simonson, 2017</a>; <a href="#bib7">Michael et al., 2017</a>): ɛ<sub>p</sub> = 6.8, σ<sub>alk</sub> = −5 cal/mol, σ<sub>pol</sub> = −8 cal/mol, σ<sub>ion</sub>= −9 cal/mol, σ<sub>aro</sub>= −12 cal/mol.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To generate a more comprehensive IEM, the user can include a larger set of positions in the active and inactive regions at this stage. Later (in the design phase), the user can restrict sampling of sequences and/or conformations to a subset of the initially specified active and inactive residues.</div>
+<p>The rotameric library contains a specified number of rotamer conformations for each amino acid type (i.e., one rotamer for alanine, eleven rotamers for asparagine, etc). When the system is partitioned into fixed/inactive/active groups, each position is associated with the appropriate number of rotamers. Setting the native rotamer flag to “1” (in the file <i>parameters.str</i>) includes the rotamer(s) encountered in the initial structural model, as explained above.</p>
+<h3 id="sec3.3">The interaction energy matrix</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>Construction of the IEM necessitates the computation and storage of the sidechain-backbone and sidechain-sidechain interaction energies, for all possible pairs of active and inactive chemical types and rotamers (defined in the setup stage). To perform this calculation:</p>
+<ol start="8">
+<li>Make copies of files <i>project.sh</i>, <i>setup.sh</i>, <i>setup.inp</i> from the source directory to the subdirectory matrix.
+<ol type="a">
+<li>Edit <i>project.sh</i> to set the environment variable <i>$CPD</i> to your local Proteus directory (source directory).
+<div class="textbox">
+<p><code>&gt; export CPD = /home/username/Programs/Proteus_3.0</code></p>
+</div>
+</li>
+<li>Edit <i>setup.inp</i> to replace the segment identity (segid) definitions “A” and “B” by “PROA” and “PROB”, respectively.
+<div class="textbox">
+<p><code>&gt; … and (segid PROA or segid PROB)</code></p>
+</div>
+</li>
+<li>Execute the shell script <i>setup.sh.</i> This invokes protX to produce the following necessary files:
+<ol type="i">
+<li>The protein structure file <i>setup.psf</i> for a “giant molecule” that contains at each active position a number of sidechains representing all chemical types sampled at this position.</li>
+<li>The corresponding coordinate file <i>setup.pdb.</i>
+</li>
+<li>File <i>position_list.dat</i> contains the list of active and inactive positions of the system (the total number of pair interactions involving each position is also reported).</li>
+<li>Individual files for all active and inactive positions, listing the allowed amino acid types at each position. These files are stored under the subdirectory <i>$PROJ</i>/<i>matrix/local/Mut.</i>
+</li>
+<li>The Generalized Born atomic radii coefficients b<sub>i</sub> for the fixed part of the system are precalculated and stored at <i>matrix/local/Bsolv/bsolv.pdb.</i>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Make copies of the shell scripts <i>runI.sh</i> and <i>runIJ.sh</i> to the matrix directory.
+<ol type="a">
+<li>Execute the shell script <i>runI.sh.</i> This invokes protX to compute the diagonal IEM terms (containing the interaction energy of each sidechain with itself and the fixed part). The calculation can be performed sequentially using one CPU core (default), or in parallel using multiple CPU cores (set the desired number of cores as the command line argument). A prerequisite for the parallel calculation is the GNU parallel shell tool.
+<div class="textbox">
+<p><code>&gt; runI.sh [number of CPU cores]</code></p>
+</div>
+<ol type="i">
+<li>Generalized-Born atomic-radii coefficients (b<sub>i</sub>) are precalculated at each position, for each chemical type and rotamer conformation sampled at that position, with the rest of the system kept at the native sequence and conformation (native environment approximation). These coefficients are stored, along with the atomic coordinates of the corresponding rotamer, to distinct pdb files at <i>matrix/local/Rota.</i>
+</li>
+<li>The diagonal IEM elements are computed. The total interaction energies and their decomposition into molecular mechanics terms (bonded, Coulombic, van der Waals) and solvation terms (GB and solvent accessible surface area) are stored in data files at <i>matrix/dat.</i>
+</li>
+<li>The shell script <i>make_rotamer_space.sh,</i> invoked by <i>runI.sh</i>, checks the diagonal terms of the matrix to identify high-energy rotamer conformations at active and inactive positions. The exclusion of unfavorable rotamers reduces the conformational space of the system (and facilitates convergence of the adaptive flattening procedure during the second step). At position 501, all rotamers of chemical types F, Y, W and H failed to satisfy the energy threshold due to steric clashes and were excluded <a href="#sec6.3">troubleshooting 2</a>.</li>
+<li>A list of all residue pairs to be computed in the next step is created (<i>pair_list.dat</i>).</li>
+</ol>
+</li>
+<li>Execute the shell script $PROJ/matrix/runIJ.sh to compute the off-diagonal IEM terms via protX.
+<div class="textbox">
+<p><code>&gt; runIJ.sh [number of CPU cores or PBS queue] pair_list.dat</code></p>
+</div>
+<ol type="i">
+<li>At this step, protX computes the sidechain – sidechain interaction energies for all chemical types/rotamers of the various pairs of active and inactive residues. The total interaction energies and the individual molecular-mechanics, Generalized-Born and solvent accessible surface-area energy terms are stored in data files at <i>matrix/dat.</i>
+</li>
+<li>After the energy calculation is completed, all data files are concatenated into a big file (<i>matrix.dat</i>) and then split into two files containing the diagonal terms (<i>matrix.bb</i>) and the off-diagonal terms (<i>matrix.pw</i>) to be read in the second step of the protocol.
+<div class="note">
+<span class="note-title">Note:</span> This calculation is computationally demanding and should be performed in multiple CPU cores. In our case, a cluster of 43 nodes with 424 (Intel Xeon 2.4 GHz) CPU cores was employed. By assigning each pair interaction to one CPU core, the entire step was completed in less than a day.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Repeat the IEM calculation for the SARS-CoV-2 RBD apo state. The next step of the protocol involves the independent explorations of the sequence – structure space of the complex and the apo states.</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.4">Exploration of sequence/conformation space</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 h</div>
+<p>The exploration of the sequence/conformation space is performed in two stages: i) First, we conduct a set of design simulations of the apo state (the free SARS-CoV-2 RBD domain). We use these simulations to derive biasing potentials that render all chemical types at each active position approximately equiprobable. The procedure is analogous to the Wang-Landau approach and has been described in (<a href="#bib15">Villa et al., 2018</a>; <a href="#bib10">Opuu et al., 2020</a>; <a href="#bib8">Mignon et al., 2020</a>). The resulting biasing potentials are approximately equal to the negative folding energies of the apo state sequences. ii) Using these biasing potentials, we conduct biased “production design” simulations of the complex. The biasing potentials subtract the apo-state folding free energies from the complex-state folding free energies, promoting thereby the selection of sequences with good binding affinities. iii) We also conduct a new set of biased simulations for the apo state, with the same biasing potentials. These simulations produce biased probabilities of the various sequences in the apo state. The binding free energy of a sequence, relative to a reference sequence, is computed from the sequence probabilities in the complex and apo state (see Equation (9), <a href="#bib12">Polydorides and Archontis, 2021</a>).</p>
+<ol start="10">
+<li>Adaptive flattening of the SARS-CoV-2 RBD apo state:
+<ol type="a">
+<li>Make copies of the configuration files “∗.conf” from <i>$CPD/tutorials/adaptive_MC/apo/protMC</i> to <i>$PROJ/protMC/apo.</i>
+</li>
+<li>Edit the adaptive configuration file (<i>adapt.conf</i>) <a href="#sec6.5">troubleshooting 3</a>.
+<ol type="i">
+<li>Define the energy directory location of the apo state energy files (matrix.bb/pw).</li>
+<li>Set the length of the MC trajectory to 3 × 10<sup>8</sup> steps.</li>
+<li>Employ all active positions (455, 493, 494, 501) and all possible position pairs in the adaptive procedure, and update the calculated single and double bias terms every 1,000 steps. Use the parameters e<sub>0</sub> = 0.2 kcal/mol and E<sup>0</sup> = 100 kcal/mol for single position biases, and the values 0.1 kcal/mol and 40 kcal/mol for two-positions biases. (The values of these parameters can be optimized for a particular system via short biasing simulations).</li>
+<li>Set the temperature via the thermal energy kT at 0.6 kcal/mol and the protein dielectric constant at 6.8.</li>
+</ol>
+</li>
+<li>Run protMC to conduct the adaptive-flattening simulation that computes and stores the biasing potentials in the output file <i>bias.dat.</i> The values are updated every 1,000 steps. The sampled sequences (<i>adapt.seq</i>) and their energies (<i>adapt.ener</i>) are also stored.
+<div class="textbox">
+<p><code>&gt; $CPD/protMC/protMC.exe &lt; adapt.conf &gt; adapt.log</code></p>
+</div>
+</li>
+<li>When the adaptive flattening is completed, manually copy the final set of values of the biasing potentials to the file <i>bias.in</i>, that is used in the next step.</li>
+</ol>
+</li>
+<li>Set up and run the biased “production design” simulation of the sequence – conformation space of the apo state:
+<ol type="a">
+<li>Edit the MC configuration file (<i>MC.conf</i>) <a href="#sec6.5">troubleshooting 3</a>
+<ol type="i">
+<li>Use a replica exchange Monte Carlo (REMC) exploration method, with 4 replicas at temperatures (0.6 kcal/mol, 0.9 kcal/mol, 1.3 kcal/mol, 1.8 kcal/mol).</li>
+<li>Include the file containing the biasing potentials.</li>
+<li>Reduce the conformational space, by restricting distant inactive residues (beyond 8 Å from the interface) to their native conformation.</li>
+<li>Set the trajectory length to 10<sup>9</sup> steps.
+<div class="textbox">
+<p><code>&lt;Replica_Number&gt; 4 &lt;\Replica_Number&gt;</code></p>
+<p><code>&lt;Temperature&gt; 1.8 1.3 0.9 0.6 &lt;\Temperature&gt; #kT units</code></p>
+<p><code>&lt;Bias_Input_File&gt; bias.in &lt;\Bias_Input_File&gt;</code></p>
+<p><code>&lt;Space_Constraints&gt;</code></p>
+<p><code>2417 LYS # all rotamers of lysine are available</code></p>
+<p><code>2437 ASN{12} # only the native rotamer is available</code></p>
+<p><code>&lt;\Space_Constraints&gt;</code></p>
+<p><code>&lt;Trajectory_Length&gt; 1000000000 &lt;\Trajectory_Length&gt;</code></p>
+</div>
+</li>
+</ol>
+</li>
+<li>Run protMC to conduct the biased production simulation of the apo SARS-CoV-2 RBD. All sequence – structure combinations visited by each replica and their energies are stored in individual files (<i>proteus.seq, proteus.ener</i>), indexed 0, 1, 2, 3 according to the temperature of the replica (from the highest to the lowest).
+<div class="textbox">
+<p><code>&gt; $CPD/protMC/protMC.exe &lt; MC.conf &gt; MC.log</code></p>
+</div>
+</li>
+<li>Edit the postprocess configuration file <i>POST.conf</i> to include only the designed sequences sampled at the room temperature trajectory.
+<div class="textbox">
+<p><code>&lt;Seq_Input_File&gt; proteus.seq_3 &lt;\Seq_Input_File&gt;</code></p>
+<p><code>&lt;Fasta_File&gt; proteus.rich_3 &lt;\Fasta_File&gt;</code></p>
+</div>
+</li>
+<li>Run protMC to convert the stored sequences (<i>proteus.seq_3</i>) in a human-readable enriched form (<i>proteus.rich_3</i>)
+<div class="textbox">
+<p><code>&gt; $CPD/protMC/protMC.exe &lt; POST.conf &gt; POST.log</code></p>
+</div>
+</li>
+<li>Run the python script <i>$CPD/bin/analyze_seq.py</i> to count the occurrence of the various sequences identified by the design. For each sequence the script reports, its occurrence and percentage probability, along with the minimum, maximum and average energy (over all rotameric conformations identified by the design).
+<div class="textbox">
+<p><code>&gt; $CPD/bin/analyze_seq.py proteus_seq.3 proteus_rich.3</code></p>
+<p><code>1000000000 $proj/matrix/active.list &gt; proteus.dat</code></p>
+</div>
+</li>
+<li>A total of 81,643 out of 81,648 possible sequences were sampled in the simulation of the SARS-CoV-2 RBD apo state. The wild-type sequence L455-S493-Q494-N501 (“LQSN”) was selected 15,651 times. A graphical representation of the chemical type abundancies at each position can be constructed (<a href="#bib12">Polydorides and Archontis, 2021</a>).</li>
+</ol>
+</li>
+<li>Repeat the previous step to set up and run the biased production simulation of the sequence – conformation space of the complex state, using the same biasing potentials (<i>bias.in</i>). A total of 29,668 out of 81,648 possible sequences were sampled in the simulation of the complex. The wild-type sequence “LQSN” was selected 6,347 times. Run the following from the <i>$PROJ/complex.</i> <a href="#sec6.7">troubleshooting 4</a>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; $CPD/protMC/protMC.exe &lt; MC.conf &gt; MC.log</code></p>
+<p><code>&gt; $CPD/protMC/protMC.exe &lt; POST.conf &gt; POST.log</code></p>
+<p><code>&gt; $CPD/bin/analyze_seq.py proteus_seq.3 proteus_rich.3</code></p>
+<p><code>1000000000 $proj/matrix/active.list &gt; proteus.dat</code></p>
+</div>
+<ol start="13">
+<li>Filter designed sequences according to their binding affinity.
+<ol type="a">
+<li>For sequences encountered very infrequently during the design, the computed sequence probabilities and the resulting binding free energies may be associated with significant errors. For this reason, we exclude sequences with smaller occurrence frequency than a minimum number, set here to 5000. In the simulations of the apo state and the complex, 60,660 and 6,350 sequences appeared, respectively, more than 5,000 times. Of those, a total of 5,596 sequences were common in both states. Extract these common sequences in two new files (i.e., proteus_5000.dat); store those files in the apo and complex directories.</li>
+<li>Run the python script $CPD/bin/affinity.py to calculate the binding free energy of each sequence with respect to the wild-type, using the biased probabilities in the apo and the complex state. The output file lists those sequences with improved binding affinity relative to the wild type, in descending order. A total of 4,704 out of the 5,596 had better affinity than the wild-type sequence.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; $CPD/bin/affinity.py $PROJ/CMP/protMC/proteus_5000.dat</code></p>
+<p><code>$PROJ/APO/protMC/proteus_5000.dat bias.in -rf LQSN -p 455</code></p>
+<p><code>493 494 501 &gt; results.dat</code></p>
+</div>
+<ol start="14">
+<li>Further analysis of potent sequences
+<ol type="a">
+<li>From the top (strongest-affinity) 50 to 100 sequences, choose a small number ∼10 of sequences with chemical diversity.</li>
+<li>Run the shell script <i>$CPD/bin/reconstruct.sh</i> from <i>$PROJ/complex/reconstruct</i> to create 3D structure models of selected sequences – conformations sampled by the selected replica (proteus_rich.3).</li>
+<li>We reconstructed the most probable conformers of the highest-affinity sequence LEIV and two more interesting sequences, EEIV and LQWN. We tested further these sequences by MD simulations in explicit water, using the NAMD program (<a href="#bib11">Phillips et al., 2020</a>).
+<ol type="i">
+<li>Create a new subdirectory <i>$PROJ/comp/MD</i> and make copies of the coordinate (<i>rec.1.pdb</i>) and structure (<i>rec.1.psf</i>) files of reconstructed sequence.</li>
+<li>Run the shell script <i>$CPD/bin/dihe_mult.sh</i> to correct the protein structure file from multiple dihedral entries, readable by NAMD.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Employ a sufficient number of adaptive flattening steps to achieve reasonable convergence of biasing potentials. The simulation length depends on the size of the sequence space. For 4 active positions and 18 chemical types per position, there are 18<sup>4</sup> (∼10<sup>5</sup>) possible sequences. Each sequence can be associated with a large number of rotamer conformations. Thus, a MC length of at least 10<sup>9</sup> steps would be expected). Note that perfect flattening of the energy landscape is not necessary. The MC output files <i>proteus.seq</i>, <i>proteus.ener</i> can be extremely large, depending on the trajectory length. We usually employ sequences from the room temperature replica, thus the output files storing solutions from higher-temperature replicas can be shrunk to zero using the Linux truncate command.</div>
+<div class="note">
+<span class="note-title">Note:</span> As explained above, we set a minimum sequence occurrence threshold to exclude insufficiently sampled sequences during design. The threshold depends on the size of the sequence space. For a total of ∼10<sup>5</sup> possible sequences, explored by 10<sup>9</sup> MC steps, we ignore sequences sampled less than 5,000 times.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The computation of biasing potentials does not consider correlations beyond pairs of active positions. Therefore, the biasing potentials do not render the sequences of the apo state strictly equiprobable. For this reason, the biased apo-state simulation with the converged biased potentials should have an appropriate length so that a large fraction of all possible sequences be sampled.</p>
+<p>The bias potentials are approximately equal to the folding free energies of the apo state. In the biased simulation of the complex state, the bias potentials are subtracted from the folding free energies of the complex state, promoting sequence with low binding free energies (high binding affinities). Efficient sampling of the apo and complex energy landscapes should result in a large number of common sequences with high frequency occurrence and low binding free energies.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The performance of the protocol depends on the accuracy of the energy function, the effectiveness of the bias potentials, and the quality of the sampling. Proteus employs a physics-based energy function to describe the protein-protein interaction energies and models solvent effects by implicit solvation models. A careful selection of solvation model and optimum parameters (protein dielectric constant, atomic surface-area coefficients, Lazaridis-Karplus (LK) parameters, etc.) should be made during the setup step. The exploration of the vast sequence – conformation space becomes tractable via Boltzmann weighted MC simulations, sampling billions of sequences/conformations in a short time. The quality of the sampling is improved via replica-exchange MC (REMC) simulations and optimum bias potentials. The combination of these techniques allows sampling of a large number of sequences with good binding affinities. The number of replicas, their temperature range, and the trajectory length should be decided with respect to the size of the combinatorial space. The biasing potentials are derived through an iterative procedure; a sufficient number of steps should be taken to ensure that convergence is reasonably achieved (i.e., the chemical types at each position are approximately equiprobable). Sidechain conformations with extremely high energies, arising from steric interactions, prevent convergence and should be excluded from the adaptive procedure.</p>
+<p>During design, a part of the molecule remains fixed at the conformation specified by the initial structural model. Even though the missing backbone flexibility is partly taken into account via the protein dielectric constant, the results may depend on the chosen structural model <a href="#sec6.9">troubleshooting 5</a>.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Errors during the system build and setup steps occur if: (i) the atom/residue names are not compatible to the selected force field (Amber), (ii) the coordinates file (pdb) doesn’t end with the “END” keyword and (iii) the application employs a molecule with unknown topology. Paths to files longer than 80 characters cause the termination of protX.</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Edit the structure files properly and use additional files (patches) for the topology and parameters of any unknown molecules. Avoid large file names.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>The fixed-backbone approximation occasionally results in the exclusion of bulky sidechains or specific rotamers at a given position. In that case, none of the available conformations fits and the interaction energies remain very large due to steric clashes, even after minimization. These unfavorable energies may cause a convergence problem during the adaptive flattening step.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Check the list of allowed rotamers for each position under <i>matrix/local/EnrFltr</i>. Employ suitable mutation-space constraints in the configuration files, to exclude amino acid types with solely unfavorable conformations. To allow excluded conformers, one could alleviate steric clashes during the initial preparation of the starting structural model or consider alternative starting models.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Syntax errors in the configuration files (<i>MC.conf, adapt.conf, POST.conf</i>) terminate the simulations and report the message “error in the optimization configuration”. An incomplete interaction energy matrix will also cause the termination of the simulation indicating errors in the matrix files (<i>matrix.bb, matrix.pw</i>) with missing types or rotamers “Can not find type … ”, “Can not find rotamer”.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Keep the necessary syntax of the configuration files, and use compatible space constraints between the calculation steps. Check the interaction energy matrix files for missing chemical types or rotamers at a given position. Errors during the IEM calculation by protMC are reported at the <i>matrix/err</i> subdirectory for each diagonal and off diagonal term. Check for errors and recompute only the necessary pairs.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Using an unrestricted sequence / conformation space of the hACE2 in the complex state, limits sampling of the active positions and their neighboring inactive positions at the interface of the two proteins.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Keep the same sequence / conformation space constraints of SARS-CoV-2 in the apo and complex state and include additional space restrictions hACE2, within the MC configuration file (<i>MC.conf</i>).</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The designed sequences may depend on approximations of the protocol, such as the fixed-backbone treatment and the discretization of conformational space. As an example, with the crystallographic structure as a model for the fixed backbone, the calculations predict the negatively charged residues glutamic and aspartic acid as the main solutions at position 493 (for a sequence logo see Figure 3B of (<a href="#bib12">Polydorides and Archontis, 2021</a>)). With a frame from the all-atom MD simulation of the complex as the fixed-backbone structural model, the polar analogues asparagine and glutamine are also inserted at that position.</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Design calculations could be performed with a small number of different initial structural models (X-ray, some MD snapshots) and the results could be combined.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Archontis, G. and Simonson, T. (2005). A residue-pairwise generalized born scheme suitable for protein design calculations. J. Phys. Chem. B <i>109</i>, 22667-22673. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref1">View at publisher</a></p>
+<p id="bib2">Gaillard, T.,. and Simonson, T. (2017). Full protein sequence redesign with an MMGBSA energy function. J. Chem. Theor. Comput. <i>13</i>, 4932-4943. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref2">View at publisher</a></p>
+<p id="bib3">Hawkins, G.D., Cramer, C.J., and Truhlar, D.G. (1995). Pairwise solute descreening of solute charges from a dielectric medium. Chem. Phys. Lett. <i>246</i>, 122-129. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref3">View at publisher</a></p>
+<p id="bib4">Hornak, V., Abel, R., Okur, A., Strockbine, B., Roitberg, A., and Simerling, C. (2006). Comparison of multiple Amber force fields and development of improved protein backbone parameters. Proteins <i>65</i>, 712-725. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref4">View at publisher</a></p>
+<p id="bib5">Jo, S., Kim, T., Iyer, V.G., and Im, W. (2008). CHARMM-GUI: a web-based graphical user interface for CHARMM. J. Comput. Chem. <i>29</i>, 1859-1865. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref5">View at publisher</a></p>
+<p id="bib6">Lan, J., Ge, J., Yu, J., Shan, S., Fan, S., Zhang, Q., Shi, X., Wang, Q., Zhang, L., and Wang, X. (2020). Structure of the SARS-CoV-2 spike receptor-binding domain bound to the ACE2 receptor. Nature <i>581</i>, 215-220. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref6">View at publisher</a></p>
+<p id="bib7">Michael, E., Polydorides, S., Simonson, T., and Archontis, G. (2017). Simple models for nonpolar solvation: parameterization and testing. J. Comput. Chem. <i>38</i>, 2509-2519. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref7">View at publisher</a></p>
+<p id="bib8">Mignon, D., Druart, K., Michael, E., Opuu, V., Polydorides, S., Villa, F., Gaillard, T., Panel, N., Archontis, G., and Simonson, T. (2020). Physics-based computational protein design: an update. J. Phys. Chem. A <i>124</i>, 10637-10648. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref8">View at publisher</a></p>
+<p id="bib9">Neria, E., Fischer, S., and Karplus, M. (1996). Simulation of activation free energies in molecular systems. J. Chem. Phys. <i>105</i>, 1902-1921. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref9">View at publisher</a></p>
+<p id="bib10">Opuu, V., Nigro, G., Gaillard, T., Schmitt, E., Mechulam, Y., and Simonson, T. (2020). Adaptive landscape flattening allows the design of both enzyme: substrate binding and catalytic power. Plos Comput. Biol. <i>16</i>, e1007600. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref10">View at publisher</a></p>
+<p id="bib11">Phillips, J.C., Hardy, D.J., Maia, J.D.C., Stone, J.E., Ribeiro, J.V., Bernardi, R.C., Buch, R., Fiorin, G., Henin, J., Jiang, W., et al. (2020). Scalable molecular dynamics on CPU and GPU architectures with NAMD. J. Chem. Phys. <i>153</i>, 044130. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref11">View at publisher</a></p>
+<p id="bib12">Polydorides, S. and Archontis, G. (2021). Computational optimization of the SARS-CoV-2 receptor-binding-motif affinity for human ACE2. Biophys. J. <i>120</i>, 2859-2871. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref12">View at publisher</a></p>
+<p id="bib13">Seeber, M., Felline, A., Raimondi, F., Muff, S., Friedman, R., Rao, F., Caflish, A., and Fanelli, F. (2011). J. Comput. Chem. <i>32</i>, 1183-1194. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref13">View at publisher</a></p>
+<p id="bib14">Villa, F., Mignon, D., Polydorides, S., and Simonson, T. (2017). Comparing pairwise-additive and many-body generalized Born models for acid/base calculations and protein design. J. Comput. Chem. <i>38</i>, 2396-2410. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref14">View at publisher</a></p>
+<p id="bib15">Villa, F., Panel, N., Chen, X., and Simonson, T. (2018). Adaptive landscape flattening in amino acid sequence space for the computational design of protein:peptide binding. J. Chem. Phys. <i>149</i>, 072302. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(22)00134-4/sref15">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Georgios Archontis (<a href="mailto:archonti@ucy.ac.cy">archonti@ucy.ac.cy</a>).</p>
+<h4>Materials availability</h4>
+<p>Results of the application describing the protocol are reported in <a href="#bib12">Polydorides and Archontis (2021)</a>.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate new code. The source code (Proteus3.0) is available at <a href="https://proteus.polytechnique.fr/">https://proteus.polytechnique.fr</a>.</p>
+<h3>Acknowledgments</h3>
+<p>S.P. thanks the Cyprus Ministry of Education, Culture, Sports, and Youth for a leave of absence.</p>
+<h3>Author contributions</h3>
+<p>Both authors contributed equally to this work.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

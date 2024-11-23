@@ -1,0 +1,1057 @@
+<article>
+<section>
+<h1 id="header">Microfluidics for single-cell lineage tracking over time to characterize transmission of phenotypes in <i>Saccharomyces cerevisiae</i>
+</h1>
+<p><time datetime="2020-12-18">Published: December 18, 2020</time></p>
+<p>Poonam Bheda,<sup><a href="#aff1">1</a>,<a href="#fn1">8</a>,<a href="#fn2">9</a>,<a href="#cor1">*</a></sup> Diana Aguilar-Gómez,<sup><a href="#aff2">2</a>,<a href="#fn1">8</a></sup> Igor Kukhtevich,<sup><a href="#aff1">1</a>,<a href="#fn1">8</a></sup> Johannes Becker,<sup><a href="#aff3">3</a></sup> Gilles Charvin,<sup><a href="#aff4">4</a>,<a href="#fn1">8</a></sup> Antonis Kirmizis,<sup><a href="#aff5">5</a></sup> and Robert Schneider<sup><a href="#aff1">1</a>,<a href="#aff6">6</a>,<a href="#aff7">7</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Institute of Functional Epigenetics, Helmholtz Zentrum München, 85764 Neuherberg, Germany</p>
+<p id="aff2"><sup>2</sup>Center for Computational Biology, UC Berkeley, Berkeley, CA 94720, USA</p>
+<p id="aff3"><sup>3</sup>Institute of Bioengineering, School of Engineering, École Polytechnique Fédérale de Lausanne, 1015 Lausanne, Switzerland</p>
+<p id="aff4"><sup>4</sup>Development and Stem Cells, IGBMC, 67400 Illkirch, France</p>
+<p id="aff5"><sup>5</sup>Department of Biological Sciences, University of Cyprus, 2109 Nicosia, Cyprus</p>
+<p id="aff6"><sup>6</sup>German Center for Diabetes Research (DZD), 85764 Neuherberg, Germany</p>
+<p id="aff7"><sup>7</sup>Faculty of Biology, Ludwig-Maximilians Universität München, 80333 Munich, Germany</p>
+<p id="fn1"><sup>8</sup>Technical Contact</p>
+<p id="fn2"><sup>9</sup>Lead Contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:poonam.bheda@helmholtz-muenchen.de">poonam.bheda@helmholtz-muenchen.de</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:robert.schneider@helmholtz-muenchen.de">robert.schneider@helmholtz-muenchen.de</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100228">10.1016/j.xpro.2020.100228</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The budding yeast <i>Saccharomyces cerevisiae</i> is an excellent model organism to dissect the maintenance and inheritance of phenotypes due to its asymmetric division. This requires following individual cells over time as they go through divisions to define pedigrees. Here, we provide a detailed protocol for collecting and analyzing time-lapse imaging data of yeast cells. The microfluidics protocol can achieve improved time resolution for single-cell tracking to enable characterization of maintenance and inheritance of phenotypes.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib1">Bheda et al. (2020a)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Single-cell-tracking microfluidics and imaging allow phenotype and lineage analysis</li>
+<li>Details to prepare custom microfluidics chips</li>
+<li>Custom software for cell segmentation</li>
+<li>Detailed quantifications and statistical analyses of single-cell lineage data</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Preparation of yeast reporter strains</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 weeks</div>
+<ol>
+<li>Prepare yeast reporter strains. For fluorescence reporters, yeast can be transformed with self-propagating plasmids or with linear DNA for integration with the appropriate selection markers (<a href="#fig1">Figures 1</a>A–1C, <a href="#mmc1">Methods Video S1</a>) (<a href="#bib3">Brachmann et al., 1998</a>; <a href="#bib8">Gietz and Woods, 2002</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. <i>S. cerevisiae</i> strain construction with integrated reporter and lineage marker</div>
+<p>(A) In <a href="#bib1">Bheda et al. (2020a)</a>, we created a reporter strain by fusing GFP at the C terminus of the endogenous <i>GAL1</i> open reading frame (ORF) on chromosome 2 (<i>chrom II</i>) by homologous recombination. The reporter cassette included a superfolder GFP (sfGFP) fused to a degron sequence from <i>CLN2</i> (CLN2-PEST), followed by a terminator sequence from <i>ADH1</i> (ADH1-term) and a kanMX selection cassette, which is made of a <i>TEF1</i> promoter sequence (TEF1-prom), the G418-resistance sequence (G418<sup>R</sup>), and a <i>TEF1</i> terminator (TEF1-term).</p>
+<p>(B) Additionally we created a lineage marker by expressing NLS-2mCherry under the control of the constitutively active <i>TEF1</i> promoter (TEF1-prom) and a <i>CYC1</i> terminator (CYC1-term) with a <i>URA3</i> selection marker.</p>
+<p>(C) Snapshot from <a href="#mmc1">Methods Video S1</a>. Left: phase contrast. Middle: Galp-GFP. Right: nuclear 2mCherry.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In <a href="#bib1">Bheda et al. (2020a)</a> we created a reporter strain in the Y7092 background (<a href="#bib21">Tong and Boone, 2007</a>) by fusing GFP at the C terminus of the endogenous <i>GAL1</i> open reading frame (ORF) on chromosome 2 (<i>chrom II</i>) by homologous recombination (<a href="#fig1">Figure 1</a>A). The reporter cassette included a superfolder GFP (sfGFP) fused to a degron sequence from <i>CLN2</i> (CLN2-PEST) to destabilize the reporter, followed by a terminator sequence from <i>ADH1</i> (ADH1-term), which was cloned into a plasmid. The reporter cassette was directly followed by the kanMX selection cassette, which is made of a <i>TEF1</i> promoter sequence (TEF1-prom), the G418-resistance sequence (G418<sup>R</sup>), and a <i>TEF1</i> terminator (TEF1-term). The reporter + selection cassette was PCR amplified with oligonucleotides bearing homology to the C terminus of <i>GAL1</i> and transformed into yeast. Transformants were selected on YPD plates supplemented with G418 and reporter insertions were tested by junction PCRs and validated by sequencing.</div>
+<div class="note">
+<span class="note-title">Note:</span> For lineage analyses, we recommend including a second fluorescent reporter to facilitate pedigree mapping. Although some segmentation algorithms, such as the custom software PhyloCell that we used for segmentation and lineage definition (see “<a href="#sec2.3">Custom software for cell-tracking microfluidics data processing</a>” and the <a href="#key-resources-table">Key resources table</a> for details), are capable of reconstructing lineages without a lineage marker, using one reduces errors. As yeast nuclear envelopes do not break down during cell division, a nuclear fluorescent reporter clearly shows the intact nucleus dividing and separating in two cells – i.e., a mother cell and its daughter cell (<a href="#mmc1">Methods Video S1</a>), facilitating pedigree definition. In <a href="#bib1">Bheda et al. (2020a)</a>, we used for this a nuclear localization signal (NLS) sequence fused to mCherry (<a href="#fig1">Figures 1</a>B and 1C, <a href="#mmc1">Methods Video S1</a>) in order to sequester the fluorescent protein in the nucleus and aid in lineage definition. Specifically we created this lineage marker by expressing 2 copies of monomeric mCherry (2mCherry) with an NLS fusion to the N terminus under the control of the constitutively active <i>TEF1</i> promoter (TEF1-prom) and a <i>CYC1</i> terminator (CYC1-term). This lineage marker cassette is located on an integrating plasmid with a <i>URA3</i> selection marker. The plasmid was linearized in the <i>URA3</i> promoter, transformed in a background strain with a <i>URA3</i> deletion (<i>ura3Δ0</i>) on chromosome V (<i>chrom V</i>), and transformants were selected on synthetic drop-out plates lacking uracil. Other suitable lineage markers include the nuclear histone H2B gene Htb2p (<a href="#bib9">Goulev et al., 2017</a>; <a href="#bib14">Meitinger et al., 2014</a>; <a href="#bib15">Morlot et al., 2019</a>) or the budneck markers Cdc10p and Myo1p (<a href="#bib5">Charvin et al., 2008</a>).</div>
+<figure id="mmc1"><video controls="controls">
+        <source src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Mmc1.mp4" type="video/mp4"></source>
+        Your browser does not support HTML5 video.
+      </video>
+<figcaption>
+<div class="figcaption-title">Methods Video S1. Time-lapse video of images collected during a microfluidics experiment, related to Preparation of yeast reporter strains, step 1</div>
+<p><i>left</i>, phase contrast. <i>middle</i>, Galp-GFP. <i>right</i>, nuclear 2mCherry. Cells bearing the Gal1p-GFP reporter and NLS-2mCherry nuclear marker are undergoing repeated galactose inductions. The nuclear marker is constitutively active and remains localized to the nucleus, while Galp-GFP is only expressed during induction.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.2">Preparation of yeast media</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 days</div>
+<ol start="2">
+<li>Prepare a suitable amount of synthetic media prior to the experiment. See <a href="#materials-and-equipment">Materials and equipment</a> for media recipes used in <a href="#bib1">Bheda et al. (2020a)</a>.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend preparing twice as much media to allow for potential flow rate problems. Make sure to account for each set of media tubing, flow rate, and length of time lapse. For example, for a chip with 10 independent channels, a flow rate of 10 μL/min, and a 10 h experiment, prepare 120 mL media.</div>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si1.jpg" alt="Si1.jpg"></p>
+<div class="note">
+<span class="note-title">Note:</span> Synthetic media is preferable over rich media (e.g., YP) to minimize cellular autofluorescence.</div>
+<ol start="3">
+<li>On the day of the microfluidics experiment, combine media components and sterile filter through a 0.22 μm filter to remove particulate matter or precipitates from older media that could clog the microfluidics microchambers/microchannels.</li>
+</ol>
+<h3 id="sec1.3">Microfluidic chip prep work</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼2 weeks</div>
+<ol start="4">
+<li>Purchase or design and fabricate a microfluidics chip that is appropriate for your needs.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A chip made from polydimethylsiloxane (PDMS) with a #1.5 glass coverslip is recommended. The height of the microchannels where the cells will be trapped should be ∼3–3.3 μm for haploid yeast with normal sizes. Mother cells typically have a long axis diameter (as yeast cells are slightly oblong) between 4–6 μm (<a href="#bib12">Kukhtevich et al., 2020</a>).</div>
+<p>The use of custom-made PDMS microfluidics chips for inheritance analyses of <i>S. cerevisiae</i> has been previously described (<a href="#bib1">Bheda et al., 2020a</a>; <a href="#bib6">Fehrmann et al., 2013</a>; <a href="#bib7">Garmendia-Torres et al., 2018</a>; <a href="#bib9">Goulev et al., 2017</a>; <a href="#bib17">Paoletti et al., 2016</a>; <a href="#bib26">Xu et al., 2015</a>). Our custom-designed PDMS microfluidics chip allows haploid yeast cells to be trapped and tracked for ∼8 generations (<a href="#fig2">Figure 2</a>A and see “<a href="#limitations">Limitations</a>”) (<a href="#bib1">Bheda et al., 2020a</a>; <a href="#bib9">Goulev et al., 2017</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Cell-tracking microfluidics chip</div>
+<p>(A) Cell- and lineage-tracking custom microfluidics design (figure modified from Figure 1A in <a href="#bib1">Bheda et al., 2020a</a>). The chip is designed with 16 independent microchambers, with each having its own media and cell inlet and outlet channels (represented by different colors), where different strains or conditions can be tested simultaneously. Each microchamber has 8 microchannels for trapping the yeast such that 8 regions containing cells of interest can be imaged per strain/condition (<a href="#bib9">Goulev et al., 2017</a>).</p>
+<p>(B) Mold fabrication using photomasks and SU-8 photoresist. Photomasks are made from CAD files designed for each layer of the microfluidics chip, then printed onto slides. The mold is made by 2-layer photolithography using a silicon wafer. The process for each layer involves using a spin coater to evenly spread SU-8 photoresist on the wafer and UV treatment through each photomask to transfer the design onto the wafer. This process results in a negative replica mold that can be used repeatedly to prepare PDMS microfluidics chips.</p>
+<p>(C) Preparation of a PDMS chip stepwise from left to right. Liquid PDMS mix is poured into the replica mold and baked. The solidified PDMS is then assembled into a microfluidics chip by punching holes, treating with O<sub>2</sub> plasma, and attaching to a coverslip. For details see text.</p>
+</figcaption>
+</figure>
+<p>To prepare a custom-made PDMS chip as in <a href="#bib1">Bheda et al. (2020a)</a> start with mask fabrication of the desired design (<a href="#fig2">Figure 2</a>B):</p>
+<ol start="5">
+<li>Prepare a high-resolution computer-aided-design (CAD) file with the desired microfluidics chip design.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Our design includes a 3-μm layer for trapping yeast and an ∼40-μm layer for the media supply channels. The CAD file for the microfluidic chip design is available on Mendeley Data (<a href="#bib2">Bheda et al., 2020b</a>).</div>
+<ol start="6">
+<li>Prepare photomasks of the microfluidics chip by printing the high-resolution CAD files for each layer onto a polymer slide.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We have outsourced this step (Selba, Switzerland).</div>
+<p>Using these masks, prepare a replica mold as follows (<a href="#fig2">Figure 2</a>B):</p>
+<ol start="7">
+<li>Start the process with the 3-μm layer for trapping yeast by cleaning a 4-inch silicon wafer with 100% isopropanol, then baking it at 120°C for ∼15 min to dry it out.</li>
+<li>Use a spin coater to evenly spread 3 mL of SU-8 2002 photoresist onto the wafer at 400 rpm.</li>
+<li>Soft bake the wafer for 2 min at 95°C.</li>
+<li>Expose the SU-8 2002 on the wafer through the photomask with 100 mJ/cm<sup>2</sup> UV at 365 nm.</li>
+<li>For the post exposure bake, bake the wafer for 2 min at 95°C.</li>
+<li>Develop the SU-8 2002 for 15–30 s in a bath of ∼50 mL SU-8 developer.</li>
+<li>Rinse the wafer with 100% isopropanol and dry with compressed air.</li>
+<li>Perform a hard bake by baking the wafer for 15 min at 150°C.</li>
+<li>For the second, 40-μm layer for the media supply channels, use the spin coater to spread 3 mL of SU-8 2025 on top of the first layer at 2,500 rpm.</li>
+<li>Soft bake the wafer for 7 min at 95°C.</li>
+<li>Align the second photomask with the first layer manually or with a mask aligner.</li>
+<li>Expose the SU-8 2025 on the wafer through the second photomask with 160 mJ/cm<sup>2</sup> UV at 365 nm.</li>
+<li>For the post exposure bake, bake the wafer for 2 min at 65°C, followed by a 6 min bake at 95°C.</li>
+<li>Develop the SU-8 2025 for 45–60 s in a bath of ∼50 mL SU-8 developer.</li>
+<li>Rinse the wafer with 100% isopropanol and dry with compressed air.</li>
+<li>Perform a hard bake by baking the wafer for 15 min at 150°C.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This process is best carried out in a microelectronics cleanroom.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The replica mold can now be stored and reused indefinitely.</div>
+<p>On the day of the experiment, prepare the PDMS microfluidics chip using the replica mold (<a href="#fig2">Figure 2</a>C):</p>
+<ol start="23">
+<li>Weigh out 10:1 PDMS to curing agent (included in the PDMS kit) and mix well.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> 10 g PDMS + 1 g curing agent is sufficient for 1 chip. If cutting a larger area around the chip, prepare up to 20 g PDMS + 2 g curing agent.</div>
+<ol start="24">
+<li>Degas PDMS mix using a vacuum pumping unit connected to a vacuum desiccator for 10–30 min with 15–20 mbar pressure until no air bubbles remain.</li>
+<li>Pour the PDMS mix into the mold and let sit for 10 min to remove any remaining air bubbles.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> the PDMS mix can be first poured into the mold and then degassed using the vacuum desiccator.</div>
+<ol start="26">
+<li>Bake the microfluidics chip in the mold at 100°C in an incubator for 1 h to crosslink the PDMS.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> PDMS can be baked in the mold ahead of time and with different lengths of time, depending on temperature. For every 10°C less, double the time (e.g., 2 h at 90°C, 4 h at 80°C, 8 h at 70°C, or 16 h at 60°C).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Keep microfluidics chip in mold until use.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The PDMS chip in the replica mold can be stored indefinitely.</div>
+<ol start="27">
+<li>On the day of the cell-tracking microfluidics data collection, cut out the PDMS replica from the mold using a scalpel.</li>
+</ol>
+<div class="caution">
+<span class="caution-title">Caution:</span> Use caution when cutting the chip out of the mold. Cut deep enough to remove chip, while minimizing scratches to the mold.</div>
+<div class="note">
+<span class="note-title">Note:</span> If you cut out a large area around the chip to remove from the mold, the edges should be trimmed to the size of the coverslip that it will be attached to, using a scalpel or preferably a long razor blade.</div>
+<div class="caution">
+<span class="caution-title">Caution:</span> Avoid touching the surface of the microfluidics chip as the microchannels can easily be damaged.</div>
+<ol start="28">
+<li>Place the microfluidics chip with the microchannels side up and punch out holes for connecting tubing using a 1–1.5 mm biopsy puncher.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The choice of biopsy puncher size depends on the type of tubing and connection to the chip. If using Tygon tubing and bent needles with the specifications as in <a href="#bib1">Bheda et al. (2020a)</a> and in the Media supplementation section and <a href="#key-resources-table">Key resources table</a>, we suggest using the 1 mm biopsy puncher. We have also successfully used Teflon tubing directly inserted in the chip. In this case, a larger hole is preferable; therefore, for this type of tubing connection to the chip, we suggest using a 1.5 mm biopsy puncher.</div>
+<ol start="29">
+<li>Dust particles on the surface of the chip should be cleaned by gently attaching a piece of Scotch tape evenly across the surface and peeling the tape away.</li>
+</ol>
+<div class="caution">
+<span class="caution-title">Caution:</span> Dust particles on the surface of the chip can block media flow through the microchannels.</div>
+<ol start="30">
+<li>Using forceps, wash a 24 × 50 mm #1.5 glass coverslip first by completely immersing in 100% ethanol for ∼5 s, followed by immersing the coverslip in ddH<sub>2</sub>O for ∼5 s, and then dry with compressed air.</li>
+</ol>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Soak coverslips for at least 1 h in H<sub>2</sub>O<sub>2</sub>, rinse with ddH<sub>2</sub>O, and dry with compressed air.</div>
+<ol start="31">
+<li>Treat the microfluidics chip (microchannel side up) and coverslip with O<sub>2</sub> plasma cleaner surface activation.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Using the Zepto B model plasma cleaner from Diener, the microfluidics chip and chamber can be treated with 6.0 power with the timer set to 0–40 (∼2 min) under 0.8–1 mbar pressure with 100% O<sub>2</sub>.</div>
+<ol start="32">
+<li>Assemble the chip by carefully placing the PDMS (microchannel side down) on top of the coverslip. Carefully press the chip and coverslip together to achieve full contact. Allow the chip to bond to the glass for 10 min at 20°C–25°C.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Do not push too hard on the chip otherwise the microchannels may be crushed. You should be able to see a contrast between where the PDMS is in contact with the glass and where it is still in contact with air. With careful pressing, the air front should spread and disappear.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> It is best to plasma clean and assemble the microfluidics chip just prior to setting up the cell-tracking microfluidics experiment to retain hydrophilicity in the microchannels that results from O<sub>2</sub> plasma treatment, however the assembled chip can be stored for days to weeks.</div>
+<h3 id="sec1.4">Preparation of cell and media tubings</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>To prepare tubing for media supplementation and to inject cells into the microfluidics chip as in <a href="#bib1">Bheda et al. (2020a)</a>:</p>
+<ol start="33">
+<li>Pull out the needle (18 gauge, 90° bent, blunt edge) from plastic used for syringe attachment.</li>
+<li>Insert needle into one end of Tygon tubing with 0.02” inner dimension × 0.060” outer dimension.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Cell and media tubings can be stored and reused indefinitely.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Drop-out Mix Complete w/o yeast nitrogen Bbase</td>
+<td>US Biological</td>
+<td>Cat# D9515</td>
+</tr>
+<tr>
+<td>Yeast Nitrogen Base without amino acids</td>
+<td>Becton-Dickinson</td>
+<td>Cat# 291940</td>
+</tr>
+<tr>
+<td>D-(+)-Raffinose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 83400</td>
+</tr>
+<tr>
+<td>D-(+)-Galactose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# G6404</td>
+</tr>
+<tr>
+<td>D-(+)-Glucose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# G8270</td>
+</tr>
+<tr>
+<td>Polydimethylsiloxane (PDMS) kit Sylgard 184</td>
+<td>Dow Corning</td>
+<td>Cat# 2646340</td>
+</tr>
+<tr>
+<td>SU-8 2002 photoresist</td>
+<td>MicroChem</td>
+<td>Cat# SU-8 2002</td>
+</tr>
+<tr>
+<td>SU-8 2025 photoresist</td>
+<td>MicroChem</td>
+<td>Cat# SU-8 2025</td>
+</tr>
+<tr>
+<td>SU-8 developer</td>
+<td>MicroChem</td>
+<td>Cat# Y020100</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td><i>Saccharomyces cerevisiae</i></td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>PhyloCell</td>
+<td>Gilles Charvin</td>
+<td>
+<a href="https://github.com/gcharvin">https://github.com/gcharvin</a><a href="#bib9">Goulev et al., 2017</a>
+</td>
+</tr>
+<tr>
+<td>Autotrack</td>
+<td>Gilles Charvin</td>
+<td>
+<a href="https://github.com/gcharvin">https://github.com/gcharvin</a><a href="#bib9">Goulev et al., 2017</a>
+</td>
+</tr>
+<tr>
+<td>Single-cell lineage analysis sample code</td>
+<td>Diana Aguilar-Gómez</td>
+<td><a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a></td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td>MathWorks</td>
+<td>versions R2009a, R2016a, and R2016b</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Python Software Foundation</td>
+<td>versions 2.7 and 3.6.3</td>
+</tr>
+<tr>
+<td>R</td>
+<td>R Foundation for Statistical Computing</td>
+<td>version 3.4.4</td>
+</tr>
+<tr>
+<td>Nikon NIS Elements</td>
+<td>Nikon Microscope Solutions</td>
+<td>version 4.51.c1</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>1 mm biopsy puncher</td>
+<td>Integra Miltex, USA</td>
+<td>Cat# 33-31AA-P/25</td>
+</tr>
+<tr>
+<td>1.5 mm biopsy puncher</td>
+<td>Integra Miltex, USA</td>
+<td>Cat# 33-31A-P/25</td>
+</tr>
+<tr>
+<td>Vacuum pumping unit</td>
+<td>Vacuubrand, Germany</td>
+<td>Cat# PC 3004 VARIO</td>
+</tr>
+<tr>
+<td>Vacuum desiccator</td>
+<td>Nalgene, USA</td>
+<td>Cat# 5311-0250</td>
+</tr>
+<tr>
+<td>Incubator</td>
+<td>Binder, Germany</td>
+<td>Cat# ED 56</td>
+</tr>
+<tr>
+<td>Scotch Magic invisible tape</td>
+<td>3M, USA</td>
+<td>Cat# 810</td>
+</tr>
+<tr>
+<td>Steritop 0.22 μm PES filter</td>
+<td>Millipore, USA</td>
+<td>Cat# 2GPT02RE</td>
+</tr>
+<tr>
+<td>1 mL syringe</td>
+<td>B. Braun, Germany</td>
+<td>Cat# 9166017V</td>
+</tr>
+<tr>
+<td>22 gauge 0.5 inch blunt edge needle</td>
+<td>Adhesive Dispensing, UK</td>
+<td>Cat# AD722050</td>
+</tr>
+<tr>
+<td>Thermoelectric modules</td>
+<td>RS, France</td>
+<td>Cat# 490-1317</td>
+</tr>
+<tr>
+<td>Temperature regulator</td>
+<td>Oven Industries, USA</td>
+<td>Cat# 5R6-900</td>
+</tr>
+<tr>
+<td>Spin coater</td>
+<td>Mikasa, Japan</td>
+<td>Cat#MS-B100</td>
+</tr>
+<tr>
+<td>O<sub>2</sub> plasma cleaner</td>
+<td>Diener Electronic, Germany</td>
+<td>Cat# Zepto B</td>
+</tr>
+<tr>
+<td>24 × 50 mm #1.5 glass coverslip</td>
+<td>Knittel Glass, Germany</td>
+<td>Cat# VD12450Y1A.01</td>
+</tr>
+<tr>
+<td>Tygon tubing 0.02 inch ID × 0.060 inch OD</td>
+<td>Cole-Parmer, Germany</td>
+<td>Cat# GZ-06419-01</td>
+</tr>
+<tr>
+<td>18 gauge 0.5 inch bent 90° blunt needle</td>
+<td>Techcon, USA</td>
+<td>Cat# TE718050B90PK</td>
+</tr>
+<tr>
+<td>Microfluidic flow controller</td>
+<td>Elveflow, France</td>
+<td>Cat# OB1 MK3+</td>
+</tr>
+<tr>
+<td>Microfluidic flow sensor</td>
+<td>Elveflow, France</td>
+<td>Cat# MFS 3</td>
+</tr>
+<tr>
+<td>Port selector valve</td>
+<td>Idex, USA</td>
+<td>Cat# MXX778-605</td>
+</tr>
+<tr>
+<td>Peristaltic pump</td>
+<td>Ismatec, Switzerland</td>
+<td>Cat# ISM 931</td>
+</tr>
+<tr>
+<td>Objective heater</td>
+<td>Okolab, Italy</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Heating chip holder</td>
+<td>custom-built</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Epifluorescence microscope</td>
+<td>Nikon, Japan</td>
+<td>Cat# Eclipse Ti-E</td>
+</tr>
+<tr>
+<td>Objective</td>
+<td>Nikon, Japan</td>
+<td>Cat# plan-apo λ 100×/1.45 NA Ph3 oil immersion</td>
+</tr>
+<tr>
+<td>Light engine</td>
+<td>Lumencor, USA</td>
+<td>Cat# SPECTRA X</td>
+</tr>
+<tr>
+<td>EMCCD camera</td>
+<td>Andor, UK</td>
+<td>Cat# iXon Ultra 888</td>
+</tr>
+<tr>
+<td>CAD file for mask fabrication</td>
+<td><a href="#bib2">Bheda et al., 2020b</a></td>
+<td><a href="https://data.mendeley.com/datasets/yr2nrysyyx/1">https://data.mendeley.com/datasets/yr2nrysyyx/1</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<h3 id="sec2.1">Equipment</h3>
+<h4 id="sec2.1.1">Media supplementation equipment</h4>
+<p>For automated media supplementation in <a href="#bib1">Bheda et al. (2020a)</a>, we used a pressure microfluidic flow controller with a flow sensor. Automated media changes were controlled by a port selector valve system (<a href="#fig3">Figure 3</a>A). Media is supplied via tubing prepared with bent needles (see connected to the microfluidics chip (<a href="#fig3">Figure 3</a>B, left).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Cell-tracking microfluidics setup</div>
+<p>(A) Schematic of microfluidics setup. Top: red lines indicate regulation by controlling units. Gray lines indicate flow of air. Blue lines indicate tubing for media flow. Software on the computer controls the pressure controller, valve, and microscope. The pressure controller also receives input from the flow sensor, allowing it to adjust the pressure in case flow is too high or low. The heating chip holder and the objective heater are regulated by independent controllers. Bottom: zoomed in schematic of custom-built heating chip holder with thermoelectric modules, objective heater, tubing with bent needles, and screws + holders.</p>
+<p>(B) Left: photo of tubing with bent needle inserted in PDMS. Middle: photo of heating chip holder. Right: photo of 3D-printed holders.</p>
+</figcaption>
+</figure>
+<h4 id="sec2.1.2">Inverted epifluorescence microscope</h4>
+<p>Phase contrast and fluorescence images in <a href="#bib1">Bheda et al. (2020a)</a> were captured with Nikon NIS Elements software from an inverted Nikon Eclipse Ti-E epifluorescence microscope using a plan-apo λ 100×/1.45 NA Ph3 oil immersion objective, SPECTRA X light engine illumination, and an Andor iXon Ultra 888 EMCCD camera.</p>
+<h4 id="sec2.1.3">Temperature control equipment</h4>
+<p>An objective heater is important to maintain the temperature (normally 30°C for yeast cells) during a microfluidics experiment. We used an objective heater and also a custom-built microfluidic chip holder with standard thermoelectric modules controlled by temperature regulation devices (<a href="#fig3">Figures 3</a>A and 3B) (<a href="#bib5">Charvin et al., 2008</a>). The heating chip holder is designed with holes so that bars or holders can be screwed in to hold the chip in place, which is important to prevent movement so that cells of interest are continually tracked and remain in focus. We have used custom 3D-printed holders (<a href="#fig3">Figure 3</a>B, right). We have found that the objective heater is the most important temperature regulation equipment – the heating chip holder is not necessary, but helps to buffer major temperature changes.</p>
+<h3 id="sec2.2">Recipes</h3>
+<h4 id="sec2.2.1">Synthetic complete (SC) media</h4>
+<p>We recommend first preparing the media components by autoclaving the amino acid mix plus yeast nitrogen base together and separately sterile filtering the carbon source (sugar). To prepare media as in <a href="#bib1">Bheda et al. (2020a)</a>:</p>
+<table id="undtbl1">
+<caption>1.25× SC stock</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Drop-out Mix Complete w/o Yeast Nitrogen Base</td>
+<td>1.25×</td>
+<td>2.75 g</td>
+</tr>
+<tr>
+<td>Yeast Nitrogen Base without Amino Acids</td>
+<td>1.25×</td>
+<td>8.375 g</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>up to 1 L</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> autoclave on the same day that it is prepared</div>
+<table id="undtbl2">
+<caption>20% raffinose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>raffinose</td>
+<td>20%</td>
+<td>200 g</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>up to 1 L</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> sterile filter through a 0.22 μm filter on the same day that it is prepared</div>
+<table id="undtbl3">
+<caption>20% glucose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>glucose</td>
+<td>20%</td>
+<td>200 g</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>up to 1 L</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> sterile filter through a 0.22 μm filter on the same day that it is prepared</div>
+<table id="undtbl4">
+<caption>15% galactose/15% raffinose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>galactose</td>
+<td>15%</td>
+<td>150 g</td>
+</tr>
+<tr>
+<td>raffinose</td>
+<td>15%</td>
+<td>150 g</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>up to 1 L</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> sterile filter through a 0.22 μm filter on the same day that it is prepared</div>
+<p>On the day of the microfluidics experiment, combine media components and sterile filter to remove particulate matter or precipitates from older media that could clog the microfluidics microchambers/microchannels.</p>
+<table id="undtbl5">
+<caption>SC+2% raffinose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.25× SC stock</td>
+<td>1×</td>
+<td>800 mL</td>
+</tr>
+<tr>
+<td>20% raffinose</td>
+<td>2%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>100 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> prepare and sterile filter through a 0.22 μm filter on the day of the experiment</div>
+<table id="undtbl6">
+<caption>SC+2% glucose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.25× SC stock</td>
+<td>1×</td>
+<td>800 mL</td>
+</tr>
+<tr>
+<td>20% glucose</td>
+<td>2%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>100 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> prepare and sterile filter through a 0.22 μm filter on the day of the experiment</div>
+<table id="undtbl7">
+<caption>SC+1.5% galactose/1.5% raffinose</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Per liter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.25× SC stock</td>
+<td>1×</td>
+<td>800 mL</td>
+</tr>
+<tr>
+<td>15% galactose/15% raffinose</td>
+<td>1.5%/1.5%</td>
+<td>100 mL</td>
+</tr>
+<tr>
+<td>autoclaved ddH<sub>2</sub>O</td>
+<td> </td>
+<td>100 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> prepare and sterile filter through a 0.22 μm filter on the day of the experiment</div>
+<h3 id="sec2.3">Custom software for cell-tracking microfluidics data processing</h3>
+<p>Cells were segmented and mapped from frame to frame and nuclei were segmented to build pedigrees from the single-cell tracking microfluidics data in <a href="#bib1">Bheda et al. (2020a)</a> using the custom software PhyloCell and Autotrack (<a href="https://github.com/gcharvin">https://github.com/gcharvin</a>) that operates in MATLAB. These software have been previously implemented for lineage analyses of <i>S. cerevisiae</i> (<a href="#bib1">Bheda et al., 2020a</a>; <a href="#bib6">Fehrmann et al., 2013</a>; <a href="#bib7">Garmendia-Torres et al., 2018</a>; <a href="#bib9">Goulev et al., 2017</a>; <a href="#bib17">Paoletti et al., 2016</a>; <a href="#bib26">Xu et al., 2015</a>). For help using these software, there are available files on Github as HTML web pages (<a href="https://github.com/gcharvin/phyloCell/help/html/index.html">https://github.com/gcharvin/phyloCell/help/html/index.html</a>). In addition, there is a demo project that can be launched from PhyloCell to try out the features of the software (<a href="https://github.com/gcharvin/phyloCell/demo">https://github.com/gcharvin/phyloCell/demo</a>).</p>
+<h3 id="sec2.4">Alternatives</h3>
+<h4 id="sec2.4.1">Microfluidic chip</h4>
+<p>Commercially available microfluidics chips for yeast, such as CellASIC ONIX plates from Millipore, are available.</p>
+<h4 id="sec2.4.2">Microscope</h4>
+<p>Other inverted epifluorescence microscopes are compatible with time-lapse microfluidics imaging. We have also successfully used a Zeiss AxioObserver.</p>
+<h4 id="sec2.4.3">Media supplementation</h4>
+<p>Other media flow systems can be used with time-lapse microfluidics imaging. We have also successfully used a peristaltic pump instead of a pressure flow controller.</p>
+<h4 id="sec2.4.4">Temperature control equipment</h4>
+<p>We have also used a heated box around the microscope for experiments where rapid increases in temperature are important, such as temperature-sensitive mutants that are grown under temperature-permissive conditions and then changed to temperature-restrictive conditions. The heated box helps to facilitate the temperature change, but this equipment is not absolutely required.</p>
+<h4 id="sec2.4.5">Segmentation software</h4>
+<p>There are many alternative segmentation software programs for budding yeast cells, some of which can also track cells and lineages, such as CellStar (<a href="#bib22">Versari et al., 2017</a>).</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Cell-tracking microfluidics data collection</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 36 h/1.5 days</div>
+<p>This step describes how to collect microfluidics data for single-cell tracing.</p>
+<h4 id="sec3.1.1">Day 1</h4>
+<ol>
+<li>Set up yeast cultures by inoculating 3 mL synthetic media of choice in a 15-mL tube with yeast from a freshly streaked plate (less than 1 month old) and grow at 30°C with shaking at 250–300 rpm for 10–15 h.</li>
+</ol>
+<h4 id="sec3.1.2">Day 2</h4>
+<ol start="2">
+<li>Filter media through a 0.22 μm filter to remove particulate matter or precipitates from older media that could clog the microfluidics microchambers/microchannels.</li>
+<li>Dilute cells by inoculating a fresh culture of 3 mL media with 25–50 μL culture from step 1 and grow at 30°C with shaking at 250–300 rpm for ∼4 h (∼2 doublings) until cells reach low log phase (∼3–9 × 10<sup>6</sup> cells/mL).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Many strains of <i>S. cerevisiae</i> grown in typical growth media are in log phase with a concentration of ∼0.3–3 × 10<sup>7</sup> cells/mL. In most spectrophotometers, this corresponds to an optical density (OD) from 0.1 to 1; however, this should be previously determined. Using spectrophotometers where <i>S. cerevisiae</i> log phase is 0.1–1, low log phase corresponds to OD readings between 0.1 and 0.3.</div>
+<ol start="4">
+<li>Place microfluidics chip in the heating chip holder and secure the chip with screws + holders.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The chip should be sufficiently tightly secured such that movement is not possible during the time-lapse experiment; however, take care not to apply too much pressure on the chip, as this can cause the coverslip to break. Securing the chip is important to prevent movement so that cells of interest are continually tracked and remain in focus.</div>
+<ol start="5">
+<li>Connect all tubings (media and cell) to the chip and prime with media.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend using ∼10 cm of tubing for cell inlet and outlet. The tubing lengths for media inlet and outlet will depend on your setup, but ∼50 cm tubing should be sufficient for most setups.</div>
+<div class="note">
+<span class="note-title">Note:</span> We recommend priming the chip and tubings with enough media until a continuous flow is observed into the waste (see <a href="#fig3">Figure 3</a>A).</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Tape the tubings onto the stage. Tubings can move during the experiment and affect the focus of the cells.</div>
+<ol start="6">
+<li>Carefully inject cells obtained from the low log phase culture into each microchamber using a 1 mL syringe and a 22 gauge blunt edge needle inserted into 1 of the 2 cell tubes attached to each microchamber (the other cell tube allows uncaptured cells and media to flow out of the chip) such that each microchannel has very few cells.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is best that the starting cells that will be captured and tracked have a bud. This helps to avoid capturing old/sick/arrested/dying cells. In case unwanted cells are captured, they can be flushed out by injecting more culture with a slightly harder push on the syringe.</div>
+<div class="note">
+<span class="note-title">Note:</span> Choose the number of starting cells depending on the purpose and length of the experiment. For example, in a memory experiment as in <a href="#bib1">Bheda et al. (2020a)</a>, we started the experiment with ∼2 budding cells in each region of interest to capture ∼8 generations.</div>
+<ol start="7">
+<li>Start pumping media through chip.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend a flow rate of 10–50 μL/min. Higher flow rates can lead to loss of cells (see “<a href="#troubleshooting">Troubleshooting</a>”).</div>
+<ol start="8">
+<li>Choose positions to image. Set focus for each position. Collect images with 3-min resolution with phase contrast and any filters for fluorescent molecules of interest.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For segmentation and analysis by PhyloCell, we recommend the following order of acquisition: (channel 1) phase contrast, (channel 2) fluorescent protein of interest, (channel 3) lineage marker.</div>
+<div class="note">
+<span class="note-title">Note:</span> Exposure levels and times will need to be determined for each protein of interest such that signal is not saturated and there is minimal photobleaching.</div>
+<div class="note">
+<span class="note-title">Note:</span> According to our experience, capturing images every 3 min provides enough time resolution for cell mapping and to capture budding events for lineage tracking without resulting in severe phototoxicity (see “<a href="#limitations">Limitations</a>”).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> We have successfully used the Perfect Focus System (Nikon) and the Definite Focus (Zeiss) autofocus systems to minimize focus loss. Even with autofocus systems, there can be focus loss due to e.g., tubing movement, channel clogging, or thermal expansion. Therefore, we recommend checking the progress of the experiment after 30 min to 1 h to ensure that cells are still in focus.</div>
+<h4 id="sec3.1.3">Day 3</h4>
+<ol start="9">
+<li>After the experiment is complete, clean media and cell tubings by pumping first ddH<sub>2</sub>O, then 80% ethanol, and then drying them completely by letting air run through.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We recommend a flow rate of ∼300 μL/min for 20 min for each step, therefore running ∼6 mL of each liquid through the tubings.</div>
+<h3 id="sec3.2">Cell-tracking microfluidics data processing</h3>
+<p>This step describes how images collected from the single-cell tracking microfluidics data should be processed prior to quantification and statistical analyses. We have used the custom software PhyloCell (see “<a href="#materials-and-equipment">Materials and equipment</a>” above for further details).</p>
+<ol start="10">
+<li>Segment cells using fluorescence or phase contrast images.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To use PhyloCell for this step, the images should first be imported to generate a segmentation project. We recommend JPEG image files. PhyloCell can generate a segmentation project in a number of ways. For more details, please access the help files available for PhyloCell on Github (see “Loading images and generating segmentation projects with PhyloCell”). For Nikon NIS Elements users, we have a function available to convert the ND2 file format into a PhyloCell project with JPEG images.</div>
+<div class="optional">
+<span class="optional-title">Optional:</span> Segment lineage markers.</div>
+<ol start="11">
+<li>Map cells so that they are tracked from frame to frame.</li>
+<li>Build pedigrees based on mother-bud proximity or lineage markers (see “<a href="#sec1.1">Preparation of yeast reporter strains</a>” in “<a href="#before-you-begin">Before you begin</a>” above).</li>
+<li>Correct any segmentation, mapping, or lineage errors.</li>
+<li>Measure fluorescence in segmented cells.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This information can be used as absolute fluorescence or as normalized to cell area.</div>
+<ol start="15">
+<li>Subtract cellular autofluorescence and/or background fluorescence to determine fluorescence signal of interest.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Different kinds of media (e.g., synthetic vs rich or glucose vs galactose) result in different autofluorescence levels. Therefore, rather than subtracting autofluorescence signal in the strain of interest from a non-inducing medium, it is preferable to use a strain with the same background lacking the reporter.</div>
+<div class="note">
+<span class="note-title">Note:</span> Background fluorescence can be calculated using a contour in the image that does not contain any cells.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The microfluidics setup described in the protocol above will allow you to capture and image cells to track them using segmentation and mapping over time. With high time resolution and the aid of lineage markers, it is possible not only to track the cells, but also define the pedigree of all the cells (<a href="#fig4">Figure 4</a>). In <a href="#bib1">Bheda et al. (2020a)</a>, we tracked a Gal1p-GFP reporter yeast strain that was repeatedly exposed to galactose. Mother cells were present throughout the whole experiment, resulting in two inductions of Gal1p-GFP. These cells were segmented and their lineages (daughter cells) were defined by the constitutively expressed NLS-2mCherry marker (<a href="#fig4">Figure 4</a>A). By measuring the fluorescence in each of the cells, we observed memory by higher expression during a second induction in both mother cells and previously unexposed daughter cells (<a href="#fig4">Figure 4</a>B). Building a pedigree of mother cells and their progeny allowed us to visualize the inheritance of phenotypes (<a href="#fig4">Figure 4</a>C). Together, this provides the basis of the single-cell quantification and statistical analyses in the following sections to dissect maintenance and inheritance of phenotypes.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Expected outcomes</div>
+<p>(A) Cells captured in the microfluidics chip are tracked over time with live imaging. In <a href="#bib1">Bheda et al. (2020a)</a>, reporter cells with constitutively expressed NLS-2mCherry lineage marker were repeatedly exposed to galactose, resulting in induction of Gal1p-GFP.</p>
+<p>(B) Top: single-cell traces of Gal1-GFP expression over two inductions during time lapse. Each colored line represents a different single cell. Bottom: mean Gal1-GFP expression, error bars indicate SEM.</p>
+<p>(C) Example pedigree of mother cells and their progeny with Gal1-GFP expression depicted by heat map to visualize induction inheritance over time. Vertical black lines indicate daughter cell birthtimes.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>We describe here different possible ways (A to D below) with which data from the single-cell tracking microfluidics experiments can be analyzed for single-cell behavior and/or lineage evaluation, mainly following what has been implemented in <a href="#bib1">Bheda et al. (2020a)</a> (<a href="#fig5">Figure 5</a>A). We have used these calculations to compare memory in individual mother cells to themselves during two inductions (maintenance of memory) or to analyze memory transmittance from mother to daughter cells by using the lineage information (inheritance of memory). Furthermore, we have compared maintenance and inheritance of memory between a wild-type strain and several mutant strains (<a href="#fig5">Figure 5</a>B). However, the calculations and analyses listed below are applicable to a wide variety of topics beyond memory, but are by no means exhaustive and depend on the question(s) of interest.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Overview of possible options for single-cell lineage-tracking analysis</div>
+<p>(A) Cell-tracking microfluidics data can be quantified and statistically analyzed in myriad ways. Here we depict various possibilities A–D described in the text within the section on Quantification and statistical analysis. These analyses, and the sub-analyses listed beneath are not hierarchical, but can be applied independently of each other, based on the required analysis of the collected data.</p>
+<p>(B) The strength of the cell-tracking microfluidics setup implemented is the ability to dissect transmission of phenotypes into maintenance in mother cells (M) and inheritance into their specific daughter cells (D). Maintenance is measured by analyzing differences between a mother cell at an initial time point (M1) and the same cell at a later time point (M2) (top panel). Inheritance is measured between mothers and daughters at the same time point after the birth of the daughter (M2 and D2). Maintenance and inheritance analyses are depicted by blue arrows, which are compared against controls such as shuffled pairs of mothers or mother-daughter pairs as depicted by the red arrows. In addition, maintenance and inheritance in wild-type (WT) cells can be compared to different conditions or mutants (bottom panel). We employed these analyses to dissect maintenance and inheritance of phenotypes during repeated inductions and found e.g., asymmetric inheritance as depicted in mutant 1/condition 1 and gain-of-memory such as in mutant 2/condition 2. Please note, these analyses can be modified to address other important questions on single-cell inheritance in yeast and even other cell types.</p>
+</figcaption>
+</figure>
+<h3 id="sec5.1">Overview of the data</h3>
+<p>Simple plots can be generated for an overall visualization of the microfluidics experiment results.</p>
+<ol>
+<li>Organize data using the package pandas (<a href="#bib13">McKinney, 2010</a>) in Python which works with dataframe resulting in two-dimensional data structures with a tabular format. Pandas can be used to read tab separated files, among other file formats, into dataframes (e.g., <i>DataFrame = pandas.read_table(‘input.tsv’)</i>). Using pandas, data can be easily grouped by a specified variable and this can facilitate statistical analysis or plotting of data. For example, useful functions to do this in pandas are <i>DataFrame.set_index()</i> and <i>DataFrame.groupby().</i>
+</li>
+<li>Plot single-cell traces to observe the phenotype(s) (e.g., fluorescence signal) over time (<a href="#fig4">Figure 4</a>B, top). In Python, some useful packages for plotting are seaborn (<a href="#bib28">Waskom et al., 2014</a>) and <i>matplotlib</i> (<a href="#bib11">Hunter, 2007</a>). The <i>lineplot</i> function from <i>seaborn</i> (available from seaborn v0.10.0 onwards, previously <i>tsplot()</i>) allows to plot time series with error bands, confidence intervals, and data ranges, among many other features. An example using this function on microfluidics data over 200 data points, 3 different cell strains, and more than 450 cells, is available in the TimeSeriesPlot directory on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis/">https://github.com/aguilar-gomez/SingleCellLineageAnalysis/</a>).</li>
+<li>Calculate the mean or the median of the phenotype(s). Include confidence intervals, standard deviation, or other measurements to represent the variation (<a href="#fig4">Figure 4</a>B, bottom). Useful packages to perform these statistical analyses in Python are <i>scipy</i> (<a href="#bib23">Virtanen et al., 2020</a>) and <i>numpy</i> (<a href="#bib10">Harris et al., 2020</a>).</li>
+<li>Plot pedigree of mother cells and their progeny according to a heatmap of the phenotype to observe the phenotype(s) over time and its potential inheritance (<a href="#fig4">Figure 4</a>C). This can be done in the PhyloCell GUI with <i>Plot Pedigree/Parentage</i> from the <i>Analyze</i> tab.</li>
+</ol>
+<h3 id="sec5.2">Method A: Comparing strains/conditions/generations at single time points</h3>
+<p>To compare single-cell phenotypes (e.g., different strains, or the same strain at different time points or in different conditions, or mothers vs daughters), distributions at single time points of interest can be visualized.</p>
+<ol>
+<li>Plot data for phenotype of interest grouped by e.g., strain or condition using boxplots, violinplots, kernel densities, or histograms (<a href="#fig6">Figures 6</a>A–6C). As mentioned above, the <i>seaborn</i> and <i>matplotlib</i> packages in Python are useful for data visualization, including the functions <i>matplotlib.pyplot.boxplot()</i> and <i>seaborn.boxplot().</i> Examples using these functions are available on the provided Github link (<a href="https://github.com/aguilar-gomez">https://github.com/aguilar-gomez</a>). An alternative package for plotting data using a language other than Python is <i>ggplot2</i> in R (<a href="#bib24">Wickham, 2011</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Analysis figures option A: comparing strains/conditions/generations at single time points</div>
+<p>(A–C) (A) Boxplots with linear scale, (B) boxplots with log scale, and (C) violinplots to visualize the same data. These figures were generated in R using the functions <i>boxplot()</i> and <i>vioplot().</i> Boxplot elements are as follows: center line, median; diamond, mean; box limits, upper and lower quartiles; whiskers, 1.5× interquartile range; crosses, outliers. Violinplot elements are as follows: white circle, median; box limits, upper and lower quartiles; whiskers, 1.5× interquartile range; violin, rotated kernel density.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Depending on the type of data some plots might be favored:</div>
+<p>Quantitative (numerical) data: histograms, boxplots, violinplots, and scatterplots might be preferred. Boxplots depict where most of the data lies, as the box represents the 25<sup>th</sup> to 75<sup>th</sup> percentiles. Violinplots are very similar to boxplots, but additionally they have a rotated kernel density on each side.</p>
+<p>Categorical (ordinal and nominal) data: bar charts and dot charts. The counts of each categorical data can be plotted with bar charts. Dot plots can be used to plot the difference in proportions per category.</p>
+<ol start="2">
+<li>Perform statistical tests to confirm actual differences between groups.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For more information on choosing statistical tests, refer to section on Assessing statistical significance.</div>
+<h4 id="sec5.2.2">Coefficient of variation at single time point</h4>
+<ol>
+<li>Calculate a coefficient of variation (<i>CV</i>) for all cells within a population at a specific time point to determine how noisy (variable) gene expression is in each population. To obtain the mean and standard deviation, <i>numpy</i> functions can be used such as <i>numpy.mean()</i> and <i>numpy.std()</i>, respectively.</li>
+</ol>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si3.jpg" alt="Si3.jpg"></p>
+<p>Where <i>σ</i> indicates the standard deviation and <i>μ</i> indicates the mean. For <i>N</i> cells with the observed phenotypes (<i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ..<i>x</i><sub>n</sub>) the <i>CV</i> is calculated in the following way:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si9.jpg" alt="Si9.jpg"></p>
+<ol start="2">
+<li>Bootstrap cells in each time point to create a distribution of <i>CVs</i> and to calculate error bars by the standard error of the mean (SEM) or the standard deviation (SD). For our applications we used 1,000 replicates, but for time or memory consuming processes, 100 may be enough to get a rough estimate (<a href="#bib18">Pattengale et al., 2010</a>). Although there are no strict rules regarding the number of bootstrap replicates that should be applied, in general 599 bootstrap replicates are recommended for a wide range of applications (<a href="#bib25">Wilcox, 2010</a>). The functions <i>bootstrap()</i> and <i>errorbars()</i> that have been used are available in the Python notebook (SLCV.ipynb) within the directory <i>Sublineage_CV</i> on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a>).</li>
+<li>Perform statistical tests to confirm actual differences between groups.</li>
+</ol>
+<h3 id="sec5.3">Method B: Determining association of conditions/generations at single time points</h3>
+<p>To determine whether two phenotypes that have been observed are related, the data for one phenotype can be plotted as a function/relative to the second phenotype (e.g., different strains, or the same strain at different time points or in different conditions, or mothers vs daughters).</p>
+<ol>
+<li>Plot the phenotypes as a scatter plot against each other, with one observation on the x axis and the other along the y axis (<a href="#fig7">Figure 7</a>A). A function called <i>matplotlib.pyplot.scatter()</i> can be used to generate scatterplots in Python, or alternatively the <i>geom_point()</i> function within <i>ggplot2</i> in R.
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Analysis figures option B: determining association of conditions/generations at single time points</div>
+<p>(A) Scatter plot with correlation coefficient and linear regression. In <a href="#bib1">Bheda et al. (2020a)</a>, we plotted the delay until detectable Gal1-GFP expression for mother cells to themselves in a first versus second induction and calculated a corresponding correlation coefficient of R = 0.42 and a linear regression with a slope m = 0.3.</p>
+<p>(B) Relative difference calculations. We also used relative difference (RD) as a measure for relatedness by the difference in delay until detectable Gal1-GFP expression in mother-daughter pairs for different strains (from Figure 4A in <a href="#bib1">Bheda et al., 2020a</a>). These figures were generated in Python using the functions library Matplotlib. Boxplot elements are as follows: center line, median; diamond, mean; box limits, upper and lower quartiles; whiskers, 1.5× interquartile range; crosses, outliers.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<h4 id="sec5.3.2">Correlations at single time points</h4>
+<ol>
+<li>Calculate correlations to determine how closely associated (linear) two phenotypes (<i>x</i> and <i>y</i>) are (<a href="#fig7">Figure 7</a>A).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We used Pearson’s correlation in <a href="#bib1">Bheda et al. (2020a)</a>, but there are other types such as Spearman’s.</div>
+<p>Pearson’s correlation assumes a linear relationship (constant rate and same direction) between the variables. Spearman’s rank correlation assumes monotonic relationship (same direction not necessarily same rate), but is in fact a special case of Pearson’s correlation.</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si12.jpg" alt="Si12.jpg"></p>
+<p>The <i>cov</i> is the covariance between <i>x</i> and <i>y</i> and <i>σ</i> indicates the standard deviation. <i>R</i> indicates how well correlated the variables are, where 1 equals a perfect correlation. <i>R<sup>2</sup></i>, which is also known as the coefficient of determination, indicates the proportion of the variance in the variable that is predictable from the explanatory variables. Pearson’s coefficient of correlation could be calculated using the function <i>pearsonr()</i> found within the statistical functions library <i>scipy.stats</i> in Python.</p>
+<h4 id="sec5.3.3">Linear regressions at single time points</h4>
+<ol>
+<li>Calculate linear regressions to determine whether one phenotype can be predicted by (or is dependent on) another (single, <a href="#fig7">Figure 7</a>A) or several explanatory variables (multiple).</li>
+</ol>
+<p>For <i>n</i> cells with two phenotypes or <i>n</i> pairs of cells, there are <i>n</i> datapoints:{(<i>x<sub>i</sub></i>,<i>y<sub>i</sub></i>),<i>i</i> = 1,..., <i>n</i>}, where <i>x<sub>i</sub></i> is the one phenotype of cell <i>i</i> and <i>y<sub>i</sub></i> is another phenotype of the same cell (or of the other cell in the pair). The function that relates <i>x<sub>i</sub></i> and <i>y<sub>i</sub></i> is:</p>
+<p><i>y<sub>i</sub></i> = <i>α</i> + <i>βx<sub>i</sub></i> + <i>ϵ<sub>i</sub></i></p>
+<p>Linear regressions seek to find a linear model that fits best all of the cells, minimizing <i>ϵ<sub>i</sub></i> which is the residue of each datapoint to the line of the model.</p>
+<p><i>y</i> = <i>α</i> + <i>βx</i></p>
+<p>The offset (<i>α</i>) reflects the independent scaling difference between the variables. The slope (<i>β</i>) reflects the relation of proportion between variables and often provides the most interesting information about their relationship. For example, a positive slope indicates a directly proportional relationship, which means that if one of the variables increases, the other one does as well. Linear regression using least squares can be performed in Python by importing <i>numpy</i> and using the function <i>numpy.linalg.lstsq(),</i> which takes <i>x</i> and <i>y</i> as parameters and returns the coefficients (including the offset) and the residuals.</p>
+<h4 id="sec5.3.4">Relative difference at single time points</h4>
+<ol>
+<li>Calculate relative differences (<i>RD</i>) as a measure for how similar or different two single-cell phenotypes are (<a href="#fig7">Figure 7</a>B).</li>
+</ol>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si30.jpg" alt="Si30.jpg"></p>
+<p>To avoid bias due to the values themselves, the difference in the phenotype values is divided by some reference value <i>f</i>(<i>x</i>,<i>y</i>), which, for example, can be the mean (<i>μ</i>) so that both cells contribute equally, and is then a similar measurement to <i>CV</i> (dividing <i>RD</i> the by 2, or rescaling the values on a scale from 0 to 1 is equivalent to calculating a <i>CV</i> for two values).</p>
+<ol start="2">
+<li>Perform statistical tests to confirm actual differences between groups.</li>
+</ol>
+<h3 id="sec5.4">Method C: Comparing trajectories of cells over time</h3>
+<p>With time-lapse data, correlations can be calculated over multiple time points, e.g., to compare a single cell to itself during two inductions or using the lineage information for analyzing inheritance from pairs of mother and daughter cells.</p>
+<ol>
+<li>As previously, plot the phenotypes as a scatter plot against each other, with one observation on the <i>x</i> axis and the other along the <i>y</i> axis, and now use a color scale for the time (<a href="#fig8">Figure 8</a>A) or make a 3D plot where the <i>z</i> axis is time and each cell is plotted with a different color/symbol (<a href="#fig8">Figure 8</a>B). These figures can be generated in MATLAB using the function for plotting in 3D axis <i>scatter3D()</i>; an example of this application is provided within <i>scatter3d_Compare2intervals.m</i> under the directory <i>PHYLOCELLcomplenent</i> on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a>).
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Analysis figures option C: comparing trajectories of cells over time</div>
+<p>(A and B) (A) Single-cell phenotypes plotted on the <i>x</i> axis and <i>y</i> axis, and time with color scale or (B) time on the <i>z</i> axis. Each dot represents a single cell at a given time point. (A) and (B) were generated in MATLAB, using the functions <i>plot(x,y)</i> and <i>scatter3()</i>, respectively.</p>
+<p>(C) Cells undergoing similar phenotype changes (e.g., induction) over time will have high correlation, regardless of whether they are related (MD = mother-daughter pairs) or unrelated (UMD = unrelated mother-daughter pairs). Boxplot elements are as follows: center line, median; diamond, mean; box limits, upper and lower quartiles; whiskers, 1.5× interquartile range; crosses, outliers.</p>
+<p>(D) Same dataset as in (C), except calculated with partial correlation. Partial correlation helps to differentiate underlying sources of similarity by subtracting the population effect. The boxplots of (C) and (D) were generated in Python using the Matplotlib function <i>matplotlib.pyplot.boxplot()</i>.</p>
+<p>(E and F) (E) Comparing different strains for coefficient of variation over time for the population of cells at each time point and (F) within sublineages, which is defined by the lineage of each mother cell at any given time point. Error bars in E and F are calculated from bootstrapping (×1,000) and they are drawn using the standard deviation of the bootstrap samples. Error bars in (E) and (F) were plotted using the <i>errobar()</i> function in Matplotlib.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<h4 id="sec5.4.2">Correlations and partial correlations over time</h4>
+<ol>
+<li>Calculate correlations or partial correlations for each cell to itself over two time periods (e.g., two inductions) or pairs of cells (mothers and daughters) over their time trajectories to obtain a distribution of correlations.</li>
+<li>Plot as e.g., boxplots or violinplots (<a href="#fig8">Figures 8</a>C and 8D).</li>
+<li>Perform statistical tests to confirm actual differences between groups.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> When the phenotype of all of the cells follows the same trend through the experiment (such as steadily increasing gene expression during an induction), this results in extremely high values of correlation as the overall trend plays a greater role in determining similarity than other underlying variables (e.g., relatedness, age, cell cycle, etc.) (<a href="#fig8">Figure 8</a>C). To minimize this effect, calculate partial correlations (<a href="#fig8">Figure 8</a>D).</div>
+<p>Partial correlation measures the degree of association (strength and direction) between two continuous variables, while removing the effect of a third controlling variable. In order to subtract this effect, calculate an average of the phenotype in the population through time, and use it as the controlling variable. For each of the continuous variables that you want to compare, perform a linear regression to the controlling variable and obtain the residuals.</p>
+<p>For a cell <i>x<sub>k</sub></i>, the linear regression (<i>a<sub>k</sub></i>) is calculated by testing models (<i>a</i>) where prediction (which is calculated as the scalar product between the model and the population average <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si38.jpg" alt="Si38.jpg">), is most similar to <i>x<sub>k</sub></i>, meaning the residues of the subtraction are minimized:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si39.jpg" alt="Si39.jpg"></p>
+<p>Next, the residue, which represents the part of the phenotype that cannot be explained by the population effect, is calculated for each cell:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si40.jpg" alt="Si40.jpg"></p>
+<p>Finally, Pearson correlation coefficient is calculated using the residues of two cells:</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si41.jpg" alt="Si41.jpg"></p>
+<div class="note">
+<span class="note-title">Note:</span> The analysis implemented in our previous work (<a href="#bib1">Bheda et al., 2020a</a>) is available on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a>) under the directory <i>Partial Correlation</i> which contains a jupyter notebook (PartialCorrelations.ipynb) with the function <i>partial_corr()</i> used to calculate partial correlations. This function takes three arguments which all must be vectors of the same size, from which two vectors are used for the correlation and a third used as a controlling variable. This analysis returns the Pearson correlation coefficient of the residuals.</div>
+<h4 id="sec5.4.3">Coefficient of variation over time</h4>
+<ol>
+<li>Calculate coefficients of variation for all cells within the population at each time point to determine how the noise in expression in the population is changing over time (<a href="#fig8">Figure 8</a>E).</li>
+<li>For data with lineage information, calculate coefficients of variation between sublineages of cells (<i>SLCV)</i>. Compare with the population <i>CV</i> to determine whether the population is differentiating on a single-cell level or on a lineage level (<a href="#fig8">Figure 8</a>F) (<a href="#bib16">Ni et al., 2012</a>).</li>
+</ol>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si43.jpg" alt="Si43.jpg"></p>
+<p>Where <i>s</i> and <i>t</i> are time points, and <i>s</i>&lt;<i>t</i>. The second time point <i>t</i>, should be enough time after <i>s</i> to allow cells to divide at least once. <i>N<sub>s</sub></i> is the number of cells at time <i>s</i>, which are defined as mother cells, and each mother cell will divide and have its own sublineage. Therefore, <i>N<sub>s</sub></i> is the number of cells at time <i>s</i> and also the number of sublineages at time <i>t</i>. At time <i>t</i>, <i>N<sub>t</sub></i> is the total number of cells <i>N<sub>s</sub></i> plus their progeny. The phenotype for each cell is denoted as <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si49.jpg" alt="Si49.jpg">, where <i>i</i> indicates the sublineage of a cell and <i>k</i> the number of cells within that sublineage. Then, <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si50.jpg" alt="Si50.jpg"> is the average phenotype among cells of a sublineage and <i>μ<sub>s</sub></i> is the average across all <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si50.jpg" alt="Si50.jpg">.</p>
+<ol start="3">
+<li>Bootstrap cells in each time point to create a distribution of <i>CVs</i> and to calculate error bars by the standard error of the mean (SEM) or the standard deviation (STD).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A Python notebook is available on Github with an example on how to perform this analysis (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis/blob/master/Sublineage_CV/SLCV.ipynb">https://github.com/aguilar-gomez/SingleCellLineageAnalysis/blob/master/Sublineage_CV/SLCV.ipynb</a>).</div>
+<h3 id="sec5.5">Method D: Asymmetric division of phenotypes</h3>
+<p>To probe asymmetric inheritance of a phenotype, there are methods to determine whether mother and daughter cells behave equally, or if there is a bias toward one or the other.</p>
+<h4 id="sec5.5.2">Binomial test</h4>
+<ol>
+<li>Perform a binomial test as a simple method to determine potential asymmetry of memory inheritance.</li>
+</ol>
+<p>Transform the data into a categorical variable by counting the cases <i>k</i> out of the total number of pairs of related cells <i>N</i> (mother-daughter relationships) where the mother has higher/lower values than its daughter. Then, a binomial test can be performed to test the probability (<i>P</i>) that the trait is symmetrically inherited (<i>p</i> = 50%) or higher in mothers or daughters.</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si55.jpg" alt="Si55.jpg"></p>
+<div class="note">
+<span class="note-title">Note:</span> R base has the function <i>biom.test(k,N,p)</i> to perform the test. An example of this analysis is provided on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a>) within the script <i>AsymmetricDivision.R</i>.</div>
+<h4 id="sec5.5.3">Bayesian statistics</h4>
+<ol>
+<li>Assess asymmetric inheritance of a trait with Bayesian Statistics (<a href="#fig9">Figure 9</a>). For this you can calculate the posterior distribution <i>P</i>(<i>p</i>|<i>k</i>, <i>N</i>) where <i>p</i> is the probability that the mother has a certain phenotype (e.g., higher expression or faster induction) than its daughter given the data (<i>k</i>, <i>N</i>):<br> <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si59.jpg" alt="Si59.jpg">
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Analysis figures option D: asymmetric division of phenotypes by posterior distributions</div>
+<p>Bayesian statistics can be used to determine the probability that mothers or daughters have a certain phenotype. For symmetric inheritance, this will be close to 0.5. It is also possible, for example, to compare the probability that a mutant strain has a different inheritance pattern than a WT. In <a href="#bib1">Bheda et al. (2020a)</a>, we implemented these calculations to determine whether there was a bias in mother cells expressing Gal1-GFP before their daughter cells and identified a mutant (<i>cit1Δ</i>) with asymmetric inheritance. The x axis shows the probability of mother cells expressing faster than their daughters (p). The y axis shows the posterior probability [P(p|k,N)], which is the probability of asymmetric inheritance (p) given the observed mother cells that started expressing earlier (k) out of the total pair of cells analyzed (N). This figure was plotted in R using <i>plot()</i> and <i>lines().</i></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<p>Where <i>L</i> is a binomial likelihood, and <i>π</i>(<i>p</i>) is a <i>Beta</i> (1, 1) flat prior distribution.</p>
+<p>By integrating the distribution in a range [<i>a</i>, <i>b</i>] you can calculate the probability of having a value anywhere in that range. To determine the probability that the mothers express higher more than 50% of the time, calculate the posterior probability that <i>p</i> is larger than 0.5 by integrating <i>P</i>(<i>p</i>|<i>k</i>, <i>N</i>) on the interval [0.5,1]. A probability outcome of 0.5 would then indicate that mothers or daughters express equally (<a href="#fig9">Figure 9</a>), where <i>CDF</i> is the cumulative distribution function.</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si65.jpg" alt="Si65.jpg"></p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si66.jpg" alt="Si66.jpg"></p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si67.jpg" alt="Si67.jpg"></p>
+<p>To compare strains/conditions to a control/WT, calculate the probability that <i>p</i> of the mutant is larger than <i>p</i> of the wild type (taking into account posterior uncertainty) with Δ<i>x</i> = <i>x<sub>i+1</sub></i> - <i>x<sub>i</sub></i> as the step size.</p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si69.jpg" alt="Si69.jpg"></p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si70.jpg" alt="Si70.jpg"></p>
+<p><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si71.jpg" alt="Si71.jpg"></p>
+<p>Where <i>P<sub>WT</sub></i> and <i>P<sub>mutant</sub></i> are the posterior distributions of the WT and the mutant strains, respectively.</p>
+<div class="note">
+<span class="note-title">Note:</span> The code is available within the <i>AsymmetricDivision.R</i> script mentioned above. The function <i>dbeta()</i> in R is used to calculate and plot the distributions, and the function <i>pbeta()</i> is used to calculate probability values against an expected outcome.</div>
+<h3 id="sec5.6">Method E: Assessing statistical significance</h3>
+<p>Here we suggest a few tests and considerations for data from the protocol and analyses above to compare different strains/conditions/samples and determine whether they are statistically significant from each other.</p>
+<h4 id="sec5.6.2">Sample size</h4>
+<ol>
+<li>Ensure that the number of cells does not differ greatly between the groups and that there are not too many observations in each group.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For comparisons from cell-tracking microfluidics experiments, we have compared ∼30–300 single cells/pairs of cells from each group.</div>
+<div class="note">
+<span class="note-title">Note:</span> Large numbers of data can affect the p-value in a way such that everything appears to be statistically significant, resulting in false positive differences due to e.g., technical variability between experiments and not true biological differences. If you are interested in identifying differences in strains or conditions, one way to account for this is to include multiple technical and biological replicates of a reference (usually WT) strain/condition. This also highlights the importance of considering the effect sizes (<a href="#bib20">Sullivan and Feinn, 2012</a>). For more on this see below.</div>
+<h4 id="sec5.6.3">Control samples</h4>
+<ol start="2">
+<li>Create a control sample to compare related cells by reshuffling pairs of cells (same cell at different time points or in different conditions, or mothers vs daughters) into unrelated pairs to differentiate between population effects and effects on maintenance/inheritance of phenotypes.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Related and unrelated pairs may behave similarly if the phenotype is not inherited or there is not variability in gene expression in the population.</div>
+<div class="note">
+<span class="note-title">Note:</span> Reshuffling to form unrelated pairs results in a number of combinations that is much greater than the number of related cells. If the total number of cells in the population is <i>N</i>, then we have <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si74.jpg" alt="Si74.jpg"> possible pairs. Then if we have <i>x</i> related pairs of cells, we would have <img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/332-Si75.jpg" alt="Si75.jpg"> unrelated pairs of cells. To keep sample sizes similar, you can sample the unrelated pairs of cells by randomly selecting the same number of pairs that you have for the related cells.</div>
+<h4 id="sec5.6.4">Test for normality</h4>
+<ol start="3">
+<li>Determine whether your data are normally distributed.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> You can use graphical methods like the quantile-quantile plot or a histogram of your data and check whether the shape of the histogram looks like a normal probability curve. However, if you want a formal method you can use a one-sample Kolmogorov-Smirnov test, the Shapiro–Wilk test, or the Anderson–Darling test.</div>
+<h4 id="sec5.6.5">Comparing two samples</h4>
+<ol start="4">
+<li>To determine whether two samples have been drawn from the same distribution you can use the common t-test if your data are continuous variables, normally distributed, and homogenous in variance. If the data are not normally distributed, then non-parametric statistical tests, such as the Mann-Whitney U test or a two-sample Kolmogorov-Smirnov test, are recommended.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> All these tests are available in multiple software packages, here we just list a few: R base has the following functions for t-test, Mann-Whitney U (also known as Wilcoxon rank sum test) and Kolmogorov-Smirnov: <i>t.test(), wilcox.test(), ks.test()</i>. In Python the <i>scipy.stats</i> module contains <i>ttest_ind(),mannwhitneyu(), ks_2samp()</i> for the equivalent tests. In all of the tests the null hypothesis is that the samples have been drawn from the same distribution. The alternative hypothesis default is “two-sided,” but there is a parameter that can be changed to “greater” or “lower” if you want to test for that specifically. For comparing more than two samples ANOVA can be used, or several other pairwise tests can be performed.</div>
+<h4 id="sec5.6.6">Effect size</h4>
+<ol start="5">
+<li>Consider the size of the effect and whether it is large enough for the effect to be considered meaningful. The effect size is the magnitude of the difference between groups.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The magnitude that would be meaningful requires some domain knowledge of the specific question and the units of the phenotype that is being measured. There are different ways of assessing the effect size. One of the simplest ways is to subtract the means of the different groups and divide by the standard deviation of either group (Cohen’s d). The effect size with this calculation is considered roughly in the following way: small-0.2, medium-0.5, large-0.8, very large-1.3. One of the advantages of the two-sample Kolmogorov-Smirnov tests is that besides calculating a p-value, the tests quantifies a distance between samples (D statistic).</div>
+<h4 id="sec5.6.7">Correcting p values for multiple testing</h4>
+<ol start="6">
+<li>Correct p values for multiple testing when comparing multiple strains/conditions/samples, as the incidence of a falsely significant p-value increases with each test.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> There are several methods for multiple correction testing. It is recommended to choose a method of correction that does not favor the results toward a desired conclusion. The Bonferroni correction method can be easily implemented by multiplying the original p values by the number of tests performed. This is the most conservative correction method. Another popular and less stringent correction method is False Discovery Rate (FDR). FDR has greater power than Bonferroni, which means it is better at avoiding type II errors (false negatives). The power comes at a cost of increased number of type I errors (false positives) compared to Bonferroni. R base contains the function <i>pdjust</i>() where the parameter <i>method</i> is used to specify which method (Bonferroni, FDR, etc) of correction is desired. Python has a module called <i>statsmodels.stats.multitest</i> with a function <i>multipletests()</i> that works the same way, having a parameter to specify the correction method.</div>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The microfluidics chip used in <a href="#bib1">Bheda et al. (2020a)</a> is suitable for tracking lineages of cells, but is limited by a maximum number of cells before cell tracking becomes very difficult and prone to numerous errors. If the time lapse is started with ∼2 cells in the field of interest, then all cells in ∼8 generations can be accounted for and reasonably tracked with 3-min image resolution.</p>
+<p>Depending on the question of interest, you may want to use fluorescence reporters as in <a href="#bib1">Bheda et al. (2020a)</a>, although there are reports of cell-tracking data using microfluidics where fluorescence reporters are not used and, for example, they rather follow individual cell or colony growth (<a href="#bib4">Cerulus et al., 2018</a>).</p>
+<p>If you employ fluorescence reporters, it is possible that prolonged light exposure from taking multiple phase contrast and fluorescence images with high time resolution could affect the fitness of the cells.</p>
+<p>To determine whether this is a problem in your experiments, you can compare the well-being of the cells in your cell-tracking microfluidics experiments to yeast that have not been exposed to excitation light, e.g., subjected to only phase contrast images taken every 15 min to 1 h. For this, you can examine whether there are any noticeable phenotypic differences, e.g., increase in the number of vacuoles or cell death. For a more quantitative test, you can also calculate and compare growth rates for the cells with and without fluorescence excitation (<a href="#bib19">Schmidt et al., 2018</a>). If you are comparing your data between a wild-type strain and other conditions or mutants, and your growth and imaging conditions are the same, the light incidence is also identical for all strains, and therefore it would be unlikely that your results are affected by the imaging procedure. Additionally, you may want to validate your data with other methods, such as testing bulk expression by RT-qPCR analyses.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem</h3>
+<p>Too many cells are captured in each microchannel at the start of the microfluidics experiment.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>Cell cultures that are in low log phase do not need to be diluted prior to injecting into a microchamber. However, if too many cells are being captured in the microchannels, it may help to dilute the cultures in the same media prior to the injection. Additionally, captured cells can be flushed out by injecting more culture with a slightly harder push on the syringe.</p>
+<h3 id="sec7.3">Problem</h3>
+<p>Cells are lost/washed out or images lose focus during the microfluidics experiment.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Flow rates that are too high can cause cells to be lost, especially those growing at the periphery of the colony. For this reason, we recommend using a flow rate between 10–50 μL. Problems with high pressure can also result in sudden, small delaminations of the PDMS chip from the glass coverslip. Small changes in the height of the microfluidics channels can cause cells to be flushed away or imaging to lose focus. This could occur due to clogging of the microchamber/microchannel with dust particles/debris from the media. To eliminate this issue, we recommend filtering the media with a 0.22 μm filter just prior to use, such that particulate matter that could clog the channels are removed.</p>
+<h3 id="sec7.5">Problem</h3>
+<p>There are too many cell mapping errors toward the end of the experiment, making manual correction of cell identities in the segmentation files very time-consuming.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>Long cell-tracking microfluidics experiments face the problem that toward the end of the experiment, there are many cells that are all growing and dividing and pushing each other. This makes it difficult for any mapping algorithm to function properly, as they use a limited cellular displacement to aid in mapping. If this is a problem in your experiments, start with fewer cells in each microchannel at the beginning of the experiment.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bheda, P., Aguilar-Gomez, D., Becker, N.B., Becker, J., Stavrou, E., Kukhtevich, I., Hofer, T., Maerkl, S., Charvin, G., Marr, C., et al. (2020a). Single-cell tracing dissects regulation of maintenance and inheritance of transcriptional reinduction memory. Mol. Cell <i>78</i>, 915-925.e17.</p>
+<p id="bib2">Bheda, P., Charvin, G., Aguilar-Gomez, D., Kukhtevich, I., Becker, J., Kirmizis, A., and Schneider, R. (2020b). Microfluidics Chip_16 Chamber Design. V1. <a href="https://doi.org/10.17632/yr2nrysyyx.1">https://doi.org/10.17632/yr2nrysyyx.1</a></p>
+<p id="bib3">Brachmann, C.B., Davies, A., Cost, G.J., Caputo, E., Li, J., Hieter, P., and Boeke, J.D. (1998). Designer deletion strains derived from <i>Saccharomyces cerevisiae</i> S288C: a useful set of strains and plasmids for PCR-mediated gene disruption and other applications. Yeast <i>14</i>, 115-132.</p>
+<p id="bib4">Cerulus, B., Jariani, A., Perez-Samper, G., Vermeersch, L., Pietsch, J.M., Crane, M.M., New, A.M., Gallone, B., Roncoroni, M., Dzialo, M.C., et al. (2018). Transition between fermentation and respiration determines history-dependent behavior in fluctuating carbon sources. Elife <i>7</i>, e39234.</p>
+<p id="bib5">Charvin, G., Cross, F.R., and Siggia, E.D. (2008). A microfluidic device for temporally controlled gene expression and long-term fluorescent imaging in unperturbed dividing yeast cells. PLoS One <i>3</i>, e1468.</p>
+<p id="bib6">Fehrmann, S., Paoletti, C., Goulev, Y., Ungureanu, A., Aguilaniu, H., and Charvin, G. (2013). Aging yeast cells undergo a sharp entry into senescence unrelated to the loss of mitochondrial membrane potential. Cell Rep. <i>5</i>, 1589-1599.</p>
+<p id="bib7">Garmendia-Torres, C., Tassy, O., Matifas, A., Molina, N., and Charvin, G. (2018). Multiple inputs ensure yeast cell size homeostasis during cell cycle progression. Elife <i>7</i>.</p>
+<p id="bib8">Gietz, R.D. and Woods, R.A. (2002). Transformation of yeast by lithium acetate/single-stranded carrier DNA/polyethylene glycol method. Methods Enzymol. <i>350</i>, 87-96.</p>
+<p id="bib9">Goulev, Y., Morlot, S., Matifas, A., Huang, B., Molin, M., Toledano, M.B., and Charvin, G. (2017). Nonlinear feedback drives homeostatic plasticity in H<sub>2</sub>O<sub>2</sub> stress response. Elife <i>6</i>.</p>
+<p id="bib10">Harris, C.R., Millman, K.J., van der Walt, S.J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N.J., et al. (2020). Array programming with NumPy. Nature <i>585</i>, 357-362.</p>
+<p id="bib11">Hunter, J.D. (2007). Matplotlib: a 2D graphics environment. Comput. Sci. Eng. <i>9</i>, 90-95.</p>
+<p id="bib12">Kukhtevich, I.V., Lohrberg, N., Padovani, F., Schneider, R., and Schmoller, K.M. (2020). Cell size sets the diameter of the budding yeast contractile ring. Nat. Commun. <i>11</i>, 2952.</p>
+<p id="bib13">McKinney, W. (2010). Data structures for statistical computing in python. Proceedings of the 9th Python in Science Conference <i>445</i>, 51-56.</p>
+<p id="bib14">Meitinger, F., Khmelinskii, A., Morlot, S., Kurtulmus, B., Palani, S., Andres-Pons, A., Hub, B., Knop, M., Charvin, G., and Pereira, G. (2014). A memory system of negative polarity cues prevents replicative aging. Cell <i>159</i>, 1056-1069.</p>
+<p id="bib15">Morlot, S., Song, J., Leger-Silvestre, I., Matifas, A., Gadal, O., and Charvin, G. (2019). Excessive rDNA transcription drives the disruption in nuclear homeostasis during entry into senescence in budding yeast. Cell Rep. <i>28</i>, 408-422.e4.</p>
+<p id="bib16">Ni, M., Decrulle, A.L., Fontaine, F., Demarez, A., Taddei, F., and Lindner, A.B. (2012). Pre-disposition and epigenetics govern variation in bacterial survival upon stress. PLoS Genet. <i>8</i>, e1003148.</p>
+<p id="bib17">Paoletti, C., Quintin, S., Matifas, A., and Charvin, G. (2016). Kinetics of formation and asymmetrical distribution of Hsp104-bound protein aggregates in yeast. Biophys. J. <i>110</i>, 1605-1614.</p>
+<p id="bib18">Pattengale, N.D., Alipour, M., Bininda-Emonds, O.R., Moret, B.M., and Stamatakis, A. (2010). How many bootstrap replicates are necessary?. J. Comput. Biol. <i>17</i>, 337-354.</p>
+<p id="bib19">Schmidt, G.W., Cuny, A.P., and Rudolf, F. (2018). Preventing photomorbidity in long-term multi-color fluorescence imaging of <i>S. cerevisiae</i> and <i>S. pombe</i>. bioRxiv <a href="https://doi.org/10.1101/180018">https://doi.org/10.1101/180018</a></p>
+<p id="bib20">Sullivan, G.M. and Feinn, R. (2012). Using effect size-or why the P value is not enough. J. Grad. Med. Educ. <i>4</i>, 279-282.</p>
+<p id="bib21">Tong, A.H. and Boone, C. (2007). High-throughput strain construction and systematic synthetic lethal screening in <i>Saccharomyces cerevisiae</i>. Methods Microbiol. <i>36</i>, 369-386.</p>
+<p id="bib22">Versari, C., Stoma, S., Batmanov, K., Llamosi, A., Mroz, F., Kaczmarek, A., Deyell, M., Lhoussaine, C., Hersen, P., and Batt, G. (2017). Long-term tracking of budding yeast cells in brightfield microscopy: CellStar and the evaluation platform. J. R. Soc. Interface <i>14</i>.</p>
+<p id="bib23">Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., et al. (2020). SciPy 1.0: fundamental algorithms for scientific computing in Python. Nat. Methods <i>17</i>, 261-272.</p>
+<p id="bib24">Wickham, H. (2011). ggplot2. Wiley Interdiscip. Rev. Comput. Stat. <i>3</i>, 180-185.</p>
+<p id="bib25">Wilcox, R.R. (2010). Fundamentals of modern statistical methods: substantially improving power and accuracy.</p>
+<p id="bib26">Xu, Z., Fallet, E., Paoletti, C., Fehrmann, S., Charvin, G., and Teixeira, M.T. (2015). Two routes to senescence revealed by real-time analysis of telomerase-negative single lineages. Nat. Commun. <i>6</i>, 7680.</p>
+<p id="bib28">Waskom, M., Botvinnik, O., Hobson, P., Cole, J.B., Halchenko, Y., Hoyer, S., Miles, A., Augspurger, T., Yarkoni, T., Megies, T., et al. (2014). seaborn: v0.5.0. Zenodo, <a href="https://doi.org/10.5281/zenodo.592845">https://doi.org/10.5281/zenodo.592845</a>.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Poonam Bheda (<a href="mailto:poonam.bheda@helmholtz-muenchen.de">poonam.bheda@helmholtz-muenchen.de</a>, <a href="mailto:poonam.j.bheda@gmail.com">poonam.j.bheda@gmail.com</a>).</p>
+<h4>Materials availability</h4>
+<p>The reagents generated in this study are available upon request from the Lead Contact, Poonam Bheda (<a href="mailto:poonam.bheda@helmholtz-muenchen.de">poonam.bheda@helmholtz-muenchen.de</a>, <a href="mailto:poonam.j.bheda@gmail.com">poonam.j.bheda@gmail.com</a>). The CAD file for the microfluidics chip design used in <a href="#bib1">Bheda et al. (2020a)</a> is available at Mendeley Data (<a href="https://data.mendeley.com/datasets/yr2nrysyyx/1">https://data.mendeley.com/datasets/yr2nrysyyx/1</a>) (<a href="#bib2">Bheda et al., 2020b</a>).</p>
+<h4>Data and code availability</h4>
+<p>Analysis scripts for cell-tracking microfluidics are available on Github (<a href="https://github.com/aguilar-gomez/SingleCellLineageAnalysis">https://github.com/aguilar-gomez/SingleCellLineageAnalysis</a>). On this Github we have some sample datasets available, in the directory <i>Partial Correlations</i>, the <i>fileMotherDaughterWT.txt</i> contains single-cell data over time for a second galactose induction of yeast cells and includes lineage information (mother cell specified). The directories <i>Sublineage_CV</i> and <i>TimeSeriesPlot</i> also contain sample datasets of single-cell data over two galactose inductions of the WT strain and unspecified mutants (labeled Mutant1 and Mutant2). Additional sample datasets are available from the authors upon request. PhyloCell and Autotrack software are available on Github (<a href="https://github.com/gcharvin">https://github.com/gcharvin</a>).</p>
+<h3>Acknowledgments</h3>
+<p>We thank Theo Aspert and Youlian Goulev for support on the cell-tracking microfluidics setup. Work in the R.S. laboratory was supported by the <a href="https://doi.org/10.13039/501100001659">DFG</a> through SFB 1064 (project-ID 213249687) and SFB 1309 (project-ID 325871075), Marie Skłodowska-Curie Innovative Training Network (ITN) project "Cell2Cell" (H2020-MSCA-ITN-20219 grant no. 860675), as well as AmPro program (ZT0026) and the Helmholtz Gesellschaft. The A.K. laboratory is co-funded by the <a href="https://doi.org/10.13039/501100008530">European Regional Development Fund</a> and the Republic of Cyprus through the Research &amp; Innovation Foundation (projects: EXCELLENCE/1216/0215 and EXCELLENCE/0918/0105). G.C. was supported by grant no. ANR-10-LABX-0030-INRT, a French State fund managed by the <a href="https://doi.org/10.13039/501100001665">Agence Nationale de la Recherche</a> under the frame program Investissements d’Avenir ANR-10-IDEX-0002-02.</p>
+<h3>Author Contributions</h3>
+<p>P.B., A.K., and R.S. conceived the study. P.B., D.A.G., and I.K. performed the cell-tracking microfluidics time-lapse experiments and processed the data. G.C. developed the cell-tracking microfluidics and the cell-tracking image analysis pipeline. J.B. identified memory mutant candidates. P.B. and D.A.G. developed and analyzed the cell-tracking microfluidics data for inheritance analyses. P.B. and D.A.G. wrote the manuscript. I.K., A.K., and R.S. critically revised the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

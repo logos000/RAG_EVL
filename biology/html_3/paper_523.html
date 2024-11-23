@@ -1,0 +1,381 @@
+<article>
+<section>
+<h1 id="header">Protocol for intervention-free quantification of protein turnover rate by steady-state modeling</h1>
+<p><time datetime="2021-03-19">Published: March 19, 2021</time></p>
+<p>Stefania Marcotti,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a></sup> Besaiz Jose Sánchez-Sánchez,<sup><a href="#aff1">1</a></sup> Eduardo Serna-Morales,<sup><a href="#aff1">1</a></sup> Anca Dragu,<sup><a href="#aff1">1</a></sup> María-del-Carmen Díaz-de-la-Loza,<sup><a href="#aff1">1</a></sup> Yutaka Matsubayashi,<sup><a href="#aff1">1</a></sup> and Brian Marc Stramer<sup><a href="#aff1">1</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>Randall Centre for Cell and Molecular Biophysics, King’s College London, London SE1 1UL, UK</p>
+<p id="fn1"><sup>2</sup>Technical contact</p>
+<p id="fn2"><sup>3</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:brian.m.stramer@kcl.ac.uk">brian.m.stramer@kcl.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100377">10.1016/j.xpro.2021.100377</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Protein turnover rate is difficult to obtain experimentally. This protocol shows how to mathematically model turnover rates in an intervention-free manner given the ability to quantify mRNA and protein expression from initiation to homeostasis. This approach can be used to calculate production and degradation rates and to infer protein half-life. This model was successfully employed to quantify turnover during <i>Drosophila</i> embryogenesis, and we hypothesize that it will be applicable to diverse <i>in vivo</i> or <i>in vitro</i> systems.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib12">Matsubayashi et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol for intervention-free modeling of protein turnover rates</li>
+<li>Based on quantifying mRNA and protein levels from initiation to homeostasis</li>
+<li>Devised for inferring protein half-life in fly embryos but applicable across systems</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">What data do you need?</h3>
+<p>This protocol requires the temporal expression of a protein of interest and its mRNA profile as input data to quantify turnover. Both should be observed over the same time frame, starting as close as possible to initiation of expression, until as close as possible to reaching homeostasis. The protein and mRNA profiles do not need the same temporal resolution (i.e., they can have different sampling intervals) and can be obtained using a number of different experimental approaches. Two datasets are used as examples in this protocol, related to Collagen IV (ColIV) and Nidogen (Ndg) expression in the <i>Drosophila</i> embryo (see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc3.xlsx">Material S3</a>). mRNA levels were quantified from an RNA-seq time course (<a href="#bib6">Graveley et al., 2011</a>) and protein levels were obtained by measuring the fluorescence intensity of GFP protein-trap lines during development (<a href="#bib12">Matsubayashi et al., 2020</a>) (see the <a href="#sec1.3">data acquisition</a> section for more details). It should be noted that this approach is not limited to <i>in vivo</i> models and to the experimental methods used here. For example, a similar approach could be used to analyze protein turnover in cultured cells or isolated tissues, provided that there are methods to experimentally obtain information on the temporal dynamics of the protein of interest and its mRNA profile.</p>
+<h3 id="sec1.2">Modeling hypotheses</h3>
+<p>The model presented in this protocol relies on the assumption that the protein expression over time is controlled by a single rate of synthesis and a single rate of degradation, both constant over time, which is a common hypothesis of most experimental analyses of protein turnover (<a href="#bib2">Beynon, 2005</a>; <a href="#bib4">Claydon and Beynon, 2012</a>; <a href="#bib7">Hinkson and Elias, 2011</a>; <a href="#bib11">Kristensen et al., 2013</a>; <a href="#bib18">Schwanhäusser et al., 2013</a>; <a href="#bib19">Tchourine et al., 2014</a>) (refer to the <a href="#limitations">limitations</a> section for further details).</p>
+<p>The model can be mathematically described as follows:</p>
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>Equation 1</mtext></mtd> <mtd> <mrow> <mfrac> <mrow> <mi>d</mi> <mi>P</mi> <mrow> <mo>(</mo> <mi>t</mi> <mo>)</mo> </mrow> </mrow> <mrow> <mi>d</mi> <mi>t</mi> </mrow> </mfrac> <mo>=</mo> <msub> <mi>S</mi> <mi>p</mi> </msub> <mi>M</mi> <mrow> <mo>(</mo> <mi>t</mi> <mo>)</mo> </mrow> <mo>−</mo> <mspace></mspace> <msub> <mi>D</mi> <mi>p</mi> </msub> <mi>P</mi> <mrow> <mo>(</mo> <mi>t</mi> <mo>)</mo> </mrow> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>where P(t) is the protein expression over time t, M(t) is the mRNA profile over time, S<sub>p</sub> is the constant rate of protein synthesis, and D<sub>p</sub> the constant rate of protein degradation (<a href="#bib12">Matsubayashi et al., 2020</a>; <a href="#bib19">Tchourine et al., 2014</a>). This corresponds to hypothesizing that the net change in protein levels over time is determined by synthesis minus degradation, with the amount of synthesis and degradation proportional to the mRNA levels and the protein levels, respectively. The aim of this protocol is to calculate the synthesis and degradation rates, using as input experimental data for the expression levels of RNA and protein. From the degradation rate, the protein half-life can be subsequently inferred as the ln(2) divided by the degradation rate itself (<a href="#fd5">Equation 5</a>) (<a href="#bib4">Claydon and Beynon, 2012</a>; <a href="#bib12">Matsubayashi et al., 2020</a>).</p>
+<p><a href="#fd1">Equation 1</a> can be solved either numerically for the protein levels by using as input the experimental mRNA data or analytically for the mRNA levels by using as input the experimental protein expression. We named the first approach “Anterograde modeling” (i.e., from mRNA to protein expression), and the second approach “retrograde modeling” (i.e., from protein expression to mRNA). In both cases, the synthesis and degradation rates can be found by nonlinear regression between the calculated solution and the corresponding experimental data (<a href="#fig1">Figure 1</a>, see the <a href="#sec2.2">anterograde modeling</a> and <a href="#sec2.3">retrograde modeling</a> sections for more details).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Anterograde and retrograde modeling</div>
+<p>Schematic of the anterograde (mRNA to protein) and retrograde (protein to mRNA) modeling. For the anterograde (retrograde) model, the mRNA (protein) measured experimentally is used as input to calculate the protein (mRNA) dynamics. The obtained protein (mRNA) profile undergoes a fitting procedure to find the best parameters for the synthesis and degradation rates to match the experimentally observed protein (mRNA) dynamics.</p>
+</figcaption>
+</figure>
+<h3 id="sec1.3">Data acquisition</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–5 days</div>
+<ol>
+<li>Measure the mRNA time course for the protein of interest. This can be obtained by many different methods, (e.g., RNA-seq or qPCR), to show relative changes in mRNA expression over time. For the purpose of this protocol, we used the mRNA temporal profile for ColIV and Ndg, which were obtained through an RNA-seq time course of <i>Drosophila</i> development (<a href="http://flybase.org">http://flybase.org</a>, <a href="#fig2">Figures 2</a>A and 2B, see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc3.xlsx">Material S3</a>) (<a href="#bib6">Graveley et al., 2011</a>; <a href="#bib12">Matsubayashi et al., 2020</a>); similar databases are available for other species, such as Wormbase for <i>C. elegans</i> and related nematodes (<a href="http://wormbase.org/">http://wormbase.org/</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Experimental input data for modeling</div>
+<p>Smoothed mRNA temporal profile for ColIV (A) and Ndg (B), respectively, obtained by an RNA-seq time course of <i>Drosophila</i> development. ColIV (C) and Ndg (D) protein expression acquired experimentally by time-lapse images of viable GFP protein-trap lines in the <i>Drosophila</i> genes ColIV and Ndg. Each curve represents a biological replicate (n = 10 ColIV, n = 6 Ndg). A.U., arbitrary units (relative measure over time). Data are available in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc3.xlsx">Material S3</a>.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Both the ColIV and Ndg profiles were smoothed with a walking average of 3 data points. Smoothing should be considered on a case-by-case basis and kept consistent across multiple samples within an experiment. Smoothing is necessary when poor fitting is obtained at <a href="#sec2.1">step 2 of Data fitting</a> (see also <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.1">problem 1</a>) to help with cases when the time course is sparse and does not give a complete picture of the curve shape and to reduce the noise from the experimental data.</div>
+<div class="note">
+<span class="note-title">Note:</span> Please refer to <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.3">problem 2</a> should more than one mRNA time course be available.</div>
+<ol start="2">
+<li>Measure the protein expression time course. The relative changes in the temporal expression of a protein of interest can be acquired, for example, by taking time-lapse images of a fluorescently labeled protein in a model organism or via western blot experiments. The choice of the most suitable experimental method to acquire such measurements ultimately depends on the model system of interest. Western blots, despite offering a direct measurement of the protein level, are experimentally more challenging and time consuming as they require multiple harvesting at different time points. The achievable temporal resolution might therefore be worse than imaging. Conversely, if it is not possible to fluorescently tag the protein or to observe it in the tissue of interest, or where concerns with imaging acquisition or fluorophore maturation lags arise, western blots should be preferred.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> For the purpose of this protocol, we used time-lapse images of viable GFP protein-trap lines in the <i>Drosophila</i> ColIV and Ndg (<a href="#bib13">Morin et al., 2001</a>), as we were interested in looking at ECM turnover (<a href="#bib12">Matsubayashi et al., 2020</a>). It should be noted that embryos are not required to be homozygous for the protein-trap, provided that the fluorescence intensity is strong enough for imaging quantification. Moreover, the protein should be endogenous or driven by its own promoter and it should be verified that the associated fluorophore is stable and matures quickly enough, as the protein amount is indirectly measured via the proxy of fluorescence intensity. The maturation time of GFP is relatively fast (∼14–60 min) (<a href="#bib9">Iizuka et al., 2011</a>) compared to the observed dynamics in our proteins of interest and was therefore deemed suitable; however, fast-folding GFP could be considered for faster processes and dynamics.</div>
+<div class="note">
+<span class="note-title">Note:</span> Whole embryos were imaged every 2 min under a dissection microscope to observe the increase in fluorescence from induction to homeostasis (<a href="#fig2">Figures 2</a>C and 2D, see <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc3.xlsx">Material S3</a>) (<a href="#bib12">Matsubayashi et al., 2020</a>). This imaging modality was chosen due to the ease of gathering a large amount of data simultaneously, however, confocal or widefield microscopy would be equally valid. Relative changes in fluorescence intensity over time should be acquired (arbitrary units). Fluorescence quantification for the example dataset (<a href="#bib12">Matsubayashi et al., 2020</a>) was performed as follows. Fluorescent protein-expressing embryos were imaged together with control embryos not expressing the fluorophore. The average raw fluorescence intensity in each embryo at each time point was measured in Fiji and the acquired curve smoothed with a 15-frame moving average. To remove the contribution of embryonic autofluorescence, the signal from control embryos was subtracted from the experimental sample at each timepoint.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> if using fluorescently labeled proteins, the effects of photobleaching should be determined. This can be done by comparing the fluorescence of two samples, one of which is imaged following the experimental protocol (e.g., once every 2 min) and the other is spared. The effect of photobleaching could be considered negligible if the two samples displayed similar fluorescence levels at the end of the experiment. Refer to the <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.5">problem 3</a> section for more information.</div>
+<h3 id="sec1.4">Modeling requirements</h3>
+<div class="critical">
+<span class="critical-title">Critical:</span> Check the mRNA profile. The model assumes a simple relationship between mRNA and protein expression (i.e., a single constant rate of synthesis). For this reason, a first warning sign that the model might not be appropriate for a specific case is if the mRNA temporal expression displays a complex profile (e.g., multiple peaks, which suggest the presence of multiple rates of synthesis or of time-dependent rates, see <a href="#limitations">limitations</a> section, <a href="#fig8">Figure 8</a>). The sample mRNA profiles for <i>Drosophila</i> ColIV and Ndg display a simple behavior, with a single peak followed by a plateau (<a href="#fig2">Figures 2</a>A and 2B), and they are therefore suitable for this modeling approach. The presence of a plateau is expected when the process reaches homeostasis, i.e., an equilibrium state.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Check the protein expression profile. The protein expression is expected to follow a logistic behavior over time, hence showing a sigmoid or S-shape starting from zero and ending with a plateau. If the protein of interest does not follow such a trend, this is a second warning sign that the model described in this protocol might not be sufficient to calculate turnover rates (see <a href="#limitations">limitations</a> section). This requirement is met in the sample datasets, as the temporal expression of GFP-tagged ColIVa2 and Ndg follow a logistic trend (<a href="#fig2">Figures 2</a>C and 2D).</div>
+<h3 id="sec1.5">Code and folders setup</h3>
+<ol start="3">
+<li>Download the code from <a href="https://github.com/stemarcotti/protein_turnover_modelling">https://github.com/stemarcotti/protein_turnover_modelling</a>, by clicking on the green button “Code” and selecting “Download ZIP” to save the file locally on your machine. Unzip the folder.</li>
+<li>Open MATLAB and navigate to the unzipped folder where the code is located. Further assistance on how to do so can be found <a href="https://uk.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html">here</a>. The code was tested on MATLAB v.2018b.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>D. melanogaster:</i> ColIVα2 (Vkg)-GFP (embryos)</td>
+<td>(<a href="#bib13">Morin et al., 2001</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>D. melanogaster: Ndg-GFP</i> (embryos)</td>
+<td>(<a href="#bib16">Sarov et al., 2016</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>LAS AF</td>
+<td>Leica</td>
+<td><a href="http://www.leica-microsystems.com/home/">http://www.leica-microsystems.com/home/</a></td>
+</tr>
+<tr>
+<td>ImageJ/Fiji</td>
+<td>Fiji</td>
+<td><a href="http://fiji.sc/">http://fiji.sc/</a></td>
+</tr>
+<tr>
+<td>MATLAB R2018b</td>
+<td>MathWorks</td>
+<td><a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a></td>
+</tr>
+<tr>
+<td>Prism (8 or 9)</td>
+<td>GraphPad</td>
+<td><a href="https://www.graphpad.com/scientific-software/prism/">https://www.graphpad.com/scientific-software/prism/</a></td>
+</tr>
+<tr>
+<td>MATLAB custom code for fitting purpose</td>
+<td>(<a href="#bib12">Matsubayashi et al., 2020</a>)</td>
+<td><a href="https://github.com/stemarcotti/protein_turnover_modelling">https://github.com/stemarcotti/protein_turnover_modelling</a></td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>The “modENCODE Temporal Expression Data” of <i>vkg/ColIVα2</i> mRNA</td>
+<td>(<a href="#bib6">Graveley et al., 2011</a>)</td>
+<td><a href="http://flybase.org/reports/FBgn0016075">http://flybase.org/reports/FBgn0016075</a></td>
+</tr>
+<tr>
+<td>The “modENCODE Temporal Expression Data” of <i>LanA</i> mRNA</td>
+<td>(<a href="#bib6">Graveley et al., 2011</a>)</td>
+<td><a href="http://flybase.org/reports/FBgn0002526">http://flybase.org/reports/FBgn0002526</a></td>
+</tr>
+<tr>
+<td>The “modENCODE Temporal Expression Data” of <i>Ndg</i> mRNA</td>
+<td>(<a href="#bib6">Graveley et al., 2011</a>)</td>
+<td><a href="https://flybase.org/reports/FBgn0026403">https://flybase.org/reports/FBgn0026403</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>M205 fluorescent dissection microscope</td>
+<td>Leica</td>
+<td><a href="http://www.leica-microsystems.com/home/">http://www.leica-microsystems.com/home/</a></td>
+</tr>
+<tr>
+<td>PLANAPO 2.0× objective for M205</td>
+<td>Leica</td>
+<td>10450030</td>
+</tr>
+</tbody>
+</table>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Live organism, tissue, cultured cells, etc. for which it is possible to measure mRNA and protein profile over time can be used as the experimental models.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Any Imaging software other than LAS AF can be used to quantify fluorescent proteins.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Any statistical software for fitting and graphing (e.g., SPSS, Prism, R, MATLAB, Python) can be applied for data analysis.</div>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Depending on the model system, another experimental setup may be required to measure the mRNA and protein profiles over time (e.g., microscope and objectives).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Data fitting</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol>
+<li>Temporal resolution considerations. Due to experimental constraints, it is possible that the temporal resolution of the mRNA and protein measurements may not be identical (e.g., the mRNA sampling is performed less often than the fluorescence time-lapse imaging). If this is the case, the mRNA profile should be interpolated to obtain information on the intermediate time points. The mRNA profiles for <i>Drosophila</i> ColIV and Ndg was sampled with 2 h intervals starting from egg laying, and it was interpolated to obtain a data point every 2 min to match the sampling frequency of the protein. There is no theoretical limit on how different the temporal resolutions could be; however, the sampling frequency should be enough to give confidence that the interpolated curve is reflecting the observed dynamics (e.g., if two time points are too far from each other, the curve in between could take a number of shapes).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> care should be taken to align the temporal scales of both mRNA and protein data. The imaging for ColIV started at embryonic stage 15 (about 11 h 20 min after egg laying); therefore, the time was set to zero at this point for the ColIV mRNA data. The imaging for Ndg started at embryonic stage 11 (about 5 h after egg laying); therefore, the time was set to zero at this point for the Ndg mRNA data. Time zero on the two graphs in <a href="#fig2">Figures 2</a>A and 2B therefore represents two different stages of development.</div>
+<ol start="2">
+<li>mRNA profile interpolation. Different software can be used to interpolate the mRNA data to increase temporal resolution; an option is detailed below using GraphPad Prism (version 8 or 9). A standard spline fitting can be chosen when the raw data have relatively even spacing between time intervals. A spline provides piece-wise polynomial fitting of a curve by dividing it in a number of segments. An increase in the number of segments and an increase in the temporal resolution of the data will increase the spline fitting quality.
+<ol type="a">
+<li>Copy time and mRNA profile data into an XY data table in Prism</li>
+<li>Calculate how many data points are needed in the interpolated function. In this case we want to match the experimental protein acquisition to obtain a data point every 2 min. The total available time we have ColIV and Ndg mRNA data for is −10 h to 38 h and −-4 h to 44 h, respectively (48 h = 2,880 min; time zero is the start of protein expression measurements). Therefore, we need the interpolated function on 1,441 data points (2,880/2 min + 1 data point for t = 0).</li>
+<li>Select “Analyze &gt; Fit spline/LOWESS” from the Analysis menu</li>
+<li>A cubic spline with 1,441 segments was chosen for this example (<a href="#fig3">Figures 3</a>A and 3B), but the parameters might need to be adjusted for different data to assure good fitting quality (<a href="#fig3">Figure 3</a>C).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Fitting of mRNA temporal profile</div>
+<p>Spline interpolation (solid line) for ColIV (A) and Ndg (B) mRNA data, respectively, allowing to infer the intermediate data points between mRNA experimental acquisitions (circles). A poor fitting example is shown in (C): the data point at 12 h and 14 h were deleted to simulate poor fitting quality for the unsmoothed ColIV mRNA profile with the same interpolating spline function as of (A) (dash line, gray square). The data points at later time are not frequent enough to capture the curve plateau at equilibrium. A.U., arbitrary units (relative measure over time).</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> check your results for overall fitting quality (see also <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.1">problem 1</a>). An example of poor fitting quality for the ColIV mRNA profile is shown in <a href="#fig3">Figure 3</a>C, where the fitting does not match the expected curve shape with a peak and a plateau. The available data are too sparse at late time points to fully capture the mRNA dynamics at equilibrium (i.e., plateau). It is worth noting that acquiring the ColIV example data beyond 15 h is essential simply to make sure that the mRNA profile is reaching homeostasis around the time when we observe the protein levels also reaching equilibrium.</div>
+<ol start="3">
+<li>Protein expression fitting. Protein expression is expected to show a logistic trend over time from initiation to homeostasis for the purpose of the present modeling (refer to <a href="#sec1.4">step 4 of Modeling requirements</a> for details). Logistic curves can be fully described by three parameters (<a href="#bib3">Brown and Rothery, 1993</a>): the carrying capacity K (value at infinite time), the inflection point t<sub>i</sub> (midpoint of the curve), and the intrinsic rate of increase r (steepness of the curve around t<sub>i</sub>). Logistic fitting can be achieved in GraphPad Prism as follows.
+<ol type="a">
+<li>Copy time and protein expression data into an XY data table, with one column for each experimental replicate</li>
+<li>Select “Analyze &gt; Nonlinear regression (curve fit)” from the Analysis menu</li>
+<li>Select the option “log(agonist)vs. response -- Variable slope (four parameters)” in the Dose-response – Stimulation sub-menu</li>
+<li>In the Results page, check the Goodness of Fit – R squared row, to evaluate how well the data fit to a logistic curve. Values close to one signify best fitting (an average R squared of 0.99 was achieved with both sample datasets, <a href="#fig4">Figures 4</a>A and 4B). It is not possible to state a cut-off value on the R squared parameter, and fitting quality should always be visually evaluated against the expected dynamics (i.e., curve shape).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Fitting of protein temporal profile</div>
+<p>Logistic fitting (solid line) of ColIV (A) and Ndg (B) protein levels (semi-transparent dots) for all available biological replicates (n = 10 ColIV, n = 6 Ndg). A.U., arbitrary units (relative measure over time).</p>
+</figcaption>
+</figure>
+</li>
+<li>The output parameters are linked to the logistic parameters K, t<sub>i</sub> and r as follows:</li>
+</ol>
+</li>
+</ol>
+<p id="fd2" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>Equation 2</mtext></mtd> <mtd> <mrow> <mi>K</mi> <mo>=</mo> <mtext>Span</mtext> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd3" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>Equation 3</mtext></mtd> <mtd> <mrow> <msub> <mi>t</mi> <mi>i</mi> </msub> <mo>=</mo> <mi>log</mi> <msub> <mtext>EC</mtext> <mn>50</mn> </msub> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p id="fd4" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>Equation 4</mtext></mtd> <mtd> <mrow> <mi>r</mi> <mo>=</mo> <mtext>HillSlope</mtext> <mo>∗</mo> <mi>ln</mi> <mo>(</mo> <mn>10</mn> <mo>)</mo> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>A fourth parameter called Bottom is provided; this represents the starting value of the logistic curve and it is expected to be close to zero. If protein levels are obtained by imaging of a fluorescently tagged protein, the Bottom parameter represents the residual autofluorescence. To facilitate the conversion between the GraphPad parameters and the logistic parameters an Excel workbook named 01_logistic_parameters.xlsx is provided in the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc1.xlsx">Material S1</a>.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> fitting quality scores, such as R<sup>2</sup>, should be checked. If the performed fitting has low quality, it is likely that the protein does not follow a logistic behavior, or that not enough data points were obtained within the time interval of interest to fully capture the logistic trend. This could mean that the data acquisition should be adjusted (see <a href="#sec1.1">what data do you need?</a> and <a href="#sec1.3">data acquisition</a>) or that the protein of interest does not meet the modeling assumptions (see <a href="#sec1.2">modeling hypotheses</a> and <a href="#limitations">limitations</a> sections).</div>
+<h3 id="sec2.2">Anterograde modeling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<ol start="4">
+<li>Run anterograde modeling. The model in <a href="#fd1">Equation 1</a> can be solved numerically for the protein expression if using the mRNA temporal profile as input (<a href="#bib12">Matsubayashi et al., 2020</a>). The synthesis and degradation rates can be obtained by minimizing the difference between the numerical solution and the experimentally measured protein levels. This is achieved by nonlinear regression (Levenberg-Marquardt nonlinear least squares algorithm, MATLAB function nlinfit); confidence intervals for the fitted parameters are also computed.
+<ol type="a">
+<li>Create an empty folder where the analysis output will be saved</li>
+<li>Inside the folder, create two separate csv files with the interpolated mRNA profile (<a href="#sec2.1">step 2 of data fitting</a>) and the fitted logistic parameters for the protein profile (<a href="#sec2.1">step 3 of data fitting</a>). The first file should include two columns, one for time and one for mRNA values, and the number of rows will depend on the chosen time steps and interval; the second file should include three rows (K, t<sub>i</sub>, r) and one column for each biological replicate (<a href="#fig5">Figure 5</a>A). The number of biological replicates to include ultimately depends on the biological and experimental variability in the system used. In this example, due to small discrepancies in embryo staging and possible fluctuations in room temperature (24°C–25°C), 10 ColIV and 6 Ndg samples were deemed sufficient.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Structure of input and output files</div>
+<p>Schematic of the required input (A) and the obtained output files (B).</p>
+</figcaption>
+</figure>
+</li>
+<li>In MATLAB, open the file called anterograde_model.m and hit Run. The code will request you to locate the two files you created and to choose the time interval and span of your experiments (in the case of the sample data, Time interval [min] = 2 and “Starting time experiment [h]” and “Finishing time experiment [h]” were chosen equal to 0 and 15 for ColIV and to 0 and 20 for Ndg, respectively).</li>
+<li>The code will produce four output csv files, containing the values for the synthesis and degradation rates and their confidence intervals (<a href="#fig5">Figure 5</a>B). Each row represents a biological replicate.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> the confidence intervals should be checked in order to verify good fitting of the model. These values are expected to be much smaller than the biological variability between replicates (see also <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.7">problem 4</a>).</div>
+<h3 id="sec2.3">Retrograde modeling</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 30 min</div>
+<ol start="5">
+<li>Run retrograde modeling. The model in <a href="#fd1">Equation 1</a> can be solved analytically for the mRNA profile if using the logistic curve fitted to the experimentally measured protein expression as input (<a href="#bib12">Matsubayashi et al., 2020</a>). The synthesis and degradation rates can be obtained by minimizing the difference between the analytical solution and the experimentally obtained mRNA profiles. This is achieved with the same nonlinear regression algorithm of the anterograde case; confidence intervals for the fitted parameters are computed.
+<ol type="a">
+<li>Create an empty folder where the analysis output will be saved</li>
+<li>Copy in the newly created folder the two csv files created at <a href="#sec2.2">step 4b of Anterograde modeling</a>
+</li>
+<li>In MATLAB, navigate to the folder where the code was saved. Open the file called retrograde_model.m and hit Run. The code will request you to locate the two files you copied and to choose the time interval and span of your experiments (in the case of the sample data, Time interval [min] = 2 and “Starting time experiment [h]” and “Finishing time experiment [h]” were chosen equal to 0 and 15 for ColIV and to 0 and 20 for Ndg, respectively).</li>
+<li>The code will produce four output csv files, containing the values for the synthesis and degradation rates and their confidence intervals (<a href="#fig5">Figure 5</a>B). Each row represents a biological replicate.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> this step represents a control for the internal consistency of the modeling, as the synthesis and degradation rates for anterograde and retrograde should be similar. If this is not the case, this is the third warning sign that the modeling might not be sufficient for the protein of interest (see the <a href="#limitations">limitations</a> section). In the case of the test data, this condition is satisfied, as the calculated turnover rates do not show statistical difference when comparing anterograde and retrograde modeling (Mann-Whitney two-tailed test, level of significance set to 0.01, for both ColIV and Ndg, <a href="#fig6">Figures 6</a>A and 6B).</div>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Modeled turnover rates</div>
+<p>Comparison of ColIV (A) and Ndg (B) turnover rates obtained by anterograde and retrograde modeling for synthesis (S<sub>p</sub>) and degradation (D<sub>p</sub>). Each dot represents modeling for a biological replicate, bars represent median and interquartile range of the sample.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> the confidence intervals should be checked in order to verify good fitting of the model. These values are expected to be much smaller than the biological variability between replicates (see also <a href="#troubleshooting">troubleshooting</a> <a href="#sec5.7">problem 4</a>).</div>
+<h3 id="sec2.4">Calculate half-life</h3>
+<ol start="6">
+<li>Protein half-life <i>h</i> is calculated as follows</li>
+</ol>
+<p id="fd5" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>Equation 5</mtext></mtd> <mtd> <mrow> <mi>h</mi> <mo>=</mo> <mspace></mspace> <mfrac> <mrow> <mi>ln</mi> <mrow> <mo>(</mo> <mn>2</mn> <mo>)</mo> </mrow> </mrow> <msub> <mi>D</mi> <mi>p</mi> </msub> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>To facilitate the protein half-life calculation, an Excel workbook is provided as the <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc2.xlsx">Material S2</a>, named 02_half-life.xlsx. To use, copy the degradation rate values obtained with anterograde modeling. Please note that this is an arbitrary choice, the degradation rates from the retrograde model could be used and should lead to similar results as internal consistency between the two modeling approaches is expected. The test data show an average protein half-life of about 6 h for ColIV and about 14 h for Ndg.</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>If the modeling was appropriate for the protein of interest, the anterograde and retrograde approaches should lead to similar values for the rate of synthesis and degradation (<a href="#fig6">Figure 6</a>). Moreover, the confidence intervals for these parameters should be small compared to biological variability (i.e., the nonlinear regression performed well on the data, <a href="#fig7">Figure 7</a>). If this is the case, the calculated rates can be tested experimentally to verify model predictions (<a href="#bib7">Hinkson and Elias, 2011</a>). To this aim, different approaches can be taken. For example, <i>in vivo</i> pulse-chase experiments and fluorescent decay after photoconversion analysis were successfully compared with the model output for the ColIV dataset (<a href="#bib12">Matsubayashi et al., 2020</a>).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Confidence intervals of the modeled turnover rates</div>
+<p>Confidence intervals of turnover rates (synthesis S<sub>p</sub> and degradation D<sub>p</sub>) obtained by anterograde and retrograde modeling for ColIV (A) and Ndg (B). The bars represent the range between the 95% lower and upper confidence intervals for the mean values of each biological replicate shown in <a href="#fig6">Figure 6</a>.</p>
+</figcaption>
+</figure>
+<p>Once turnover rates are confirmed experimentally, the modelling approach presented in this protocol makes it easier to elucidate regulators of the turnover process. The relative changes in protein turnover rates can therefore be easily examined in an intervention-free manner using a variety of perturbations (e.g., mutants or RNAi), which would be extremely difficult using an experimental approach such as pulse-chase analysis (<a href="#bib12">Matsubayashi et al., 2020</a>).</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The presented model relies on some assumptions that might not hold for all proteins of interest. This modeling might not be appropriate for noisy measurements, complex expression profiles or in the presence of additional translation and degradation regulators that make S<sub>p</sub> and D<sub>p</sub> change with time. Despite these caveats, it was shown to offer good turnover predictions for about one-third of all the proteins in yeast cells (<a href="#bib19">Tchourine et al., 2014</a>).</p>
+<p>Care should be taken due to the possible unreliability of the results when:</p>
+<ol>
+<li>the mRNA profile displays complex trends. Here an example for <i>Drosophila</i> Laminin A (LanA) is shown (<a href="#fig8">Figure 8</a>), where multiple peaks can be observed. Please note that it would not be acceptable to perform the modeling using only data from a shorter timespan (e.g., 5–20 h for LanA), as the mRNA profile has to be observed reaching homeostasis. Moreover, the modeling relies on the assumption of single constant rate of synthesis and degradation, which is likely not met in this case.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Example of unsuitable mRNA temporal profile</div>
+<p>mRNA levels for <i>Drosophila</i> LanA (circles) fitted with a cubic spline (solid line). It can be noted that the mRNA profile is complex, showing multiple peaks and failing to display a clear plateau at equilibrium. A.U., arbitrary units (relative measure over time).</p>
+</figcaption>
+</figure>
+</li>
+<li>the protein expression does not follow a logistic trend</li>
+<li>the anterograde and retrograde model results do not show internal consistency</li>
+</ol>
+<p>For successful modeling with the present protocol, protein expression should be quantified as close as possible from initiation to homeostasis. It is theoretically possible to take an opposite approach relying on similar assumptions to the ones presented here and quantify protein levels after inhibiting protein synthesis, observing expression during decay from homeostasis instead of during the increase to homeostasis, such as in metabolic radioisotope labeling experiments (<a href="#bib1">Beavan et al., 1989</a>; <a href="#bib5">Cohen and Surma, 1980</a>; <a href="#bib10">Kim et al., 2012</a>; <a href="#bib15">Price and Spiro, 1977</a>; <a href="#bib17">Schleicher and Wieland, 1986</a>). In fact, analogous models to the one presented here have been used to analyze the rates of HIV synthesis and turnover after the administration of anti-viral drugs (<a href="#bib8">Ho et al., 1995</a>; <a href="#bib14">Perelson et al., 1996</a>) instead of de novo production. This could be possible with the presented framework but was not thoroughly tested.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>Fitting quality for the mRNA is poor (i.e., the fitting function does not follow the expected shape of the curve) (<a href="#sec1.3">step 1 of Data acquisition</a> and <a href="#sec2.1">step 2 of Data fitting</a>).</p>
+<h3 id="sec5.2">Potential solutions</h3>
+<p>Test smoothing the raw data with a small-windowed (3–5 data point) moving average. This should help when time points are sparse or experimental measures are noisy. Such small smoothing should not greatly change the downstream calculated rates (e.g., anterograde ColIV D<sub>p</sub> median changes from 0.12 to 0.11 when using non-smoothed data) but could improve modeling performance as offering a better representation of the experimental mRNA dynamics.</p>
+<p>Test a different fitting function. For example, if the mRNA profile shows a recognizable shape (e.g., Gaussian), such function could be used instead of a generic spline to achieve better fitting.</p>
+<p>Consider increasing the temporal resolution of the acquisition. This will provide the fitting functions with more data points as input, helping to capture the observed dynamics.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Multiple mRNA time-course experiments were carried out, but the code expects a single mRNA input (<a href="#sec1.3">step 1 of Data acquisition</a>).</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>Average the experiments to obtain a single input</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>The effects of photobleaching are not negligible when acquiring protein expression over time by means of fluorescence imaging (<a href="#sec1.3">step 2 of Data acquisition</a>).</p>
+<h3 id="sec5.6">Potential solutions</h3>
+<p>Please do not try bleach corrections as they might skew the data. As the fluorescence is used as proxy for the protein amount, this might affect the results.</p>
+<p>Test down-sampling by imaging with a lower temporal resolution. The signal should still show a discernable logistic behavior for the subsequent steps to work.</p>
+<p>Consider using a different experimental acquisition mode (e.g., western blot).</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>The confidence intervals for the synthesis and degradation rates are larger than the biological variability between replicates – this is suggesting that the modeling is failing (<a href="#sec2.2">step 4 of Anterograde modeling</a> and <a href="#sec2.3">step 5 of Retrograde modeling</a>).</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>Check that the model assumptions have been verified, and the protein and mRNA expression observed as close as possible from initiation to homeostasis.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Beavan, L.A., Davies, M., Couchman, J.R., Williams, M.A., and Mason, R.M. (1989). In vivo turnover of the basement membrane and other heparan sulfate proteoglycans of rat glomerulus. Arch. Biochem. Biophys. <i>269</i>, 576-585. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref1">View at publisher</a></p>
+<p id="bib2">Beynon, R.J. (2005). The dynamics of the proteome: strategies for measuring protein turnover on a proteome-wide scale. Brief. Funct. Genomic. Proteomic. <i>3</i>, 382-390. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref2">View at publisher</a></p>
+<p id="bib3">Brown, D. and Rothery, P. (1993). Models in Biology: Mathematics, Statistics, and Computing (Wiley). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref3">View at publisher</a></p>
+<p id="bib4">Claydon, A.J. and Beynon, R. (2012). Proteome dynamics: revisiting turnover with a global perspective. Mol. Cell. Proteomics <i>11</i>, 1551-1565. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref4">View at publisher</a></p>
+<p id="bib5">Cohen, M.P. and Surma, M. (1980). Renal glomerular basement membrane. J. Biol. Chem. <i>255</i>, 1767-1771. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref5">View at publisher</a></p>
+<p id="bib6">Graveley, B.R., Brooks, A.N., Carlson, J.W., Duff, M.O., Landolin, J.M., Yang, L., Artieri, C.G., van Baren, M.J., Boley, N., Booth, B.W., et al. (2011). The developmental transcriptome of <i>Drosophila melanogaster</i>. Nature <i>471</i>, 473-479. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref6">View at publisher</a></p>
+<p id="bib7">Hinkson, I.V. and Elias, J.E. (2011). The dynamic state of protein turnover: it’s about time. Trends Cell Biol. <i>21</i>, 293-303. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref7">View at publisher</a></p>
+<p id="bib8">Ho, D.D., Neumann, A.U., Perelson, A.S., Chen, W., Leonard, J.M., and Markowitz, M. (1995). Rapid turnover of plasma virions and CD4 lymphocytes in HIV-1 infection. Nature <i>373</i>, 123-126. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref8">View at publisher</a></p>
+<p id="bib9">Iizuka, R., Yamagishi-Shirasaki, M., and Funatsu, T. (2011). Kinetic study of de novo chromophore maturation of fluorescent proteins. Anal. Biochem. <i>414</i>, 173-178. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref9">View at publisher</a></p>
+<p id="bib10">Kim, T., Wangs, D., Kim, A.K., Laus, E., Lin, A.J., Liem, D.A., Zhangs, J., Zong, N.C., Lam, M.P.Y., and Pings, P. (2012). Metabolic labeling reveals proteome dynamics of mouse mitochondria. Mol. Cell. Proteomics <i>11</i>, 1586-1594. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref10">View at publisher</a></p>
+<p id="bib11">Kristensen, A.R., Gsponer, J., and Foster, L.J. (2013). Protein synthesis rate is the predominant regulator of protein expression during differentiation. Mol. Syst. Biol. <i>9</i>, 1-12. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref11">View at publisher</a></p>
+<p id="bib12">Matsubayashi, Y., Sánchez-Sánchez, B.J., Marcotti, S., Serna-Morales, E., Dragu, A., Díaz-de-la-Loza, M.-C., Vizcay-Barrena, G., Fleck, R.A., and Stramer, B.M. (2020). Rapid homeostatic turnover of embryonic ECM during tissue morphogenesis. Dev. Cell, 1-10. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref12">View at publisher</a></p>
+<p id="bib13">Morin, X., Daneman, R., Zavortink, M., and Chia, W. (2001). A protein trap strategy to detect GFP-tagged proteins expressed from their endogenous loci in <i>Drosophila</i>. Proc. Natl. Acad. Sci. U S A <i>98</i>, 15050-15055. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref13">View at publisher</a></p>
+<p id="bib14">Perelson, A.S., Neumann, A.U., Markowitz, M., Leonard, J.M., and Ho, D.D. (1996). HIV-1 dynamics in vivo: virion clearance rate, infected cell life-span, and viral generation time. Science <i>271</i>, 1582-1586. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref14">View at publisher</a></p>
+<p id="bib15">Price, R.G. and Spiro, R.G. (1977). Studies on the metabolism of the renal glomerular basement membrane. J. Biol. Chem. <i>252</i>, 8597-8602. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref15">View at publisher</a></p>
+<p id="bib16">Sarov, M., Barz, C., Jambor, H., Hein, M.Y., Schmied, C., Suchold, D., Stender, B., Janosch, S., Vinay Vikas, K.J., Krishnan, R.T., et al. (2016). A genome-wide resource for the analysis of protein localisation in <i>Drosophila</i>. eLife <i>5</i>, 1-38. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref16">View at publisher</a></p>
+<p id="bib17">Schleicher, E. and Wieland, O.H. (1986). Kinetic analysis of glycation as a tool for assessing the half-life of proteins. Biochim. Biophys. Acta <i>884</i>, 199-205. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref17">View at publisher</a></p>
+<p id="bib18">Schwanhäusser, B., Wolf, J., Selbach, M., and Busse, D. (2013). Synthesis and degradation jointly determine the responsiveness of the cellular proteome. BioEssays <i>35</i>, 597-601. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref18">View at publisher</a></p>
+<p id="bib19">Tchourine, K., Poultney, C.S., Wang, L., Silva, G.M., Manohar, S., Mueller, C.L., Bonneau, R., and Vogel, C. (2014). One third of dynamic protein expression profiles can be predicted by simple rate equations. Mol. Biosyst. <i>10</i>, 2850-2862. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00084-8/sref19">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Brian Stramer (<a href="mailto:brian.m.stramer@kcl.ac.uk">brian.m.stramer@kcl.ac.uk</a>).</p>
+<h4>Materials Availability</h4>
+<p><i>Drosophila</i> strains and other reagents used in this study were generated in (<a href="#bib12">Matsubayashi et al., 2020</a>) and will be available upon reasonable request.</p>
+<h4>Data and Code Availability</h4>
+<p>The sample data used in this protocol is available in the attached Excel file sample_data.xlsx. The code is available to download at <a href="https://github.com/stemarcotti/protein_turnover_modelling">https://github.com/stemarcotti/protein_turnover_modelling</a>.</p>
+<h3>Supplemental Information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc1.xlsx">Material S1. Excel workbook to facilitate the conversion between the GraphPad parameters and the logistic parameters, related to step 3 of Data fitting</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc2.xlsx">Material S2. Excel workbook to calculate protein half-life from turnover rates, related to step 6 of Calculate half-life</a></p>
+<p><a id="mmc3" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/523-Mmc3.xlsx">Material S3. Sample experimental input data for modeling, related to step 1 and step 2 of Data acquisition</a></p>
+<h3>Acknowledgments</h3>
+<p>This project has been funded from the <a href="https://doi.org/10.13039/100004440">Wellcome Trust</a> (grant no. 107859/Z/15/Z) and the <a href="https://doi.org/10.13039/100010663">European Research Council</a> (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement no. 681808).</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization and Methodology, B.J.S.-S., Y.M., and B.M.S.; Software, S.M.; Formal Analysis and Data Curation, S.M., B.J.S.-S., E.S.-M., and Y.M.; Investigation, B.J.S.-S., E.S.-M., A.D., M.D.C.D.D.L.L., and Y.M.; Writing – Original Draft, S.M.; Writing – Review &amp; Editing, S.M., B.J.S.-S., E.S.-M., M.D.C.D.D.L.L., Y.M., and B.M.S.; Funding Acquisition and Supervision, B.M.S.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

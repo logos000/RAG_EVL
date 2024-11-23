@@ -1,0 +1,589 @@
+<article>
+<section>
+<h1 id="header">Analysis of cellulose synthase activity in Arabidopsis using spinning disk microscopy</h1>
+<p><time datetime="2021-10-08">Published: October 8, 2021</time></p>
+<p>Jana Verbančič,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">4</a>,<a href="#cor1">*</a></sup> Jenny Jiahui Huang,<sup><a href="#aff3">3</a></sup> and Heather E. McFarlane<sup><a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Biosciences, University of Melbourne, Parkville, VIC 3010, Australia</p>
+<p id="aff2"><sup>2</sup>Max Planck Institute of Molecular Plant Physiology, Am Muehlenberg 1, 14476 Potsdam, Germany</p>
+<p id="aff3"><sup>3</sup>Department of Cell and Systems Biology, University of Toronto, 25 Harbord St., Toronto, ON M5S 3G5, Canada</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:jverbancic@student.unimelb.edu.au">jverbancic@student.unimelb.edu.au</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:h.mcfarlane@utoronto.ca">h.mcfarlane@utoronto.ca</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100863">10.1016/j.xpro.2021.100863</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>We describe sample preparation and visualization of fluorescently tagged cellulose synthases in cellulose synthase complexes at the plasma membrane of Arabidopsis hypocotyl epidermal cells using live-cell imaging via spinning disk microscopy. We present a technique for sample mounting that may be suitable for imaging other samples. Additionally, we offer free, open-source solutions for image analysis and provide extensive troubleshooting suggestions.</p>
+<p>For complete information on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1101/2020.10.20.345868">McFarlane et al., 2021</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol to track cellulose synthesis in real time in living plant cells</li>
+<li>Image analysis pipeline to quantify cellulose synthase complex speeds</li>
+<li>Example dataset for analysis and example data display suggestions</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The protocol below describes the specific steps for imaging fluorescently-tagged cellulose synthases (CESAs) in cellulose synthase complexes (CSCs) in Arabidopsis hypocotyl epidermal cells. However, we have also used a similar protocol in Arabidopsis leaf and root epidermal cells and similar steps should apply to fluorescently-tagged CESA visualization in other plant species. Additionally, this protocol for sample preparation and time-lapse imaging is also suitable for visualization of other plasma membrane-localized proteins, but data analysis might be different.</p>
+<h3 id="sec1.1">Preparation of ½ MS medium and plates</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol>
+<li>Dissolve 2.2 g Murashige &amp; Skoog Medium (including vitamins) and 0.5 g MES in 800 mL ddH<sub>2</sub>O.</li>
+<li>Adjust pH to 5.8 with 1 M KOH.</li>
+<li>Add 8 g agar, fill up to 950 mL with ddH<sub>2</sub>O and autoclave for 20 min at 121°C.</li>
+<li>In a sterile hood, add 50 mL of sterile 20% sucrose solution (w/v in water) to a final concentration of 1% sucrose.</li>
+<li>Let the media cool to 50°C–60°C and pour approximately 20 square petri dishes.</li>
+<li>Let the plates cool completely and store them upside-down at 4°C until use, for up to 4 weeks.</li>
+<li>For preparation of ½ MS liquid medium omit the addition of agar and continue with steps as described. The ½ MS liquid medium can be stored at 4°C until use, for up to 4 weeks.</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Murashige &amp; Skoog Medium (including vitamins)</td>
+<td>½ concentration∗</td>
+<td>2.2 g∗</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>1%</td>
+<td>50 mL of 20% (w/v) solution</td>
+</tr>
+<tr>
+<td>MES</td>
+<td>2.35 mM</td>
+<td>0.5 g</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>0.8%</td>
+<td>8 g</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>N/A</td>
+<td>Fill up to 950 mL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">∗ Check manufacturer’s directions and use half as much MS media powder as directed to achieve ½ strength MS media.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> If chemical inhibitors are used for long-term treatment, they should be dissolved in an appropriate solvent, filter sterilized and mixed into the cooled media after autoclaving, but before pouring into plates. Inhibitor plates should be used immediately, since some inhibitors can be degraded with time and/or light exposure. Appropriate solvent controls are essential; DMSO and ethanol can have significant effects on Arabidopsis seedling growth and subcellular dynamics (<a href="#mmc1">Figure S1</a>). Therefore, dissolve the inhibitor at a concentration that minimizes the addition of the solvent in the final solution, e.g., isoxaben was prepared as a 20 μM solution in ethanol and 100 μL of the stock solution was added to a final volume of 1 L of ½ MS to have a final concentration of 2 nM isoxaben and 0.01% ethanol.</div>
+<h3 id="sec1.2">Plant growth</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 6 days</div>
+<ol start="8">
+<li>In a sterile hood, sterilize seeds using a solution of 1.5% (final concentration, v/v) sodium hypochlorite and 0.1% (w/v) Triton X-100 solution for 15 min and then wash the seeds three times with sterile ddH<sub>2</sub>O.</li>
+<li>Using a sterile 1000 μL pipette tip, transfer seeds to ½ MS plates, leaving enough space above the seeds for hypocotyl growth and spacing seeds several mm apart (e.g., 2–3 rows of 15–20 seeds each per plate).</li>
+<li>Wrap the plates in aluminum foil and stratify for 3 days at 4°C.</li>
+<li>Expose the plates to light for 3 h (growth chamber conditions: 120 μmol m<sup>−2</sup> s<sup>−1</sup>, 21°C), then wrap in a double layer of aluminum foil to block any light and incubate the plates vertically in the growth chamber in the dark for 3 days at 21°C.</li>
+</ol>
+<h3 id="sec1.3">Preparation of agarose pads</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 min</div>
+<ol start="12">
+<li>Place several 15 mm round cover slips in a petri dish, on top of a piece of parafilm.</li>
+<li>Melt ½ MS with 0.8% agarose (for preparation refer to step 1) and pipet 80 μL onto each cover slip. Immediately place a second round cover slip on top to make a kind of “sandwich” and then wait for it to cool and solidify (a few minutes).</li>
+<li>Keep the agarose pads hydrated by placing a moistened tissue inside the petri dish.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Agarose pads are used instead of square coverslips when preparing the sample for imaging and should be made immediately before imaging, as they may dry out if left for longer. The second round coverslip has to be put on the agarose with caution to ensure an even agarose layer and to avoid air bubbles forming in the agarose.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals</td>
+</tr>
+<tr>
+<td>Murashige &amp; Skoog Medium (including vitamins)</td>
+<td>Duchefa Biochemie</td>
+<td>Cat# M0222</td>
+</tr>
+<tr>
+<td>Sucrose</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# S9378</td>
+</tr>
+<tr>
+<td>Potassium hydroxide pellets</td>
+<td>ChemSupply</td>
+<td>Cat# PA161</td>
+</tr>
+<tr>
+<td>Agar</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# A1296</td>
+</tr>
+<tr>
+<td>Agarose</td>
+<td>Bioline</td>
+<td>Cat# BIO-41025</td>
+</tr>
+<tr>
+<td>MES [2(n-morpholine) ethane sulphonic acid]</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# M8250</td>
+</tr>
+<tr>
+<td>Isoxaben</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 36138</td>
+</tr>
+<tr>
+<td>Sodium hypochlorite solution, 12.5%</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AJA485</td>
+</tr>
+<tr>
+<td>Triton™ X-100, laboratory grade</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# X100</td>
+</tr>
+<tr>
+<td>Silicone vacuum grease</td>
+<td>Beckman Coulter</td>
+<td>Cat# 335148</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>Arabidopsis thaliana</i> pCESA3:GFP-CESA3</td>
+<td><a href="#bib3">Desprez et al., 2007</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>Arabidopsis thaliana</i> pCESA6:YFP-CESA6</td>
+<td><a href="#bib9">Paredez et al., 2006</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>Arabidopsis thaliana</i> pCESA6:tdTomato-CESA6</td>
+<td><a href="#bib10">Sánchez-Rodríguez et al., 2012</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Fiji</td>
+<td><a href="#bib11">Schindelin et al., 2012</a></td>
+<td><a href="https://imagej.net/software/fiji/">https://imagej.net/software/fiji/</a></td>
+</tr>
+<tr>
+<td>StackReg plugin</td>
+<td><a href="#bib13">Thévenaz et al., 1998</a></td>
+<td><a href="http://bigwww.epfl.ch/thevenaz/stackreg/">http://bigwww.epfl.ch/thevenaz/stackreg/</a></td>
+</tr>
+<tr>
+<td>PlotsOfDifference</td>
+<td><a href="#bib5">Goedhart, 2019</a></td>
+<td><a href="https://huygens.science.uva.nl/%20PlotsOfDifferences/">https://huygens.science.uva.nl/ PlotsOfDifferences/</a></td>
+</tr>
+<tr>
+<td>BoxPlotR</td>
+<td><a href="#bib12">Spitzer et al., 2014</a></td>
+<td><a href="http://shiny.chemgrid.org/%20boxplotr/">http://shiny.chemgrid.org/ boxplotr/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Assistent® German coverslips for cell culture, round, 15 mm diameter</td>
+<td>Neuvitro Corporation</td>
+<td>Cat# GG-15</td>
+</tr>
+<tr>
+<td>Rectangular coverslips, #1.522 x 32 mm</td>
+<td>Thermo Scientific GerhardMenzel</td>
+<td>Cat# 12322118</td>
+</tr>
+<tr>
+<td>Metal slides with round opening</td>
+<td>Custom made (see <a href="#fig1">Figure 1</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Kimwipes</td>
+<td>Kimtech</td>
+<td>Cat# WIPE4120</td>
+</tr>
+<tr>
+<td>Parafilm M (38m × 100 mm)</td>
+<td>Bemis Company Inc</td>
+<td>Cat#PM996</td>
+</tr>
+<tr>
+<td>Carl Zeiss™ Immersol™ Immersion Oil or other appropriate immersion media for the microscope objective</td>
+<td>Fisher Scientific</td>
+<td>Cat# 10539438</td>
+</tr>
+<tr>
+<td>Petri dish, square, clear, 120 x 120 x 17 mm, with vents</td>
+<td>Greiner eHealth Technologies</td>
+<td>Cat# 688102</td>
+</tr>
+<tr>
+<td>6-Well plate</td>
+<td>Greiner eHealth Technologies</td>
+<td>Cat # 657160</td>
+</tr>
+<tr>
+<td>Growth chamber</td>
+<td>e.g., Percival Scientific or Conviron</td>
+<td>Model AR-36L2 or A1000</td>
+</tr>
+<tr>
+<td>Inverted microscope with a 100 x oil-immersion objective</td>
+<td>Nikon</td>
+<td>Eclipse Ti-E or Ti2-E with APOTIRF corrected N.A. 1.49, 100x objective</td>
+</tr>
+<tr>
+<td>Spinning disk head</td>
+<td>Yokogawa Electric Corporation</td>
+<td>CSU-W1 or CSU-X1</td>
+</tr>
+<tr>
+<td>Focus maintenance system</td>
+<td>Nikon</td>
+<td>Perfect Focus System 4</td>
+</tr>
+<tr>
+<td>EM-CCD camera or sCMOS camera</td>
+<td>Andor Technology or Photometrics</td>
+<td>iXon Ultra 888 or Prime95B</td>
+</tr>
+</tbody>
+</table>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Technical drawing of a custom-made metal microscopy slide</div>
+<p>The drawing was created with FreeCAD (<a href="http://www.freecadweb.org">www.freecadweb.org</a>).</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> Alternatively, Arabidopsis root, cotyledon or first true leaf epidermal cells can be imaged.</div>
+<p>Fluorescently-tagged CESA lines are also currently available in <i>Brachypodium distachyon</i> (<a href="#bib7">Liu et al., 2017</a>) and <i>Physcomitrium patens</i> (<a href="#bib14">Tran et al., 2018</a>).</p>
+<p>CESAs can be imaged using several varieties of spinning disk microscopes, including differences in microscope bases, objectives, spinning disk units, and cameras. Other imaging systems optimized for fast frame rate acquisition may also be suitable, but a spinning disk system is ideal for high-speed imaging.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Sample and slide preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 min</div>
+<ol>
+<li>Prepare the metal slide for imaging (<a href="#fig2">Figure 2</a>A).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Sample preparation</div>
+<p>(A) A metal slide with a round opening used for sample mounting.</p>
+<p>(B) Vacuum grease is applied with a toothpick in two thin lines on each side of the round opening of the metal slide. Note that the metal slide is positioned on a stand to prevent contact with the surface.</p>
+<p>(C) A rectangular coverslip is placed above the opening and pressed firmly to the metal slide on the sides.</p>
+<p>(D) The metal slide is flipped over and a small amount of water or media is added to the coverslip.</p>
+<p>(E) One to three etiolated seedlings are carefully transferred to the water/media droplets and placed in the middle of the coverslip.</p>
+<p>(F) Preparation of an agarose pad. LEFT: Melted 0.8% agarose is added to a round coverslip. MIDDLE: A second round coverslip is carefully placed on top of the agarose. RIGHT: Prepared agarose pads are stored in a petri dish on parafilm.</p>
+<p>(G) The upper round coverslip is removed from the agarose pad and the agarose pad with the attached round coverslip is carefully placed on top of the seedlings at an angle to avoid air bubbles. Excess water/media is absorbed by cautiously placing a corner of a tissue close to the agarose pad edge.</p>
+<p>(H) The prepared sample is ready to be imaged.</p>
+<p>(I) A thin layer of immersion oil is added to the 100x objective and the metal slide with the prepared sample is placed on top with the rectangular coverslip touching the oil.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Attach a 22x32 mm coverslip on one side of the metal slide by adding a small amount of silicone vacuum grease on each side of the metal slide opening and pressing the coverslip firmly onto the slide without touching the center of the coverslip (<a href="#fig2">Figures 2</a>B and 2C).</li>
+<li>Flip the metal slide over, so the coverslip is below the metal slide, and place it on a stand, such that the coverslip is not touching any surface (<a href="#fig2">Figure 2</a>D).</li>
+</ol>
+</li>
+<li>Mount the etiolated seedling on the prepared metal slide and coverslip.
+<ol type="a">
+<li>Add a minimal amount (∼10 μL) of sterile water or sterile liquid ½ MS medium in the middle of the coverslip without touching the glass (<a href="#fig2">Figure 2</a>D).</li>
+<li>Carefully lift an etiolated seedling from the plate using a toothpick or fine forceps and transfer it to the coverslip. Place a total of one to three hypocotyls centered in the middle of the slide (<a href="#fig2">Figure 2</a>E).</li>
+<li>Cover the etiolated seedling with an agarose pad.
+<ol type="i">
+<li>Take the prepared round coverslips with agarose in the middle (<a href="#fig2">Figure 2</a>F) and separate the upper coverslip from the lower one; the agarose pad will remain attached to one of the round coverslips (like separating the cream filling from a popular type of chocolate sandwich cookie); discard the round coverslip without the agarose.</li>
+<li>Carefully place the agarose and coverslip, agarose side down, on top of the seedlings without moving or pressing the seedlings. The agarose pad will create a more stable environment for time-lapse imaging.</li>
+<li>Absorb the excess water or media with a tissue to reduce seedling drift or movement during imaging (<a href="#fig2">Figures 2</a>G and 2H).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Be very careful not to disturb the seedling, as the cells will be damaged if pressure is applied. Stressing the seedling can also inhibit cytoplasmic streaming and movement of Golgi stacks and other organelles in the cytosol. The mounting phase should be done as quickly as possible to minimize hypocotyl exposure to light. It is also important that no air bubbles are introduced under the agarose pad during mounting.</div>
+<h3 id="sec3.2">CSC imaging with the spinning disk microscope</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> depending on the experiment; 1 sample approximately 12 min</div>
+<p>Etiolated hypocotyl epidermal cells of the seedlings are imaged using an inverted spinning disk confocal microscope (e.g., Nikon Eclipse Ti2-E with a CSU-W1 spinning disk head), a sCMOS camera (e.g., Photometrics Prime95B), and a 100 × oil-immersion objective (e.g., Nikon APOTIRF, MRD01991, NA 1.49, WD 0.12). Depending on the fluorophore attached to the CESA protein, use an excitation wavelength of 488 nm for GFP, 515 nm for YPF or 561 nm for RFP/tdTomato, and band emission filter 525/36 nm for GFP, 540/24 nm for YFP or 605/52 nm for RFP/tdTomato, or other appropriate excitation and emission parameters for the fluorophore.</p>
+<ol start="3">
+<li>Put a drop of immersion oil on the objective and transfer the slide with the rectangular coverslip facing the microscope objective (<a href="#fig2">Figure 2</a>I).</li>
+<li>Using a low laser power (∼15% of 60 mW laser, power measured at fiber tip) and short exposure times (100–200 ms) to prevent photo-bleaching, find cells approximately 2 cells below the apical hook.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Higher laser powers and longer exposure times increase the signal to noise ratio, but also increase photo-bleaching.</div>
+<ol start="5">
+<li>Move to the plasma membrane focal plane, where there are active CSCs . Identify the plasma membrane focal plane by moving in towards the surface of the cell – the CSCs are small punctae, which will appear as clear and bright fluorescent signal. <a href="#sec7.1">Troubleshooting 1</a> and <a href="#sec7.7">4</a>. Avoid stressed or dead cells and cells with no fluorescent signal. <a href="#sec7.3">Troubleshooting 2</a> and <a href="#sec7.5">3</a>
+</li>
+<li>For time-lapse movies, activate the focus maintenance system (i.e., ‘Perfect Focus System’ for Nikon microscopes), then re-adjust the focus if necessary.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The focus maintenance system stabilizes the selected focal plane and therefore reduces drift in the Z direction (‘Z-drift’). To minimize sample drift, water or media should be minimized when preparing the sample.</div>
+<ol start="7">
+<li>Take a 10-min movie with 10 s time intervals with the exposure time of 300–800 ms, depending on the fluorescent marker (<a href="#mmc3">Methods video S1</a>).</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is very important that the imaging is performed in a temperature-stable environment as CESA movement/activity can vary in different temperatures (<a href="#bib4">Fujita et al., 2011</a>). The laser can increase sample temperature, it is therefore important to keep the imaging times to a minimum to avoid artefacts.</div>
+<ol start="8">
+<li>Drift in the XY- and/or Z-direction is either caused by movement of the sample or extensive thermal drift. Significant drift can already be identified during live-cell imaging. In case of extensive drift, stop the acquisition and repeat the imaging with a new sample. <a href="#sec7.9">Troubleshooting 5</a> and <a href="#sec7.11">6</a>
+</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Short-term inhibitor (e.g., isoxaben) treatment is possible before the sample preparation and imaging steps. For this, seedlings can be transferred to liquid ½ MS media with 1% sucrose (e.g., in a 6-well plate) with the appropriate inhibitor concentration and imaged immediately after the treatment.</div>
+<h3 id="sec3.3">Image processing with Fiji</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 sample approximately 5 min, batch processing is also possible in Fiji</div>
+<ol start="9">
+<li>XY- and Z-drift can be easily detected by playing the movie or by generating a sum intensity projection of all images.
+<ol type="a">
+<li>Open the image stack in Fiji (<a href="#fig3">Figure 3</a>A; <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Mmc2.zip">Data S1</a>) and click on the ‘Play’ button to check for large abnormalities.
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Visualization of cellulose synthase complexes (CSCs) by live-cell imaging</div>
+<p>(A) Image of fluorescently-tagged CESAs in a hypocotyl cell at the plasma membrane focal plane. The insert is a close-up of the area inside the dashed rectangle and shows an example of an out-of-focus Golgi stack (white arrow), a SmaCC particle (yellow arrow) and several CSCs in a line (magenta arrow). Scale bar in the insert: 5 μm.</p>
+<p>(B) A sum intensity projection of (A). CSCs can be visualized over a time span of 5–10 min as linear tracks at the plasma membrane.</p>
+<p>Scale bars: 20 μm. See also <a href="#mmc3">Methods video S1</a>.</p>
+</figcaption>
+</figure>
+</li>
+<li>To generate the summed intensity image, go to ‘Image -&gt; Stacks -&gt; Z Project…’ and select all images and ‘Sum Slices’. Press OK. The output will be the movement of CESAs in the plasma membrane (and CESAs in Golgi stacks and other small intracellular compartments) over the time span of the imaging. Active CSCs should be observed as distinct linear tracks (<a href="#fig3">Figure 3</a>B).</li>
+</ol>
+</li>
+<li>If XY-drift occurred, the image stack can be processed with the StackReg plugin in Fiji (<a href="#bib13">Thévenaz et al., 1998</a>).
+<ol type="a">
+<li>Go to ‘Plugins -&gt; StackReg’ and select the ‘Rigid Body’ transformation correct for XY-drift; ‘Rigid Body’ allows for corrections of X- and Y- translations, as well as rotation, but will not resize the images (<a href="#fig4">Figure 4</a>).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. XY-drift correction of CSC time-lapse images using the StackReg plugin</div>
+<p>(A–D) Time course at 0 (A), 1 (B), 2 (C) and 3 min (D) of imaging shows a slight XY-drift towards the upper right of the image.</p>
+<p>(E) Sum intensity projection before applying StackReg for drift correction on a movie with XY-drift shows blurred CSC tracks.</p>
+<p>(F–I) Time course at 0 (F), 1 (G), 2 (H) and 3 min (I) of the same movie as in (A–D) after XY-drift correction with StackReg.</p>
+<p>(J) Sum intensity projection after running StackReg to correct for XY-drift shows successfully aligned images and clear CSC tracks.</p>
+<p>Scale bars: 20 μm.</p>
+</figcaption>
+</figure>
+</li>
+<li>Alternatively, the preinstalled Fiji plugin under ‘Plugins -&gt; Registration -&gt; Rigid Registration’ can be used to correct for XY-drift.</li>
+</ol>
+</li>
+<li>Additional processing on the TIFF stack prior generating the image projection might be required to reduce background noise and enhance the signal intensity.
+<ol type="a">
+<li>For background noise reduction select ‘Analyze -&gt; Multi Kymograph -&gt; Walking Average’ (3 frame average).</li>
+<li>For the signal intensity enhancement select ‘Process -&gt; Enhance contrast…’; the saturated pixels value should be around 0.4% and ‘Process all X slices’ should be selected to process all images in the stack.</li>
+<li>For background subtraction, use ‘Process -&gt; Subtract Background’ with a rolling ball radius of ∼50 px.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Selecting a bright and stable fluorophore with a high quantum yield and low photo-bleaching rate can reduce the need for image processing before the analysis.</div>
+<div class="note">
+<span class="note-title">Note:</span> Laser power and exposure times should be optimized during live-cell imaging to yield images with high signal-to-noise ratio while reducing photo-bleaching and photo-damage.</div>
+<ol start="12">
+<li>Adjusted stacks can be saved in the TIFF format and used for analysis.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> All images should be processed in an identical manner.</div>
+<div class="note">
+<span class="note-title">Note:</span> Other analysis pipelines are also suitable, including using proprietary software such as IMARIS (<a href="#bib6">Gutierrez et al., 2009</a>; <a href="#bib15">Vellosillo et al., 2015</a>) or open-source software, such as ICY (<a href="#bib17">Woodley et al., 2018</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Any image adjustments, including the algorithms and parameters used, should be reported in image analysis methods.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Fluorescently-tagged primary cell wall CESAs can be observed in bright, fast-moving Golgi stacks; in small, rapidly- and erratically-moving compartments inside the cell (i.e., below the plasma membrane focal plane), called small CESA compartments or microtubule-associated CESA compartments (SmaCCs/MASCs; <a href="#bib6">Gutierrez et al., 2009</a>; <a href="#bib2">Crowell et al., 2009</a>) and at the plasma membrane of Arabidopsis hypocotyls (<a href="#bib9">Paredez et al., 2006</a>) (<a href="#fig3">Figure 3</a>). CESA particles that are located at the plasma membrane can be observed as bright punctae that are moving in a linear manner over time and are presumed to be active CSCs, producing cellulose microfibrils (<a href="#fig3">Figure 3</a>B; <a href="#mmc3">Methods video S1</a>).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<p>CSC speeds are calculated from kymographs, which are graphical representations of individual CSCs in space over time (<a href="#fig5">Figure 5</a>). CSCs in a kymograph are observed as lines with a specific slope, from which speed can be calculated.</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. CSC speed determination from kymographs in Fiji</div>
+<p>(A) First image in the time-lapse movie.</p>
+<p>(B) The sum intensity projection of all images in the time-lapse movie. Line segment in magenta is overlaying a chosen CSC track for speed analysis and was copied to the original time-lapse movie in (A).</p>
+<p>(C) Kymograph generated from the magenta line segment in (A). The yellow line represents a single CSC trajectory chosen for speed measurement.</p>
+<p>(D) Kymograph of a SmaCC particle, marked with white arrows. SmaCCs are usually bright and move erratically. Scale bars in A and B: 20 μ, scale bars in C and D: 2 μm. See also Supplemental Dataset 1.</p>
+</figcaption>
+</figure>
+<p>Images often include fluorescently-tagged CESAs in SmaCCs/MASCs and Golgi stacks. SmaCCs are usually bright punctae with irregular movement (<a href="#fig5">Figure 5</a>D) and Golgi stacks are relatively large and bright objects with an irregular pattern of movement (<a href="#bib9">Paredez et al., 2006</a>), which can be easily observed in the kymograph and excluded.</p>
+<p>It is also important to consider the definition of n for CSC speed calculation. The actual number of CSCs or CSC tracks analyzed is not considered as n, as many CSC tracks can be measured from a single cell (<a href="#fig5">Figure 5</a>). CSC tracks should be considered from several cells in different seedlings. Therefore, n is the number of cells in a certain number of seedlings, e.g., n=9 if CSC tracks are measured in 3 different cells of 3 different seedlings or n=6 if CSC tracks are measured in 3 different cells of 2 different seedlings. Different cells represent technical replicates and different seedlings represent biological replicates.</p>
+<h3 id="sec5.1">Kymograph analysis with Fiji</h3>
+<p>CSC speed data can be obtained with the ‘Multi Kymograph’ function in Fiji.</p>
+<ol>
+<li>Open the previously-processed TIFF stack of the time-lapse images (<a href="#fig5">Figure 5</a>A) and generate the sum intensity projection with ‘Image -&gt; Stacks -&gt; Z Project…’, select ‘all images’ and ‘Sum Slices’ (<a href="#fig5">Figure 5</a>B).</li>
+<li>In the sum intensity projection, where multiple CSC tracks should be visible, select the ‘segmented line’ tool and draw a line along one CSC track (<a href="#fig3">Figures 3</a>A and <a href="#fig5">5</a>B).</li>
+<li>Go back to the previously opened TIFF stack and copy the drawn line to the stack with ‘Edit -&gt; Selection -&gt; Restore Selection’ to select the CSC track to follow through the whole imaging time (<a href="#fig5">Figure 5</a>A).</li>
+<li>To generate a kymograph, go to ‘Analyze -&gt; Multi Kymograph -&gt; Multi Kymograph’ and set the line width to 3 pixels (px). This kymograph is a two-dimensional representation of the time-lapse image, where the x-dimension is defined by the line drawn on the image stack, and the y-dimension is time. The kymograph usually shows the paths of several CSC tracks over time as diagonal lines (<a href="#fig5">Figure 5</a>C). <a href="#sec7.13">Troubleshooting 7</a>
+</li>
+<li>The slope of those lines can be used to calculate CSC speeds.
+<ol type="a">
+<li>Go to ‘Analyze -&gt; Set measurements…’ and select the ‘Area’ and ‘Bounding Rectangle’ options.</li>
+<li>With the ‘straight line’ tool, draw a line along one diagonal line on the kymograph (<a href="#fig5">Figure 5</a>C, yellow line) and press ‘M’ to measure the coordinates.</li>
+<li>A ‘Results’ window with ‘width’ and ‘height’ values will automatically appear. Those values represent the X-distance (‘width’) and the Y-time (‘height’) in pixels by which the CSC particle moved.</li>
+</ol>
+</li>
+<li>With this data, CSC speed (i.e., the distance a particle has traveled over time) can be calculated. Each pixel in the y-dimension corresponds to one frame in the time-lapse, which is defined by the time interval between images. For the x-dimension of the kymograph, the pixel size is defined by the objective, camera, and any binning used. Scale information should be encoded in image metadata collected from a calibrated microscope but it can also be obtained using a micrometer calibration slide. In Fiji, scale information can be obtained by going to ‘Image -&gt; Properties…’</li>
+<li>Example calculation: a time-series image was collected for 10 min with 10-s intervals and had a scale of 1 μm = 9.0909 px (i.e., 1 px = 110 nm). An example line drawn on the kymograph had a width of 23 px and a height of 54 px as measured by Fiji:</li>
+</ol>
+<p class="math-ml"><math> <mi>s</mi> <mi>p</mi> <mi>e</mi> <mi>e</mi> <mi>d</mi> <mo>=</mo> <mfrac> <mi>distance</mi> <mi>time</mi> </mfrac> <mo>=</mo> <mfrac> <mrow> <mn>23</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> </mrow> <mrow> <mn>54</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> </mrow> </mfrac> <mo>=</mo> <mfrac> <mrow> <mn>23</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> <mfenced> <mfrac> <mrow> <mn>110</mn> <mspace></mspace> <mi>n</mi> <mi>m</mi> </mrow> <mrow> <mn>1</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> </mrow> </mfrac> </mfenced> </mrow> <mrow> <mn>54</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> <mfenced> <mfrac> <mrow> <mn>10</mn> <mspace></mspace> <mi>s</mi> <mi>e</mi> <mi>c</mi> </mrow> <mrow> <mn>1</mn> <mspace></mspace> <mi>p</mi> <mi>x</mi> </mrow> </mfrac> </mfenced> </mrow> </mfrac> <mo>=</mo> <mfrac> <mrow> <mn>2530</mn> <mspace></mspace> <mi>n</mi> <mi>m</mi> </mrow> <mrow> <mn>540</mn> <mspace></mspace> <mi>s</mi> <mi>e</mi> <mi>c</mi> </mrow> </mfrac> <mo>=</mo> <mn>4.68</mn> <mspace></mspace> <mi>n</mi> <mi>m</mi> <mspace></mspace> <msup> <mi>s</mi> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> <mo>=</mo> <mn>281</mn> <mspace></mspace> <mi>n</mi> <mi>m</mi> <mspace></mspace> <mi>m</mi> <mi>i</mi> <msup> <mi>n</mi> <mrow> <mo>−</mo> <mn>1</mn> </mrow> </msup> </math></p>
+<p>Convention in the field has been to present CSC speeds in nm min<sup>−1</sup>; however, nm s<sup>−1</sup> are the most appropriate SI units; some authors call this measurement “velocity” but velocity is a vector quantity (speed plus direction), so speed is a more appropriate term.</p>
+<ol start="8">
+<li>The data can be visualized as violin plots using statistical analysis software or tools available online, such as ‘PlotsOfDifferences - a web app for the quantitative comparison of unpaired data’ (<a href="#bib5">Goedhart, 2019</a>) (<a href="#fig6">Figure 6</a>) or ‘BoxPlotR: A web tool for generation of box plots’ (<a href="#bib12">Spitzer et al., 2014</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Data visualization of CSC speeds as violin plots generated with “PlotsOfDifferences”</div>
+<p>Speed measurements from two different cells each from two different wild-type seedlings. Gray dots represent individual speed measurements (60 for each cell) and the shape of the plots represents the data distribution. The open circle represents the mean and the black bar represents the 95% confidence interval of the mean.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The protocol requires stable fluorescently-labeled CESA lines, such as Arabidopsis GFP-CESA3, YFP-CESA6 or tdT-CESA6, transformed into wild-type or mutant backgrounds. All CESA marker lines reported to-date have the fluorescent protein fused to the N-terminus.</p>
+<p>CESA imaging is temperature sensitive (<a href="#bib4">Fujita et al., 2011</a>). For example, <a href="#bib4">Fujita et al., 2011</a> showed that transferring wild-type seedlings from 21°C to 29°C for 3 h increased the average CSC speed by 3.7-fold. Therefore, care must be taken to image the seedlings in a temperature-stable environment with as little temperature fluctuation as possible, e.g., performing the measurements in an air-conditioned laboratory.</p>
+<p>Other factors can also affect CESA imaging. Exposing hypocotyls to light (during sample mounting) or to changes in gravity vector (i.e., mounting the sample on a horizontal stage) can also affect hypocotyl growth. Blue light (i.e., light used to excite GFP) can trigger microtubule reorientation in plants (<a href="#bib18">Zandomeni and Schopfer, 1993</a>), which can affect orientation of CSC trajectories in the plasma membrane (<a href="#bib9">Paredez et al., 2006</a>).</p>
+<p>Osmotic and mechanical stress can induce CESA internalization from the plasma membrane and accumulation in SmaCCs (<a href="#bib6">Gutierrez et al., 2009</a>). Therefore, collecting images as quickly as possible and only mounting 1–3 seedlings at a time can reduce the effects of these abiotic factors on CSC speed in the plasma membrane and CESA distribution within the cell.</p>
+<p>CESA movies with Z-drift or extensive XY-drift that cannot be corrected with the StackReg plugin in Fiji cannot be properly analyzed. We would advise against using these images for analyses for CESA speed or density. <a href="#sec7.9">Troubleshooting 5</a> and <a href="#sec7.11">6</a></p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>In step 4 of imaging CSCs, too few or too many plasma membrane-bound CSC can be observed due to imaging cells that are too young or too old (<a href="#fig7">Figures 7</a>A–7C).</p>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Selecting the correct cells for CSC imaging</div>
+<p>(A) A low magnification stitched image of an etiolated seedling indicating the correct imaging region – epidermal cells in the upper hypocotyl (dashed box). The magenta arrow indicates cells of the apical hook that are too young to image and the white arrow indicates cells too far away from the apical hook that are too old for imaging. Scale bar: 200 μm.</p>
+<p>(B) An image of a cell that is positioned too far away from the apical hook of the seedling (also indicated with a white arrow in A) and therefore has few CSCs in the plasma membrane.</p>
+<p>(C) An image of cells that are positioned very close to the apical hook (also indicated with a magenta arrow in A) and are very young, therefore unsuitable for the analysis.</p>
+<p>(D) An image of cells at the correct imaging region, positioned 2–3 cells below the apical hook of the etiolated seedling (also indicated with a dashed box in A).</p>
+<p>(E) An example of stressed cells – very few plasma membrane-localized CSCs are present and CESA signal is much higher in Golgi stacks and SmaCCs.</p>
+<p>(F) An example of a dead cell.</p>
+<p>(G) An example of a seedling with no detected fluorescent CESA signal.</p>
+<p>Scale bars B–G: 20 μm.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.2">Potential solution</h3>
+<p>If there are too few or too many CSCs in the plasma membrane, the cells may be too young or too old. Cells that are too young/too close to the apical hook (<a href="#fig7">Figures 7</a>A and 7B) or too old/too far down the hypocotyl (<a href="#fig7">Figures 7</a>A and 7C) have unusually high or low CESA density in the plasma membrane, respectively and are unsuitable for imaging. Image cells that are approximately 2–3 cells away from the apical hook of the etiolated hypocotyl (<a href="#fig7">Figures 7</a>A and 7D; <a href="#bib1">Bringmann et al., 2012</a>).</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>In step 5 of imaging CSCs, few or no plasma membrane-bound CSCs can be observed due to stressed or dead cells (<a href="#fig7">Figures 7</a>E and 7F).</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>If there are many SmaCCs and few CSCs in the plasma membrane, the seedlings may be stressed due to over-handling or a long delay between mounting and imaging (<a href="#fig7">Figure 7</a>E). CESA localization and dynamics are sensitive to abiotic factors (<a href="#bib16">Wang et al., 2016</a>).Work very carefully when handing and mounting seedlings and image seedlings relatively quickly (within ∼30 min) after mounting.</p>
+<h3 id="sec7.5">Problem 3</h3>
+<p>In CSC imaging step 5, no plasma membrane-bound CSCs can be observed due to no fluorescent signal (<a href="#fig7">Figure 7</a>G).</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>If only vague outlines of the cells are visible and no fluorescently-tagged CESAs are visible in the plasma membrane or within the cell (<a href="#fig7">Figure 7</a>G), the signal may be segregating or silenced so there is little or no fluorescently-tagged CESA signal in the seedling; choose a new seedling for imaging.</p>
+<h3 id="sec7.7">Problem 4</h3>
+<p>In CSC imaging step 5, few or no plasma membrane-bound CSCs can be observed due to the wrong focal plane (<a href="#fig8">Figure 8</a>).</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Selecting the correct focal plane for CSC imaging</div>
+<p>(A and B) Out of focus images taken above the plasma membrane (PM) focal plane. An image taken too close to the coverslip (A) is blurry and CSCs cannot be imaged. In the image taken just below image A (B) CSCs can be seen but are still out of focus.</p>
+<p>(C) Image of CESAs at the correct PM focal plane. CESAs appear as bright punctae, are clear and can be easily imaged.</p>
+<p>(D and E) Out of focus images taken below the PM focal plane. An image taken just below the PM focal plane (D) contains few CSCs, but includes many CESA-containing Golgi stacks (large bright dots). An image taken in the lower cell cortex below image D (E) contains almost exclusively CESA-containing Golgi stacks. Scale bars: 20 μm.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.8">Potential solution</h3>
+<p>The focal plane may be incorrect and set above the cell (<a href="#fig8">Figures 8</a>A and 8B) or too deep into the cell (<a href="#fig8">Figures 8</a>D and 8E); adjust the focus so that the imaging plane is exactly at the plasma membrane (<a href="#fig8">Figure 8</a>C).</p>
+<h3 id="sec7.9">Problem 5</h3>
+<p>In CSC imaging step 8, XY-drift can occur (<a href="#fig4">Figure 4</a>).</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>Remove as much water as possible from the slide when mounting the sample by placing a corner of a tissue under the agarose pad to absorb water (<a href="#fig2">Figure 2</a>G). Wait for approximately 5 min after mounting the sample before starting image acquisition to allow the sample to settle into the agarose pad. If the XY-drift is moderate, the Fiji plugin ‘StackReg’ can be used for correction (<a href="#fig4">Figures 4</a>F–4J).</p>
+<h3 id="sec7.11">Problem 6</h3>
+<p>In CSC imaging step 8, Z-drift or XYZ-drift can occur (<a href="#fig9">Figures 9</a>A–9F).</p>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Example of an XYZ-drift and a resulting kymograph that is unsuitable for CSC speed analysis</div>
+<p>(A) Sum projection of all images from a time-lapse image series with XYZ-drift without StackReg drift correction.</p>
+<p>CSC tracks are blurry and not clearly distinguishable.</p>
+<p>(B–E) Unsuccessful XYZ-drift correction with StackReg. Time course at 0 (B), 1 (C), 2 (D) and 3 min (E) after XY-drift correction with StackReg reveals substantial drift in the Z-direction. At the beginning of the movie, plasma membrane-bound CESAs are clear (B) but at the end of the movie the focal plane moves inside of the cell where large, bright CESA-containing Golgi stacks are more prevalent (E).</p>
+<p>(F) Sum projection of all images from the StackReg-corrected time-lapse image series (B-E) with XYZ-drift. CSC tracks can be seen more clearly than before correction (A) but are still blurry and mixed between each other due to Z-drift. Scale bars A–F: 20 μm.</p>
+<p>(G) An example of a kymograph that is unsuitable for analysis. CSC tracks are smeared and not clearly visible; therefore, a speed analysis cannot be performed. Scale bar: 2 μm.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.12">Potential solution</h3>
+<p>Remove as much water as possible from the slide when mounting the sample, let the slide settle after mounting for ∼5 min. Use the focus maintenance system (e.g., Nikon ‘Perfect Focus System’) to reduce Z-drift (<a href="#fig9">Figure 9</a>F) and image hypocotyl cells that are closest to the cover slip. If the Z-drift is large, repeat the imaging on a different cell.</p>
+<h3 id="sec7.13">Problem 7</h3>
+<p>In data analysis step 4, linear tracks, which represent CSCs, may not be clearly visible either in the sum projection or the kymograph (<a href="#fig9">Figure 9</a>G). This makes it difficult or impossible to measure CSC speed.</p>
+<h3 id="sec7.14">Potential solution</h3>
+<p>Collect a new time-lapse image from a fresh sample, taking steps to minimize abiotic stress and XYZ-drift as described above.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Bringmann, M., Li, E., Sampathkumar, A., Kocabek, T., Hauser, M.T., and Perssona, S. (2012). POM-POM2/CELLULOSE SYNTHASE INTERACTING1 is essential for the functional association of cellulose synthase and microtubules in Arabidopsis. Plant Cell <i>24</i>, 163-177. <a class="external-link" href="https://doi.org/10.1105/tpc.111.093575">https://doi.org/10.1105/tpc.111.093575</a></p>
+<p id="bib2">Crowell, E.F., Bischoff, V., Desprez, T., Rolland, A., Stierhof, Y.D., Schumacher, K., Gonneau, M., Höfte, H., and Vernhettes, S. (2009). Pausing of Golgi bodies on microtubules regulates secretion of cellulose synthase complexes in Arabidopsis. Plant Cell <i>21</i>, 1141-1154. <a class="external-link" href="https://doi.org/10.1105/tpc.108.065334">https://doi.org/10.1105/tpc.108.065334</a></p>
+<p id="bib3">Desprez, T., Juraniec, M., Crowell, E.F., Jouy, H., Pochylova, Z., Parcy, F., Höfte, H., Gonneau, M., and Vernhettes, S. (2007). Organization of cellulose synthase complexes involved in primary cell wall synthesis in Arabidopsis thaliana. PNAS <i>104</i>, 15572-15577. <a class="external-link" href="https://doi.org/10.1073/pnas.0706569104">https://doi.org/10.1073/pnas.0706569104</a></p>
+<p id="bib4">Fujita, M., Himmelspach, R., Hocart, C.H., Williamson, R.E., Mansfield, S.D., and Wasteneys, G.O. (2011). Cortical microtubules optimize cell-wall crystallinity to drive unidirectional growth in Arabidopsis. Plant J. <i>66</i>, 915-928. <a class="external-link" href="https://doi.org/10.1111/j.1365-313X.2011.04552.x">https://doi.org/10.1111/j.1365-313X.2011.04552.x</a></p>
+<p id="bib5">Goedhart, J. (2019). PlotsOfDifferences – a web app for the quantitative comparison of unpaired data. bioRxiv. . <a class="external-link" href="https://doi.org/10.1101/578575">https://doi.org/10.1101/578575</a></p>
+<p id="bib6">Gutierrez, R., Lindeboom, J.J., Paredez, A.R., Emons, A.M.C., and Ehrhardt, D.W. (2009). Arabidopsis cortical microtubules position cellulose synthase delivery to the plasma membrane and interact with cellulose synthase trafficking compartments. Nat. Cell Biol. <i>11</i>, 797-806. <a class="external-link" href="https://doi.org/10.1038/ncb1886">https://doi.org/10.1038/ncb1886</a></p>
+<p id="bib7">Liu, D., Zehfroosh, N., Hancock, B.L., Hines, K., Fang, W., Kilfoil, M., Learned-Miller, E., Sanguinet, K.A., Goldner, L.S., and Baskin, T.I. (2017). Imaging cellulose synthase motility during primary cell wall synthesis in the grass Brachypodium distachyon. Sci. Rep. <i>7</i>, 1-12. <a class="external-link" href="https://doi.org/10.1038/s41598-017-14988-4">https://doi.org/10.1038/s41598-017-14988-4</a></p>
+<p id="bib8">McFarlane, H.E., Mutwil-Anderwald, D., Verbančič, J., Picard, K.L., Gookin, T.E., Froehlich, A., Trindade, L.M., Alonso, J.M., Assmann, S.M., and Persson, S. (2021). A G protein-coupled receptor-like module regulates Cellulose Synthase secretion from the endomembrane system in Arabidopsis. Dev. Cell <i>56</i>, 14841497. <a class="external-link" href="https://doi.org/10.1101/2020.10.20.345868">https://doi.org/10.1101/2020.10.20.345868</a></p>
+<p id="bib9">Paredez, A.R., Somerville, C.R., and Ehrhardt, D.W. (2006). Visualization of cellulose synthase demonstrates functional association with microtubules. Science <i>312</i>, 1491-1495. <a class="external-link" href="https://doi.org/10.1126/science.1126551">https://doi.org/10.1126/science.1126551</a></p>
+<p id="bib10">Sánchez-Rodríguez, C., Bauer, S., Hématy, K., Saxe, F., Ibáñez, A.B., Vodermaier, V., Konlechner, C., Sampathkumar, A., Rüggeberg, M., Aichinger, E., et al. (2012). CHITINASE-LIKE1/POM-POM1 and its homolog CTL2 are glucan interacting proteins important for cellulose biosynthesis in Arabidopsis. Plant Cell <i>24</i>, 589-607. <a class="external-link" href="https://doi.org/10.1105/tpc.111.094672">https://doi.org/10.1105/tpc.111.094672</a></p>
+<p id="bib11">Schindelin, J., Arganda-Carreras, I., Frise, E., Kaynig, V., Longair, M., Pietzsch, T., Preibisch, S., Rueden, C., Saalfeld, S., Schmid, B., et al. (2012). Fiji: an open-source platform for biological-image analysis. Nat. Methods <i>9</i>, 676-682. <a class="external-link" href="https://doi.org/10.1038/nmeth.2019">https://doi.org/10.1038/nmeth.2019</a></p>
+<p id="bib12">Spitzer, M., Wildenhain, J., Rappsilber, J., and Tyers, M. (2014). BoxPlotR: a web tool for generation of box plots. Nat. Methods <i>11</i>, 121-122. <a class="external-link" href="https://doi.org/10.1038/nmeth.2811">https://doi.org/10.1038/nmeth.2811</a></p>
+<p id="bib13">Thévenaz, P., Ruttimann, U.E., and Unser, M. (1998). A pyramid approach to subpixel registration based on intensity. IEEE Trans. Image Process. <i>7</i>, 27-41. <a class="external-link" href="https://doi.org/10.1109/83.650848">https://doi.org/10.1109/83.650848</a></p>
+<p id="bib14">Tran, M.L., McCarthy, T.W., Sun, H., Wu, S.Z., Norris, J.H., Bezanilla, M., Vidali, L., Anderson, C.T., and Roberts, A.W. (2018). Direct observation of the effects of cellulose synthesis inhibitors using live cell imaging of Cellulose Synthase (CESA) in Physcomitrella patens. Sci. Rep. <i>8</i>, 1-9. <a class="external-link" href="https://doi.org/10.1038/s41598-017-18994-4">https://doi.org/10.1038/s41598-017-18994-4</a></p>
+<p id="bib15">Vellosillo, T., Yeats, T., and Sorek, N. (2015). Analysis of in vivo cellulose biosynthesis in Arabidopsis cells by spinning disk confocal microscopy. Bio Protoc. <i>5</i>, e1617. <a class="external-link" href="https://doi.org/10.21769/BioProtoc.1617">https://doi.org/10.21769/BioProtoc.1617</a></p>
+<p id="bib16">Wang, T., McFarlane, H.E., and Persson, S. (2016). The impact of abiotic factors on cellulose synthesis. J. Exp. Bot. <i>67</i>, 543-552. <a class="external-link" href="https://doi.org/10.1093/jxb/erv488">https://doi.org/10.1093/jxb/erv488</a></p>
+<p id="bib17">Woodley, M., Mulvihill, A., Fujita, M., and Wasteneys, G.O. (2018). Exploring microtubule-dependent cellulose-synthase-complex movement with high precision particle tracking. Plants <i>7</i>. . <a class="external-link" href="https://doi.org/10.3390/plants7030053">https://doi.org/10.3390/plants7030053</a></p>
+<p id="bib18">Zandomeni, K. and Schopfer, P. (1993). Reorientation of microtubules at the outer epidermal wall of maize coleoptiles by phytochrome, blue-light photoreceptor, and auxin. Protoplasma <i>173</i>, 103112. <a class="external-link" href="https://doi.org/10.1007/BF01378999">https://doi.org/10.1007/BF01378999</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>The lead contact is Heather E. McFarlane (<a href="mailto:h.mcfarlane@utoronto.ca">h.mcfarlane@utoronto.ca</a>). Further information and requests for resources and reagents should be directed to and will be fulfilled by the technical contact, Jana Verbančič (<a href="mailto:jverbancic@student.unimelb.edu.au">jverbancic@student.unimelb.edu.au</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate unique datasets or code.</p>
+<h3>Supplemental information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Mmc1.jpg">Figure S1. Arabidopsis seedling growth is inhibited by common solvents, highlighting the need for appropriate solvent controls for inhibitor studies, related to step 1</a></p>
+<p><a id="mmc2" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Mmc2.zip">Data S1. TIFF stack of GFP-CESA time-lapse imaging, related to step 9</a></p>
+<p><a id="mmc3" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1060-Mmc3.mp4">Methods video S1. Time-lapse movie of GFP-CESA3, related to step 7</a></p>
+<h3>Acknowledgments</h3>
+<p>Imaging was conducted using instruments supported by <a href="https://doi.org/10.13039/501100000196">Canada Foundation for Innovation</a> and the <a href="https://doi.org/10.13039/100012171">Ontario Research Fund</a> grants (38721) to H.E.M. J.V. was supported by <a href="https://doi.org/10.13039/501100001782">the University of Melbourne</a> Research Scholarship and is affiliated with the International Max Planck Research School – Primary Metabolism and Plant Growth, and H.E.M. acknowledges funding from the <a href="https://doi.org/10.13039/501100001804">Canada Research Chairs</a> Program and a Natural Science and Engineering Council (<a href="https://doi.org/10.13039/501100000038">NSERC</a>) Discovery grant (2020-05959).</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, J.V. and H.E.M.; resources, J.J.H. and H.E.M.; writing – original draft, J.V.; writing – reviewing and editing, J.V., J.J.H., and H.E.M.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

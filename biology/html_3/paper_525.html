@@ -1,0 +1,539 @@
+<article>
+<section>
+<h1 id="header">Transcriptome-wide quantification of double-stranded RNAs in live mouse tissues by dsRIP-Seq</h1>
+<p><time datetime="2021-03-19">Published: March 19, 2021</time></p>
+<p>Yimeng Gao,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">5</a></sup> Shirui Chen,<sup><a href="#aff3">3</a></sup> Stephanie Halene,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup> and Toma Tebaldi<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff4">4</a>,<a href="#fn1">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Section of Hematology, Yale Cancer Center and Department of Internal Medicine, Yale University School of Medicine, New Haven, CT 06520, USA</p>
+<p id="aff2"><sup>2</sup>Yale Stem Cell Center and Yale RNA Center, Yale University School of Medicine, New Haven, CT 06520, USA</p>
+<p id="aff3"><sup>3</sup>Department of Computational Biology and Medical Sciences, Graduate School of Frontier Sciences, The University of Tokyo, Bunkyo-ku, Tokyo 113-0032, Japan</p>
+<p id="aff4"><sup>4</sup>Department of Cellular, Computational and Integrative Biology (CIBIO), University of Trento, Trento 38123, Italy</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:stephanie.halene@yale.edu">stephanie.halene@yale.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:toma.tebaldi@yale.edu">toma.tebaldi@yale.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100366">10.1016/j.xpro.2021.100366</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Double-stranded RNAs (dsRNAs) are abundantly present in cells, playing multiple regulatory functions. dsRNAs of viral origin activate innate immune responses. Since RNA editing and modifications affect the structure and recognition of RNAs, their alteration can result in the accumulation of aberrant endogenous dsRNAs inducing a deleterious innate immune response. Here, we present a complete protocol for the measurement of dsRNAs in a live mouse tissue using dsRNA immunoprecipitation and sequencing (dsRIP-Seq). This protocol focuses on tissue isolation, dsRNA immunoprecipitation and downstream computational analysis.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib3">Gao et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Purification and sequencing of double-stranded RNAs (dsRNAs) in live tissues</li>
+<li>Open-source computational framework for the quantification and comparison of dsRNAs</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Timed breeding</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 15–20 days</div>
+<ol>
+<li>Timed breeding to obtain fetal liver.
+<ol type="a">
+<li>Set up mating between one male and two female mice (8–16 weeks old) per cage in the afternoon 15–20 days before experiment. Set up as many cages as needed to obtain desired number of fetal livers per genotype, taking into account breeding success for mouse strain and season.</li>
+<li>Check for vaginal plug each morning after mating has been set up. Move female mouse with plug to a separate cage. The morning a plug is detected is counted as day E0.5.</li>
+<li>On day E14.5 proceed with fetal liver isolation. Usually, one E14.5 fetal liver will yield approximately 30 μg RNA (∼40–50 million nucleated cells), sufficient for a single experimental sample.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">Isolation of murine fetal livers</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="2">
+<li>Thoroughly clean the bench and dissection tools with 70% ethanol and a cleaning agent to remove RNases (e.g., RNase Away<sup>TM</sup>).</li>
+<li>Prepare sterile petri dishes, dissection scissors, microdissection forceps (2) and tweezers (2, 4 1/4" extra fine point), 24-well plates, 1.5 mL Eppendorf tubes.</li>
+<li>Isolate fetal livers from the pregnant mouse at E14.5.
+<ol type="a">
+<li>Prepare two to four matching 24-well plates per pregnant female and fill each well with 1 mL 1× PBS. Label each well with mouse identifier and fetal liver number. In general, expect 4–10 fetal livers per pregnant female.</li>
+<li>Sacrifice the pregnant mouse by isofluorane anesthesia and cervical dislocation per institutional animal care and use committee guidelines. Disinfect the abdominal wall with 70% ethanol.</li>
+<li>Using forceps, tent skin of the lower abdomen and cut up towards sternum to expose internal organs. Remove bilateral uterine horns and place in 10 cm diameter petri dish with 1× PBS to rinse maternal blood.</li>
+<li>Gently remove one fetal-placental unit from uteri at a time using extra-fine point tweezers and separate fetus from placenta and place fetus in a 24-well filled with 1× PBS. Place the 24-well plate on ice.</li>
+<li>Dissect the fetal livers from the fetuses. Gently hold the body of the fetus with one tweezer while gently pulling the fetal liver (recognizable by its dark red color) away from the body with the second tweezer. Place fetal liver in matching well of second 24-well plate, also on ice. Remove remnant connective tissue from fetal livers.</li>
+</ol>
+</li>
+<li>Store the fetal livers in the 24-well plate on ice for further experiments (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Morphology of murine E14.5 embryos and fetal livers</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> If genotyping of each fetal liver is required, clean utensils with 10% bleach followed by 70% ethanol in-between each fetus and fetal liver prep. After isolation of fetal livers, remove a small piece of fetus from each corresponding well for genotyping following standard tissue lysis and DNA genotyping protocol.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Normal mouse IgG</td>
+<td>MilliporeSigma</td>
+<td>Cat# 12-371; RRID: AB_145840</td>
+</tr>
+<tr>
+<td>Mouse Monoclonal Antibody SCICONS J2</td>
+<td>English &amp; Scientific Consulting Kft.</td>
+<td>Cat# 10010200; RRID: AB_2651015</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Sodium chloride, 5M solution</td>
+<td>AmericanBio</td>
+<td>Cat# AB13198-01000</td>
+</tr>
+<tr>
+<td>Magnesium chloride, 1M solution</td>
+<td>AmericanBio</td>
+<td>Cat# AB09006-00100</td>
+</tr>
+<tr>
+<td>Tris-HCl, 1M solution, pH 7.4</td>
+<td>AmericanBio</td>
+<td>Cat# AB14044-01000</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# I8896-50ML</td>
+</tr>
+<tr>
+<td>cOmplete™, Mini, EDTA-free Protease Inhibitor Cocktail</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 11836170001</td>
+</tr>
+<tr>
+<td>SUPERase• In™ RNase Inhibitor</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM2696</td>
+</tr>
+<tr>
+<td>Water, RNase free</td>
+<td>AmericanBio</td>
+<td>Cat# AB02128-00500</td>
+</tr>
+<tr>
+<td>Dynabeads™ Protein G for Immunoprecipitation</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 10004D</td>
+</tr>
+<tr>
+<td>TRIzol™ Reagent</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15596026</td>
+</tr>
+<tr>
+<td>Chloroform</td>
+<td>J.T. Baker</td>
+<td>Cat# 9180-01</td>
+</tr>
+<tr>
+<td>GlycoBlue™ Coprecipitant</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM9515</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>RNeasy Plus Mini Kit</td>
+<td>QIAGEN</td>
+<td>Cat# 74134</td>
+</tr>
+<tr>
+<td>KAPA RNA HyperPrep Kit with RiboErase</td>
+<td>Roche</td>
+<td>Cat# KK8560</td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Mouse genome and transcript annotation</td>
+<td>Gencode M15</td>
+<td><a href="https://www.gencodegenes.org/mouse/release_M15.html">https://www.gencodegenes.org/mouse/release_M15.html</a></td>
+</tr>
+<tr>
+<td>Transcript sequences</td>
+<td>Ensembl 90</td>
+<td><a href="https://useast.ensembl.org/info/website/archives/index.html">https://useast.ensembl.org/info/website/archives/index.html</a></td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse: Vav-Cre; Mettl3<sup>fl/fl</sup>
+</td>
+<td>(<a href="#bib3">Gao et al., 2020</a>)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Mouse: C57BL/6J</td>
+<td>In house colony</td>
+<td>JAX: 000664</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>STAR v2.3.3a</td>
+<td>N/A</td>
+<td><a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a></td>
+</tr>
+<tr>
+<td>edgeR</td>
+<td>Bioconductor</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">https://bioconductor.org/packages/release/bioc/html/edgeR.html</a></td>
+</tr>
+<tr>
+<td>FastUniq v1.1</td>
+<td>N/A</td>
+<td><a href="https://sourceforge.net/projects/fastuniq/">https://sourceforge.net/projects/fastuniq/</a></td>
+</tr>
+<tr>
+<td>RNAfold v2.4.11</td>
+<td>ViennaRNA package</td>
+<td><a href="https://www.tbi.univie.ac.at/RNA/">https://www.tbi.univie.ac.at/RNA/</a></td>
+</tr>
+<tr>
+<td>FastQC v0.11.5</td>
+<td>N/A</td>
+<td><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>TapeStation 2200</td>
+<td>Agilent Technologies</td>
+<td>Cat# G2964AA</td>
+</tr>
+<tr>
+<td>HiSeq 2500 Sequencing System</td>
+<td>Illumina</td>
+<td>Cat# SY–401–2501</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>dsRIP lysis buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Volume (100 mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>100 mM</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>Tirs-HCl pH 7.4</td>
+<td>50 mM</td>
+<td>5 mL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub>
+</td>
+<td>3 mM</td>
+<td>0.3 mL</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>0.5%</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O, RNase-free</td>
+<td>n/a</td>
+<td>92.2 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p>On the day of the experiment, to 10 mL dsRIP lysis buffer add 0.4 mL of 25× Complete Proteinase Inhibitor and 20 μL SUPERase⋅ In™ RNase Inhibitor for immediate use; maintain at 4°C.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The dsRIP lysis buffer can be stored at 4°C for one month. Make fresh lysis buffer if longer time period elapses between experiments.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Double-stranded RNA immunoprecipitation (dsRIP) from fetal livers</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4 h</div>
+<p>This protocol allows for the isolation of double-stranded RNAs (dsRNAs) from tissues, such as murine fetal livers. It is predicted to work with other tissues, such as bone marrow, and cell pellets of cell lines or primary cells. Cell numbers equivalent to ∼30 μg RNA should be used. Lysates are incubated with the mouse monoclonal anti-dsRNA antibody J2 followed by isolation with magnetic beads (Protein G Dynabeads™) (<a href="#bib1">Blango and Bass, 2016</a>; <a href="#bib6">Lybecker et al., 2014</a>; <a href="#bib9">Son et al., 2015</a>).</p>
+<ol>
+<li>Set aside approximately one fifth of each fetal liver for preparation of total RNA as input control for dsRNA analysis. The total RNA can be extracted per standard protocol of the QIAGEN RNeasy Plus Mini Kit (Cat# 74134) or following the standard TRIzol isolation procedure.</li>
+<li>Place the remainder of each fetal liver (∼30 million nucleated fetal liver cells) into a 1.5 mL Eppendorf tube with 600 μL dsRIP lysis buffer. Vortex and incubate on ice for exactly 5 min. If the tissues are firm and hard to dissociate and lyse by lysis buffer, they should be minced prior to lysis into smaller fragments.</li>
+<li>Spin down cell lysates in a tabletop centrifuge at maximum speed (13,000 × <i>g</i>) for 10 min at 4°C.</li>
+<li>Carefully pipet equal volumes of the supernatant from each fetal liver into two new 1.5 mL tubes placed on ice. Add 5 μL anti-dsRNA J2 antibody (1 μg/μL) to one tube and 5 μg mouse IgG to the second tube and incubate at 4°C for 2 h with rotation. During this step, dsRNA will be recognized and bound by J2 antibody while non-specific binding is expected to occur with mouse IgG (<a href="#bib8">Schonborn et al., 1991</a>). The mouse monoclonal anti-dsRNA J2 antibody may be replaced by other antibodies of interest, but readers should ensure specificity and that appropriate Dynabeads are used, according to the species antibodies are raised in.</li>
+<li>Towards the end of the incubation period of cell lysates with anti-dsRNA J2 antibody, prepare 25 μL Protein G Dynabeads for each sample.
+<ol type="a">
+<li>Aliquot 25 μL Dynabeads Protein G each into two 1.5 mL tubes for each fetal liver and add 500 μL dsRIP lysis buffer and vortex.</li>
+<li>Place the tubes on a magnetic rack and allow beads to collect on side wall of Eppendorf tube for 2 min.</li>
+<li>Carefully pipette off supernatant without dislodging beads while tube remains on the magnetic rack. Repeat the wash step × 1.</li>
+<li>Discard the supernatant and keep the beads for the next step.</li>
+</ol>
+</li>
+<li>At the end of the two-hour lysate/antibody incubation period, transfer lysates to the tubes with the Protein G Dynabeads and incubate at 4°C for 1 h with rotation.</li>
+<li>At the end of the incubation period, place the tubes on the magnetic rack and allow beads to collect on side wall of tubes, remove supernatant and wash beads as under 5b–5d 4 times with 500 μL dsRIP lysis buffer. This step should be performed in a cold room.</li>
+<li>Place the tubes with washed beads on ice for RNA extraction.</li>
+</ol>
+<h3 id="sec3.2">Extraction of immunoprecipitated dsRNAs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<p>This protocol allows for isolation of J2-immunoprecipitated dsRNAs from fetal livers.</p>
+<ol start="9">
+<li>Add 1 mL TRIzol to each tube with Protein G Dynabeads™ and mix well by pipetting up and down.</li>
+<li>Add 200 μL chloroform to the TRIzol solution, mix well and incubate on ice for 5 min.</li>
+<li>Spin at 13,000 × <i>g</i> for 15 min at 4°C.</li>
+<li>Carefully remove aqueous phase (530 μL) without disrupting protein layer or disturbing phenol phase. Add 200 μL chloroform and incubate on ice for 5 min.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The second round of incubation with chloroform serves to reduce contamination with phenol, which is a common problem in the extraction of low amount of RNAs inhibiting downstream reactions (<a href="#bib11">Toni et al., 2018</a>).</div>
+<ol start="13">
+<li>Spin at 4°C and 13,000 × <i>g</i> for 15 min.</li>
+<li>Transfer 480 μL of the upper aqueous phase as above into equal volume (480 μL) isopropanol. Add 1 μL GlycoBlue or RNAse-free glycogen of choice, invert by hand 10 times to mix and incubate at −20°C for 20 min.</li>
+<li>Spin down at 4°C and 13,000 × <i>g</i> for 10 min to precipitate RNA.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Addition of glycogen serves to make the RNA pellet visible following precipitation and to prevent loss of RNA during the next wash and precipitation steps.</div>
+<ol start="16">
+<li>Pipet off and discard the supernatant and add 800 μL 75% ethanol in nuclease-free water to the RNA pellet.</li>
+<li>Centrifuge at 4°C and 8000 × <i>g</i> for 5 min.</li>
+<li>Pipet off and discard the supernatant.</li>
+<li>Pulse spin samples at ∼23°C.</li>
+<li>Carefully remove the remainder of the supernatant without disturbing the RNA pellet.</li>
+<li>Air-dry the pellet with the lid open at ∼23°C for 5 min.</li>
+<li>Add 15–20 μL RNase-free water to the pellet and dissolve dsRNAs.</li>
+<li>Quantify RNA using a Nanodrop or other instrument to determine concentration and purity. Usually, one sample can produce around 2 ng/μL dsRNA corresponding to ∼30 ng in total. Clear absorbance peaks at 260 nm and 280 nm should be seen.</li>
+<li>Perform quality control analysis on a TapeStation System using High Sensitivity RNA ScreenTape (<a href="#fig2">Figure 2</a>).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Examples of RNA profiles obtained by dsRIP on the TapeStation System</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The extracted RNA can be stored at −80°C for use in subsequent steps.</div>
+<h3 id="sec3.3">Library preparation and next-generation sequencing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–5 days</div>
+<ol start="25">
+<li>At this step, submit both INPUT and experimental (J2-dsRIP ± IgG-dsRIP) samples for library generation. Note that IgG immunoprecipitation may not yield RNA sufficient for library preparation (in our hands, IgG controls yielded concentrations lower than 0.1 ng/μL and less than 2 ng in total, insufficient for sequencing). In this case only INPUT and J2-dsRNA samples should be processed further.</li>
+<li>Ribosomal RNA (rRNA) depletion and library construction are performed following the instructions of the KAPA RNA HyperPrep Kit with RiboErase.</li>
+<li>Samples are ready for high-throughput sequencing on Illumina or other platforms. Generally, 60 million reads/sample should be sequenced to yield good results.</li>
+</ol>
+<p>rRNA depletion instead of mRNA selection is important for the dsRIP-seq to capture all possible dsRNAs that may or may not have poly-A tails, such as circular RNA (circRNA), for sequencing.</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The results of your TapeStation quality control analysis, performed prior to rRNA depletion and library preparation, will likely depend on your tissues and experimental conditions. We observed a random distribution of RNA ranging from 50 nucleotides (nt) to 4000 nt length on the TapeStation system with a peak around 200 nt in the wildtype samples. We observed sharp peaks corresponding to the sizes of the 18S and 28S rRNAs (<a href="#fig2">Figure 2</a>).</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<h3 id="sec5.1">Pre-processing of next-generation sequencing data</h3>
+<p>This section lists all the computational steps necessary to obtain gene or transcript specific read counts starting from sequencing raw data (FASTQ). In the simplest experimental design, dsRIP and INPUT libraries with ideally 3 or more biological replicates are expected. In our worked example, we sequenced libraries with Illumina, 2×100 paired end sequencing, obtaining approximately 60 million of read pairs for each sample.</p>
+<ol start="28">
+<li>Perform quality control of FASTQ files with FastQC or similar tools. QC metrics should resemble those obtained by RNA-seq of the same tissue, in our worked example we only observed a higher percentage of duplicated reads (<a href="#tbl1">Table 1</a>).
+<table id="tbl1">
+<caption>Table 1. Sequencing statistics in our worked example</caption>
+<thead>
+<tr>
+<th>Sample</th>
+<th>Sequenced read pairs</th>
+<th>After deduplication</th>
+<th>Duplication %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dsRIP_ctrl_rep1</td>
+<td>55162796</td>
+<td>15529442</td>
+<td>72%</td>
+</tr>
+<tr>
+<td>dsRIP_ctrl_rep2</td>
+<td>65336514</td>
+<td>15878260</td>
+<td>76%</td>
+</tr>
+<tr>
+<td>dsRIP_trt_rep1</td>
+<td>60185224</td>
+<td>15682440</td>
+<td>74%</td>
+</tr>
+<tr>
+<td>dsRIP_trt_rep2</td>
+<td>48709914</td>
+<td>13363489</td>
+<td>73%</td>
+</tr>
+<tr>
+<td>INPUT_ctrl_rep1</td>
+<td>65554565</td>
+<td>12143560</td>
+<td>81%</td>
+</tr>
+<tr>
+<td>INPUT_ctrl_rep2</td>
+<td>67722509</td>
+<td>13159257</td>
+<td>81%</td>
+</tr>
+<tr>
+<td>INPUT_trt_rep1</td>
+<td>66321387</td>
+<td>13885129</td>
+<td>79%</td>
+</tr>
+<tr>
+<td>INPUT_trt_rep2</td>
+<td>53744307</td>
+<td>12558777</td>
+<td>77%</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Optionally, remove duplicated reads from FASTQ files with FastUniq (<a href="#bib12">Xu et al., 2012</a>) or similar tools. In our worked example we decided to perform this step, prompted by the relatively high amount of duplicates. To be sure to prevent the removal of natural duplicates, UMIs (Unique Molecular Identifiers) should be used (<a href="#bib4">Kivioja et al., 2011</a>) UMIs, or molecular barcodes, are standard in almost all single-cell RNA-seq and CLIP-seq protocols.</li>
+<li>Align reads to a reference genome with a splice-aware aligner. In our worked example, reads were aligned to the mouse genome, assembly GRCm38.p5, with STAR version 2.5.3a (<a href="#bib2">Dobin et al., 2013</a>) and default parameters (see <a href="https://github.com/alexdobin/STAR">https://github.com/alexdobin/STAR</a> for a full tutorial on this aligner).</li>
+<li>Quantify read counts per gene or per transcript from BAM files. In our worked example, gene-specific read counts were obtained running STAR with the –quantMode GeneCounts option. We used the Gencode M15 transcript annotation as transcriptome guide. Alternative tools can be used, such as FeatureCounts or HTSeq.</li>
+<li>Load the table of read counts, with each column associated with a sample and each row associated with a gene or transcript, in the R software environment. Filter out genes or transcripts with low or absent signals. In our worked example, we selected genes with at least 10 raw reads in all the replicates of at least 1 condition (dsRIP or INPUT). This filter selected 13779 out of 52640 annotated genes. The specific R code used for the worked example is available and enables the reproduction of the analyses shown in this protocol: <a href="https://github.com/tomateba/dsRIP-Seq">https://github.com/tomateba/dsRIP-Seq</a>.</li>
+<li>Normalize counts across samples. In our worked example, we used the TMM method implemented in the edgeR Bioconductor package (<a href="#bib7">McCarthy et al., 2012</a>) (see <a href="https://www.bioconductor.org/packages/release/bioc/html/edgeR.html">https://www.bioconductor.org/packages/release/bioc/html/edgeR.html</a> for a full tutorial on edgeR). Alternatively, similar packages such as DESeq2 can be used for the normalization and for the identification of dsRNA (see <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">https://bioconductor.org/packages/release/bioc/html/DESeq2.html</a> for a tutorial on DESeq2).</li>
+</ol>
+<h3 id="sec5.2">Identification of dsRNAs by comparing dsRIP and INPUT normalized signals</h3>
+<p>In the simplest experimental design, not involving differential conformation analysis, genes or transcripts that are more likely to be in dsRNA conformation can be identified by comparing dsRIP and INPUT signals (<a href="#fig3">Figure 3</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Computational analysis to identify and compare dsRNAs, with examples</div>
+</figcaption>
+</figure>
+<ol start="34">
+<li>Identify dsRIP enriched genes or transcripts. In our worked example, we used generalized linear models implemented in edgeR (<i>glmQLFTest</i> function). The contrast used for this analysis is: <math> <mrow> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <mi>P</mi> <mo>−</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <mi>T</mi> </mrow> <mo>)</mo> </mrow> </mrow> </math>. After applying this contrast, select genes or transcripts in dsRNA conformation applying a significance threshold (<math> <mrow> <mi>p</mi> <mo>−</mo> <mi>v</mi> <mi>a</mi> <mi>l</mi> <mi>u</mi> <mi>e</mi> <mo>&lt;</mo> <mn>0.05</mn> </mrow> </math>) and a fold enrichment threshold <math> <mfenced> <mrow> <mi>log</mi> <msub> <mspace></mspace> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <mi>P</mi> <mo>/</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <mi>T</mi> </mrow> </mfenced> <mo>&gt;</mo> <mn>0</mn> </math>.</li>
+</ol>
+<h3 id="sec5.3">Differential analysis of dsRNAs comparing two conditions</h3>
+<p>In this experimental design, the aim of the analysis is to identify changes in the dsRNA conformation of genes or transcripts by comparing two conditions. In the general case, these conditions can be named control (ctrl) and treatment (trt). Genes or transcripts with enriched dsRNA conformation in the treatment condition can be identified applying 3 different criteria, explained below (<a href="#fig3">Figure 3</a>).</p>
+<ol start="35">
+<li>Identify dsRIP enriched genes or transcripts, considering both control and treatment conditions. This criterion selects genes or transcripts that are more likely to be in a dsRNA conformation. In our worked example, we used generalized linear models implemented in edgeR (glmQLFTest function). The contrast used for this criterion is:</li>
+</ol>
+<p><math> <mrow> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> <mo>+</mo> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> <mo>+</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </math> After applying this contrast, select genes or transcripts in dsRNA conformation applying a significance threshold (<math> <mrow> <mi>p</mi> <mo>−</mo> <mi>v</mi> <mi>a</mi> <mi>l</mi> <mi>u</mi> <mi>e</mi> <mo>&lt;</mo> <mn>0.05</mn> </mrow> </math>) and a fold enrichment threshold <math> <mrow> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mrow> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <mi>P</mi> </mrow> <mo>/</mo> <mrow> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <mi>T</mi> </mrow> </mrow> </mrow> <mo>)</mo> </mrow> <mo>&gt;</mo> <mn>0</mn> </mrow> </math>.</p>
+<ol start="36">
+<li>Identify genes or transcripts showing significant changes in dsRNA conformation comparing treatment and control condition, normalizing for INPUT. This criterion selects transcripts that are specifically altered in the dsRIP signal of the treatment versus control condition, normalizing for variations in the INPUT, that could be due to expression changes. Using generalized linear models implemented in edgeR (glmQLFTest function), the contrast used for this criterion is:</li>
+</ol>
+<p><math> <mrow> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </math>, that is also equivalent to the contrast:</p>
+<p><math> <mrow> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <mo>−</mo> <mrow> <mo>(</mo> <mrow> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> <mo>−</mo> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </math></p>
+<p>After applying this contrast, select genes or transcripts applying a significance threshold (<math> <mrow> <mi>p</mi> <mo>−</mo> <mi>v</mi> <mi>a</mi> <mi>l</mi> <mi>u</mi> <mi>e</mi> <mo>&lt;</mo> <mn>0.05</mn> </mrow> </math>) and a fold change threshold, for example <math> <mrow> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <mo>&gt;</mo> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </math> to look for increased dsRNA conformation in the treatment condition, or <math> <mrow> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> <mo>&lt;</mo> <mrow> <mo>(</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>)</mo> </mrow> </mrow> </math> to look for decreased dsRNA conformation in the treatment condition.</p>
+<ol start="37">
+<li>Identify genes or transcripts with major contribution of dsRIP changes over INPUT changes. This criterion selects genes or transcripts for which the change in dsRIP levels (treatment vs control) is larger, in absolute values, than the change in INPUT levels. This criterion is important to exclude genes that, for example, decrease in both dsRIP and INPUT, but more in the latter. These genes could result enriched in the analysis described at point 34, just because their decrease in dsRIP is lower than their decrease in INPUT. Yet for these genes variations in expression levels are larger than variations in conformations, therefore they should be considered with caution or excluded from the analysis. Considering average expression values among replicates, select genes or transcripts with <math> <mrow> <mrow> <mo>|</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>d</mi> <mi>s</mi> <mi>R</mi> <mi>I</mi> <msub> <mi>P</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>|</mo> </mrow> <mo>&gt;</mo> <mrow> <mo>|</mo> <mrow> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>t</mi> <mi>r</mi> <mi>t</mi> </mrow> </msub> <mo>−</mo> <msub> <mrow> <mi>log</mi> <mspace></mspace> </mrow> <mn>2</mn> </msub> <mspace></mspace> <mi>I</mi> <mi>N</mi> <mi>P</mi> <mi>U</mi> <msub> <mi>T</mi> <mrow> <mi>c</mi> <mi>t</mi> <mi>r</mi> <mi>l</mi> </mrow> </msub> </mrow> <mo>|</mo> </mrow> </mrow> </math>. In our worked example, this criterion was not associated with an edgeR contrast, therefore it is not dependent on a p value.</li>
+</ol>
+<h3 id="sec5.4">Downstream structural and functional analysis of dsRNAs</h3>
+<p>The populations of relevant genes or transcripts with dsRNA conformation identified by dsRIP-Seq can be further characterized with structural of functional computational analysis tools (<a href="#fig4">Figure 4</a>).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Examples of downstream analysis of the identified dsRNAs</div>
+</figcaption>
+</figure>
+<ol start="38">
+<li>Predict the secondary structure of the identified genes or transcripts. In our worked example, we used the RNAfold algorithm contained in the ViennaRNA package (v2.4.11) (<a href="#bib5">Lorenz et al., 2011</a>) (see <a href="https://www.tbi.univie.ac.at/RNA/RNAfold.1.html">https://www.tbi.univie.ac.at/RNA/RNAfold.1.html</a> for a tutorial on RNAfold). This algorithm requires as input a fasta file of transcript sequences and enables the prediction of the minimum free energy (MFE) structure, with the corresponding free folding energy, and also more advanced features such as thermodynamic ensemble prediction and the ensemble diversity, describing the flexibility of the expected RNA structure by measuring the diversity of the ensemble structures. In our worked example, we executed RNAfold starting with the fasta file of whole transcript sequences with the following code: <i>RNAfold –infile=input.fasta –MEA -d2 -p.</i> Numerical features such as folding free energy and ensemble diversity can be used to compare the population of dsRIP enriched vs non-enriched transcripts. Predicted secondary structures for each transcript, in the commonly used dot-bracked notation, can be displayed with multiple online tools such as forna (<a href="http://rna.tbi.univie.ac.at/forna/">http://rna.tbi.univie.ac.at/forna/</a>) or further dissected to identify long dsRNA regions and structural motifs.</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The approach presented here is based on the J2 antibody to specifically recognize dsRNAs and perform the immunoprecipitation. Since it has been reported that J2 antibody mainly recognizes dsRNAs longer than 40 bp, dsRNAs which are shorter than 40 bp may be missed in this analysis. Besides fetal livers, other tissues and cells can also be used for the dsRIP-Seq, as long as they can provide enough RNA for the immunoprecipitation. As far as we have tested, a E14.5 fetal liver can yield more than 20 μg RNA. Therefore, any fresh tissue or cultured cell lines that can provide similar RNA quantities, can be considered as a feasible starting material. While the dsRIP-Seq approach enables the identification of RNAs enriched in double stranded conformation, the specific location of dsRNA regions within long transcripts cannot be directly sequenced, as the RNA fragmentation step is performed after RNA immunoprecipitation. RNA fragmentation or partial digestion before immunoprecipitation would theoretically enrich the library with specific dsRNA regions, but this approach would require more starting material, a more complex experimental protocol and computational workflows based on peak callers such as those used in the context of identifying RNA-protein interactions (CLIP-seq) or m<sup>6</sup>A enrichment sites (m<sup>6</sup>A-RIP).</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem</h3>
+<p>Uncertainty of fetal liver timing.</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>It is best to check for vaginal plugs early in the morning, especially in multigravida mice as it can fall out. If a plug is not obvious, a blunt surgical probe can be used to detect a plug that is still situated deeper in the female mouse’s vagina.</p>
+<h3 id="sec7.3">Problem</h3>
+<p>Insufficient RNA is isolated after dsRNA immunoprecipitation.</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>Sterile technique and RNAse free surfaces, tools, and reagents are key. Incubation steps should be exactly timed. Avoid unnecessary delays between steps. Long-term storage of RNA should be avoided prior to sequencing. A positive control to confirm the dsRNA immunoprecipitation process is1 μg polyinosinic:polycytidylic acid (pI:pC). 1 μg can be used to monitor and confirm the efficiency of each step, as pI:pC is a well-characterized dsRNA which can be recognized by J2 antibody.</p>
+<h3 id="sec7.5">Problem</h3>
+<p>Contamination of phenol after RNA extraction identified by an unexpected peak at 270 nm during TapeStation system quality control analysis of isolated RNAs.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>RNA may be contaminated with Phenol, inhibiting downstream steps. RNA resuspended in 20 μL RNAse free water can be re-extracted by adding 1 mL TRIzol followed by careful execution of steps 10–20. Especially steps 16–20 serve to eliminate all remnant phenol contamination. With a tweezer manipulate a clean Kimwipes to wipe the side of the Eppendorf tube after each chloroform step to further eliminate phenol. Be careful not to touch the RNA pellet visualized by addition of GlycoBlue. If a second clean-up step fails, the experiment should be repeated from the beginning starting with new tissue to obtain high-quality RNA for downstream sequencing.</p>
+<h3 id="sec7.7">Problem</h3>
+<p>Interpretation of TapeStation quality control results and choice of dsRNA antibody.</p>
+<h3 id="sec7.8">Potential solution</h3>
+<p>If performed for the first time and under experimental conditions where expected results are unknown, it is essential to strictly adhere to RNAse free conditions, ensure high quality of reagents and buffers and exact documentation of experimental steps. It is advised that samples from control and experimental condition (such as wildtype versus knockout) are always performed in parallel. At least 3 biologic replicates should be performed for each condition. The quality of the anti-dsRNA J2 or other antibodies are essential for the specific immunoprecipitation of dsRNA. The provided information for the J2 antibody reflects the one with best performance in our hands. At the time of receipt, researchers should resuspend according to manufacturer instruction and generate multiple aliquots to avoid multiple freeze-thaw cycles. J2 antibodies produced by other companies or provided in different forms may yield differing results. Although other dsRNA antibodies may produce similar results to the ones with J2 antibody, we suggest researchers start with J2 antibody since it is the most widely used and well-characterized anti-dsRNA antibody.</p>
+<h3 id="sec7.9">Problem</h3>
+<p>Analysis of transposable elements</p>
+<h3 id="sec7.10">Potential solution</h3>
+<p>Transposable elements (TEs) comprise approximately half of the mammalian genomes. If the analysis of repetitive sequences transcribed from transposable elements such as retrotransposons is an important aspect of the experiment, the dsRIP protocol may require some modifications, both in the experimental and the computational parts. First, unique molecular identifiers (UMIs) should be ideally included in library preparation to discriminate between technical duplicates (due to PCR) and natural duplicates, such as repetitive elements (<a href="#bib4">Kivioja et al., 2011</a>). Libraries should be sequenced with a paired end approach, as in our worked example, trying to maximize read length. Sequenced reads coming from repeated elements also introduce ambiguities in the mapping step. Therefore, mapping parameters can be adjusted to allow higher number of multi-mapped reads. Finally, the quantification of transposable elements can be performed with dedicated tools, recently reviewed in (<a href="#bib10">Teissandier et al. 2019</a>). In our worked example, the analysis of Transposable Elements, including their classification in classes and families, was based on GTF files curated by the Hammell Lab: (<a href="http://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/mm10_rmsk_TE.gtf.gz">http://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/mm10_rmsk_TE.gtf.gz</a>). Reads mapped on transposable elements were identified and quantified with the Rsubread Bioconductor package. Our results suggest that some retrotransposon classes are enriched in dsRNA conformation (<a href="#fig5">Figure 5</a>)</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/525-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Example of analysis and dsRNA quantification of transposable elements</div>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Blango, M.G. and Bass, B.L. (2016). Identification of the long, edited dsRNAome of LPS-stimulated immune cells. Genome Res. <i>26</i>, 852-862. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref1">View at publisher</a></p>
+<p id="bib2">Dobin, A., Davis, C.A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., and Gingeras, T.R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics <i>29</i>, 15-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref2">View at publisher</a></p>
+<p id="bib3">Gao, Y., Vasic, R., Song, Y., Teng, R., Liu, C., Gbyli, R., Biancon, G., Nelakanti, R., Lobben, K., Kudo, E., et al. (2020). m(6)A modification prevents formation of endogenous double-stranded RNAs and deleterious innate immune responses during hematopoietic development. Immunity <i>52</i>, 1007-1021.e8. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref3">View at publisher</a></p>
+<p id="bib4">Kivioja, T., Vähärautio, A., Karlsson, K., Bonke, M., Enge, M., Linnarsson, S., and Taipale, J. (2011). Counting absolute numbers of molecules using unique molecular identifiers. Nat. Methods <i>9</i> (<i>1</i>), 72-74. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref4">View at publisher</a></p>
+<p id="bib5">Lorenz, R., Bernhart, S.H., Honer Zu Siederdissen, C., Tafer, H., Flamm, C., Stadler, P.F., and Hofacker, I.L. (2011). ViennaRNA Package 2.0. Algorithms Mol. Biol. <i>6</i>, 26. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref5">View at publisher</a></p>
+<p id="bib6">Lybecker, M., Zimmermann, B., Bilusic, I., Tukhtubaeva, N., and Schroeder, R. (2014). The double-stranded transcriptome of Escherichia coli. Proc. Natl. Acad. Sci. U S A <i>111</i>, 3134-3139. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref6">View at publisher</a></p>
+<p id="bib7">McCarthy, D.J., Chen, Y., and Smyth, G.K. (2012). Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation. Nucleic Acids Res. <i>40</i>, 4288-4297. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref7">View at publisher</a></p>
+<p id="bib8">Schonborn, J., Oberstrass, J., Breyel, E., Tittgen, J., Schumacher, J., and Lukacs, N. (1991). Monoclonal-antibodies to double-stranded-Rna as probes of Rna structure in crude nucleic-acid extracts. Nucleic Acids Res. <i>19</i>, 2993-3000. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref8">View at publisher</a></p>
+<p id="bib9">Son, K.N., Liang, Z., and Lipton, H.L. (2015). Double-stranded RNA is detected by immunofluorescence analysis in RNA and DNA virus infections, including those by negative-stranded RNA viruses. J. Virol. <i>89</i>, 9383-9392. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref9">View at publisher</a></p>
+<p id="bib10">Teissandier, A., Servant, N., Barillot, E., and Bourc'his, D. (2019). Tools and best practices for retrotransposon analysis using high-throughput sequencing data. Mob. DNA <i>10</i>, 52. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref10">View at publisher</a></p>
+<p id="bib11">Toni, L.S., Garcia, A.M., Jeffrey, D.A., Jiang, X., Stauffer, B.L., Miyamoto, S.D., and Sucharov, C.C. (2018). Optimization of phenol-chloroform RNA extraction. MethodsX <i>5</i>, 599-608. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref11">View at publisher</a></p>
+<p id="bib12">Xu, H., Luo, X., Qian, J., Pang, X., Song, J., Qian, G., Chen, J., and Chen, S. (2012). FastUniq: a fast de novo duplicates removal tool for paired short reads. PLoS One <i>7</i>, e52249. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00073-3/sref12">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Stephanie Halene (<a href="mailto:stephanie.halene@yale.edu">stephanie.halene@yale.edu</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and Code Availability</h4>
+<p>This study did not generate any unique datasets or code. Raw and analyzed sequencing data for the worked example were previously deposited under GEO: GSE148882.</p>
+<p>Software used for the analyses are described and referenced in the <a href="#quantification-and-statistical-analysis">quantification and statistical analysis</a> subsections and are listed in the <a href="#key-resources-table">key resources table</a>. The specific R code used for the analysis of the worked example are available at <a href="https://github.com/tomateba/dsRIP-Seq">https://github.com/tomateba/dsRIP-Seq</a>.</p>
+<h3>Acknowledgments</h3>
+<p>This study was supported in part by the State of Connecticut under the Regenerative Medicine Research Fund (to S.H.; its contents are solely the responsibility of the authors and do not necessarily represent the official views of the State of Connecticut or Connecticut Innovations), the NIH/<a href="https://doi.org/10.13039/100000062">NIDDK</a> R01DK102792 (to S.H.), and The Frederick A. Deluca Foundation (to S.H.); Y.G. was supported by the James Hudson Brown-Alexander Brown Coxe Postdoctoral Fellowships. T.T. was supported by a pilot grant from the Yale Cooperative Center of Excellence in Hematology (YCCEH) (<a href="https://doi.org/10.13039/100000062">NIDDK</a> U54DK106857) and by <a href="https://doi.org/10.13039/501100005010">AIRC</a> under MFAG 2020 - ID. 24883 project.</p>
+<h3>Author Contributions</h3>
+<p>Conceptualization, Y.G., T.T., and S.H.; experimental methodology, Y.G. and S.C.; computational methodology, T.T.; writing, Y.G., T.T., and S.H.; funding acquisition and supervision, S.H.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

@@ -1,0 +1,826 @@
+<article>
+<section>
+<h1 id="header">Co-fractionation/mass spectrometry to identify protein complexes</h1>
+<p><time datetime="2021-03-12">Published: March 12, 2021</time></p>
+<p>Claire D. McWhite,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor1">*</a></sup> Ophelia Papoulas,<sup><a href="#aff1">1</a>,<a href="#fn1">2</a>,<a href="#fn2">3</a>,<a href="#cor2">**</a></sup> Kevin Drew,<sup><a href="#aff1">1</a></sup> Vy Dang,<sup><a href="#aff1">1</a></sup> Janelle C. Leggere,<sup><a href="#aff1">1</a></sup> Wisath Sae-Lee,<sup><a href="#aff1">1</a></sup> and Edward M. Marcotte<sup><a href="#aff1">1</a>,<a href="#fn3">4</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Molecular Biosciences and the Center for Systems and Synthetic Biology, University of Texas at Austin, Austin, TX 78712, USA</p>
+<p id="fn1"><sup>2</sup>These authors contributed equally</p>
+<p id="fn2"><sup>3</sup>Technical contact</p>
+<p id="fn3"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:cmcwhite@princeton.edu">cmcwhite@princeton.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:papoulas@austin.utexas.edu">papoulas@austin.utexas.edu</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:marcotte@utexas.edu">marcotte@utexas.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100370">10.1016/j.xpro.2021.100370</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Co-fractionation/mass spectrometry (CF/MS) is a flexible and powerful method to detect physical associations of proteins. CF/MS can be applied to any tissue or organism without the need for protein-specific antibodies or epitope tags. Here, we outline two alternate protocols for MS preparation of samples (containing low or high salt) and a computational pipeline (cfmsflow) that together allow the successful application of this approach. These protocols are based on CF/MS of over 16 diverse organisms including plants and animals.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib5">McWhite et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Co-fractionation/mass spectrometry (CF/MS) detects native protein associations</li>
+<li>Experimental methods for mass spec preparation of 96-well native fractions</li>
+<li>Computational pipeline to generate protein interaction maps from CF/MS data</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<ol>
+<li>Prepare a native protein extract from your sample using any method optimized for the chosen starting material that avoids using organic solvents or other denaturing compounds. Low concentrations of non-ionic detergents (e.g., up to 1% NP40 or equivalent) can aid cell lysis, however higher concentrations of detergents can dissociate protein-protein interactions and interfere with the subsequent electrospray-based liquid chromatography-mass spectrometry (LC/MS) analysis. Detergents used for the initial extraction are typically omitted from subsequent chromatographic separation buffers in order to reduce any potential impact on mass spectrometry.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> if you include detergent and must use ultrafiltration to concentrate your lysate prior to fractionation, be mindful that micelles may also be concentrated and increase detergent concentration with consequent disruption of protein assemblies.</div>
+<ol start="2">
+<li>Fractionate 1–4 mg of total native protein extract into 12–100 protein fractions using any convenient method such as size exclusion chromatography, ion exchange chromatography, isoelectric focusing, glycerol gradient separation, etc.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The following MS preparation protocols assume you have collected your fractions in a 96-well format. There are two distinct MS preparation methods provided. If your samples contain &gt;300 mM salt, then use Method 1. If your samples will be &lt;300 mM salt, then use Method 2. Methods are compared in <a href="#fig1">Figure 1</a>.</div>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Workflow of the two alternative methods for preparation of LC/MS-ready samples from chromatographic fractions</div>
+<p>Method 1 can be used in any salt condition but Method 2 will only work if salt is below 300 mM.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> If you plan to use MS sample preparation Method 2 then you must modify your 96-well fraction collection plate <u>prior to collecting chromatographic fractions</u>, as indicated in <a href="#fig2">Figure 2</a>.</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Modification of a 96-well fraction collection plate (shown here, Corning Axygen polypropylene #P-DW-20-C) for use with the 96-well magnetic plate separator (Thermo Fisher Scientific #A14179)</div>
+<p>Four support ribs on the underside of the deep well plate (indicated by black arrows in lower left) interfere with prongs on the blue magnetic plate preventing close contact of the well bottoms with the magnet. The 4 ribs are cut and folded as follows to accommodate the prongs. For each of the 4 interfering support ribs use a straight-edge razor to make 2 vertical cuts of the approximate depth shown. Use metal forceps or other tool to bend the resultant plastic tabs over. After modification of the 4 ribs the deepwell plate should sit flush on the magnetic plate as shown in the upper right panel.</p>
+</figcaption>
+</figure>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> Collected fractions can be stored frozen at −80°C until you are ready to complete one of the mass spectrometry preparations outlined below.</div>
+<ol start="3">
+<li>Before beginning to prepare your fractions for LC/MS analysis, prepare the required solutions from the <a href="#tbl1">Table 1</a> below using LC/MS-grade water and reagents as much as possible. If you are not using a commercially-prepared solution of TCEP, prepare a 0.5 M stock in water (this may require pH adjustment with potassium hydroxide for full solubility). If you will be using Method 2 additionally prepare and aliquot SpeedBeads (as described below).
+<table id="tbl1">
+<caption>Table 1. Solutions and buffers</caption>
+<thead>
+<tr>
+<th>Solutions stored 21°C–25°C</th>
+<th>Needed for Method 1</th>
+<th>Needed for Method 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buffer A (recipe below)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Buffer B (recipe below)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Buffer C (recipe below)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>60% Buffer B (recipe below)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Trypsin Digestion Buffer (recipe below)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>70% ethanol</td>
+<td>N/A</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>2% DMSO</td>
+<td>N/A</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>10% TFE in Trypsin Digestion Buffer</td>
+<td>N/A</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>0.5 M TCEP</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td colspan="3">Aliquoted frozen stock solutions</td>
+</tr>
+<tr>
+<td>1 M DTT in LC/MS-grade water (store −20°C)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>550 mM 2-iodoacetamide in LC/MS-grade water (store −20°C, protect from light)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Trypsin 1 μg/10 μL in 10 mM acetic acid (store −80°C)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>1 M Tris-HCl, pH 8.0</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>CaCl<sub>2</sub>
+</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tris(2-carboxyethyl)phosphine (TCEP)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>2-Iodoacetamide</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>2,2,2-Trifluoroethanol (TFE)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Dimethyl sulfoxide (DMSO)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Ethanol</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Formic acid</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Acetonitrile (LC/MS-grade)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Water (LC/MS-grade)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Trypsin, MS-grade</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Dithiothreitol (DTT)</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td><i>Arabidopsis thaliana</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Brassica oleracea var. italica</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Cannabis sativa</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Ceratopteris richardii</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Chenopodium quinoa</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Chlamydomonas reinhardtii</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Cocos nucifera</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Glycine max</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Homo sapiens</i></td>
+<td><a href="#bib4">Mallam et al., 2019</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Mus Musculus</i></td>
+<td>
+<a href="#bib4">Mallam et al., 2019</a>; <a href="#bib3">Liebeskind et al., 2020</a>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Oryza sativa</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Selaginella moellendorffii</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Solanum lycopersicum</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Triticum aestivum</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Xenopus laevis</i></td>
+<td><a href="#bib2">Drew et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><i>Zea mays</i></td>
+<td><a href="#bib5">McWhite et al., 2020</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Cfmsflow</td>
+<td>This paper, <a href="https://github.com/marcottelab/cfmsflow">https://github.com/marcottelab/cfmsflow</a>
+</td>
+<td> </td>
+</tr>
+<tr>
+<td>TPOT</td>
+<td><a href="#bib6">Olson and Moore, 2016</a></td>
+<td>Version &gt;= 0.10.0</td>
+</tr>
+<tr>
+<td>Nextflow</td>
+<td><a href="#bib1">Di Tommaso et al., 2017</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td><a href="https://www.docker.com/">https://www.docker.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>AcroPrep Advance 96-filter plate 3k MWCO</td>
+<td>Pall</td>
+<td>8163</td>
+</tr>
+<tr>
+<td>QIAvac 96 or QIAvac Multiwell vacuum manifold</td>
+<td>Qiagen</td>
+<td>19504 or 9014579</td>
+</tr>
+<tr>
+<td>1-μm Sera-Mag SpeedBead magnetic carboxylate modified particles, hydrophilic</td>
+<td>Cytiva</td>
+<td>45152105050250</td>
+</tr>
+<tr>
+<td>1-μm Sera-Mag SpeedBead magnetic carboxylate modified particles, hydrophobic</td>
+<td>Cytiva</td>
+<td>65152105050250</td>
+</tr>
+<tr>
+<td>Lab-in-a-plate Flow-thru plate, 5–7 μL C18</td>
+<td>Glygen</td>
+<td>MFNSC18.10</td>
+</tr>
+<tr>
+<td>Magnetic plate, 96-well separator</td>
+<td>Thermo Fisher Scientific</td>
+<td>A14179</td>
+</tr>
+<tr>
+<td>Vacuum centrifuge</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Deep 96-well plate for autosampler</td>
+<td>Waters</td>
+<td>186005837</td>
+</tr>
+<tr>
+<td>Silicone cap-mat pre-slit for autosampler</td>
+<td>Waters</td>
+<td>186006332</td>
+</tr>
+<tr>
+<td>1.5 mL polypropylene microcentrifuge tubes</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>V-bottom, 0.45 mL, 96-well polypropylene microplates</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Low-speed (1,000 × <i>g</i>) centrifuge with microplate adaptors</td>
+<td>No preference</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Organic-resistant plate sealing film</td>
+<td>Eppendorf</td>
+<td>0030127870</td>
+</tr>
+<tr>
+<td>Plate sealing foil</td>
+<td>Eppendorf</td>
+<td>0030127889</td>
+</tr>
+<tr>
+<td>Dionex UltiMate 3000 RSLCnano UHPLC system or other LC system</td>
+<td>Thermo Scientific</td>
+<td>ULTIM3000RSLCNANO</td>
+</tr>
+<tr>
+<td>Acclaim PepMap 100 C18 Analytical Column, 75 μm × 25 cm NanoViper</td>
+<td>Thermo Scientific</td>
+<td>164941</td>
+</tr>
+<tr>
+<td>Acclaim PepMap 100 C18 trap column, 75 μm × 2 cm NanoViper</td>
+<td>Thermo Scientific</td>
+<td>164535</td>
+</tr>
+<tr>
+<td>Orbitrap Fusion Lumos or other mass spectrometer</td>
+<td>Thermo Scientific</td>
+<td>IQLAAEGAAPFADBMBHQ</td>
+</tr>
+<tr>
+<td>Orbitrap Fusion or other mass spectrometer</td>
+<td>Thermo Scientific</td>
+<td>IQLAAEGAAPFADBMBCX</td>
+</tr>
+<tr>
+<td>Orbitrap Elite or other mass spectrometer</td>
+<td>Thermo Scientific</td>
+<td>AAEGAAPFADBMAZQ</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>The two alternate experimental methods below each begin with separated protein fractions in a deepwell 96-well plate and are described briefly in <a href="#bib5">McWhite et al., 2020</a>. See the <a href="#key-resources-table">key resources table</a> for necessary specialty plates and equipment described in the protocols. Both methods require a 96-well plate-compatible vacuum manifold and a vacuum centrifuge (e.g., Eppendorf Vacufuge; #022820044) with a microplate adaptor. Method 2 additionally requires a magnetic slab (e.g., Thermo Fisher Scientific 96-well magnetic plate separator; A14179) and may require modification of the 96-well plate as in <a href="#fig2">Figure 2</a> to allow the plate to adequately contact the magnet. Multichannel pipettes are helpful throughout. Solutions to make up in advance are listed in <a href="#tbl1">Table 1</a> with recipes below. Unless otherwise specified all solutions are made in LC/MS-grade water.</p>
+<table>
+<caption>Solution preparations</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration LC/MS-grade water</th>
+<th>Final concentration LC/MS-grade Acetonitrile</th>
+<th>Final concentration Formic Acid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buffer A</td>
+<td>100%</td>
+<td>0%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td>Buffer B</td>
+<td>0%</td>
+<td>100%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td>Buffer C</td>
+<td>95%</td>
+<td>5%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td>60% B</td>
+<td>40%</td>
+<td>60%</td>
+<td>0.1%</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Trypsin digestion buffer</th>
+<th>Final concentration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCL pH 8.0</td>
+<td>50 mM</td>
+</tr>
+<tr>
+<td>CaCl<sub>2</sub>
+</td>
+<td>2 mM</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Prepare protein fractions for MS analysis</h3>
+<h4 id="sec3.1.1">Method 1: Ultrafiltration and in-solution digest</h4>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>We use two different methods for reduction/alkylation and trypsin digestion of samples in 96-well plates for MS analysis (outlined in <a href="#fig1">Figure 1</a>). If your sample contains &gt;300 mM salt, then use Method 1 directly below. If your sample contains &lt;300 mM salt, then use Method 2.</p>
+<ol>
+<li>Buffer exchange and sample concentration.
+<ol type="a">
+<li>Use a vacuum manifold and vacuum of up to −24 Hg for all plate conditioning and sample concentration steps. Wash any preservatives or wetting agents from a 3k MWCO AcroPrep Advance 96 filter plate (see <a href="#key-resources-table">key resources table</a>) by adding a 300-μL volume of LC/MS-grade H<sub>2</sub>O and pulling it through the membrane using vacuum. Then condition the filter plate by adding a 300-μL volume of Trypsin Digestion Buffer and pulling the solution through the membrane using vacuum.
+<div class="note">
+<span class="note-title">Note:</span> If all 96 wells are not required place a sealing film over unused wells. The plate can be saved after use, and the unused wells uncovered for use at a later date.</div>
+<div class="note">
+<span class="note-title">Note:</span> Throughout all washes and subsequent steps do not let the wells dry out or proteins may stick irreversibly to the membrane.</div>
+</li>
+<li>Stop the vacuum and shake excess liquid from the washed plate.</li>
+<li>Transfer your samples to the washed AcroPrep plate. Apply vacuum to the 96-well filter plate to reduce the sample volume to ~100 μL.
+<div class="note">
+<span class="note-title">Note:</span> Samples will flow through the filter-plate wells at variable rates due to varied macromolecular content. Monitor the liquid volumes throughout filtration and add Trypsin Digestion Buffer to samples as necessary to prevent rapidly flowing wells from drying before all wells are adequately concentrated.</div>
+</li>
+<li>Add a 100-μL volume of Trypsin Digestion Buffer to all wells, and mix using several aspirate and dispense cycles of a pipette.</li>
+<li>Continue vacuum filtration to reduce the sample volume to ~ 50 μL.</li>
+<li>Transfer concentrated samples back into the original deep well plate for digestion.</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>Reduction/Alkylation
+<ol type="a">
+<li>To the 50-μL volume of sample, add a 50-μL volume of 100% TFE.
+<div class="note">
+<span class="note-title">Note:</span> Even if your sample volume is &gt;50-μL do NOT add more than a 50-μL volume of 100% TFE, or the final concentration at the digestion step could inhibit trypsin activity.</div>
+</li>
+<li>Add a sufficient volume of the 0.5 M TCEP stock for a final concentration of 5 mM in each sample well, seal the plate with clear film, and incubate for 30 min at 37°C.</li>
+<li>Place the plate at room temperature (20°C–25°C) and add a sufficient volume of the 550 mM iodoacetamide stock for a final concentration of 15 mM in each sample well.</li>
+<li>Seal the plate and incubate for 30 min in the dark, and at room temperature (20°C–25°C).
+<div class="note">
+<span class="note-title">Note:</span> Iodoacetamide is light sensitive and reactive in aqueous solution. We generally store small aliquots of the 550 mM stock solution of iodoacetamide in water at −20°C. These are thawed directly prior to use in this protocol. Alternatively, a fresh stock can be made from powder directly before use.</div>
+</li>
+<li>Quench the unreacted iodoacetamide by the addition of a sufficient volume of the 1 M DTT stock for a final concentration of 7.5 mM in each sample well.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Digestion
+<ol type="a">
+<li>Add ~880-μL volume of the Trypsin Digestion Buffer to bring each sample to a final volume of 1 mL, this dilution reduces the TFE concentration to less than 5%.</li>
+<li>Add a 10 μL volume (1 μg of enzyme) of a proteomics-grade Trypsin stock solution in 10 mM acetic acid to each well.</li>
+<li>Seal the plate with clear film and digest overnight (12–16 h) at 37°C.</li>
+<li>Stop the protein digestion by the addition of a sufficient volume of formic acid for a final concentration of 0.1% (v/v) per sample well.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Desalting and Peptide recovery
+<div class="note">
+<span class="note-title">Note:</span> This step uses the solid-phase C18 Lab-in-a-Plate device indicated in the <a href="#key-resources-table">key resources table</a>. As with the ultrafiltration plates, unused wells should be covered with sealing film during plate use so that they may be saved for future use.</div>
+<ol type="a">
+<li>Condition each utilized well of the C18 Lab-in-a-Plate using vacuum filtration as follows:
+<ol type="i">
+<li>Add a 100-μL volume of the 60% Buffer B per well and vacuum through. Repeat a second time.</li>
+<li>Add a 100-μL volume of Buffer A per well and vacuum through. Repeat 3–4 times.</li>
+</ol>
+</li>
+<li>Add the 1-mL volume of each sample to an individual conditioned well on the plate, and apply vacuum to filter the samples through.</li>
+<li>Wash the wells by adding a 100-μL volume of Buffer A, and apply vacuum to filter. Repeat 2 more times.
+<div class="note">
+<span class="note-title">Note:</span> If your sample initially had very high salt add some additional Buffer A washes here to thoroughly de-salt the sample prior to peptide elution for LC/MS analysis.</div>
+</li>
+<li>Place a 96-well collection plate into the appropriate vacuum manifold adaptor to collect the eluate.
+<div class="critical">
+<span class="critical-title">Critical:</span> Strong vacuum can lead to bubbling/foaming of the eluting liquid causing cross-contamination of samples so pay attention at this step and adjust the vacuum accordingly. Elution at &lt;−15 Hg is recommended. Alternatively, samples can be eluted by using gentle centrifugation (&lt;1,000 × <i>g</i>) in a swinging bucket rotor equipped with microplate adaptors. During centrifugation, the C18 plate is directly seated on top of the collection plate.</div>
+</li>
+<li>Elute the digested peptides into the collection plate using a 50-μL volume of 60% Buffer B per well. Repeat the elution step a second time for a total eluate volume of 100 μL.</li>
+<li>Evaporate the eluate solvent in a vacuum centrifuge to dryness. This step takes approximately 3 h.
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> If you will not be able to load samples onto a MS system within ~24 h these samples can be stored dry, sealed with adhesive foil at −80°C.</div>
+</li>
+<li>For LC/MS analysis, resuspend peptides in a 20- to 35-μL volume of Buffer C per well, pipette up and down several times, and transfer the reconstituted sample to the appropriate sample vial or plate for your autosampler system.
+<div class="note">
+<span class="note-title">Note:</span> We use Waters deep 96-well plates appropriate to our autosampler with a pre-slit silicone cap-mat as listed in the <a href="#key-resources-table">key resources table</a>. A 5-μL volume of each sample is sufficient for LC/MS analysis using the mass spectrometry parameters described below. Unused sample can be stored for a period of weeks to months at −80°C in sealed plates, but solvent may evaporate.</div>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.2">Prepare protein fractions for MS analysis</h3>
+<h4 id="sec3.2.1">Method 2: Bead binding and on-bead digest</h4>
+<p>Method 2 for reduction/alkylation and trypsin digestion can be used if your sample contains &lt; 300 mM salt. Otherwise you must use Method 1 (see step 1 above).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Ensure that bottom of wells can make good contact with the magnetic slab (see <a href="#fig2">Figure 2</a> if modification of the deep well plate is required). Have aliquots of beads prepared as described below.</div>
+<h4 id="sec3.2.2">Prepare SpeedBead slurry for Method 2</h4>
+<div class="timing">
+<span class="timing-title">Timing:</span> 45 min</div>
+<ol start="5">
+<li>Completely resuspend each of the 2 types of commercial beads (hydrophilic and hydrophobic, see <a href="#key-resources-table">key resources table</a>) provided as a 50 mg/mL slurry containing preservative (0.05% sodium azide). Be thorough with vortex-mixing and pipetting to ensure homogeneity.</li>
+<li>Combine 50 μL of each commercial bead suspension in a single 1.5 mL microcentrifuge tube and mix well.</li>
+<li>Collect the beads by low-speed pulse centrifugation in a microfuge and remove and discard the supernatant.</li>
+<li>Wash the beads by thorough resuspension in 1 mL LC/MS-grade H<sub>2</sub>O.</li>
+<li>Repeat steps 7 and 8.</li>
+<li>Collect the beads as in step 7 and resuspend in a 500-μL volume of LC/MS-grade H<sub>2</sub>O for a working microparticle dispersion density of 10 μg/μL total (5 μg/μL of each bead type). This slurry can be aliquoted for ease of resuspension, and stored at 4°C (do not freeze) for at least 6 months. Resuspend beads thoroughly before each use.</li>
+</ol>
+<h4 id="sec3.2.3">Process sample using Method 2</h4>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<ol start="11">
+<li>Reduction and alkylation
+<ol type="a">
+<li>To each well containing your samples add 100% TFE to achieve 20% TFE final concentration and mix by pipetting.</li>
+<li>Add a sufficient volume of the 0.5 M TCEP stock for a final concentration of 5 mM in each sample well.</li>
+<li>Seal the plate with adhesive film and incubate 45 min at 37°C.</li>
+<li>Place the plate at room temperature (20°C–25°C).</li>
+<li>Add a sufficient volume of the 550 mM iodoacetamide stock for a final concentration of 25 mM in each sample well (see note at step 2d above).</li>
+<li>Incubate for 30 min in the dark at room temperature (20°C–25°C).
+<ol type="i">
+<li>Quench reactivity by the addition of a sufficient volume of the 1 M DTT stock for a final concentration of 12 mM in each sample well.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="12">
+<li>Bead binding of proteins
+<ol type="a">
+<li>To each fraction add a 4-μL volume of bead suspension. The bead suspension is a stock slurry comprising a 1:1 mix of 5 μg/mL each of the two bead types (hydrophobic and hydrophilic) listed in the <a href="#key-resources-table">key resources table</a>.</li>
+<li>Add a sufficient volume of formic acid for a final concentration of 2% (v/v), and a sufficient volume of acetonitrile for final solvent proportion of 50% (v/v) and mix well by pipetting. These two ingredients can be made into a premix for easier dispensing.</li>
+<li>Mix gently but thoroughly by pipetting.</li>
+<li>Incubate for 30 min with gentle shaking or rocking to keep beads from settling.
+<div class="critical">
+<span class="critical-title">Critical:</span> incubation for prolonged periods of time does not help and may reduce recovery.</div>
+</li>
+<li>Collect beads from this large volume by brief centrifugation (e.g., 5 min at 1,000 × <i>g</i>) in a swinging bucket rotor equipped with deep well plate adaptors.</li>
+<li>Place the sample plate on the magnetic plate. Remove and discard the bulk of the liquid leaving behind the beads and approximately a 250-μL volume of liquid.</li>
+<li>Take the sample plate off the magnetic plate. Resuspend the beads in the remaining liquid and transfer them to a fresh 450 μL conical bottom, 96-well plate to facilitate the remaining steps.</li>
+<li>Place this shallow plate on the magnetic plate. Once beads have collected to the bottom, remove and discard the remaining liquid.
+<div class="note">
+<span class="note-title">Note:</span> beads will vary in appearance from rust color when diffuse to darker brown when compact, and appear more aggregated or dispersed depending on protein content and other unknown parameters. None of these appearances indicates failure to bind proteins.</div>
+</li>
+<li>Keep the sample plate on the magnetic plate for all the following wash steps and work rapidly. Pipette carefully to avoid losing beads. The washes need not resuspend the bead pellet.
+<ol type="i">
+<li>Wash with a 100-μL volume of 70% ethanol per well. Repeat this wash step a second time.</li>
+<li>Wash with a 100 μL volume of acetonitrile. Repeat this wash step a second time.</li>
+<li>Air dry the beads briefly.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="13">
+<li>On-bead digestion of proteins
+<ol type="a">
+<li>Remove the sample plate from the 96-well magnetic separator plate, and resuspend the beads in a 25-μL volume of the 10% TFE prepared in Trypsin Digestion Buffer solution.
+<div class="note">
+<span class="note-title">Note:</span> Do not be concerned if beads appear “chunky” or aggregated at this stage.</div>
+</li>
+<li>Dilute enough trypsin stock solution with trypsin digestion buffer for the next step.</li>
+<li>To each sample add a 25-μL volume of Trypsin Digestion Buffer that contains 0.25 μg of proteomics-grade Trypsin.</li>
+<li>Seal the plate with adhesive film and incubate overnight (12–16 h) at 37°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="14">
+<li>Peptide recovery
+<ol type="a">
+<li>Place the sample plate on the magnet. Once the beads have collected transfer the bead-free supernatant to a fresh 96-well plate.</li>
+<li>To the transferred volume add a sufficient volume of formic acid for a final concentration of 1% (v/v) to stop protein digestion.
+<div class="note">
+<span class="note-title">Note:</span> Formic acid is very volatile and corrosive to metal parts of pipettors (e.g., plungers) at concentrations &gt;10%. If you are pipetting undiluted formic acid we recommend using positive displacement pipettors.</div>
+</li>
+<li>Remove the plate from the 96-well magnetic plate separator, and elute peptides from the beads with the addition of a 50-μL volume of a 2% DMSO solution.
+<div class="note">
+<span class="note-title">Note:</span> If possible, cover samples with adhesive film and sonicate 5 min in a bath sonicator to assist elution at this point.</div>
+</li>
+<li>Replace the plate on the 96-well magnetic plate separator to collect the beads. Remove each sample eluate and add it to the corresponding supernatant from step 14a.</li>
+<li>Remove the plate from the magnet and elute the beads with another 50-μL volume of a 2% DMSO solution (no sonication necessary).</li>
+<li>Replace the bead plate on the magnetic plate separator. Remove this second volume of eluate and pool it with the first corresponding matched eluate for a total volume of 150 μL for each fraction.</li>
+<li>Desalting of the eluted peptides is identical to that in Method 1 (step 4) with the only difference being the sample volumes loaded on the conditioned solid-phase C18 Lab-in-a-Plate are 150 μL instead of 1 mL.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec3.3">LC/MS system and acquisition conditions</h3>
+<p>To maximize its generality, this protocol was explicitly designed to work with CF/MS data collected using different LC/MS equipment and analysis protocols, including both label and label-free protein quantification. In practice, we frequently use the following LC/MS setup:</p>
+<p>Peptides are separated using reverse phase chromatography on a Dionex UltiMate 3000 RSLCnano UHPLC system with a C18 trap to Acclaim C18 PepMap RSLC column configuration. We typically employ a data-dependent acquisition strategy on either a Thermo Orbitrap Elite, Orbitrap Fusion, or Orbitrap Fusion Lumos mass spectrometer. If using an Orbitrap Fusion or Lumos, we elute peptides with a 3%–45% acetonitrile gradient in 0.1% formic acid over 60 min, and if using a less sensitive machine (Orbitrap Elite) we employ a longer gradient separation, e.g., 5%–40% acetonitrile gradient in 0.1% formic acid over 120 min. Additional details are provided in <a href="#bib5">McWhite et al., 2020</a>.</p>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Plates prepared as above are ready for protein detection and quantification by LC/MS. We typically exclude fractions corresponding to baseline UV signal in a chromatographic separation. In cases where a particular separation experiment is repeated we will also exclude those particular fractions that previously contained insufficient material to confidently identify proteins.</p>
+<p>In our experience, starting with samples that contain too little protein is the biggest cause of failure. Fractionation experiments beginning with less than 1 mg total protein generally produce poor results. We recommend aiming for 1–4 mg total protein at a concentration of ≥ 5 mg/mL. Failure to reach this amount can occur when beginning with too little starting material. If grinding the material on liquid nitrogen and prior to protein extraction, aim for at least a 1 mL volume of frozen powder, ideally 5 mL. Likewise, failure to extract sufficient protein can occur when the sample inherently has a very low proportion of protein per overall mass (e.g., starch-filled seeds) or a high amount of confounding non-proteinaceous substances (e.g., abundant mucus). In these cases it is important to use extraction methods specialized for the particular organism or tissue.</p>
+<h3 id="sec4.1">Quality control</h3>
+<p>After fractionation, proteins in each fraction are identified and quantified by LC/MS. This information is used to create elution profiles across all fractions for each protein observed. After proteins have been identified, we typically spot-check the elution profile in Excel for intact protein complexes, typically highly stable and abundant protein complexes such as the proteasome, CCT chaperonin, and ribosome. <a href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Mmc1.xlsx">Table S1</a> shows an example of one of these elution profiles, annotated with protein names and a selection of the typically highly stable and abundant complexes we use as internal controls. In practical terms, if a fractionation experiment shows, e.g., core proteasome subunits with different elution patterns, it means that the experimental preparation may have failed to preserve intact protein complexes. To simplify this quality control step, we add a sparkline column showing the elution profile of each protein, and an annotation column containing, e.g., gene names or protein names. As a quick-and-dirty sanity check, proteins that are members of the same complex are often named similarly (i.e., CCT1, CCT2, CCT3), etc, so sorting the Excel sheet by the annotation column will group members of some complexes together, allowing their intactness to be quickly visually assessed by the similarity of subunit sparklines.</p>
+<h3 id="sec4.2">Determine protein interactions from protein elution profiles</h3>
+<p>The computational protocol identifies sets of proteins which have related elution profiles, signifying that these sets are physically associating. For determining protein interactions, we always use a set of separations represented by at least two different fractionation techniques (e.g., size exclusion and ion exchange). Many complexes elute in the same size range, or the same charge range, however few elute at both the same size and charge. The orthogonality of separations of different biochemical properties highly increases the discovery power of CF/MS.</p>
+<p>To simplify the computational process of detecting protein interactions from CF/MS data, we provide cfmsflow, a Nextflow pipeline for Linux systems. This pipeline takes as inputs identified protein profiles (elution profiles) and uses known protein interactions (provided by the user) to train a model of elution profile similarity.</p>
+<p>The pipeline is divided into 5 main steps (<a href="#fig3">Figure 3</a>). To summarize, these steps are to 1) Calculate similarities between protein elution profiles, 2) Combine similarity scores into a feature matrix, 3) Label the feature matrix with gold standard protein-protein interactions, 4) Train a model to detect and score pairwise protein interactions, 5) Cluster the resulting protein interaction network into complexes.</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Overview of computational pipeline to detect protein-protein interactions and protein complexes</div>
+<p>In step 1, a set of similarity scores between all proteins are calculated for each fractionation experiment. In step 2, these similarity scores are combined into one large table. In step 3, pairs of proteins that are known from prior literature to interact are labeled with a 1 (positive training label), and a set of random pairs of proteins are labeled with a −1 (negative training label). In step 4, a model is trained to distinguish these positive and negatively labeled pairs of proteins, giving a score to each pair, where a higher score indicates higher probability of interaction. In step 5, this interaction network is clustered to protein complexes.</p>
+</figcaption>
+</figure>
+<p>By default, the pipeline begins at step 1 (calculating protein profile similarities) and continues through step 5 (detect complexes), however, a subset of steps or individual steps may be run as set in the user parameter file.</p>
+</section>
+<section>
+<h2 id="quantification-and-statistical-analysis">Quantification and statistical analysis</h2>
+<div class="timing">
+<span class="timing-title">Timing:</span> ~24 h for a dataset containing 8,000 proteins; varies by computational resources</div>
+<p>The pipeline requires two main data inputs 1) A set of known gold standard protein complexes, and 2) One table of protein identifications for each fraction per each separation experiment. Examples of all input files can be found in the example_input/ directory. For maximal power in deriving protein-protein interactions, it is ideal to use multiple separations using different separation techniques, as CF/MS gains substantial statistical power from reproducible co-elution behavior of interacting proteins across otherwise distinct separations. Each table of protein identifications for each fractionation plate should be formatted as a comma separated table with header, where the first column (named ID) contains protein identifiers, and the following columns contain protein quantification in each fraction. Values can be any abundance metric, such as peptide spectral matches (PSMs), peptide peak area or precursor ion intensity. We typically use gold standard protein complexes from the CORUM database. This file should be formatted with one protein complex per line, and each protein in the complex separated by a space.</p>
+<p>Check the notes and CRITICAL points below carefully before proceeding to running the pipeline.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Install nextflow onto a Linux-based operating system (<a href="https://www.nextflow.io/docs/latest/getstarted.html">https://www.nextflow.io/docs/latest/getstarted.html</a>)</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> retrieve the cfmsflow pipeline from github with the following command: <code>git clone</code> <a href="https://github.com/marcottelab/cfmsflow.git">https://github.com/marcottelab/cfmsflow.git</a>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The basic usage of the pipeline is:</div>
+<p><code>nextflow main.nf –params-file user_parameters.json</code></p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Before running cfmsflow on real data, test the pipeline by running the provided example. Look for successful completion after approximately 5 min and for output to appear in the example_output/ directory.</div>
+<p><code>nextflow main.nf –params-file example_params/example_wholepipeline.json</code></p>
+<div class="note">
+<span class="note-title">Note:</span> Examples of all input file formats are provided in the example_input directory of the github repository.</div>
+<div class="note">
+<span class="note-title">Note:</span> For discrete count-based measures such as peptide spectral matches (PSMs), correlations may be run for N repetitions with Poisson noise, and scores averaged, controlled by the parameter `<code>added_poisson_reps = N</code>`. Intensity-based measures should not be run with added Poisson noise.</div>
+<div class="note">
+<span class="note-title">Note:</span> To resume running a pipeline after fixing an error or changing a parameter value, run the same command as above with additionally –resume to run all steps downstream of the parameter change.</div>
+<h3 id="sec5.1">Computational pipeline steps</h3>
+<ol>
+<li>Calculate features
+<ol type="a">
+<li>Correlation and distance metrics are calculated between all possible pairs of proteins in each elution file.</li>
+<li>Input: File containing paths to elution files, or glob pattern matching paths to elution files.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Reduce feature length and run time by pre-filtering to only include well observed proteins, or proteins that are observed in at least n experiments.</div>
+<ol start="2">
+<li>Build a feature matrix
+<ol type="a">
+<li>Features are joined into a single table</li>
+<li>Input: Output of previous step, or file containing paths to feature files, or glob pattern matching paths to feature files.</li>
+</ol>
+</li>
+<li>Label the feature matrix with gold standard interactions
+<ol type="a">
+<li>A column “label” is added to the feature matrix, with a value of 1 if a positive training interaction and −1 if a negative interaction</li>
+<li>Input: Output of previous step, or path to a feature matrix file</li>
+<li>Input: Path to gold standard interactions</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Training labels may be either provided by the user or generated from input gold standard complexes. Negative interactions can either be drawn from observed interactions (as in <a href="#bib5">McWhite et al., 2020</a>) or from faux interactions between different gold standard complexes (as in (<a href="#bib7">Drew et al., 2017</a>), as controlled by the parameter <code>`negatives_from_observed = true/false`</code>.</div>
+<ol start="4">
+<li>Train a model to score protein-protein interactions
+<ol type="a">
+<li>The TPOT AutoML software scans machine learning pipelines and parameters to determine optimal model parameter settings based on positive and negative labeled training interactions.
+<div class="note">
+<span class="note-title">Note:</span> Available algorithms are listed in <code>accessory_files/all_classifiers.txt</code>
+</div>
+</li>
+<li>A model is trained on the same training interactions using the parameter settings determined by TPOT</li>
+<li>This model is applied to the full feature matrix to give a CF-MS score to all pairs of proteins in the feature matrix.
+<div class="note">
+<span class="note-title">Note:</span> Interactions from the same gold standard complex are prevented from being split between different cross validation portions</div>
+<div class="note">
+<span class="note-title">Note:</span> To reduce overtraining effects, lower the value of the <code>max_features_to_select</code> parameter. The model will then select no more than this number of features. After modifying this parameter, rerun the nextflow command with an additional –resume flag to avoid rerunning already complete portions of the pipeline.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="5">
+<li>Cluster interactions
+<ol type="a">
+<li>Scored interactions are thresholded at a parameter-input false discovery rate threshold (default 0.1), then clustered into protein complexes with diffusion clustering (see Supplemental methods section of <a href="#bib5">McWhite et al., 2020</a>).</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>No single extraction method will be able to comprehensively identify all protein complexes because of their diverse biochemical characteristics. For example, extraction conditions that readily solubilize cytoplasmic proteins may not be optimal for transmembrane proteins or cytoskeletal proteins. Therefore the original extraction conditions and chromatography method will most directly affect the range of detectable proteins identified by LC/MS. Failure to identify a specific expected protein complex is typically attributable to insufficient abundance of complex members or insufficient stability of the complex. If a protein is detected with less than approximately 10 PSMs per fractionation experiment, it is unlikely that this experimental approach will be able to confidently detect its interactors.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec7.1">Problem 1</h3>
+<p>Pipeline fails to run</p>
+<h3 id="sec7.2">Potential solution</h3>
+<p>First, confirm that the example parameter json (<code>example_params/example_wholepipeline.json</code>) runs to completion. If it does not, use provided example parameter jsons to test and troubleshoot individual steps of the pipeline. Next, confirm that the file format of your input files exactly matches the corresponding example input files, including delimiters and column names when specified. Confirm at the command line that file paths in your parameter json exist. If missing parameters are warned, add those parameters to your parameter json.</p>
+<h3 id="sec7.3">Problem 2</h3>
+<p>Overfit model</p>
+<h3 id="sec7.4">Potential solution</h3>
+<p>When a model is overfit to the training data, it fails to generalize to data not used to train the model. Overfitting can be visually diagnosed by comparison of the precision-recall curves of training and test of interactions (<a href="#fig4">Figure 4</a>). While models will generally perform better on training labels, a large gap in performance between training and test precision-recall curves is diagnostic of an overfit model. Overfitting can often be reduced by reducing the number of features that are used to construct the model. The initial run of the pipeline will produce a <code>.featureimportances</code> file after step 4, which contains feature importances determined by Random Feature Elimination. To rerun the TPOT pipeline limiting the maximum number of features, modify the <code>max_features_to_select</code> value in your user parameters json to a smaller number than the total number of features and resume the pipeline with <code>nextflow main.nf –params-file user_parameters.json –resume</code> or create a new parameters file that begins at step 4<code>.</code></p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Using precision-recall curves to evaluate overfitting</div>
+<p>Precision-recall curves illustrating overfit, better fit, and underfit models. A substantial difference between Test and Train precision-recall curves suggests overfitting, and that the max number of features should likely be lowered to improve model performance. When a model is overfit, as features are removed, the Test precision-recall curve will shift right, while the training curve is minimally affected. Once too many features have been removed, performance in both test and training will decline.</p>
+</figcaption>
+</figure>
+<h3 id="sec7.5">Problem 3</h3>
+<p>Too few or too many proteins in the output clustering file. Large complexes broken apart.</p>
+<h3 id="sec7.6">Potential solution</h3>
+<p>The number of interactions forwarded into clustering is controlled by the <code>fdr_cutoff</code> value in your user parameters json, which thresholds interactions with CF-MS scores above a particular false discovery rate. False discovery rate (FDR) is calibrated from test positive and negative labeled interactions.</p>
+<p>A high FDR cutoff that uses more interactions can cause an overly dense network that, in our experience, can lead to less cleanly distinguished complexes after clustering. However, an overly stringent FDR cutoff reduces recall of complexes.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Di Tommaso, P., Chatzou, M., Floden, E.W., Barja, P.P., Palumbo, E., and Notredame, C. (2017). Nextflow enables reproducible computational workflows. Nat. Biotechnol. <i>35</i>, 316-319. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00077-0/sref1">View at publisher</a></p>
+<p id="bib2">Drew, K., Lee, C., Cox, R.M., Dang, V., Devitt, C.C., Papoulas, O., Huizar, R.L., Marcotte, E.M., and Wallingford, J.B. (2020). A systematic, label-free method for identifying RNA-associated proteins in vivo provides insights into vertebrate ciliary beating machinery. Dev. Biol. <i>467</i>, 108-117. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00077-0/sref2">View at publisher</a></p>
+<p id="bib7">Drew, K., Lee, C., Huizar, R.L., Tu, F., Borgeson, B., McWhite, C.D., Ma, Y., Wallingford, J.B., and Marcotte, E.M. (2017). Integration of over 9,000 mass spectrometry experiments builds a global map of human protein complexes. Mol. Syst. Biol. <i>13</i> (<i>6</i>), 932. <a class="external-link" href="https://doi.org/10.15252/msb.20167490">https://doi.org/10.15252/msb.20167490</a></p>
+<p id="bib3">Liebeskind, B.J., Young, R.L., Halling, D.B., Aldrich, R.W., and Marcotte, E.M. (2020). Mapping functional protein neighborhoods in the mouse brain. bioRxiv. <a class="external-link" href="https://doi.org/10.1101/2020.01.26.920447">https://doi.org/10.1101/2020.01.26.920447</a></p>
+<p id="bib4">Mallam, A.L., Sae-Lee, W., Schaub, J.M., Tu, F., Battenhouse, A., Jang, Y.J., Kim, J., Finkelstein, I.J., Marcotte, E.M., and Drew, K. (2019). Systematic discovery of endogenous human ribonucleoprotein complexes. Cell Rep. <i>29</i>, 1351-1368.e5. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00077-0/sref4">View at publisher</a></p>
+<p id="bib5">McWhite, C.D., Papoulas, O., Drew, K., Cox, R.M., June, V., Dong, O.X., Kwon, T., Wan, C., Salmi, M.L., Roux, S.J., Browning, K.S., Chen, Z.J., Ronald, P.C., and Marcotte, E.M. (2020). A Pan-plant protein complex map reveals deep conservation and novel assemblies. Cell <i>181</i>, 460-474.e14. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00077-0/sref5">View at publisher</a></p>
+<p id="bib6">Olson, R.S. and Moore, J.H. (2016). TPOT: A tree-based pipeline optimization tool for automating machine learning. In Automated Machine Learning, F. Hutter, L. Kotthoff, and J. Vanschoren, eds. (Springer), pp. 66-74. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00077-0/sref6">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead Contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Edward Marcotte (<a href="mailto:marcotte@utexas.edu">marcotte@utexas.edu</a>).</p>
+<h4>Materials Availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and Code Availability</h4>
+<p>The cfmsflow pipeline is available at <a href="https://github.com/marcottelab/cfmsflow">https://github.com/marcottelab/cfmsflow</a>. Example data are provided along with the pipeline.</p>
+<h3>Supplemental Information</h3>
+<p><a id="mmc1" href="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/512-Mmc1.xlsx">Table S1. Example of an annotated protein elution profile, showing elution behavior of several known complexes</a></p>
+<h3>Acknowledgments</h3>
+<p>Research was funded by grants from the <a href="https://doi.org/10.13039/100000928">Welch Foundation</a> (F-1515 to E.M.M.); <a href="https://doi.org/10.13039/100000001">NSF</a> (1237975 to E.M.M.); <a href="https://doi.org/10.13039/100000183">Army Research Office</a> (W911NF-12-1-0390); and <a href="https://doi.org/10.13039/100000002">NIH</a> (GM123683 to C.D.M., K99 HD092613 to K.D., and R35 GM122480 and R01 HD085901 to E.M.M.).</p>
+<h3>Author Contributions</h3>
+<p>Writing – Experimental Methodology, O.P.; Writing – Computational Methodology and Pipeline, C.D.M.; Editing, C.D.M., O.P., and E.M.M.; Scripts, C.D.M. and K.D.; Pipeline Testing, V.D., W.S., and J.C.L.; Funding Acquisition, C.D.M., K.D., and E.M.M.; Supervision, E.M.M.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors have no competing interests.</p>
+</section>
+</article>

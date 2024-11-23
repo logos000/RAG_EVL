@@ -1,0 +1,1759 @@
+<article>
+<section>
+<h1 id="header">Protocol for scChaRM-seq: Simultaneous profiling of gene expression, DNA methylation, and chromatin accessibility in single cells</h1>
+<p><time datetime="2021-11-26">Published: November 26, 2021</time></p>
+<p>Rui Yan,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a></sup> Xin Cheng,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a></sup> and Fan Guo<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#aff4">4</a>,<a href="#fn1">5</a>,<a href="#fn2">6</a>,<a href="#cor1">*</a></sup></p>
+<p id="aff1"><sup>1</sup>State Key Laboratory of Stem Cell and Reproductive Biology, Institute of Zoology, Chinese Academy of Sciences, Beijing 100101, China</p>
+<p id="aff2"><sup>2</sup>Institute for Stem Cell and Regeneration, Chinese Academy of Sciences, Beijing 100101, China</p>
+<p id="aff3"><sup>3</sup>Beijing Institute for Stem Cell and Regenerative Medicine, Beijing 100101, China</p>
+<p id="aff4"><sup>4</sup>University of Chinese Academy of Sciences, Beijing 100049, China</p>
+<p id="fn1"><sup>5</sup>Technical contact</p>
+<p id="fn2"><sup>6</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:guofan@ioz.ac.cn">guofan@ioz.ac.cn</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100972">10.1016/j.xpro.2021.100972</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Single-cell multi-omics sequencing technology can infer cell heterogeneity and reveal relationships across molecular layers. Combining single-cell RNA sequencing, DNA methylation, and chromatin accessibility allows a multimodal understanding of cell function and epigenetic regulation within individual cells. Here, we offer a protocol to perform scChaRM-seq (single-cell chromatin accessibility, RNA barcoding, and DNA methylation sequencing), which has been applied to study <i>de novo</i> DNA methylation and its relationship with transcription and chromatin accessibility in single human oocytes.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="https://doi.org/10.1016/j.stem.2021.04.012">Yan et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Protocol for sequencing library construction of scChaRM-seq</li>
+<li>Detailed description of single-cell RNA libraries procedures in scChaRM-seq</li>
+<li>Detailed TAILS procedures to construct single-cell DNA libraries in scChaRM-seq</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Techniques for evaluation of single-cell DNA methylome with other molecular layers have been reported in recent years (<a href="#bib1">Angermueller et al., 2016</a>; <a href="#bib2">Clark et al., 2018</a>). We previously developed scCOOL-seq (single-cell Chromatin Overall Omic-scale Landscape sequencing) to perform multimodal sequencing of both DNA methylation and chromatin accessibility in single cells (<a href="#bib5">Gu et al., 2019</a>; <a href="#bib6">Guo et al., 2017</a>). Moreover, we have achieved high mapping efficiency for bisulfite-converted gDNA sequencing through a tailing- and ligation-free method for single cells (TAILS) (<a href="#bib5">Gu et al., 2019</a>). Recently, we combined single-cell barcoded RNA sequencing (<a href="#bib3">Dong et al., 2018</a>; <a href="#bib5">Gu et al., 2019</a>) with DNA methylation and chromatin accessibility profiling to generate a single-cell multi-omics sequencing method named scChaRM-seq (<a href="#bib9">Yan et al., 2021</a>). We have used scChaRM-seq to study the pattern of the DNA methylation establishment in human oocytes (<a href="#bib9">Yan et al., 2021</a>). In this STAR Protocol, we describe detailed steps on how to construct scChaRM-seq libraries (<a href="#fig1">Figure 1</a>) from mouse embryonic stem cells (ESCs). This protocol allows sequencing of up to 96 single-cell RNA (DNA) libraries in one batch, which is suitable for analyzing precious cell samples.</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Scheme of scChaRM-seq</div>
+<p>Individual cell was picked, lysed and underwent <i>in vitro</i> GpC methylation. mRNA was magnetically separated from released gDNA. Single-cell DNA and RNA were subjected to TAILS or RNA barcoding procedures respectively.</p>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> Use RNaseZap and DNA-OFF to clean the workbench before starting the experiment.</div>
+<div class="note">
+<span class="note-title">Note:</span> Multichannel pipettes are very useful to improve work efficiency and reduce the time costs.</div>
+<div class="note">
+<span class="note-title">Note:</span> Make sure that the pipette tips (filter tips) and centrifuge (or PCR) tubes used are both RNase-free and DNase-free.</div>
+<h3 id="sec1.1">Preparation of stock solutions</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>Prepare the stock solutions according to “stock solution” in materials and equipment before the start of this experiment. Store them at a suitable temperature until use.</p>
+<h3 id="sec1.2">Conjugation of biotinylated oligo-dT primer to magnetic beads</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 h</div>
+<ol>
+<li>For each of the 24 barcoded &amp; biotinylated oligo-dT primers (<a href="#tbl1">Table 1</a>): add 5 μL of Dynabeads™ MyOne™ Streptavidin C1 beads to a 1.5-mL DNA LoBind Tube.
+<table id="tbl1">
+<caption>Table 1. Twenty-four barcoded &amp; biotinylated oligo-dT primers</caption>
+<thead>
+<tr>
+<th>Primer</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Biotin-oligodT-#1</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAACGTGATNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#2</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAAACATCGNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#3</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTATGCCTAANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#4</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAGTGGTCANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#5</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACCACTGTNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#6</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACATTGGCNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#7</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTCAGATCTGNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#8</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTCATCAAGTNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#9</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTCGCTGATCNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#10</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACAAGCTANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#11</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTCTGTAGCCNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#12</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAGTACAAGNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#13</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAACAACCANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#14</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAACCGAGANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#15</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAACGCTTANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#16</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAAGACGGANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#17</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAAGGTACANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#18</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACACAGAANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#19</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACAGCAGANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#20</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACCTCCAANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#21</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACGCTCGANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#22</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACGTATCANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#23</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTACTATGCANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+<tr>
+<td>Biotin-oligodT-#24</td>
+<td><code>/Biotin/TCAGACGTGTGCTCTTCCGATCTAGAGTCAANNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTT</code></td>
+</tr>
+</tbody>
+</table>
+<table id="tbl2">
+<caption>Table 2. Four biotinylated indexing primers</caption>
+<thead>
+<tr>
+<th>Primer</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Index-primer-#1</td>
+<td><code>/Biotin/CAAGCAGAAGACGGCATACGAGATCTCTACGTGACTGGAGTTCAGACGTGTGCTCTTCCGATC</code></td>
+</tr>
+<tr>
+<td>Index-primer-#2</td>
+<td><code>/Biotin/CAAGCAGAAGACGGCATACGAGATGCTACCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATC</code></td>
+</tr>
+<tr>
+<td>Index-primer-#3</td>
+<td><code>/Biotin/CAAGCAGAAGACGGCATACGAGATGCTCATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATC</code></td>
+</tr>
+<tr>
+<td>Index-primer-#4</td>
+<td><code>/Biotin/CAAGCAGAAGACGGCATACGAGATTGCCATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATC</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Place the tube on a magnetic rack for 30 s, then remove and discard the supernatant.</li>
+<li>Wash the beads with 200 μL of 2× B&amp;W buffer on the magnetic rack and remove the supernatant.</li>
+<li>Carefully remove the tube from the magnetic rack, add 5 μL of 2× B&amp;W buffer and 5 μL of 100 μM barcoded &amp; biotinylated Oligo-dT primer to cover the beads.</li>
+<li>Re-suspend the beads with a vortexer, then incubate for 20 min at 25°C on a rotator.</li>
+<li>Place the tube on a magnetic rack for 30 s, and then remove and discard the supernatant.</li>
+<li>Wash the beads 4 times with 200 μL of 1× B&amp;W buffer on the magnetic rack (Dilute the 2× B&amp;W buffer using nuclease-free water).</li>
+<li>Wash the beads once with 200 μL of TE buffer (10 mM Tris-HCl, 1 mM EDTA, PH 7.5) on the magnetic rack.</li>
+<li>Carefully remove the tube from the magnetic rack, add 40 μL of TE buffer and keep at 4°C for less than 1 week.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> A total number of twenty-four different barcoded &amp; biotinylated oligo-dT primers were synthesized (Integrated DNA Technologies, Inc.). This step allows preparation of barcoded oligo-dT-C1 beads sufficient for 96 single cells.</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Dynabeads™ MyOne™ Streptavidin C1</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 65002</td>
+</tr>
+<tr>
+<td>UltraPure 1 M Tris-HCl, pH 7.5</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15567-027</td>
+</tr>
+<tr>
+<td>0.5 M EDTA, pH 8.0, RNase free</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM9260G</td>
+</tr>
+<tr>
+<td>dNTP mix</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# R0192</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM9932</td>
+</tr>
+<tr>
+<td>Tween-20 (50% solution)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 003005</td>
+</tr>
+<tr>
+<td>λDNA</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# SD0021</td>
+</tr>
+<tr>
+<td>Phenylmethanesulfonyl fluoride (PMSF)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 36978</td>
+</tr>
+<tr>
+<td>dCTP</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# R0151</td>
+</tr>
+<tr>
+<td>Terminal Deoxynucleotidyl Transferase (TDT)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# EP0162</td>
+</tr>
+<tr>
+<td>Superscript II reverse transcriptase</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 18064071</td>
+</tr>
+<tr>
+<td>5M Sodium chloride solution (NaCl)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# S5150</td>
+</tr>
+<tr>
+<td>Betaine</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 61962-50G</td>
+</tr>
+<tr>
+<td>Nonidet P-40 substitute</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 11332473001</td>
+</tr>
+<tr>
+<td>Recombinant RNase Inhibitor (40 U/μL)</td>
+<td>Takara Bio</td>
+<td>Cat# 2313B</td>
+</tr>
+<tr>
+<td>GpC Methyltransferase (M.CviPI)</td>
+<td>New England Biolabs</td>
+<td>Cat# M0227L</td>
+</tr>
+<tr>
+<td>Buffer RLT Plus</td>
+<td>Qiagen</td>
+<td>Cat# 1053393</td>
+</tr>
+<tr>
+<td>Carrier RNA</td>
+<td>Qiagen</td>
+<td>Cat# 1068337</td>
+</tr>
+<tr>
+<td>Klenow (3′→ 5′ exo-)</td>
+<td>Qiagen</td>
+<td>Cat# P7010-HC-L</td>
+</tr>
+<tr>
+<td>Magnesium chloride (MgCl<sub>2</sub>)</td>
+<td>VMR</td>
+<td>Cat# J364-100G</td>
+</tr>
+<tr>
+<td>2× KAPA HiFi HS ReadyMix</td>
+<td>Roche</td>
+<td>Cat# 7958935001</td>
+</tr>
+<tr>
+<td>Exo-SAP IT Express</td>
+<td>Applied Biosystems</td>
+<td>Cat# 75001</td>
+</tr>
+<tr>
+<td>AMPure XP beads</td>
+<td>Beckman coulter</td>
+<td>Cat# A63882</td>
+</tr>
+<tr>
+<td>Ethanol, absolute</td>
+<td>In house</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>DNA Clean &amp; Concentrator-5 Kit</td>
+<td>ZYMO RESEARCH</td>
+<td>Cat# D4014</td>
+</tr>
+<tr>
+<td>EZ-96 DNA Methylation-Direct MagPrep Kit</td>
+<td>ZYMO RESEARCH</td>
+<td>Cat# D5045</td>
+</tr>
+<tr>
+<td>Zymoclean Gel DNA Recovery Kit</td>
+<td>ZYMO RESEARCH</td>
+<td>Cat# D4008</td>
+</tr>
+<tr>
+<td>NEBNext Ultra II DNA Library Prep Kit</td>
+<td>New England Biolabs</td>
+<td>Cat# E7645L</td>
+</tr>
+<tr>
+<td>NEBNext Multiplex Oligos for Illumina (Index Primers Set 1)</td>
+<td>New England Biolabs</td>
+<td>Cat# E7335</td>
+</tr>
+<tr>
+<td>NEBNext Multiplex Oligos for Illumina (Index Primers Set 2)</td>
+<td>New England Biolabs</td>
+<td>Cat# E7500</td>
+</tr>
+<tr>
+<td>Qubit dsDNA high-sensitivity kit</td>
+<td>Invitrogen</td>
+<td>Cat# Q32851</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>TSO primer:<code>AAGCAGTGGTATCAACGCAGAGTACATrGrG+G</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>ISPCR primer:<code>AAGCAGTGGTATCAACGCAGAGT</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>P2 primer:<code>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATC</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>QP2 primer:<code>CAAGCAGAAGACGGCATACGA</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Short Universal primer:<code>AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGAC</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>P5-N6-oligo:<code>CTACACGACGCTCTTCCGATCTN<sub>6</sub></code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>P7-G6-oligo:<code>AGACGTGTGCTCTTCCGATCTG<sub>6</sub>HN</code>
+</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>DNA LoBind Tubes, 1.5 mL</td>
+<td>Eppendorf</td>
+<td>Cat# 0030108051</td>
+</tr>
+<tr>
+<td>DNA LoBind Tubes, 2.0 mL</td>
+<td>Eppendorf</td>
+<td>Cat# 0030108078</td>
+</tr>
+<tr>
+<td>50-mL High Clarity PP Centrifuge Tube</td>
+<td>Corning</td>
+<td>Cat# 352070</td>
+</tr>
+<tr>
+<td>0.2-mL Thin Wall PCR Tubes with Flat Cap</td>
+<td>Axygen</td>
+<td>Cat# PCR-02-C</td>
+</tr>
+<tr>
+<td>Magnetic Rack for 0.2-mL PCR tubes</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 492025</td>
+</tr>
+<tr>
+<td>Magnetic Rack for 2.0-mL centrifuge tubes</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 12321D</td>
+</tr>
+<tr>
+<td>Blue Light Gel Imager</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>microTUBE Snap-Cap</td>
+<td>Covaris</td>
+<td>Cat# 520045</td>
+</tr>
+<tr>
+<td>Qubit Fluorometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# Q33216</td>
+</tr>
+<tr>
+<td>Focused-ultrasonicator</td>
+<td>Covaris</td>
+<td>Cat# M220</td>
+</tr>
+<tr>
+<td>Fragment analyzer</td>
+<td>AATI</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Stereo microscope</td>
+<td>Nikon</td>
+<td>SMZ1270</td>
+</tr>
+<tr>
+<td>Centrifuge, refrigerated</td>
+<td>Eppendorf</td>
+<td>5425R</td>
+</tr>
+<tr>
+<td>Thermal Cycler</td>
+<td>Thermo Fisher Scientific</td>
+<td>ProFlex</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> We suppose that the listed reagents, kits and consumable items from alternatives of commercial suppliers could also be used instead.</div>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl1">
+<caption>Stock solutions</caption>
+<thead>
+<tr>
+<th>Name</th>
+<th>Reagents amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PMSF (100 mM)</td>
+<td>17.4 mg Phenylmethanesulfonyl fluoride (PMSF) in 1 mL isopropanol. Heat to 37°C to dissolve and store at −20°C (stable at least for 6 months).</td>
+</tr>
+<tr>
+<td>1 M MgCl<sub>2</sub>
+</td>
+<td>952.1 mg MgCl<sub>2</sub>, fill up to 10 mL with nuclease-free water and store at 4°C (stable at least for 6 months).</td>
+</tr>
+<tr>
+<td>5 M Betaine</td>
+<td>14.65 g Betaine, fill up to 25 mL with nuclease-free water and store at −20°C (stable at least for 6 months).</td>
+</tr>
+<tr>
+<td>Elution buffer</td>
+<td>500 μL Tris-HCl (1 M, pH 7.5), fill up to 50 mL with nuclease-free water and store at 4°C (stable at least for 6 months).</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl2">
+<caption>2× B&amp;W buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl (1 M, pH 7.5)</td>
+<td>10 mM</td>
+<td>0.5 mL</td>
+</tr>
+<tr>
+<td>EDTA (0.5 M)</td>
+<td>1 mM</td>
+<td>0.1 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>2 M</td>
+<td>20 mL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>29.4 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 4°C (stable at least for 6 months).</p>
+<table id="undtbl3">
+<caption>DNA wash buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5× Superscript II first-strand buffer</td>
+<td>1×</td>
+<td>2 mL</td>
+</tr>
+<tr>
+<td>DTT (100 mM)</td>
+<td>10 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>Tween-20 (50% solution)</td>
+<td>0.05%</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>6.99 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Store at 4°C for up to 1 week. Right before use, add 10 μL RNase inhibitor (40 U/μL) per 1 mL of buffer.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Handle DTT in a draft chamber and wear protective gloves as it is toxic upon inhalation.</div>
+<h3 id="sec2.1">Work solutions</h3>
+<table id="undtbl4">
+<caption>Re-suspend buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5× Superscript II first-strand buffer</td>
+<td>1×</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>RNase inhibitor (40 U/μL)</td>
+<td>1 U/μL</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>7.75 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl5">
+<caption>LM buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl (1 M, PH 7.5)</td>
+<td>50 mM</td>
+<td>0.125 μL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>50 mM</td>
+<td>0.025 μL</td>
+</tr>
+<tr>
+<td>DTT (100 mM)</td>
+<td>10 mM</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>EDTA (5 mM)</td>
+<td>0.25 mM</td>
+<td>0.125 μL</td>
+</tr>
+<tr>
+<td>10% NP-40</td>
+<td>0.5%</td>
+<td>0.125 μL</td>
+</tr>
+<tr>
+<td>λDNA (1 pg/μL)</td>
+<td>n/a</td>
+<td>1.0 μL</td>
+</tr>
+<tr>
+<td>PMSF (10 mM)</td>
+<td>0.25 mM</td>
+<td>0.063 μL</td>
+</tr>
+<tr>
+<td>RNase inhibitor (40 U/μL)</td>
+<td>1 U/μL</td>
+<td>0.063 μL</td>
+</tr>
+<tr>
+<td>M.CviPI (4 U/μL)</td>
+<td>1 U/μL</td>
+<td>0.625 μL</td>
+</tr>
+<tr>
+<td>SAM (8 mM)</td>
+<td>160 μM</td>
+<td>0.05 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>0.049 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>2.5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl6">
+<caption>RT reaction buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>1.795 μL</td>
+</tr>
+<tr>
+<td>dNTP mix (10 mM each)</td>
+<td>1 mM each</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>TSO primer (100 μM)</td>
+<td>1 μM</td>
+<td>0.05 μL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>6 mM</td>
+<td>0.03 μL</td>
+</tr>
+<tr>
+<td>Betaine (5 M)</td>
+<td>1 M</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>5× Superscript II first-strand buffer</td>
+<td>1×</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>DTT (100 mM)</td>
+<td>5 mM</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>Superscript II reverse transcriptase (200 U/μL)</td>
+<td>10 U/μL</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>RNase inhibitor (40 U/μL)</td>
+<td>1 U/μL</td>
+<td>0.125 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl7">
+<caption>PCR preamplification mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× KAPA HiFi HS ReadyMix</td>
+<td>1×</td>
+<td>6.25 μL</td>
+</tr>
+<tr>
+<td>ISPCR primer (10 μM)</td>
+<td>0.2 μM</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td>P2 primer (10 μM)</td>
+<td>0.6 μM</td>
+<td>0.75 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>0.25 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>7.5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl8">
+<caption>Indexing PCR mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× KAPA HiFi HS ReadyMix</td>
+<td>1×</td>
+<td>25 μL</td>
+</tr>
+<tr>
+<td>ISPCR primer (10 μM)</td>
+<td>0.4 μM</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>Indexing primer (10 μM)</td>
+<td>0.4 μM</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>29 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl9">
+<caption>NEB final PCR mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× NEBNext Ultra II Q5 Master Mix</td>
+<td>1×</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>QP2 primer (10 μM)</td>
+<td>0.3 μM</td>
+<td>0.75 μL</td>
+</tr>
+<tr>
+<td>Short Universal primer (10 μM)</td>
+<td>0.3 μM</td>
+<td>0.75 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>14 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl10">
+<caption>1<sup>st</sup> round priming mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10× Blue buffer</td>
+<td>1×</td>
+<td>1.25 μL</td>
+</tr>
+<tr>
+<td>Klenow (3′ → 5′ exo-)</td>
+<td>4 U/μL</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>P5-N6-oligo (10 μM)</td>
+<td>0.4 μM</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>dNTP (10 mM each)</td>
+<td>0.4 mM</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>3.25 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl11">
+<caption>dC tailing mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>3.3 μL</td>
+</tr>
+<tr>
+<td>10× Blue buffer</td>
+<td>1×</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>dCTP (100 mM)</td>
+<td>1 mM</td>
+<td>0.2 μL</td>
+</tr>
+<tr>
+<td>TDT enzyme</td>
+<td>1 U/μL</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl12">
+<caption>2<sup>nd</sup> round priming mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-free water</td>
+<td>n/a</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>Klenow (3′ → 5′ exo-)</td>
+<td>4 U/μL</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>10× Blue buffer</td>
+<td>1×</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>P7-G6-oligo (10 μM)</td>
+<td>0.4 μM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>dNTP (10 mM each)</td>
+<td>0.4 mM</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>5 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<table id="undtbl13">
+<caption>DNA final PCR mixture</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2× KAPA HiFi HS ReadyMix</td>
+<td>1×</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>NEBNext Universal Primer (10 μM)</td>
+<td>0.3 μM</td>
+<td>0.75 μL</td>
+</tr>
+<tr>
+<td>NEBNext Index Primer (10 μM)</td>
+<td>0.3 μM</td>
+<td>0.75 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>14 μL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare right before use.</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> This protocol uses Fragment analyzer (AATI) to assess the fragment size distribution of the RNA and DNA libraries. There are also several commercial capillary electrophoresis systems that can implement the analysis of library size distribution. For example, the Bioanalyzer (Agilent), P/ACE MDQ (Beckman) or LabChip (PerkinElmer). Researchers should choose appropriate instrument to analyze fragment size distribution of sequencing libraries.</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>The scChaRM-seq could be applied to various types of mammalian cells (if a cell contains poly-A tailed mRNA, DNA methylation modification and chromosomes), including cell lines and tissue cells. In this protocol, we took use of mouse embryonic stem cells (ES cells or ESCs) as an example cell line to describe step-by-step method details.</p>
+<h3 id="sec3.1">Preparation single-cell suspension of mouse ESCs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 days</div>
+<p>Routine culture of mouse ES cells follows the published protocol (<a href="#bib8">Samuelson and Metzger, 2006</a>) under either 2i- or serum- containing media (<a href="#bib4">Ficz et al., 2013</a>). Single-cell suspension is prepared during propagation after cell detachment by using trypsin. The viability of mouse ES cells should be above 95% (<a href="#fig2">Figure 2</a>).</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Typical morphology and viability of mouse ES cells</div>
+<p>(A) Clone morphology of mouse ES cells.</p>
+<p>(B) Examination of cell viability by trypan blue staining (CountessTM 3 FL Automated Cell Counter).</p>
+</figcaption>
+</figure>
+<h3 id="sec3.2">Single-cell lysis and <i>in vitro</i> GpC methylation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<div class="note">
+<span class="note-title">Note:</span> All the buffer and reaction mixtures should be prepared on ice.</div>
+<ol>
+<li>Prepare lysis &amp; <i>in vitro</i> methylation buffer (LM buffer) for individual cell.</li>
+<li>Add 2.5 μL LM buffer to each 0.25-mL PCR tube and place the tube on ice.</li>
+<li>Manually pick individual cell under the stereo-microscope with mouth-pipette, and transfer single cell into 0.25-mL PCR tube containing ice-cold LM buffer.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> One needs practice to perform step 3. For how to use mouth-pipette to manually selecting single cells, please refer to <a href="#bib7">Lipovsek et al. (2020)</a> as a learning example (<a href="#bib7">Lipovsek et al., 2020</a>).</div>
+<ol start="4">
+<li>Vortex briefly and centrifuge at 1,000× <i>g</i> for 1 min at 4°C, then immediately place the tube back on ice.</li>
+<li>Incubate single cell sample in a thermal cycler at 37°C for 15 min.</li>
+<li>After incubation, centrifuge at 7,500 × <i>g</i> for 1 min at 4°C and put the sample back on ice.</li>
+<li>Add 5 μL of Buffer RLT Plus to each single cell sample.</li>
+<li>Vortex briefly and incubate the mixture at 25°C for 5 min.</li>
+<li>Quickly centrifugation (7,500 × <i>g</i> for 30 s) and proceed to the next step, or transfer samples to a −80°C freezer.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The <i>in vitro</i> methylated cell samples can be stored at −80°C for several days.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Because PMSF is toxic, wear protective gloves, eye/face protection and protective clothing to avoid accidentally inhalation while handling.</div>
+<h3 id="sec3.3">Separation of mRNA from lysate</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.5–1 h</div>
+<ol start="10">
+<li>For each barcoded oligo-dT-C1 beads: transfer 10 μL of oligo-dT-C1 beads to a 0.25-mL PCR tube, and place it on a magnetic rack for 1 min, and then remove and discard the supernatant.</li>
+<li>Remove tube from magnetic rack, re-suspend the beads with 10 μL of re-suspend buffer and keep it on ice.</li>
+<li>Add 10 μL of oligo-dT-C1 beads to the 7.5 μL of single cell lysate.</li>
+<li>Vortex briefly and incubate for 10 min at 25°C.</li>
+<li>Briefly spin down the sample on a benchtop mini centrifuge, place the tube on a magnetic rack for 1 min and transfer the supernatant to a new 0.25-mL PCR tube, keep it on ice.</li>
+<li>Wash the beads on the magnetic rack once with 30 μL of DNA wash buffer for 5 min and transfer the supernatant to the same tube containing gDNA from a single cell.</li>
+<li>Collect the released gDNA from a single cell (47.5 μL in total) on ice and keep it at −80°C until further processing.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> The gDNA can be stored at −80°C for several weeks.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> The mRNA captured on the oligo-dT-C1 beads needs to be processed to the next step immediately.</div>
+<h3 id="sec3.4">Reverse transcription</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="17">
+<li>Prepare the reverse transcription reaction buffer (RT reaction buffer).</li>
+<li>Add 5 μL of RT reaction buffer to the remaining beads containing mRNA from a single cell.</li>
+<li>Vortex briefly and spin down quickly.</li>
+<li>Incubate the reaction in a thermal cycler with a heated lid (105°C), as detailed below:</li>
+</ol>
+<table id="undtbl14">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>25°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>42°C</td>
+<td>60 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>50°C</td>
+<td>30 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>70°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec3.5">PCR preamplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="21">
+<li>Centrifuge the RT sample at 7,500 × <i>g</i> for 1 min.</li>
+<li>Prepare the PCR preamplification mixture for a single cell.</li>
+<li>Add 7.5 μL of PCR preamplification mixture to each single-cell sample. Vortex briefly and spin down quickly.</li>
+<li>Perform the PCR in a thermal cycler (lid temp. 105°C) by using the following program:</li>
+</ol>
+<table id="undtbl15">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">4 cycles</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>72°C</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">18 cycles</td>
+</tr>
+<tr>
+<td>6</td>
+<td>67°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>7</td>
+<td>72°C</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="25">
+<li>Quantification the concentration of single-cell cDNA by the Qubit Fluorometer.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The total number of PCR cycles depends on the RNA content in different type of cells. 18 cycles indicated in this protocol are suitable for mouse embryonic stem cells. The number of cycles can be increased for cells which have limited mRNA (e.g., cumulus cells, 20 cycles) or decreased for cells which have abundant mRNA (e.g., oocytes, 16 cycles).</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> PCR products can be stored at −20°C for several weeks.</div>
+<h3 id="sec3.6">cDNA purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–1.5 h</div>
+<ol start="26">
+<li>Pool 6 μL of the PCR products from each single-cell sample which are labeled by one of twenty-four different barcodes.</li>
+<li>Purify once with Zymo DNA Clean &amp; Concentrator-5 Kit according to the manufacturer’s protocol, elute in 50 μL elution buffer.</li>
+<li>Quantification the concentration of single-cell cDNA by the Qubit Fluorometer.</li>
+<li>Add 40 μL of equilibrated AMPure XP beads to each single-cell sample and mix by vortex to make the solution homogeneous.</li>
+<li>Incubate the mixture for 10 min at 25°C to let the DNA bind to the beads.</li>
+<li>Place the tube on the magnetic rack for 5 min until the solution is clear and the beads have been collected at one corner of the well.</li>
+<li>Carefully remove and discard the liquid without disturbing the beads. Wash the beads twice with 200 μL 80% (vol/vol) ethanol solution.</li>
+<li>Remove any trace of ethanol and let the beads dry completely (usually 3–5 min).</li>
+<li>Before removing tube from the magnetic rack, add 30 μL elution buffer. Mix by vortex, incubate the tube off the magnetic rack for 2 min.</li>
+<li>Place the tube on the magnetic rack and leave it until the solution appears clear and beads have accumulated in a corner of the well.</li>
+<li>Collect the supernatant without disturbing the beads and transfer it to a fresh 1.5-mL DNA LoBind Tube.</li>
+<li>Measure the concentration of cDNA by the Qubit Fluorometer.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> Single-cell cDNA can be stored at −20°C for several weeks.</div>
+<h3 id="sec3.7">Quality check of the cDNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="38">
+<li>Check the size distribution of the cDNA on a Fragment analyzer. A good cDNA sample should show a peak approximately at 1–2 kb, and the yield of the cDNA sample is approximately more than 50 ng.</li>
+</ol>
+<h3 id="sec3.8">Indexing PCR amplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="39">
+<li>Prepare the indexing PCR (<a href="#tbl2">Table 2</a>) mixture for pooled single-cell cDNA. Use ∼40 ng cDNA as template, add 29 μL of indexing PCR mixture to each single-cell sample to a total volume of 50 μL. Vortex briefly and spin down quickly.</li>
+<li>Perform the PCR in a thermal cycler (lid temp. 105°C) by using the following program:</li>
+</ol>
+<table id="undtbl16">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">3 cycles</td>
+</tr>
+<tr>
+<td>3</td>
+<td>67°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>72°C</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="41">
+<li>Add 40 μL of equilibrated AMPure XP beads to PCR products, purify once and elute with 30 μL elution buffer (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above).</li>
+<li>Quantification the cDNA concentration by the Qubit Fluorometer.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> PCR products can be stored at −20°C for several weeks.</div>
+<h3 id="sec3.9">cDNA library construction</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3 h</div>
+<ol start="43">
+<li>Following the manufacturer’s protocol, fragmentation of cDNA sample by the Covaris<sup>TM</sup> to achieve peak distribution around 300–350 bp. The default programs and settings are pre-installed by the manufacturer, and could be easily selected to use.</li>
+<li>After sonication, purify once with Zymo DNA Clean &amp; Concentrator-5 Kit according to the manufacturer’s protocol, elute in 50 μL elution buffer.</li>
+<li>Purify once with 50 μL of equilibrated AMPure XP beads, elute in 50 μL nuclease-free water (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above).</li>
+<li>Take 10 μL of Dynabeads™ MyOne™ Streptavidin C1 beads into 1.5-mL tube, wash the beads once with 200 μL 2× B&amp;W buffer on magnetic rack, re-suspend beads with 50 μL 2× B&amp;W buffer by vortex.</li>
+<li>Incubate 50 μL of eluted cDNA sample with re-suspended beads at 25°C for 30 min.</li>
+<li>After incubation, put each tube on magnetic rack, then discard the supernatant.</li>
+<li>Add 100 μL 1× B&amp;W buffer to wash beads, then add 100 μL elution buffer to wash beads again. Re-suspend beads in 50 μL nuclease-free water and keep it on ice.</li>
+<li>Following the manufacturer’s protocol of the NEBNext Ultra II DNA Library Prep Kit, then perform “End repair” and “Adapter ligation” steps.</li>
+<li>After incubation with the USER enzyme for 15 min, spin down and put each tube on magnetic rack, discard the supernatant.</li>
+<li>Add 100 μL elution buffer to wash beads, then discard the supernatant.</li>
+<li>Re-suspend beads in 11 μL nuclease-free water.</li>
+</ol>
+<h3 id="sec3.10">PCR amplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<ol start="54">
+<li>Add 11 μL of adaptor ligated cDNA fragments to 14 μL of NEB final PCR mixture.</li>
+<li>Perform PCR amplification (lid temp. 105°C) as follows:</li>
+</ol>
+<table id="undtbl17">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="2">9 cycles</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65°C</td>
+<td>75 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>65°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="56">
+<li>Purify the PCR mix twice by equilibrated AMPure XP beads and elute in 30 μL of elution buffer (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above).</li>
+<li>Measure the concentration of RNA library by the Qubit Fluorometer.</li>
+</ol>
+<h3 id="sec3.11">Quality check of the final RNA library</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="58">
+<li>Check the size distribution of the final RNA library on a Fragment analyzer. A good RNA library is approximately more than 100 ng, and usually ranges from 200 bp to 800 bp.</li>
+</ol>
+<h3 id="sec3.12">Purification of genomic DNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="59">
+<li>Purify the gDNA with 47.5 μL of equilibrated AMPure XP beads (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above). Elute gDNA with 10 μL of nuclease-free water, and transfer the gDNA to a new 0.25-mL PCR tube.</li>
+</ol>
+<h3 id="sec3.13">Bisulfite conversion of gDNA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3.5 h</div>
+<ol start="60">
+<li>Use EZ-96 DNA Methylation-Direct MagPrep Kit following the manufacturer’s protocol to conduct CT conversion of gDNA from single cell. DNA was bisulfite converted as follows:</li>
+</ol>
+<table id="undtbl18">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>98°C</td>
+<td>8 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>64°C</td>
+<td>3.5 h</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4°C</td>
+<td colspan="2">hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="61">
+<li>Add 10 ng of carrier RNA to each sample before purification and elute DNA with 10 μL of elution buffer.</li>
+<li>Incubate at 55°C for 4 min and transfer 9.25 μL to a new 0.25-mL PCR tube.</li>
+</ol>
+<h3 id="sec3.14">DNA libraries construction by TAILS</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<ol start="63">
+<li>Incubate the 9.25 μL of bisulfite converted and purified gDNA at 65°C for 3 min; 4°C for pause to stretch the DNA strand.</li>
+<li>Add 3.25 μL of 1<sup>st</sup> round priming mixture to each single-cell DNA sample.</li>
+<li>Perform the first random priming as follows:</li>
+</ol>
+<table id="undtbl19">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>37°C</td>
+<td>60 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="66">
+<li>Add 3 μL of Exo-SAP IT Express to each single-cell sample to remove the remaining primers as follows:</li>
+</ol>
+<table id="undtbl20">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>37°C</td>
+<td>60 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>80°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="67">
+<li>After incubation, transfer immediately to ice. Add 5 μL of dC tailing mixture to single-cell sample.</li>
+<li>Incubate sing-cell sample as follows:</li>
+</ol>
+<table id="undtbl21">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>37°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>70°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>95°C</td>
+<td>90 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="69">
+<li>After incubation, transfer immediately to ice. Add 5 μL of 2<sup>nd</sup> round priming mixture to single-cell sample.</li>
+<li>Synthesize the second DNA strands as follows:</li>
+</ol>
+<table id="undtbl22">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>37°C</td>
+<td>90 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4°C</td>
+<td colspan="2">hold</td>
+</tr>
+</tbody>
+</table>
+<ol start="71">
+<li>After incubation, transfer immediately to ice.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After the second-round priming, samples can be stored at −20°C for 1 day.</div>
+<h3 id="sec3.15">Purification and PCR amplification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1.5–2 h</div>
+<ol start="72">
+<li>Purify the single-cell DNA samples once with equilibrated AMPure XP beads, elute with 12 μL of nuclease-free water and transfer 11 μL to a new 0.25-mL PCR tube (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above).</li>
+<li>Add 14 μL DNA final PCR mixture to the 11 μL of purified DNA sample, vortex and spin down briefly.</li>
+<li>Perform the PCR amplification (lid temp. 105°C) as follows:</li>
+</ol>
+<table id="undtbl23">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>95°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>98°C</td>
+<td>20 s</td>
+<td rowspan="3">20 cycles</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>72°C</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>72°C</td>
+<td>3 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>4°C</td>
+<td colspan="2">Hold</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec3.16">Pooling and gel recovery</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–2.5 h</div>
+<ol start="75">
+<li>Pooling the PCR products together: 12.5 μL of each single-cell's DNA for 24 samples.</li>
+<li>Purify with Zymo DNA Clean &amp; Concentrator-5 Kit according to the manufacturer’s protocol, elute in 20 μL of nuclease-free water.</li>
+<li>After 1.5% agarose electrophoresis, recover the DNA between 400-bp and 1,000-bp by using the Zymoclean Gel DNA Recovery Kit according to the manufacturer’s protocol.</li>
+<li>Purify the DNA with equilibrated AMPure XP beads, elute with 20 μL of elution buffer (For detailed steps of purifying DNA with AMPure XP beads, please refer to “<a href="#sec3.6">cDNA purification</a>” above).</li>
+</ol>
+<h3 id="sec3.17">Quality check of the final DNA library</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 h</div>
+<ol start="79">
+<li>Quantify the libraries and check the size distribution with a Fragment Analyzer. The yield of the DNA library is approximately more than 30 ng, and the size distribution is between 400 bp and 1 kb.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>This protocol describes the construction of scChaRM-seq libraries. The constructed libraries can be applied for next-generation sequencing (NGS) to obtain multi-omics datasets including transcriptome, DNA methylome and chromatin accessibility. For more details, please refer to our recent publications (<a href="#bib9">Yan et al., 2021</a>).</p>
+<p>The yield of the RNA and DNA libraries can be firstly analyzed using Qubit Fluorometer. Generally, the yield of the RNA library is approximately more than 100 ng, and the yield of the DNA library is approximately more than 30 ng.</p>
+<p>The fragment analyzer can be used to check the size distribution of both the DNA and RNA libraries. When construction of the RNA library, inspect the quality of the cDNA are also necessary. A good cDNA sample should show a peak approximately at 1–2 kb (<a href="#fig3">Figure 3</a>).</p>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The size distribution of scChaRM-seq cDNA</div>
+<p>A typical result of scChaRM-seq cDNA sample from the AATI Fragment Analyzer.</p>
+</figcaption>
+</figure>
+<p>For the final RNA library, the distribution of the fragments usually ranges from 200 bp to 800 bp, the expected peak should be around 400 bp (<a href="#fig4">Figure 4</a>).</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. The size distribution of scChaRM-seq RNA library</div>
+<p>A typical result of scChaRM-seq RNA library from the AATI Fragment Analyzer.</p>
+</figcaption>
+</figure>
+<p>For the DNA library, a peak will be observed around 600bp and the size distribution is between 400 bp and 1 kb (<a href="#fig5">Figure 5</a>). It is important that the lower molecular weight fragments (below 150bp) should not be present in both RNA and DNA libraries, this will affect sequencing results (<a href="#fig4">Figures 4</a> and <a href="#fig5">5</a>).</p>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1194-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. The size distribution of scChaRM-seq DNA library</div>
+<p>A typical result of scChaRM-seq DNA library from the AATI Fragment Analyzer.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>The scChaRM-seq method has achieved multi-omics profiling with moderate throughput, combining the multiplex sequencing of single-cell RNA with DNA methylation and chromatin accessibility. However, the scChaRM-seq is on the low throughput for scRNA-seq compared with other single-cell RNA-seq methods such as 10× Genomics platform (<a href="#bib10">Zheng et al., 2017</a>). Efforts on elevating the throughput for single-cell multi-omics sequencing are still needed.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>The cell viability is low (step 3).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>In general, cells should be at least 90% viable before use. When the cell viability is low, RNA quality from single cells may be poor. We usually use automated cell counter to measure cell viability; one could also use a blood counting chamber for cell counting after trypan blue staining.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>The yield of the cDNA sample is very low (step 37).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>Generally, the yield of the cDNA sample is approximately more than 50 ng when quantified using Qubit Fluorometer. If you got a very low cDNA yield, it might be because the total number of PCR cycles is not enough. The number of PCR cycles depends on the RNA content in different type of cells. 18 cycles indicated in this protocol are suitable for mouse embryonic stem cells. You can increase the number of cycles for cells which have limited mRNA.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>The quality of the cDNA sample is poor (step 38).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>As shown in <a href="#fig3">Figure 3</a>, a good cDNA sample should show a peak approximately at 1–2 kb. If your cDNA sample showed a huge peak lower than 500bp, the mRNA might be degraded. You can use RNase<i>Zap</i> to clean work bench and equipment before starting the experiment. Make sure that the pipette tips (filter tips) and centrifuge (or PCR) tubes are both RNase-free. Besides, it is also very important to examine the cell viability before picking up single cells and perform downstream experiments.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The DNA recovery efficiency is low (step 59–78).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>During the construction of single-cell DNA libraries, the amount of input DNA is very limited. Therefore, one needs to ensure that DNA is efficiently recovered in the purification steps. It’s better to use the DNA LoBind tubes to store DNA samples. Moreover, when introducing the DNA recovery kit or AMPure XP beads for purification procedures, ensure those reagents are still in usable date and follow the manufacturer’s instructions.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>The yield of the DNA library is very low (step 79).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Generally, the yield of the DNA library is approximately more than 30ng when quantified using Qubit Fluorometer. If you got a very low DNA yield, there might be two possible reasons. The first one is the loss of input gDNA during purification steps, you may try to use DNA low-bind tubes and increase the number of PCR cycles. The second one is gDNA might be degraded by DNase, you should use DNase-free tips and tubes when handling single-cell DNA samples. Additionally, you can use reagent to minimize DNase contamination from work bench before starting the experiment. The amount of the gDNA from a single cell is very limited, it is important to avoid loss of input gDNA when handling single-cell samples.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Angermueller, C., Clark, S.J., Lee, H.J., Macaulay, I.C., Teng, M.J., Hu, T.X., Krueger, F., Smallwood, S., Ponting, C.P., Voet, T., et al. (2016). Parallel single-cell sequencing links transcriptional and epigenetic heterogeneity. Nat. Methods <i>13</i>, 229-232. <a class="external-link" href="https://doi.org/10.1038/nmeth.3728">https://doi.org/10.1038/nmeth.3728</a></p>
+<p id="bib2">Clark, S.J., Argelaguet, R., Kapourani, C.A., Stubbs, T.M., Lee, H.J., Alda-Catalinas, C., Krueger, F., Sanguinetti, G., Kelsey, G., Marioni, J.C., et al. (2018). scNMT-seq enables joint profiling of chromatin accessibility DNA methylation and transcription in single cells. Nat. Commun. <i>9</i>, 781. <a class="external-link" href="https://doi.org/10.1038/s41467-018-03149-4">https://doi.org/10.1038/s41467-018-03149-4</a></p>
+<p id="bib3">Dong, J., Hu, Y., Fan, X., Wu, X., Mao, Y., Hu, B., Guo, H., Wen, L., and Tang, F. (2018). Single-cell RNA-seq analysis unveils a prevalent epithelial/mesenchymal hybrid state during mouse organogenesis. Genome Biol. <i>19</i>, 31. <a class="external-link" href="https://doi.org/10.1186/s13059-018-1416-2">https://doi.org/10.1186/s13059-018-1416-2</a></p>
+<p id="bib4">Ficz, G., Hore, T.A., Santos, F., Lee, H.J., Dean, W., Arand, J., Krueger, F., Oxley, D., Paul, Y.L., Walter, J., et al. (2013). FGF signaling inhibition in ESCs drives rapid genome-wide demethylation to the epigenetic ground state of pluripotency. Cell Stem Cell <i>13</i>, 351-359. <a class="external-link" href="https://doi.org/10.1016/j.stem.2013.06.004">https://doi.org/10.1016/j.stem.2013.06.004</a></p>
+<p id="bib5">Gu, C., Liu, S., Wu, Q., Zhang, L., and Guo, F. (2019). Integrative single-cell analysis of transcriptome, DNA methylome and chromatin accessibility in mouse oocytes. Cell Res. <i>29</i>, 110-123. <a class="external-link" href="https://doi.org/10.1038/s41422-018-0125-4">https://doi.org/10.1038/s41422-018-0125-4</a></p>
+<p id="bib6">Guo, F., Li, L., Li, J., Wu, X., Hu, B., Zhu, P., Wen, L., and Tang, F. (2017). Single-cell multi-omics sequencing of mouse early embryos and embryonic stem cells. Cell Res. <i>27</i>, 967-988. <a class="external-link" href="https://doi.org/10.1038/cr.2017.82">https://doi.org/10.1038/cr.2017.82</a></p>
+<p id="bib7">Lipovsek, M., Browne, L., and Grubb, M.S. (2020). Protocol for patch-seq of small interneurons. STAR Protoc. <i>1</i>, 100146. <a class="external-link" href="https://doi.org/10.1016/j.xpro.2020.100146">https://doi.org/10.1016/j.xpro.2020.100146</a></p>
+<p id="bib8">Samuelson, L.C. and Metzger, J.M. (2006). Propagation of pluripotent mouse embryonic stem (ES) cells. CSH Protoc. <i>2006</i>. . <a class="external-link" href="https://doi.org/10.1101/pdb.prot4484">https://doi.org/10.1101/pdb.prot4484</a></p>
+<p id="bib9">Yan, R., Gu, C., You, D., Huang, Z., Qian, J., Yang, Q., Cheng, X., Zhang, L., Wang, H., Wang, P., and Guo, F. (2021). Decoding dynamic epigenetic landscapes in human oocytes using single-cell multi-omics sequencing. Cell Stem Cell <i>28</i>, 1641-1656.e1647. <a class="external-link" href="https://doi.org/10.1016/j.stem.2021.04.012">https://doi.org/10.1016/j.stem.2021.04.012</a></p>
+<p id="bib10">Zheng, G.X., Terry, J.M., Belgrader, P., Ryvkin, P., Bent, Z.W., Wilson, R., Ziraldo, S.B., Wheeler, T.D., McDermott, G.P., Zhu, J., et al. (2017). Massively parallel digital transcriptional profiling of single cells. Nat. Commun. <i>8</i>, 14049. <a class="external-link" href="https://doi.org/10.1038/ncomms14049">https://doi.org/10.1038/ncomms14049</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Fan Guo (<a href="mailto:guofan@ioz.ac.cn">guofan@ioz.ac.cn</a>).</p>
+<h4>Materials availability</h4>
+<p>This study did not generate new unique reagents.</p>
+<h4>Data and code availability</h4>
+<p>For complete details on data analysis or an example of datasets generated by using scChaRM-seq, please refer to <a href="#bib9">Yan et al. (2021)</a>.</p>
+<h3>Acknowledgments</h3>
+<p>F.G. was supported by grants from the Ministry of Science and Technology of China (2018YFA0107701, 2018YFC1003401) and the <a href="https://doi.org/10.13039/501100001809">National Natural Science Foundation of China</a> (31771590, 31822035). F.G. was also supported by the Strategic Collaborative Research Program of the Ferring Institute of Reproductive Medicine, <a href="https://doi.org/10.13039/501100004914">Ferring Pharmaceuticals</a> and <a href="https://doi.org/10.13039/501100002367">Chinese Academy of Sciences</a> (FIRMC200510).</p>
+<h3>Author contributions</h3>
+<p>F.G. developed the scChaRM-seq method. R.Y. and X.C. performed the experiments. F.G. and R.Y. wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

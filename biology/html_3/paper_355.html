@@ -1,0 +1,1503 @@
+<article>
+<section>
+<h1 id="header">sncRiboTag-Seq: cell-type-specific RiboTag-Seq for cells in low abundance in mouse brain tissue</h1>
+<p><time datetime="2021-01-08">Published: January 8, 2021</time></p>
+<p>Yu Gao<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">3</a>,<a href="#cor1">*</a></sup> and Xinyu Zhao<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn2">4</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Waisman Center, University of Wisconsin-Madison, Madison, WI 53705, USA</p>
+<p id="aff2"><sup>2</sup>Department of Neuroscience, School of Medicine and Public Health, University of Wisconsin-Madison, Madison, WI 53705, USA</p>
+<p id="fn1"><sup>3</sup>Technical contact</p>
+<p id="fn2"><sup>4</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:yu.gao@wisc.edu">yu.gao@wisc.edu</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:xinyu.zhao@wisc.edu">xinyu.zhao@wisc.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2020.100231">10.1016/j.xpro.2020.100231</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>The mammalian brain has over 10,000 types of neurons. Therefore, studying gene regulation in the brain requires effective strategies for targeting specific cell types, especially those in low abundance. Cell isolation may alter gene expression and is disruptive to mature neurons with extensive processes. This protocol describes cell-type-specific expression of tagged ribosome and the use of ribosome tagging followed by RNA-seq to identify translatome of low number and sparse cells in mouse brains without disruptive cell isolation.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="#bib1">Gao et al. (2020)</a></p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>The protocol is optimized to identify translating mRNAs in low abundance cell types</li>
+<li>Useful in cell types that normally require pooling tissue from multiple animals</li>
+<li>Tissue processing and immunoprecipitation are optimized for low-abundance cell types</li>
+<li>RNA purification and library synthesis are modified for small amount of RNA</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical Abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<h3 id="sec1.1">Inducing RiboTag expression in specific cell types in the brain</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–3 m<b>onths</b>
+</div>
+<ol>
+<li>Strategy 1: Cell-type-specific RiboTag expression using RiboTag mice (<a href="#fig1">Figure 1</a>, left)
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Strategies to achieve cell-type-specific RiboTag expression</div>
+<p>Cell-type-specific expression of RiboTag (HA-RPL22) can be achieved by either crossing transgenic mouse lines or delivering virus carrying either RiboTag or Cre into the brain.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Crossing RiboTag mice (RPL22<sup>HA/WT</sup>) with specific Cre-driver mice: Cre-lox recombination approach is commonly used as a tool for cell-type-specific gene expression. The RiboTag mice express HA-tagged ribosome protein RPL22 in Cre-expressing cells. Although this strategy is straightforward and efficient, there are several considerations in choosing a correct Cre-driver line:
+<ol type="i">
+<li>Specificity of Cre expression in a given cell type: The specificity or expression pattern of Cre in the given mouse Cre-driver line is critical for the cell-type-specific gene expression profiling. Researchers must evaluate the specificity of the Cre-driver before using it. Immunostaining of Cre protein or <i>in situ</i> hybridization of Cre mRNA can be used to check Cre expression patterns. The researcher can also cross the Cre line with a Cre reporter mouse line (e.g., Ai14, ZsGreen1, etc.) to check the specificity of the Cre line. However, the most precise method is evaluating the RiboTag expression in double transgenic mice that the researcher plans to use for RiboTag-Seq.</li>
+<li>Efficiency of RiboTag expression in Cre-expressing cells: Some Cre-driver lines, especially inducible Cre (e.g., CreERT2) lines suffer low efficiency for recombination. Therefore, it is important to assess the efficiency of RiboTag expression using histology before RiboTag-Seq. In addition, since immunostaining signals do not fully reflect protein expression levels, a more precise method to evaluate the levels of RiboTag expression is quantifying immunoprecipitated RNA.</li>
+</ol>
+</li>
+<li>RiboTag mice injected with virus expressing Cre: Using virus to deliver Cre to induce RiboTag expression is faster than mouse crossing. A unique advantage is that virus can be injected in a specific brain region. There are multiple options for the viruses that can be used for Cre delivery, such as retrovirus, lentivirus, and AAV.</li>
+</ol>
+</li>
+<li>Strategy 2: Cell-type-specific RiboTag expression using Recombinant viruses (<a href="#fig1">Figure 1</a>, right)
+<ol type="a">
+<li>Virus expressing RiboTag driven by a cell-type-specific promoter: If cell-type-specific promoter is available, this method can be used in wild type mice, rats, or other species.</li>
+<li>Virus expressing Cre-dependent RiboTag.
+<ol type="i">
+<li>If cell-type-specific promoter is unavailable but a Cre-driver mouse line is available, injecting Cre-dependent RiboTag virus in a specific Cre-driver can effectively induce ribosome tagging in a given cell type</li>
+<li>Brain pathway or connectivity-specific RiboTag expression: The potential presynaptic neurons can be infected by AAV expressing Cre-dependent RiboTag (e.g., DIO-RiboTag). Cre can be expressed using engineered monosynaptic retrograde rabies virus to target presynaptic neurons.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">Fast genotyping methods for Cre and/or RiboTag mice</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2.5–3.5 h (<a href="#fig2">Figure 2</a>)</div>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Schematic representation of the fast genotyping protocol for Cre and/or RiboTag mice</div>
+</figcaption>
+</figure>
+<ol start="3">
+<li>Cut a small piece of mouse tail and put it in a DNase-free PCR tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Minimize the amount of tissue removed. A small piece of mouse tail (around 2 mm long) would be sufficient for genotyping. Removing longer tail would stress the mouse too much.</div>
+<ol start="4">
+<li>Add 20 μL of the QuickExtract DNA Extraction Solution and quickly spin the tube to ensure the entire tail is submerged in the extraction solution.</li>
+<li>Place the tube in a preheated hot-lid thermal cycler with the following program:</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th colspan="4">Digestion program</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial digestion</td>
+<td>65°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Digestion</td>
+<td>68°C</td>
+<td>15 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Inactivation of enzyme</td>
+<td>95°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="6">
+<li>Dilute the tail digestion mix by 10 times</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The minimum dilution of the digested tails is 10 times.Depending on how well the tail is digested, it can be diluted even more such as 20, or even 30 times.</div>
+<ol start="7">
+<li>Prepare genotyping PCR by mixing following reagents in a DNase-free PCR tube:</li>
+</ol>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UltraPure water (RNase and DNase free) UltraPure DNase/RNase-free distilled water</td>
+<td>7.2</td>
+</tr>
+<tr>
+<td>Forward primer (10 μM)</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>Reverse primer (10 μM)</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>EmeraldAmp Master Mix (2×)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Diluted Tail Digestion Mix</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Prepare the genotyping PCR mix with 10% extra to compensate pipetting loss. In fact, when making master mix for the following procedures, we always make 10% extra.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Include at least one negative control and one positive control.</div>
+<ol start="8">
+<li>Run the genotyping PCR in a preheated hot-lid thermal cycler with the following program:</li>
+</ol>
+<table id="undtbl3">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>10 s</td>
+<td rowspan="3">35 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="9">
+<li>Run gel and identify the genotypes: immediately after PCR, the reaction mixture can be directly used for agarose gel electrophoresis.</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>UltraPure 1 M Tris-HCI buffer, pH 7.5</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15567027</td>
+</tr>
+<tr>
+<td>KCl (2 M), RNase-free</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM9640G</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# AM9530G</td>
+</tr>
+<tr>
+<td>IGEPAL CA-630</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# I8896</td>
+</tr>
+<tr>
+<td>DL-Dithiothreitol solution (DTT)</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# 43816</td>
+</tr>
+<tr>
+<td>Protector RNase inhibitor</td>
+<td>Roche</td>
+<td>Cat# 3335402001</td>
+</tr>
+<tr>
+<td>Cycloheximide</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# C7698</td>
+</tr>
+<tr>
+<td>Heparin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat# H3393</td>
+</tr>
+<tr>
+<td>UltraPure DNase/RNase-free distilled water</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 10977015</td>
+</tr>
+<tr>
+<td>cOmplete, EDTA-free Protease Inhibitor Cocktail</td>
+<td>Roche</td>
+<td>Cat# 11873580001</td>
+</tr>
+<tr>
+<td>TRIzol reagent</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 15596018</td>
+</tr>
+<tr>
+<td>HBSS</td>
+<td>Gibco</td>
+<td>Cat# 14175103</td>
+</tr>
+<tr>
+<td>AMPure XP beads</td>
+<td>Beckman Coulter</td>
+<td>Cat# A63881</td>
+</tr>
+<tr>
+<td>Dynabeads Protein G for immunoprecipitation</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 10004D</td>
+</tr>
+<tr>
+<td>1 kb Plus DNA ladder</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 10787018</td>
+</tr>
+<tr>
+<td>SYBR Safe DNA gel stain</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# S33102</td>
+</tr>
+<tr>
+<td>Absolute ethanol</td>
+<td>Fisher Scientific</td>
+<td>Cat# BP2818100</td>
+</tr>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-HA.11 Epitope Tag Antibody</td>
+<td>BioLegend</td>
+<td>Cat# MMS-101R</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>RiboTag forward primer (see <a href="#tbl1">Table 1</a>)</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>RiboTag reverse primer (see <a href="#tbl1">Table 1</a>)</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cre forward primer (see <a href="#tbl1">Table 1</a>)</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cre reverse primer (see <a href="#tbl1">Table 1</a>)</td>
+<td>Integrated DNA Technologies</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse: Tg(Nestin-cre/ERT2)</td>
+<td>JAX</td>
+<td>RRID:IMSR_JAX:016261</td>
+</tr>
+<tr>
+<td>Mouse: RPL22<sub>HA/WT</sub>
+</td>
+<td>JAX (<a href="#bib10">Sanz et al., 2009</a>)</td>
+<td>RRID:IMSR_JAX:029977</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>QuickExtract DNA extraction solution</td>
+<td>Epicentre</td>
+<td>Cat# QE09050</td>
+</tr>
+<tr>
+<td>EmeraldAmp GT PCR master mix</td>
+<td>Takara Bio</td>
+<td>Cat# RR310A</td>
+</tr>
+<tr>
+<td>Direct-zol RNA Microprep Kit</td>
+<td>Zymo Research</td>
+<td>Cat# R2061</td>
+</tr>
+<tr>
+<td>Agilent RNA 6000 Pico Kit</td>
+<td>Agilent Technologies</td>
+<td>Cat# 5067-1513</td>
+</tr>
+<tr>
+<td>Agilent High Sensitivity DNA Kit</td>
+<td>Agilent Technologies</td>
+<td>Cat# 5067-4626</td>
+</tr>
+<tr>
+<td>Qubit dsDNA HS kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# Q32851</td>
+</tr>
+<tr>
+<td>Pico Input Mammalian SMARTer Stranded Total RNA-Seq Kit v2</td>
+<td>Takara Bio</td>
+<td>Cat# 634413</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>KONTES Dounce tissue grinders</td>
+<td>Kimble Chase</td>
+<td>Cat# KT885300-0002</td>
+</tr>
+<tr>
+<td>DynaMag-2 magnet</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 12321D</td>
+</tr>
+<tr>
+<td>DynaMag-PCR magnet</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# 492025</td>
+</tr>
+<tr>
+<td>TipOne filter tip 10 μL</td>
+<td>USA Scientific</td>
+<td>Cat# 1120-3810</td>
+</tr>
+<tr>
+<td>TipOne filter tip 20 μL</td>
+<td>USA Scientific</td>
+<td>Cat# 1120-1810</td>
+</tr>
+<tr>
+<td>TipOne filter tip 200 μL</td>
+<td>USA Scientific</td>
+<td>Cat# 1120-8810</td>
+</tr>
+<tr>
+<td>TipOne filter tip 1,000 μL</td>
+<td>USA Scientific</td>
+<td>Cat# 1120-1830</td>
+</tr>
+<tr>
+<td>PCR tube</td>
+<td>USA Scientific</td>
+<td>Cat# 14024700</td>
+</tr>
+<tr>
+<td>DNA LoBind tubes (1.5 mL)</td>
+<td>Eppendorf</td>
+<td>Cat# Z666548</td>
+</tr>
+<tr>
+<td>Refrigerated centrifuge</td>
+<td>Eppendorf</td>
+<td>Cat# 5430R</td>
+</tr>
+<tr>
+<td>Agilent 2100 bioanalyzer</td>
+<td>Agilent Technologies</td>
+<td>Cat# G2939BA</td>
+</tr>
+<tr>
+<td>Centrifuge</td>
+<td>Eppendorf</td>
+<td>Cat# 5424</td>
+</tr>
+<tr>
+<td>Qubit 2.0 fluorometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# Q32866</td>
+</tr>
+<tr>
+<td>Veriti 96-well thermal cycler</td>
+<td>Applied Biosystems</td>
+<td>Cat# 4375786</td>
+</tr>
+<tr>
+<td>AirClean Systems 600 PCR Workstation</td>
+<td>AirClean Systems</td>
+<td>Model# AC632DB</td>
+</tr>
+<tr>
+<td>Leica Microsystems 10447197 EZ4 stereo microscope</td>
+<td>Leica</td>
+<td>SKU# 10447197</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl1">
+<caption>Table 1. Primers used in this protocol</caption>
+<thead>
+<tr>
+<th>Name</th>
+<th>Sequence (5′–3′)</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RiboTag Forward primer</td>
+<td>GGGAGGCTTGCTGGATATG</td>
+<td>RiboTag mouse genotyping (<a href="#bib10">Sanz et al., 2009</a>)</td>
+</tr>
+<tr>
+<td>RiboTag reverse primer</td>
+<td>TTTCCAGACACAGGCTAAGTACAC</td>
+<td>RiboTag mouse genotyping (<a href="#bib10">Sanz et al., 2009</a>)</td>
+</tr>
+<tr>
+<td>Cre forward primer</td>
+<td>TTCGCAAGAACCTGATGGACATG</td>
+<td>Cre mouse genotyping</td>
+</tr>
+<tr>
+<td>Cre reverse primer</td>
+<td>AGCATTGCTGTCACTTGGTCGTG</td>
+<td>Cre mouse genotyping</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<table id="undtbl4">
+<caption>Preparation of stock solutions heparin (50 mg/mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Weight (g) or volume (mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heparin</td>
+<td>1 g</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>20 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Dissolve and the solution can be stored at 4°C for at least 2 months.</div>
+<table id="undtbl5">
+<caption>Cycloheximide (5 mg/mL)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Weight (g) or volume (mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cycloheximide</td>
+<td>10 mg</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>2 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> make fresh 5 mg/mL cycloheximide right before use.</div>
+<table id="undtbl6">
+<caption>Protease inhibitors (25×)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Quantity or volume (mL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cOmplete, EDTA-free Protease Inhibitor Cocktail</td>
+<td>1 tablet</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>2 mL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> Dissolve, can be stored at −20°C for at least 2 weeks.</div>
+<table id="undtbl7">
+<caption>Preparation of buffers rinse buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Add to 50 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl, pH 7.5 or 7.4 (1 M)</td>
+<td>50 mM</td>
+<td>2,500 μL</td>
+</tr>
+<tr>
+<td>KCl (2 M)</td>
+<td>100 mM</td>
+<td>2,500 μL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>12 mM</td>
+<td>600 μL</td>
+</tr>
+<tr>
+<td>IGEPAL</td>
+<td>1%</td>
+<td>5,000 μL</td>
+</tr>
+<tr>
+<td>DTT (1 M)</td>
+<td>1 mM</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Protease inhibitors (25×)</td>
+<td>1×</td>
+<td>2,000 μL</td>
+</tr>
+<tr>
+<td>Cycloheximide (5 mg/mL)</td>
+<td>100 μg/mL</td>
+<td>1,000 μL</td>
+</tr>
+<tr>
+<td>Heparin (50 mg/mL)</td>
+<td>1 mg/mL</td>
+<td>1,000 μL</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>N/A</td>
+<td>35,350 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Sterile, on ice, before use</p>
+<table id="undtbl8">
+<caption>Homogenization buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Add to 50 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl, pH 7.5 or 7.4 (1 M)</td>
+<td>50 mM</td>
+<td>2,500 μL</td>
+</tr>
+<tr>
+<td>KCl (2 M)</td>
+<td>100 mM</td>
+<td>2,500 μL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>12 mM</td>
+<td>600 μL</td>
+</tr>
+<tr>
+<td>IGEPAL</td>
+<td>1%</td>
+<td>5,000 μL</td>
+</tr>
+<tr>
+<td>DTT (1 M)</td>
+<td>1 mM</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Protease inhibitors (25×)</td>
+<td>1×</td>
+<td>2,000 μL</td>
+</tr>
+<tr>
+<td>Protector RNase inhibitor (40 U/μL)</td>
+<td>0.2 U/μL</td>
+<td>250 μL</td>
+</tr>
+<tr>
+<td>Cycloheximide (5 mg/mL)</td>
+<td>100 μg/mL</td>
+<td>1,000 μL</td>
+</tr>
+<tr>
+<td>Heparin (50 mg/mL)</td>
+<td>1 mg/mL</td>
+<td>1,000 μL</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>N/A</td>
+<td>35,100 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Sterile, on ice, before use</p>
+<table id="undtbl9">
+<caption>Wash buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Add to 50 mL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl, pH 7.5 or 7.4 (1 M)</td>
+<td>50 mM</td>
+<td>2,000 μL</td>
+</tr>
+<tr>
+<td>KCl (2 M)</td>
+<td>300 mM</td>
+<td>7,500 μL</td>
+</tr>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>12 mM</td>
+<td>600 μL</td>
+</tr>
+<tr>
+<td>IGEPAL</td>
+<td>1%</td>
+<td>5,000 μL</td>
+</tr>
+<tr>
+<td>DTT (1 M)</td>
+<td>1 mM</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td>Cycloheximide (5 mg/mL)</td>
+<td>100 μg/mL</td>
+<td>1,000 μL</td>
+</tr>
+<tr>
+<td>Protease inhibitors (25×)</td>
+<td>1×</td>
+<td>2,000 μL</td>
+</tr>
+<tr>
+<td>UltraPure water (RNase and DNase free)</td>
+<td>N/A</td>
+<td>31,350 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Sterile, on ice, before use</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Tissue processing and homogenization</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–4 h (<a href="#fig3">Figure 3</a>)</div>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Experimental scheme for tissue processing and homogenization</div>
+</figcaption>
+</figure>
+<p>In this procedure, a specific brain region of an adult mouse (8 weeks old or older) is dissected and homogenized immediately.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> When working with small number and sparsely distributed cells, performing immunoprecipitation using frozen tissues may reduce the yield of immunoprecipitated RNA. If pooling tissue from multiple animals is needed, each animal should be processed separately all the way through immunoprecipitation and the samples from each animal are pooled before the RNA isolation step.</div>
+<ol>
+<li>Turn on refrigerated centrifuge at least 15 min before using to allow sufficient time for cooling down.</li>
+<li>Make working homogenization buffer and working rinse buffer from the stock solutions (please see in the “Preparation of stock solutions” and “Preparation of Buffers”) and keep them on ice.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Always make working buffer fresh.</div>
+<ol start="3">
+<li>Rigorous wash of Dounce homogenizers (2 mL or 7 mL):
+<ol type="a">
+<li>Fill the empty mortar with milliQ water. Put two pestles in two separate conical tubes, fill the tubes with milliQ water, and let them sit for 10 min at room temperature (21°C–26°C).</li>
+<li>Wash with milliQ water for 3 times by homogenization with both loose pestles and tight pestles.</li>
+<li>Wash once with 70% Ethanol by homogenization with both loose pestles and tight pestles.</li>
+<li>Wash with UltraPure water for 3 times by homogenization with both loose pestles and tight pestles.</li>
+<li>Place on ice.</li>
+<li>Rinse with ice-cold rinse buffer right before use.</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Rigorously cleaning Dounce homogenizers significantly reduces contamination.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Rinsing Dounce homogenizers with rinse buffer can avoid dilution of homogenization buffer by the residual water left in the homogenizer.</div>
+<ol start="4">
+<li>Discard the filled rinse buffer from the mortar, remove the rinse buffer as much as possible, fill it with 500 μL cold homogenization buffer and keep the mortar in ice-water all the time.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It is important to consider the ratio of tissue to buffer. For example, 2%–3% weight per volume of tissue or 25 mg of tissue in 1 mL of buffer would be sufficient for tissue homogenization and lysis. Too much tissue would reduce homogenization and immunoprecipitation efficiency. Making the homogenate too diluted does not affect homogenization but would waste valuable reagents. Balancing cost and dilution depend on the tissue size and RiboTag expression levels.</div>
+<ol start="5">
+<li>Bring one animal at a time to the surgical room and decapitate the animal immediately. Write down the ear tag number. Cut the tail for re-genotyping to confirm the genotype of the mouse. If live decapitation without CO<sub>2</sub> euthanasia is not approved in your animal protocol, do a CO<sub>2</sub> euthanasia before decapitation.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Because gene expression may change when mice experience prolonged handling or exposure to other mice under surgery, it is important to minimize this effect by bringing one animal at a time to the surgery room and euthanizing the animal immediately without waiting.</div>
+<div class="note">
+<span class="note-title">Note:</span> We suggest adding one control animal without RiboTag expression to serve as a negative control.</div>
+<div class="note">
+<span class="note-title">Note:</span> We highly recommend that you cut tails from the mice you dissect the brains and confirm the genotypes of the mice. The previous genotyping results might have been wrong due to various reasons.</div>
+<ol start="6">
+<li>Quickly remove the brain out of the skull and put it into a petri dish containing ice-cold HBSS.</li>
+<li>Dissect out the brain region as quickly as possible under a dissecting microscope.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is important to enrich the sparsely distributed RiboTag-expressing cells by dissecting out only the region of interest.</div>
+<ol start="8">
+<li>Rinse the dissected tissue with ice-cold rinse buffer quickly.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> This rinse reduces the amount of dissection buffer (HBSS) in the dissected tissue and may improve immunoprecipitation efficiency.</div>
+<ol start="9">
+<li>Transfer the dissected tissue into the mortar filled with cold homogenization buffer (with Protector RNase Inhibitor).</li>
+<li>Use a pre-cooled Dounce and a loose pestle to homogenize the tissue immediately for 20 times.</li>
+<li>Homogenize the tissue with a tight pestle for 20 times.</li>
+<li>Let the foam (generated by homogenization) and homogenization lysate go back to the bottom of the mortar by waiting 10 min.</li>
+<li>Transfer the lysate into a pre-cooled RNase-free microcentrifuge tube.</li>
+<li>Centrifuge in the pre-cooled refrigerated centrifuge, 10,000 × <i>g</i>, 4°C, for 10 min.</li>
+<li>Transfer the supernatant into another pre-cooled microcentrifuge tube and put the tube on ice.</li>
+<li>Repeat from step 4 to step 15 for next animal until all animals are done.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> Alternatively, you can finish all animals to step 12 and then centrifuge all of them (steps 13–15) at the same time.</div>
+<h3 id="sec3.2">Immunoprecipitation, washing, and RNA elution</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 17–20 h (<a href="#fig4">Figure 4</a>)</div>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Experimental scheme for immunoprecipitation, washing, and RNA elution</div>
+</figcaption>
+</figure>
+<p>In this procedure, the HA-tagged ribosomes together with their bound translating mRNA is immunoprecipitated by using an anti-HA antibody. After washing off unbound protein and RNA, the RiboTag bound mRNA is isolated.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> The following procedure is performed in 4°C cold room or 4°C fridge</div>
+<ol start="17">
+<li>Mix the lysate by inverting up and down a few times.</li>
+<li>Transfer 5–10 μL of the lysate to a pre-cooled microcentrifuge tube with ice-cold 100 μL TRIzol and vortex for 30 s. Save it in a −80°C freezer. This lysate can be used for isolating Input sample RNA.</li>
+<li>Add 3 μL of the HA antibody into the rest of the lysate and put on a rotator and rotate for 6 h.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The amount of HA antibody used here is dependent on the number of RiboTag-expressing cells in the tissues of interest, 3 μL HA antibody used here is for induced-RiboTag expression in newborn neurons in two dentate gyri (from one mouse) (<a href="#bib1">Gao et al., 2020</a>). Slightly more HA antibody is fine, however, too much antibody might lead to unspecific IPs.</div>
+<ol start="20">
+<li>Washing magnetic G-protein beads:
+<ol type="a">
+<li>Resuspend the magnetic G-protein beads and transfer 300 μL of the beads to an RNase-free tube.</li>
+<li>Put the tube on a magnetic stand and wait for 3–5 min until the liquid becomes clear. Remove and discard the supernatant and fill the tube with 500 μL of the rinse buffer.</li>
+<li>Place the tube on a rotator and let it rotate for 5 min.</li>
+<li>Repeat steps b and c one time.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> To further reduce potential impact of non-specific bindings on magnetic beads, you may consider adding one negative control that uses IgG instead of HA antibody for IP.</div>
+<ol start="21">
+<li>Place the tube containing rotated G-protein beads (from step 20) on a magnetic stand and wait for 3–5 min until it becomes clear, remove the supernatant.</li>
+<li>Transfer the HA antibody incubated lysate into the tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Transfer the HA antibody incubated lysate into the tube that contain the G-protein beads (from step 21) immediately after removing the supernatant from the tube.</div>
+<ol start="23">
+<li>Place the tube on a rotator and let it rotate at 4°C overnight (12–16 h).</li>
+<li>(Next day) Make fresh Wash Buffer using stock solutions.</li>
+<li>Cool down the wash buffer on ice. Ensure the buffer is ice-cold before use.</li>
+<li>Place the tube with incubated lysate on a magnetic stand, wait until the lysate become clear.</li>
+<li>Keep the tube on the magnetic stand and remove the supernatant.</li>
+</ol>
+<div class="optional">
+<span class="optional-title">Optional:</span> In step 27, the supernatant can be saved in – 80°C if needed. This can be used for evaluating the IP efficiency if you are carrying out optimization experiments.</div>
+<ol start="28">
+<li>Add 1 mL ice-cold wash buffer and rotate the tube on a rotator for 5 min.</li>
+<li>Repeat steps 26–28.</li>
+<li>Repeat steps 26 and 27.</li>
+<li>Add 0.5 mL ice-cold wash buffer and rotate the tube on a rotator for 5 min.</li>
+<li>Transfer the fully resuspended RiboTag ribosome-Ab-Beads particles into a pre-cooled tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> There are some unspecific RNA or ribosome binding on the inside wall of the original immunoprecipitation tube, therefore, we transfer to a new tube for additional washing and elution.</div>
+<ol start="33">
+<li>Add 0.5 mL ice-cold wash buffer to the “old” tube and invert the tube up and down to collect the residual resuspended RiboTag ribosome-Ab-Beads particles.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Add step 33 to increase recovery of the immunoprecipitated RNA.</div>
+<ol start="34">
+<li>Transfer the 0.5 mL wash buffer with the residual resuspended RiboTag ribosome-Ab-Beads particles and combine with the previous 0.5 mL wash buffer in the “new” tube.</li>
+<li>With the “new” tube, repeat steps 26–28.</li>
+<li>Place the tube with incubated lysate on a magnetic stand, wait until the lysate become clear.</li>
+<li>Remove and discard the supernatant.</li>
+<li>Quick mild spin (200 × <i>g</i>, 5 s) the tube to bring down all the residual wash buffer to the bottom of the tube.</li>
+<li>Place the tube on a magnetic stand, carefully remove the residual wash buffer at the bottom of the tube.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Add steps 38 and 39 to increase recovery of RNA from the magnetic beads.</div>
+<ol start="40">
+<li>Carefully remove the tube from the magnetic stand.</li>
+<li>Add 100 μL of TRIzol right onto the beads.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> To elute immunoprecipitated mRNA (small amount of RNA) from the magnetic beads efficiently, use TRIzol to elute RNA from magnetic beads. This is also the best way to protect the small amount of immunoprecipitated RNA from degradation.</div>
+<ol start="42">
+<li>Vortex for 30 s at room temperature (21°C–26°C).</li>
+<li>Quick spin the tube (500 × <i>g</i>, 5 s) to pellet the beads.</li>
+<li>Place the tube on a magnetic stand, wait until the supernatant becomes clear.</li>
+<li>Transfer the supernatant into a new pre-cooled tube and put it on ice.</li>
+<li>Add 50 μL of TRIzol right onto the same beads.</li>
+<li>Repeat steps 42–44.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Add steps 46 and 47 to elute RNA completely from the magnetic beads.</div>
+<ol start="48">
+<li>Transfer the supernatant and combine it with the previous eluted 100 μL in the “new” tube.</li>
+<li>Continue to the RNA purification procedure or store the eluted RNA in TRIzol at −80°C for subsequent RNA purification.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The eluted RNA in TRIzol can be stored at −80°C for at least 6 months (we tested).</div>
+<h3 id="sec3.3">RNA purification</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 0.5–1.5 h (<a href="#fig5">Figure 5</a>)</div>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Experimental scheme for RNA purification</div>
+</figcaption>
+</figure>
+<p>In this procedure, the immunoprecipitated RNA is purified from the RNA TRIzol elute. To purify RNA (small amount of RNA) from TRIzol elute, use column-based Direct-zol RNA Microprep Kits. We compared several kits for small-amount-RNA purification, the TRIzol based RNA purification yielded the highest quality of RNA. This is also the best way to protect the small amount of RNA from degradation. Besides, the smaller diameter of membrane in the elution column allows to elute RNA in a small volume of elutes therefore there in no need to add an extra step to concentrate the purified RNA.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> This is the step that you can pool samples from multiple mice if pooling is needed.</div>
+<ol start="50">
+<li>Prepare DNase I digestion mix by mixing 5 μL DNase I (provided in the Direct-zol RNA Microprep Kit, 6 U/μL) and 35 μL DNA digestion buffer in an RNase-free tube.</li>
+<li>Thaw the eluted RNA in TRIzol at room temperature (21°C–26°C), process to next step immediately after the sample thawed.</li>
+<li>Combine TRIzol elutes into one sample if needed.</li>
+<li>Add an equal volume of ethanol (95%–100%) to the TRIzol lysate sample and mix thoroughly.</li>
+<li>Transfer the mixture into a Zymo-Spin IC Column in a Collection Tube and centrifuge at 13,000 × <i>g</i> for 30 s, at room temperature (21°C–26°C).</li>
+<li>Transfer the flow-through in the collection tube back into the Zymo-Spin IC Column and centrifuge at 13,000 × <i>g</i> for 30 s, at room temperature (21°C–26°C).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Let the TRIzol-ethanol mixture go through the Zymo-Spin IC Column twice or more times to increase the RNA yield.</div>
+<ol start="56">
+<li>Add 40 μL of the DNase I digestion mix onto the center of the membrane in the column and incubate at room temperature (20°C–30°C) for 10 min.</li>
+<li>Wash with 400 μL Direct-zol RNA PreWash two times, then wash with 700 μL RNA Wash Buffer according to the instruction of the Direct-zol RNA Microprep Kit (<a href="https://www.zymoresearch.com/pages/direct-zol">https://www.zymoresearch.com/pages/direct-zol</a>).</li>
+<li>To elute RNA, add 11 μL of DNase/RNase-Free Water directly onto the center of the membrane in the column and incubate for 3 min at room temperature (21°C–26°C).</li>
+<li>Centrifuge at 13,000 × <i>g</i> for 2 min.</li>
+<li>Transfer 1 μL of the purified RNA in a tube for determining the quality of the purified RNA (RIN score or DV200) and immediately store the rest of the purified RNA at −80°C for subsequent RNA fragmentation.</li>
+<li>Determine the quality of the purified RNA with an Agilent bioanalyzer with the Agilent RNA 6000 Pico Kit (<a href="https://www.agilent.com/en/product/automated-electrophoresis/bioanalyzer-systems/bioanalyzer-rna-kits-reagents/bioanalyzer-high-sensitivity-rna-analysis-228255">https://www.agilent.com/en/product/automated-electrophoresis/bioanalyzer-systems/bioanalyzer-rna-kits-reagents/bioanalyzer-high-sensitivity-rna-analysis-228255</a>).</li>
+</ol>
+<h3 id="sec3.4">RNA-seq library synthesis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 4–8 h</div>
+<p>In this procedure, the RNA sequencing library is synthesized. For synthesizing sncRiboTag-Seq sequencing library, the Pico Input Mammalian SMARTer Stranded Total RNA-Seq Kit v2 requires less input RNA and therefore works well for sncRiboTag-Seq. There are several other advantages of using this kit for low input RNA, which will be emphasized in following procedures. We have customized the generic manufactural instruction with several modifications.</p>
+<ol start="62">
+<li>Preheat a hot-lid thermal cycler at 94°C, ready for use.</li>
+<li>Prepare the fragmentation reaction mix in a pre-cooled RNase- and DNase-free PCR tube on ice and mix well:</li>
+</ol>
+<table id="undtbl10">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purified RNA (250 pg–10 ng, RIN &gt; 7) and RNase-free water</td>
+<td>8</td>
+</tr>
+<tr>
+<td>SMART Pico Oligos Mix v2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5× First-Strand Buffer</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> The sncRiboTag-Seq library synthesis allows for the use of small amount of input RNA (as less as 250 pg) and RNA with wider range of qualities: The quality of RNA purified using our procedure is normally very high (RIN &gt; 8). Since RNA needs to be fragmented, the starting RNA can be partially degraded (RIN &gt; 4) or even highly degraded (RIN &lt; 4).</div>
+<ol start="64">
+<li>Fragmentation of RNA based on the quality of the RNA (see CRITICAL). Incubate the fragmentation reaction mix at 94°C for 4 min, then place the tube on ice for 2–3 min to cool down the fragmented RNA immediately.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> For partially degraded RNA, the time used for fragmentation must be optimized. We normally use a shorter fragmentation time than what the kit suggested. For example, for RNA with RIN at 5–6, the fragmentation time needs to be reduced to 3 min based on our experience. For highly degraded RNA, the fragmentation time needs to be optimized using low temperature (72°C) incubation and without adding the 5× First-Strand Buffer. Please see the details in the instruction of the kit.</div>
+<div class="note">
+<span class="note-title">Note:</span> This kit incorporates SMART (Switching Mechanism At 5′ end of RNA Template) cDNA synthesis technology and generates Illumina-compatible libraries via PCR amplification, avoiding the need for adapter ligation. The directionality of the template-switching reaction preserves the strand orientation of the original RNA, making it possible to obtain strand-specific sequencing data from the synthesized cDNA.</div>
+<ol start="65">
+<li>Prepare the First-Strand cDNA Synthesis mix before the RNA fragmentation. Combine the following reagents in following order in a pre-cooled RNase- and DNase-free PCR tube on ice:</li>
+</ol>
+<table id="undtbl11">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMART TSO Mix v2</td>
+<td>4.5</td>
+</tr>
+<tr>
+<td>RNase Inhibitor</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>SMARTScribe Reverse Transcriptase</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<ol start="66">
+<li>Right after cooling down the fragmented RNA, add the First-Strand cDNA Synthesis mix (7 μL) and mix well, quick spin and incubate the final reaction mix in a preheated hot-lid thermal cycler with the following program:</li>
+</ol>
+<table id="undtbl12">
+<thead>
+<tr>
+<th colspan="4">Reaction conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reverse transcription</td>
+<td>42°C</td>
+<td>90 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Inactivation Enzymes</td>
+<td>70°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="67">
+<li>Continue to the next procedure or store the cDNA (20 μL) at −20°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The cDNA can be stored at −20°C for up to 2 weeks.</div>
+<ol start="68">
+<li>Prepare PCR master mix to add Illumina Adapters and Indexes by mixing following reagents in a DNase-free PCR tube:</li>
+</ol>
+<table id="undtbl13">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>2</td>
+</tr>
+<tr>
+<td>SeqAmp CB PCR Buffer (2×)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>SeqAmp DNA Polymerase</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5′ index oligos</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3′ index oligos</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ol start="69">
+<li>Mix the PCR master mix with the synthesized cDNA (20 μL) and place the PCR reaction mix tube in a preheated hot-lid thermal cycler to run the following program:</li>
+</ol>
+<table id="undtbl14">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>94°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>15 s</td>
+<td rowspan="3">5 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>55°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>68°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>68°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> If the input RNA is extremely low (e.g., &lt;250 pg), you may consider increasing the number of PCR cycles by 1–3.</div>
+<ol start="70">
+<li>Continue to the next procedure or store the PCR product at −20°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The PCR product (50 μL) can be stored at −20°C for up to 2 weeks.</div>
+<ol start="71">
+<li>Take out AMPure beads from fridge to warm up to room temperature (it normally needs at least 30 min to warm up).</li>
+<li>Prepare freshly made 80% ethanol.</li>
+<li>Resuspend the room temperature AMPure beads completely, add 40 μL of the AMPure beads to the 50 μL synthesized library (50 μL PCR product), mix well, and incubate at room temperature (21°C–26°C) for 8 min.</li>
+<li>Quick spin the tube and place the tube on a magnetic stand for 8 min to separate the beads and the solution.</li>
+<li>Remove the supernatant while keeping the tube on the magnetic stand.</li>
+<li>Keep the tube on the magnetic stand, add 200 μL of freshly made 80% ethanol, wait 30 s, and then discard the 80% ethanol.</li>
+<li>Repeat step 76 once.</li>
+<li>Remove the tube from the magnetic stand and quick spin the tube.</li>
+<li>Put the tube back on the magnetic stand for 30 s and remove the residual ethanol.</li>
+<li>Keep the tube open on the magnetic stand for 5 min.</li>
+<li>Add 52 μL of Nuclease-Free Water onto the beads pellet and remove the tube from the magnetic stand.</li>
+<li>Pipetting up and down the beads 10–20 times and incubate at room temperature (21°C–26°C) for 5 min.</li>
+<li>Quick spin the tube, place it back on the magnetic stand and wait for 3 min.</li>
+<li>Carefully transfer 50 μL of the supernatant (purified synthesized library) to a new DNase-free PCR tube.</li>
+<li>Add 40 μL of AMPure beads to mix with 50 μL of the supernatant (purified synthesized library). Incubate at room temperature (21°C–26°C) for 8 min.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The following steps would deplete ribosomal cDNA, continue to the following steps during 8-min incubation of step 85.</div>
+<div class="note">
+<span class="note-title">Note:</span> Around 90% of the RNA molecules are ribosomal RNA (rRNA) in total RNA samples. Depleting rRNA from the total RNA would save costs on sequencing. With small amount of immunoprecipitated RNA, initial rRNA depletion from total RNA is not efficient and would lose significant amount of the total RNA. In contrast, depletion of ribosome cDNA after initial cDNA amplification using specific probes is well-suited for dealing with low input library synthesis.</div>
+<ol start="86">
+<li>Place the tube with AMPure beads and synthesized library on a magnetic stand for 5 min.</li>
+<li>Add 1.5 μL of the R-Probes v2 in a DNase-free PCR tube, place it on a preheated hot-lid thermal cycler and run the following program:</li>
+</ol>
+<table id="undtbl15">
+<thead>
+<tr>
+<th colspan="4">Reaction conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incubation</td>
+<td>72°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Cooling</td>
+<td>4°C</td>
+<td>2 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Ready ∗</td>
+<td>4°C</td>
+<td>13 min</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> “Ready ∗”: The R-Probes are ready for use while they are at this step. The R-Probes might not function well if they are held at 4°C for either too long (after step “Ready”) or too short (before step “Ready”).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> R-Probes v2 treatment is critical for depletion of rRNA cDNA, to ensure the proper treatment of R-Probes v2, we have modified the heating program to control the time of the treatment.</div>
+<ol start="88">
+<li>Remove the supernatant from the tube from step 86 while keeping the tube on the magnetic stand.</li>
+<li>Keep the tube on the magnetic stand, add 200 μL of freshly made 80% ethanol, await 30 s, and then discard the 80% ethanol.</li>
+<li>Repeat step 89 once.</li>
+<li>Remove the tube from the magnetic stand and quick spin the tube.</li>
+<li>Put the tube back on the magnetic stand for 30 s and remove the residual ethanol.</li>
+<li>Keep the tube open on the magnetic stand for 5 min.</li>
+<li>Prepare the ribosomal cDNA depletion mix by combining the following reagents in the order shown and mix well by brief vortexing:</li>
+</ol>
+<table id="undtbl16">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>16.8</td>
+</tr>
+<tr>
+<td>10× ZapR Buffer</td>
+<td>2.2</td>
+</tr>
+<tr>
+<td>ZapR v2</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>R-Probes v2 (72°C-incubated from step 87)</td>
+<td>1.5</td>
+</tr>
+</tbody>
+</table>
+<ol start="95">
+<li>Add the mixed ribosomal cDNA depletion mix onto the bead pellets in the tube from step 93.</li>
+<li>Remove the tube from the magnetic stand, pipet up and down 10–20 times to mix the beads, and then incubate at room temperature (21°C–26°C) for 5 min.</li>
+<li>Quick spin the tube, place it back on the magnetic stand and wait for 3 min.</li>
+<li>Carefully transfer 20 μL of the supernatant (purified synthesized library) to a new DNase-free PCR tube.</li>
+<li>Place the tube in a preheated hot-lid thermal cycler and run a program as follows:</li>
+</ol>
+<table id="undtbl17">
+<thead>
+<tr>
+<th colspan="4">Reaction conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incubation</td>
+<td>37°C</td>
+<td>60 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Incubation</td>
+<td>72°C</td>
+<td>10 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<ol start="100">
+<li>Prepare library amplification PCR master mix as follows:</li>
+</ol>
+<table id="undtbl18">
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nuclease-Free Water</td>
+<td>26</td>
+</tr>
+<tr>
+<td>SeqAmp CB PCR Buffer</td>
+<td>50</td>
+</tr>
+<tr>
+<td>PCR2 Primers v2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>SeqAmp DNA Polymerase</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<ol start="101">
+<li>Add the library amplification PCR master mix into the PCR tube from step 94 and mix well with the ribosomal cDNA depleted library. Place the final mix on a preheated hot-lid thermal cycler and run the following PCR program:</li>
+</ol>
+<table id="undtbl19">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>94°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>15 s</td>
+<td rowspan="3">10–14 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>55°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>68°C</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Forever</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> The number of the PCR cycles for library amplification is extremely critical for sncRiboTag-Seq library synthesis. We try to reduce the duplicates in sequencing by reducing the number of PCR cycles for sncRiboTag-Seq library amplification. The protocol recommends using 14- 15 cycles and 16 cycles for 1 ng and 0.25 ng input RNA, respectively. For sncRiboTag-Seq library synthesis, we normally use at least 2 fewer PCR cycles than the kit recommended for amplification. You may consider using even fewer cycles here if you have already used more than 5 PCR cycles in the initial amplification (step 69 in the “C. Library Synthesis with Addition of Illumina Adapters and Indexes”). For the amplification, one may need to optimize at least once before the real experiments.</div>
+<div class="pause-point">
+<span class="pause-point-title">Pause Point:</span> The PCR product can be stored at −20°C for up to 2 weeks.</div>
+<ol start="102">
+<li>Take out AMPure beads from fridge to warm them up to room temperature (21°C–26°C).</li>
+<li>Prepare freshly made 80% ethanol.</li>
+<li>Resuspend the room temperature AMPure beads completely and add 100 μL of the AMPure beads to the 100 μL amplified library (100 μL PCR product), mix well and incubate at room temperature (21°C–26°C) for 8 min.</li>
+<li>Quick spin the tube and place the tube on a magnetic stand for 8 min to separate the beads and the solution.</li>
+<li>Remove the supernatant while keeping the tube on the magnetic stand.</li>
+<li>Keep the tube on the magnetic stand, add 200 μL of freshly made 80% ethanol and wait 30 s, discard the 80% ethanol.</li>
+<li>Repeat step 107 once.</li>
+<li>Remove the tube from the magnetic stand and quick spin the tube.</li>
+<li>Put the tube back on the magnetic stand for 30 s and remove the residual ethanol.</li>
+<li>Keep the tube open on the magnetic stand for 5 min.</li>
+<li>Add 22 μL of Nuclease-Free Water onto the beads pellet and remove the tube from the magnetic stand.</li>
+<li>Pipetting up and down the beads 10–20 times and incubate at room temperature (21°C–26°C) for 5 min.</li>
+<li>Quick spin the tube, place it back on the magnetic stand and wait for 3 min.</li>
+<li>Carefully transfer 20 μL of the supernatant (purified synthesized library) to a new DNase-free PCR tube.</li>
+<li>Proceed to library validation immediately or store at –20°C</li>
+<li>Evaluate library size distribution by running samples on the Agilent 2100 Bioanalyzer using the Agilent High Sensitivity DNA Kit.</li>
+<li>Quantify libraries with Qubit dsDNA HS kit (Thermo Fisher Scientific).</li>
+</ol>
+<h3 id="sec3.5">Sequencing and data analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> days to weeks</div>
+<p>In this procedure, the RNA sequencing libraries are sequenced, and initial analysis is performed.</p>
+<ol start="119">
+<li>Library Sequencing: Read 1 matches the antisense sequence of the input RNA and for paired-end sequencing; Read 2 will correspond to the sense strand.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> This library synthesis kit incorporates SMART (Switching Mechanism At 5′ end of RNA Template) cDNA synthesis technology and generates Illumina-compatible libraries via PCR amplification. There is no need for adapter ligation. Besides, this strategy preserves the strand orientation of the original RNA, making it possible to obtain strand-specific sequencing data from the synthesized cDNA.</div>
+<ol start="120">
+<li>Data analysis: From the raw reads to differentially expressed genes, we used highly compacted software package RSEM for the initial data analysis.</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Studying brain functions in behavior and disease is challenged by the enormous complexity of cell types in the brain with many cell types are in low abundance and sparsely distributed. Although fluorescence activated cell sorting method has been used to isolate specific cell types from the brain (<a href="#bib2">Gao et al., 2017</a>; <a href="#bib11">Shen et al., 2019</a>), tissue dissociation has been shown to cause gene expression changes (<a href="#bib4">Habib et al., 2016</a>). Isolation of nuclei may minimize the impact of cell isolation, however, extensive processes and fine synaptic terminals of mature neurons where protein translation is active are largely lost. Therefore, RiboTag-Seq, without the need for disruptive cell or nuclei isolation, has a significant advantage by preserving gene expression in native state. In addition, the RiboTag (<i>Rpl22</i><sup>HA</sup>) mice with knock-in HA tag express HA-RPL22 at the endogenous levels, which minimizes the concerns for overexpression of tagged ribosomal protein, as in the case of GFP and ribosome protein L10a fusion protein (<a href="#bib5">Heiman et al., 2014</a>). Furthermore, comparing to the original RiboTag-Seq protocol (<a href="#bib9">Sanz et al., 2019</a>; <a href="#bib10">Sanz et al., 2009</a>), this sncRiboTag-Seq protocol is significantly modified for low number and sparse cells in tissue, allowing for isolation and use of very low amount of RNA [300 pg, versus 2,000 pg by Sanz et al (<a href="#bib9">Sanz et al., 2019</a>; <a href="#bib10">Sanz et al., 2009</a>)].</p>
+<p>We expect that sncRiboTag-Seq protocol will yield high quality and consistent data. In our published paper (<a href="#bib1">Gao et al., 2020</a>), we aimed to study gene expression changes adult new neurons that exist in low numbers in the brain. We crossed RiboTag mice (<a href="#bib10">Sanz et al., 2009</a>) with neural stem cell driver Cre mice (<i>Nestin-CreER</i><sup>T2</sup>) (<a href="#bib6">Lagace et al., 2007</a>; <a href="#bib8">Li et al., 2018</a>) and performed sncRiboTag-Seq. Theoretically, 0.25 ng RNA is sufficient for our RNA-seq protocol. The numbers of cells needed to obtain this amount of RNA varies depending on cell types. In our study (<a href="#bib1">Gao et al., 2020</a>), we have obtained about 0.8 ng and 4.1 ng RNA from immature and mature adult-born hippocampal neurons of one mouse, respectively (<a href="#fig7">Figure 7</a>). Based on our published papers (<a href="#bib3">Guo et al., 2011</a>; <a href="#bib7">Li et al., 2016</a>), we estimated that the number of RiboTag-expressing cells in the hippocampus of one adult Nestin-CreERT2;RiboTag mouse induced by tamoxifen injections should be about 30,000 (7–14 days after tamoxifen injection) and 40,000 (28 days after tamoxifen injection) for immature and mature new neurons, respectively. Therefore, to obtain 0.25 ng RNA, it requires around 10,000 RiboTag-expressing immature new neurons or 2,500 RiboTag-expressing mature new neurons. We decided to use pooled tissue from multiple mice, not only to increase RNA yield therefore minimize library amplification but also to reduce the contribution of variabilities among individual animals. We must point out that these calculations are based on adult-born neuron in the hippocampus. Different cell types will likely have different yield. We recommend that you use the number of cells that yield at least 1 ng immunoprecipitated RNA for the RNA-seq library construction. The HA-ribosome bound RNA (<a href="#fig6">Figures 6</a> and <a href="#fig7">7</a>) and the next-generation sequencing libraries (<a href="#fig8">Figure 8</a>) produced using our method were high quality. Our sequencing results demonstrated consistency across all samples (<a href="#bib1">Gao et al., 2020</a>) (<a href="#fig9">Figure 9</a>). This method proves powerful in identifying intrinsic genome-wide molecular changes in adult new neurons and can be applied to other small number of cells in mature tissues.</p>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Representative results for RNA quality assessment</div>
+<p>The quality of two representative RiboTag-isolated RNA samples (A and B) was assessed by an Agilent 2100 bioanalyzer using a sensitive Eukaryote Total RNA Pico Chip.</p>
+</figcaption>
+</figure>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. RNA yields and RNA quality from two batches of sncRiboTag IP</div>
+<p>The yield (per mouse) and quality (RIN) of RNA from two different batches of sncRiboTag IP of Nestin-CreERT2;RiboTag mice. RIN, RNA integrity number.</p>
+</figcaption>
+</figure>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Representative results for sncRiboTag-Seq assessment</div>
+<p>Prior to sequencing, synthesized RiboTag libraries were analyzed by an Agilent 2100 bioanalyzer. (A) and (B) show Agilent results of two representative libraries. To date, we have synthesized 57 libraries in 5 batches from two different sparse cell types, including adult-born new neurons in the dentate gyrus of adult mouse hippocampus (<a href="#bib1">Gao et al., 2020</a>) and parvalbumin-expressing interneurons in dorsal hippocampus, ventral hippocampus, and prefrontal cortex of adult mice (unpublished). All our libraries have met the requirements for next-generation sequencing and yielded publishable data.</p>
+</figcaption>
+</figure>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. sncRiboTag-seq yields sufficient and consistent result without batch effect</div>
+<p>The number of detected transcripts that have FPKM over 0.1 (FPKM &gt; 0.1, A) or 1 (FPKM &gt; 1, B) among 3 different experiment batches. Therefore, there was no strong batch effect among all the IP samples, even though the IP and library synthesis were processed at 3 different times using different animals (<a href="#bib1">Gao et al., 2020</a>).</p>
+<p>(A) Using our sncRiboTag-Seq protocol, we were able to detect around 17,600 transcripts (FPKM &gt; 0.1) in each sample and the number of detected transcripts was similar among three different experimental batches, as described in our published study (<a href="#bib1">Gao et al., 2020</a>).</p>
+<p>(B) The number of detected transcripts that have FPKM over 1 (FPKM &gt; 1) is around 13,000 and similar number of transcripts was also found for three different experimental batches.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>There are at least three limitations of this protocol. First, the cell-type-specific RiboTag expression is heavily dependent on Cre expression patterns. Therefore, highly specific and efficient Cre-driver mouse line or promoters for viral vectors is needed to target RiboTag to specific cell type. Second, although sncRiboTag-Seq protocol allows scientists to profile translatome in specific cell-type cells, it cannot reveal the diversities of individual cells within the cell type. However, advanced bioinformatics methods can be applied to integrate sncRiboTag-Seq data with other genome-wide data at single cell and bulk cell levels to unveil novel information in biology that cannot be obtained using an individual method. Third, similar to other immunoprecipitation-based experiments, the immunoprecipitated RNA may contain non-specific contaminations. Therefore, it is important to perform preliminary experiments to optimize the IP condition. We advise that you perform preliminary experiments using two negative controls: IP from mice without Cre expression (only PRL22) and IP from RiboTag or wild-type (WT) mice using IgG instead of HA antibodies. We believe that the former is a more important negative control. To optimize this protocol, we performed IP on both PV-Cre;RiboTag and WT mice (negative control) using the same HA antibody. The IP from WT mouse yielded RNA (0.14 ng), but it was far lower than the RNA yielded from RiboTag mouse (19.46 ng) (<a href="#fig10">Figure 10</a>). In addition, the quality of RNA from WT IP was very poor (RIN=1.0, highly degraded) compared to the RNA from PV-Cre;RiboTag mouse (RIN=8.9, high quality) (<a href="#fig10">Figure 10</a>). In step 64 (Fragmentation of RNA), high quality mRNA will be fragmented into appropriate sizes, however, the low-quality background mRNA molecules are expected to be fragmented into even smaller RNA fragments, from which the smaller DNA fragments would be generated and these small DNA fragment are expected to be removed in the subsequent three rounds of purifications using AMPure beads (because the purifications using AMPure beads removes DNA fragments smaller than 250 bp) (see first round of purification: steps 71–84, second round of purification: steps 85–98, and third round of purification: steps 102–116). Therefore, even if this IP protocol yielded some background RNA, these RNA would likely to be cleaned out from the libraries before sequencing.</p>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/355-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. sncRiboTag- IP of negative control tissue yields small quantity and low-quality background RNA</div>
+<p>(A and B) sncRiboTag IP of frontal cortex tissue from parvalbumin (PV)-expressing interneurons of adult PV-Cre;RiboTag mice yields 19.46 ng high quality RNA (RIN = 8.9, A). The analysis of input RNA from the same mouse (B) is provided as a comparison.</p>
+<p>(C and D) sncRiboTag IP of frontal cortex tissues from wild-type (WT) mice yields small amount (C, 0.14 ng) and low-quality RNA (C, RIN =1.0). The analysis of input RNA from WT mice (D) is provided as a comparison.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>During genotyping, the negative control shows positive (step 9 in the part “<a href="#sec1.2">Fast Genotyping Methods for Cre and/or RiboTag Mice</a>”).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>This is gDNA contamination. To solve this problem, re-dilute the digested tail mix, use new tubes of EmeraldAmpMaster Mix, primers, and water, and repeat the genotyping PCR.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Extremely low yield of RNA and the RIN values of the purified RNA below 7 (step 61).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>There are a number of possible reasons and potential solutions:</p>
+<p>The tissue you isolated may not have RiboTag expression. Check the RiboTag expression by staining with HA antibody to ensure that RiboTag is expressed in the tissues that you plan to use for IP. In addition, make sure your genotyping result is correct and any false positive gel bands for either RiboTag, or Cre would cause this.</p>
+<p>For tissue processing, ensure the homogenization is efficient, if possible, check the homogenate under a microscope to make sure there is no tissue chunk, otherwise, homogenize more times.</p>
+<p>During tissue processing and homogenization, always keep tissues cold to prevent RNA degradation.</p>
+<p>Test the HA antibody used for immunoprecipitation to make sure your antibody works for immunoprecipitation.</p>
+<p>Check the expire date of the RNA purification kit and ensure it is not expired when you use it.</p>
+<p>Ensure the working area and equipment are RNase-free and use RNaseZap Wipes to clean the working bench, pipettes, tip boxes, etc.</p>
+<p>Use filter tips or barrier tips.</p>
+<p>It is possible that low RNA reading is caused by any mistakes during Agilent Bioanalyzer analysis. You may repeat it together with an RNA preparation as positive control.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Failed library synthesis (steps 117 and 118).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>Check the input RNA used for library synthesis and make sure you used sufficient amount (&gt;250 pg) and quality of RNA. Partially degraded RNA can work but requires optimization. Check the degradation level of your RNA and perform fragmentation with corresponding fragmentation time.</p>
+<p>For library purification steps, make sure you use warmed-up purification beads and make sure the beads are within the expiration date.</p>
+<p>Check whether you used reasonable number of PCR amplification, add more PCR cycles if needed.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Too few transcripts are detected from RNA-seq (step 120).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Check your sequencing depth. If too low, you might consider re-sequence to obtain more reads.</p>
+<p>Make sure you have done at least two QC steps: (1) QC step 1: check quality of the isolated RNA; (2) QC step 2: check the quantity and profiles of your synthesized sequencing libraries.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Too many duplicate reads (step 120).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>Increase the amount of input RNA. You can increase RNA yield by pooling tissues from more animals.</p>
+<p>Perform fewer number of PCR amplifications.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Gao, Y., Shen, M., Gonzalez, J.C., Dong, Q., Kannan, S., Hoang, J.T., Eisinger, B.E., Pandey, J., Javadi, S., Chang, Q., et al. (2020). RGS6 mediates effects of voluntary running on adult hippocampal neurogenesis. Cell Rep. <i>32</i>, 107997.</p>
+<p id="bib2">Gao, Y., Wang, F., Eisinger, B.E., Kelnhofer, L.E., Jobe, E.M., and Zhao, X. (2017). Integrative single-cell transcriptomics reveals molecular networks defining neuronal maturation during postnatal neurogenesis. Cereb. Cortex <i>27</i>, 2064-2077.</p>
+<p id="bib3">Guo, W., Allan, A.M., Zong, R., Zhang, L., Johnson, E.B., Schaller, E.G., Murthy, A.C., Goggin, S.L., Eisch, A.J., Oostra, B.A., et al. (2011). Ablation of Fmrp in adult neural stem cells disrupts hippocampus-dependent learning. Nat. Med. <i>17</i>, 559-565.</p>
+<p id="bib4">Habib, N., Li, Y., Heidenreich, M., Swiech, L., Avraham-Davidi, I., Trombetta, J.J., Hession, C., Zhang, F., and Regev, A. (2016). Div-Seq: single-nucleus RNA-Seq reveals dynamics of rare adult newborn neurons. Science <i>353</i>, 925-928.</p>
+<p id="bib5">Heiman, M., Kulicke, R., Fenster, R.J., Greengard, P., and Heintz, N. (2014). Cell type-specific mRNA purification by translating ribosome affinity purification (TRAP). Nat. Protoc. <i>9</i>, 1282-1291.</p>
+<p id="bib6">Lagace, D.C., Whitman, M.C., Noonan, M.A., Ables, J.L., DeCarolis, N.A., Arguello, A.A., Donovan, M.H., Fischer, S.J., Farnbauch, L.A., Beech, R.D., et al. (2007). Dynamic contribution of Nestin-expressing stem cells to adult neurogenesis. J. Neurosci. <i>27</i>, 12623-12629.</p>
+<p id="bib7">Li, Y., Stockton, M.E., Bhuiyan, I., Eisinger, B.E., Gao, Y., Miller, J.L., Bhattacharyya, A., and Zhao, X. (2016). MDM2 inhibition rescues neurogenic and cognitive deficits in a mouse model of fragile X syndrome. Sci. Transl. Med. <i>8</i>, 336ra361.</p>
+<p id="bib8">Li, Y., Stockton, M.E., Eisinger, B.E., Zhao, Y., Miller, J.L., Bhuiyan, I., Gao, Y., Wu, Z., Peng, J., and Zhao, X. (2018). Reducing histone acetylation rescues cognitive deficits in a mouse model of Fragile X syndrome. Nat. Commun. <i>9</i>, 2494.</p>
+<p id="bib9">Sanz, E., Bean, J.C., Carey, D.P., Quintana, A., and McKnight, G.S. (2019). RiboTag: ribosomal tagging strategy to analyze cell-type-specific mRNA expression in vivo. Curr. Protoc. Neurosci. <i>88</i>, e77.</p>
+<p id="bib10">Sanz, E., Yang, L., Su, T., Morris, D.R., McKnight, G.S., and Amieux, P.S. (2009). Cell-type-specific isolation of ribosome-associated mRNA from complex tissues. Proc. Natl. Acad. Sci. U S A <i>106</i>, 13939-13944.</p>
+<p id="bib11">Shen, M., Wang, F., Li, M., Sah, N., Stockton, M.E., Tidei, J.J., Gao, Y., Korabelnikov, T., Kannan, S., Vevea, J.D., et al. (2019). Reduced mitochondrial fusion and Huntingtin levels contribute to impaired dendritic maturation and behavioral deficits in Fmr1-mutant mice. Nat. Neurosci. <i>22</i>, 386-400.</p>
+</section>
+<section>
+<h2 id="article-info">Article Info</h2>
+<h3>Resource Availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the Lead Contact, Xinyu Zhao (<a href="mailto:xinyu.zhao@wisc.edu">xinyu.zhao@wisc.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>No material was generated in this protocol.</p>
+<h4>Data and code availability</h4>
+<p>No data or code generated in this protocol. The data used in this protocol are from our published study (<a href="#bib1">Gao et al., 2020</a>)</p>
+<h3>Acknowledgments</h3>
+<p>This work was supported by grants from the <a href="https://doi.org/10.13039/100000002">National Institutes of Health</a> (R01NS105200, R56MH113146, R01MH116582, and R21NS095632 to X.Z.; U54HD090256 to the Waisman Center), UW Vilas Trust (Mid-Career Award), <a href="https://doi.org/10.13039/100001395">Wisconsin Alumni Research Foundation</a>, and Jenni and Kyle Professorship (to X.Z.). We thank S. Kannan, J. Hoang, Y. Xing, R. Spitzer, D. Wagner, A. Meara, M. Syed, X. Lyu, S. Pham, J. Le, and Y. Choi for technical assistance during optimization of this protocol; J. Pinnow, M. Eastwood, D. Bolling, and K. Knobel at the Waisman Intellectual and Developmental Disabilities (IDD) Model Core; and S. Splinter-BonDurant at the University of Wisconsin (UW)-Madison Biotechnology Center for next-generation sequencing services.</p>
+<h3>Author Contributions</h3>
+<p>X.Z. conceived the concept. Y.G. designed and performed experiments, collected data, and analyzed data. Y.G. and X.Z. wrote the manuscript.</p>
+<h3>Declaration of Interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

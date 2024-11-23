@@ -1,0 +1,2290 @@
+<article>
+<section>
+<h1 id="header">Chromatin and transcription factor profiling in rare stem cell populations using CUT&amp;Tag</h1>
+<p><time datetime="2021-08-20">Published: August 20, 2021</time></p>
+<p>Yuefeng Li,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">8</a>,<a href="#fn2">9</a>,<a href="#cor1">*</a></sup> Kiran Nakka,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn1">8</a>,<a href="#fn2">9</a>,<a href="#cor2">**</a></sup> Thomas Olender,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Philippe Gingras-Gelinas,<sup><a href="#aff3">3</a></sup> Matthew Man-Kin Wong,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Daniel C.L. Robinson,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a></sup> Hina Bandukwala,<sup><a href="#aff1">1</a></sup> Carmen G. Palii,<sup><a href="#aff1">1</a></sup> Odile Neyret,<sup><a href="#aff3">3</a></sup> Marjorie Brand,<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff4">4</a></sup> Alexandre Blais,<sup><a href="#aff5">5</a>,<a href="#aff6">6</a>,<a href="#aff7">7</a></sup> and F. Jeffrey Dilworth<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff4">4</a>,<a href="#aff5">5</a>,<a href="#fn3">10</a>,<a href="#cor3">***</a></sup></p>
+<p id="aff1"><sup>1</sup>Sprott Center for Stem Cell Research, Regenerative Medicine Program, Ottawa Hospital Research Institute, Ottawa, ON K1H 8L6, Canada</p>
+<p id="aff2"><sup>2</sup>Department of Cellular and Molecular Medicine, University of Ottawa, Ottawa, ON, Canada</p>
+<p id="aff3"><sup>3</sup>Molecular Biology Platform, Institut de Recherche Clinique de Montreal, Montreal, QC, Canada</p>
+<p id="aff4"><sup>4</sup>LIFE Research Institute, University of Ottawa, Ottawa, ON, Canada</p>
+<p id="aff5"><sup>5</sup>Ottawa Institute for Systems Biology, University of Ottawa, Ottawa, ON, Canada</p>
+<p id="aff6"><sup>6</sup>Department of Biochemistry, Microbiology and Immunology, University of Ottawa, Ottawa, ON, Canada</p>
+<p id="aff7"><sup>7</sup>CI3, University of Ottawa Centre for Infection, Immunity and Inflammation, Ottawa, ON, Canada</p>
+<p id="fn1"><sup>8</sup>These authors contributed equally</p>
+<p id="fn2"><sup>9</sup>Technical contact</p>
+<p id="fn3"><sup>10</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:yueli@ohri.ca">yueli@ohri.ca</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:knakka@ohri.ca">knakka@ohri.ca</a></p>
+<p id="cor3"><sup>***</sup>Correspondence: <a href="mailto:jdilworth@ohri.ca">jdilworth@ohri.ca</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100751">10.1016/j.xpro.2021.100751</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Muscle stem cells (MuSCs) are a rare stem cell population that provides myofibers with a remarkable capacity to regenerate after tissue injury. Here, we have adapted the Cleavage Under Target and Tagmentation technology to the mapping of the chromatin landscape and transcription factor binding in 50,000 activated MuSCs isolated from injured mouse hindlimb muscles. We have applied this same approach to human CD34<sup>+</sup> hematopoietic stem and progenitor cells. This protocol could be adapted to any rare stem cell population.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref24">Robinson et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Isolation of muscle stem cells from cardiotoxin-injured tissue</li>
+<li>CUT&amp;Tag-based mapping of epigenetic landscape and transcription factor enrichment</li>
+<li>Adaptation of a synthetic spike-in DNA for effective normalization across samples</li>
+<li>Pipeline for efficient analysis of CUT&amp;Tag sequencing data hosted on Git-hub</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Adult tissue-resident stem cells are rare cell populations that maintain tissue homeostasis and are indispensable for growth and regeneration throughout life. In the case of skeletal muscle, myofiber damage is efficiently repaired through the activity of Muscle Stem Cells (MuSCs). However, harnessing the regenerative capacity of MuSCs therapeutically has been limited by our inability to fully characterize these rare stem cells. Thus, it is important to develop technologies that allow for the characterization of MuSCs without <i>ex vivo</i> expansion.</p>
+<p>The epigenetic state of a cell is an important characteristic that defines the genes that are expressed. Epigenetic landscapes of MuSCs have been examined using formaldehyde cross-linking based ChIP-Seq protocols in MuSCs expanded <i>ex vivo</i> (<a href="#bib4">Blum et al., 2012</a>; <a href="#bib10">Judson et al., 2018</a>; <a href="#bib18">Mousavi et al., 2012</a>). A disadvantage of this approach is the large number of cells required to complete the protocol due to the inherent background noise associated with the technology. The ChIP-Seq approach also suffers from the appearance of false-positive identification of histone mark enrichment due to cross-linking of marked and unmarked regions of the genome. At the same time, false-negative results can be observed if the epitope of the antibody is masked by the presence of “reader” proteins as they become crosslinked to chromatin. The development of Native ChIP protocols mitigated the problem of false negatives (<a href="#bib3">Benyoucef et al., 2016</a>; <a href="#bib5">Brand et al., 2008</a>; <a href="#bib8">Faralli et al., 2016</a>; <a href="#bib9">Grzybowski et al., 2019</a>; <a href="#bib19">O'Neill and Turner, 2003</a>), but continued to require large number of cells to obtain a good signal above the background noise. To overcome the need for large number of cells, the Henikoff group recently described the Cleavage Under Target and Tagmentation (CUT&amp;Tag) technology that uses a Tn5 transposase fused to Protein A (pA-Tn5) to tagment, antibody-bound regions of the genome in native (non cross-linked) conditions (<a href="#bib11">Kaya-Okur et al., 2019</a>). We have recently adapted this technology to examine the function of NELF in MuSC populations (<a href="#bib24">Robinson et al., 2021</a>). Furthermore, we have used it with a wide range of antibodies for both histones and transcription factors in either MuSCs or human CD34<sup>+</sup> hematopoietic stem progenitor cells. Thus, this approach should be widely applicable across different cell-types using a broad range of antibodies.</p>
+<h3 id="sec1.1">Purification of the pA-Tn5 enzyme</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7 days</div>
+<p>This section details the preparation of the Protein A-Transposase fusion protein (pA-Tn5) required for introducing tags within the genome (<a href="#bib11">Kaya-Okur et al., 2019</a>; <a href="#bib21">Picelli et al., 2014</a>). Typically, it takes 7 days to prepare the enzyme. While this step is labor intensive, the enzyme is stable and can provide enough material for hundreds of experiments. Alternatively, pA-Tn5 can be purchased from commercial vendors. Purification of pA-Tn5 from bacterial extracts is detailed below.</p>
+<ol>
+<li>Transformation of 3XFlag-pA-Tn5-Fl (Addgene #124601) into T7 Express lysY/Iq E. coli
+<ol type="a">
+<li>Thaw a frozen aliquot of T7 Express lysY/Iq competent E. coli cells (NEB) on ice for 10 min.</li>
+<li>Add 1–5 μL of the plasmid (contains 100 ng of plasmid DNA) to the cell mixture. Carefully flick the microcentrifuge tube 4–5 times to mix cells and DNA. Do not vortex.</li>
+<li>Place the mixture on ice for 30 min.</li>
+<li>Heat shock at 42°C for 10 s.</li>
+<li>Place on ice for 5 min.</li>
+<li>Pipette 950 μL of room temperature SOC media into the mixture.</li>
+<li>Place at 37°C shaker (250 rpm) for 60 min.</li>
+<li>Simulatenously, warm an agar selection plate containing ampicillin at 37°C.</li>
+<li>After 60 min, mix the cells thoroughly by flicking and inverting the microcentrifuge tube.</li>
+<li>Spread 50 μL of the mixture onto the selection agar plate containing ampicillin and incubate overnight at 37°C.</li>
+</ol>
+</li>
+<li>Expression of pA-Tn5 Transposase (protocol for 1 L culture, can be scaled accordingly)
+<ol type="a">
+<li>Inoculate a single colony into 20 mL of LB Broth (Miller) containing 100 μg/mL ampicillin (or carbenicillin) and grow at 37°C for 6 h in an orbital shaker.</li>
+<li>Use this 20 mL starter culture to inoculate 1 L of pre-warmed LB Broth. Distribute 200 mL of inoculated LB Broth across five 1-L Erlenmeyer flasks. Grow at 37°C and monitor the culture until OD<sub>600</sub> reaches ∼0.6 (about 3 h).</li>
+<li>When the culture reaches OD<sub>600</sub> ∼0.6, chill it on ice for 30 min. Collect an aliquot of 1000 μL in a microcentrifuge tube as “pre-induction” sample for SDS-PAGE gel (centrifuge at 5000 rpm for 5 min to pellet the bacteria, aspirate LB and store at −20°C).</li>
+<li>Add IPTG to the cultures at a final concentration of 0.5 mM and agitate overnight (12–16 h) in an orbital shaker set at room temperature (21°C).</li>
+<li>Determine the final OD<sub>600</sub> and collect an aliquot of 100 μL as “post-induction” sample for SDS-PAGE gel.</li>
+<li>Transfer cultures to two 500 mL polypropylene centrifuge tubes and centrifuge at 5000×<i>g</i>, 4°C, for 20 min. Aspirate the spent LB Broth.</li>
+<li>Submerge the pellets in a dry ice-ethanol bath for 2 min to freeze and then thaw for 10 min in ice-water bath. Repeat this to complete a second freeze/thaw cycle.</li>
+<li>Store pellets at −80°C or continue to purification.</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li>Tn5 Transposase Purification
+<ol type="a">
+<li>For each frozen pellet obtained from 500 mL culture, resuspend in 40 mL cold HEGX Buffer (with 1× Roche Complete EDTA-free protease inhibitor tablet per 50 mL) and transfer to 50 mL tube.</li>
+<li>Add Lysozyme (100 mg/mL) to a final concentration of 0.5 mg/mL.</li>
+<li>Incubate lysate on ice for 30 min.</li>
+<li>Sonicate for 13 cycles while maintaining the sample chilled on ice-water. Allow 1–2 min between cycles for sample to cool down.
+<ol type="i">
+<li>We used the Sonic Dismembrator Model 500. Each cycle is set for 45 s at a 50% duty cycle (Pulse ON = 1 s, Pulse OFF = 1 s) at 50% amplitude.</li>
+<li>To avoid bubble formation, reduce amplitude or extend cooling intervals, if needed.</li>
+<li>Lysate will appear slightly clarified and less viscous after sonication.</li>
+</ol>
+</li>
+<li>Transfer the sonicated lysate to 50 mL, polypropylene tubes and centrifuge the sonicated lysate at 31,000 × <i>g</i> at 4°C for 30 min (Avanti with JA25.50 rotor).</li>
+<li>While waiting for the centrifugation:
+<ol type="i">
+<li>Set up four 30 mL disposable columns (Bio-Rad 7321010) and add 2.5 mL chitin slurry to each one of the four columns.</li>
+<li>Wash each column containing chitin slurry with 30 mL of de-ionized water, followed by a wash with 20 mL of HEGX buffer.</li>
+<li>Always avoid drying out resin. To avoid drying the column bed, plug the elution tip with closure while leaving ∼1 mL of buffer above the resin surface.</li>
+</ol>
+</li>
+<li>After centrifugation, transfer supernatant (SN) to fresh 50 mL tubes.
+<ol type="i">
+<li>Set aside an aliquot (100 μL) of “SN” in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+<li>Resuspend pellets from one of the polypropylene tubes with 10 mL HEGX buffer. Set aside an aliquot (100 μL) of “pellet” in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+</ol>
+</li>
+<li>Uncap the column and slowly add 20 mL of supernatant to each column. Seal both ends of the column securely with an end-cap and tip closure. Rotate overnight at 4°C.</li>
+<li>Next day, drain the unbound flow-through fraction into 50 mL tubes and wash each column once with 20 mL HEGX buffer (with 1× Roche Complete EDTA-free protease inhibitor tablets).
+<ol type="i">
+<li>Combine unbound fractions</li>
+<li>Set aside an aliquot (100 μL) of unbound fraction in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+<li>Drain the HEGX buffer up until the liquid level sits at the top of resin bed.</li>
+</ol>
+</li>
+<li>Exchange the remaining HEGX buffer in column bed for Chitin elution buffer, to do this:
+<ol type="i">
+<li>Slowly add 1 mL of Chitin elution buffer to the top of each resin bed.</li>
+<li>Drain Chitin elution buffer up until the liquid level drops to the top of resin bed (column now saturated with 1 mL Chitin elution buffer)</li>
+</ol>
+</li>
+<li>Use 6 mL Chitin elution buffer to resuspend the resin in the first column and transfer the suspension onto the second column. Repeat this step of resuspending the resin and transfer from the second column onto the third column and then onto the fourth column. This will result in the regrouping of all the resin in a single column. This pooled resin from four columns is then transferred to a single 15 mL conical tube. (Final vol. ∼ 11 mL)</li>
+<li>Rotate tube for 48 h at 4°C.</li>
+<li>After 48 h, transfer slurry to a new 30 mL disposable column and allow it to settle.</li>
+<li>Drain the elution into a 15 mL tube until the buffer reaches the top of column bed. This elution is eluate fraction 1 (EL-frac1). Set aside an aliquot (50 μL) of EL-frac1 in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+<li>Slowly add 5 mL Chitin elution buffer to top of column bed. Drain the elution into a new 15 mL conical tube up until the buffer reaches the top of column bed. This elution is eluate fraction 2 (El-frac2).
+<ol type="i">
+<li>Set aside an aliquot (50 μL) of EL-frac2 in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+<li>Also, make an aliquot (50 μL) of chitin resin in a microcentrifuge tube for QC of purification on SDS-PAGE gel.</li>
+<li>Chitin resin can be recycled for future purifications. For details refer to the product manual.</li>
+</ol>
+</li>
+<li>Transfer EL-frac1 into two 10 k MWCO Slide-A-Lyzer Dialysis Cassettes (3 mL).
+<div class="optional">
+<span class="optional-title">Optional:</span> EL-frac1 and EL-frac2 can be pooled and then added to cassette, but this may dilute your sample.</div>
+</li>
+<li>Dialyze eluted fractions in 800 mL of pre-chilled pA-Tn5 dialysis buffer at 4°C. After 2 h, exchange with fresh pA-Tn5 dialysis buffer and continue to dialyze overnight at 4°C. Place beaker on magnetic stirrer set at very low speed.</li>
+<li>Recover the dialyzed eluate and store at 4°C until the concentration is determined (see step 4). Set aside an aliquot (50 μL) of dialyzed eluate in a microcentrifuge tube for QC of purification on SDS gel.</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li>Determine the protein concentration of pA-Tn5 Transposase.
+<ol type="a">
+<li>Perform Coomassie gel stain using samples from dialyzed eluate and BSA standards.</li>
+<li>Determine concentration of dialyzed pA-Tn5 transposase (∼75 kDa) by comparing the band intensity to the that of a BSA standard run on a coomassie blue stained SDS-PAGE gel (<a href="#fig1">Figure 1</a>). If possible, correct the concentration to 826 μg/mL (11 μM) as it will simplify downstream dilution of pA-Tn5 with glycerol (step 4c) to attain 5.5 μM working concentration previously recommended for CUT&amp;Tag reactions (<a href="#bib11">Kaya-Okur et al., 2019</a>).</li>
+<li>If the eluate is more concentrated, dilute to 826 μg/mL by adding more pA-Tn5 dialysis buffer. If the eluate needs to be concentrated to achieve 826 μg/mL, transfer dialyzed solution into an Amicon Ultra-4 Centrifugal 30 K filter tube and centrifuge at 4000× <i>g</i> at 4°C to achieve 826 μg/mL.</li>
+<li>After correcting the dialyzed pA-Tn5 to the concentration of 826 μg/mL, add an equivalent volume of sterile glycerol (80%) to achieve 413 μg/mL (5.5 μM) of pA-Tn5 in 50% glycerol. For example, if the volume of the dialyzed pA-Tn5 is 2 mL (after concentration is corrected to 826 μg/mL), add 2 mL of 80% glycerol to have a final volume of 4 mL at a concentration of 413 μg/mL. 80% glycerol is prepared by diluting pure glycerol with ddH<sub>2</sub>O.</li>
+<li>Collect an aliquot (50 μL) of glycerol resuspended pA-Tn5 for activity assays in step 7 of <a href="#before-you-begin">before you begin</a>.</li>
+</ol>
+</li>
+<li>Annealing MEDS oligos to generate ME-A adaptor and ME-B adaptor.
+<ol type="a">
+<li>Before annealing, dilute MED oligonucleotides (ME-A, ME- B, and ME-Reverse) to 200 μM in annealing buffer (10 mM Tris-HCl pH 8.0, 50 mM NaCl, 1 mM EDTA). Annealing Pair1 (ME-A + ME-Reverse) and Annealing Pair2 (ME-B + ME-Reverse) are annealed simultaneously to generate the 100 μM ME-A adaptor and ME-B adaptor, respectively.</li>
+<li>To perform annealing, incubate the microcentrifuge tubes containing corresponding amounts of oligos in a heating block set at 95°C and leave for 3–5 min. Then remove the heating block from the heat source and allow for slow cooling to room temperature (∼45 min). Alternatively, a thermocycler can be used to perform annealing of the oligos such that the temperature drops at a constant rate.</li>
+</ol>
+</li>
+<li>Loading the pA-Tn5 with ME-A and ME-B adaptors.
+<ol type="a">
+<li>Mix 80 μL of the pre-annealed ME-A adaptor (100 μM) and 80 μL of the pre-annealed ME-B adaptor (100 μM) with 1000 μL of 5.5 μM pA-Tn5 obtained at step 4 of <a href="#before-you-begin">before you begin</a>.</li>
+<li>To achieve loading, incubate the mixture on a rotating platform for 1 h at room temperature. After loading the pA-Tn5 enzyme with ME-A and ME-B adaptors, the final concentration of pA-Tn5 enzyme is 4.74 μM. Take an 25 μL aliquot of this enzyme for a QC activity assay (step 7).</li>
+<li>This stock of pA-Tn5 enzyme (4.74 μM) can now be stored at −20°C.</li>
+</ol>
+</li>
+</ol>
+<ol start="7">
+<li>pA-Tn5 Transposase activity assay.
+<ol type="a">
+<li>The QC activity assay can be performed using 1 μg of any plasmid (Here, we used pTRIPz plasmid) with 5 μL of pA-Tn5 transposase in a final volume of 40 μL. Reactions can be set up as below:
+<table id="undtbl1">
+<thead>
+<tr>
+<th>pTRIPz plasmid</th>
+<th>1 μg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEBuffer 3.1</td>
+<td>4 μL</td>
+</tr>
+<tr>
+<td>pA-Tn5, loaded with ME-A and ME-B adaptors</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>Make up to 40 μL</td>
+</tr>
+</tbody>
+</table>
+When setting up the reactions:
+<ol type="i">
+<li>pA-Tn5 loaded with ME-A and ME-B adaptors can be replaced with ddH<sub>2</sub>O to be used as - ‘No pA-Tn5 and Adaptor Control’.</li>
+<li>pA-Tn5 loaded with ME-A and ME-B adaptors can be replaced with plain pA-Tn5 (without ME-A and ME-B adaptors) to be used as the “No Adaptor Control”.</li>
+<li>NEBuffer 3.1 can be replaced with ddH2O to be used as ‘No MgCl<sub>2</sub> Control’.</li>
+<li>pA-Tn5 loaded with ME-A and ME-B adaptors, is heated at 95°C for 20 min before adding to be used as ‘Inactivated Enzyme Control’.</li>
+</ol>
+</li>
+<li>Set up the reaction with all necessary components. In parallel, set up all the control reactions as listed above. Incubate for 15 min at 37°C.</li>
+<li>Add 0.4 μL of 10% SDS into each reaction.</li>
+<li>Incubate for 10 min at 55°C.</li>
+<li>Add 2.52 μL of Proteinase K (10 mg/mL) into each reaction.</li>
+<li>Incubate for 20 min at 55°C.</li>
+<li>Add 8.6 μL of 6× Orange G (or DNA Gel Loading Dye) to each reaction.</li>
+<li>Load 1/4 of the volume of each reaction (This contains 250 ng of plasmid DNA, tagmented or untagmented) on 1.2% agarose gel. As shown in <a href="#fig2">Figure 2</a>, only the ME-A and ME-B loaded pA-Tn5 transposase in the presence of MgCl<sub>2</sub>, tagments the plasmid DNA (<a href="#fig2">Figure 2</a>, lane 5).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Determine the concentration of pA-Tn5 using BSA</div>
+<p>Varying concentrations of purified pA-Tn5 protein or BSA were separated by SDS-PAGE and visualized with Coomassie Blue stain.</p>
+</figcaption>
+</figure>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Activity assay for pA-Tn5</div>
+<p>Testing the ability of purified pA-Tn5 transposase to tagment DNA when loaded with MEDS pre-annealed oligos.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">Preparation of Spike-in<sup>AmpR</sup>
+</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 5 h</div>
+<p>Here, we recommend preparing a small DNA fragment of Ampicillin resistant gene (AmpR) which is 213 bp in length. This fragment also contains i5 and i7 primer binding sites on 5′ and 3′ ends, respectively. The AmpR fragment resembles a pA-Tn5 tagmented DNA product (146 bp of AmpR sequence with a 33 bp arm complementary to ME-A, and a 34 bp arm complementary to ME-B; total 213 bp). This fragment does not share homology with any mammalian genome sequences and thus can be used both as a spike-in fragment for normalization after sequencing and as a standard DNA fragment with known concentration to optimize the PCR cycle number during library construction steps.</p>
+<ol start="8">
+<li>PCR amplification of Spike-in<sup>AmpR</sup>
+<ol type="a">
+<li>We amplified Spike-in<sup>AmpR</sup> from 50 ng of pCDNA5/FRT/TO plasmid, but any other plasmid containing AmpR gene can be used as template. The oligos used for amplifying Spike-in<sup>AmpR</sup> are listed in <a href="#key-resources-table">key resources table</a>.</li>
+<li>Set up a 50 μL reaction as shown below and perform PCR cycles using the following conditions:</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl2">
+<caption>PCR Reaction Components</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>50 μL rxn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template</td>
+<td>1 μL (∼50 ng)</td>
+</tr>
+<tr>
+<td>Tn5-MEA Amp Forward (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Tn5-MEB Amp Reverse (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>5× Phusion HF Buffer</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA polymerase</td>
+<td>0.5 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>36.5 μL</td>
+</tr>
+</tbody>
+</table>
+<table id="undtbl3">
+<caption>PCR Conditions:</caption>
+<thead>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Denaturation</td>
+<td>98°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>98°C</td>
+<td>5 s</td>
+<td rowspan="3">30 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>60°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>4°C</td>
+<td colspan="2">Infinite</td>
+</tr>
+</tbody>
+</table>
+<ol start="9">
+<li>Purification of Spike-in<sup>AmpR</sup> fragment
+<ol type="a">
+<li>The size of the amplified fragment is 213 bp. The PCR product can be run on a 1.2% agarose gel.</li>
+<li>Under mild UV light, carefully cut out the part of the gel which contains the amplified fragment.</li>
+<li>Qiagen gel elution kit can be used to extract and purify the Spike-in<sup>AmpR</sup> fragment. Final eluted volume can be up to 150 ul.</li>
+<li>Concentration of the eluted Spike-in<sup>AmpR</sup> should be measured using NanoDrop<sup>TM</sup> (One/One<sup>C</sup> Microvolume UV-Vis Spectrophotometer, ThermoFisher Scientific). A concentration range of 50–150 ng/μL is expected.</li>
+<li>Purified Spike-in<sup>AmpR</sup> can be easily diluted to 65.6 nM to be used as standard DNA template to optimize the PCR cycle number for CUT&amp;Tag library preparation. Please see step 52. in <a href="#step-by-step-method-details">step-by-step method details</a>.</li>
+<li>To obtain an extremely low concentration of Spike-in<sup>AmpR</sup> for the purpose of being used as spike-in (See step 43. of <a href="#step-by-step-method-details">step-by-step method details</a>), we recommend sequential dilution of purified Spike-in<sup>AmpR</sup> (1:10 dilution each time).</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Care should be taken to wear facial protective gear while excising the agarose gel fragment under mild UV light. Care should be taken while adding EtBr to the agarose gel as EtBr is carcinogen. EtBr can be substituted with non-mutagenic dyes such as GelRed or SYBRSafe.</div>
+<h3 id="sec1.3">Preparation of the mouse strains</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼6 months</div>
+<p>All animal breeding processes and experiments in our studies were performed according to the ethical regulations of the Animal Care and Veterinary Service at University of Ottawa and the guidelines from the Canadian Council on the Animal Care (CCAC). Here, we recommend that the commonly used B6.Cg-Pax7<sup>tm1(cre/ERT2)Gaka</sup>/J strain should be crossed with B6.Cg-Gt(ROSA)26Sor<sup>tm9(CAG-tdTomato)Hze</sup>/J to generate a strain in which all Pax7<sup>+</sup> MuSCs will be expressing the bright TdTomato reporter protein after tamoxifen treatment. We herein term this strain as Pax7<sup>gCre/gCre</sup> TdT<sup>Fl/Fl</sup>. Using this strain largely facilitates the FACS sorting of the isolated MuSCs. The information of B6.Cg-Pax7<sup>tm1(cre/ERT2)Gaka</sup>/J mouse strain and B6.Cg-Gt(ROSA)26Sor<sup>tm9(CAG-tdTomato)Hze</sup>/J mouse strain are listed in <a href="#key-resources-table">key resources table</a>. However, if the aforementioned mouse strains are not available, several cell surface markers can also be used in combination to obtain FACS-sorted MuSCs as discussed in <a href="#step-by-step-method-details">step-by-step method details</a> section.</p>
+<h3 id="sec1.4">Surgical preparation of mice for inducing muscle damage</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h depending on the number of mice</div>
+<p>Mouse experiments/surgical protocols were approved by Animal Care and Veterinary services (ACVS) ethics committee (University of Ottawa, Ottawa, ON Canada) for inducing muscle damage by injecting cardiotoxin into Tibialis Anterior (TA) and Gastrocnemius (Gastroc) muscles. Note that ethic protocols for mouse studies varies between countries, and the procedure should be confirmed with the appropriate authorities/animal care committee at your institution. This protocol is described using Pax7<sup>gCre/gCre</sup> TdT<sup>Fl/Fl</sup> male mice of &gt; 8 weeks of age. This age group was chosen to match complementary experiments, but the CUT&amp;Tag approach described here is expected to be suitable for MuSCs obtained from mice of all ages.</p>
+<ol start="10">
+<li>Verify the sterility of instruments and materials prior to using in the procedure.</li>
+<li>Before proceeding with the mice, ensure that all animals are in good condition and healthy enough to proceed.</li>
+</ol>
+<ol start="12">
+<li>Perform cardiotoxin injections as mentioned below:
+<ol type="a">
+<li>Make sure the isoflurane anesthetic station is in good condition. A functional isoflurane anesthetic station is driven by the oxygen flow from an oxygen tank. The oxygen flow from the tank first enters the oxygen flowmeter attached to the isoflurane vaporizer and then enters the isoflurane vaporizer itself to eventually pass the isoflurane into either an anesthetic chamber or to an anesthetic nose cone (or both to the chamber and nose cone at the same time). The oxygen flowmeter attached on the isoflurane vaporizer can be used to adjust the oxygen flow rate running through the whole system. The vaporizer on the other hand can control the percentage of isoflurane in the oxygen flow that is entering the anesthetic chamber or the nose cone (Normally this is set at 4–5% V/V of the oxygen flow when anesthetizing mice in the chamber but reduced to 2% V/V when keeping mice anesthetized with the nose cone).</li>
+<li>Weigh the mouse and record the wellness of the mice for future records.</li>
+<li>Turn on the oxygen tank and adjust the oxygen flowmeter to set the flow rate at 2 L/Min (at 14.7 PSIA (1.0 Bar) and 21°C).</li>
+<li>Place the mouse in the anesthetic chamber and make sure the connection between the chamber and isoflurane vaporizer is good. Shut off the connection between the vaporizer and the nose cone to avoid isoflurane overflowing into the air. Then set the vaporizer at 4% V/V (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Mouse anesthesia in the anesthetic chamber, which is connected to isoflurane vaporizer</div>
+<p>(A) The oxygen flowmeter has been set at 2 L/min for the whole system (Yellow arrow) and the vaporizer set at “4” (Red arrow) to supplement the oxygen flow to generate 4% vol/vol isoflurane in the final oxygen flow.</p>
+<p>(B) An anesthetized mouse in the chamber. The solid arrow indicates the oxygen/isoflurane input to anesthetize the mouse, and the hollow arrow indicates the exit of the excessive anesthetizing gas for disposal.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> When no mouse is in the nose cone assembly, the isoflurane can escape from the nose cone apparatus into the experimental room and present harm to the experimental personnel and even cause death at a high concentration in the air. Therefore, when anesthetizing the mice in the chamber, temporarily shut off the oxygen/isoflurane flow into the nose cone. This can be done by shutting the switch on the nose cone tube if there is one. If not, simply disconnect the nose cone tube from the vaporizer temporarily till the mouse is transferred to the nose cone for surgery and experiments.</div>
+</li>
+<li>Wait for the mouse to become unconscious in the chamber while still breathing on its own.</li>
+<li>Turn the knob of the the isoflurane vaporizer and decrease the isoflurane concentration to 2%V/V. Transfer the mice from the chamber to the nose cone (face down) (<a href="#fig4">Figure 4</a>). At this point, the connection between the nose cone and the vaporizer should be switched on.
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Picture of a mouse in the nose cone apparatus, which is also connected to the isoflurane vaporizer</div>
+<p>(A) The oxygen flowmeter continues to be maintained at 2 L/min (Yellow arrow) when the mouse is transferred to the nose cone, but the isoflurane concentration is reduced to 2% vol/vol (Red arrow).</p>
+<p>(B) A mouse is maintained under anesthesia using a nose cone apparatus, thus getting ready for downstream surgery and experiments.</p>
+</figcaption>
+</figure>
+</li>
+<li>While keeping the mouse in the facing down position, pull up the back skin and administer 0.5 or 1 mL 0.9% saline solution subcutaneously to the mouse (<a href="#fig5">Figure 5</a>A) using a 3-mL syringe equipped with 24 gauge needle.
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Preparation of mice for CTX treatment</div>
+<p>Representative images of (A) subcutaneous injection of PBS underneath back skin; (B) subcutaneous injection of Buprenorphine solution under back skin; and (C) the mouse ready for CTX injection after Nair© treatment.</p>
+</figcaption>
+</figure>
+</li>
+<li>Subcutaneously, administer the mouse with pre-procedure analgesic such as Buprenorphine (0.1 mg/kg in 0.9% saline solution) under the back skin of the mouse. 100 μL Buprenorphine solution should be injected per mouse using an insulin syringe. The injection point can be 1 cm away from the injecting site in the previous step (<a href="#fig5">Figure 5</a>B).</li>
+<li>Apply eye gel to the eyes to protect the eyes of the mouse.</li>
+<li>Turn the mouse on its back, remove the hair on the legs using hair trimmer and further by applying Nair© (hair removal reagent). Leave the mouse for 3–5 min with Nair© and then wipe the area clean (<a href="#fig5">Figure 5</a>C).
+<div class="note">
+<span class="note-title">Note:</span> Sufficient reaction time (3–5 min) for Nair© on the skin is crucial for removing the hair and making the TA muscle tendon visible through the skin. This will facilitate the localization of the needle injection site when treating Cardiotoxin saline solution (CTX) (See steps below). However, after Nair© treatment, excessive cream should be carefully wiped off to minimize skin agitation and reduce discomfort for the mouse.</div>
+</li>
+<li>Make sure the mouse has reached surgical plane (mild press/pinch on the foot should not cause involuntary foot retraction of the mouse).</li>
+<li>To damage the TA muscle, load an insulin syringe with 50 μL Cardiotoxin saline solution (CTX), and then hold the mouse foot with one hand and use the other hand to push the needle into the junction between the TA muscle tendon and the TA muscle (<a href="#fig6">Figures 6</a>A and 6B). The tendon of TA muscle is the one close to the tibia bone and should be fairly visible after trimming and Nair© hair remover (<a href="#fig6">Figure 6</a>B). Push roughly 1/2 to 2/3 of the needle into the TA muscle towards the knee, keeping the needle parallel with the tibia bone. Then push the plunger of the syringe to inject CTX into the TA muscle. After injection, an overt retracting of the foot towards TA muscle will be observed due the hyper contraction of TA muscle (<a href="#fig6">Figure 6</a>C). This indicates a successful damage of TA muscle.
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. CTX injection into TA and Gastroc muscles</div>
+<p>(A) Exposed mouse leg prior to CTX injection. It should be in a relaxed condition due to anesthesia.</p>
+<p>(B) Magnification of the tendon area adjacent to the TA muscle, and the arrow indicates the angle on which to insert the needle into the TA muscle.</p>
+<p>(C) After a successful injection of CTX into the TA muscle, a retraction of the foot towards the TA muscle is observed.</p>
+<p>(D) Magnification of the tendon area adjacent to the gastroc muscle where the needle is inserted to inject CTX into the left side of the gastroc muscle.</p>
+<p>(E) After a successful CTX injection into the gastroc muscle, a significant jerking movement of the foot towards the gastroc muscle will be observed and this results in the foot roughly returning to the position as in (A).</p>
+</figcaption>
+</figure>
+</li>
+<li>To damage the gastroc muscle, load an insulin syringe with 60 μL of CTX, hold the foot and lift the leg to show the gastroc muscle tendon which is quite visible after hair removal (<a href="#fig6">Figure 6</a>D). The location where the needle goes in should be on the gastrocnemius muscle but very close to the tendon junction (<a href="#fig6">Figure 6</a>D). Let 1/2 of the needle length travel into the left half of the gastroc muscle. Push the plunger to inject 30 μL of CTX and withdraw the needle from the muscle. Then push the needle back in at ∼2 mm right to the original injecting point. This is to let the needle travel into the right half of the gastroc muscle. Then inject the other 30 μL of CTX. A successful damage of the gastroc muscle is evidenced by a jerking movement of the foot away from the TA muscle (<a href="#fig6">Figure 6</a>E).</li>
+<li>After cardiotoxin injections, move the mouse from surgery nose cone to a recovery chamber at 37°C. Wait until mouse is ambulatory to return to a sterile recovery cage.</li>
+<li>For harvesting MuSCs in activated state, start the isolation 2 h prior to the time point of interest (e.g., Studying 30 h post activation, sacrifice the mice 28 h post injury) using the approach described in <a href="#step-by-step-method-details">step-by-step method details</a>.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Antibodies</td>
+</tr>
+<tr>
+<td>Anti-trimethyl-Histone H3(Lys4) rabbit polyclonal [Dilution - 1: 100]</td>
+<td>EMD Millipore</td>
+<td>07–473 (Lot: 3394198); RRID: AB_1977252</td>
+</tr>
+<tr>
+<td>Anti-trimethyl-Histone H3 (Lys27) C36B11 rabbit monoclonal [Dilution - 1: 100]</td>
+<td>Cell Signaling Technology</td>
+<td>9733S; RRID: AB_2616029</td>
+</tr>
+<tr>
+<td>Anti-NELF-E Rabbit Polyclonal [Dilution - 1: 100]</td>
+<td>ProteinTech</td>
+<td>10705-1-AP; RRID:AB_513966</td>
+</tr>
+<tr>
+<td>Guinea Pig Anti-rabbit IgG (Heavy &amp; Light Chain Antibody) [Dilution - 1: 100]</td>
+<td>Antibodies-online</td>
+<td>ABIN101961;RRID: AB_10775589</td>
+</tr>
+<tr>
+<td>Rabbit Anti-Mouse IgG [Dilution - 1: 100]</td>
+<td>Abcam</td>
+<td>Ab46540;RRID: AB_2614925</td>
+</tr>
+<tr>
+<td>Anti-Alpha 7 Integrin 647 (clone R2F2) [Dilution - 1: 300]</td>
+<td>ABLab</td>
+<td>67-0010-05;RRID: AB_2890939</td>
+</tr>
+<tr>
+<td>Biotin Rat Anti-Mouse CD45 Clone 30-F11 (RUO) [Dilution - 1: 100]</td>
+<td>BD Pharmingen</td>
+<td>553077</td>
+</tr>
+<tr>
+<td>Biotin Rat Anti-Mouse CD31 Clone MEC 13.3 (RUO) [Dilution - 1: 100]</td>
+<td>BD Pharmingen</td>
+<td>553371; RRID: AB_394817</td>
+</tr>
+<tr>
+<td>Ly-6A/E (Sca-1) Monoclonal Antibody (D7), Biotin eBioscience<sup>TM</sup> [Dilution - 1: 100]</td>
+<td>Thermo Fisher Scientific</td>
+<td>13–5981-81;RRID: AB_466833</td>
+</tr>
+<tr>
+<td>PE Streptavidin [Dilution - 1: 100]</td>
+<td>BD Pharmingen</td>
+<td>554061</td>
+</tr>
+<tr>
+<td>PE/Cyanine7 anti-mouse CD106 Antibody [Dilution - 1: 100]</td>
+<td>BioLegend</td>
+<td>105720;RRID: AB_2214046</td>
+</tr>
+<tr>
+<td colspan="3">Bacterial and virus strains</td>
+</tr>
+<tr>
+<td>T7 Express lysY/Iq Competent E. coli</td>
+<td>NEB</td>
+<td>C3013I</td>
+</tr>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>Isoflurane USP</td>
+<td>Fresenius Kabi Canada</td>
+<td>Product code:CP0406V2</td>
+</tr>
+<tr>
+<td>Bupenorphine (Controlled Substance – needs permit)</td>
+<td>Comparative Medicine and Animal Resource Center - McGill University</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Collagenase from Clostridium histolyticum, Type I</td>
+<td>Sigma-Aldrich</td>
+<td>C0130-1G</td>
+</tr>
+<tr>
+<td>Dispase II (Neutral Protease, grade II)</td>
+<td>Roche</td>
+<td>04942078001</td>
+</tr>
+<tr>
+<td>SYTOX Green</td>
+<td>Life Technologies</td>
+<td>S7020</td>
+</tr>
+<tr>
+<td>7-AAD (7-Aminoactinomycin D)</td>
+<td>Stem Cell Technologies</td>
+<td>75001</td>
+</tr>
+<tr>
+<td>Hams F10</td>
+<td>Wisent Biocenter</td>
+<td>318-050-CL</td>
+</tr>
+<tr>
+<td>Bovine Growth Serum/Bovine Calf Serum (BGS)</td>
+<td>HyClone Fisher Scientific</td>
+<td>SH3054103</td>
+</tr>
+<tr>
+<td>D-PBS</td>
+<td>Life technologies</td>
+<td>21600010</td>
+</tr>
+<tr>
+<td>Cardiotoxin</td>
+<td>Latoxan</td>
+<td>L8102-1MG</td>
+</tr>
+<tr>
+<td>0.9% Saline solution (0.9% Bacteriostatic Sodium Chloride Injection USP)</td>
+<td>Pfizer</td>
+<td>NDC 0409-1966-12</td>
+</tr>
+<tr>
+<td>HEPES potassium salt</td>
+<td>Sigma-Aldrich</td>
+<td>H0527-250G</td>
+</tr>
+<tr>
+<td>Sodium chloride</td>
+<td>Sigma-Aldrich</td>
+<td>S9625-1KG</td>
+</tr>
+<tr>
+<td>Potassium chloride</td>
+<td>Sigma-Aldrich</td>
+<td>P9541-1KG</td>
+</tr>
+<tr>
+<td>Calcium chloride</td>
+<td>Sigma-Aldrich</td>
+<td>C3306-500G</td>
+</tr>
+<tr>
+<td>Magnesium chloride</td>
+<td>Sigma-Aldrich</td>
+<td>M2670-500G</td>
+</tr>
+<tr>
+<td>Manganese Chloride</td>
+<td>BioShop</td>
+<td>MAN 222</td>
+</tr>
+<tr>
+<td>Bovine Serum Albumin</td>
+<td>Sigma-Aldrich</td>
+<td>A9647</td>
+</tr>
+<tr>
+<td>Digitonin</td>
+<td>EMD- Millipore</td>
+<td>300410-1GM</td>
+</tr>
+<tr>
+<td>Red Blood Cell Lysis Buffer Hybri-Max</td>
+<td>Sigma-Aldrich</td>
+<td>R7757-100ML</td>
+</tr>
+<tr>
+<td>Roche Complete Protease Inhibitor EDTA-Free tablets</td>
+<td>Sigma-Aldrich</td>
+<td>5056489001</td>
+</tr>
+<tr>
+<td>Spermidine</td>
+<td>Sigma-Aldrich</td>
+<td>S2626</td>
+</tr>
+<tr>
+<td>BioMag®Plus Concanavalin A (3 or 10mL)</td>
+<td>Bangs Laboratories</td>
+<td>BP531</td>
+</tr>
+<tr>
+<td>Ethylenediaminetetraacetic Acid Disodium Salt Dihydrate</td>
+<td>Fisher Chemicals</td>
+<td>S311-500</td>
+</tr>
+<tr>
+<td>Dimethyl Sulfoxide</td>
+<td>Sigma-Aldrich</td>
+<td>D8418-100ML</td>
+</tr>
+<tr>
+<td>Triton-X-100</td>
+<td>Sigma-Aldrich</td>
+<td>T8787-250ML</td>
+</tr>
+<tr>
+<td>Glycerol</td>
+<td>Fisher Chemicals</td>
+<td>G33-1</td>
+</tr>
+<tr>
+<td>Sodium dodecyl sulfate</td>
+<td>Bio-Rad</td>
+<td>1610302</td>
+</tr>
+<tr>
+<td>Proteinase K</td>
+<td>BioShop</td>
+<td>PRK403.100</td>
+</tr>
+<tr>
+<td>Phenol-chloroform-isoamyl alcohol</td>
+<td>Fisher Scientific</td>
+<td>BP1752I-400</td>
+</tr>
+<tr>
+<td>Chloroform</td>
+<td>Sigma-Aldrich</td>
+<td>319988</td>
+</tr>
+<tr>
+<td>Ethanol</td>
+<td>Greenfield Specialty Alcohol INC</td>
+<td>P016EAAN</td>
+</tr>
+<tr>
+<td>Glycogen</td>
+<td>Santa Cruz Biotechnology</td>
+<td>SC-203976</td>
+</tr>
+<tr>
+<td>RNase A</td>
+<td>Sigma-Aldrich</td>
+<td>R4642</td>
+</tr>
+<tr>
+<td>Trizma Base</td>
+<td>Sigma-Aldrich</td>
+<td>T6066-1KG</td>
+</tr>
+<tr>
+<td>Kapa Pure Beads</td>
+<td>Roche</td>
+<td>7983271001</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>PowerUp™ SYBR™ Green Master Mix</td>
+<td>Thermo Fisher Scientific</td>
+<td>A25742</td>
+</tr>
+<tr>
+<td>NEBNext High-Fidelity 2× PCR Master Mix</td>
+<td>NEB</td>
+<td>M0541L</td>
+</tr>
+<tr>
+<td>QIAquick Gel Extraction Kit</td>
+<td>QIAGEN</td>
+<td>28704</td>
+</tr>
+<tr>
+<td>QIAquick PCR Purification Kit</td>
+<td>QIAGEN</td>
+<td>28104</td>
+</tr>
+<tr>
+<td>MaXtract High Density</td>
+<td>QIAGEN</td>
+<td>129046</td>
+</tr>
+<tr>
+<td>Qubit™ 1× dsDNA HS Assay Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Q33230</td>
+</tr>
+<tr>
+<td>NEBNext® Library Quant Kit for Illumina®</td>
+<td>NEB</td>
+<td>E7630L</td>
+</tr>
+<tr>
+<td>Bioanalyzer High Sensitivity DNA Analysis</td>
+<td>Agilent</td>
+<td>Part number:5067-4627</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>Mouse strain: Pax7<sup>gCre/gCre</sup> TdT<sup>Fl/Fl</sup>:</td>
+<td>Bred for this paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Mouse strain: B6.Cg-Pax7<sup>tm1(cre/ERT2)Gaka</sup>/J</td>
+<td>The Jackson Laboratory</td>
+<td>JAX 017763</td>
+</tr>
+<tr>
+<td>Mouse strain: B6.Cg-Gt(ROSA)26Sor<sup>tm9(CAG-tdTomato)Hze</sup>/J</td>
+<td>The Jackson Laboratory</td>
+<td>JAX 007909</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>Mosaic end_Adapter A (ME-A):TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</td>
+<td>IDT</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td>Mosaic end_Adapter B (ME-B):GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG</td>
+<td>IDT</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td>Mosaic end_reverse (ME-Reverse): [PHO]CTGTCTCTTATACACATCT</td>
+<td>IDT</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td>Tn5 ME-A Amp Forward:TCG TCG GCA GCG TCA GAT GTG TAT AAG AGA CAG GATACGGGAGGGCTTACCAT</td>
+<td>IDT</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td>Tn5 ME-B Amp Reverse:GTC TCG TGG GCT CGG AGA TGT GTA TAA GAG ACA G GGATGGAGGCGGATAAAGTT</td>
+<td>IDT</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>Spike-in<sup>AmpR</sup>
+</td>
+<td>This Paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>FastQC v0.11.9</td>
+<td>(<a href="#bib2">Babraham Bioinformatics, 2019</a>)</td>
+<td><a href="https://www.bioinformatics.babraham.ac.uk/projects/download.html">https://www.bioinformatics.babraham.ac.uk/projects/download.html</a></td>
+</tr>
+<tr>
+<td>MultiQC</td>
+<td>(<a href="#bib7">Ewels et al., 2016</a>)</td>
+<td><a href="https://multiqc.info/">https://multiqc.info/</a></td>
+</tr>
+<tr>
+<td>Cutadapt</td>
+<td>(<a href="#bib16">Martin, 2011</a>)</td>
+<td><a href="https://cutadapt.readthedocs.io/en/stable/">https://cutadapt.readthedocs.io/en/stable/</a></td>
+</tr>
+<tr>
+<td>Bowtie2</td>
+<td>(<a href="#bib13">Langmead and Salzberg, 2012</a>)</td>
+<td><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a></td>
+</tr>
+<tr>
+<td>Samtools</td>
+<td>(<a href="#bib14">Li et al., 2009</a>)</td>
+<td><a href="http://samtools.sourceforge.net/">http://samtools.sourceforge.net/</a></td>
+</tr>
+<tr>
+<td>Picard Tools</td>
+<td>(<a href="#bib27">Broad Institute, 2012</a>)</td>
+<td><a href="https://broadinstitute.github.io/picard/">https://broadinstitute.github.io/picard/</a></td>
+</tr>
+<tr>
+<td>DeepTools</td>
+<td>(<a href="#bib23">Ramirez et al., 2016</a>)</td>
+<td><a href="https://deeptools.readthedocs.io/en/develop/">https://deeptools.readthedocs.io/en/develop/</a></td>
+</tr>
+<tr>
+<td>SEACR</td>
+<td>(<a href="#bib17">Meers et al., 2019</a>)</td>
+<td><a href="https://seacr.fredhutch.org/">https://seacr.fredhutch.org/</a></td>
+</tr>
+<tr>
+<td>BEDtools</td>
+<td>(<a href="#bib22">Quinlan and Hall, 2010</a>)</td>
+<td><a href="https://bedtools.readthedocs.io/en/latest/">https://bedtools.readthedocs.io/en/latest/</a></td>
+</tr>
+<tr>
+<td>BedToBigBed</td>
+<td>(<a href="#bib12">Kent et al., 2002</a>)</td>
+<td><a href="https://www.encodeproject.org/software/bedToBigBed/">https://www.encodeproject.org/software/bedToBigBed/</a></td>
+</tr>
+<tr>
+<td>ChIPSeeker</td>
+<td>(<a href="#bib26">Yu et al., 2015</a>)</td>
+<td><a href="https://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">https://bioconductor.org/packages/release/bioc/html/ChIPseeker.html</a></td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>3/10 cc Insulin Syring U-100 29G1/2"</td>
+<td>BD/Fisher Scientific</td>
+<td>309301</td>
+</tr>
+<tr>
+<td>3 mL Syringes</td>
+<td>BD/Fisher Scientific</td>
+<td>B309657</td>
+</tr>
+<tr>
+<td>Nair 3-in-1 hair removal lotion</td>
+<td>Walmart</td>
+<td>Item number:4636345</td>
+</tr>
+<tr>
+<td>Dissection tools</td>
+<td>Fisher Scientific</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Thermo Steri-cycle CO<sub>2</sub> Incubator</td>
+<td>Thermo Electron Corporation</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tissue Culture Dish 60</td>
+<td>SARSTEDT AG &amp; Co.KG</td>
+<td>83.3901</td>
+</tr>
+<tr>
+<td>15 mL Conical Tubes</td>
+<td>FroggaBio</td>
+<td>TB15-500</td>
+</tr>
+<tr>
+<td>50 mL Conical Tubes</td>
+<td>FroggaBio</td>
+<td>TB50-25</td>
+</tr>
+<tr>
+<td>Large volume centrifuge tube, 500 mL, Polypropylene</td>
+<td>Corning</td>
+<td>CLS431123-36EA</td>
+</tr>
+<tr>
+<td>Nikon Eclipse TS100 Microscope</td>
+<td>Nikon</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>NanoDrop<sup>TM</sup> One Microvolume UV-Vis Spectrophotometer</td>
+<td>Thermo Fisher Scientific</td>
+<td>ND-ONE-W</td>
+</tr>
+<tr>
+<td>Fisherbrand™ Hand Tally Counter</td>
+<td>Fisher scientific</td>
+<td>079056</td>
+</tr>
+<tr>
+<td>Hausser Scientific Bright-Line™ Phase Hemacytometer</td>
+<td>Fisher scientific</td>
+<td>026716</td>
+</tr>
+<tr>
+<td>PYREX® Round Media Storage Bottles, with Screw Cap</td>
+<td>Corning</td>
+<td>1395-100; 1395-250; 1395-500</td>
+</tr>
+<tr>
+<td>BD 50 mL Syringe</td>
+<td>BD Biosciences</td>
+<td>309653</td>
+</tr>
+<tr>
+<td>Filtropur S 0.2 μM Syringe Filters</td>
+<td>SARSTEDT AG &amp; Co.KG</td>
+<td>83.1826.001</td>
+</tr>
+<tr>
+<td>5-mL Polypropylene Round Bottom Tube</td>
+<td>Falcon</td>
+<td>352063</td>
+</tr>
+<tr>
+<td>Cell Strainer 40 μm</td>
+<td>Fisher Scientific</td>
+<td>22363547</td>
+</tr>
+<tr>
+<td>CellTrics 50 μm</td>
+<td>Sysmex Canada Inc</td>
+<td>04-004-2327</td>
+</tr>
+<tr>
+<td>1.5 mL Microcentrifuge tubes</td>
+<td>Axygen</td>
+<td>MCT-175-CT</td>
+</tr>
+<tr>
+<td>50 mL, Polypropylene Bottle with Screw-On Cap, 29 X 104mm</td>
+<td>Beckman Coulter</td>
+<td>357003</td>
+</tr>
+<tr>
+<td>Amicon Ultra-4 Centrifugal Filter Unit</td>
+<td>Millipore</td>
+<td>UFC803024</td>
+</tr>
+<tr>
+<td>Thermo Scientific<sup>TM</sup> Slide-A-Lyzer<sup>TM</sup> Dialysis Cassettes, 10 K MWCO, 3 mL</td>
+<td>Fisher Scientific</td>
+<td>66380</td>
+</tr>
+<tr>
+<td>Nutator Mixer</td>
+<td>VWR</td>
+<td>82007-202</td>
+</tr>
+<tr>
+<td>Benchtop Orbital Shaker (w Temperature Chamber)</td>
+<td>ThermoFisher</td>
+<td>SHKE4000</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipments">Materials and equipments</h2>
+<table id="undtbl4">
+<caption>HEGX Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES-KOH pH 7.2 (1 M)</td>
+<td>20 mM</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>800 mM</td>
+<td>80 mL</td>
+</tr>
+<tr>
+<td>Glycerol (100%)</td>
+<td>10%</td>
+<td>50 mL</td>
+</tr>
+<tr>
+<td>Triton X-100 (100%)</td>
+<td>0.2%</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>EDTA pH 7.2 (0.5M)</td>
+<td>1 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>358 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>500 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter-sterilize and store at 4°C for up to 1 month. Add 1 Roche Complete EDTA-free protease inhibitor tablet per 50 mL before use.</p>
+<table id="undtbl5">
+<caption>Chitin Elution Buffer (HEGX Buffer + DTT)</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEGX Buffer</td>
+<td>n/a</td>
+<td>13.5 mL</td>
+</tr>
+<tr>
+<td>DTT (1 M)<sup><a href="#dtbl6fnlowast">∗</a></sup>
+</td>
+<td>100 mM</td>
+<td>1.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>15 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare fresh, and keep on ice once DTT is added.</p>
+<p id="dtbl6fnlowast" class="table-footnote"><sup>∗</sup>Add DTT immediately before pA-Tn5 elution step.</p>
+<table id="undtbl6">
+<caption>pA-Tn5 Dialysis Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES-KOH pH 7.2 (1 M)</td>
+<td>100 mM</td>
+<td>160 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>200 mM</td>
+<td>64 mL</td>
+</tr>
+<tr>
+<td>Glycerol (100%)</td>
+<td>20%</td>
+<td>320 mL</td>
+</tr>
+<tr>
+<td>Triton X-100 (100%)</td>
+<td>0.2%</td>
+<td>3.2 mL</td>
+</tr>
+<tr>
+<td>EDTA pH 7.2 (0.5 M)</td>
+<td>0.2 mM</td>
+<td>640 μL</td>
+</tr>
+<tr>
+<td>DTT (1 M)</td>
+<td>2mM</td>
+<td>3.2mL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>1048.96 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>1600 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Filter sterilize, store at 4°C (should be made fresh prior to dialysis and pre-chilled).</p>
+<table id="undtbl7">
+<caption>Annealing Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris pH 8.0 (1 M)</td>
+<td>10 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>50 mM</td>
+<td>1 mL</td>
+</tr>
+<tr>
+<td>EDTA pH 8.0 (0.5 M)</td>
+<td>1 mM</td>
+<td>0.2 mL</td>
+</tr>
+<tr>
+<td>Nuclease-free dH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>97.8 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>100 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Prepare fresh.</p>
+<table id="undtbl8">
+<caption>Cardiotoxin Saline Solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cardiotoxin powder</td>
+<td>10 μM</td>
+<td>1 mg</td>
+</tr>
+<tr>
+<td>0.9% Saline solution</td>
+<td>n/a</td>
+<td>14.64 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>14.64 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make 500 μL aliquots in microcentrifuge tubes, and store at −20°C until use.<br> Freeze-thaw cycles should be minimized to protect the stability and efficacy.</p>
+<table id="undtbl9">
+<caption>Dispase II 20× stock Solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES pH 7.4 (500 mM)</td>
+<td>50 mM</td>
+<td>2.25 mL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>150 mM</td>
+<td>675 μL</td>
+</tr>
+<tr>
+<td>Dispase® II (neutral protease, gradeII)</td>
+<td>40 U/mL</td>
+<td>900 U (1 g)</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>Make up the volume to 22.5 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>22.5 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Make 500 μL aliquots in microcentrifuge tubes, and store at −20°C until use</p>
+<table id="undtbl10">
+<caption>Collagenase I/Dispase II solution</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collagenase I</td>
+<td>1 mg/mL</td>
+<td>10 mg</td>
+</tr>
+<tr>
+<td>Dispase II 20× stock (40 U/mL) aliquot</td>
+<td>2 U/mL</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td>n/a</td>
+<td>10 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Always prepare fresh.</p>
+<table id="undtbl11">
+<caption>FACS buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BGS</td>
+<td>10%</td>
+<td>20mL</td>
+</tr>
+<tr>
+<td>EDTA (0.5 M)</td>
+<td>3.4mM</td>
+<td>1360 μL</td>
+</tr>
+<tr>
+<td>PBS</td>
+<td>n/a</td>
+<td>180 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>200 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Always prepare fresh, filter to sterilize.</p>
+<table id="undtbl12">
+<caption>5% Digitonin</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digitonin</td>
+<td>50 μg/μL</td>
+<td>25 mg</td>
+</tr>
+<tr>
+<td>DMSO</td>
+<td>n/a</td>
+<td>500 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td>500 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Stable at room temperature for 1 week or freeze at −20°C.</p>
+<table id="undtbl13">
+<caption>Binding Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES pH 7.5 (1 M)</td>
+<td>20 mM</td>
+<td>200 μL</td>
+</tr>
+<tr>
+<td>KCl (1 M)</td>
+<td>10 mM</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>CaCl<sub>2</sub> (1 M)</td>
+<td>1 mM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>MnCl<sub>2</sub> (1 M)</td>
+<td>1 mM</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>BSA (30%) <sup><a href="#dtbl14fnlowast">∗</a></sup>
+</td>
+<td>0.1%</td>
+<td>33.33 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>9.65 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>10 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Can be stored at 4°C for 1 weeks.</p>
+<p id="dtbl14fnlowast" class="table-footnote"><sup>∗</sup>Recommended: Adding BSA here as well as in Wash Buffer and Digitonin-300 Wash Buffer reduces beads sticking to tube walls without reduction in binding to cells/nuclei.</p>
+<table id="undtbl14">
+<caption>Wash Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES pH 7.5 (1 M)</td>
+<td>20 mM</td>
+<td>1000 μL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>150 mM</td>
+<td>1500 μL</td>
+</tr>
+<tr>
+<td>Spermidine (2 M)</td>
+<td>0.83 mM</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>BSA (30%)</td>
+<td>0.1%</td>
+<td>166.7 μL</td>
+</tr>
+<tr>
+<td>Roche Complete Protease Inhibitor EDTA-Free tablets</td>
+<td>n/a</td>
+<td>1 tablet</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>47.5mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Can be stored at 4°C for 1 weeks.</p>
+<table id="undtbl15">
+<caption>Digitonin Wash Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digitonin (5%)</td>
+<td>0.5 μg/mL</td>
+<td>400 μL</td>
+</tr>
+<tr>
+<td>Wash Buffer</td>
+<td>n/a</td>
+<td>39.6 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>40 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Can be stored at 4°C for 1 weeks.</p>
+<table id="undtbl16">
+<caption>Antibody Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EDTA (0.5 M)</td>
+<td>2 mM</td>
+<td>24 μL</td>
+</tr>
+<tr>
+<td>Digitonin wash Buffer</td>
+<td>n/a</td>
+<td>5976 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>6 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Always prepare fresh, and keep it on ice.</p>
+<table id="undtbl17">
+<caption>Digitonin-300 Wash Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEPES pH 7.5 (1 M)</td>
+<td>20 mM</td>
+<td>1000 μL</td>
+</tr>
+<tr>
+<td>NaCl (5 M)</td>
+<td>300 mM</td>
+<td>3000 μL</td>
+</tr>
+<tr>
+<td>Spermidine (2 M)</td>
+<td>0.83 mM</td>
+<td>12.5 μL</td>
+</tr>
+<tr>
+<td>Digitonin (5%)</td>
+<td>0.1 μg/mL</td>
+<td>100 μL</td>
+</tr>
+<tr>
+<td>BSA (30%)</td>
+<td>0.1%</td>
+<td>166.7 μL</td>
+</tr>
+<tr>
+<td>Roche Complete Protease Inhibitor EDTA-Free tablets</td>
+<td>n/a</td>
+<td>1 tablet</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>46 mL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>Close to 50 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Can be stored at 4°C for 1 weeks.</p>
+<table id="undtbl18">
+<caption>Tagmentation Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MgCl<sub>2</sub> (1 M)</td>
+<td>10 mM</td>
+<td>150 μL</td>
+</tr>
+<tr>
+<td>Digitonin-300 Wash buffer</td>
+<td>n/a</td>
+<td>14.8 mL</td>
+</tr>
+<tr>
+<td>Spike-in<sup>AmpR</sup><sup><a href="#dtbl19fnlowast">∗</a></sup> (56.97 amol/L stock solution)</td>
+<td>0.1899 amol/L</td>
+<td>50 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>15 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Always prepare fresh.</p>
+<p id="dtbl19fnlowast" class="table-footnote"><sup>∗</sup>Spike-in<sup>AmpR</sup> used here is at a very low concentration (56.97 amol/L), this concentration can be achieved by sequential dilutions of the original purified PCR product Spike-in<sup>AmpR</sup>. The addition of the Spike-in<sup>AmpR</sup> is optional, and can be replaced by H<sub>2</sub>0.</p>
+<table id="undtbl19">
+<caption>CUT&amp;Tag DNA resuspension Buffer</caption>
+<thead>
+<tr>
+<th>Reagent</th>
+<th>Final concentration</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tris-HCl pH=8.0 (1 M)</td>
+<td>10 mM</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>EDTA (500 mM)</td>
+<td>0.1 mM</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>RNAse A<sup><a href="#dtbl20fnlowast">∗</a></sup>
+</td>
+<td>1/1200 in volume</td>
+<td>1.7 μL</td>
+</tr>
+<tr>
+<td>Nuclease-free dH<sub>2</sub>O</td>
+<td>n/a</td>
+<td>1976.3 μL</td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+<td><b>n/a</b></td>
+<td><b>2 mL</b></td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">Always prepare fresh.</p>
+<p id="dtbl20fnlowast" class="table-footnote"><sup>∗</sup>RNAse A purchased from Sigma-Aldrich (R4642) is at a concentration of 20–40 mg/mL in solution form (50% glycerol, 10 mM Tris-HCL pH 8.0). And this is the recommended form of RNase A by us.</p>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec3.1">Muscle dissection and digestion to obtain muscle tissue-derived cell mixture</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 3–4 h</div>
+<p>The first 21 steps describe the isolation of murine MuSCs from injured hind-limb muscles. If you plan to utilize an alternate purified stem cell population, proceed to steps 22. We have applied the CUT&amp;Tag technique to human CD34<sup>+</sup> hematopoietic stem and progenitor cells (HSPCs) isolated from cord blood using a purification protocol that we have previously detailed (<a href="#bib20">Palii et al., 2011</a>). For murine MuSCs, please proceed from step 1.</p>
+<ol>
+<li>Euthanize the mice using CO<sub>2</sub> chamber, and sterilize the mice with 70% ethanol.</li>
+<li>Isolate the CTX-injured TA and gastroc muscles. The two TA muscles and two gastroc muscles from one mouse can be pooled as one muscle sample from a mouse. You can then proceed to work in a BSL-2 (Biosafety level 2) tissue culture hood for MuSC isolation to maintain sterility.</li>
+<li>Put the muscles from one mouse in a 10 cm dish and add 15 mL PBS pre-warmed to 37°C. Rinse the muscles in the dish. Transfer the muscles to a new 10 cm dish containing at least 15 mL of PBS pre-warmed to 37°C. Rinse the muscles again in the dish.</li>
+<li>Transfer the muscles into a new 6 cm dish with PBS (<a href="#fig7">Figure 7</a>A). Aspirate PBS. Mince the muscle sample into ∼1 mm<sup>3</sup> pieces using dissection scissors (<a href="#fig7">Figure 7</a>B).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Isolation and digestion of damaged TA and Gastroc muscle</div>
+<p>(A) Freshly isolated TA and gastroc muscles; (B) minced muscle tissue; (C) tissue prior to Collagenase/Dispase treatment; (D) tissue after Collagenase/Dispase treatment; and (E) dissociated muscle tissue.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The following steps are an example of pooling the muscles from one mouse into a single sample.</div>
+<ol start="5">
+<li>Add Collagenase I/Dispase II solution to the 6 cm dish containing the minced muscle. The muscle sample obtained from one mouse requires at least 4 mL Collagenase I/Dispase II solution for thorough digestion (<a href="#fig7">Figure 7</a>C) (If pooling the samples from 2 or 3 mice, the mincing and digestion of the muscle samples can be performed in a 10 cm dish, and the amount of Collagenase I/Dispase II solution needs to be scaled up to 8 mL or 12 mL, respectively).</li>
+<li>Incubate the 6 cm dish containing minced muscle pieces in Collagenase I/Dispase II solution in the cell culture incubator at 37°C for 1 h. During the digestion period, shake the dish every 15 min to ensure the Collagenase I/Dispase II solution fully contacts the muscle pieces and facilitates thorough digestion.</li>
+<li>While waiting for the muscle digestion, coat the pipets, 50 mL conical tubes, and strainers (both 100 μm and 40 μm strainers) with Bovine Growth Serum/Calf Serum (BGS).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> All the pipets, conical tubes, and strainers that will directly contact the digested sample MUST be coated with BGS. Pipets can be coated by aspirating the BGS up to the full capacity of the pipets and then flushing out. Repeat this coating process two more times. For coating conical tubes, adding 5 mL BGS into a 50 mL conical tubes, rock and invert the tubes to ensure the BGS has contacted the entire inner surface of the tube. To coat the strainers, place a strainer onto a 50 mL conical tube and flush BGS onto the strainer to ensure the BGS has contacted the entire surface of the strainer. Skipping the coating of any surfaces that comes in direct contact with the digested samples will significantly reduce the final MuSC yield.</div>
+<ol start="8">
+<li>After 1 h of digestion (see <a href="#fig7">Figure 7</a>D), use the BGS-coated pipets to triturate the muscle pieces by pipetting up and down several times til a homogeneous mixture is generated in the dish. No visible clumps of muscle are observed at this point (<a href="#fig7">Figure 7</a>E). Put the dish back into the incubator for 5–10 min.</li>
+<li>Add 5 mL BGS into the digested sample and mix by pipetting. Adding of BGS will dilute the collagenase I and stop tissue digestion.</li>
+<li>Use a 100 μm strainer to strain the digested muscle sample into a 50 mL conical tube.</li>
+<li>Rinse the 6 cm dish where the digestion took place with PBS (heated to 37°C) to collect the residual cells in the dish and run the PBS through the strainer. Repeat this rinsing step one or two times more to ensure all cells in the digestion dish have been collected and run through the strainer into the 50 mL conical tube.</li>
+<li>Using a 40 μm strainer, filter the 100 μm-strained sample into a new 50 mL conical tube.</li>
+<li>Centrifuge the 40 μm-strained sample in 50 mL conical tube at 300 × <i>g</i> for 10 min at room temperature.</li>
+<li>The pellet will be red due to the presence of red blood cells (<a href="#fig8">Figure 8</a>A). Carefully aspirate the supernatant and add 500 μL of red blood cell lysis buffer onto the pellet within the 50 mL conical tube. Pipet up and down to resuspend the pellet. Wait for 1 min and add 10 mL FACS buffer into the 50 mL conical tube. Rock to mix and centrifuge at 300×<i>g</i> for 7 min at room temperature. The red color of the pellet should be significantly lighter due to the lysis of most red blood cells (<a href="#fig8">Figure 8</a>B).
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Removal of red blood cells by applying red blood cell lysis buffer</div>
+<p>(A) Cell pellet before red cell lysis.</p>
+<p>(B) Cell pellet after red cell lysis.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We notice that lysing the red blood cells as described in step 14 is not able to completely remove the red color of the pellet, indicating there are residual red blood cells within the pellet. However, since the majority of the red blood cells are lysed, repeating step 14 for the purpose of thoroughly removing red blood cells is NOT recommended. We found that the residual red blood cells do not interfere with FACS sorting of MuSCs. Also, repeating step 14 may unnecessarily stress the cells.</div>
+<ol start="15">
+<li>Carefully remove the supernatant, resuspend the pellet in 1 mL of FACS buffer and transfer the sample to a microcentrifuge tube. This 1 mL of FACS buffer contains the muscle tissue-derived cell mixture, which contains multiple cell types including MuSCs. If the mouse strain used has a Pax7-driven fluorescent reporter (e.g., Pax7<sup>gCre/gCre</sup> TdT<sup>Fl/Fl</sup> strain of this study), then TdTomato fluorescent reporter such as tdTomato can be used to indicate and sort MuSCs by FACS. (However, If the mouse strain does not have a fluorescent reporter which is specifically expressed in the Pax7<sup>+</sup> cells, then the muscle tissue derived cell mixture needs to be stained with a combination of cell surface marker antibodies for FACS sorting MuSCs. For this purpose, skip to step 18 and continue.).</li>
+</ol>
+<h3 id="sec3.2">FACS of muscle tissue-derived cells to isolate MuSCs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2–3 h</div>
+<ol start="16">
+<li>Filter the 1 mL muscle tissue-derived cell mixture into a 5-mL Polypropylene round bottom FACS tube using CellTrics 50 μm filters. Bring up the sample volume to 4 mL by passing 1 mL of FACS buffer through the CellTrics filter. Now add 2 mL of FACS buffer to the tube. Note that myoblasts that don’t express TdTomato should be prepared in parallel to use as a control for gating TdTomato<sup>-</sup> and TdTomato<sup>+</sup> populations.</li>
+<li>Place the sample on ice and add SYTOX™ Green nucleic acid stain (final concentration in the sample: 10 nM) into the sample to stain dead cells. Now this muscle-derived cell mixture sample is ready for FACS. Sorted MuSCs are collected in a microcentrifuge tube containing 300–400 μL FACS buffer without EDTA. In this case, the Sytox Green<sup>-</sup>/TdTomato<sup>+</sup> cells are sorted and collected as live MuSCs (<a href="#fig9">Figure 9</a>A). Up to 60,000 live Sytox Green<sup>-</sup>/TdTomato<sup>+</sup> MuSCs can be obtained from the damaged TA and gastroc muscles of one mouse.
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. FACS of MuSCs</div>
+<p>(A) FACS plot of live MuSCs isolation based on TdTomato expression and exclusion of Sytox Green.</p>
+<p>(B) FACS plot of live MuSCs isolation based on Itga7 expression and exclusion of lineage markers CD31/CD45/Sca1.</p>
+</figcaption>
+</figure>
+</li>
+<li>If the mouse strain does not have a MuSC specific fluorescent reporter which is uniquely expressed in the Pax7<sup>+</sup> cells, then the muscle tissue-derived cell mixture can be stained with cell surface marker antibodies for MuSCs sorting. Here we showed one such representative FACS sorting of MuSCs using biotinylated CD31/CD45/Sca1 antibodies and Alexa-647 conjugated α7-integrin (Itga7) antibody. For this, add the cell surface marker antibodies to 1 mL FACS buffer containing the cell mixture (See step 15). Incubate on the rotator at 4°C for 30 min (protected from light), and then spin down the cells at 300×<i>g</i> for 10 min. Discard the supernatant.</li>
+<li>Now, resuspend the cell mixture with 500 μL FACS buffer and add 5 μL Streptavidin-PE and incubate on a rotator at room temperature for 5 min (protected from light). Spin down the cells at 300×<i>g</i> for 5 min and discard the supernatant.</li>
+<li>Resuspend the loose pellet in 200 μL of FACS buffer. To label dead cells, add 10 μL of 7-AAD and incubate on ice protected from light for 2 min.</li>
+<li>Dilute the cell mixture by adding 800 μL FACS buffer and filter the cell mixture through CellTrics 50 μm filters and bring up the sample volume to 4 mL by passing 1 mL of FACS buffer through the filter and then by adding 2 mL FACS buffer into the tube. Place the sample on ice and proceed for FACS sorting. Sorted MuSCs can be collected in a microcentrifuge tube containing 300–400 μL FACS buffer without EDTA. In this case, the 7-AAD<sup>-</sup>/CD31<sup>-</sup>/CD45<sup>-</sup>/Sca1<sup>-</sup>/Itga7<sup>+</sup> cells are sorted and collected as MuSCs (<a href="#fig9">Figure 9</a>B). The damaged TA and gastroc muscles from one mouse can readily generate 60,000 to 100,000 7-AAD<sup>-</sup>/CD31<sup>-</sup>/CD45<sup>-</sup>/Sca1<sup>-</sup>/Itga7<sup>+</sup> MuSCs. Vcam1 can also be added to the antibody panel in step 18 as another positive marker for MuSCs. PE/Cyanine7 anti-mouse Vcam1 antibody is recommended (<a href="#bib15">Liu et al., 2018</a>) for this purpose.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> EDTA should be avoided in the buffer used to collect FACS-sorted MuSCs. The residual EDTA in the buffer can interfere with cell binding to Concanavalin A.</div>
+<h3 id="sec3.3">CUT&amp;Tag on isolated MuSCs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 days</div>
+<p>For efficient binding, we recommend incubating 50,000 MuSCs with 20 μL of BioMag®Plus Concanavalin A bead solution in a microcentrifuge tube for one CUT&amp;Tag reaction. Muscle tissue (2 TA and 2 gastroc muscles) from one mouse at 30 h post-injury should generate around 60,000 live MuSCs, an amount sufficient for one CUT&amp;Tag reaction. Using antibodies targeting histone modifications (e.g., H3K4me3), we have successfully performed CUT&amp;Tag assay with MuSC numbers as low as 25,000 cells for one CUT&amp;Tag reaction. However, we recommend using 50,000 MuSCs per CUT&amp;Tag reaction when examining less abundant histone marks or transcription factors. Importantly, while comparing the genome-wide histone and transcription factor binding profiles across the samples, it is crucial to maintain the same number of cells for unambiguous normalization. If one experiemental condition (for instance the knockout mouse) resulted in sorting 25,000 MuSCs, same number of cells should be used across all the conditions (for instance the wild type mouse) being tested, for a given antibody. Notably, to obtain sufficient number of cells, and to examine multiple different binding profiles for histone marks and/or transcription factors, muscles dissected from more than one mouse (same genotype and treatment) can be pooled and FACS-sorted before separating into distinct 50,000-cell CUT&amp;Tag reactions. In this case, both the volume of Collagenase I/Dispase II solution used for digestion of muscle tissue and the quantity of antibodies used FACS sorting MuSCs should be scaled accordingly.</p>
+<ol start="22">
+<li>For calculating the number of CUT&amp;Tag reactions, determine how many different types of histone modifications or transcription factor profiles will be studied for one sample. For instance, if you are interested in characterizing two histone modifications, in duplicate reactions, then four CUT&amp;Tag reactions will be performed for one sample.</li>
+<li>Before aliquoting Concanavalin A bead solution from the main stock bottle, shake or invert the bottle several times to thoroughly mix the contents of the bottle to obtain a uniform slurry. In this protocol, we describe running 4 reactions using 200,000 MuSCs as an example. Aspirate 90 μL (20 μL for one CUT&amp;Tag reaction plus 10 μL to account for pipetting loss) of BioMag®Plus Concanavalin A bead solution into a 1.5 mL microcentrifuge tube containing 850 μL Binding buffer.</li>
+<li>Mix the binding buffer with Concanavalin A beads in the 1.5 mL tube by mild-pipetting or by inverting and tapping. Place on a magnetic rack and let it sit for 2 min to be clear.</li>
+<li>Withdraw the buffer and then remove the tube from the magnetic rack. Add 800 μL Binding buffer into tube and completely resuspend the beads by mild-pipetting or by inverting and tapping. Place the tube on magnetic rack and let it sit for 2 min to be clear.</li>
+<li>Remove the liquid completely and take the tube off the magnetic rack. Resuspend the beads in 90 μL of Binding buffer. Thus prepared beads can be kept at 22°C until the MuSCs are ready. The preparation of beads can be started when FACS sorting of MuSCs is about to finish.</li>
+<li>Spin down the microcentrifuge tube containing FACS-sorted MuSCs (from step 17 or step 21) at 600×<i>g</i> for 5 min at 22°C.</li>
+<li>Carefully aspirate the supernatant. Caution must be exercised not to touch or aspirate the cell pellet. If the sample is to be used for four CUT&amp;Tag reactions, then it should contain at least 200,000 MuSCs to ensure each reaction is allocated 50,000 cells.</li>
+<li>Resuspend the cell pellet with 750 μL of Wash buffer. While gently vortexing the tube containing the cells, add the 90 μL of Concanavalin A bead slurry (Prepared in step 26) dropwise. Place the tube containing cell-bead mixture on an end-to-end rotator at 22°C for 15 min.</li>
+<li>After 15 min, place the microcentrifuge tube on a magnetic rack and let it sit for 2 min to be clear. Transfer the liquid (“supernatant”) to a new microcentrifuge tube. Proceed with the Concanavalin A beads-MuSCs cell mixture to step 31.</li>
+</ol>
+<p>To check the binding of MuSCs to the Concanavalin A beads, drop 5–10 μL of the supernatant into one of the chambers of a hemocytometer and observe under the microscope for cells. In most cases, Concanavalin A beads bind all the cells quickly and efficiently (there should not be any visible cells left in the supernatant).</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> Note that the MuSCs should not be kept in wash buffer for extended periods of time, and should be quickly advanced to step 31. If processing a large number of different antibodies, it is suggested that binding of MuSCs to Concanavalin A beads be performed sequentially where the cells needed for each antibody are processed through steps 29 and 30 sequentially. In rare cases, the residual amounts of EDTA in FACS buffer may interfere with Concanavalin A bead binding to the cells. This is the reason we highly recommend FACS buffer without EDTA while collecting MuSCs during FACS. Collecting cells in FACS buffer containing EDTA needs extra pelleting and resuspending steps to completely remove EDTA and this might lead to MuSC loss.</div>
+<ol start="31">
+<li>If the supernatant is clear without any cells, resuspend the cell-bead complex in 450 μL antibody buffer and split into four 1.5 mL Axygen MCT-150-C microcentrifuge tubes (100 μL in each tube). Each tube represents a single CUT&amp;Tag reaction. Here, we recommend Axygen MCT-150-C microtubes to be used from primary antibody incubation step, because cell-bead mixture is less sticky to the inner walls of this type of tubes.</li>
+<li>For each CUT&amp;Tag reaction, dilute the primary antibody in 100 μL antibody buffer at a concentration that is double the working concentration normally required for immunofluorescence microscopy studies. This way after adding the 100 μL antibody into the microcentrifuge tubes already containing 100 μL cell-bead mixture, the final concentration of the diluted antibody in the tube will be equivalent to the working concentration used in immunofluorescence.</li>
+<li>Place the tubes on a nutator at 4°C and let it agitate overnight.</li>
+<li>Next day, in order to remove beads from the cap and walls, flick or briefly spin the tubes and place them on a magnetic rack. Wait for 2 min and remove the primary antibody liquid.</li>
+<li>Add 200 μL of Digitonin-wash buffer containing the secondary antibody onto the beads. The dilution of secondary antibody is 1:100. Remove the tubes from the magnetic rack, vortex mildly at 300 rpm. Nutate the tubes at 22°C for 1 h.</li>
+<li>Flick or briefly spin the tubes and place them on a magnetic rack. Wait for 2 min and remove the liquid containing the secondary antibody.</li>
+<li>Wash the cell-bead mixture by adding 200 μL of Digitonin-wash buffer into each tube. Close the caps, remove the tubes from the magnetic rack and invert 20 times. Quick spin to remove liquid from cap. Place the tubes back onto the magnetic rack and wait for 2 min. Remove the Digitonin-wash buffer from the tubes.</li>
+<li>Repeat step 37 one more time.</li>
+<li>Dilute the pA-Tn5 fusion protein (with adaptors loaded, see <a href="#before-you-begin">before you begin</a> section) to 1:250 using Digitonin-300 wash buffer (Final concentration is 4.74 μM∗1/250 = 18.96 nM). Add 100 μL of this diluted pA-Tn5 fusion protein into each tube. Remove the tubes from the magnetic rack and nutate for 1 h at 22°C.</li>
+<li>Flick or briefly spin the tubes and place them back on the magnetic rack. Wait for 2 min, and remove the pA-Tn5 containing liquid.</li>
+<li>To further remove unbound/excess pA-Tn5, wash the cell-bead mixture by adding 800 μL of Digitonin-300 wash buffer to each tube. Close the caps, remove the tubes from the magnetic rack and invert the tubes 10–20 times. Quick spin to remove liquid from cap. Place the tubes back onto the magnetic rack and wait for 2 min. Remove the Digitonin-300 wash buffer from the tubes.</li>
+<li>Repeat step 41 twice for a total of three washes using Digitonin-300 wash buffer.</li>
+<li>Add 300μL Tagmentation buffer containing Spike-in<sup>AmpR</sup> (0.1899 amol/L) to each CUT&amp;Tag reaction tube. Invert or tap the tubes to mix well. Incubate at 37°C for 1 h. <i>Note the addition of the Spike-in</i><sup><i>AmpR</i></sup> <i>is optional.</i>
+</li>
+<li>To each tube, add 10 μL of 0.5 M EDTA, 3 μL 10% SDS and 2.5 μL 20 mg/mL Proteinase K. Vortex to mix and incubate at 37°C overnight. Incubation can be shortened to 1 h at 55°C.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After step 44, the samples can be frozen at −80°C. While proceeding to the following steps, just thaw the samples at 4°C and proceed to step 45.</div>
+<ol start="45">
+<li>Add 300 μL of Phenol/Chloroform into each tube, vortex thoroughly. Now transfer the contents to a freshly labeled phase lock tube (Qiagen) and centrifuge at 16,000×<i>g</i> in a benchtop centrifuge for 5 min. Transfer the aqueous layer to a new labeled microcentrifuge tube. The microcentrifuge tubes used from here onwards are not necessarily Axygen MCT-150-C microcentrifuge tubes.</li>
+</ol>
+<p><b>Caution:</b> Phenol/Chloroform is toxic and should be handled in a fume hood.</p>
+<ol start="46">
+<li>Add 300 μL of chloroform into each new tube and invert to mix thoroughly. Spin the tubes at 16,000×<i>g</i> in a benchtop centrifuge for 5 min. Transfer the aqueous layer to a fresh new tube. Label the new tubes accordingly and properly.</li>
+<li>Add 1 μL of 20 mg/mL glycogen solution into each tube and vortex. Now, add 750 μL of 100% ethanol into each tube. Invert several times and place at −80°C to precipitate the tagmented DNA. Note that the addition of glycogen is optional. In our hands, this concentration of glycogen delayed PCR amplification by two cycles, but has the added benefit of being able to see the precipitated material.</li>
+</ol>
+<div class="pause-point">
+<span class="pause-point-title">Pause point:</span> After step 47, the samples can be stored at −80°C. When continuing to the following steps, thaw the samples at 4°C and proceed to step 48.</div>
+<ol start="48">
+<li>Thaw samples on ice, spin the microcentrifuge tubes at max-speed for 15 min using a benchtop centrifuge at 4°C. The glycogen/DNA will form a visible pellet at the bottom of each tube. If no pellet is visible, check to ensure your stock solution of glycogen is correct. Note that if you choose not to add glycogen during the precipitation step, proceed without being able to see a visible pellet.</li>
+<li>Carefully pour off the liquid and add 1 mL of 100% ethanol into each tube. Invert several times to wash the pellet. Spin the tubes again at 18,000×<i>g</i> for 10 min in a benchtop microcentrifuge.</li>
+<li>Carefully pour off the ethanol from the tubes. Wipe off the residual ethanol from the cap and edge of the tubes using a piece of Kimwipes and then completely dry the tubes in a fume hood with caps open to remove any residual ethanol.</li>
+<li>When the tubes and pellets are dry, add 25 μL CUT&amp;Tag DNA resuspension Buffer into each tube and incubate at 37°C for 10 min to dissolve the pellet. We recommend keeping the dissolved CUT&amp;Tagged genomic DNA on ice and perform library preparation within 2–3 h. Avoid freeze-thawing the tagmented genomic DNA samples before making the libraries.</li>
+</ol>
+<h3 id="sec3.4">Library preparation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 h</div>
+<p>One CUT&amp;Tag reaction will generate a library of 50 μL in volume after PCR reaction. For most histone marks or transcription factors, we target 10 million reads per sample, and combine up to 40 CUT&amp;Tag samples in the same sequencing lane of 350–400 M reads. Before setting up the PCR reaction to make the sequencing libraries, aliquot 2 μL from each CUT&amp;Tagged genomic DNA sample (obtained in step 51). Set up a qPCR to determine the number of cycles required during actual library preparation to obtain sufficient material for sequencing.</p>
+<ol start="52">
+<li>Dilute the Spike-in<sup>AmpR</sup> fragment to a concentration of 65.6 nM. This will be used as standard DNA in qPCR.</li>
+<li>Set up the qPCR on Amp<sup>R</sup> gene fragment using the following conditions:</li>
+</ol>
+<table id="undtbl20">
+<caption>PCR Reaction Components</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>25 μL reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spike-in<sup>AmpR</sup>
+</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>i5 primer (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>i7 primer (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>PowerUp™ SYBR™ Green Master Mix (2×)</td>
+<td>12.5 μL</td>
+</tr>
+</tbody>
+</table>
+<p class="table-legend">In this 25 μL qPCR system, the concentration of the Spike-in<sup>AmpR</sup> fragment is known: 65.6 nM × (2/25) = 5.25 nM. This is the standard qPCR reaction.</p>
+<ol start="54">
+<li>Set up the qPCR on each of the aliquoted 2 μL CUT&amp;Tagged genomic DNA sample (obtained in step 51) using the following conditions:</li>
+</ol>
+<table id="undtbl21">
+<caption>PCR Reaction Components</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>25 μL reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CUT&amp;Tag genomic DNA</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>H<sub>2</sub>O</td>
+<td>8.5 μL</td>
+</tr>
+<tr>
+<td>i5 primer (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>i7 primer (10 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>PowerUp™ SYBR™ Green Master Mix (2×)</td>
+<td>12.5 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="55">
+<li>Run the standard qPCR reaction (Set up in step 53.) along with CUT&amp;Tagged genomic DNA samples (Set up in step 54.) using the following cycling parameters:</li>
+</ol>
+<table id="undtbl22">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hold</td>
+<td>50°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Gap filling</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>10 s</td>
+<td rowspan="2">30 cycles</td>
+</tr>
+<tr>
+<td>Annealing and extension</td>
+<td>63°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="critical">
+<span class="critical-title">Critical:</span> Record the cycle numbers required by each sample to reach a fluorescence intensity equivalent to that observe in the Spike-in<sup>AmpR</sup> control at 5 cycles – when the Spike-in<sup>AmpR</sup> fragment reaches 168 nM (5.25nM ∗ 2<sup>5</sup> = 168 nM). This will provide an approximation on the number of cycles needed to amplify samples to 168 nM.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Here we recommended a qPCR method to obtain a concentration of approximately 168 nM for each CUT&amp;Tag library. However, it is not necessary that every single CUT&amp;Tag library reaches this concentration when pooling up to 30–40 CUT&amp;Tag libraries into one lane of sequencing. For instance, your IgG control should not amplify to 168 nM. However, the IgG control should be amplified for the same number of cycles determined to amplify the antibody-specific sample to 168 nM. During sequencing, the libraries that attained higher than 168 nM concentration can compensate for the lower DNA concentration in some of the samples (control or knockout libraries).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> It is essential that the same number of PCR cycles be used for samples that will be compared (i.e. H3K4me3 CUT&amp;Tag in a wild type versus knockout should be amplified to give 168 nM in the wild type conditions, and the same number of PCR cycles should be used in the knockout). For samples that will not be compared quantitatively (i.e. different antibodies such as H3K4me3 and H3K4me1 ), each sample can be made into a library as per the optimal number of PCR cycles determined, for ensuring the WT is amplified to 168 nM.</div>
+<ol start="56">
+<li>Set up the actual library preparation using 20 μL of each CUT&amp;Tagged genomic DNA sample (obtained in step 51). The library preparation PCR conditions are as follows:</li>
+</ol>
+<table id="undtbl23">
+<caption>PCR Reaction Components</caption>
+<thead>
+<tr>
+<th>Component</th>
+<th>50 μL reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CUT&amp;Tagged genomic DNA</td>
+<td>20 μL</td>
+</tr>
+<tr>
+<td>ddH<sub>2</sub>O</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>i5 primer (10 μM)</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>i7 primer (10 μM)</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>NEBNext High-Fidelity 2× PCR Master Mix</td>
+<td>25 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="57">
+<li>Use the following PCR cycling setup to perform actual library preparation:</li>
+</ol>
+<table id="undtbl24">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gap filling</td>
+<td>72°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>95°C</td>
+<td>30 s</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>10 s</td>
+<td rowspan="2"><sup><a href="#dtbl25fnlowast">∗</a></sup></td>
+</tr>
+<tr>
+<td>Annealing and extension</td>
+<td>63°C</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>Final extension</td>
+<td>72°C</td>
+<td>1 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>8°C</td>
+<td colspan="2">Infinite</td>
+</tr>
+</tbody>
+</table>
+<p id="dtbl25fnlowast" class="table-footnote"><sup>∗</sup>Optimal number of cycles for the “Denaturation” and “Annealing and extension” steps is determined at step 55 and should be adapted here. As mentioned in <a href="#fig10">Figure 10</a> legend, during the actual library preparation step, the starting concentration of the CUT&amp;Tagged genomic DNA sample is 5 times to that of the starting concentration in the qPCR system in step 54. So, the optimized cycle numbers obtained in step 55 should be reduced by 2 cycles for actual library preparation PCR.</p>
+<div class="critical">
+<span class="critical-title">Critical:</span> To distinguish different samples which are sequenced in the same lane, different i5 and/or i7 primers should be used for each sample. We recommend 12 different i7 primers (<a href="#tbl1">Table 1</a>) and 8 different i5 primers (<a href="#tbl2">Table 2</a>). This can generate a combination of 8 X 12 = 96, which is sufficient to distinguish 30–40 samples pooled in one lane as mentioned above. Notably, in the preliminary qPCR setup in steps 53 and 54 used to determine approximate concentrations, distinguishing i5 or i7 primers for each sample are not required as the products of these qPCR reactions are not for sequencing purpose. Instead these qPCR reactions are solely for optimizing/obtaining the cycle numbers required during actual library preparation step.</div>
+<table id="tbl1">
+<caption>Table 1. List of i7 primers for library preparation on CUT&amp;Tagged DNA</caption>
+<thead>
+<tr>
+<th>i7_GTAGAGGA</th>
+<th>CAA GCA GAA GAC GGC ATA CGA GAT TCC TCT ACG TCT CGT GGG CTC GGA GAT GTG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i7_AAGAGGCA</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>TGC CTC TT</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_CGAGGCTG</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>CAG CCT CG</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_GCTACGCT</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>AGC GTA GC</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_CAGAGAGG</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>CCT CTC TG</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_CTCTCTAC</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>GTA GAG AG</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_TAGGCATG</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>CAT GCC TA</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_GGACTCCT</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>AGG AGT CC</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_TCCTGAGC</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>GCT CAG GA</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_AGGCAGAA</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>TTC TGC CT</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_CGTACTAG</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>CTA GTA CG</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+<tr>
+<td>i7_TAAGGCGA</td>
+<td>CAA GCA GAA GAC GGC ATA CGA GAT <b>TCG CCT TA</b>G TCT CGT GGG CTC GGA GAT GTG</td>
+</tr>
+</tbody>
+</table>
+<table id="tbl2">
+<caption>Table 2. List of i5 primers for library preparation on CUT&amp;Tagged DNA</caption>
+<thead>
+<tr>
+<th>i5_CTAAGCCT</th>
+<th>AAT GAT ACG GCG ACC ACC GAG ATC TAC ACC TAA GCC TTC GTC GGC AGC GTC AGA TGT GTA T</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i5_AAGGAGTA</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>A AGG AGT A</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_ACTGCATA</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>A CTG CAT A</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_GTAAGGAG</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>G TAA GGA G</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_AGAGTAGA</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>A GAG TAG A</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_TATCCTCT</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>T ATC CTC T</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_CTCTCTAT</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>C TCT CTA T</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+<tr>
+<td>i5_TAGATCGC</td>
+<td>AAT GAT ACG GCG ACC ACC GAG ATC TAC AC<b>T AGA TCG C</b>TC GTC GGC AGC GTC AGA TGT GTA T</td>
+</tr>
+</tbody>
+</table>
+<p>After libraries are made, 3–5 μL of the library (50 μL in total) can be aliquoted, purified using QIAquick PCR Purification Kit and eluted in 40 μL of H<sub>2</sub>O. Before sequencing, this small fraction of purified library allows for qPCR diagnosis by using some locus-specific primers to primarily test whether the CUT&amp;Tag assay has yielded antibody targeted enrichment of protein bound regions. IgG can be used as the negative control. As a positive control, we recommend using H3K4me3 antibody (Millipore) as we found H3K4me3 is abundant in activated MuSCs and can be readily detected specifically at promoter regions of active genes, including housekeeping genes. Accordingly, primers binding active genes in MuSCs such as <i>Gapdh</i> locus (Forward: 5′-3′ CTCTGAGCCTCCTCCAATTC; Reverse: 5′-3′ GCTACGCCATAGGTCAGGAT) can be used for qPCR. The sequences of the primers for amplifying a mouse gene-desert region are also provided here: Forward: 5′-3′ TCCTCCCCATCTGTGTCATC; Reverse: 5′-3′ GGATCCATCACCATCAATAACC. The qPCR can be set up using the following conditions:</p>
+<table id="undtbl25">
+<thead>
+<tr>
+<th colspan="4">PCR cycling conditions</th>
+</tr>
+<tr>
+<th>Steps</th>
+<th>Temperature</th>
+<th>Time</th>
+<th>Cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hold</td>
+<td>50°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Initial denaturation</td>
+<td>95°C</td>
+<td>5 min</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Denaturation</td>
+<td>95°C</td>
+<td>10 s</td>
+<td rowspan="3">45 cycles</td>
+</tr>
+<tr>
+<td>Annealing</td>
+<td>63°C</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>72°C</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>Melting</td>
+<td>Ramping from 65°C to 95°C</td>
+<td> </td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>As an indicator of successful CUT&amp;Tag assay, the amplification of <i>Gapdh</i> locus in H3K4me3 CUT&amp;Tag sample should be at least 3 cycles ahead of the amplification of this locus in the IgG sample. Also, the gene-desert primer should not amplify significantly more tagmented DNA from the H3K4me3 antibody sample compared to the IgG antibody sample.</p>
+<ol start="58">
+<li>To further clean up the library for sequencing, mix 45 μL of PCR-prepared library (obtained in step 57) with 63 μL Kapa Pure beads (Roche) in an Axygen microcentrifuge tube. Pipette few times to get this fully mixed.</li>
+<li>Quickly spin down the mixture and keep at room temperature for 10 min.</li>
+<li>Place the microcentrifuge tube on a magnetic rack and wait till clear. Withdraw the liquid from the tubes and avoid disturbing the beads.</li>
+<li>Wash twice by adding 200 μL 80% ethanol in the tube. Returning the tube to the magnetic rack and withdraw the liquid from the tube.</li>
+<li>Remove the residual liquid from the tube by pipetting.</li>
+<li>Wait for 5 min to dry the beads.</li>
+<li>Remove the tubes from magnetic rack and add 21 μL of 10 mM Tris-HCl (pH 8.0) to the tube. Vortex to fully mix.</li>
+<li>Wait for 5 min and put the tubes back onto the magnetic rack.</li>
+<li>Wait till clear and transfer the liquid to a fresh tube. The liquid contains the cleaned-up DNA for sequencing.</li>
+<li>Sample concentration is first quantified using a Qubit™ 1× dsDNA HS Assay (Thermo Fisher Scientific) as per manufacturer’s guide and adjusted to 4 ng/μL (using 10 mM Tris-HCl, pH 8) for dilution.</li>
+<li>The quality of the tagmented DNA library is then assessed using Bioanalyzer High Sensitivity DNA Analysis (Agilent). A sample dilution at 2 ng/μL is loaded on the Chip when possible. If the sample concentration is below 2 ng/μL, load the sample undiluted. The library size can be determined using the average size value for a region between 170 bp to 1000 bp. Examples of successful CUT&amp;Tag DNA samples profiled by bioanalyzer analysis are shown in <a href="#fig11">Figure 11</a>. The histone mark samples are enriched for slightly bigger DNA fragments in which the average length is ∼350 bp, whereas for the transcription factor CUT&amp;Tag samples are enriched for smaller fragments that start from 200 bp.
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Schematic qPCR amplification of each CUT&amp;Tagged genomic DNA sample along with the Spike-in<sup>AmpR</sup> (Standard DNA)</div>
+<p>The red horizontal line indicates the targeted intensity of fluorescence when Spike-in<sup>AmpR</sup> (Standard DNA) reached 168 nM (5 cycles). For the group of samples a, b, and c (3 conditions with the same antibody), amplification for average 13 cycles is required to reach the level of the red horizontal line, whereas Samples d, e, and f (3 conditions with a different antibody) requires approximately 19 cycles to reach the level indicated by the red horizontal line. This test qPCR is set up using 2 μL of each CUT&amp;Tagged genomic DNA sample in a 25 μL qPCR reaction where as the actual CUT&amp;Tag library will be generated with 20 μL of each CUT&amp;Tagged genomic DNA sample in a 50-μL reaction (i.e., 5× more DNA). As the library prepapration will be performed with 5× higher concentration of DNA, an amplification of the DNA to 168 nM should be achieved approximately 2 cycles earlier (log<sub>2</sub>5 ≈ 2.3). As a result, Sample a, b, and c require 13 - 2 = 11 cycles to reach 168 nM while Sample d, e, and f require 17 cycles (19-2) for library prep.</p>
+</figcaption>
+</figure>
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Bioanalyzer profiling of the tagmented DNA of CUT&amp;Tag libraries</div>
+</figcaption>
+</figure>
+</li>
+<li>The final sample concentration for sequencing is then determined using <a href="https://www.neb.ca/neb_protocols.php?p=protocols/2015/05/14/nebnext-library-quant-kit-quick-protocol-e7630">NEBNext® Library Quant Kit for Illumina (NEB</a>) and run as per manufacturer’s protocol.</li>
+<li>Samples are then pooled and sequenced on NovaSeq 6000 (or equivalent platform) using 50 bp Paired-End sequencing at ∼10 M / sample. We use a S1 flowcell on an XP workflow but it can be sequenced on any flowcell (SP, S1, S2 and S4) and on any workflow (standard or regular).</li>
+</ol>
+<h3 id="sec3.5">Data analyses after sequencing</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> ∼4 h</div>
+<p>A pipeline has been established in Github for users to analyze their CUT&amp;Tag sequencing data (<a href="https://github.com/dilworthlab/CnT_pipeline_snakemake">https://github.com/dilworthlab/CnT_pipeline_snakemake</a>). This pipeline includes normalization of samples using Spike-in<sup>AmpR</sup> as the default. An overview of this pipeline is provided in <a href="#fig12">Figure 12</a>. This pipeline allows for: 1) Quality Control of Raw FASTQ reads; 2) Adapter trimming; 3) Alignment (primary genome and spike-in sequences) ; 4) Post-Alignment filtering; 5) Spike-in normalization; and 6) Peak calling.</p>
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. An overview of the pipeline of the analyses on the raw reads of CUT&amp;Tag DNA sequencing</div>
+<p>The dotted arrows represent valid alternate paths within the pipeline where duplicates are not removed – this is not the preferred path.</p>
+</figcaption>
+</figure>
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. FastQC report showing failed modules that are characteristic of a typical CUT&amp;Tag library</div>
+<p>(A–C) (A) Per base sequence content, (B) Sequence duplication levels, and (C) Overrepresented sequences.</p>
+</figcaption>
+</figure>
+<ol start="71">
+<li>Prepare the software environment and download the data.
+<ol type="a">
+<li>Install required software. A Linux-based High-Performance computing (HPC) environment is ideal for this analysis. To install the following software, set up a virtual environment within the HPC and install the required versions. 1) FastQC v0.11.9 (<a href="#bib2">Babraham Bioinformatics, 2019</a>); MultiQC &gt;=1.9 (<a href="#bib7">Ewels et al., 2016</a>); Cutadapt &gt;=2.6 (<a href="#bib16">Martin, 2011</a>), Bowtie2 &gt;=2.4.1 (<a href="#bib13">Langmead and Salzberg, 2012</a>); Samtools &gt;=1.11 (<a href="#bib14">Li et al., 2009</a>); Picard Tools &gt;= <a href="https://github.com/broadinstitute/picard/releases/tag/2.22.5">2.22.5</a> (Broad Institute); deepTools &gt;=3.3.2 (<a href="#bib23">Ramirez et al., 2016</a>) ; SEACR &gt;=1.3 (<a href="#bib17">Meers et al., 2019</a>); BEDtools &gt;= 2.29.2 (<a href="#bib22">Quinlan and Hall, 2010</a>); bedToBigBed &gt;= 2.7(<a href="#bib12">Kent et al., 2002</a>); and ChIPseeker &gt;= 1.24.0 (<a href="#bib26">Yu et al., 2015</a>).<br> A virtual environment can be set up using Conda. Conda is a convenient package management system that is included with Anaconda or Miniconda. For more information on usage documentation for condo can be consulted.</li>
+<li>Download the Data. Download raw FASTQ reads to desired location and perform md5sum checks to verify the integrity of all files. With paired-end sequencing, there should be two reads (i.e., R1 and R2) per sample. For simplicity, from here onwards, these two reads can be referred to as “R1” and “R2”.<br> Sample_R1.fastq.gz - ${R1}<br> Sample_R2.fastq.gz - ${R2}</li>
+</ol>
+</li>
+</ol>
+<ol start="72">
+<li>Quality control. Preliminary quality control checks are performed on raw FASTQ reads by running FastQC on each read individually. For more detailed information on the type of checks the tool performs, refer the documentation for FastQC.<br> fastqc ${R1}<br> fastqc ${R2}<br> Typically, with CUT&amp;Tag libraries, the raw reads do not always pass all QC modules (<a href="#fig13">Figure 13</a>) defined by FastQC (i.e., duplicates, overrepresented sequences, or mapped reads). This, however is not necesssarily indicative of an unusable library and hence you should proceed with further analysis. A fail in the “per base sequence quality” score would suggest that the library is not of good quality and needs to be re-made.
+<ol type="a">
+<li>Per base sequence content<br> Reads from CUT&amp;Tag libraries usually display a non-uniform base composition at the start of the read. This is due to the sequence bias exhibited by Tn5 during transposition (<a href="#bib25">Viswanadham et al., 2019</a>).</li>
+<li>Sequence duplication levels<br> Since a CUT&amp;Tag library has low complexity, the level of duplication of enriched regions is expected to be higher than for typical libraries.<br> (<a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html</a>)</li>
+<li>Overrepresented sequences</li>
+</ol>
+</li>
+</ol>
+<p>Not always, but sometimes there are overrepresented sequences in the library due to contaminants. These warnings can be ignored as they do not affect any of the subsequent steps.</p>
+<ol start="73">
+<li>Adaptor trimming. Illumina Nextera adaptors are trimmed from reads using Cutadapt in paired-end mode. The resulting trimmed reads are referred to as <i>Trim.R1</i> and <i>Trim.R2</i> respectively.</li>
+</ol>
+<p>cutadapt -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \</p>
+<p>-o $[Trim.R1] -p ${Trim.R2} ${R1} ${R2}</p>
+<ol start="74">
+<li>Alignment. After preliminary quality control and adaptor trimming, paired-end reads are aligned to both the <i>Mus musculus (or Homo sapiens)</i> genome and spike-in sequence using Bowtie2. The Bowtie2 output containing sequence alignment information is in SAM (Sequence Alignment Map) format. This format is however, bypassed by piping the output directly to Samtools and producing files in a storage-efficient BAM (binary version of SAM) format. The resulting BAM files are coordinate-sorted and indexed using Samtools.<br> The syntax for aligning trimmed paired-end reads is as follows:<br> bowtie2 <b>{Alignment.Parameters}</b> -× <b>${Genome_Index}</b> \<br> -1 ${Trim.R1} -2 ${Trim.R2} | samtools view -bS - &gt; ${Sample}.bam<br> samtools sort ${Sample}.bam -o {Sample}.coordsorted.bam<br> samtools index ${sample}.coordsorted.bam Please note that alignment to the primary genome (mm10) and Spike-in sequence (Ampr) is done separately. Alignment parameters and genome indices for each is listed below.
+<ol type="a">
+<li>Mus musculus<br> Alignment Parameters [<a href="https://www.protocols.io/view/cut-amp-tag-data-processing-and-analysis-tutorial-bjk2kkye.html">https://www.protocols.io/view/cut-amp-tag-data-processing-and-analysis-tutorial-bjk2kkye.html</a>]:<br> --local --very-sensitive-local --no-unal --no-mixed --no-discordant –<br> phred33 -I 10 -X 700<br> Genome Index: Pre-built bowtie2 indices for <i>Mus musculus</i> (UCSC mm10) can be retrieved directly from iGenomes (Illumina, Inc.).</li>
+<li>Spike-in<br> Alignment Parameters [<a href="https://www.protocols.io/view/cut-amp-tag-data-processing-and-analysis-tutorial-bjk2kkye.html">https://www.protocols.io/view/cut-amp-tag-data-processing-and-analysis-tutorial-bjk2kkye.html</a>]<br> --end-to-end --very-sensitive --no-overlap --no-dovetail --no-<br> mixed --no-discordant --phred33 -I 10 -X 700<br> Genome Index: FASTA sequence of the Ampicillin resistance gene from pBlueScript II SK (+) (Addgene plasmid # 212205, GenBank ID: X52328.1) was used to build an index using bowtie2-build.</li>
+<li>Alignment statistics.<br> With Bowtie2, the alignment summary is printed to the standard error where it can be collected and processed. The essential metrics from Bowtie2 include:<br> 1) Total number of paired reads examined;<br> 2) Total number of mapped reads (Uniquely aligned reads + multi mapping reads). This can be used to derive the alignment rate. Ideally, an alignment rate between 50 and 100% is expected, however, we did observe lower rates. The reads that are not mapping either to the primary genome or to the spike-in are most probably due to amplified primers (<a href="#fig14">Figure 14</a>). For such samples, we have still observed good genomic coverage.
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Source of unmappable reads</div>
+<p>A bioanalyzer image shows small fragments of less than 100 bp that are likely to give rise to unmappable reads during their alignment to genome.</p>
+</figcaption>
+</figure>
+MultiQC provides a convenient way of aggregating the statistics for all samples. MultiQC is run in a directory containing the appropriate log files where it will automatically detect and collect them to produce a summary report.</li>
+</ol>
+</li>
+</ol>
+<ol start="75">
+<li>Post-alignment filtering.
+<ol type="a">
+<li>First, the resulting BAM files are filtered to only retain mapped and properly paired reads using the Samtools flag -f2.</li>
+<li>Second, only uniquely aligned reads are kept by performing MAPQ-based filtering with the Samtools flag -q 10.</li>
+<li>Lastly, duplicates are marked and removed using MarkDuplicates from Picard.</li>
+</ol>
+</li>
+</ol>
+<ol start="76">
+<li>Spike-in normalization.
+<ol type="a">
+<li>Per-sample normalization factors.<br> Normalization factors for a set of libraries associated with a particular histone or transcription factor is calculated using reads mapped to the Spike-in sequence. Normalization factors for each sample is calculated as:<br> Normalization Factor = <b>Spike</b><sub><b>min</b></sub>/<b>Spike</b><sub><b>sample</b></sub><br> where:<br> <b>Spike</b><sub><b>min</b></sub> = No. of reads corresponding to the sample with minimum number of mapped reads within the set,<br> <b>Spike</b><sub><b>sample</b></sub> = No. of total mapped reads corresponding to the sample for which the normalization factor is being calculated.</li>
+<li>BigWigs and Bedgraphs</li>
+</ol>
+</li>
+</ol>
+<p>The normalization factors are used with bamCoverage from deepTools (<a href="#bib23">Ramirez et al., 2016</a>) to obtain spike-in normalized bigwig and bedgraph files. Bigwig files can be uploaded and viewed on the UCSC genome browser.</p>
+<ul>
+<li>bamCoverage --bam ${Filtered_bam} -o ${Norm}.bw \
+<ul>
+<li>--binSize 10 \</li>
+<li>--scaleFactor ${NormalizationFactor} \</li>
+<li>--ignoreForNormalization ‘chrM’ \</li>
+<li>--extendReads</li>
+</ul>
+</li>
+<li>bamCoverage --bam ${Filtered_bam} --outFileFormat bedgraph -o ${Norm}.bedgraph \
+<ul>
+<li>--binSize 10 \</li>
+<li>--scaleFactor ${NormalizationFactor} \</li>
+<li>--ignoreForNormalization ‘chrM’ \</li>
+<li>--extendReads</li>
+</ul>
+</li>
+</ul>
+<p>where:</p>
+<p>${Filtered_bam} = Filtered BAM files without duplicates from step 75 “Post-Alignment Filtering”.</p>
+<p>${NormalizationFactor} = Normalization factor calculated in step 76 section a.</p>
+<ol start="77">
+<li>Identification of enriched regions/Peak Calling.
+<ol type="a">
+<li>Peak Calling<br> Enriched regions are identified within each sample using SEACR. In the presence of an IgG control, SEACR determines the enrichment threshold using the control IgG bedgraph file. Without a control, a FDR cut-off of 0.05 is used.<br> Bash SEACR ${Target_bedgraph} ${Control_bedgraph} non stringent ${prefix}<br> OR<br> Bash SEACR ${Target_bedgraph} 0.05 non stringent ${prefix}</li>
+<li>Filtering peaks and making bigbeds</li>
+</ol>
+</li>
+</ol>
+<p>ENCODE blacklist regions (<a href="#bib1">Amemiya et al., 2019</a>) are filtered from the peaks to remove regions prone to erroneous high signals using bedtools. The filtered peak files are converted into bigBed using bedToBigBed to enable visualization on the UCSC genome browser.</p>
+<h3 id="sec3.6">Downstream analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–3 days</div>
+<ol start="78">
+<li>Functional Analysis and annotation of Peaks
+<ol type="a">
+<li>Peak annotation and visualization:
+<ol type="i">
+<li>Annotation: Genomic features associated with peaks are obtained using ChIPseeker, an R package. Informative annotations include, but not limited to, genes and cis-regulatory elements near identified peaks.</li>
+<li>Visualization: Tools such as deeptools can be used to visualize the enrichment profile of peaks around transcription start sites (TSSs).</li>
+</ol>
+</li>
+<li>Functional analysis of peaks:<br> To study the biological relevance of enriched regions associated with a histone or transcription factor, various downstream analyses can be done using annotations from 78a. Though a detailed overview is beyond the scope of this protocol, here are some examples:<br>
+<ol type="i">
+<li>It is useful to find biological themes (e.g., pathways, molecular function etc.) associated with enriched regions. Databases such as GO (<a href="http://geneontology.org/">http://geneontology.org/</a>), REACTOME (<a href="https://reactome.org/">https://reactome.org/</a>) and KEGG (<a href="https://www.genome.jp/kegg/">https://www.genome.jp/kegg/</a>) can be queried to find overrepresented "terms" (set of genes associated with a function or pathway) within the annotated gene lists;</li>
+<li>Motif enrichment analysis;</li>
+<li>Various differential analyses to compare CUT&amp;Tag libraries (e.g., WT vs KO).</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>After sequencing, the normal samples will contain ∼40–80% duplicates, whereas the IgG samples normally contain up to 90% duplicates. After alignment to the genome and duplicate removal, the successful CUT&amp;Tag examples are shown in <a href="#fig15">Figure 15</a>. On the <i>Hoxa10</i> locus in mouse MuSCs, H3K4me3 and H3K27me3 are enriched on different locations or genes, except for Hoxa1, which might be bivalently marked by both H3K4me3 and H3K27me3 (<a href="#fig15">Figure 15</a>A). <i>Hoxa10</i> locus in human Hematopoietic Stem and Progenitor Cells (HSPCs) showed a similar pattern of H3K4me3 and H3K27me3 enrichment (<a href="#fig15">Figure 15</a>A). NELF-E bindings in MuSCs are shown as successful examples of transcription factor CUT&amp;Tag (<a href="#fig15">Figures 15</a>A and 15B - bottom tracks).</p>
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/950-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. Examples of successful histone mark and transcription factor CUT&amp;Tag assays</div>
+<p>(A) UCSC Browser tracks showing the enrichment of H3K27me3, H3K4me3 and/or NELF-E across the HoxA locus in either murine MuSCs or human HSPCs.</p>
+<p>(B) UCSC Browser tracks showing the enrichment of H3K27me3, H3K4me3 and/or NELF-E at the Hdgfl2 locus in murine MuSCs.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>We have experience using a large number of antibodies directed at histone marks or transcriptional regulators for looking at genomic enrichment using CUT&amp;Tag. These conditions work well for freshly isolated MuSCs from either injured or uninjured muscles. We have not yet been able to adapt the conditions to fixed MuSCs from PFA-perfused mice. Therefore, the current form of this protocol is not suitable for histone mark profiling of true quiescent MuSCs which are isolated from PFA- or methanol-perfused mice. Further adaptations will be needed if practicing CUT&amp;Tag assay on fixed MuSCs resulting from PFA-perfusion. Finally, users should keep in mind that the results obtained from their CUT&amp;Tag studies will vary depending on decisions taken prior to starting the experiment. Results from MuSCs isolateds by TdT sorting might differ slightly from those obtained with ITGA7 sorting due to differences in purity, but also due to slight differences in cell identity that your selection marker defines. Pax7gCre-TdT will mark all cells that were expressing Pax7 at the time tamoxifen was administered, while ITGA7 identifies MuSCs. It is important that you plan the experiement in conditions that will allow you to study the epigenetics that best recapitulate the phenotypic conditions you are trying to understand. In our case we chose Pax7gCre-TdT cells at 30 h post injury so as to best understand MuSC activation. Please consider the optimal conditions and approach to address your research question.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Poor transposase/tagmentation activity of pA-Tn5 Transposase</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Ensure the buffers are freshly prepared when purifying the enzyme. Buffer solutions should be adjusted to appropriate pH by calibrating the pH meter prior to adjusting the pH of the buffer. Inaccuarate pH could lead to loss in enzymatic activity. Similarly, Mg<sup>2+</sup> is necessary for pA-Tn5 to be enzymatically active. Another potential reason could be a poor loading of ME-A and ME-B adaptors. Ensure the oligos are of good quality and are annealed properly prior to loading on to the pA-Tn5 transposase.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>Poor staining of cell surface markers and insignificant separations of positive populations in FACS.</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>This can be caused by destruction or compromise of cell markers during digestion of the muscle tissue. This can be solved by further optimizing the digestion period as well as collagenase and dispase concentrations. Over digestion is likely to damage the cell surface markers and as a result, the digestion condition should be just sufficient to release enough MuSCs rather than over digestion. Over digestion may also cause death of MuSCs and thus an increase in the dead cell numbers.</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>Cells are not bound to Concanavalin A beads efficiently.</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>1. Replace the buffers with freshly made ones, as the MnCl<sub>2</sub> in Binding Buffer is critical for Concanavalin A to work. 2. Wash the cells with PBS or Wash buffer after FACS sorting to remove residual EDTA, as EDTA may decrease free Mn<sup>2+</sup> through chelation and interfere with the beads to bind the cells. Actually, PBS instead of FACS buffer without EDTA is recommended for collecting cells during FACS sorting. After the cells have been mounted to the beads, the EDTA present in Antibody Buffer does not interfere with binding anymore.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>Poor recovery of MuSCs from the hind-limb muscles.</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>Ensure that the concentration of the collagenase I and dispase II is correct. Make a fresh batch of the collagenase I/Dispase II solution.</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>Failed/poor QC on CUT&amp;Tagged genomic DNA</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>While determing the optimal cycle number for library preparation, the QC of CUT&amp;Tagged genomic DNA can be established. If the Ct values of IgG samples is too early to that of the histone/transcription factor specific-antibody samples, it potentially indicates poor tagmentation in antibody-specific samples. This could mean, the antibody’s poor binding to the protein of interest. Ensure the antibody dilution is at optimal concentrations. Validate the binding by immunofluorescence before proceeding to CUT&amp;Tag with the antibody.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Amemiya, H.M., Kundaje, A., and Boyle, A.P. (2019). The ENCODE blacklist: identification of problematic regions of the genome. Sci Rep <i>9</i>, 9354. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref1">View at publisher</a></p>
+<p id="bib2">Babraham Bioinformatics (2019). FastQC - A Quality Control Tool for High Throughput Sequence Data. <a class="external-link" href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a></p>
+<p id="bib3">Benyoucef, A., Palii, C.G., Wang, C., Porter, C.J., Chu, A., Dai, F., Tremblay, V., Rakopoulos, P., Singh, K., Huang, S., et al. (2016). UTX inhibition as selective epigenetic therapy against TAL1-driven T-cell acute lymphoblastic leukemia. Genes Dev. <i>30</i>, 508-521. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref3">View at publisher</a></p>
+<p id="bib4">Blum, R., Vethantham, V., Bowman, C., Rudnicki, M., and Dynlacht, B.D. (2012). Genome-wide identification of enhancers in skeletal muscle: the role of MyoD1. Genes Dev. <i>26</i>, 2763-2779. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref4">View at publisher</a></p>
+<p id="bib5">Brand, M., Rampalli, S., Chaturvedi, C.P., and Dilworth, F.J. (2008). Analysis of epigenetic modifications of chromatin at specific gene loci by native chromatin immunoprecipitation (N-ChIP) of nucleosomes isolated using hydroxyapatite chromatography. Nat. Protoc. <i>3</i>, 398-409. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref5">View at publisher</a></p>
+<p id="bib27">Broad Institute (2012). Picard Tools (Broad Institute).</p>
+<p id="bib7">Ewels, P., Magnusson, M., Lundin, S., and Kaller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics <i>32</i>, 3047-3048. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref7">View at publisher</a></p>
+<p id="bib8">Faralli, H., Wang, C., Nakka, K., Benyoucef, A., Sebastian, S., Zhuang, L., Chu, A., Palii, C.G., Liu, C., Camellato, B., et al. (2016). UTX demethylase activity is required for satellite cell-mediated muscle regeneration. J. Clin. Invest. <i>126</i>, 1555-1565. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref8">View at publisher</a></p>
+<p id="bib9">Grzybowski, A.T., Shah, R.N., Richter, W.F., and Ruthenburg, A.J. (2019). Native internally calibrated chromatin immunoprecipitation for quantitative studies of histone post-translational modifications. Nat. Protoc. <i>14</i>, 3275-3302. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref9">View at publisher</a></p>
+<p id="bib10">Judson, R.N., Quarta, M., Oudhoff, M.J., Soliman, H., Yi, L., Chang, C.K., Loi, G., Vander Werff, R., Cait, A., Hamer, M., et al. (2018). Inhibition of Methyltransferase Setd7 Allows the In Vitro Expansion of Myogenic Stem Cells with Improved Therapeutic Potential. Cell Stem Cell <i>22</i>, 177-190 e177. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref10">View at publisher</a></p>
+<p id="bib11">Kaya-Okur, H.S., Wu, S.J., Codomo, C.A., Pledger, E.S., Bryson, T.D., Henikoff, J.G., Ahmad, K., and Henikoff, S. (2019). CUT&amp;Tag for efficient epigenomic profiling of small samples and single cells. Nat. Commun. <i>10</i>, 1930. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref11">View at publisher</a></p>
+<p id="bib12">Kent, W.J., Sugnet, C.W., Furey, T.S., Roskin, K.M., Pringle, T.H., Zahler, A.M., and Haussler, D. (2002). The human genome browser at UCSC. Genome Res. <i>12</i>, 996-1006. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref12">View at publisher</a></p>
+<p id="bib13">Langmead, B. and Salzberg, S.L. (2012). Fast gapped-read alignment with Bowtie 2. Nat. Methods <i>9</i>, 357-359. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref13">View at publisher</a></p>
+<p id="bib14">Li, H., Handsacker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R., and Group, G.P.D.P. (2009). The sequence alignment/map format and samtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref14">View at publisher</a></p>
+<p id="bib15">Liu, L., Charville, G.W., Cheung, T.H., Yoo, B., Santos, P.J., Schroeder, M., and Rando, T.A. (2018). Impaired notch signaling leads to a decrease in p53 activity and mitotic catastrophe in aged muscle stem cells. Cell Stem Cell <i>23</i>, 544-556 e544. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref15">View at publisher</a></p>
+<p id="bib16">Martin, M. (2011). Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet J. <i>17</i>, 10-12. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref16">View at publisher</a></p>
+<p id="bib17">Meers, M.P., Tenenbaum, D., and Henikoff, S. (2019). Peak calling by sparse enrichment analysis for CUT&amp;RUN chromatin profiling. Epigenetics Chromatin <i>12</i>, 42. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref17">View at publisher</a></p>
+<p id="bib18">Mousavi, K., Zare, H., Wang, A.H., and Sartorelli, V. (2012). Polycomb protein Ezh1 promotes RNA polymerase II elongation. Mol. Cell <i>45</i>, 255-262. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref18">View at publisher</a></p>
+<p id="bib19">O'Neill, L.P. and Turner, B.M. (2003). Immunoprecipitation of native chromatin: NChIP. Methods <i>31</i>, 76-82. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref19">View at publisher</a></p>
+<p id="bib20">Palii, C.G., Pasha, R., and Brand, M. (2011). Lentiviral-mediated knockdown during ex vivo erythropoiesis of human hematopoietic stem cells. J. Vis. Exp. <i>53</i>, 2813. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref20">View at publisher</a></p>
+<p id="bib21">Picelli, S., Bjorklund, A.K., Reinius, B., Sagasser, S., Winberg, G., and Sandberg, R. (2014). Tn5 transposase and tagmentation procedures for massively scaled sequencing projects. Genome Res. <i>24</i>, 2033-2040. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref21">View at publisher</a></p>
+<p id="bib22">Quinlan, A.R. and Hall, I.M. (2010). BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics <i>26</i>, 841-842. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref22">View at publisher</a></p>
+<p id="bib23">Ramirez, F., Ryan, D.P., Gruning, B., Bhardwaj, V., Kilpert, F., Richter, A.S., Heyne, S., Dundar, F., and Manke, T. (2016). deepTools2: a next generation web server for deep-sequencing data analysis. Nucleic Acids Res. <i>44</i>, W160–165. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref23">View at publisher</a></p>
+<p id="bib24">Robinson, D.C.L., Ritso, M., Nelson, G.M., Mokhtari, Z., Nakka, K., Bandukwala, H., Goldman, S.R., Park, P.J., Mounier, R., Chazaud, B., et al. (2021). Negative elongation factor regulates muscle progenitor expansion for efficient myofiber repair and stem cell pool repopulation. Dev. Cell <i>56</i>, 1014-1029. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref24">View at publisher</a></p>
+<p id="bib25">Viswanadham, V.V., Mahajan, V.S., and Pillai, S. (2019). A Bayesian approach for correcting Tn5 transposition bias in ATAC-seq footprinting. bioRxiv. <a class="external-link" href="https://doi.org/10.1101/525808">https://doi.org/10.1101/525808</a></p>
+<p id="bib26">Yu, G., Wang, L.G., and He, Q.Y. (2015). ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization. Bioinformatics <i>31</i>, 2382-2383. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00458-5/sref26">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, F. Jeffrey Dilworth (<a href="mailto:jdilworth@ohri.ca">jdilworth@ohri.ca</a>)</p>
+<h4>Materials availability</h4>
+<p>All materials mentioned in this protocol are commercially available.</p>
+<h4>Data and code availability</h4>
+<p>For data generated using this protocol refer to GEO accession: GSE150280</p>
+<p>A pipeline has been established in Github for users to analyze their CUT&amp;Tag sequencing data (<a href="https://github.com/dilworthlab/CnT_pipeline_snakemake">https://github.com/dilworthlab/CnT_pipeline_snakemake</a>).</p>
+<h3>Acknowledgments</h3>
+<p>We thank Dr. Steve Henikoff for providing an aliquot of the purified pA-Tn5 protein at the initial stages of this project. Work in the Blais, Brand, and Dilworth labs is supported by grants from the <a href="https://doi.org/10.13039/501100000024">CIHR</a> (MOP119458 to A.B., 201708IGH to M.B., and FDN-143330 to F.J.D.). Y.L. is the recipient of a doctoral scholarship from the China Scholarship Council.</p>
+<h3>Author contributions</h3>
+<p>All the authors contributed to discussions that led to the optimizations of conditions for CUT&amp;Tag on primary cells using antibodies directed against histones and transcription factors. Purifications of the pA-Tn5 were performed by T.O. Characterization of spike-in and PCR amplification of the libraries were performed by Y.L. and K.N. Library prep was optimized by P.G.-G. and O.N. Data analysis was performed by H.B.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

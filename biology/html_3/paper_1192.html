@@ -1,0 +1,861 @@
+<article>
+<section>
+<h1 id="header">Generation of auxin inducible degron (AID) knock-in cell lines for targeted protein degradation in mammalian cells</h1>
+<p><time datetime="2021-11-26">Published: November 26, 2021</time></p>
+<p>Bikash Adhikari,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a>,<a href="#cor1">*</a></sup> Ashwin Narain,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn2">4</a></sup> and Elmar Wolf<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#fn3">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Cancer Systems Biology Group, Theodor Boveri Institute, University of Würzburg, Am Hubland, 97074 Würzburg, Germany</p>
+<p id="aff2"><sup>2</sup>Mildred Scheel Early Career Center, University of Würzburg, Beethovenstraße 1A, 97080 Würzburg, Germany</p>
+<p id="fn1"><sup>3</sup>These authors contributed equally</p>
+<p id="fn2"><sup>4</sup>Technical contact</p>
+<p id="fn3"><sup>5</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:bikash.adhikari@biozentrum.uni-wuerzburg.de">bikash.adhikari@biozentrum.uni-wuerzburg.de</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:elmar.wolf@biozentrum.uni-wuerzburg.de">elmar.wolf@biozentrum.uni-wuerzburg.de</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100949">10.1016/j.xpro.2021.100949</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Targeted protein degradation using degrons, such as the mini-Auxin-inducible degron (mAID), has an advantage over genetic silencing/knockout. However, the efficiency of sgRNA, homologous recombination, tedious expansion, and screening single clones makes the process of tagging endogenous proteins long and laborious. This protocol describes a practical and economical way to obtain AID-tagged endogenous proteins using CRISPR/Cas9-mediated homology-directed repair (HDR). We use the generation of endogenously AID-tagged SPT6 in U2OS cells as an example but provide sufficient details for usage in other cell types.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref5">Narain et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>An efficient protocol to obtain mammalian cells with endogenously AID-tagged protein</li>
+<li>Detailed steps to design adjustable knock-in tag, sgRNA, HDR with SPT6-AID as example</li>
+<li>A practical way to select, expand and characterize clones with homozygous knock-in</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Auxin inducible degron (AID) system is used for the targeted protein degradation and can be applied to the mammalian cells (<a href="#bib7">Nishimura et al., 2009</a>). The AID system consists of a degron which is a substrate of the plant E3-ligase, TIR1; however, the interaction takes place only in presence of auxin. Hence, the prerequisite of the system is generation of cell lines expressing AIDtagged protein of interest (POI). Furthermore, to exploit the system for degradation of POI, stable expression of the E3-ligase TIR1 and addition of auxin (or auxin derivatives) are required. The major advantage of this system is acuteness. Also, the system is rapidly reversible. The mini-Auxin Inducible Degron (mAID) (<a href="#bib6">Natsume et al., 2016</a>) is relatively small 7 kDa degron which presumably causes less influence on function and structure of the POI when tagged.</p>
+<p>The protocol below describes generation of U2OS cells expressing SPT6 tagged C-terminally with the mAID. However, we have also used this protocol to generate several proteins tagged at N-terminal or C-terminus with different tags in various human and mouse cell lines.</p>
+<h3 id="sec1.1">Knock-in tag design</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The knock-in tag should be carefully designed before undertaking the protocol for cell line generation. Different types of tags (degrons, epitopes or fluorescent proteins) and selection markers (fluorescent or antibiotic resistance) can be used. The design depends on the downstream application of the generated cell line.</p>
+<p>The protocol below describes the generation of knock-in cell line using Auxin Inducible Degron (AID) as the tag of interest and Blasticidin as the selection marker.</p>
+<ol>
+<li>For easy modification of the homology arms for different protein of interest, tag, and selection markers, include various restriction sites for a reusable HDR (Homology Directed Repair) template (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Map of HDR templates</div>
+<p>Map for (A) N-terminal AID tagging and (B) C-terminal AID tagging. RS: Restriction digestion site, LHA: left homology arm, P2A: Self cleaving peptide, AID tag (including V5 or HA epitope), RHA: right homology arm</p>
+</figcaption>
+</figure>
+</li>
+<li>Design and order a double stranded DNA fragment containing the above-mentioned features as gBlocks Gene Fragments (IDT) (<a href="#fig2">Figure 2</a>). This sequence of the knock-in cassette used in <a href="#bib5">Narain et al. (2021)</a> for C-terminal AID tagging of SPT6 and the complete gBlock for N-terminal AID tagging are listed in the key resources table (cAID_knock-in_cassette and nAID_knock-in_gBlock).
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Map of knock-in cassette</div>
+<p>Map for knock-in cassette along with the restriction enzymes for Homology arm insertion for C-terminal AID tagging.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<h3 id="sec1.2">Retrieving the genomic sequence</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<ol start="3">
+<li>For the design of the single guide RNA (sgRNA) and homology arms (HAs), genomic sequence of the gene of interest with upstream and downstream 1000 bp is required which can be retrieved by UCSC genome browser (<a href="#fig3">Figure 3</a>).
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. Representative screenshots from the UCSC browser</div>
+<p>Screenshots from UCSC browser for retrieving genomic sequence of SUPT6H gene.</p>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Open UCSC genome browser: <a href="http://www.genome.ucsc.edu/cgi-bin/hgGateway">http://www.genome.ucsc.edu/cgi-bin/hgGateway</a>.</li>
+<li>Select the genome and type in the gene of interest in the box ‘Position-Search Term’.</li>
+<li>Right click on the correct isoform and select ‘Show details for SUPT6H’.</li>
+<li>In the ‘Sequence and Links to Tools and Databases’ select ‘Genomic Sequence’.</li>
+<li>In ‘Sequence Retrieval Region Options’ select also upstream and downstream 1000 bp.</li>
+<li>Use SnapGene viewer or ApE for the visualization of the genome and annotate it.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.3">Designing the sgRNAs</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The CRISPR-Cas9 machinery functions by cutting the genomic region of interest which is directed by guide RNA. sgRNA should be designed for the specific terminus around the START site for N-terminal tagging or around the STOP site for C-terminal tagging. The sgRNA must be designed in such a way that the sgRNA sequence is followed by a PAM site, i.e., NGG for sense strand or CCN for antisense strand in the genome. The cut is made 3 bp upstream the PAM site by Cas9 leading to the possibility of non-homologous end joining (NHEJ) or HDR.</p>
+<p>sgRNA can be designed using various online tools like ChopChop (<a href="https://chopchop.cbu.uib.no">https://chopchop.cbu.uib.no</a>), CRISPick (<a href="https://portals.broadinstitute.org/gppx/crispick/public">https://portals.broadinstitute.org/gppx/crispick/public</a>), Custom Alt-R® CRISPR-Cas9 guide RNA (<a href="https://eu.idtdna.com/site/order/designtool/index/CRISPR_CUSTOM">https://eu.idtdna.com/site/order/designtool/index/CRISPR_CUSTOM</a>), etc. We design the sgRNAs manually using the SnapGene Viewer, however for stringency, online tools are recommended.</p>
+<ol start="4">
+<li>Design sgRNA manually using obtained genomic sequence in the sense or antisense direction.
+<ol type="a">
+<li>For sense sgRNA: search for <b>NGG</b> sites near the START or STOP codon. The nearer, the better. However, make sure that the sgRNA does not make a cut in your HDR template, but only binds to the genome. After finding the appropriate PAM site, select 20 bp upstream of the PAM site. This 20bp sequence is the required sgRNA (<a href="#fig4">Figure 4</a>).
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Representative screenshot of SnapGene Viewer showing PAM site</div>
+<p>PAM site towards the stop codon of SUPT6H gene. The highlighted sgRNA (blue) is sgRNA1 used for C-terminal AID knock-in and PAM site (green) is the PAM site for sgRNA1.</p>
+</figcaption>
+</figure>
+</li>
+<li>Similarly, design antisense sgRNA when the PAM site is in the antisense strand and in this case PAM site is <b>CCN.</b> This PAM site is followed by the sgRNA sequence (20 bp).</li>
+<li>Once the 20 bp sgRNA sequence is obtained, check the oligo off targets using BLAT (<a href="https://genome.ucsc.edu/cgi-bin/hgBlat">https://genome.ucsc.edu/cgi-bin/hgBlat</a>) or any other online tool. Select three as the number of mismatches to find the off target. If no off-target binding is observed in BLAT, acquire the complementary sequence to it.</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> Performing BLAT search will only identify off targets with perfect match (for 20 bp). However, sgRNA can work with 1–2 mismatches, that is why it is preferable to use online tools for sgRNA design.</div>
+<ol start="5">
+<li>Design the sgRNA using the online tool by taking 100 bp upstream and downstream of the START or STOP codon. Choose two sgRNAs that are closest to the START site in case of N-terminal or STOP site in case of C-terminal tagging and have the lowest predicted off-target score.</li>
+<li>Confirm and annotate the sgRNA location on the SnapGene viewer and check whether it is a sense or antisense sgRNA as this step is important for adding the correct overhang in the next step.</li>
+<li>Add overhangs to the sgRNA sequence and the complementary sequence (which is required for ligation into PX458; Addgene: #48138) to get the top-oligo and bottom-oligo.</li>
+</ol>
+<p>Top oligo: 5′- CACCGNNNNNNNNNNNNNNNNNNNN – 3′</p>
+<p>Bottom oligo: 3′- CNNNNNNNNNNNNNNNNNNNNCAAA – 5′</p>
+<ol start="8">
+<li>Design two sgRNAs for each terminal knock-in and order the oligos (top and bottom) in correct orientation as normal primers. The top and bottom oligos for the C-terminal AID tagging of SPT6 are listed in key resources table (cSPT6_sg1_T, cSPT6_sg1_B, cSPT6_sg2_T and cSPT6_sg2_B).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> The sgRNA sequence and hence the ordered oligo should not contain the PAM site. It only contains 20 bp upstream of the PAM site.</div>
+<h3 id="sec1.4">Designing the homology arms and screening primers</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1 day</div>
+<p>The homology arms (HA) must be designed for each protein of interest individually. We have used HA which are of lengths 400–800 bp downstream/upstream after/before the START codon (N-terminal) or downstream/upstream after/before the STOP codon (C-terminal).</p>
+<ol start="9">
+<li>Design the primers to amplify the HA. As the HA will be cloned into the entry vector, see ‘Knock-in tag design’, it is important to check which restriction sites have been used. Keeping the restriction digestion and downstream cloning in mind, adjust the length of HA such that none of the restriction enzymes to be used will make a cut inside the HA.</li>
+<li>Use Primer-BLAST to design specific primers or perform an in-silico PCR beforehand with the UCSC browser and make a BLAT search to check the off-target. Add the respective restriction sites as overhang. For better results, make sure that the primers have similar Tm values. The primers used for the HA amplification of C-terminal AID tagging of SPT6 are listed in the key resources table (cSPT6_LHA_AgeI_F, cSPT6_LHC_EcoRI_R, cSPT6_RHA_BamHI_F and cSPT6_RHA_SpeI_R).</li>
+<li>If the PAM site and the sgRNA sequence will be still present after the knock-in event, then mutate the PAM site (silent) in your primer (if possible) to avoid recognition of sgRNA sequence by CRISPR/Cas9 system after knock-in event. If the PAM site is further away from the knock-in site and can’t be mutated in your primer used for HA amplification, perform mutagenesis PCR of your homology arm to mutate the PAM site. Alternatively, the homology arms with the required mutation can be ordered as gBlocks from IDT.</li>
+<li>To check the knock-in event, design 2 sets of screening primers
+<ol type="a">
+<li>Both forward and reverse primers outside the HA and which would eventually result in two different product sizes for knock-in and no knock-in (or wild type) events (<a href="#fig5">Figure 5</a>A)
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Design of screening primers for knock-in events</div>
+<p>(A) Primer set 1 where both binds outside HA and (B) Primer set 2 where one primer binds to AID tag and other outside the HA.</p>
+</figcaption>
+</figure>
+</li>
+<li>One primer is in the knock-in tag and the other in the genome but outside the HA. (<a href="#fig5">Figure 5</a>B).</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.5">Antibiotic kill curve</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7–10 days</div>
+<p>To determine the concentration of antibiotics required for selection, perform antibiotic kill curve for your cell line and your antibiotic selection marker. For this add increasing amount of antibiotics to your cells, replace the medium (with antibiotics) every 48 h and monitor the cell death for 7–10 days. Finally, use the minimum concentration of the antibiotics that can kill all the cells for the selection. For U2OS, Blasticidin works at 7.5 μg/mL.</p>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Chemicals, peptides, and recombinant proteins</td>
+</tr>
+<tr>
+<td>DMEM, high glucose, pyruvate</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#41966052</td>
+</tr>
+<tr>
+<td>Opti-MEM I Reduced Serum Media</td>
+<td>Thermo Fischer Scientific</td>
+<td>Cat#31985047</td>
+</tr>
+<tr>
+<td>Fetal Bovine Serum Advanced</td>
+<td>Capricorn Scientific GmbH</td>
+<td>Cat#FBS-11A</td>
+</tr>
+<tr>
+<td>Penicillin-Streptomycin</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#P4333</td>
+</tr>
+<tr>
+<td>Blasticidin</td>
+<td>InvivoGen</td>
+<td>Cat#ant-bl</td>
+</tr>
+<tr>
+<td>SpeI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3133L</td>
+</tr>
+<tr>
+<td>MluI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3198L</td>
+</tr>
+<tr>
+<td>AgeI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3552L</td>
+</tr>
+<tr>
+<td>BbsI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3539L</td>
+</tr>
+<tr>
+<td>EcoRI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3101L</td>
+</tr>
+<tr>
+<td>BamHI-HF</td>
+<td>New England BioLabs</td>
+<td>Cat#R3136L</td>
+</tr>
+<tr>
+<td>PEI (Polyethyleneimine)</td>
+<td>Sigma-Aldrich</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Vaseline petroleum jelly</td>
+<td>Unilever</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Cloning rings</td>
+<td>Made at University workshop</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>T4 Polynucleotide Kinase</td>
+<td>New England BioLabs</td>
+<td>Cat#M0201S</td>
+</tr>
+<tr>
+<td>T4 DNA Ligase</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#EL0011</td>
+</tr>
+<tr>
+<td>Protease Inhibitor Cocktail</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#P8340</td>
+</tr>
+<tr>
+<td>Phosphatase Inhibitor Cocktail 2</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#P5726</td>
+</tr>
+<tr>
+<td>Phosphatase Inhibitor Cocktail 3</td>
+<td>Sigma-Aldrich</td>
+<td>Cat#P0044</td>
+</tr>
+<tr>
+<td>Immobilon-FL, PVDF Membran</td>
+<td>Merck Millipore</td>
+<td>Cat#IPFL00010</td>
+</tr>
+<tr>
+<td>GlycoBlue Coprecipitant (15 mg/mL)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#AM9516</td>
+</tr>
+<tr>
+<td colspan="3">Critical commercial assays</td>
+</tr>
+<tr>
+<td>Phusion High-Fidelity DNA Polymerase (2 U/μL)</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#F530L</td>
+</tr>
+<tr>
+<td>CloneJET PCR Cloning Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat#K1231</td>
+</tr>
+<tr>
+<td>PureLink HiPure Plasmid Maxiprep Kit</td>
+<td>Thermo Fisher Scientific</td>
+<td>Cat# K210007</td>
+</tr>
+<tr>
+<td>Immobilon Western Chemiluminescent HRP Substrate</td>
+<td>Merck Millipore</td>
+<td>Cat#WBKLS0500</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: Cell lines</td>
+</tr>
+<tr>
+<td>U2OS</td>
+<td>ATCC</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>U2OS<sup>SPT6-CAID</sup>
+</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Oligonucleotides</td>
+</tr>
+<tr>
+<td>cSPT6_LHA_AgeI_F: CGCACCGGTCTCTGAGGGCCCTGACCACA</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_LHA_EcoRI_R: CGGAATTCCCGATCCATCTCGTCCAGGA</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_RHA_BamHI_F: CGGGATCCGGGGCCTGCTCCTCGGACTC</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_RHA_SpeI_R: GGACTAGTAGGGTCACCCGGCTGGGAAG</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_2055_F: GATCTTTGGAACCCGCAAGC</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_2055_R: TGGGGCAGGAACACCTTACT</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_sg1_T: CACCGTGGACGAGATGGATCGGTAG</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_sg1_B: AAACCTACCGATCCATCTCGTCCAC</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_sg2_T: CACCGCCTGGACGAGATGGATCGGT</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cSPT6_sg2_B: AAACACCGATCCATCTCGTCCAGGC</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>cAID_knock-in_cassette (EcoRI-linker-AID-AfeI-V5-P2A-MluI-Blast<sup>R</sup>-BamHI):GAATTCGGAGGTGGATCGGGAGGTGGATCGCCTAAAGATCCAGCCAAACCTCCGGCCAAGGCACAAGTTGTGGGATGGCCACCAGTGAGATCATACCGGAAGAACGTGATGGTTTCCTGCCAAAAATCAAGCGGTGGCCCGGAGGCGGCGGCGTTCGTGAAGAGCGCTGGGAAGCCCATCCCCAACCCCCTGCTGGGCCTGGACAGCACGGGCAGCGGCGCCACCAACTTCAGCCTGCTGAAGCAGGCCGGCGACGTGGAGGAGAACCCCGGCCCCACGCGTATGAAGACCTTCAACATCTCTCAGCAGGACCTTGAGCTGGTGGAAGTTGCCACTGAGAAAATCACCATGCTCTATGAGGACAACAAGCACCATGTTGGTGCTGCCATCAGGACCAAGACAGGAGAAATCATCTCTGCTGTCCACATTGAAGCCTACATTGGCAGGGTCACTGTGTGTGCAGAGGCCATTGCCATTGGGTCTGCAGTCTCCAATGGGCAGAAGGACTTTGACACCATTGTGGCTGTGAGGCACCCCTACAGTGATGAGGTGGACAGGTCCATCAGAGTGGTGTCCCCCTGTGGCATGTGCAGGGAGCTCATCTCAGACTATGCCCCTGATTGCTTTGTTCTGATTGAGATGAATGGCAAGCTGGTCAAGACAACCATTGAGGAGCTGATTCCACTGAAATACACCAGAAACTGAGGATCC</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>nAID_knock-in_gBlock (AgeI-MluI-Blast<sup>R</sup>-BamHI-P2A-V5-AfeI-AID-linker-EcoRI-SpeI): ACCGGTACGCGTGCCACCATGAAGACCTTCAACATCTCTCAGCAGGACCTTGAGCTGGTGGAAGTTGCCACTGAGAAAATCACCATGCTCTATGAGGACAACAAGCACCATGTTGGTGCTGCCATCAGGACCAAGACAGGAGAAATCATCTCTGCTGTCCACATTGAAGCCTACATTGGCAGGGTCACTGTGTGTGCAGAGGCCATTGCCATTGGGTCTGCAGTCTCCAATGGGCAGAAGGACTTTGACACCATTGTGGCTGTGAGGCACCCCTACAGTGATGAGGTGGACAGGTCCATCAGAGTGGTGTCCCCCTGTGGCATGTGCAGGGAGCTCATCTCAGACTATGCCCCTGATTGCTTTGTTCTGATTGAGATGAATGGCAAGCTGGTCAAGACAACCATTGAGGAGCTGATTCCACTGAAATACACCAGAAACGGATCCGGCAGCGGCGCCACCAACTTCAGCCTGCTGAAGCAGGCCGGCGACGTGGAGGAGAACCCCGGCCCCATGGGGAAGCCCATCCCCAACCCCCTGCTGGGCCTGGACAGCACGAGCGCTCCTAAAGATCCAGCCAAACCTCCGGCCAAGGCACAAGTTGTGGGATGGCCACCAGTGAGATCATACCGGAAGAACGTGATGGTTTCCTGCCAAAAATCAAGCGGTGGCCCGGAGGCGGCGGCGTTCGTGAAGGGAGGTGGATCGGGAGGTGGATCGGAATTCACTAGT</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Recombinant DNA</td>
+</tr>
+<tr>
+<td>pJET-SPT6_HDR</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pJET-nAID_knock-in_EV</td>
+<td>This paper</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>pSpCas9(BB)-2A-GFP (PX458)</td>
+<td>Zhang Lab</td>
+<td>Addgene #48138</td>
+</tr>
+<tr>
+<td>PX458_SPT6_sgR1</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>PX458_SPT6_sgR2</td>
+<td><a href="#bib5">Narain et al. (2021)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>A plasmid Editor</td>
+<td><a href="https://jorgensen.biology.utah.edu/wayned/ape/">https://jorgensen.biology.utah.edu/wayned/ape/</a></td>
+<td>RRID:SCR_014266; <a href="https://jorgensen.biology.utah.edu/wayned/ape/">https://jorgensen.biology.utah.edu/wayned/ape/</a>
+</td>
+</tr>
+<tr>
+<td>SnapGene Viewer</td>
+<td>SnapGene</td>
+<td>RRID:SCR_015053; <a href="https://www.snapgene.com/snapgene-viewer/">https://www.snapgene.com/snapgene-viewer/</a>
+</td>
+</tr>
+<tr>
+<td>ImageJ v1.51</td>
+<td>(<a href="#bib10">Schneider et al., 2012</a>)</td>
+<td>RRID:SCR_003070; <a href="https://imagej.net/ImageJ">https://imagej.net/ImageJ</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Cloning</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 14 days</div>
+<h4 id="sec2.1.1">sgRNA cloning</h4>
+<p>We use pSpCas9(BB)-2A-GFP (PX458; Addgene: #48138) for sgRNA cloning but any Cas9-sgRNA vectors can be used. PX458 has Cas9 fused to GFP which is useful for the estimation of the transfection efficiency.</p>
+<ol>
+<li>Vector digestion. Prepare the following reaction in an Eppendorf tube and incubate the reaction for 4 h at 37°C.</li>
+</ol>
+<table id="undtbl1">
+<thead>
+<tr>
+<th>Component</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PX458 (1 mg/mL)</td>
+<td>10 μL</td>
+</tr>
+<tr>
+<td>10× buffer (CutSmart)</td>
+<td>5 μL</td>
+</tr>
+<tr>
+<td>BbsI-HF</td>
+<td>3 μL</td>
+</tr>
+<tr>
+<td>ddH2O</td>
+<td>32 μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>50 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Purify the digested vector after electrophoresis on 1% agarose gel using GeneJET Gel Extraction Kit (ThermoFischer Scientific) and elute in at least 25 μL elution buffer.
+<ol type="a">
+<li>Run small amount of undigested PX458 vector alongside the digested vector as comparison (<a href="#fig6">Figure 6</a>).
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Agarose gel image of PX458</div>
+<p>Agarose gel image of undigested (left) and BbsI digested (right) PX458.</p>
+</figcaption>
+</figure>
+</li>
+<li>Measure the concentration of the digested vector and dilute to 100 ng/μL.</li>
+</ol>
+</li>
+<li>sgRNA top/bottom oligos hybridization</li>
+</ol>
+<p>Set up the following reaction in 200 μL PCR tube, and incubate at 95°C for 5 min and then ramp down to 25°C at 5°C/ min. As controls, use only one oligo as a negative control (sgRNA hybridization) and water for the re-ligation control (PX458).</p>
+<table id="undtbl2">
+<thead>
+<tr>
+<th>Component</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Top oligo (100 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Bottom oligo (100 μM)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>10× T4 ligase buffer (NEB or Thermo)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>7 μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>10 μL</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> In case the vector is dephosphorylated, phosphorylate the oligos in the same PCR tube by addition of 0.5 μL T4 PNK (NEB) and incubation at 37°C for 30 minutes before heating it at 95°C for 5 minutes. For phosphorylation, use only T4 ligation buffer, not the PNK buffer supplied with T4 PNK enzyme. This is because the PNK buffer doesn’t contain ATP.</div>
+<ol start="4">
+<li>Dilute the hybridized sgRNA 1:200 in ddH2O.</li>
+<li>Ligation and transformation</li>
+</ol>
+<p>Prepare the following reaction, incubate the tube for 60 min at 22°C and then for 10 min at 65°C for heat inactivation of the ligase. Use re-ligation and single oligo hybrid as negative controls.</p>
+<table id="undtbl3">
+<thead>
+<tr>
+<th>Component</th>
+<th>Volume (μL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digested PX458 (100 ng)</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Hybridized sgRNA (1:200)</td>
+<td>3 μL</td>
+</tr>
+<tr>
+<td>10× T4 ligase buffer</td>
+<td>2 μL</td>
+</tr>
+<tr>
+<td>T4 ligase</td>
+<td>1 μL</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>13 μL</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>20 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="6">
+<li>Transformation
+<ol type="a">
+<li>Add 5 μl ligation mixture to 50 μL <i>E. coli</i> XL1 blue strain or any other competent <i>E. coli</i> strain.</li>
+<li>Incubate for 15 min on ice.</li>
+<li>Heat shock the cells at 42°C for 45 s, followed by incubation on ice for 3 min.</li>
+<li>Add 500 μL LB medium and regenerate for 30 min at 37°C with shaking.</li>
+<li>Spin down the cells at 800 × g for 2 min and resuspend in 100 μL of LB medium.</li>
+<li>Plate the cells in ampicillin or carbenicillin containing agar plates, and incubate at 37°C for 16–18 h .</li>
+</ol>
+</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Count the colony numbers. Usually, the ratio between colonies in the sgRNA ligation plate and control plate is &gt;50. If the desired ratio is not observed repeat the hybridization and/or ligation again.</div>
+<ol start="7">
+<li>Pick 3–4 single colonies, carry out plasmid extraction (miniprep) and send the plasmid for sequencing (using ASK-FN2 as primer) to check the presence of sgRNA.</li>
+<li>Perform maxiprep using PureLink™ HiPure Plasmid Maxiprep Kit or other kit according to manufacturer protocol to obtain the sgRNA plasmid.</li>
+</ol>
+<h4 id="sec2.1.2">HDR plasmid cloning</h4>
+<ol start="9">
+<li>Clone the gBlock ordered into pJET1.2/blunt vector using CloneJET PCR Cloning Kit (Thermo Scientific) using the manufacturer protocol to generate the entry vector.</li>
+</ol>
+<ol start="10">
+<li>Extract genomic DNA from the cell line of interest.
+<ol type="a">
+<li>Prepare lysis buffer for genomic DNA extraction. The buffer can be stored at 25°C, for two years.
+<table id="undtbl4">
+<thead>
+<tr>
+<th>Component</th>
+<th>Final concentration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NaCl</td>
+<td>100 mM</td>
+</tr>
+<tr>
+<td>EDTA</td>
+<td>10 mM</td>
+</tr>
+<tr>
+<td>SDS</td>
+<td>0.5 %</td>
+</tr>
+<tr>
+<td>Tris-HCl (pH 8.0)</td>
+<td>10 mM</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>as required</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Mix the cells with 500 μL lysis buffer in Eppendorf tube and incubate at 37°C for 2 h.</li>
+<li>Add 250 μL saturated saline solution, vortex for approximately 20 s and incubate on ice for 20 min.</li>
+<li>Centrifuge for 10 min at 5000× g at 4°C.</li>
+<li>Transfer the supernatant into new tube, add 10 μg Glycogen and 650 μL isopropanol, and incubate for 15 min at 20°C–22°C.</li>
+<li>Centrifuge at 14000× g for 10 min at 4°C and discard the supernatant.</li>
+<li>Wash the pellet with 70 % ethanol.</li>
+<li>Air dry the pellet and dissolve it in ddH2O to obtain the genomic DNA.
+<div class="note">
+<span class="note-title">Note:</span> Alternatively, any kit can be used for genomic DNA extraction.</div>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li>Perform PCR using the primers for the amplification of the Homology arm (right, RHA and left, LHA) using genomic DNA as a template.</li>
+<li>Clone the amplified fragments in pJET1.2, prepare minis and send for sequencing to check if the HA is correctly amplified.</li>
+<li>Digest the entry vector to remove the knock-in cassette (tag-selection marker) using RS3/RS4 and to prepare the vector backbone using RS1/RS5.</li>
+<li>Digest the LHA and RHA with correct set of restriction enzymes from the mini-prep plasmid and clone into the entry vector using a triple ligation (molar ratio RHA: LHA: knock-in cassette: empty vector backbone = 4: 4: 3: 1) with 50 ng of entry vector backbone.</li>
+<li>Transform the ligated mixture into competent <i>E. coli</i> cells.</li>
+<li>Inoculate minis for 5–6 colonies, perform miniprep and digest them to check the inserts. Send few minis to confirm the sequence (using pJET1.2-F and pJET1.2-R as primers).</li>
+<li>Finally inoculate the mini with correct sequence for maxi and perform maxiprep to obtain the HDR plasmid.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> It has been observed that the HDR plasmids could have different sequence to the one found on GenBank or UCSC browser, but as long as you observe the same mutations in more than one mini’s clones (pJET-HDR) and it is not leading to missense/non-sense mutations in the CDS of the protein of interest, it might be a natural variation to the UCSC sequence for that particular cell line.</div>
+<h3 id="sec2.2">Transfection and selection of single cell clones</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 21 days</div>
+<p>After obtaining the required plasmids, carry out transfection.</p>
+<ol start="18">
+<li>Seed 1–1.5× 10<sup>6</sup> cells per 10 cm or 1–2× 10<sup>5</sup> cells per 6 well plate evening before transfection. The cell numbers might vary with cell type. These above numbers are for U2OS cells</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> As the cells will not be split until 72 hours post transfection, cell seeding must be optimized accordingly for other cell types.</div>
+<ol start="19">
+<li>Prepare the following DNA and polyethyleneimine (PEI) mixture in two separate tubes for each of the following transfection with the DNA amount required for 10 cm dish.
+<ol type="a">
+<li>Positive selection control: Plasmid with resistance marker (Blasticidin in our case)</li>
+<li>Knock-in mix for each sgRNA: 3 μg PX458 (sgRNA-plasmid) + 9 μg (HDR plasmid)</li>
+<li>CRISPR control (to check random cutting): 5 μg PX458 (sgRNA-plasmid)</li>
+<li>HDR control (to check random integration): 5 μg HDR plasmid</li>
+</ol>
+</li>
+</ol>
+<table id="undtbl5">
+<thead>
+<tr>
+<th> </th>
+<th colspan="2">DNA-mix</th>
+<th colspan="2">PEI-mix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> </td>
+<td>10 cm dish</td>
+<td>6-well plate</td>
+<td>10 cm dish</td>
+<td>6-well plate</td>
+</tr>
+<tr>
+<td>OptiMEM</td>
+<td>700 μL</td>
+<td>140 μL</td>
+<td>700 μL</td>
+<td>140 μL</td>
+</tr>
+<tr>
+<td>DNA</td>
+<td>5 μg (single) or 12 μg (double)</td>
+<td>3 μg (single) or 6 μg (double)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PEI</td>
+<td>-</td>
+<td>-</td>
+<td>30 μL</td>
+<td>6 μL</td>
+</tr>
+</tbody>
+</table>
+<ol start="20">
+<li>Vortex both mixtures, incubate for 10 min, add DNA-Mix to PEI-Mix dropwise, mix by pipetting and incubate for 20 min.</li>
+<li>Remove the medium from the cells, wash the cells twice with PBS and add 6 mL (10 cm dish) or 1.2 mL (6-well plate) transfection media (supplemented with 2% FCS, NO antibiotics). Finally add the DNA-PEI-Mix dropwise to the cells.</li>
+<li>Wash the cells 2× with PBS after 6 h of transfection and add 10 mL (10 cm dish) or 2 mL (6-well plate) full medium (supplemented with 10% FCS, 1% Pen/Strep).</li>
+<li>Monitor the cell confluency and the GFP expression (GFP present in PX458) to judge the transfection efficiency (<a href="#fig7">Figure 7</a>) over the next days.
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Transfection efficiency of U2OS cells</div>
+<p>GFP expression in U2OS cells 51 h after transfection of the PX458 plasmid containing sgRNA along with HDR plasmid. HDR only plasmid is a control. Scale bar: 200 μm.</p>
+</figcaption>
+</figure>
+</li>
+<li>After 72 h of transfection, select the cells. For selection, trypsinize the cells and plate them in 15 cm dish with 20 mL media containing 7.5 μg/mL Blasticidin for all. Divide knock-in cells i.e., with sgRNA-plasmid and HDR into 5 plates serial diluting with various ratios (1:1000, 1:500, 1:100, 1:20, remaining cells for 10 cm dish or 1:500, 1:200, 1:50, and remaining cells for 6-well plate) into 15 cm dish with Blasticidin. For controls, do not prepare serial dilution plate, instead transfer all cells to 15 cm dish.</li>
+<li>Refresh the media with antibiotics every 48 h. Check the negative control and continue selection until all negative control cells are dead. For U2OS with Blasticidin 6 days selection works.</li>
+<li>When negative selection controls are dead, wash the knock-in cells with PBS (do it slowly to avoid cell detachment and mixing of clones) and put fresh medium and change medium as frequently as you would do in normal cell culture.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> In the plates with knock-in cells, a lot of cells will die, which is normal and expected.</div>
+<ol start="27">
+<li>Once single colonies are observed, they should be allowed to grow and reach a size where they are visible by naked eyes by looking from bottom of the plate (usually within 10 days).</li>
+</ol>
+<h3 id="sec2.3">Single clone picking and expansion</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7 days</div>
+<ol start="28">
+<li>Once the single clones are visible with naked eyes, transfer single colonies to 24 well plates using cloning rings. Mark each colony with a marker at the bottom of the plate and confirm by seeing under microscope. Usually from one 15 cm, do not mark more than 40 clones due to time constraints because the colonies dry very fast (see next steps).</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> Only mark the colonies separated by approximately 0.5–1 cm from each other. If the colonies are near to each other, there is chance of picking both colonies into same well. Also, colonies are better visible if you remove the media, wash once with PBS, and leave cells in PBS. It will be easier to mark the colonies.</div>
+<ol start="29">
+<li>Remove the medium and wash with PBS. Take autoclaved cloning ring using sterilized forceps (with 70% ethanol followed by flaming it with Bunsen-burner) and put in sterilized Vaseline so that the bottom of the ring is coated with thin layer of Vaseline.</li>
+<li>Take the cloning ring and carefully place it so that the colony is in the center of the ring (<a href="#fig8">Figure 8</a>). Use another cloning ring to press the cloning ring downwards so that it seals with the bottom of the plate. Repeat the same for all colonies.
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Single clone picking using cloning rings</div>
+<p>(A) Representative image for picking single clone, (B) cloning ring, and (C) cloning rings placed with colony in center for trypsinization.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> We used self-made metal cloning ring, but it can also be bought from different vendors (Fischer scientific; catalog number 09-552-20).</div>
+<ol start="31">
+<li>Once all cloning rings are placed, add 50 μL of trypsin in each and incubate for 20 min at 20°C–22°C or at 37°C.</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> U2OS cells tolerate 20 minutes in trypsin. However, for other cell lines use shorter incubation of 5–8 minutes or precheck the trypsinization time for your cell type.</div>
+<ol start="32">
+<li>During trypsinization, prepare 24 well plate with 1 mL medium each.</li>
+<li>Take 100 μL media from each well and add on the cloning rings with trypsinized cells to resuspend them.</li>
+<li>Transfer the cell suspension with trypsin into the 24 well plate and label them properly. Repeat the same for all.</li>
+<li>Leave the cells to attach 16–18 h and then change the medium next day.</li>
+<li>Once the cells reach confluency, split them, and take about 0.8× for genotype screening and the rest for maintenance.</li>
+</ol>
+<h3 id="sec2.4">Identification of positive clones</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 7 days</div>
+<ol start="37">
+<li>Extract the genomic DNA from the cells and carryout the PCR using the screening primers with genomic DNA as template for 28 cycles. Homozygous, heterozygous and wildtype or no knock-in clones should have one, two and one bands respectively (<a href="#fig9">Figure 9</a>).
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Screening of the knock-in clones using the screening primers</div>
+<p>Screening of clones using screening primers set 1 (cSPT6_2055_F and cSPT6_2055_R). The PCR products of heterozygous, homozygous, wild type or no knock-in clones is labeled.</p>
+</figcaption>
+</figure>
+</li>
+<li>Check the correct integration by Sanger sequencing the integration site.
+<ol type="a">
+<li>Select at least two clones which showed homozygous band in screening PCR for sequencing.</li>
+<li>Gel extract and clone the PCR fragment into pJET1.2 using kit, perform miniprep and sequence using pJET1.2-F and pJET1.2-R.</li>
+</ol>
+</li>
+<li>Check the clones, not only by the sequence, but carefully observe the chromatogram (<a href="#fig10">Figure 10</a>) for any small peaks which might be worrisome. Make sure to check all the junctions.
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1192-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Chromatogram from Sanger sequencing</div>
+<p>Chromatogram of the homozygous U2OS C-terminally tagged SPT6 with AID using the screening primer set 1 (shown in <a href="#bib5">Narain et al., 2021</a> as chromatogram for U2OS<sup>SPT6-AID-C1</sup>).</p>
+</figcaption>
+</figure>
+</li>
+<li>Finally, for the clones with correct sequence at the insertion site, extract protein and perform western blots.
+<ol type="a">
+<li>Incubate the whole membrane with preferentially 2 antibodies recognizing N- and C- terminal.</li>
+<li>Additionally, an antibody recognizing the epitope introduced during knock-in can also be used. It is important to see if there are any truncated proteins or random products.</li>
+</ol>
+</li>
+</ol>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>We have obtained efficiency of 5:1 (ligation vs religation) using the triple-ligation strategy for cloning the HDR plasmid.</p>
+<p>For sgRNA cloning, screening 2–3 colonies has always been enough for us to obtain plasmid with the sgRNA.</p>
+<p>Transfection efficiency of PX458 (alone or with HDR) using PEI in U2OS has been 25%–30% whereas for GFP control usually more than 60%.</p>
+<p>In case of SPT6-AID knock-in, 22 clones were picked, out of which 18 were proliferating normally. Out of the 18 clones, 10 clones were observed to have homozygous knock-in, and 2 heterozygous. The number of colonies screened and picked can vary with cell line and protein of interest, however, for us, usually picking 50 colonies are enough.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>Insertion of any tag might lead to altering the functionality and/or expression of the protein of interest (<a href="#bib3">Majorek et al., 2014</a>; <a href="#bib8">Turkewitz et al., 2021</a>). In such cases, there is a high chance of observing heterozygous knock-in clones. For such cases, we recommend one to try using a second selection marker, however, if the results are still the same, the tagging might be lethal. Furthermore, for smaller proteins, one can increase the size of the linker for the tag (<a href="#bib9">van Rosmalen et al., 2017</a>).</p>
+<p>Expression of a selection marker and a protein of interest as a double-cystronic sequence (using P2A) can be considered a limitation as self-cleavable peptides are not 100% efficient and some are expressed as a fusion which may interfere with the downstream applications. Further, there is possibility of reduction in expression of a longer construct. So, as an alternative a marker under a separate promoter can be used (<a href="#bib1">Amen and Kaganovich, 2020</a>).</p>
+<p>There is the possibility of encountering difficulty in amplifying the HA from the genomic DNA. In such cases, we recommend that one can order the HA as double stranded DNA fragments (gBlock) and proceed with triple ligation as described above.</p>
+<p>We have experienced promising results using PEI as transfection reagent. However, it is also not very efficient for all cell lines and is toxic if the cells are exposed to it for too long (<a href="#bib2">Florea et al., 2002</a>; <a href="#bib4">Moghimi et al., 2005</a>). Thus, one can always switch to commercial reagents such as Lipofectamine2000.</p>
+<p>Our protocol does not consider the ploidy of the cell line used. There is possibility that the knock-in event is heterozygous due to polyploidy.</p>
+<p>Availability of cloning rings can also be an issue. In such cases, we recommend FACS sorting single cells using GFP (from PX458) followed by selection to obtain single colonies.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p><a href="#before-you-begin">Before you begin</a></p>
+<p>Antibiotics selection cannot be used in my cell line..</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>FACS sorting can also be used to obtain the single colonies. In that case more colonies must be screened to obtain the knock-in clone, at least 2×96 well plates. Also, check the viability of the sorted cell in fresh media before performing the actual sorting. In some cell lines conditioned media is required after sorting.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>Steps 6 and 7.</p>
+<p>The number of colonies in the sgRNA cloning plate is similar to the religation and negative control plate.</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>We generally observe the ratio of &gt;40:1 for ligation plate: control plate. Similar number of colonies indicate insufficient digestion of the vector backbone (PX458) or wrong sequence of oligos (top and bottom oligos must be complement) and overhangs. In that case digest the vector for longer time followed by dephosphorylation and perform the phosphorylation of oligos with proper buffer (containing ATP) followed by hybridization. It is also noteworthy to re-check the oligos/overhangs as the orientation is very critical for the hybridization and ligation.</p>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Step 23.</p>
+<p>Most of the cells die after transfection.</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>PEI might to toxic for some cell lines. In that case use lipofectamine as transfecting reagent.</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>Step 28.</p>
+<p>Colonies not separated by 0.5–1 cm in the knock-in plate after selection.</p>
+<h3 id="sec5.8">Potential solution</h3>
+<p>It is essential to have at least 0.5–1 cm between colonies for picking them using cloning ring. It is the reason why different dilutions or cells were used for selection. If the desired distance was not observed in any dilution, repeat the dilution again from the plate containing the “remaining cells” and start selection again. Do not trypsinize cells from already diluted cells as this will result in many colonies from same parent cell.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Step 32.</p>
+<p>Successful knock-in clone not obtained.</p>
+<h3 id="sec5.10">Potential solution</h3>
+<p>For successful knock-in most important step is cut by Cas9 guided by sgRNA on the target site. To check efficient cutting of the site, transfect the cells with sgRNA plasmid, harvest genomic after 24 h of transfection, PCR amplify the cut site using the screening primer and send the PCR product for sequencing. In case of successful cut, indel should be observed around cut site. If no indels are observed, redesign the sgRNA. If indels are obtained, use inhibitors of NHEJ pathway during the knock-in transfection (some cells have very low HDR efficiency and are more prone to NHEJ after successful cut).</p>
+<h3 id="sec5.11">Problem 6</h3>
+<p>Step 37.</p>
+<p>Successful homozygous clone not obtained.</p>
+<h3 id="sec5.12">Potential solution</h3>
+<p>The efficiency of generation of homozygous clone highly depends on the chromosome ploidy of the target site for the cell line. In that case use HDR templates with multiple selection marker.</p>
+<p>Also, sometimes there is knock-in in one allele whereas knock-out in another allele. In such case PCR with screening primers shows the clone as heterozygous whereas western blot shows it as homozygous. Depending on your downstream application, these kinds of clones can also be utilized. So, it is advised to perform western blot for screening.</p>
+<h3 id="sec5.13">Problem 7</h3>
+<p>Step 37.</p>
+<p>Longer PCR product observed in screening PCR using primer set 1 than the expected size from knock-in.</p>
+<h3 id="sec5.14">Potential solution</h3>
+<p>As the screening primers bind outside the HA, multiple integration of the knock-in cassette at the site might give longer PCR products. Gel-extract the PCR product and send it for sequencing to see the exact genotype. It is advisable not to select those clones.</p>
+<h3 id="sec5.15">Problem 8</h3>
+<p>Step 40.</p>
+<p>Many bands or no bands observed in full membrane western blot for the knock-in clones.</p>
+<h3 id="sec5.16">Potential solution</h3>
+<p>Always have lysate from naïve cells side by side lysate from the knock-in clones. If several bands are seen only in the knock-in clones, it is possibly from truncated proteins or random products: It is advised not to use such clones in that case. If several bands are observed in both naïve and knock-in clones, it might be due to specificity of the antibody and use of another antibody should help. Also, introduction of epitope-tag (like HA and V5) is helpful.</p>
+<p>If no bands are seen in the western for the knock-in clones, check the recognition site of the antibody to your protein. It might be the knock-in destroys the antibody recognition epitope. So, it is advisable (if possible) to use two antibodies that recognize N- and C-terminal of your protein for western blot.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Amen, T. and Kaganovich, D. (2020). Quantitative photoconversion analysis of internal molecular dynamics in stress granules and other membraneless organelles in live cells. STAR Protoc. <i>1</i>, 100217. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref1">View at publisher</a></p>
+<p id="bib2">Florea, B., Meaney, C., Junginger, H., and Borchard, G. (2002). Transfection efficiency and toxicity of polyethylenimine in differentiated Calu-3 and nondifferentiated COS-1 cell cultures. AAPS PharmSci <i>4</i>, 1-11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref2">View at publisher</a></p>
+<p id="bib3">Majorek, K., Kuhn, M., Chruszcz, M., Anderson, W., and Minor, W. (2014). Double trouble-Buffer selection and His-tag presence may be responsible for nonreproducibility of biomedical experiments. Protein Sci. <i>23</i>, 1359-1368. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref3">View at publisher</a></p>
+<p id="bib4">Moghimi, S., Symonds, P., Murray, J., Hunter, A., Debska, G., and Szewczyk, A. (2005). A two-stage poly(ethylenimine)-mediated cytotoxicity: implications for gene transfer/therapy. Mol. Ther. <i>11</i>, 990-995. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref4">View at publisher</a></p>
+<p id="bib5">Narain, A., Bhandare, P., Adhikari, B., Backes, S., Eilers, M., Dölken, L., Schlosser, A., Erhard, F., Baluapuri, A., and Wolf, E. (2021). Targeted protein degradation reveals a direct role of SPT6 in RNAPII elongation and termination. Mol. Cell <i>81</i>, 3110-3127.e14. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref5">View at publisher</a></p>
+<p id="bib6">Natsume, T., Kiyomitsu, T., Saga, Y., and Kanemaki, M. (2016). Rapid protein depletion in human cells by auxin-inducible degron tagging with short homology donors. Cell Rep. <i>15</i>, 210-218. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref6">View at publisher</a></p>
+<p id="bib7">Nishimura, K., Fukagawa, T., Takisawa, H., Kakimoto, T., and Kanemaki, M. (2009). An auxin-based degron system for the rapid depletion of proteins in nonplant cells. Nat. Methods <i>6</i>, 917-922. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref7">View at publisher</a></p>
+<p id="bib10">Schneider, C.A., Rasband, W.S., and Eliceiri, K.W. (2012). NIH Image to ImageJ: 25 years of image analysis. Nat. Methods <i>9</i>, 671-675. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref10">View at publisher</a></p>
+<p id="bib8">Turkewitz, D., Moghaddasi, S., Alghalayini, A., D'Amario, C., Ali, H., Wallach, M., and Valenzuela, S. (2021). Comparative study of His- and Non-His-tagged CLIC proteins, reveals changes in their enzymatic activity. Biochem. Biophys. Rep. <i>26</i>, 101015. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref8">View at publisher</a></p>
+<p id="bib9">van Rosmalen, M., Krom, M., and Merkx, M. (2017). Tuning the flexibility of glycine-serine linkers to allow rational design of multidomain proteins. Biochemistry <i>56</i>, 6565-6574. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00655-9/sref9">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources and reagents should be directed to and will be fulfilled by the lead contact, Elmar Wolf (<a href="mailto:elmar.wolf@biozentrum.uni-wuerzburg.de">elmar.wolf@biozentrum.uni-wuerzburg.de</a>).</p>
+<h4>Materials availability</h4>
+<p>Plasmid and cell lines used in this study are available upon request.</p>
+<h4>Data and code availability</h4>
+<p>This study did not generate any unique datasets or codes.</p>
+<h3>Acknowledgments</h3>
+<p>We thank André Kutschke for excellent technical assistance. This work was supported by German Research Foundation (<a href="https://doi.org/10.13039/501100001659">DFG</a>, WO 2108/1-1 and GRK 2243 to E.W.), <a href="https://doi.org/10.13039/501100005972">German Cancer Aid</a> (MSNZ funding to E.W.), the <a href="https://doi.org/10.13039/100001445">Alexś Lemonade Stand Foundation for Childhood Cancer</a> (Crazy8 to E.W.), and the <a href="https://doi.org/10.13039/100010663">European Research Council</a> (TarMYC to E.W.).</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, E.W. and B.A. ; investigation, B.A. and A.N.; writing – original draft, B.A. and A.N.; writing – review &amp; editing, B.A., A.N., and E.W.; funding acquisition, E.W.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

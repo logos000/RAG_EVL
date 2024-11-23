@@ -1,0 +1,750 @@
+<article>
+<section>
+<h1 id="header">Identifying tumorigenic non-coding mutations through altered <i>cis</i>-regulation</h1>
+<p><time datetime="2021-11-12">Published: November 12, 2021</time></p>
+<p>Zhongshan Cheng,<sup><a href="#aff1">1</a>,<a href="#fn1">3</a>,<a href="#fn4">6</a>,<a href="#cor1">*</a></sup> Michael Vermeulen,<sup><a href="#aff1">1</a>,<a href="#fn2">4</a></sup> Micheal Rollins-Green,<sup><a href="#aff1">1</a></sup> Tomas Babak,<sup><a href="#aff1">1</a>,<a href="#fn3">5</a></sup> and Brian DeVeale<sup><a href="#aff2">2</a>,<a href="#fn5">7</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>Department of Biology, Queen’s University, Kingston, ON K7L 3N6, Canada</p>
+<p id="aff2"><sup>2</sup>The Eli and Edythe Broad Center of Regeneration Medicine and Stem Cell Research, University of California, San Francisco, San Francisco, CA 94143, USA</p>
+<p id="fn1"><sup>3</sup>Present address: Applied Bioinformatics Center, St. Jude Children’s Research Hospital, Memphis, TN 38105, USA</p>
+<p id="fn2"><sup>4</sup>Present address: Department of Medical Genetics, University of British Columbia, Vancouver, BC V6T 1Z4, Canada</p>
+<p id="fn3"><sup>5</sup>Present address: Leapfrog Bio, 319 N Bernardo Avenue, Mountain View, CA, 94043743, USA</p>
+<p id="fn4"><sup>6</sup>Technical contact</p>
+<p id="fn5"><sup>7</sup>Lead contact</p>
+<p id="cor1"><sup>*</sup>Correspondence: <a href="mailto:cheng.zhong.shan@gmail.com">cheng.zhong.shan@gmail.com</a></p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:brian.deveale@ucsf.edu">brian.deveale@ucsf.edu</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100934">10.1016/j.xpro.2021.100934</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Identification of non-coding mutations driving tumorigenesis requires alternative approaches to coding mutations. Enriched associations between mutated regulatory elements and altered cis-regulation in tumors are a promising approach to stratify candidate non-coding driver mutations. Here we provide a bioinformatics pipeline to mine data from the Cancer Genomic Commons (GDC) for such associations. The pipeline integrates RNA and whole-genome sequencing with genotyping data to reveal putative non-coding driver mutations by cancer type.</p>
+<p>For complete information on the generation and use of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref2">Cheng et al. (2021)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Integration of expression, genotyping, and whole-genome sequencing modalities</li>
+<li>RNA-seq profiles resolved to gene-level allele-specific expression (ASE).</li>
+<li>Mutated cis-regulatory features associated with gene-level ASE by cancer type</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Obtain a GDC Key and install the Driver-ASE Docker image. Alternatively, install Driver-ASE using conda in a local Linux system or online computational cluster.</p>
+<h3 id="sec1.1">Obtain GDC key</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [∼10 min]</div>
+<ol>
+<li>Apply for GDC access and register a GDC account to obtain a downloading key (<a href="https://portal.gdc.cancer.gov/">https://portal.gdc.cancer.gov/</a>). The key requires periodic renewal.
+<div class="note">
+<span class="note-title">Note:</span> A GDC Key is required to download SNP array data, RNA-Seq BAMs and whole-genome sequencing (WGS) BAMs from the GDC database (<a href="#bib4">Gao et al., 2019</a>).</div>
+<ol type="a">
+<li>Login to GDC.</li>
+<li>Click on your account name (top right), and click the download token from the drop-down menu.</li>
+<li>Rename the downloaded token file to ‘gdc.key’ on the local computer.</li>
+</ol>
+</li>
+</ol>
+<h3 id="sec1.2">Install Driver-ASE via docker</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [∼30 min]</div>
+<ol start="2">
+<li>Install Docker (<a href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop</a>) using the default settings.
+<ol type="a">
+<li>After Docker is installed, open Terminal and pull the Driver-ASE Docker image with the command:
+<div class="textbox">
+<p><code>&gt; docker pull mikevermeulen/driver-ase</code></p>
+</div>
+</li>
+<li>Place the token file ‘gdc.key’ in the ‘Database’ directory, ‘/Driver-ASE/Database/gdc.key’. The Driver-ASE scripts to download GDC data require that the path to the GDC key is specified.</li>
+<li>Adjust the amount of CPU and RAM that the Driver-ASE Docker container uses by going to Docker settings and selecting ‘Resources’ and modify the settings (<a href="#fig1">Figure 1</a>).
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. Recommended resource settings for the Driver-ASE Docker image</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> To calculate gene-level ASE or call somatic mutations using the Driver-ASE workflow, &gt;8 GB of memory and 100 GB of free disk space are recommended. The optimal settings depend on the available RAM and memory. GDC sample information can be queried with ∼1 GB of memory.</div>
+</li>
+<li>Install the pipeline within the Docker image using the git command:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; git clone &lt;hyperlink refid="https://github.com/michaelcvermeulen/driver-ase.git"&gt;https://github.com/michaelcvermeulen/driver-ase.git</code></p>
+</div>
+<ol start="3">
+<li>Download and mount the 1000 Genome Reference database in Docker for genotype imputation.
+<div class="note">
+<span class="note-title">Note:</span> This database is required by the Driver-ASE pipeline, ∼16 GB and shared through MEGA as 'Database.zip'.</div>
+<ol type="a">
+<li>Install MEGASync (<a href="https://mega.nz/sync">https://mega.nz/sync</a>) and then use it to download 'Database.zip' from <a href="https://mega.nz/file/VsRTzYRJ#Bi-a1lgVkvzX-MGkNRhINNHu9nGY9owew4cTB4aAWys">https://mega.nz/file/VsRTzYRJ#Bi-a1lgVkvzX-MGkNRhINNHu9nGY9owew4cTB4aAWys</a>
+</li>
+<li>Unzip and place the ‘Database.zip’ files in the ‘Driver-ASE’ directory.</li>
+<li>Mount the directory ‘Driver-ASE’ to the Docker image and change the absolute path to the full path to the ‘Driver-ASE’ directory by running the following Docker command:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code><i>#run Docker image in background</i></code></p>
+<p><code><i>#replace path of Driver-ASE in host computer with its</i></code></p>
+<p><code><i>#absolute path in local computer</i></code></p>
+<p><code>&gt; docker run -it -d --rm --name driver-ase --memory=8g \</code></p>
+<p><code>&gt; -v AbsolutePathInLocalComputer/Driver-ASE:/Driver-ASE \</code></p>
+<p><code>&gt; mikevermeulen/driver-ase:latest /bin/bash</code></p>
+<p><code><i>#Initiate bash within Docker</i></code></p>
+<p><code>&gt; docker exec -it driver-ase /bin/bash</code></p>
+</div>
+<ol start="4">
+<li>Make the perl scripts executable using the following commands:</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; cd /Driver-ASE/Driver_ASE_Lib/Driver_ASE_Scripts</code></p>
+<p><code>&gt; chmod a+x ∗</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Third party software required by the pipeline including samtools (<a href="#bib7">Li et al., 2009</a>), overlapSelect (<a href="#bib5">Kent et al., 2002</a>), shapeit (<a href="#bib3">Delaneau et al., 2011</a>), impute2 (<a href="#bib8">Marchini et al., 2007</a>), and VarScan2 (<a href="#bib9">Reble et al., 2017</a>), are preinstalled and located in the directory ‘/usr/local/bin/anaconda2/bin’ of the Docker image.</div>
+<ol start="5">
+<li>Save these changes by running the command below in the local computer terminal before exiting the Driver-ASE Docker image. This ‘commit’ prevents loss of changes when Docker is closed, and renders the pipeline executable from the Docker image.</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; docker commit driver-ase driver-ase</code></p>
+</div>
+<h3 id="sec1.3">Install driver-ASE using conda</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [∼60min]</div>
+<ol start="6">
+<li>Install Driver-ASE, its dependencies and databases in Linux terminal with bash. Installation is automated via conda on local or online Linux clusters.
+<ol type="a">
+<li>Download the shell script from github: <a href="https://raw.githubusercontent.com/michaelcvermeulen/driver-ase/main/Driver_ASE_Installation_with_conda.sh">https://raw.githubusercontent.com/michaelcvermeulen/driver-ase/main/Driver_ASE_Installation_with_conda.sh</a>
+</li>
+<li>Type ‘bash ./Driver_ASE_Installation_with_conda.sh' in Linux terminal from within the directory containing the shell script.
+<div class="note">
+<span class="note-title">Note:</span> The shell script will determine whether conda, the conda environment “driverase,” its dependencies and databases are available. If conda is not preinstalled, the script will download conda and install it before installing Driver-ASE. The script will stop installation if the conda driverase environment has already been created. To force a new installation to over-write a previous one, enter “1”. The following message will be produced:</div>
+<div class="textbox">
+<p><code>&gt; bash ./Driver_ASE_Installation_with_conda.sh</code></p>
+<p><code><i>Usage: Driver_ASE_Installation_with_conda.sh</i></code></p>
+<p><code><i>(1) Dir4InstallationFullpath (enter “.” to install in current directory)</i></code></p>
+<p><code><i>(2) Force (force installation: default is “0”, enter “1” to force installation)</i></code></p>
+<p><code><i>Note: wget needs to be installed for running this shell script to download data!</i></code></p>
+</div>
+</li>
+<li>Run the shell script with the Driver-ASE Docker image or a Linux environment with the commands below.
+<div class="note">
+<span class="note-title">Note:</span> Minconda2 is preinstalled in the Driver-ASE Docker image, so the user only needs to create the conda environment “driverase”, then install Driver-ASE and its dependencies.</div>
+<div class="textbox">
+<p><code><i>#create driverase environment if necessary</i></code></p>
+<p><code><i>#conda create -n driverase</i></code></p>
+<p><code>&gt; conda activate driverase</code></p>
+<p><code>#set the last parameter to “1” to force installation of #Driver-ASE and its dependencies</code></p>
+<p><code>&gt; ./Driver_ASE_Installation_with_conda.sh . 1</code></p>
+</div>
+</li>
+<li>Activate the conda environment “driverase” before running any Driver-ASE scripts as follows (See ‘<a href="#sec5.1">potential problem 1</a>’ if the environment is not activated):
+<div class="textbox">
+<p><code>&gt; conda activate driverase</code></p>
+</div>
+</li>
+<li>Save changes made to the Driver-ASE docker image during installation or modification by running the following command:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; docker commit driver-ase driver-ase</code></p>
+</div>
+<h3 id="sec1.4">Driver-ASE workflow</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [∼30 min]</div>
+<p>The Driver-ASE workflow involves downloading GDC data, then formatting, processing and ultimately integrating it for the association between gene-level ASE and somatic mutations. <a href="#fig2">Figure 2</a> summarizes the relationship between the various Driver-ASE functions in a flowchart.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Driver-ASE workflow</div>
+<p>The flowchart illustrates the scripts to identify putative non-coding driver mutations. The key Driver-ASE steps of calculating gene-level ASE, calling somatic mutations, and associating mutations with gene-level ASE by regulatory element are outlined in red.</p>
+</figcaption>
+</figure>
+<p>The pipeline uses different perl scripts to download SNP array, RNA-Seq and WGS BAMs, and then calculate gene-level ASE and call somatic mutations; these results are then converted to associate somatic mutations in different regulatory elements and gene-level ASE in MATLAB (at least version 2014b or using version 90 of the freely available MATLAB runtime (<a href="https://www.mathworks.com/products/compiler/matlab-runtime.html">https://www.mathworks.com/products/compiler/matlab-runtime.html</a>).</p>
+<ol start="7">
+<li>View the parameters of each perl script (<a href="#fig3">Figures 3</a> and <a href="#fig4">4</a>):
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. The perl scripts in the Driver-ASE pipeline</div>
+</figcaption>
+</figure>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. A typical help message generated after execution <i>of the perl script ‘</i>0_Download_SNPArray_Table_From_GDC.pl’</div>
+</figcaption>
+</figure>
+<ol type="a">
+<li>Navigate to the directory containing the perl scripts in either the Docker or Linux terminal according to where Driver-ASE is installed and list the scripts:
+<div class="textbox">
+<p><code>&gt; cd /Driver-ASE/Driver_ASE_Lib/Driver_ASE_Scripts</code></p>
+<p><code><i># list perl scripts</i></code></p>
+<p><code>&gt; ls</code></p>
+</div>
+</li>
+<li>Enter the name of a script to access its usage and parameter details as shown in the example below.
+<div class="note">
+<span class="note-title">Note:</span> The script is correctly installed if no errors appear after displaying its details.</div>
+<div class="textbox">
+<p><code><i>#If the perl script is not executable, use ‘chmod a+x</i></code></p>
+<p><code><i>#script’ to make it executable.</i></code></p>
+<p><code><i>#If running the script in a local Linux computer or</i></code></p>
+<p><code><i>#online computational cluster, need to activate conda</i></code></p>
+<p><code><i>#environment</i></code></p>
+<p><code><i>#conda activate driverase</i></code></p>
+<p><code>&gt; ./0_Download_SNPArray_Table_From_GDC.pl</code></p>
+</div>
+To save user time, the sample information for &gt;30 cancer types from GDC legacy portal is included in “/Driver_ASE/Analysis/”. Please see ‘<a href="#sec5.3">potential problem 2</a>’ for detail on how to over-write existing tables.</li>
+<li>View the target directory of Database to confirm that the 1000 Genome Reference database required by Driver-ASE is available.
+<div class="textbox">
+<p><code>&gt; cd /Driver-ASE/Database</code></p>
+<p><code>&gt; ls</code></p>
+</div>
+</li>
+<li>The default output for all Driver-ASE scripts is within the following directory:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; cd /Driver-ASE/Analysis</code></p>
+<p><code>&gt; ls</code></p>
+</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>Driver-ASE</td>
+<td>This paper</td>
+<td><a href="https://github.com/mikevermeulen/driver-ase">https://github.com/mikevermeulen/driver-ase</a></td>
+</tr>
+<tr>
+<td>Miniconda</td>
+<td>Anaconda, Inc.</td>
+<td><a href="https://docs.conda.io/en/latest/miniconda.html">https://docs.conda.io/en/latest/miniconda.html</a></td>
+</tr>
+<tr>
+<td>impute2</td>
+<td><a href="#bib12">Marchini and Howie, 2010</a></td>
+<td><a href="https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#download">https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#download</a></td>
+</tr>
+<tr>
+<td>Shapeit</td>
+<td><a href="#bib11">Delaneau et al., 2013</a></td>
+<td><a href="https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html">https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html</a></td>
+</tr>
+<tr>
+<td>Samtools</td>
+<td><a href="#bib7">Li et al. (2009)</a></td>
+<td><a href="http://www.htslib.org/download/">http://www.htslib.org/download/</a></td>
+</tr>
+<tr>
+<td>plink1.9</td>
+<td><a href="#bib1">Chang et al. (2015)</a></td>
+<td><a href="https://www.cog-genomics.org/plink2">https://www.cog-genomics.org/plink2</a></td>
+</tr>
+<tr>
+<td>overlapSelect</td>
+<td>UCSC Genome Browser</td>
+<td><a href="http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/overlapSelect">http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/overlapSelect</a></td>
+</tr>
+<tr>
+<td>VarScan2</td>
+<td><a href="#bib6">Koboldt et al. (2012)</a></td>
+<td><a href="http://varscan.sourceforge.net/">http://varscan.sourceforge.net/</a></td>
+</tr>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Processed Driver-ASE data</td>
+<td><a href="#bib2">Cheng et al. (2021)</a></td>
+<td><a href="https://data.mendeley.com/datasets/4kx5sfx9vz/2">https://data.mendeley.com/datasets/4kx5sfx9vz/2</a></td>
+</tr>
+<tr>
+<td>shapeit2 phased 1000 Genome Project reference files</td>
+<td><a href="#bib11">Delaneau et al., 2013</a></td>
+<td><a href="https://mathgen.stats.ox.ac.uk/impute/ALL.integrated_phase1_SHAPEIT_16-06-14.nomono.tgz">https://mathgen.stats.ox.ac.uk/impute/ALL.integrated_phase1_SHAPEIT_16-06-14.nomono.tgz</a></td>
+</tr>
+<tr>
+<td>1000 Genome Project reference haplotype files</td>
+<td><a href="#bib12">Marchini and Howie, 2010</a></td>
+<td>
+<a href="https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.tgz">https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.tgz</a><a href="https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3_chrX.tgz">https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3_chrX.tgz</a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<h3 id="sec2.1">Evaluate gene-level ASE and identify somatic mutations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [1-h hands-on; computational time scales with sample number and resources]</div>
+<p>Outline of workflow for the major Driver-ASE scripts:</p>
+<ol>
+<li>Use <b>0_Download_SNPArray_Table_From_GDC.pl</b> to download the annotation table without the genotyping SNP array data.
+<ol type="a">
+<li>Download the SNP array table using the commands below, specify the cancer types to download with ‘-c’ (e.g., BRCA, OV, PRAD), and the data type with ‘-a’ (either “Genotypes” or “Copy number estimate”).</li>
+</ol>
+</li>
+</ol>
+<p>Use the shell script ‘0_Download_ALL_SNPArray_Table_From_GDC.sh’, to download SNPArray sample information for all GDC legacy cancer types. Download by wrapping the following commands. See ‘<a href="#sec5.5">potential problem 3</a>’ to resolve download issues.</p>
+<div class="textbox">
+<p><code>&gt; cd /Driver-ASE/Driver_ASE_Lib/Driver_ASE_Scripts</code></p>
+<p><code><i>#download sample information of BRCA SNPArrays from GDC</i></code></p>
+<p><code><i>#run it in docker image or conda drivease environment</i></code></p>
+<p><code>&gt; ./0_Download_SNPArray_Table_From_GDC.pl \</code></p>
+<p><code>&gt; -c BRCA -a Genotypes</code></p>
+<p><code><i># Displays GDC sample IDs as well as corresponding GDC</i></code></p>
+<p><code><i># uuids for downloaded SNPArrays</i></code></p>
+<p><code>&gt;</code></p>
+<p><code>head ../../Analysis/BRCA/BRCA_tables/BRCA.Genotypes.id2uui</code></p>
+<p><code>d.txt</code></p>
+<p><code><i>#download sample information of BRCA copy number estimate</i></code></p>
+<p><code><i>from GDC</i></code></p>
+<p><code>&gt; ./0_Download_SNPArray_Table_From_GDC.pl \</code></p>
+<p><code>&gt; -c BRCA -a "Copy number estimate"</code></p>
+<p><code><i># Displays GDC sample IDs and corresponding GDC uuids for</i></code></p>
+<p><code><i># downloaded Copy Number Estimates</i></code></p>
+<p><code>&gt; head ../../Analysis/BRCA/BRCA_tables/BRCA.Copy\ number\</code></p>
+<p><code>estimate.id2uuid.txt</code></p>
+</div>
+<ol start="2">
+<li>Download SNP-Array Genotyping or “Copy number estimate” using <b>0_Download_SNPArray_From_GDC.pl</b>
+<ol type="a">
+<li>Run the script by specifying the cancer type ‘-c’, the data type ‘-a’ (either “Genotypes” or “Copy number estimate”), the full path to the GDC key ‘-k’ and the use of downloading software curl or aria2c using ‘-d’.</li>
+</ol>
+</li>
+</ol>
+<p>The script downloads and generates GDC tables if it cannot locate preexisting tables of targeted samples. If tables already exist, the script will begin downloading the files.</p>
+<div class="note">
+<span class="note-title">Note:</span> The path to the GDC downloading key must also be specified with ‘-k’ if it is moved from the default path of (‘/Driver-ASE/Database/gdc.key’). See ‘<a href="#sec5.7">potential problem 4</a>’ to resolve GDC authentication errors.</div>
+<div class="textbox">
+<p><code><i>#download raw SNPArray data from GDC</i></code></p>
+<p><code>&gt; ./0_Download_SNPArray_From_GDC.pl \</code></p>
+<p><code>&gt; -c BRCA -a Genotypes \</code></p>
+<p><code>&gt; -k /Driver-ASE/Database/gdc.key -d curl</code></p>
+<p><code><i>#download raw SNPArray copy number estimates from GDC</i></code></p>
+<p><code>&gt; ./0_Download_SNPArray_From_GDC.pl \</code></p>
+<p><code>&gt; -c BRCA -a "Copy number estimate" \</code></p>
+<p><code>&gt; -k /Driver-ASE/Database/gdc.key -d curl</code></p>
+</div>
+<ol start="3">
+<li>Prepares the SNP-Array genotype annotation data for imputation using <b>1.0_Prep_SNPs_for_Imputation_and_Plink.pl</b>
+<ol type="a">
+<li>Unzip ‘GenomeWideSNP_6.na35.annot.csv.zip’ from the Database directory into a new directory called ‘affy6’.</li>
+<li>Run the script, specifying the cancer type with the parameter ‘-c’ as illustrated below:</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./1.0_Prep_SNPs_for_Imputation_and_Plink.pl –c BRCA</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The script first parses annotation information from the file ‘GenomeWideSNP_6.na35.annot.csv’ and outputs data into a file called ‘snp6.anno.txt’. Next, the script outputs annotated SNPs to a file called ‘snp6.cd.txt’. If these files already exist, the script will not execute and it will bypass this step.</div>
+<ol start="4">
+<li>Parse the genotype files and create the plink1.9 formatted (.map and .ped) files for input into plink1.9 (<a href="#bib1">Chang et al., 2015</a>) using <b>1.1_Birdseed_to_ped_and_maps.pl</b>
+<ol type="a">
+<li>Run the script, specifying the sample type with ‘-s’ (0 for normal, 1 for tumor and 2 for both), the cancer type ‘-c’ and/or enter the path to the plink1.9 ‘-p’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./1.1_Birdseed_to_ped_and_maps.pl \</code></p>
+<p><code>&gt; -p /usr/local/bin/anaconda2/bin/plink \</code></p>
+<p><code>&gt; -s 0 -c BRCA</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> plink1.9 performs quality control by keeping SNPs with minor allele frequency &gt;0.01 on these data, which is required by shapeit. If users prefer genotypes called from WGS data, supply these genotypes in plink binary bed format, using the sister Perl script ‘1.1_plink_binary_bed_to_ped_and_maps.pl’ to prepare the input data. This sister script uses the same parameters, except for the ‘-b’ parameter for supplying plink binary bed file.</div>
+<ol start="5">
+<li>Phase genotyping data using <b>1.2_Shapeit_and_Imputation.pl</b>
+<ol type="a">
+<li>Phase genotypes as shown below, specifying the cancer type after the parameter ‘-c’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./1.2_Shapeit_and_Imputation.pl -c BRCA</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Shapeit uses the genotyping data in the ‘peds’ and ‘maps’ directories and outputs the phased result to a new directory called ‘phased’ (<a href="#bib3">Delaneau et al., 2011</a>).</div>
+<p>Shapeit only extracts chromosome sizes, generating a file called ‘chr_lens_grep_chr’ from which it parses only chr1-22 and X for imputation. The imputation results, including SNP calls and phased haplotype data are printed to the directory ‘phased_imputed_raw_out’, and unnecessary files removed. See ‘<a href="#sec5.9">potential problem 5</a>’ to resolve issues accessing plink format data of peds and maps.</p>
+<ol start="6">
+<li>Extract heterozygous SNPs and make a heterozygous SNP Bed file for gene-level ASE calculation using <b>1.3_Make_het_cds.pl</b>
+<ol type="a">
+<li>Make a heterozygous SNP Bed file using the command below, ensuring that the cancer type is specified after the parameter ‘-c’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./1.3_Make_het_cds.pl -c BRCA</code></p>
+</div>
+<ol start="7">
+<li>Extract copy number estimates to call CNVs using <b>2.0_Prep_For_Bad_SNPs_CNVs.pl</b> (optional).
+<div class="note">
+<span class="note-title">Note:</span> Copy number estimate files must be downloaded as described above using the script ‘0_Download_SNPArray_From_GDC.pl’ before proceeding.</div>
+<ol type="a">
+<li>Extract copy number estimates using the command below and specifying the cancer type after the parameter ‘-c’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./2.0_Prep_For_Bad_SNPs_CNVs.pl -c BRCA</code></p>
+</div>
+<ol start="8">
+<li>Identify SNPs that overlap CNVs for ASE evaluation using <b>2.1_Get_Bad_SNPs_and_CNVs.pl</b>
+<ol type="a">
+<li>Identify SNPs that overlap CNVs with the command below, ensuring that the cancer type is specified after the parameter ‘-c’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./2.1_Get_Bad_SNPs_and_CNVs.pl -c BRCA</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> This script requires outputs from scripts 1.1, 1.2, 1.3 and 2.0 to run.</div>
+<ol start="9">
+<li>Download RNA-Seq or WGS data and run mpileup on them to aggregate reads by genomic coordinates using <b>3.0_Download_RNASeq_WGS_and_do_Mpileup.pl</b>
+<ol type="a">
+<li>Download data and run mpileup as shown below, specifying:
+<ol type="i">
+<li>cancer type with ‘-c’</li>
+<li>data type with ‘-E’ (e.g., ‘RNA-Seq’ or ‘WGS’)</li>
+<li>path to the gdc key with ‘-k’</li>
+<li>total number of BAMs for downloading with the parameter ‘-n’</li>
+<li>‘-i’ ‘yes’ to download samples with available RNA-Seq and WGS data (optional)</li>
+<li>Use ‘-o download’ to download BAM files without running mpileups or ‘-o all’ to download BAMs and do mpileups (optional)</li>
+<li>‘-d aria’ to download with it instead of the default, ‘-d curl’ (optional)
+<div class="textbox">
+<p><code><i>#download RNA-Seq BAMs and do mpileup</i></code></p>
+<p><code>&gt; ./3.0_Download_RNASeq_WGS_and_do_Mpileup.pl -E RNA-Seq \</code></p>
+<p><code>&gt; -c BRCA -o all -i yes -n 50 -d curl \</code></p>
+<p><code>&gt; -k /Driver-ASE/Database/gdc.key</code></p>
+<p><code><i>#download WGS BAMs and call somatic mutations</i></code></p>
+<p><code>&gt; ./3.0_Download_RNASeq_WGS_and_do_Mpileup.pl -E WGS \</code></p>
+<p><code>&gt; -c BRCA -o all -i yes -n 10 -d curl -k /Driver-ASE/Database/gdc.key</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The script uses preexisting sample tables or downloads the sample table from GDC for the specified cancer type, and downloads BAM files for the samples included in the table. After downloading and indexing the specified BAM files, the script will run samtools mpileups on them.</div>
+</li>
+</ol>
+</li>
+<li>Create an RNA-Seq or WGS annotation table of GDC sample ids and corresponding BAM ids using 3.0_Dwnld_RNASeq_WGS_Table_From_GDC.pl as shown below. Specify:
+<ol type="i">
+<li>cancer type with ‘-c’ (or multiple types separated by commas: e.g., OV, PRAD)</li>
+<li>experimental strategy with ‘-E’ (either ‘RNA-Seq’ or ‘WGS’)</li>
+<li>gdc key path with ‘-k’ (optional)</li>
+<li>‘-d aria’ to download with it instead of the default, ‘-d curl’ (optional)</li>
+<li>‘-o’ to restrict analysis to samples with overlapping WGS and RNA-seq (optional)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="note">
+<span class="note-title">Note:</span> The wrapper shell script, ‘3.0_Download_RNAseq_WGS_Tables_From_GDC.sh’, will run the commands of ‘3.0_Dwnld_RNASeq_WGS_Table_From_GDC.pl’ for all cancer types from GDC legacy portal.</div>
+<div class="textbox">
+<p><code><i>#download RNA-Seq sample table from GDC</i></code></p>
+<p><code>&gt; ./3.0_Dwnld_RNASeq_WGS_Table_From_GDC.pl -E RNA-Seq \</code></p>
+<p><code>&gt; -c BRCA -d curl -o no -k /Driver-ASE/Database/gdc.key</code></p>
+<p><code><i>#download WGS sample table from GDC and overlap WGS table with RNA-Seq samples</i></code></p>
+<p><code>&gt; ./3.0_Dwnld_RNASeq_WGS_Table_From_GDC.pl -E WGS -c BRCA \</code></p>
+<p><code>&gt; -d curl -o yes -k /Driver-ASE/Database/gdc.key</code></p>
+</div>
+<ol start="10">
+<li>Perform gene-level ASE analysis using <b>3.1_Gene_Level_ASE_Analysis.pl</b>
+<ol type="a">
+<li>Run gene-level ASE analysis using the command below and specifying the cancer type after the parameter ‘-c’. Restrict the gene-level ASE evaluation to only samples with overlapping RNA-Seq, WGS and Genotype TCGA IDs using ‘-o’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code><i>#download RNA-Seq sample table from GDC</i></code></p>
+<p><code>&gt; ./3.1_Gene_Level_ASE_Analysis.pl -c BRCA -o yes</code></p>
+</div>
+<ol start="11">
+<li>Prepare the data for analysis in MATLAB using <b>3.2_Export_ASE_Data.pl</b>
+<ol type="a">
+<li>Prepare for MATLAB analysis using the command below, ensuring that the cancer type ‘-c’ is specified. If intersecting RNA-Seq, WGS, and Genotype data tables, specify ‘-o yes’ and ensure the TCGA sample IDs are present in each dataset.</li>
+<li>Include annotation of SNPs associated with CNV by running scripts 0, 2.0 and 2.1 to download and process GDC copy number data.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./3.2_Export_ASE_Data.pl -c BRCA</code></p>
+</div>
+<ol start="12">
+<li>Filter the Varscan2 mutation calls for somatic mutations using <b>4.0_Somatic_Variants.p</b>l
+<ol type="a">
+<li>Filter the Varscan2 mutation calls using the command below and specifying the cancer type ‘-c’. Optionally, specify:
+<ol type="i">
+<li>read cutoff with ‘--readcutoff'</li>
+<li>tumor frequency with ‘--tfreq’</li>
+<li>normal frequency of mutated allele with ‘--nfreq'</li>
+<li>restrict filtering of somatic mutations to only samples with overlapping RNA-Seq, WGS and Genotypes TCGA IDs, use ‘-o’.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./4.0_Somatic_Variants.pl -c BRCA --readcutoff 20 --tfreq 0.2 --nfreq 0.02 -o yes</code></p>
+</div>
+<ol start="13">
+<li>Map somatic mutations to different regulatory regions, including TF-binding site, CpG islands, DNase sensitive sites, broad histone modification regions, 3′UTR, 5′UTR, coding regions, intronic regions from UCSC or generated based on ENCODE data using <b>4.1_Upstream_Downstream_Analysis.pl</b>
+<ol type="a">
+<li>Map somatic mutations to different regulatory regions using the command below ensuring the cancer type is specified with ‘-c’.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; ./4.1_Upstream_Downstream_Analysis.pl -c BRCA</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The bed files (hg19) are pre-built for each feature and included in the directory ‘/Driver-ASE/Database/reg’ from ‘Database.zip’. Users can replace these bed files with custom files as necessary.</div>
+<h3 id="sec2.2">Associate gene-level ASE with somatic mutations</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> [20 mins]</div>
+<p>Gene-level ASE and somatic mutations in different regulatory regions can be correlated with M1_Import_ASE_and_Mutation_data.m or its executable file. MATLAB version 2014b or more recent versions will run the script. Alternatively, the executable file ‘M1_Import_ASE_and_Mutation_data’ can be run with MATLAB Runtime version 90 in a local Linux system or online cluster.</p>
+<ol start="14">
+<li>Download the MATLAB scripts (‘Driver_ASE_MatLab_Lib’) and its corresponding database (‘MatLab_Analysis.zip’) from GitHub (<a href="https://github.com/mikevermeulen/Driver-ASE/">https://github.com/mikevermeulen/Driver-ASE/</a>). If users installed Driver-ASE with the shell script, ‘Driver_ASE_Installation_with_conda.sh’, these directories and data are automatically available.
+<ol type="a">
+<li>Decompress the association scripts to a new directory ‘MatLab_Analysis’ by double clicking and extracting all files or the ‘unzip MatLab_Analysis.zip’ command in Linux.</li>
+<li>Create a subdirectory for each cancer type (e.g., ‘BRCA’ was created for demo; n=46) with required nested directories of ‘somatic_calls’, ‘mutations’, ‘annotations’ and ‘matrix’ (<a href="#fig5">Figure 5</a>).
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Directory tree of Driver-ASE to associate gene-level ASE with somatic mutations</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+<li>Make Driver_ASE functions and scripts accessible to MATLAB by adding the directory path containing relevant subfolders (‘Driver_ASE_MatLab_Lib’, ‘MatLab_Variables’, ‘Driver_ASE_MatLab_Scripts’) to the MATLAB environment variable path.
+<ol type="a">
+<li>In MATLAB, click ‘Home’ -&gt; ’Set Path’ -&gt; ’Add folder’ sequentially to add the directory ‘Driver_ASE_MatLab_Lib’ with default setting. These steps are illustrated in <a href="#fig6">Figure 6</a>.
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Screenshot of how to add the Driver_ASE scripts into the MATLAB global path</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+<li>Start MATLAB, navigate to the Driver_ASE_MatLab_Scripts’ directory, and run the function: ‘M1_Import_ASE_and_Mutation_data.m’.
+<ol type="a">
+<li>Specify the cancer type (‘cancer_type’) and regulatory feature (‘rgx4feature’) parameters for the ASE-Mut association analysis. Supply a custom FDR cutoff if desired, the default is 0.2. To evaluate all 18 regulatory or genomic features from ‘4.1_Upstream_Downstream_Analysis.pl’, the user can specify ‘.∗’ (see <a href="#fig7">Figure 7</a>).
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Sample MATLAB commands to run ASE-Mut association on BRCA data</div>
+</figcaption>
+</figure>
+</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code><i>%In matlab</i></code></p>
+<p><code>&gt; cd ‘your_fullpath_to_the_dir_Driver_ASE_MatLab_Scripts’</code></p>
+<p><code>&gt; cancer_type=’BRCA’;</code></p>
+<p><code>&gt; rgx4feature=’.∗’;</code></p>
+<p><code>&gt; fdrcutoff=0.2;</code></p>
+<p><code><i>%FDR cutoff can be supplied after rgx4feature, with the</i></code></p>
+<p><code><i>default value being 0.2.</i></code></p>
+<p><code>&gt;</code></p>
+<p><code><i>[All_Assoc,Top_assoc]=M1_Import_ASE_and_Mutation_data(canc</i></code></p>
+<p><code><i>er_type,rgx4feature,fdrcutoff);</i></code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> For the association results, MATLAB outputs all (‘All_Assoc’) and the top-ranked (‘Top_assoc’) ASE-Mut association results separately for each tested feature (FDR &lt;= user-defined FDR cutoff in each tested feature).</div>
+<ol start="17">
+<li>Run the MATLAB executable function to associate gene-level ASE with somatic mutations.
+<ol type="a">
+<li>Export the global variable ‘LD_LIBRARY_PATH’ for MATLAB runtime.</li>
+<li>Navigate to the working directory 'Driver_ASE_MatLab_Scripts’ where the executable is located and follow the commands below to perform the association.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>&gt; export</code></p>
+<p><code>LD_LIBRARY_PATH=$MCR_v90/runtime/glnxa64:$MCR_v90/bin/glnxa64:$MCR_v90/sys/os/glnxa6</code></p>
+<p><code>4:$MCR_v90/sys/opengl/lib/glnxa64</code></p>
+<p><code>&gt; cd</code></p>
+<p><code>/Driver_ASE/Driver_ASE_MatLab/Driver_ASE_MatLab_Lib/Driver_A</code></p>
+<p><code>SE_MatLab_Scripts</code></p>
+<p><code><i>#Parameters required by the executable file.</i></code></p>
+<p><code><i>#./M1_Import_ASE_and_Mutation_data &lt;cancer type, such as</i></code></p>
+<p><code><i>BRCA&gt; &lt;feature_rgx, such as chipseq&gt; &lt;FDR cutoff, e.g., 0.2&gt;</i></code></p>
+<p><code><i>#This will print help information for the MATLAB executable</i></code></p>
+<p><code><i>file;</i></code></p>
+<p><code>&gt; ./M1_Import_ASE_and_Mutation_data</code></p>
+<p><code><i>#When running the following command in a Linux terminal, the</i></code></p>
+<p><code><i>MATLAB executable will generate the same results as that</i></code></p>
+<p><code><i>executing in MATLAB shown in the previous section of</i></code></p>
+<p><code><i>‘Expected Outcomes’.</i></code></p>
+<p><code><i>#Note: the regular expression ‘.∗’' will match all 18</i></code></p>
+<p><code><i>regulatory features</i></code></p>
+<p><code>&gt; ./M1_Import_ASE_and_Mutation_data BRCA '.∗' 0.2</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> MATLAB runtime version 90 must be installed in a local Linux system or online cluster, the installation of which should be completed when running the shell script for the installation of Driver-ASE in the system via conda. See ‘<a href="#sec5.11">potential problem 6</a>’ to resolve issues in running the MATLAB executable file in a local Linux system.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>Summary figures and MATLAB datasets are automatically generated by running ‘M1_Import_ASE_and_Mutation_data.m’ (<a href="#fig8">Figures 8</a>, <a href="#fig9">9</a>, <a href="#fig10">10</a>, and <a href="#fig11">11</a>).</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Sample update messages after executing ASE-Mut association across different regulatory features</div>
+</figcaption>
+</figure>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Output of ‘<i>M1_Import_ASE_and_Mutation_data.m</i>’ applied to BRCA demonstration data</div>
+<p>The plot illustrates the number of genes for which ASE that can be measured in tumors grouped by sample size and gene-level ASE read counts of heterozygous SNPs.</p>
+</figcaption>
+</figure>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Evaluation of ASE-Mutation associations using the MATLAB function ‘<i>M1_Import_ASE_and_Mutation_data.m</i>’</div>
+<p>Typing ‘Top_assoc’ in MATLAB terminal shows the top associations (false discovery rate [FDR]&lt;=0.2 and raw association p value [p]&lt;=0.05) across 18 different regulatory or genomic features after running the scripts in this vignette with default settings. All association results are also included in the MATLAB structure ‘All_Assoc’.</p>
+</figcaption>
+</figure>
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1160-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. The directory tree of the final ASE-Mutation results</div>
+<p>(A) The ASE-Mutation associations are saved in the ‘BRCA’ directory that includes 3 subdirectories: ‘Driver_Beds’, ‘hits’, and ‘mut_ase_auto’. After running the pipeline the ‘Driver_beds’ directory will contain one text file of all associations FDR&lt;0.2 (driver_top_fdr0.2), and a bed file for each association between a mutated cis-regulatory element and gene-level ASE. For example, the upper box shows an association between <i>RALGPS1</i> and mutations within 10kb of its TSS and gene body that is found using the demo data of 46 BRCA samples. The bed files of putative driver mutations can be visualized with the UCSC or alternate genome browsers (hg19). The directory ‘hits’ will contain all ASE-Mut association results as shown in the lower panel.</p>
+<p>(B) The raw association p-values (assoc_P_all.tab), FDR values (fdr_all.tab), mutation enrichment p-values for each feature with each gene (fm_all.tab), and information for samples harboring these regulatory mutations (mut_all.tab) are output into the ‘hits’ directory. The ‘mut_ase_auto’ directory contains the ‘mutation x regulatory-feature’ MATLAB matrix.</p>
+</figcaption>
+</figure>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p><b>Computational Resources.</b> The Docker pipeline requests &gt;8 GB memory and &gt;100 GB disk space to perform imputation, calculate gene-level ASE and call somatic mutations from the respective SNP genotype data, RNA-Seq and WGS BAMs. As these calculations are computationally intensive we recommend running the pipeline on a high-performance cluster. For additional detail on how to install Driver-ASE and its dependencies onto a cluster via conda, please see the Driver-ASE github homepage (<a href="https://github.com/michaelcvermeulen/driver-ase">https://github.com/michaelcvermeulen/driver-ase</a>).</p>
+<p><b>Data access</b>. A downloading key is a prerequisite for downloading controlled GDC data. Instructions on how to apply for GDC access can be found at the GDC website (<a href="https://portal.gdc.cancer.gov/">https://portal.gdc.cancer.gov/</a>). To determine if samples of interest are available from GDC before applying for GDC access, users can search sample numbers and types by running the scripts ‘<b>0_Download_SNPArray_Table_From_GDC.pl</b>’ and ‘<b>3.0_Dwnld_RNASeq_WGS_Table_From_GDC.pl</b>’. A toy GDC key is available in the ‘Database’ directory to assist the downloading of these sample tables.</p>
+<p><b>Computational time.</b> Downloading GDC data and calling somatic mutations both consume considerable time and computational resources. We recommend processing a small number of WGS and RNA-Seq files to guide the resource requirements for future analyses.</p>
+<p><b>Mutations and ASE inputs</b>. The default Driver-ASE pipeline screens for driver mutations by integrating orthogonal GDC datasets, including SNPArray data, RNA-Seq, and WGS. To input gene-level ASE and somatic mutations into the Driver-ASE pipeline, we offer a separate package (‘Pipeline2MapMuts2DiffRegulatoryRegions’) to prepare gene-level ASE and map somatic mutations called by alternative software; the package is available via Mendeley Data: https://doi.org/10.17632/8x3y5swppw.4. Driver-ASE only process data mapped to human hg19 reference. For hg38 input data, we recommend liftover into hg19 using CrossMap (<a href="#bib10">Zhao et al., 2014</a>).</p>
+<p><b>Operating system compatibility</b>. We have confirmed that the Driver-ASE Docker image runs on Windows, Mac and Linux operating systems but have not evaluated others. We also automated the installation of Driver-ASE via conda for local or online Linux computational clusters.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec5.1">Problem 1</h3>
+<p>An error may occur when activating the driverase conda environment if conda versions prior to version 4.4 were used for the installation (corresponding protocol step: Install Driver-ASE using conda 6d). The error might be as follows:</p>
+<p>CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.</p>
+<h3 id="sec5.2">Potential solution</h3>
+<p>Use the following approach to address the issue:</p>
+<p>(1) Run the command below in docker image to enable all users miniconda access:</p>
+<div class="textbox">
+<p><code>&gt; sudo ln -s /usr/local/bin/anaconda2/etc/profile.d/conda.sh</code></p>
+<p><code>/etc/profile.d/conda.sh</code></p>
+</div>
+<p>(2) Add the bin path of miniconda, such as '/usr/local/bin/anaconda2/bin' in our Docker image, to the global $PATH in the file ‘∼/.bashrc’:</p>
+<div class="textbox">
+<p><code>&gt; export PATH=/usr/local/bin/anaconda2/bin:$PATH</code></p>
+</div>
+<p>(3) Write the command ‘conda activate’ at the end of the file ‘∼/.bashrc’.</p>
+<p>(4) Exit Linux terminal and rerun the command ‘conda activate driverase’.</p>
+<h3 id="sec5.3">Problem 2</h3>
+<p>The following error message may emerge when running the perl script ‘0_Download_SNPArray_Table_From_GDC.pl’ (corresponding protocol step: Driver-ASE workflow 7b):</p>
+<p>It seems that there is a table in the /Driver_ASE/Analysis/BRCA/BRCA_tables directory already. Table: BRCA.Genotypes.id2uuid.txt</p>
+<h3 id="sec5.4">Potential solution</h3>
+<p>The problem is due to pre-downloaded table residing in the directory ‘/Driver_ASE/Analysis/BRCA’ that we provided to save user time. If users want to download these tables again, please delete the table as show below and rerun the perl download script.</p>
+<div class="textbox">
+<p><code>&gt; ls /Driver_ASE/Analysis</code></p>
+<p><code><i># remove existing tables</i></code></p>
+<p><code>&gt; rm -rf</code></p>
+<p><code>/Driver_ASE/Analysis/BRCA/BRCA_tables/BRCA.Genotypes.id2u</code></p>
+<p><code>uid.txt</code></p>
+</div>
+<h3 id="sec5.5">Problem 3</h3>
+<p>Unable to download the sample information from GDC (corresponding protocol step: Evaluate gene-level ASE and identify somatic mutations 1a).</p>
+<div class="textbox">
+<p>&gt; ./0_Download_SNPArray_Table_From_GDC.pl -c BRCA -a Genotypes</p>
+</div>
+<p>The following is a typical error:</p>
+<p>###################################################################</p>
+<p>/Driver-ASE/ Database does not exist! It was either deleted, moved or renamed.</p>
+<p>If the missing directory is the Database directory, it may not have been downloaded or the name was changed. Check the README.md file on the github page to find out where to get the Database directory.</p>
+<p>###################################################################</p>
+<h3 id="sec5.6">Potential solution</h3>
+<p>The perl script cannot find the ‘Database’ directory. Go to Driver-ASE github page, download ‘Database.zip’, and decompress ‘Database’ in the path ‘/Driver-ASE/Database’ of the Docker image. Alternatively, please run the shell script ‘Driver_ASE_Installation_with_conda.sh' in the force mode from the docker terminal to install the ‘Database’ automatically (see installation section).</p>
+<h3 id="sec5.7">Problem 4</h3>
+<p>GDC authentication error (corresponding protocol step of Evaluate gene-level ASE and identify somatic mutations 2a).</p>
+<div class="textbox">
+<p><code>&gt; ./0_Download_SNPArray_Table_From_GDC.pl -c BRCA -a Genotypes</code></p>
+</div>
+<p>The error is as follows:</p>
+<div class="textbox">
+<p><code>curl --header 'X-Auth-Token: ###########put your key to replace this line!</code></p>
+</div>
+<h3 id="sec5.8">Potential solution</h3>
+<p>Replace the toy GDC key with the user key ‘gdc.key’ in the ‘/Driver-ASE/Database’ directory. Keep the same key filename.</p>
+<h3 id="sec5.9">Problem 5</h3>
+<p>Missing plink format data of peds and maps. After execution of the ‘1.2_Shapeit_and_Imputation.pl’ script (corresponding protocol step of Evaluate gene-level ASE and identify somatic mutations 5a), the following error appears:</p>
+<div class="textbox">
+<p><code>/Driver-ASE/Analysis/BRCA/RNA_Seq_Analysis/maps does not exist! It was either deleted, moved or renamed.</code></p>
+<p><code>If /Driver-ASE/Analysis/BRCA/RNA_Seq_Analysis/maps is missing, It is likely that it was deleted, moved, renamed or the scripts were ran out of order.</code></p>
+</div>
+<h3 id="sec5.10">Potential solution</h3>
+<p>This error occurs when the required plink formatted data is not in the ‘peds’ and ‘maps’ directories. Run the perl script ‘1.1_Birdseed_to_ped_and_maps.pl’ before executing the perl script ‘1.2_Shapeit_and_Imputation.pl’.</p>
+<h3 id="sec5.11">Problem 6</h3>
+<p>A typical error may occur when running the MATLAB executable file in a Local Linux system (corresponding protocol step: Associate gene-level ASE with somatic mutations 17b), such as Ubuntu 20.04 and CentOS 8, which is listed here:</p>
+<p>./M1_Import_ASE_and_Mutation_data: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory.</p>
+<h3 id="sec5.12">Potential solution</h3>
+<p>This is due to the MATLAB runtime v90 requires the library libncurses5 to be installed in the Linux system. In Ubuntu or CentOS, it can be addressed by installing the dependency via the following command:</p>
+<div class="textbox">
+<p><code><i>#In Ubuntu Linux system</i></code></p>
+<p><code>&gt; sudo apt-get install libncurses5</code></p>
+<p><code><i>#In CentOS Linux system</i></code></p>
+<p><code>&gt; yum install libncurses5</code></p>
+</div>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Chang, C.C., Chow, C.C., Tellier, L.C., Vattikuti, S., Purcell, S.M., and Lee, J.J. (2015). Second-generation PLINK: rising to the challenge of larger and richer datasets. Gigascience <i>4</i>, 7. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref1">View at publisher</a></p>
+<p id="bib2">Cheng, Z., Vermeulen, M., Rollins-Green, M., DeVeale, B., and Babak, T. (2021). Cis-regulatory mutations with driver hallmarks in major cancers. iScience <i>24</i>, 102144. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref2">View at publisher</a></p>
+<p id="bib3">Delaneau, O., Marchini, J., and Zagury, J.F. (2011). A linear complexity phasing method for thousands of genomes. Nat. Methods <i>9</i>, 179-181. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref3">View at publisher</a></p>
+<p id="bib11">Delaneau, O., Zagury, J.F., and Marchini, J. (2013). Improved whole-chromosome phasing for disease and population genetic studies. Nature Methods <i>10</i>, 5-6. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/optDhZBwKebS9">View at publisher</a></p>
+<p id="bib4">Gao, G.F., Parker, J.S., Reynolds, S.M., Silva, T.C., Wang, L.B., Zhou, W., Akbani, R., Bailey, M., Balu, S., Berman, B.P., et al. (2019). Before and after: Comparison of legacy and Harmonized TCGA genomic data Commons' data. Cell Syst. <i>9</i>, 24-34 e10. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref4">View at publisher</a></p>
+<p id="bib5">Kent, W.J., Sugnet, C.W., Furey, T.S., Roskin, K.M., Pringle, T.H., Zahler, A.M., and Haussler, D. (2002). The human genome browser at UCSC. Genome Res. <i>12</i>, 996-1006. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref5">View at publisher</a></p>
+<p id="bib6">Koboldt, D.C., Zhang, Q., Larson, D.E., Shen, D., McLellan, M.D., Lin, L., Miller, C.A., Mardis, E.R., Ding, L., and Wilson, R.K. (2012). VarScan 2: somatic mutation and copy number alteration discovery in cancer by exome sequencing. Genome Res. <i>22</i>, 568-576. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref6">View at publisher</a></p>
+<p id="bib7">Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R., and Genome Project Data Processing, S. (2009). The sequence Alignment/map format and SAMtools. Bioinformatics <i>25</i>, 2078-2079. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref7">View at publisher</a></p>
+<p id="bib12">Marchini, J. and Howie, B. (2010). Genotype imputation for genome-wide association studies. Nature Review Genetics <i>11</i>, 499-511. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/optLtrLn6alOr">View at publisher</a></p>
+<p id="bib8">Marchini, J., Howie, B., Myers, S., McVean, G., and Donnelly, P. (2007). A new multipoint method for genome-wide association studies by imputation of genotypes. Nat. Genet. <i>39</i>, 906-913. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref8">View at publisher</a></p>
+<p id="bib9">Reble, E., Castellani, C.A., Melka, M.G., O'Reilly, R., and Singh, S.M. (2017). VarScan2 analysis of de novo variants in monozygotic twins discordant for schizophrenia. Psychiatr. Genet. <i>27</i>, 62-70. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref9">View at publisher</a></p>
+<p id="bib10">Zhao, H., Sun, Z., Wang, J., Huang, H., Kocher, J.P., and Wang, L. (2014). CrossMap: a versatile tool for coordinate conversion between genome assemblies. Bioinformatics <i>30</i>, 1006-1007. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00640-7/sref10">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and resource requests should be directed to and will be fulfilled by the lead contact, Brian DeVeale (<a href="mailto:brian.deveale@ucsf.edu">brian.deveale@ucsf.edu</a>).</p>
+<h4>Materials availability</h4>
+<p>No newly generated data were produced by this protocol.</p>
+<h4>Data and code availability</h4>
+<p>The protocol includes all datasets generated or analyzed during this study that are accessible at: <a href="https://github.com/michaelcvermeulen/driver-ase">https://github.com/michaelcvermeulen/driver-ase</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We thank the <a href="https://doi.org/10.13039/501100000147">Canadian Cancer Society</a> for funding this research (CBCF grant BC-RG-15-2, PI: T.B.).</p>
+<h3>Author contributions</h3>
+<p>Z.C., M.V., M.R.G., T.B, and B.D. assembled the Driver-ASE pipeline and wrote the manuscript.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>

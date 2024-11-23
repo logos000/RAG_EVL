@@ -1,0 +1,2428 @@
+<article>
+<section>
+<h1 id="header">Protocol for hybrid flux balance, statistical, and machine learning analysis of multi-omic data from the cyanobacterium <i>Synechococcus</i> sp. PCC 7002</h1>
+<p><time datetime="2021-10-01">Published: October 1, 2021</time></p>
+<p>Supreeta Vijayakumar<sup><a href="#aff1">1</a>,<a href="#fn1">4</a></sup> and Claudio Angione<sup><a href="#aff1">1</a>,<a href="#aff2">2</a>,<a href="#aff3">3</a>,<a href="#fn2">5</a>,<a href="#cor2">**</a></sup></p>
+<p id="aff1"><sup>1</sup>School of Computing, Engineering &amp; Digital Technologies, Teesside University, Middlesbrough, North Yorkshire TS1 3BX, UK</p>
+<p id="aff2"><sup>2</sup>Centre for Digital Innovation, Teesside University, Middlesbrough TS1 3BX, UK</p>
+<p id="aff3"><sup>3</sup>Healthcare Innovation Centre, Teesside University, Middlesbrough TS1 3BX, UK</p>
+<p id="fn1"><sup>4</sup>Technical contact</p>
+<p id="fn2"><sup>5</sup>Lead contact</p>
+<p id="cor2"><sup>**</sup>Correspondence: <a href="mailto:c.angione@tees.ac.uk">c.angione@tees.ac.uk</a></p>
+<p><span class="open-access">Open Access</span> • DOI: <a href="https://doi.org/10.1016/j.xpro.2021.100837">10.1016/j.xpro.2021.100837</a></p>
+</section>
+<section>
+<h2 id="summary">Summary</h2>
+<p>Combining a computational framework for flux balance analysis with machine learning improves the accuracy of predicting metabolic activity across conditions, while enabling mechanistic interpretation. This protocol presents a guide to condition-specific metabolic modeling that integrates regularized flux balance analysis with machine learning approaches to extract key features from transcriptomic and fluxomic data. We demonstrate the protocol as applied to <i>Synechococcus</i> sp. PCC 7002; we also outline how it can be adapted to any species or community with available multi-omic data.</p>
+<p>For complete details on the use and execution of this protocol, please refer to <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref56">Vijayakumar et al. (2020)</a>.</p>
+
+
+
+
+<div class="highlights">
+<h3>Highlights</h3>
+<ul>
+<li>Step-by-step instructions are provided for metabolic modeling and machine learning</li>
+<li>Any organism with a working GSMM and available transcriptomic data can be analyzed</li>
+<li>Analyzing multi-omic data provides a more complete picture of metabolism</li>
+<li>Machine learning algorithms reduce dimensionality and detect cross-omic features</li>
+</ul>
+</div>
+<div class="graphical-abstract">
+<h3>Graphical abstract</h3>
+<figure><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-GA.jpg" alt="GraphicalAbstract.jpg"></figure>
+</div></section>
+<section>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The generation of a genome-scale view of metabolic activity is a useful step for many biological scientists, requiring the construction of a computational model that can be adapted to suit the purpose of each analysis by integrating omic additional data to simulate specific genetic or environmental conditions (<a href="#bib55">Vijayakumar et al., 2018</a>). Metabolic networks must be converted into a mathematical format that is both amenable to predictive modeling and able to effectively convey the functional state or behavior of the cell at a multi-systems level (<a href="#bib64">Yurkovich and Palsson, 2015</a>). To this end, genome-scale metabolic models (GSMMs) are mathematical representations of all known biochemical reactions and transmembrane transporters that occur within a living system. They provide a comprehensive view of all metabolic processes by recording and quantifying their flux, which can be defined as the rate of metabolic turnover or conversion of reactants into products (<a href="#bib44">Palsson, 2015</a>). Several methods for constraint-based reconstruction and analysis (COBRA) can be used to simulate flux through metabolic networks at the whole-genome scale (<a href="#bib7">Bordbar et al., 2014</a>). Among these, flux balance analysis (FBA) is a technique that utilizes linear programming to predict flux through all reactions in the metabolic network by locating a set of values in the solution space that best satisfies a given objective function representing the main metabolic goal for the cell (<a href="#bib48">Reed, 2012</a>; <a href="#bib14">Dusad et al., 2020</a>).</p>
+<p>With the rapid advent of high-throughput technologies, supplementation of GSMMs with multi-dimensional omic data describing various levels of biological organization can provide the opportunity to trace molecular components across multiple functional states and record their interactions (<a href="#bib6">Blazier and Papin, 2012</a>; <a href="#bib15">Ebrahim et al., 2016</a>; <a href="#bib30">Li et al., 2018</a>). However, the quality of available experimental datasets can severely limit the predictive power of the model (<a href="#bib65">Yurkovich and Palsson, 2018</a>). To this end, there have been many recent studies that combine machine learning analyses with metabolic modeling (<a href="#bib42">Nandi et al., 2017</a>; <a href="#bib60">Yaneske and Angione, 2018</a>; <a href="#bib10">Costello and Martin, 2018</a>; <a href="#bib18">Guebila and Thiele, 2019</a>; <a href="#bib62">Yang et al., 2019</a>; <a href="#bib11">Culley et al., 2020</a>; <a href="#bib67">Zhang et al., 2020a</a>). Given the difficulty of extracting information from multi-omic datasets, machine learning algorithms serve to reduce dimensionality and elucidate cross-omic relationships (<a href="#bib12">Cuperlovic-Culf, 2018</a>). Additionally, machine learning algorithms and constraint-based models share complementary characteristics and common mathematical bases which make them compatible to be combined. On one hand, GSMMs can provide critical data in terms of stoichiometry and the genetic control of biochemical reactions. On the other hand, machine learning can deconstruct biological complexity by extracting relevant outputs from data. Together, they improve omic-based statistical and machine learning analyses by enriching the learning process with biological knowledge and refining phenotypic predictions (<a href="#bib66">Zampieri et al., 2019</a>; <a href="#bib57">Volkova et al., 2020</a>; <a href="#bib27">Kim et al., 2020</a>).</p>
+<p>This protocol presents a series of steps that apply the principles of constraint-based metabolic modeling, multi-omic data integration and machine learning to analyze a genome-scale metabolic model of <i>Synechococcus</i> sp. PCC 7002 (summarized in <a href="#fig2">Figures 2</a> and <a href="#fig3">3</a>). Following this framework, the main stages comprise regularized flux balance analysis to observe flux response between growth conditions, as well as principal component analysis, <i>k</i>-means clustering, LASSO regression and correlation analysis to reduce dimensionality and extract key features from transcriptomic and fluxomic data. Through this synergistic approach, our goal is to achieve better characterization of metabolic activity across conditions by predicting the phenotypic response. We begin our protocol by presenting a brief summary of the software programs that must be installed prior to completing the main stages of analyses in Installation. Following this, we describe critical steps for the preparation of the chosen genome-scale metabolic model (GSMM) (<a href="#sec1.2">Preparation of Metabolic Model</a>) and the transcriptomic data (<a href="#sec1.3">Preparation of Transcriptomic Data</a>) for flux balance analysis. Preprocessing of transcriptomic data involves the conversion of reads per kilobase million (RPKM) into fold change values, which serves two purposes. First, each growth condition is normalized relative to the standard control within its dataset, allowing the integration of profiles relating to each growth condition during FBA. Second, calculating fold changes centered around 1 serves to facilitate comparisons between transcript and flux data when they are concatenated during later stages of analysis (PCA, LASSO and correlation).</p>
+<p>Inputs and outputs for datasets used in each analysis are listed in <a href="#tbl1">Table 1</a>.</p>
+<table id="tbl1">
+<caption>Table 1. Data inputs and outputs</caption>
+<thead>
+<tr>
+<th>INPUTS</th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">Preparation of metabolic model</td>
+</tr>
+<tr>
+<td>
+<b>model</b><b>XML</b><b>.xml</b>
+</td>
+<td><b>SynechococcusPCC7002.mat</b></td>
+</tr>
+<tr>
+<td>GSMM in XML format</td>
+<td>GSMM in .mat format</td>
+</tr>
+<tr>
+<td colspan="2">Preparation of transcriptomic data</td>
+</tr>
+<tr>
+<td><b>Dataset1.xlsx</b></td>
+<td><b>transcripts.mat / transcriptsnew.csv</b></td>
+</tr>
+<tr>
+<td>Reads per kilobase million per mapped reads (RPKM) for gene transcripts in 16 experimental conditions and 3 standard controls</td>
+<td>Transcript fold changes centered around 1, calculated by dividing RPKM values for experimental conditions by average RPKM of 3 standard controls</td>
+</tr>
+<tr>
+<td><b>Dataset2.xlsx</b></td>
+<td> </td>
+</tr>
+<tr>
+<td>Reads per kilobase million per mapped reads (RPKM) for gene transcripts in 7 experimental conditions and 3 standard controls</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">Flux balance analysis</td>
+</tr>
+<tr>
+<td><b>transcripts.mat</b></td>
+<td><b>all_atp_flux.mat / all_atp_flux.csv</b></td>
+</tr>
+<tr>
+<td><b>SynechococcusPCC7002.mat</b></td>
+<td>Flux distribution recorded when conducting regularized bi-level FBA for the Biomass-ATP maintenance objective pair</td>
+</tr>
+<tr>
+<td><b>reaction_expression.mat</b></td>
+<td><b>all_P1_flux.mat / all_P1_flux.csv</b></td>
+</tr>
+<tr>
+<td>Array defining connection between genes and reactions in the GSMM</td>
+<td>Flux distribution recorded when conducting regularized bi-level FBA for the Biomass-Photosystem I objective pair</td>
+</tr>
+<tr>
+<td><b>pos_genes_in_react_expr.mat</b></td>
+<td><b>all_P2_flux.mat / all_P2_flux.csv</b></td>
+</tr>
+<tr>
+<td>Array indexing the position of all genes within all reactions in the GSMM</td>
+<td>Flux distribution recorded when conducting regularized bi-level FBA for the Biomass-Photosystem II objective pair</td>
+</tr>
+<tr>
+<td><b>ixs_genes_sorted_by_length.mat</b></td>
+<td> </td>
+</tr>
+<tr>
+<td>Array indexing all genes by length (required when replacing genes with expression values)</td>
+<td> </td>
+</tr>
+<tr>
+<td><b>Syn7002_IDs.mat</b></td>
+<td> </td>
+</tr>
+<tr>
+<td>Gene IDs extracted from transcriptomic reads file</td>
+<td> </td>
+</tr>
+<tr>
+<td><b>bounds.mat</b></td>
+<td> </td>
+</tr>
+<tr>
+<td>Reaction names, indices and new values for lower and upper bounds to be adjusted in each growth condition prior to FBA</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">Creation of multi-omic dataset</td>
+</tr>
+<tr>
+<td><b>all_atp_flux.mat</b></td>
+<td><b>ATPTF.mat / all_ATPTF.csv</b></td>
+</tr>
+<tr>
+<td><b>all_P1_flux.mat</b></td>
+<td>Concatenated dataset of fold changes for gene transcripts and flux rates calculated with Biomass - ATP maintenance as objectives</td>
+</tr>
+<tr>
+<td><b>all_P2_flux.mat</b></td>
+<td><b>P1TF.mat / all_P1TF.csv</b></td>
+</tr>
+<tr>
+<td><b>transcripts.mat</b></td>
+<td>Concatenated dataset of fold changes for gene transcripts and flux rates calculated with Biomass - Photosystem I as objectives</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>P2TF.mat / all_P2TF.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Concatenated dataset of fold changes for gene transcripts and flux rates calculated with Biomass - Photosystem II as objectives</td>
+</tr>
+<tr>
+<td colspan="2">Principal component analysis</td>
+</tr>
+<tr>
+<td><b>transcriptsnew.csv</b></td>
+<td><b>contrib_transcripts.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for gene transcripts</td>
+</tr>
+<tr>
+<td><b>all_ATP_flux.csv</b></td>
+<td><b>contrib_all_atp_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for flux rates calculated with Biomass - ATP maintenance as objectives</td>
+</tr>
+<tr>
+<td><b>all_P1_flux.csv</b></td>
+<td><b>contrib_all_p1_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for flux rates calculated with Biomass - Photosystem I as objectives</td>
+</tr>
+<tr>
+<td><b>all_p2_flux.csv</b></td>
+<td><b>contrib_all_p2_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for flux rates calculated with Biomass - Photosystem II as objectives</td>
+</tr>
+<tr>
+<td><b>all_ATPTF.csv</b></td>
+<td><b>contrib_all_ATPTF.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for concatenated dataset of gene transcript and Biomass - ATP maintenance flux fold changes</td>
+</tr>
+<tr>
+<td><b>all_P1TF.csv</b></td>
+<td><b>contrib_all_P1TF.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for concatenated dataset of gene transcript and Biomass - Photosystem I flux fold changes</td>
+</tr>
+<tr>
+<td><b>all_P2TF.csv</b></td>
+<td><b>contrib_all_P2TF.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component contributions for concatenated dataset of gene transcript and Biomass - Photosystem II flux fold changes</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>ind_coord_all_atp_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component coordinates for Biomass - ATP maintenance flux data</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>ind_coord_all_p1_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component coordinates for Biomass - Photosystem I flux data</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>ind_coord_all_p2_flux.csv</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Principal component coordinates for Biomass – Photosystem II flux data</td>
+</tr>
+<tr>
+<td colspan="2">Pathway-level PCA</td>
+</tr>
+<tr>
+<td><b>contrib_all_atp_flux.csv</b></td>
+<td><b>pathway_contrib_ATP.csv</b></td>
+</tr>
+<tr>
+<td><b>contrib_all_p1_flux.csv</b></td>
+<td>Pathway-level PCA contributions to variance for Biomass - ATP maintenance fluxes</td>
+</tr>
+<tr>
+<td><b>contrib_all_p2_flux.csv</b></td>
+<td><b>pathway_contrib_P1.csv</b></td>
+</tr>
+<tr>
+<td><b>ind_coord_all_atp_flux.csv</b></td>
+<td>Pathway-level PCA contributions to variance for Biomass - Photosystem I fluxes</td>
+</tr>
+<tr>
+<td><b>ind_coord_all_p1_flux.csv</b></td>
+<td><b>pathway_contrib_P2.csv</b></td>
+</tr>
+<tr>
+<td><b>ind_coord_all_p2_flux.csv</b></td>
+<td>Pathway-level PCA contributions to variance for Biomass - Photosystem II fluxes</td>
+</tr>
+<tr>
+<td colspan="2">
+<i>K</i>-means clustering</td>
+</tr>
+<tr>
+<td><b>SynechococcusPCC7002.mat</b></td>
+<td><b>silh_transcripts.fig / kmeans_transcripts.fig</b></td>
+</tr>
+<tr>
+<td><b>Syn7002_IDs.mat</b></td>
+<td>Silhouette and <i>k</i>-means plots for transcript data</td>
+</tr>
+<tr>
+<td><b>transcripts.mat</b></td>
+<td><b>silh_ATP.fig / kmeans_ATP.fig</b></td>
+</tr>
+<tr>
+<td><b>all_atp_flux.mat</b></td>
+<td>Silhouette and <i>k</i>-means plots for Biomass - ATP maintenance fluxes</td>
+</tr>
+<tr>
+<td><b>all_P1_flux.mat</b></td>
+<td><b>silh_P1.fig / kmeans_P1.fig</b></td>
+</tr>
+<tr>
+<td><b>all_P2_flux.mat</b></td>
+<td>Silhouette and <i>k</i>-means plots for Biomass - Photosystem I fluxes</td>
+</tr>
+<tr>
+<td><b>ATPTF.mat</b></td>
+<td><b>silh_P2.fig / kmeans_P2.fig</b></td>
+</tr>
+<tr>
+<td><b>P1TF.mat</b></td>
+<td>Silhouette and <i>k</i>-means plots for Biomass - Photosystem II fluxes</td>
+</tr>
+<tr>
+<td><b>P2TF.mat</b></td>
+<td><b>silh_ATPTF.fig / kmeans_ATPTF.fig</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Silhouette and <i>k</i>-means plots for concatenated transcripts and Biomass - ATP maintenance fluxes</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>silh_P1TF.fig / kmeans_P1TF.fig</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Silhouette and <i>k</i>-means plots for concatenated transcripts and Biomass - Photosystem I fluxes</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>silh_P2TF.fig / kmeans_P2TF.fig</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Silhouette and <i>k</i>-means plots for concatenated transcripts and Biomass - Photosystem II fluxes</td>
+</tr>
+<tr>
+<td colspan="2">LASSO regression</td>
+</tr>
+<tr>
+<td><b>transcripts_subset.mat</b></td>
+<td><b>B_transcripts_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of transcript data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with gene transcripts (x) and growth rates (y).</td>
+</tr>
+<tr>
+<td><b>all_atp_flux_subset</b></td>
+<td><b>B_ATP_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of Biomass - ATP maintenance flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with Biomass - ATP maintenance fluxes (x) and growth rates (y).</td>
+</tr>
+<tr>
+<td><b>all_p1_flux_subset</b></td>
+<td><b>B_P1_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of Biomass - Photosystem I flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with Biomass - Photosystem I fluxes (x) and growth rates (y).</td>
+</tr>
+<tr>
+<td><b>all_p2_flux_subset</b></td>
+<td><b>B_P2_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of Biomass - Photosystem II flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with Biomass – Photosystem II fluxes (x) and growth rates (y).</td>
+</tr>
+<tr>
+<td><b>ATPTF_subset</b></td>
+<td><b>B_ATPTF_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of concatenated transcript and Biomass - ATP maintenance flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with concatenated gene transcripts and Biomass - ATP maintenance fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>P1TF_subset</b></td>
+<td><b>B_P1TF_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of concatenated transcript and Biomass - Photosystem I flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with concatenated gene transcripts and Biomass - Photosystem I fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>P2TF_subset</b></td>
+<td><b>B_P2TF_nonzero.xlsx</b></td>
+</tr>
+<tr>
+<td>Subset of concatenated transcript and Biomass - Photosystem II flux data corresponding to available growth conditions</td>
+<td>Non-zero fitted least-squares regression beta coefficients for LASSO conducted with concatenated gene transcripts and Biomass - Photosystem II fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>Y2.mat</b></td>
+<td> </td>
+</tr>
+<tr>
+<td>Growth rates corresponding to available growth conditions</td>
+<td> </td>
+</tr>
+<tr>
+<td colspan="2">Correlation analysis</td>
+</tr>
+<tr>
+<td><b>transcripts_subset.mat</b></td>
+<td><b>corr_transcript_table.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Pearson correlation coefficients, P-values, lower and upper bounds according to the 95% CI calculated between gene transcripts (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>all_atp_flux_subset</b></td>
+<td><b>corr_ATP_table.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Pearson correlation coefficients, P-values, lower and upper bounds according to the 95% CI calculated between Biomass - ATP maintenance fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>all_p1_flux_subset</b></td>
+<td><b>corr_P1_table.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Pearson correlation coefficients, P-values, lower and upper bounds according to the 95% CI calculated between Biomass - Photosystem I fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td><b>all_p2_flux_subset</b></td>
+<td><b>corr_P2_table.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Pearson correlation coefficients, P-values, lower and upper bounds according to the 95% CI calculated between Biomass - Photosystem II fluxes (x) and growth rates (y)</td>
+</tr>
+<tr>
+<td colspan="2">Pathway-level correlation analysis</td>
+</tr>
+<tr>
+<td><b>corr_ATP_table.mat</b></td>
+<td><b>ATP_PCC_mean.mat</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Mean absolute Pearson correlation coefficients calculated between Biomass - ATP maintenance fluxes (x) and growth rates (y) for each subsystem of the GSMM</td>
+</tr>
+<tr>
+<td><b>corr_P1_table.mat</b></td>
+<td><b>P1_PCC_mean.mat</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Mean absolute Pearson correlation coefficients calculated between Biomass - Photosystem I fluxes (x) and growth rates (y) for each subsystem of the GSMM</td>
+</tr>
+<tr>
+<td><b>corr_P2_table.mat</b></td>
+<td><b>P2_PCC_mean.mat</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>Mean absolute Pearson correlation coefficients calculated between Biomass - Photosystem II fluxes (x) and growth rates (y) for each subsystem of the GSMM</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>all_corr_ATP.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>PCC values calculated between Biomass - ATP maintenance fluxes (x) and growth rates (y) for all reactions within each subsystem</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>all_corr_P1.xls</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>PCC values calculated between Biomass - Photosystem I fluxes (x) and growth rates (y) for all reactions within each subsystem</td>
+</tr>
+<tr>
+<td> </td>
+<td><b>all_corr_P2.xlsx</b></td>
+</tr>
+<tr>
+<td> </td>
+<td>PCC values calculated between Biomass - Photosystem II fluxes (x) and growth rates (y) for all reactions within each subsystem</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec1.1">Installation</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 1–2 h</div>
+<p>All installations can be run using Linux, Mac or Windows operating systems, but this protocol is mainly based on using the Windows platform. For full instructions on installing the COBRA Toolbox in Mac and Linux, we refer the reader directly to follow the steps provided at: <a href="https://opencobra.github.io/cobratoolbox/stable/installation.html">https://opencobra.github.io/cobratoolbox/stable/installation.html</a>.</p>
+<ol>
+<li>If needed, install the latest version of MATLAB.
+<ol type="a">
+<li>The MATLAB programming language can be downloaded from <a href="https://uk.mathworks.com/downloads/web_downloads/">https://uk.mathworks.com/downloads/web_downloads/</a>. Following registration, a free 30-day trial can be requested from <a href="https://uk.mathworks.com/campaigns/products/trials.html">https://uk.mathworks.com/campaigns/products/trials.html</a>.</li>
+<li>For a permanent installation, an associated license can be purchased for use by commercial or government organizations, degree-granting institutions, or individuals. Several universities and research organizations provide access to MATLAB through a centralized, campus-wide license.</li>
+</ol>
+</li>
+<li>Check if you have a working installation of git by typing \$ git --version in the Terminal (on Linux and macOS) or cmd (in Windows, not Git Bash). For the latest source release of git, check <a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>.</li>
+<li>Download the latest version of the COBRA Toolbox and its compatible solvers from: <a href="https://opencobra.github.io/cobratoolbox/stable/installation.html">https://opencobra.github.io/cobratoolbox/stable/installation.html</a>. Alternative implementations of COBRA are listed in <a href="#materials-and-equipment">materials and equipment</a>.</li>
+<li>Install the Gurobi Optimizer from: <a href="https://www.gurobi.com/products/gurobi-optimizer/">https://www.gurobi.com/products/gurobi-optimizer/</a>. This is required as a quadratic optimization solver during the regularized flux balance analysis steps. For a list of alternative solvers, see <a href="#materials-and-equipment">materials and equipment</a>.</li>
+</ol>
+<h3 id="sec1.2">Preparation of metabolic model</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 weeks to 1 month</div>
+<p>Any organism with a baseline GSMM and available transcriptomic data can be analyzed using this protocol. The COBRA Toolbox is a popular module for constraint-based reconstruction and analysis of metabolic networks in MATLAB (<a href="#bib20">Heirendt et al., 2019</a>). In most cases, models are written in the Systems Biology Markup Language (SBML) to ensure compliance with the COBRA modules used for analysis (<a href="#bib26">Keating et al., 2006</a>). In this instance, we convert the model directly into .mat format for analysis in MATLAB using the COBRA Toolbox (the resulting model is shown in <a href="#fig1">Figure 1</a>).</p>
+<figure id="fig1"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig1.jpg" alt="Fig1.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 1. A list of all fields present in the <i>Synechococcus</i> sp. PCC 7002 GSMM (saved as <i>fbamodel.mat</i>).</div>
+</figcaption>
+</figure>
+<p>Many GSMMs are publicly available in online repositories such as the Kyoto Encyclopedia of Genes and Genomes (KEGG) (<a href="#bib23">Kanehisa et al., 2016</a>), the Biochemical Genetic and Genomic (BiGG) knowledge-base (<a href="#bib43">Norsigian et al., 2020</a>), the BioCyc collection of pathway/genome databases (<a href="#bib24">Karp et al., 2019</a>), MetaNetX (<a href="#bib39">Moretti et al., 2021</a>) and the ModelSEED and PlantSEED databases (<a href="#bib13">Devoid et al., 2013</a>; <a href="#bib52">Seaver et al., 2014</a>). The preparation of these models for flux balance analysis involves the automated reconstruction of all metabolic reactions taking place in the organism, supplemented by the functional annotation of genes, metabolites and pathways. This is usually followed by extensive manual curation and gap-filling (<a href="#bib45">Prigent et al., 2017</a>), the extent of which is subject to the quality of the initial model reconstruction (<a href="#bib31">Lieven et al., 2020</a>). Furthermore, predictions obtained from GSMMs can be reconciled with <i>in vivo</i> findings and used to identify current gaps in our knowledge of metabolism (<a href="#bib38">Mienda, 2017</a>). However, there are often inconsistencies that must be reconciled between models and experimental data that would otherwise result in outcomes that are falsely predicted by the model (false positives) or experimentally observed outcomes that the model fails to predict (false negatives).</p>
+<ol start="5">
+<li>Create a genome-scale model for <i>Synechococcus</i> sp. PCC 7002 by converting model.xml into a .mat model in MATLAB:</li>
+</ol>
+<div class="textbox">
+<p><code>% Add cobratoolbox and Gurobi directories to MATLAB path</code></p>
+<p><code>addpath(genpath('C:\Users\xxxx\xxxx\cobratoolbox'))</code></p>
+<p><code>addpath(genpath('C:\gurobi911'));</code></p>
+<p><code>% Initialize the COBRA Toolbox</code></p>
+<p><code>initCobraToolbox</code></p>
+<p><code>% Create a .mat model from an XML model</code></p>
+<p><code>fbamodel = readCbModel('modelXML.xml');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> In order to relate genes, metabolites and reactions during FBA, the GSMM must contain a field of logical gene-protein-reaction (GPR) association rules. These rules record the involvement of every gene in every reaction of the metabolic network and must be adjusted when integrating new data that record differential gene expression under various conditions.</div>
+<div class="note">
+<span class="note-title">Note:</span> Although the field <i>fbamodel.rules</i> already exists within the model, running <i>compute_reaction_expression.m</i> creates the field <i>fbamodel.grRules</i> (a string representation of the GPR rules), which will be solved mathematically at the stage of omic data integration. As these new rules do not contain parentheses, it must be manually ensured that AND is solved before OR when substituting MIN and MAX respectively. This means that in the final expression, the MINs must be calculated before the MAXs. The function <i>associate_genes_reactions.m</i> called by <i>compute_reaction_expression.m</i> substitutes the ORs first (which become MAXs), and then the ANDs inside the MAXs. This generates an expression that first solves the ANDs (within an internal loop) and then solves the ORs (within an external loop).</div>
+<ol start="6">
+<li>Create new fields within the model for <i>grRules</i> and two flux objectives (<i>f</i> and <i>g</i>) that will be specified in <a href="#sec3.1">flux balance analysis</a>:</li>
+</ol>
+<div class="textbox">
+<p><code>% Add new field for grRules</code></p>
+<p><code>fbamodel = creategrRulesField(fbamodel)</code></p>
+<p><code>% Remove field c that is used to specify a single flux objective</code></p>
+<p><code>field = 'c';</code></p>
+<p><code>fbamodel = rmfield(fbamodel,field)</code></p>
+<p><code>% Create new fields f and g (whose length is equal to the number of reactions in the model)</code></p>
+<p><code>to later specify pairwise primary and secondary flux objectives in the model</code></p>
+<p><code>fbamodel.f = zeros(742,1);</code></p>
+<p><code>fbamodel.g = zeros(742,1);</code></p>
+<p><code>% Save the model in .mat format</code></p>
+<p><code>writeCbModel(fbamodel,'format','mat','fileName','</code><code>SynechococcusPCC7002.mat');</code></p>
+</div>
+<ol start="7">
+<li>Match the parsing of gene IDs in the transcriptomic data with those listed in <i>fbamodel.genes</i>:</li>
+</ol>
+<div class="textbox">
+<p><code>% Run the script compute_reaction_expression.m, which calls the function associate_genes_reactions.m in order to substitute the expressions AND and OR with MIN and MAX within fbamodel.grRules and creates the variables required for condition−specific flux balance analysis − i.e. pos_genes_in_react_expr, reaction_expression and ixs_genes_sorted_by_length</code></p>
+<p><code>compute_reaction_expression;</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> When parsing the strings within <i>grRules</i> (i.e., replacing AND and OR with MIN and MAX), it is essential to check the parentheses to ensure that the code runs correctly. Depending on the existing parsing rules for parentheses, it may be necessary to edit <i>associate_genes_reactions.m</i> to adjust the substitution loop according to the model in question.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Steps 6 and 7 only apply when creating a new GSMM, as it must be ensured that a new <i>grRules</i> field is written in the model to link gene IDs in the omic dataset with those in the model. When applying the steps to a new model or data, it is important to ensure the consistency of gene names between external data and the GSMM, but modelers wishing to run the analysis for the <i>Synechococcus</i> GSMM only need to load the variables already saved in the code repository.</div>
+<ol start="8">
+<li>As stated previously, conducting manual curation of all model fields, including genes, reactions, metabolites and subsystems prior to performing FBA is necessary to ensure the verity of biological outputs. Particularly, subsystems within the model may be known by multiple names or annotated inconsistently. It is also possible, as in our case, that several reactions are assigned with multiple subsystems or even none at all. In the case of reactions, we create a new array of subsystem names that are modified to account for reactions classified by more than one subsystem:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create a cell array of subsystems</code></p>
+<p><code>subsystems = fbamodel.subSystems;</code></p>
+<p><code>% Merge the same names for amino acid metabolism into a single subsystem</code></p>
+<p><code>old_aa = {'Amino Acid Metabolisms','Amino Acid Metabolism'};</code></p>
+<p><code>new_aa = 'Amino acid metabolism';</code></p>
+<p><code>subsystems = replace(subsystems,old_aa,new_aa);</code></p>
+<p><code>% Merge the same names for exchange reactions into a single subsystem</code></p>
+<p><code>subsystems = replace(subsystems,'Exchange Reaction','Exchange');</code></p>
+<p><code>% Divide the names for lipid and cell wall metabolism into separate subsystems</code></p>
+<p><code>subsystems = replace(subsystems,'Lipid and Cell Wall Metabolism', 'Lipid metabolism and Cell wall');</code></p>
+<p><code>% Merge the same names for unassigned reactions into a single subsystem</code></p>
+<p><code>old_none = {'None','Other'};</code></p>
+<p><code>new_none = 'Unassigned';</code></p>
+<p><code>subsystems = replace(subsystems,old_none,new_none);</code></p>
+<p><code>subsystems(cellfun('isempty',subsystems)) = {'Unassigned'};</code></p>
+</div>
+<ol start="9">
+<li>Since it has been used to differentiate multiple subsystems associated with single reactions in <i>fbamodel.subSystems</i>, the word 'and' can be used as a string delimiter to divide subsystem names across a cell array of separate strings:</li>
+</ol>
+<div class="textbox">
+<p><code>% Replace existing instances of 'and' with '&amp;' within single subsystems</code></p>
+<p><code>old_names = {'Metabolism of terpenoids and polyketides','Metabolism of terpenoids and polyketides',</code></p>
+<p><code>'Metabolism of cofactors and vitamins','Coenzymes and prosthetic groups','Glycan biosynthesis and</code></p>
+<p><code>metabolism','Nucleotides and nucleic acids','Nucleotide Metabolism','Carbohydrate Metabolism','Energy</code></p>
+<p><code>Metabolism'};</code></p>
+<p><code>new_names = {'Metabolism of terpenoids &amp; polyketides','Metabolism of terpenoids &amp; polyketides','</code></p>
+<p><code>Metabolism of cofactors &amp; vitamins','Coenzymes &amp; prosthetic groups','Glycan biosynthesis &amp;</code></p>
+<p><code>metabolism','Nucleotides &amp; nucleic acids','Nucleotide metabolism','Carbohydrate metabolism',' Energy</code></p>
+<p><code>metabolism'};</code></p>
+<p><code>subsystems = replace(subsystems,old_names,new_names);</code></p>
+<p><code>% Split multiple subsystems across reactions into a cell array of strings by using 'and' as a delimiter</code></p>
+<p><code>new_subsystems = regexpi(subsystems,'and','split');</code></p>
+<p><code>% Remove trailing spaces from the end of each string</code></p>
+<p><code>new_subsystems = strtrim(new_subsystems);</code></p>
+<p><code>% Remove any blank cells remaining in the subsystems array</code></p>
+<p><code>new_subsystems{12}(2)=[];</code></p>
+<p><code>new_subsystems{225}(2)=[];</code></p>
+<p><code>% Replace subsystem names in the model</code></p>
+<p><code>fbamodel.subSystems = new_subsystems;</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Parsing strings at the correct positions within single subsystems and removing any trailing spaces and blank cells after name replacement are essential to ensure consistency and match strings accurately within subsystem names during <a href="#sec3.4">Pathway-level PCA</a> (optional) and <a href="#sec3.8">Pathway-level correlation analysis</a> (optional).</div>
+<h3 id="sec1.3">Preparation of transcriptomic data</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> 2 weeks to 1 month</div>
+<p>The transcriptomic profiles utilized in this study originate from three studies conducted by <a href="#bib32">Ludwig and Bryant (2011</a>, <a href="#bib33">2012a</a>,<a href="#bib34">b)</a> that sequenced RNA reads for <i>Synechococcus</i> sp. PCC 7002 cells grown under different conditions (detailed in <a href="#tbl2">Table 2</a>). Following their generation via SOLiD™ sequencing, the study by <a href="#bib61">Yang et al. (2015)</a> describes how these data have been preprocessed prior to their inclusion in our protocol. The reads obtained from the NCBI Sequence Read Archive (SRA) were filtered to eliminate low-quality reads and aligned against the <i>Synechococcus</i> genome using Burrows-Wheeler Aligner (BWA) software. Following this, the sequences that did not map to the reference genome, those that were mapped to the rRNA-coding regions or those aligned to more than one region were eliminated. The remaining uniquely mapped genes were converted into reads per kilobase million (RPKM) and fold change values.</p>
+<table id="tbl2">
+<caption>Table 2. Experimental conditions</caption>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Description of culture conditions</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard control</td>
+<td>Medium A+ at 38°C, illuminated at 250 μmol photons m<sup>−2</sup>s<sup>−1</sup>, sparged in air with 1% (v/v) CO<sub>2</sub>, with cells harvested at OD<sub>730nm</sub> = 0.7.</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>Dark oxic</td>
+<td>Incubated in darkness prior to harvest, sparged in N<sub>2</sub>
+</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>Dark anoxic</td>
+<td>Incubated in darkness prior to harvest</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>High light</td>
+<td>Illuminated at 900 μmol photons m<sup>−2</sup> s<sup>−1</sup> prior to harvest</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>OD 0.4</td>
+<td>Harvested at OD<sub>730nm</sub> = 0.4</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>OD 1.0</td>
+<td>Harvested at OD<sub>730nm</sub> = 1.0</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>OD 3.0</td>
+<td>Harvested at OD<sub>730nm</sub> = 3.0</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>OD 5.0</td>
+<td>Harvested at OD<sub>730nm</sub> = 5.0</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>Low O<sub>2</sub>
+</td>
+<td>Sparged in N<sub>2</sub>
+</td>
+<td>(<a href="#bib32">Ludwig and Bryant, 2011</a>)</td>
+</tr>
+<tr>
+<td>Low CO<sub>2</sub>
+</td>
+<td>Sparged with air [0.035% (v/v) CO<sub>2</sub>]</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>N-limited</td>
+<td>Cells washed in medium A (lacking NO<sup>3−</sup>) and resuspended</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>S-limited</td>
+<td>Cells washed with MgCl<sub>2</sub>
+</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>PO<sub>4</sub><sup>3-</sup> limited</td>
+<td>Cells washed without (PO<sub>4</sub><sup>3-</sup>) harvested at OD 730 nm = 0.7</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>Fe-limited</td>
+<td>Cells washed in medium A with 720 μM deferoxamine me-sylate B added at OD<sub>730nm</sub> = 0.35</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>NO<sub>3</sub><sup>-</sup>
+</td>
+<td>Standard growth in medium A (lacking NaNO<sub>3</sub>) with 25 mM HEPES, 1 μM NiSO<sub>4</sub>, 12 mM NaNO<sub>3</sub>
+</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>NH<sub>3</sub>
+</td>
+<td>Standard growth in medium A (lacking NaNO<sub>3</sub>) with 25 mM HEPES, 1 μM NiSO<sub>4</sub> and 10 mM NH<sub>4</sub>Cl</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>CO(NH<sub>2</sub>)<sub>2</sub>
+</td>
+<td>Standard growth in medium A (lacking NaNO<sub>3</sub>) with 25 mM HEPES, 1 μM NiSO<sub>4</sub> and 10 mM CO(NH<sub>2</sub>)<sub>2</sub>
+</td>
+<td>(<a href="#bib33">Ludwig and Bryant, 2012a</a>)</td>
+</tr>
+<tr>
+<td>Heat Shock</td>
+<td>1 h heat shock at 47°C</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>22°C</td>
+<td>Standard growth at 22°C</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>30°C</td>
+<td>Standard growth at 30°C</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>Oxidative stress</td>
+<td>5 μM methyl viologen added 30 min prior to harvesting</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>Mixotrophic</td>
+<td>Medium A+ supplemented with 10 mM glycerol</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>Low salt</td>
+<td>Medium A+ containing 3 mM NaCl and 0.08 mM KCl</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+<tr>
+<td>High salt</td>
+<td>Medium A+ containing 1.5 M NaCl and 40 mM KCl</td>
+<td>(<a href="#bib34">Ludwig and Bryant, 2012b</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>Starting from RPKM values (stored in Datasets 1 and 2), we begin by recalculating fold changes as values centered around 1. As outlined in <a href="#before-you-begin">before you begin</a>, this ensures a more convenient comparison between transcript and flux data when they are concatenated and also between all growth conditions, including the standard controls within each separate dataset, which were averaged over three replicates.</p>
+<ol start="10">
+<li>Download Dataset1.xls and Dataset2.xls from <a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/tree/master/transcriptomic_data">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/tree/master/transcriptomic_data</a>.</li>
+</ol>
+<div class="critical">
+<span class="critical-title">Critical:</span> In this instance, all transcriptomic reads were obtained from studies conducted in tandem (with the same number of samples). For omic data obtained from multiple sources/studies that require additional normalization, see <a href="#sec6.1">troubleshooting problem one</a>.</div>
+<ol start="11">
+<li>Import the datasets into MATLAB:</li>
+</ol>
+<div class="textbox">
+<p><code>% Import gene expression data from Excel</code></p>
+<p><code>Dataset1 = readtable('Dataset1.xlsx');</code></p>
+<p><code>Dataset2 = readtable('Dataset2.xlsx');</code></p>
+<p><code>% Save columns containing RPKM values for each growth condition within numerical matrices</code></p>
+<p><code>Dataset1RPKM = table2array(Dataset1(:,[3,4,5,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66]));</code></p>
+<p><code>Dataset2RPKM = table2array(Dataset2(:,[3,4,5,6,10,14,18,22,26,30]));</code></p>
+</div>
+<ol start="12">
+<li>Within each dataset, divide the RPKM values for each experimental condition by the mean of three standard control values. This produces a series of fold change values centered around 1:</li>
+</ol>
+<div class="textbox">
+<p><code>% Calculate separate standard averages for each dataset by computing the mean of three standard</code></p>
+<p><code>control replicates (the first three columns of each RPKM matrix)</code></p>
+<p><code>Standard_Averages_Dataset1 = mean(Dataset1RPKM(:,1:3),2);</code></p>
+<p><code>Standard_Averages_Dataset2 = mean(Dataset2RPKM(:,1:3),2);</code></p>
+<p><code>% Create dataset of transcript fold changes by dividing RPKM values in each growth condition</code></p>
+<p><code>by the average RPKM value of standard control replicates in that dataset</code></p>
+<p><code>newFC = Dataset1RPKM(:,4:19)./Standard_Averages_Dataset1;</code></p>
+<p><code>newFC2 = Dataset2RPKM(:,4:10)./Standard_Averages_Dataset2;</code></p>
+<p><code>transcripts = horzcat(newFC,newFC2);</code></p>
+</div>
+<ol start="13">
+<li>Save fold change values for all growth conditions:</li>
+</ol>
+<div class="textbox">
+<p><code>% Save names for each growth condition corresponding to the transcripts</code></p>
+<p><code>conditions = {'Darkoxic','Darkanoxic','Highlight','OD04','OD10','OD30','OD50',</code></p>
+<p><code>'lowO2','lowCO2','Nlim','Slim','Plim','Felim','Nitrate','Ammonia','Urea',</code></p>
+<p><code>'Heatshock','T22','T30','Oxstress','Mixotrophic','Lowsalt','Highsalt'};</code></p>
+<p><code>% Create a table by concatenating names of growth conditions and transcript fold changes</code></p>
+<p><code>transcripts_table = array2table(transcripts,'VariableNames',conditions);</code></p>
+<p><code>save('transcripts_table.mat','transcripts_table');</code></p>
+<p><code>% Save as .mat variable and .csv file for later analyses</code></p>
+<p><code>transcripts = transcripts'; % transpose matrix</code></p>
+<p><code>save('transcripts.mat','transcripts');</code></p>
+<p><code>writemat(transcripts,'transcriptsnew.csv');</code></p>
+</div>
+</section>
+<section>
+<h2 id="key-resources-table">Key resources table</h2>
+<table id="krt">
+<thead>
+<tr>
+<th>REAGENT or RESOURCE</th>
+<th>SOURCE</th>
+<th>IDENTIFIER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">Deposited data</td>
+</tr>
+<tr>
+<td>Sequence reads for <i>Synechococcus</i> sp. PCC 7002 cells</td>
+<td><a href="#bib32">Ludwig and Bryant (2011)</a></td>
+<td>Sequence Read Archive (SRA):<a href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a>SRP004049</td>
+</tr>
+<tr>
+<td>Sequence reads for <i>Synechococcus</i> sp. PCC 7002 cells</td>
+<td><a href="#bib33">Ludwig and Bryant (2012a)</a></td>
+<td>Sequence Read Archive (SRA):<a href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a>SRP007372</td>
+</tr>
+<tr>
+<td>Sequence reads for <i>Synechococcus</i> sp. PCC 7002 cells</td>
+<td>
+<a href="#bib34">Ludwig and Bryant (2012b)</a>)</td>
+<td>Sequence Read Archive (SRA):<a href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a>SRP013965</td>
+</tr>
+<tr>
+<td>
+<i>Synechococcus</i>-metabolic-modelingDataset 1</td>
+<td><a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/blob/master/transcriptomic_data/Dataset1.xlsx">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/blob/master/transcriptomic_data/Dataset1.xlsx</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>
+<i>Synechococcus</i>-metabolic-modelingDataset 2</td>
+<td><a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/blob/master/transcriptomic_data/Dataset2.xlsx">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling/blob/master/transcriptomic_data/Dataset2.xlsx</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Experimental models: organisms/strains</td>
+</tr>
+<tr>
+<td>
+<i>Synechococcus</i> sp. PCC 7002genome-scale model</td>
+<td><a href="#bib21">Hendry et al. (2016)</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Software and algorithms</td>
+</tr>
+<tr>
+<td>MATLAB R2020b</td>
+<td><a href="https://www.mathworks.com/products/matlab">https://www.mathworks.com/products/matlab</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Git 2.3.0</td>
+<td><a href="https://git-scm.com/">https://git-scm.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>COBRA Toolbox v3.0</td>
+<td><a href="https://opencobra.github.io/cobratoolbox/stable/">https://opencobra.github.io/cobratoolbox/stable/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Gurobi Optimizer 9.1.1</td>
+<td><a href="https://www.gurobi.com/">https://www.gurobi.com/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>R-3.6.2 for Windows (64 bit)</td>
+<td><a href="https://cran.r-project.org/">https://cran.r-project.org/</a></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="3">Other</td>
+</tr>
+<tr>
+<td>Lenovo G50-30 80G0 model laptop computer (4 GB RAM, Intel Pentium 2.16 GHz processor and 500 GB solid-state hard drive)</td>
+<td>Any reasonably up-to-date computer may be used</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2 id="materials-and-equipment">Materials and equipment</h2>
+<p>Throughout this work, a Lenovo G50-30 80G0 model laptop computer using the Microsoft Windows 10 Home operating system was used. This computer has a 500 GB solid-state hard drive, an Intel Pentium N3530 CPU @ 2.16 GHz (1,333 Mhz memory speed and 4 cores) and 4 GB Random Access Memory (RAM). However, any reasonably up-to-date computer may be used to run all code and any operating system can be used - Windows, Mac OS, or Unix/Linux.</p>
+<p>MATLAB (MathWorks: <a href="https://www.mathworks.com/products/matlab">https://www.mathworks.com/products/matlab</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> While the current implementation applies the COBRA Toolbox in MATLAB, the package is extendable to any other platforms that support COBRA (such as Python, Julia, Mathematica as well as Linux, Windows and Mac binaries). A full list is available from: <a href="https://opencobra.github.io/">https://opencobra.github.io/</a>.</div>
+<p>Gurobi (<a href="https://www.gurobi.com/">https://www.gurobi.com/</a>)</p>
+<div class="alternatives">
+<span class="alternatives-title">Alternatives:</span> While the current implementation uses the Gurobi Optimizer, a number of other available solvers could be installed and selected as the solver for quadratic optimization (such as IBM CPLEX <a href="https://www.ibm.com/products/ilog-cplex-optimization-studio">https://www.ibm.com/products/ilog-cplex-optimization-studio</a>, TOMLAB CPLEX <a href="https://tomopt.com/tomlab/download/products">https://tomopt.com/tomlab/download/products</a> or MOSEK <a href="https://www.mosek.com/downloads">https://www.mosek.com/downloads</a>).</div>
+</section>
+<section>
+<h2 id="step-by-step-method-details">Step-by-step method details</h2>
+<p>In this section, a comprehensive step-by-step protocol is laid out for running the flux balance analysis of <i>Synechococcus</i> sp. PCC 7002, followed by principal components analysis, <i>k</i>-means clustering, LASSO regression and finally, correlation analysis. Each of these stages comprises a series of inputs and outputs, as well as intermediary processes that transform each type of data (see <a href="#fig2">Figure 2</a>). Critical steps for running the code and troubleshooting are interspersed between these steps and further elaborated in the <a href="#troubleshooting">troubleshooting</a> section. All steps described in the code are case-specific, but they can easily be adapted to any transcriptomic dataset or GSMM that the user wishes to analyze.</p>
+<figure id="fig2"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig2.jpg" alt="Fig2.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 2. Inputs and outputs for all stages of the analysis in step-by-step method details.</div>
+</figcaption>
+</figure>
+<figure id="fig3"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig3.jpg" alt="Fig3.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 3. A workflow summarizing all stages of analysis in step-by-step method details.</div>
+</figcaption>
+</figure>
+<h3 id="sec3.1">Flux balance analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span> &lt;15 min</div>
+<div class="note">
+<span class="note-title">Note:</span> During flux balance analysis, a single objective is usually specified for optimization within the field <i>fbamodel.c</i>. Using different solvers to perform the same optimization can cause solutions to vary, owing to differences in numerical implementation and the existence of multiple optimal solutions in the solution space. Calculating a unique solution using quadratic optimization is therefore more reliable when the flux distribution is intended for use in further analyses. To this end, minimizing the sum of squared flux values (L2 norm) carried by the metabolic network following maximization of the primary objective guarantees a unique set of flux solutions drawn from a strictly convex space (<a href="#bib3">Angione, 2019</a>). This section lists the major processes and steps for running a regularized flux balance analysis that maximizes pairwise objective functions in a bi-level fashion with a penalty term that considers the norm-2 of the flux vector (<a href="#bib20">Heirendt et al., 2019</a>). Bi-level regularized FBA is conducted in MATLAB using the quadratic programming solver Gurobi to compute flux distributions by selecting pairs of reactions in the GSMM to act as flux objectives (i.e. by selecting reactions within <i>fbamodel.f</i> and <i>fbamodel.g</i>, as detailed in <a href="#fig4">Figure 4</a>). Subsequently, 24 condition-specific growth profiles of <i>Synechococcus</i> sp. PCC 7002 are generated by integrating omics data relating to different environmental conditions, and three pairs of reactions are optimized for each of these profiles, namely: (i) Biomass - ATP maintenance (ii) Biomass - Photosystem I and (iii) Biomass - Photosystem II.</div>
+<div class="note">
+<span class="note-title">Note:</span> When calculating the flux distribution across conditions, the biomass reaction was chosen as the primary objective, while the secondary objective was set to ATP maintenance, photosystem I or photosystem II reactions in order to reflect the main cellular goals of cyanobacteria. In our case, the carbon-limited biomass reaction has been chosen as a primary objective to represent the maximization of growth rate and cellular yields (<a href="#bib16">Feist and Palsson, 2010</a>; <a href="#bib63">Yuan et al., 2016</a>; <a href="#bib28">Lakshmanan et al., 2019</a>), which is a critical consideration for cyanobacteria as this informs the substrate uptake rates and maintenance requirements that indicate fundamental cellular growth requirements. The chosen secondary objectives are key pathways involved in energy metabolism during photosynthesis. Simulating the cost of ATP maintenance helps to assess the energy required for sustaining metabolic activity even in the absence of growth. The incorporation of the photoexcitation reactions occurring within photosystems I and II serves to characterize how flux under various conditions reflects the light harvesting and energy transfer via photon absorption through these complexes. Thus, solving the quadratic optimization problem for multiple pairs of objectives helped to resolve trade-offs by considering the conditions and constraints affecting each of these objectives.</div>
+<p>It has been established that the activity of biosynthetic and energy-generating pathways increases with the growth rate (<a href="#bib5">Bernstein et al., 2014</a>), which led us to implement multi-level regularized FBA in our pipeline, considering more than one objective function. This allows us to examine the effect of maximizing biomass using regularized flux balance analysis, followed by the maximization of flux through ATP maintenance and photosynthetic reactions. Performing the FBA in this manner has a relatively low computational cost, taking approximately 0.9–1.69 s per growth condition, and 43.53 s to run the entire script.</p>
+<figure id="fig4"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig4.jpg" alt="Fig4.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 4. Check that the correct reaction indices for flux objectives <i>fbamodel.f</i> and <i>fbamodel.g</i> are selected in <i>fbamodel.mat</i> (indicated by the position of 1 in each vector).</div>
+</figcaption>
+</figure>
+<div class="note">
+<span class="note-title">Note:</span> As an alternative to regularized FBA, we also provide a critical step detailing how users can employ flux variability analysis (FVA) to obtain minimal and maximal flux ranges for each growth condition. The full details for running the analysis are contained in the script <i>RUN_all.m</i> stored in the GitHub repository listed in the <a href="#key-resources-table">key resources table</a>: <a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling</a>.</div>
+<ol>
+<li>Firstly, we load the required variables within a local directory available to MATLAB:</li>
+</ol>
+<div class="textbox">
+<p><code>% Load the pre-existing variables</code></p>
+<p><code>% Genome-scale model of</code> <code>Synechococcus sp. PCC 7002</code></p>
+<p><code>load('</code><code>SynechococcusPCC7002.mat');</code></p>
+<p><code>% Array indexing the position of genes within reactions</code></p>
+<p><code>load('pos_genes_in_react_expr.mat');</code></p>
+<p><code>% Array defining the connection between genes and reactions based on GPR rules</code></p>
+<p><code>load('reaction_expression.mat');</code></p>
+<p><code>% Array indexing genes (required when replacing genes with their expression values)</code></p>
+<p><code>load('</code><code>ixs_gen</code><code>es</code><code>_sorted_by_length.mat');</code></p>
+<p><code>% List of gene IDs extracted from transcriptomic reads file</code></p>
+<p><code>load('Syn7002_IDs.mat');</code></p>
+<p><code>% Array of fold changes calculated from transcriptomic reads</code></p>
+<p><code>load('transcripts.mat')</code>;</p>
+</div>
+<ol start="2">
+<li>We then specify variables for the genes within the model and those included in the transcriptomic data:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create a variable to store gene accession IDs from the model</code></p>
+<p><code>genes = fbamodel.genes;</code></p>
+<p><code>% Create a variable to store gene accession IDs from the transcriptomic datasets</code></p>
+<p><code>genes_in_dataset = Syn7002_IDs;</code></p>
+<p><code>% Specify the number of objectives for FBA</code></p>
+<p><code>M = 2;</code></p>
+<p><code>% Specify the number of variables for FBA (i.e. genes)</code></p>
+<p><code>V = numel(genes)</code><code>;</code></p>
+<p><code>% Create indices to set the objective functions for FBA</code></p>
+<p><code>ix_f = find(fbamodel.f==1); %check current primary objective</code></p>
+<p><code>ix_g = find(fbamodel.g==1); %check current secondary objective</code></p>
+</div>
+<ol start="3">
+<li>This step assigns indices for selecting the objective function(s) to be optimized during flux balance analysis:
+<ol type="a">
+<li>This step assigns indices for selecting the objective function(s) to be optimized during flux balance analysis.</li>
+</ol>
+</li>
+</ol>
+<div class="textbox">
+<p><code>% Set new primary objective f as the standard biomass reaction</code></p>
+<p><code>ix_new_f = 735;</code></p>
+<p><code>% Set new secondary objective g as ATP maintenance, photosystem I or photosystem II (manually change the</code></p>
+<p><code>second objective optimized for FBA in each of the three cases by commenting out the other two objectives</code></p>
+<p><code>not in use)</code></p>
+<p><code>ix_new_g = find(ismember(fbamodel.rxnNames,'ATP maintenance requirment')==1);</code></p>
+<p><code>% ix_new_g = find(ismember(fbamodel.rxnNames,'Photosystem I Reaction (cytochrome c6)')==1);</code></p>
+<p><code>% ix_new_g = find(ismember(fbamodel.rxnNames,'photosystem II reaction')==1);</code></p>
+<p><code>% Select new objective functions for simulation</code></p>
+<p><code>fbamodel.f(ix_f) = 0;</code></p>
+<p><code>fbamodel.f(ix_new_f) = 1;</code></p>
+<p><code>fbamodel.g(ix_g) = 0;</code></p>
+<p><code>fbamodel.g(ix_new_g) = 1;</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Although a large number of studies express the maximization of biomass as the only objective when performing FBA, it is important to recognize that, in reality, most organisms have multiple objectives to satisfy. Depending on the goal of the flux simulation, any reactions within the metabolic network reflecting a property of interest that must be optimized by the cell can be selected as objective functions via vector indexing. Within each pair of objectives, the primary flux objective <i>fbamodel.f</i> is fixed as the standard biomass reaction (<i>fbamodel.rxnNames</i> = 735) since it reflects the universal property of cellular growth maintenance, whereas the secondary flux objective <i>fbamodel.g</i> is manually switched between the reactions for ATP maintenance (<i>fbamodel.rxnNames</i> = 70), Photosystem I (<i>fbamodel.rxnNames</i> = 698) or Photosystem II (<i>fbamodel.rxnNames</i> = 697) to examine processes relating to energy metabolism and photosynthesis. As an alternative approach, users may also wish to force flux by increasing the lower bounds of reactions to ensure a minimum flux through pathways of interest, although in general this would not allow the user to find solutions that maximize their usage.</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Before applying gene-expression derived constraints during FBA, additional boundary constraints based on the varying metabolic capability of cells under different growth conditions (stored in <i>bounds.mat</i>) are used to modify lower and upper bounds in the model (<i>fbamodel.lb</i> and <i>fbamodel.ub</i>), thus shrinking the solution space and refining phenotypic prediction of metabolic activity. For all experimental conditions, a series of uptake and secretion rates are adjusted in the GSMM prior to performing FBA, taking into account: (i) composition of growth media limitation/supplementation of trace elements, e.g. nitrogen, sulfur, iron, phosphorus, etc. (ii) optical density at which cells were harvested (OD<sub>730nm</sub> = 0.4/0.7/1.0/3.0/5.0), (iii) mode of energy utilization (phototrophy/heterotrophy/mixotrophy), (iv) availability of oxygen/carbon dioxide (low O<sub>2</sub>, low CO<sub>2</sub>, oxic/anoxic), (v) light intensity (dark or high light), (vi) temperature (22°C, 30°C, heat shock), (vii) salinity (low/high). This enables a more unique characterization of each growth condition.</div>
+<div class="note">
+<span class="note-title">Note:</span> For example, the bounds adjusted in our model are specified in <a href="#tbl3">Table 3</a>, where a list of uptake and secretion rates (i.e. lower and upper bounds recorded in <i>fbamodel.lb</i> and <i>fbamodel.ub</i> respectively) for various exchange reactions are fixed at different values according to the growth conditions under which the <i>Synechococcus</i> cells were cultured and harvested (<a href="#bib32">Ludwig and Bryant, 2011</a>, <a href="#bib34">2012b</a>,<a href="#bib33">a</a>). Apart from glycerol in the mixotrophic condition, lower bounds for other carbon sources (maltohexaose, maltopentaose, maltotriose, maltotetraose, maltose) and carbonate are set to zero for all conditions. γ represents the photon exchange reaction, whose lower bounds are determined using the calculation specified in Equation <a href="#fd1">1</a>.</div>
+<div class="note">
+<span class="note-title">Note:</span> To specify the variation in light uptake across growth conditions, we calculated a photon uptake rate (P<sub>U</sub>) for each growth condition using a method similar to <a href="#bib58">Vu et al. (2012)</a>. In this calculation, light consumption (LC) under each condition (mmol) is multiplied by the surface area (SA) of the culture exposed to the light source (m<sup>2</sup>); the product is subsequently divided by the total available dry cell weight (DCW) of the culture (grams per volume) as follows:</div>
+<p id="fd1" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 1)</mtext></mtd> <mtd> <mrow> <msub> <mi>P</mi> <mi>U</mi> </msub> <mo>=</mo> <mfrac> <mrow> <mi>L</mi> <mi>C</mi> <mspace></mspace> <mo>×</mo> <mi>S</mi> <mi>A</mi> </mrow> <mrow> <mi>D</mi> <mi>C</mi> <mi>W</mi> </mrow> </mfrac> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<p>In this instance, the surface area of the culture exposed to the light source was calculated using the diameter of the cylindrical culture tube and the volume of the culture medium (<a href="#bib32">Ludwig and Bryant, 2011</a>), but users are advised to consider the shape and capacity of the vessel used to culture the cells in their own experimental setting when calculating this value.</p>
+<table id="tbl3">
+<caption>Table 3. Flux bounds adjusted for FBA</caption>
+<thead>
+<tr>
+<th colspan="10">fbamodel.lb</th>
+<th colspan="2">fbamodel.ub</th>
+</tr>
+<tr>
+<th>Condition</th>
+<th>CO<sub>2</sub>
+</th>
+<th>C<sub>3</sub>H<sub>8</sub>O<sub>3</sub>
+</th>
+<th>SO<sub>4</sub><sup>2-</sup>
+</th>
+<th>NO<sub>3</sub><sup>-</sup>
+</th>
+<th>NH<sub>4</sub><sup>+</sup>
+</th>
+<th>CO(NH<sub>2</sub>)<sub>2</sub>
+</th>
+<th>γ</th>
+<th>O<sub>2</sub>
+</th>
+<th>Fe<sup>3+</sup>
+</th>
+<th>γ</th>
+<th>O<sub>2</sub>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard control</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Dark oxic</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.003</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Dark anoxic</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.003</td>
+<td>−0.01</td>
+<td>−1000</td>
+<td>1000</td>
+<td>−0.01</td>
+</tr>
+<tr>
+<td>High light</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.234</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>OD 0.4</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.114</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>OD 1.0</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.045</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>OD 3.0</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.008</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>OD 5.0</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.004</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Low O<sub>2</sub>
+</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−0.01</td>
+<td>−1000</td>
+<td>1000</td>
+<td>−0.01</td>
+</tr>
+<tr>
+<td>Low CO<sub>2</sub>
+</td>
+<td>−0.01</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>N-limited</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−0.01</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>S-limited</td>
+<td>−10</td>
+<td>0</td>
+<td>−0.01</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>PO<sub>4</sub><sup>3-</sup> limited</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Fe-limited</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−0.01</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>NO<sub>3</sub><sup>-</sup>
+</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−12</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>NH<sub>3</sub>
+</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>0</td>
+<td>−10</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>CO(NH<sub>2</sub>)<sub>2</sub>
+</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>0</td>
+<td>−1000</td>
+<td>−10</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Heat Shock</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>22°C</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>30°C</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Oxidative stress</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Mixotrophic</td>
+<td>−10</td>
+<td>-10</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Low salt</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>High salt</td>
+<td>−10</td>
+<td>0</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>−0.065</td>
+<td>−1000</td>
+<td>−1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<span class="note-title">Note:</span> If conducting growth experiments to directly measure light availability and DCW <i>in vivo</i> is not possible, users can refer to the literature to find the closest estimates available for their model species. In our case, we use an approximation for the DCW of marine <i>Synechococci</i> (<a href="#bib41">Myers et al., 2013</a>), which was confirmed to be in the same range of values as other <i>Synechococci</i> (<a href="#bib1">Aikawa et al., 2014</a>; <a href="#bib47">Qiao et al., 2018</a>). Upon obtaining these estimates or measured values, a linear calibration for cultures can be used to calculate the DCW from optical density (<a href="#bib25">Kato et al., 2017</a>), or a piecewise linear approximation can be adopted to extrapolate the line, calculate its gradient and obtain the growth rate.</div>
+<ol start="4">
+<li>Specify this series of boundary constraints to simulate growth media for each condition and record experimentally feasible growth rates:</li>
+</ol>
+<div class="textbox">
+<p><code>% Load list of variables including reaction names, indices and new values for lower and upper bounds</code></p>
+<p><code>in the model for each condition</code></p>
+<p><code>load('bounds.mat')</code><code>;</code></p>
+</div>
+<ol start="5">
+<li>In this step, Gurobi is specified as the solver to be used for FBA:</li>
+</ol>
+<div class="textbox">
+<p><code>%% Solver</code></p>
+<p><code>% Set Gurobi as the solver for linear and quadratic problems</code></p>
+<p><code>changeCobraSolver('gurobi','LP');</code></p>
+<p><code>changeCobraSolver('gurobi','QP');</code></p>
+<p><code>% Avoid solver feasibility error</code></p>
+<p><code>changeCobraSolverParams('QP', 'method', 1);</code></p>
+</div>
+<ol start="6">
+<li>The new boundary constraints are assigned within <i>fbamodel.lb</i> and <i>fbamodel.ub</i> before running FBA in order to characterize condition-specific flux rates:</li>
+</ol>
+<div class="textbox">
+<p><code>%% Set new bounds for standard control condition</code></p>
+<p><code>fbamodel.lb(new_lb_ixs) = new_lb_val(1:15,1);</code></p>
+<p><code>fbamodel.ub(new_ub_ixs) = new_ub_val(1:2,1);</code></p>
+</div>
+<ol start="7">
+<li>Following this, a new vector of gene expression values (<i>x</i>) is mapped onto flux bounds for every condition, starting with an all-ones configuration for the standard control:</li>
+</ol>
+<div class="textbox">
+<p><code>%% Flux distribution in standard control condition</code></p>
+<p><code>% Set an all<i>−</i>one configuration for gene expression in the control condition</code></p>
+<p><code>x = ones(numel(genes),1);</code></p>
+<p><code>% Calculate flux rates for the control condition</code></p>
+<p><code>[v1_control, f_out_control] =</code></p>
+<p><code>evaluate_objective_minNorm(x,M,V,fbamodel,genes,reaction_expression,</code></p>
+<p><code>pos_genes_in_react_expr,ixs_genes_sorted_by_length);</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Users could also use alternative methods for constraining the model using gene expression data. For a critical guide of factors to consider when integrating gene expression or other omic data with GSMMs, see <a href="#sec6.3">troubleshooting problem two</a>.</div>
+<ol start="8">
+<li>Alternatively, the function for flux balance analysis (<i>evaluate_objective_minNorm</i>) can be replaced by a function for flux variability analysis (<i>evaluate_objective_FVA</i>) to obtain minimal and maximal flux vectors:</li>
+</ol>
+<div class="textbox">
+<p><code>% Calculate flux ranges for the control condition</code></p>
+<p><code>[minFlux_control,</code><code>maxFlux_control] =</code></p>
+<p><code>evaluate_objective_FVA(x,M,V,fbamodel,genes,reaction_expression,pos_genes_in_react_expr,</code></p>
+<p><code>ixs_genes_sorted_by_length);</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> If using FVA instead of FBA, change the field <i>fbamodel.f</i> to <i>fbamodel.c</i> prior to calling <i>evaluate_objective_FVA</i> to ensure compatibility with the <i>fluxVariability.m</i> script, i.e. :</div>
+<div class="textbox">
+<p><code>% Rename fbamodel.f as fbamodel.c if conducting FVA instead of FBA</code></p>
+<p><code>if isfield(fbamodel, 'f')</code></p>
+<p>  <code>fbamodel.c = fbamodel.f;</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="9">
+<li>All other conditions specify a loop to replace the RNA-seq expression. The dark oxic condition is provided as an example below:</li>
+</ol>
+<div class="textbox">
+<p><code>%% Set new bounds for dark oxic condition</code></p>
+<p><code>fbamodel.lb(new_lb_ixs) = new_lb_val(1:15,2);</code></p>
+<p><code>fbamodel.ub(new_ub_ixs) = new_ub_val(1:2,2);</code></p>
+<p><code>%% Flux distribution in dark oxic condition</code></p>
+<p><code>% Choose growth condition by changing column vectors 1<i>−</i>23 in the transcripts dataset</code></p>
+<p><code>expr_profile = transcripts(:,1);</code></p>
+<p><code>pos_genes_in_dataset = zeros(numel(genes),1);</code></p>
+<p><code>% Remove the last two characters (e.g. '.1') since transcripts are indicated with '.1' in the model but these are not present in the dataset</code></p>
+<p><code>expression = '[.]\d';</code></p>
+<p><code>replace = '';</code></p>
+<p><code>genes_truncated = regexprep(genes,expression,replace);</code></p>
+<p><code>% Set gene expression to the set of transcript fold changes in the selected growth condition</code></p>
+<p><code>for i = 1:numel(genes)</code></p>
+<p>    <code>position = find(strcmp(genes_truncated{i},genes_in_dataset));</code></p>
+<p>    <code>if ∼isempty(position)</code></p>
+<p><code>      pos_genes_in_dataset(i) = position;</code></p>
+<p><code>      x(i) = expr_profile(pos_genes_in_dataset(i));</code></p>
+<p>    <code>end</code></p>
+<p><code>end</code></p>
+<p><code>% Specify the number of variables</code></p>
+<p><code>V = numel(genes);</code></p>
+<p><code>% Calculate flux rates for the dark oxic condition</code></p>
+<p><code>[v1_do, f_out_do] =</code><code>evaluate_objective_minNorm(x,M,V,fbamodel,genes,reaction_expression,</code></p>
+<p><code>  pos_genes_in_react_expr,</code><code>ixs_gen</code><code>es</code><code>_sorted_by_length);</code></p>
+</div>
+<ol start="10">
+<li>Similar to Step 8, the flux ranges for each condition can be calculated by replacing the <i>evaluate_objective_minNorm</i> with <i>evaluate_objective_FVA</i>:</li>
+</ol>
+<div class="textbox">
+<p><code>% Calculate flux ranges for the dark oxic condition</code></p>
+<p><code>[minFlux_do,</code><code>maxFlux_do]</code><code>=</code></p>
+<p><code>  evaluate_objective_FVA(x,M,V,fbamodel,genes,reaction_expression,pos_genes_in_react_expr,</code></p>
+<p><code>  ixs_genes_sorted_by_length);</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> In Equation <a href="#fd2">2</a>, we use the logarithmic vector-valued function φ to map the expression level of each gene set (represented by the vector θ) to a coefficient for the lower- and upper-limits of the corresponding reaction. Here, γ represents the “strength” of gene expression mapped to each reaction - which can be varied to adjust the level of upregulation or downregulation in cases where the values are too low to influence the flux rates (see <a href="#sec6.3">troubleshooting problem two</a>). This ensures higher metabolic sensitivity by enabling fine-tuning of flux rates by gene expression values to yield experimentally feasible fluxes for all growth conditions.</div>
+<p id="fd2" class="math-ml"><math> <mtable> <mlabeledtr> <mtd><mtext>(Equation 2)</mtext></mtd> <mtd> <mrow> <mi>ϕ</mi> <mrow> <mo>(</mo> <mi>θ</mi> <mo>)</mo> </mrow> <mo>=</mo> <msup> <mrow> <mo>[</mo> <mn>1</mn> <mo>+</mo> <mi>γ</mi> <mo>|</mo> <mi>log</mi> <mrow> <mo>(</mo> <mi>θ</mi> <mo>)</mo> </mrow> <mo>]</mo> </mrow> <mrow> <mi>s</mi> <mi>g</mi> <mi>n</mi> <mrow> <mo>(</mo> <mi>θ</mi> <mo>−</mo> <mn>1</mn> <mo>)</mo> </mrow> </mrow> </msup> </mrow> </mtd> </mlabeledtr> </mtable> </math></p>
+<ol start="11">
+<li>For each condition, the function <i>evaluate_objective_minNorm</i> uses the instruction below to perform regularized flux balance analysis:</li>
+</ol>
+<div class="textbox">
+<p><code>% This command is integrated within evaluate_objective_minNorm and does not need to be run separately</code></p>
+<p><code>[solution] = optimizeCbModel(fbamodel,'max',</code><code>1e<i>−</i>6);</code></p>
+<p><code>f_out = solution.f;</code></p>
+<p><code>v_out = solution.v;</code></p>
+</div>
+<ol start="12">
+<li>If the function <i>evaluate_objective_FVA</i> is used in the place of <i>evaluate_objective_minNorm</i>, the instruction below gives norm-2 minimal and maximal flux vectors as outputs of flux variability analysis:</li>
+</ol>
+<div class="textbox">
+<p><code>% This command is integrated within evaluate_objective_FVA and does not need to be run separately</code></p>
+<p><code>[minFlux, maxFlux] = fluxVariability(fbamodel,[],</code><code>[],[],0,</code><code>1,</code><code>'2-norm');</code></p>
+</div>
+<ol start="13">
+<li>The same process is carried out for all growth conditions in the script until all resulting flux vectors can be concatenated within a single matrix:</li>
+</ol>
+<div class="textbox">
+<p><code>% Concatenate flux vectors for all growth conditions</code></p>
+<p><code>all_atp_flux = [v1_do,v1_da,v1_hl,v1_od04,v1_od10,v1_od30,v1_od50,v1_lo2,v1_lco2,v1_nlim,v1_slim,</code></p>
+<p><code>  v1_plim,v1_felim,v1_no3,v1_nh3,v1_urea,v1_heat,v1_22c,v1_30c,v1_oxs,v1_mix,v1_ls,v1_hs, v1_control];</code></p>
+<p><code>% Convert fluxes into absolute values, change all the values &lt; 10ˆ<i>−</i>4 into 0 to account for</code></p>
+<p><code>solver tolerance and save to a .csv file</code></p>
+<p><code>all_atp_flux = abs(all_atp_flux)';</code></p>
+<p><code>all_atp_flux(all_atp_flux &lt;= 0.0001) = 0;</code></p>
+<p><code>save('all_atp_flux.mat','all_atp_flux');</code></p>
+<p><code>writematrix(all_atp_flux,'all_atp_flux.csv');</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> In this case study, the threshold for setting flux values to zero was selected as 10<sup>-4</sup>, however we advise users of the protocol to choose their own cut-offs for flux values/fold changes by conducting a robustness analysis to assess different thresholds (see <a href="#sec6.5">troubleshooting problem three</a>).</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> An example of the expected output for running the script <i>RUN_all.m</i> is provided in <a href="#fig5">Figure 5</a>. After flux rates have been calculated for all growth conditions, the results can be plotted as a simple bar chart where they are re-scaled as values between 0-1 (see <a href="#fig6">Figure 6</a> for sample plotting commands and <a href="#fig7">Figure 7</a> for the resulting plot).</div>
+<figure id="fig5"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig5.jpg" alt="Fig5.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 5. Example output of FBA when running the <i>RUN_all.m</i> script in MATLAB.</div>
+<p>The code prints flux values for the primary (biomass) and secondary flux objectives in all 24 growth conditions.</p>
+</figcaption>
+</figure>
+<figure id="fig6"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig6.jpg" alt="Fig6.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 6. Plotting FBA results in the MATLAB console</div>
+</figcaption>
+</figure>
+<figure id="fig7"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig7.jpg" alt="Fig7.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 7. Example of horizontal bar chart plotted to display results of FBA for 4 key reactions.</div>
+<p>Flux rates in units of mmol/gDW h<sup>-1</sup> have been re-scaled to values between 0-1 (see <a href="#fig6">Figure 6</a> for plotting commands). Growth conditions are listed as follows: 1 - Dark oxic, 2 - Dark anoxic, 3 - High light, 4 - OD 0.4, 5 - OD 1.0, 6 - OD 3.0, 7 - OD 5.0, 8 - Low O<sub>2</sub>, 9 -Low CO<sub>2</sub>, 10 - N-limited, 11 - S-limited, 12 - PO<sub>4</sub><sup>3-</sup> limited, 13 - Fe-limited, 14 - NO<sub>3</sub>, 15 - NH<sub>3</sub>, 16 - CO(NH<sub>2</sub>)<sub>2</sub>, 17 - Heat Shock, 18°C - 22°C, 19°C - 30°C, 20 - Oxidative stress, 21 - Mixotrophic, 22 - Low salt, 23 - High salt, 24 - Standard Control. Further details of these experimental conditions are given in <a href="#tbl2">Table 2</a>. Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<div class="critical">
+<span class="critical-title">Critical:</span> If calculating flux ranges, the minimum and maximum flux vectors can be used as two sets of fluxomic features, or users could calculate the mean flux between these two values for use in the next steps of the pipeline.</div>
+<ol start="14">
+<li>For flux variability analysis, the mean of minimal and maximal flux vectors for different conditions can be calculated as follows:</li>
+</ol>
+<div class="textbox">
+<p><code>% Concatenate minimal and maximal flux vectors for all growth conditions</code></p>
+<p><code>all_atp_minFlux =</code></p>
+<p><code>  [minFlux_do,minFlux_da,minFlux_hl,minFlux_od04,minFlux_od10,minFlux_od30,minFlux_od50,minFlux_lo2,</code></p>
+<p><code>  minFlux_lco2,minFlux_nlim,minFlux_slim,minFlux_plim,minFlux_felim,minFlux_no3,minFlux_nh3,minFlux_urea,</code></p>
+<p><code>  minFlux_heat,minFlux_22c,minFlux_30c,minFlux_oxs,minFlux_mix,minFlux_ls,minFlux_hs,minFlux_control];</code></p>
+<p><code>all_atp_maxFlux =</code></p>
+<p><code>  [maxFlux_do,maxFlux_da,maxFlux_hl,maxFlux_od04,maxFlux_od10,maxFlux_od30,maxFlux_od50,maxFlux_lo2,</code></p>
+<p><code>  maxFlux_lco2,maxFlux_nlim,maxFlux_slim,maxFlux_plim,maxFlux_felim,maxFlux_no3,maxFlux_nh3,maxFlux_urea,</code></p>
+<p><code>  maxFlux_heat,maxFlux_22c,maxFlux_30c,maxFlux_oxs,maxFlux_mix,maxFlux_ls,maxFlux_hs,maxFlux_control];</code></p>
+<p><code>% Calculate mean fluxes between minFlux and maxFlux ranges for each condition</code></p>
+<p><code>all_atp_meanFlux = zeros(742,24);</code></p>
+<p><code>for m = 1:24</code></p>
+<p><code>  all_atp_meanFlux(:,m) = (all_atp_minFlux(:,m) + all_atp_maxFlux(:,m))./2;</code></p>
+<p><code>end</code></p>
+</div>
+<h3 id="sec3.2">Creation of multi-omic dataset</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 10 min</div>
+<p>In our analyses, gene transcripts constitute a vital component of the flux balance analysis since transcriptomic data are integrated into the GSMM to determine condition-specific flux values. Although partially based on transcriptomics, flux rates are additionally subjected to condition-specific GSMM constraints, the steady-state, and their underlying biochemistry. This automatically creates a component of nonredundant information that does not exist in the transcriptomic dataset. Generating flux data supplies more layers of information to further refine phenotypic predictions. It is thus easier to identify important predictors during machine learning analyses; much of the noise in the gene transcript data is no longer present in the flux data, since gene transcripts with low expression have been ‘filtered out’ as they do not have a large influence on linear constraints in the metabolic model, and consequently they have a smaller effect on the flux rates.</p>
+<p>Therefore, if a machine learning model can extract the non-redundant information contained in the flux rates, they can contribute new mechanistic information that is not found in the transcriptomic data. Furthermore, the model itself can act as a tool for ranking and noise reduction since the effect of low importance genes can be 'filtered out' even if their expression is highly variable across conditions. Without the metabolic model, the importance of these genes would be overstated, and they would be used erroneously to differentiate conditions. For example, in our case study, reactions involved in succinate dehydrogenation (SUCD1Itlm/SUCD1Icpm), efflux (SUCCt2b) or exchange (EX_succ_E) were found to be positively correlated with growth for all three objective pairs and were also identified among the highest positive correlations when analyzing the concatenated dataset of gene transcripts and Biomass - ATP maintenance flux data (<a href="#bib56">Vijayakumar et al., 2020</a>). These reactions are encoded by A1094 and A2569, which had relatively low gene expression and variability across growth conditions (ranging between 0.33 to 3.74 and 0.14 to 3.66, respectively). Being unrelated to genes already identified as significant during LASSO and correlation analyses of the single omic (transcriptomic) data, these reactions were only detected as a result of transcriptomic data being used to adjust the constraints for calculating flux rates, showing the importance of the metabolic model in characterizing the phenotype across conditions.</p>
+<p>In practice, combining transcript and flux data in a single multi-omic dataset (by converting them into fold change values) provides a direct point of comparison between the two omics and an opportunity to observe in which instances the flux values are more predictive than transcript values. Generally, transcriptomic and fluxomic data produce different outcomes from the modeling and statistical analyses and combining the two omics yields more stable predictions.</p>
+<p>In this section, we define how to concatenate transcript and flux data by obtaining fold changes that enable a comparison of their contribution to gene/reaction variables as a result of the conditions under which the cells were grown and harvested.</p>
+<ol start="15">
+<li>In MATLAB, create datasets for further analysis by concatenating transcripts and fluxes:</li>
+</ol>
+<div class="textbox">
+<p><code>% Find out the highest flux value in the fold change matrix by setting Inf values to 0 and omitting NaN values</code></p>
+<p><code>ATP_FC_noinf = (all_atp_flux(1:23,:))./(all_atp_flux(24,:));</code></p>
+<p><code>ATP_FC_noinf(isinf(ATP_FC_noinf)) = 0;</code></p>
+<p><code>max_ATP_FC = max(ATP_FC_noinf,[],'all','omitnan');</code></p>
+<p><code>% Divide flux values in all conditions by the standard control to obtain fold changes</code></p>
+<p><code>ATP_FC = (all_atp_flux(1:23,:))./(all_atp_flux(24,:));</code></p>
+<p><code>% Set all fold changes &lt; 10</code><code>^</code><code><i>−</i>4 equal to 0 to account for solver tolerance</code></p>
+<p><code>ATP_FC(ATP_FC&lt;=0.0001) = 0;</code></p>
+<p><code>% Set all NaN values to 1</code></p>
+<p><code>ATP_FC(isnan(ATP_FC)) = 1;</code></p>
+<p><code>% Set Inf values equal to the highest flux value in the matrix</code></p>
+<p><code>ATP_FC(isinf(ATP_FC)) = max_ATP_FC;</code></p>
+<p><code>% Concatenate transcripts and flux fold changes</code></p>
+<p><code>ATPTF = horzcat(transcripts,ATP_FC);</code></p>
+<p><code>% Add a row of all ones to represent the fold change for the standard control</code></p>
+<p><code>ATPTF(24,:) = ones;</code></p>
+<p><code>% Save as .mat variable and .csv file for later analyses</code></p>
+<p><code>save('ATPTF.mat','ATPTF')</code><code>;</code></p>
+<p><code>writemat(ATPTF,'all_ATPTF.csv');</code></p>
+</div>
+<h3 id="sec3.3">Principal component analysis (PCA)</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 5 min</div>
+<p>Principal component analysis (PCA) can reduce multidimensional datasets to a few latent dimensions known as principal components, allowing the identification of variables responsible for the largest variations within datasets. The reduction of dimensionality within voluminous omic datasets is an important process to achieve successful multi-omic integration and is vital to facilitate their interpretation.</p>
+<p>In this analysis, PCA is being used to compare the contribution of each growth condition to the construction of dimensions that summarize the greatest proportion of variance in the dataset. Furthermore, specific genes and reactions contributing to variance between conditions can be pinpointed using Pathway-level PCA, wherein they are classified according to their genetic/metabolic function. The role of these genes and reactions in significant pathways or cellular processes can also be ascertained in a more detailed manner.</p>
+<p>Here, principal component analysis is conducted in R using the FactoMineR and factoextra packages. Full details of the code are provided in the script <i>PCA_script.R</i>, which can be found in the GitHub repository listed in the <a href="#key-resources-table">key resources table</a>: <a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling</a>. For users wishing to carry out the full analysis on gene transcripts and/or flux rates in the form of .mat variables in MATLAB, the function <i>pca</i> can be used to carry out PCA on raw data, <i>pcares</i> returns the residuals obtained by retaining a given number of principal components and <i>pcacov</i> performs PCA on the square covariance matrix. However, we demonstrate our pipeline using the packages in R for improved analysis and visualization of plots that facilitate the biological interpretation. As seen below, the R packages generate detailed plots, lists of variable contributions, principal component scores and the proportions of variance explained by each dimension.</p>
+<p>The gene transcripts dataset is used as an example below, but the same steps can be repeated for all datasets (<i>transcripts</i>, <i>all_ATP_flux</i>, <i>all_ATPTF</i>, etc.). For an example plot using individual growth conditions, see <a href="#fig8">Figure 8</a>. Other useful outputs resulting from the analysis, such as principal component contributions (<a href="#fig9">Figure 9</a>) or coordinates (<a href="#fig10">Figure 10</a>) relating to all growth conditions or variables within the dataset can also be saved for further inspection.</p>
+<figure id="fig8"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig8.jpg" alt="Fig8.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 8. Example of principal component analysis plot of growth conditions colored according to cos2 values.</div>
+<p>The higher the cos2 value, the greater the proportion of contribution to the total distance, signifying greater importance of the principal components for that condition. Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<figure id="fig9"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig9.jpg" alt="Fig9.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 9. Obtaining principal component contributions for all variables (gene transcripts) in the dataset.</div>
+</figcaption>
+</figure>
+<figure id="fig10"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig10.jpg" alt="Fig10.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 10. Obtaining coordinates for principal components according to individuals (growth conditions).</div>
+</figcaption>
+</figure>
+<ol start="16">
+<li>We begin by navigating to the workspace in R and loading the required packages:</li>
+</ol>
+<div class="textbox">
+<p><code>setwd(C:/Users/)</code></p>
+<p><code>library(devtools)</code></p>
+<p><code>library</code><code>(Facto</code><code>Mine</code><code>R)</code></p>
+<p><code>library(factoextra)</code></p>
+<p><code>library(corrplot)</code></p>
+<p><code>library</code><code>(Performance</code><code>Analytics)</code></p>
+</div>
+<ol start="17">
+<li>We then load transcript/multiomic/flux .csv data files for analysis:</li>
+</ol>
+<div class="textbox">
+<p><code>transcripts &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = transcriptsnew</code><code>.</code><code>csv , head = FALSE</code><code>,</code><code>sep =,)</code></p>
+</div>
+<ol start="18">
+<li>Perform PCA for each dataset:</li>
+</ol>
+<div class="textbox">
+<p><code>res</code><code>_</code><code>transcripts</code><code>.</code><code>pca &lt;- PCA</code><code>(</code><code>transcripts</code><code>)</code></p>
+</div>
+<ol start="19">
+<li>Create plots to compare principal components scores for the first two dimensions:</li>
+</ol>
+<div class="textbox">
+<p><code>transcripts</code><code>_</code><code>PCA</code><code>_</code><code>plot &lt;- fviz</code><code>_</code><code>pca</code><code>_</code><code>ind</code><code>(</code><code>res</code><code>_</code><code>transcripts</code><code>.</code><code>pca</code><code>, col</code><code>.</code><code>ind = cos2,</code></p>
+<p><code>gradient</code><code>.</code><code>cols = c(#00AFBB, #E7B800, #FC4E07)</code><code>,</code></p>
+<p><code>repel = TRUE % Avoid text overlapping</code></p>
+<p><code>)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The number of dimensions to be plotted can be adjusted, usually depending on the proportion of variance explained by each component. For each dataset, conditions are colored according to cos2 values that indicate the contribution of the first two components to the squared distance of each condition to the origin.</div>
+<ol start="20">
+<li>Obtain contributions of principal component variables (genes) for each dataset:</li>
+</ol>
+<div class="textbox">
+<p><code>contributions</code><code>_</code><code>transcripts &lt;- res</code><code>_</code><code>transcripts</code><code>.</code><code>pca</code><code>$</code><code>var</code><code>$</code><code>contrib</code></p>
+</div>
+<ol start="21">
+<li>Obtain principal component coordinates for individual growth conditions:</li>
+</ol>
+<div class="textbox">
+<p><code>ind</code><code>_</code><code>coord</code><code>_</code><code>transcripts &lt;- res</code><code>_</code><code>transcripts</code><code>.</code><code>pca</code><code>$</code><code>ind</code><code>$</code><code>coord</code></p>
+</div>
+<h3 id="sec3.4">Pathway-level PCA</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 15 min</div>
+<p>In order to carry out a more detailed investigation of specific gene transcripts or metabolic reactions in the model, it is possible to perform a pathway-level PCA that categorizes genes and reactions identified during PCA according to their main biological function. Upon obtaining the results of these analyses, we can plot the sum and average principal component contributions across different pathways as well as principal component coordinates for each growth condition against single reaction fluxes. As in the previous <a href="#sec3.3">principal component analysis</a> section, there are existing functions for plotting these data in MATLAB. The <i>barh</i> function can be used to generate bar plots displaying sums of subsystem contributions, the <i>polarplot</i> function can be used to display average contributions by subsystem and the <i>scatter</i> function can be used to plot principal coordinates for individual reactions against their corresponding flux values across different growth conditions. In this protocol, we utilize the <i>plotrix</i> and <i>fmsb</i> libraries in R to customize individual pyramid plots and radar charts, facilitating comparisons between different pairs of flux objectives and multiple pathways.</p>
+<p>This provides an opportunity to study these components in a more detailed manner through expanding the scope of biological insights detected and establishing connections between genes and reactions within the same functional category or pathway. It is important to account for the varying number of reactions within each pathway, therefore both the sum and average contributions to variance can be used as measures of comparison from principal components. Additionally, principal component coordinates for each growth condition can also be compared against single reactions selected from the top flux contributors to variance (identified for all three objective pairs during <a href="#sec3.3">Principal Component Analysis</a> (PCA)). This helps to quantify the strength of association between these reactions and the principal components they are best summarized by.</p>
+<ol start="22">
+<li>Within MATLAB, import the table of contributions for the dataset (<i>all_atp_flux</i> is provided as an example):</li>
+</ol>
+<div class="textbox">
+<p><code>% Import data table of flux contributions</code></p>
+<p><code>contrib_ATP = readtable('contrib_all_atp_flux.csv');</code></p>
+<p><code>% Concatenate with reaction and subsystem names from the GSMM</code></p>
+<p><code>contrib_ATP_new =</code></p>
+<p><code>horzcat(contrib_ATP(:,{'Var1'}),fbamodel.rxns,fbamodel.rxnNames,fbamodel.subSystems,contrib_ATP(:,{'Dim_1'</code></p>
+<p><code>'Dim_2' 'Dim_3' 'Dim_4' 'Dim_5'}));</code></p>
+<p><code>% Sort contributions in descending order by Dim1 then Dim 2</code></p>
+<p><code>contrib_ATP_sort = sortrows(contrib_ATP_new,{'Dim_1','Dim_2','Dim_3','Dim_4','Dim_5'},{'descend' 'descend'</code></p>
+<p><code>'descend' 'descend' 'descend'});</code></p>
+<p><code>contrib_ATP_Dim1 = sortrows(contrib_ATP_new,{'Dim_1'},{'descend'});</code></p>
+<p><code>contrib_ATP_Dim2 = sortrows(contrib_ATP_new,{'Dim_2'},{'descend'});</code></p>
+<p><code>% Save vector containing flux contributions for the first and second dimensions, specifying a dataset of contributions</code></p>
+<p><code>Dim_1_and_2 = table2array(contrib_ATP_new(:,5:6));</code></p>
+<p><code>% Save all contributions to .xls file</code></p>
+<p><code>writetable(contrib_ATP_sort,'contrib_atp_sort.xlsx');</code></p>
+<p><code>writetable(contrib_ATP_Dim1,'contrib_atp_dim1.csv');</code></p>
+<p><code>writetable(contrib_ATP_Dim2,'contrib_atp_dim2.csv');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> While gene transcripts can be classified by their Cluster of Orthologous Genes (COG) category, reactions must be classified according to the pathways they are assigned within <i>fbamodel.subSystems</i>. Since each reaction can be classified by multiple subsystems, separate cell arrays can be allocated to store subsystems from each column of <i>fbamodel.subSystems</i>. The number of arrays needed depends on the maximum number of subsystems that a single reaction is categorized by within the model. In this case, each reaction is assigned to a maximum of five subsystems, therefore a total of five cell arrays are required to store the subsystem names, which are later concatenated into a single array and used to replace the original <i>fbamodel.subSystems</i> in the model.</div>
+<ol start="23">
+<li>Create cell arrays to store subsystems from <i>fbamodel.subSystems</i>:</li>
+</ol>
+<div class="textbox">
+<p><code>% List all subsystems in the model</code></p>
+<p><code>list_subsystems = unique([new_subsystems{:}])';</code></p>
+<p><code>% Create cell arrays to store subsystem names</code></p>
+<p><code>first_subsystems = cell(numel(list_subsystems),1);</code></p>
+<p><code>...</code></p>
+<p><code>fifth_subsystems = cell(numel(list_subsystems),1);</code></p>
+</div>
+<ol start="24">
+<li>Write a 'for' loop to obtain the names of subsystems according to the number of subsystems that each reaction is categorized by:</li>
+</ol>
+<div class="textbox">
+<p><code>for k = 1 : length(fbamodel.subSystems)</code></p>
+<p><code>    thisCellContents = fbamodel.subSystems{k};</code></p>
+<p><code>% Get the first subsystem for all reactions</code></p>
+<p><code>    first_subsystems{k} = thisCellContents{1};</code></p>
+<p><code>    if length(thisCellContents) &gt; 1</code></p>
+<p><code>% Get the second subsystem if present</code></p>
+<p><code>    second_subsystems{k} = thisCellContents{2};</code></p>
+<p><code>    else</code></p>
+<p><code>% If there is only one subsystem for the reaction, assign the second a blank []</code></p>
+<p><code>    second_subsystems{k} = [];</code></p>
+<p><code>    end</code></p>
+<p><code>    ...</code></p>
+<p><code>    if length(thisCellContents) &gt; 4</code></p>
+<p><code>% Get the fifth subsystem if present</code></p>
+<p><code>    fifth_subsystems{k} = thisCellContents{5};</code></p>
+<p><code>    else</code></p>
+<p><code>% If there are no more than four subsystems for the reaction, assign the fifth a blank []</code></p>
+<p><code>    fifth_subsystems{k} = [];</code></p>
+<p><code>    end</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="25">
+<li>Create another series of cell arrays to store reaction indices; then retrieve the indices that match the number of subsystems (between one and five) for each unique subsystem:</li>
+</ol>
+<div class="textbox">
+<p><code>% Specify the number of unique subsystems</code></p>
+<p><code>N = length(list_subsystems);</code></p>
+<p><code>% Create empty cell arrays (with length of list_subsystems) to store reaction indices of</code></p>
+<p><code>each number of subsystems</code></p>
+<p><code>ix_first = cell(N,1);</code></p>
+<p><code>...</code></p>
+<p><code>ix_fifth = cell(N,1);</code></p>
+<p><code>% Retrieve reaction indices for each group of subsystems (1<i>−</i>5):</code></p>
+<p><code>for s = 1:N</code></p>
+<p><code>    ix_first{s} = find(strcmpi(list_subsystems{s},first_subsystems));</code></p>
+<p><code>    ...</code></p>
+<p><code>    ix_fifth{s} = find(strcmpi(list_subsystems{s},fifth_subsystems));</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="26">
+<li>Merge all five arrays into a single list of indices for all subsystems:</li>
+</ol>
+<div class="textbox">
+<p><code>% Concatenate all five columns</code></p>
+<p><code>ix_all = horzcat(ix_first,ix_second,ix_third,ix_fourth,ix_fifth);</code></p>
+<p><code>% Create cell array to store reaction indices for all subsystems</code></p>
+<p><code>ixs_subsystems = cell(length(ix_all),1);</code></p>
+<p><code>% Merge columns to compile a total list of indices for each subsystem</code></p>
+<p><code>for a = 1:length(ixs_subsystems)</code></p>
+<p><code>  ixs_subsystems{a} = vertcat(ix_all{a,:});</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="27">
+<li>Create new variables to store the number of reactions as well as the sums and averages of principal component contributions:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create empty vector to store number of reactions within each pathway</code></p>
+<p><code>cardinality_subsystems = zeros(numel(list_subsystems),1);</code></p>
+<p><code>% Create empty vectors to store sums of contributions within each pathway for the first and second principal</code></p>
+<p><code>components</code></p>
+<p><code>sum_contrib_subsystems_PC1 = zeros(numel(list_subsystems),1);</code></p>
+<p><code>sum_contrib_subsystems_PC2 = zeros(numel(list_subsystems),1);</code></p>
+<p><code>% Create empty vectors to store average contributions within each pathway for the first and</code></p>
+<p><code>second principal components</code></p>
+<p><code>avg_contrib_subsystems_PC1 = zeros(numel(list_subsystems),1);</code></p>
+<p><code>avg_contrib_subsystems_PC2 = zeros(numel(list_subsystems),1);</code></p>
+</div>
+<ol start="28">
+<li>Calculate the sums and averages of flux contributions according to their respective subsystems using another 'for' loop:</li>
+</ol>
+<div class="textbox">
+<p><code>%% Sort flux contributions according to subsystems</code></p>
+<p><code>for i = 1:numel(list_subsystems)</code></p>
+<p><code>% Compute the sums of contributions for the first and second principal components</code></p>
+<p><code>      sum_contrib_subsystems_PC1(i) = sum(Dim_1_and_2(ixs_subsystems{i},1));</code></p>
+<p><code>      sum_contrib_subsystems_PC2(i) = sum(Dim_1_and_2(ixs_subsystems{i},2));</code></p>
+<p><code>% Record the number of reactions within each subsystem</code></p>
+<p><code>      cardinality_subsystems(i) = numel(ixs_subsystems{i});</code></p>
+<p><code>% Compute the mean contributions by dividing sums by the number of reactions</code></p>
+<p><code>in each subsystem</code></p>
+<p><code>      avg_contrib_subsystems_PC1(i) = sum_contrib_subsystems_PC1(i)./cardinality_subsystems(i);</code></p>
+<p><code>      avg_contrib_subsystems_PC2(i) = sum_contrib_subsystems_PC2(i)./cardinality_subsystems(i);</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="29">
+<li>Create a table containing all sums and averages of component contributions:</li>
+</ol>
+<div class="textbox">
+<p><code>subsystem_names = array2table(list_subsystems,'VariableNames',{'Subsystems'});</code></p>
+<p><code>subsys_sum_avg_ATP = horzcat(sum_contrib_subsystems_PC1,avg_contrib_subsystems_PC1,</code></p>
+<p><code>sum_contrib_subsystems_PC2,avg_contrib_subsystems_PC2);</code></p>
+<p><code>subsys_sum_avg_ATP_table = array2table(subsys_sum_avg_ATP,'VariableNames',{'PC1 Sum','PC1 Average',</code></p>
+<p><code>'PC2 Sum','PC2 Average'});</code></p>
+<p><code>subsys_sum_avg_ATP_table = horzcat(subsystem_names,subsys_sum_avg_ATP_table);</code></p>
+<p><code>writetable(subsys_sum_avg_ATP_table,'pathway_contrib_ATP.csv');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Within this loop, <i>sum_contrib_subsystems</i> and <i>avg_contrib_subsystems</i> can be manually adjusted to select each dataset of contributions individually, i.e. <i>Dim_1_&amp;_2</i> originating from <i>contrib_ATP_new</i>, <i>contrib_p1_new</i> or <i>contrib_p2_new</i>.</div>
+<ol start="30">
+<li>The sums of contributions to variance within each subsystem can be summarized using a pyramid plot in R (<a href="#fig11">Figure 11</a>) to compare results between the first and second principal components:
+<figure id="fig11"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig11.jpg" alt="Fig11.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 11. Sums of first and second principal component contributions across metabolic pathways (model subsystems) for the Biomass - ATP maintenance flux objective pair.</div>
+<p>Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="textbox">
+<p><code># Load plotrix library</code></p>
+<p><code>library</code><code>(</code><code>plotrix</code><code>)</code></p>
+<p><code># Load all pathway contribution data</code></p>
+<p><code>pathway</code><code>_</code><code>contributions &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = pathway</code><code>_</code><code>contrib</code><code>_</code><code>ATP</code><code>. csv, head = TRUE</code><code>, sep = ,)</code></p>
+<p><code># Load pathway labels in reverse order for plotting</code></p>
+<p><code>pathways &lt;- rev</code><code>(</code><code>pathway</code><code>_</code><code>contributions</code><code>[,</code><code>c(</code><code>Subsystems</code><code>)])</code></p>
+<p><code># Load pathway sums of contributions for Component 1 and Component 2 in reverse order</code></p>
+<p><code>comp</code><code>1atp.pop &lt;- rev(pathway_contributions[,c(PC1.Sum)])</code></p>
+<p><code>comp2atp.pop &lt;- rev(pathway_contributions[,c(PC2.Sum)])</code></p>
+<p><code>#</code><code>Set ATP color gradient using preset-color-palettes from R-colorspace</code></p>
+<p><code>library</code><code>(colorspace)</code></p>
+<p><code>comp</code><code>1</code><code>atpcol &lt;- sequential</code><code>_</code><code>hcl(9</code><code>,Greens)</code></p>
+<p><code>comp2atpcol &lt;- sequential_hcl(9,Oranges)</code></p>
+<p><code># Plot ATP pyramid</code></p>
+<p><code>par(mar = pyramid.plot(comp1atp.pop, comp2atp.pop, labels = pathways, main = Biomass – ATP</code></p>
+<p><code>maintenance Component Sum, top.labels = c(Component 1 Sum, Pathway,Component 2 Sum), unit = ,</code></p>
+<p><code>lxcol = comp1atpcol, rxcol = comp2atpcol, gap = 0, xlim = c(25</code><code>,25), show.values = FALSE))</code></p>
+</div>
+<ol start="31">
+<li>Likewise, the average contributions to variance within each subsystem can be summarized using a radar chart in R (<a href="#fig12">Figure 12</a>) to compare results between the first and second principal components:
+<figure id="fig12"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig12.jpg" alt="Fig12.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 12. Averages of first and second principal component contributions across metabolic pathways (model subsystems) for the Biomass - ATP maintenance flux objective pair.</div>
+<p>Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="textbox">
+<p><code># Load fmsb library</code></p>
+<p><code>library</code><code>(</code><code>fmsb</code><code>)</code></p>
+<p><code># Load pathway names</code></p>
+<p><code>pathways &lt;- pathway_contributions [,c(Subsystems)]</code></p>
+<p><code># Load pathway average contributions for Component 1 and Component 2</code></p>
+<p><code>PC1_Average &lt;- pathway_contributions [,c(PC1.Average)]</code></p>
+<p><code>PC2_Average &lt;- pathway_contributions [,c(PC2.Average)]</code></p>
+<p><code># Specify the maximum and minimum values for plotting</code></p>
+<p><code>max &lt;- rep (c(0.6), each = 39)</code></p>
+<p><code>min &lt;- rep (c(0), each = 39)</code></p>
+<p><code># Create a dataframe of contribution values</code></p>
+<p><code>ATP_radar_data &lt;- t(data.frame(max,</code><code>min,</code><code>PC1_Average,</code><code>PC2_Average))</code></p>
+<p><code># Specify labels for each data series</code></p>
+<p><code>rownames(ATP_radar_data) = c(max,min,Component_1_Average,Component_2_Average)</code></p>
+<p><code>colnames(ATP_radar_data) = pathways</code></p>
+<p><code># Convert the variable back into a data frame</code></p>
+<p><code>ATP_radar_data &lt;- data.frame (ATP_radar_data)</code></p>
+<p><code># Define line colors</code></p>
+<p><code>colors_line_ATP &lt;- c(scales :: alpha(green3,0.9),scales :: alpha</code><code>(orangered,0.9))</code></p>
+<p><code># Create the plot (specifying the number of axis segments, title, line colors,</code><code>axis labels, etc.)</code></p>
+<p><code>radarchart (ATP_radar_data,</code></p>
+<p><code>seg = 6,</code></p>
+<p><code>title = Average Component Contributions (Biomass - ATP maintenance),</code></p>
+<p><code>pcol = colors_line_ATP ,</code></p>
+<p><code>plty = 1:1,</code></p>
+<p><code>plwd = 2,</code></p>
+<p><code>axistype = 4,</code></p>
+<p><code>caxislabels = c(0,0.1,0.2,0.3,0.4,0.5,0.6),</code></p>
+<p><code>cglty = 3,</code></p>
+<p><code>cglcol = gray70,</code></p>
+<p><code>axislabcol = gray0)</code></p>
+<p><code># Add a legend to indicate which series belongs to which component</code></p>
+<p><code>legend (x = 1.35, y = 1.25, legend = rownames(ATP_radar_data [- c(1,2),]),bty = o,</code></p>
+<p><code>pch = 20, col = colors_line_ATP, text.col = gray0, cex = 1.2, pt.cex = 3)</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Finally, we can also analyze principal component coordinates for each growth condition against single reaction fluxes. An example is demonstrated below using Biomass - ATP maintenance flux data in R (with the expected results plotted in <a href="#fig13">Figure 13</a>).</div>
+<figure id="fig13"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig13.jpg" alt="Fig13.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 13. Example of principal component plots between principal component coordinates (<i>x</i>) and Biomass - ATP maintenance flux (<i>y</i>) across 24 growth conditions.</div>
+<p>Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<ol start="32">
+<li>We begin by loading the requisite variables:</li>
+</ol>
+<div class="textbox">
+<p><code># Load all principal component coordinates</code></p>
+<p><code>ind</code><code>_</code><code>coord</code><code>_</code><code>ATP &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = ind</code><code>_</code><code>coord</code><code>_</code><code>all</code><code>_</code><code>atp</code><code>_</code><code>flux</code><code>.csv, head = TRUE</code><code>, sep = ,)</code></p>
+<p><code># Load all flux data and contributions sorted by PC1 and PC2</code></p>
+<p><code>ATPflux &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = all</code><code>_</code><code>atp</code><code>_</code><code>flux</code><code>.</code><code>csv, head = FALSE , sep = ,)</code></p>
+<p><code>contrib</code><code>_</code><code>ATP</code><code>_</code><code>Dim1 &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = contrib</code><code>_</code><code>atp</code><code>_</code><code>dim1</code><code>.</code><code>csv, head = TRUE</code><code>, sep = ,)</code></p>
+<p><code>contrib</code><code>_</code><code>ATP</code><code>_</code><code>Dim2 &lt;- read</code><code>.</code><code>csv</code><code>(</code><code>file = contrib</code><code>_</code><code>atp</code><code>_</code><code>dim2</code><code>.</code><code>csv, head = TRUE</code><code>, sep = ,)</code></p>
+</div>
+<ol start="33">
+<li>Select only the columns required</li>
+</ol>
+<div class="textbox">
+<p><code># Select the first principal component</code></p>
+<p><code>PC1</code><code>_</code><code>ATP &lt;- ind</code><code>_</code><code>coord</code><code>_</code><code>ATP</code><code>[, c(Dim.1)]</code></p>
+<p><code># Check the reaction name and index of the highest contributor to the first principal component</code></p>
+<p><code>head</code><code>(</code><code>contrib</code><code>_</code><code>ATP</code><code>_</code><code>Dim1</code><code>)</code></p>
+<p><code># Select the flux rate corresponding to the reaction yielding the top</code></p>
+<p><code>contribution in the first principal component</code></p>
+<p><code>IODP &lt;- ATPflux</code><code>[, c</code><code>(708)]</code></p>
+<p><code># Select the second principal component and the reaction corresponding to the</code></p>
+<p><code>top contribution in the second principal component</code></p>
+<p><code>PC2</code><code>_</code><code>ATP &lt;- ind</code><code>_</code><code>coord</code><code>_</code><code>ATP</code><code>[, c(Dim.2)]</code></p>
+<p><code># Check the reaction name and index of the highest contributor to the second principal component</code></p>
+<p><code>head</code><code>(</code><code>contrib</code><code>_</code><code>ATP</code><code>_</code><code>Dim2</code><code>)</code></p>
+<p><code># Select the flux rate corresponding to the reaction yielding the top</code></p>
+<p><code>contribution in the second principal component</code></p>
+<p><code>ILEABC &lt;- ATPflux</code><code>[, c</code><code>(301)]</code></p>
+</div>
+<ol start="34">
+<li>Use the data to fit linear models and create scatter plots for both principal components:</li>
+</ol>
+<div class="textbox">
+<p><code># Fit linear models</code></p>
+<p><code>require (stats)</code></p>
+<p><code>fit_ATP1 &lt;- lm(IODP ∼ PC1_ATP)</code></p>
+<p><code>fit_ATP2 &lt;- lm(ILEABC ∼ PC2_ATP)</code></p>
+<p><code># Create plots</code></p>
+<p><code>ATP1_plot &lt;- plot (PC1_ATP, IODP</code><code>, xlab = PC1, ylab = IODP flux, pch = 19</code><code>, col = chartreuse4, axes = TRUE)</code></p>
+<p><code>ATP2_plot &lt;- plot (PC2_ATP, ILEABC</code><code>, xlab = PC2, ylab = ILEABC flux, pch = 19</code><code>, col = chartreuse4, axes = TRUE)</code></p>
+<p><code># Calculate the Pearson correlation coefficient</code></p>
+<p><code>corr_PC1 = cor(PC1_ATP, IODP)</code></p>
+<p><code>corr_PC2 = cor(PC2_ATP, ILEABC)</code></p>
+<p><code>abline(fit_ATP1)</code></p>
+<p><code>abline(fit_ATP2)</code></p>
+</div>
+<h3 id="sec3.5">
+<i>K</i>-means clustering</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 10 min</div>
+<p>The purpose of clustering techniques is to partition samples into groups based on hidden patterns in data. They are particularly suitable for detecting underlying associations based on shared characteristics where there is little information available. Most clustering methods are categorized within the hierarchical and <i>k</i>-means families. On one hand, hierarchical clustering is an iterative process that progressively combines pairs of observations that are the closest in proximity until all clusters are merged within a hierarchy. On the other hand, <i>k</i>-means finds the number of clusters that minimizes the sum of squared Euclidean distances between each observation and its respective cluster mean (<a href="#bib37">McLachlan et al., 2008</a>). <i>K</i> random points in the dataset (known as cluster centroids) define the groups that the remaining data points are assigned to, which are continually relocated to the averages computed within each group until distinctive clusters are formed. When applied to transcriptomic and fluxomic data in our study, <i>k</i>-means clustering is used as a method to assess whether multi-omic datasets identify clusters of growth conditions according to their respective omic responses and which trends can be observed between growth-promoting and growth-limiting conditions. In this instance, they indicate that the single-omic datasets may benefit from being analyzed in isolation, bypassing an increase in data dimensionality that cannot be easily reduced. <i>k</i>-means clustering is run using the script <i>statistics_on_genes.m</i>, which also calls <i>mdscale_robust.m</i>, a script that applies multidimensional scaling to avoid co-location of data points during clustering. Additionally, the generation of silhouette plots (<a href="#fig14">Figures 14</a> and <a href="#fig15">15</a>) is used to decide the number of clusters for the final scatter plot (<a href="#fig16">Figure 16</a>).</p>
+<figure id="fig14"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig14.jpg" alt="Fig14.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 14. Example of silhouette pre-plot to determine the number of clusters to be used for <i>k</i>-means.</div>
+</figcaption>
+</figure>
+<figure id="fig15"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig15.jpg" alt="Fig15.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 15. Example of silhouette plot for transcript data (<i>k</i>=6).</div>
+</figcaption>
+</figure>
+<figure id="fig16"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig16.jpg" alt="Fig16.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 16. Example of <i>k</i>-means scatter plot for transcript data (<i>k</i>=6).</div>
+</figcaption>
+</figure>
+<ol start="35">
+<li>We begin by loading the required variables into MATLAB:</li>
+</ol>
+<div class="textbox">
+<p><code>% Load the model and transcriptomic IDs</code></p>
+<p><code>load('</code><code>SynechococcusPCC7002.mat'); %fbamodel</code></p>
+<p><code>load('Syn7002_IDs.mat'); % list of gene IDs extracted from transcriptomic reads file</code></p>
+<p><code>% Create a variable to store gene accession IDs from the model</code></p>
+<p><code>genes = fbamodel.genes;</code></p>
+<p><code>% Create a variable to store gene accession IDs from the transcriptomic datasets</code></p>
+<p><code>genes_in_dataset = Syn7002_IDs;</code></p>
+<p><code>% Specify the number of objectives</code></p>
+<p><code>M = 2;</code></p>
+<p><code>% Specify the number of variables</code></p>
+<p><code>V = numel(genes);</code></p>
+</div>
+<ol start="36">
+<li>Specify the dataset on which the clustering will be performed. The gene transcripts dataset is shown as an example, but the same steps can be repeated for all datasets (<i>transcripts</i>, <i>all_ATP_flux</i>, <i>ATPTF</i>, etc.):</li>
+</ol>
+<div class="textbox">
+<p><code>% Choose dataset</code></p>
+<p><code>all_objpairs = transcripts';</code></p>
+<p><code>% Transpose the same dataset here</code></p>
+<p><code>all_solutions = transcripts';</code></p>
+<p><code>all_biomass_values = all_solutions(:,1);</code></p>
+</div>
+<ol start="37">
+<li>It is important to use the transposed dataset <i>profiles</i>’ and not the original dataset <i>profiles</i>, otherwise the correlation (and all the following measures) would be computed between profiles along all the genes, instead of the correlation between genes along the profiles:</li>
+</ol>
+<div class="textbox">
+<p><code>% Select the index of interest (all reactions in our case)</code></p>
+<p><code>profiles = all_objpairs;</code></p>
+<p><code>% Transpose profiles to compute correlation between genes</code></p>
+<p><code>genes_vs_profiles = profiles';</code></p>
+</div>
+<ol start="38">
+<li>The <i>zscore</i> function is used to standardize each of the profiles to have zero mean and unit variance, after which the <i>pdist</i> function is used to compute pairwise distances between pairs of observations in the dataset:</li>
+</ol>
+<div class="textbox">
+<p><code>% Standardize profiles using zscore values and compute the pairwise distances between them</code></p>
+<p><code>dist_correlation_vector = pdist(zscore(genes_vs_profiles), 'correlation');</code></p>
+<p><code>% Compute the distance correlation matrix</code></p>
+<p><code>dist_correlation_matrix = squareform(dist_correlation_vector);</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> <i>K</i>-means clustering requires the user to decide the number of clusters (<i>K</i>) that the data is partitioned into. Prior to clustering, different values of <i>K</i> can be tested using silhouette analysis in order to select the most suitable number of clusters for partitioning data.</div>
+<ol start="39">
+<li>In order to establish the optimal number of clusters, a silhouette analysis can be conducted to measure the cohesion of data points within each cluster (given by a silhouette value for each variable). The initial pre-plot in <a href="#fig14">Figure 14</a> displays silhouette values (<i>y</i>) against the number of clusters selected (<i>x</i>), which indicates the best value to select for <i>K</i> (i.e., the number of clusters with the highest silhouette value):</li>
+</ol>
+<div class="textbox">
+<p><code>prompt = 'k<i>−</i>means: Press ''y'' if the number of cluster is known, or any other key to execute silhouette analysis ';</code></p>
+<p><code>answer = input(prompt,'s');</code></p>
+<p><code>%</code></p>
+<p><code>if strcmp(answer,'y')</code></p>
+<p><code>    mean_silhouette = zeros(1,30);</code></p>
+<p><code>    for NoClust = 2:30</code></p>
+<p><code>        [cidx, ctrs] = kmeans(genes_vs_profiles,</code><code>NoClust,</code><code>'dist','correlation',</code><code>'rep',</code><code>5,</code></p>
+<p>        <code>'</code><code>disp','final');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Upon selecting a value for <i>K</i>, the <i>silhouette</i> function in MATLAB produces a plot (<a href="#fig15">Figure 15</a>) that displays values for each individual cluster within the range of [−1,1]. This gives a measure of proximity for each point in one cluster to points in the neighboring clusters.</div>
+<div class="textbox">
+<p><code>% Create a silhouette plot to decide the number of clusters</code></p>
+<p><code>        figure;</code></p>
+<p><code>        [silh5,h] =</code></p>
+<p><code>        silhouette(genes_vs_profiles,cidx,'corr');</code></p>
+<p><code>        h = gca;</code></p>
+<p><code>        h.Children.EdgeColor =</code></p>
+<p><code>        [.8 .8 1];</code></p>
+<p><code>        xlabel 'Silhouette</code></p>
+<p><code>        Value';</code></p>
+<p><code>        ylabel 'Cluster';</code></p>
+<p><code>    end</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="40">
+<li>Upon examination of the silhouette plot, the user is prompted to manually select the number of clusters for the <i>k</i>-means plot:</li>
+</ol>
+<div class="textbox">
+<p><code>% Enter the number of clusters</code></p>
+<p><code>prompt = 'k<i>−</i>means: what is the number of clusters chosen after inspection of the mean_silhouette plot?';</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> The closer the silhouette coefficients are to the value of 1, the further that point is from other clusters and the better the separation of clusters. If the point has a coefficient close to 0, this means that it is very close to the decision boundary between two neighboring clusters. After the silhouette coefficients have been calculated for data points in each cluster, a mean silhouette score can be computed to evaluate the feasibility of the entire cluster.</div>
+<ol start="41">
+<li>Nonmetric multi-dimensional scaling can be applied to circumvent errors caused by the co-location of data points by multiplying dissimilarities by a scalar:</li>
+</ol>
+<div class="textbox">
+<p><code>% Specify the number of iterations for the scaling algorithm</code></p>
+<p><code>options = statset('MaxIter',5</code><code>00);</code></p>
+<p><code>% Perform multi<i>−</i>dimensional scaling</code></p>
+<p><code>[Y,stress] = mdscale_robust(dist_correlation_vector,2,'criterion','sstress','start','random','</code><code>Options',</code></p>
+<p><code>    options);</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> <i>mdscale_robust</i> is a variation of the <i>mdscale</i> function where scaling is used to minimize the squared stress criterion with 500 iterations of the algorithm.</div>
+<ol start="42">
+<li>The <i>kmeans</i> function is used to perform clustering using the following command:</li>
+</ol>
+<div class="textbox">
+<p><code>% Perform k-means clustering</code></p>
+<p><code>[cidx, ctrs] = kmeans(genes_vs_profiles,</code><code>num_clusters, 'dist','cityblock',</code><code>'rep',5,</code><code>'disp','final');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> In this instance, the ‘dist’ metric for clustering is the city block (also called “Manhattan”) distance. The formula for computing this distance can be specified in general as:</div>
+<p class="math-ml"><math> <mrow> <msub> <mi>d</mi> <mrow> <mi>s</mi> <mi>t</mi> </mrow> </msub> <mo>=</mo> <mspace></mspace> <mroot> <mrow> <munderover> <mo>∑</mo> <mrow> <mi>j</mi> <mo>=</mo> <mn>1</mn> </mrow> <mi>n</mi> </munderover> <mrow> <mo>|</mo> <msub> <mi>x</mi> <mrow> <mi>s</mi> <mi>j</mi> </mrow> </msub> <mo>−</mo> <msub> <mi>x</mi> <mrow> <mi>t</mi> <mi>j</mi> </mrow> </msub> <msup> <mo>|</mo> <mi>p</mi> </msup> </mrow> </mrow> <mi>p</mi> </mroot> </mrow> </math></p>
+<p>where p = 1 in the case of the Manhattan distance, but the user is encouraged to choose the metric most suitable for their dataset.</p>
+<ol start="43">
+<li>Finally, a scatter plot can be created to display the <i>k</i>-means clusters:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create the final k-means plot</code></p>
+<p><code>figure</code></p>
+<p><code>C = cidx; %color according to k-means clustering</code></p>
+<p><code>colormap(jet(256))</code></p>
+<p><code>scatter(Y(:,1),Y(:,2),200,C,'.');</code></p>
+<p><code>title(['K<i>−</i>Means Clustering (k = 'num2str(numel(unique(cidx)))')']);</code></p>
+<p><code>labels = num2str((1:size(Y,1))','%d');    %'</code></p>
+<p><code>text(Y(:,1),</code><code>Y(:,2),</code><code>labels,</code><code>'horizontal','left',</code><code>'vertical','bottom')</code></p>
+</div>
+<h3 id="sec3.6">LASSO regression</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 10 min</div>
+<p>The main purpose of the analysis is to identify the core subset of predictors (either genes and/or reactions) with positive or negative nonzero coefficients greater than 0.01 that are strongly related to <i>in vivo</i> growth rates by penalizing the recursive predictors (i.e., setting their coefficients to zero). The script <i>lasso.m</i> performs LASSO regression with α= 1, which returns fitted least-squares coefficients for linear models of transcript, flux or multi-omic data (<i>x</i>) and the growth rates (<i>y</i>) in 12 growth conditions. Following this, the mean predictor coefficient (MPC) can be calculated by averaging across nonzero coefficients in all vectors for each gene/reaction. In this example, only 12 out of 23 growth conditions had (i) specified growth rates, (ii) specified doubling times, or (iii) standard growth curves that could be used to calculate growth rates from the original studies (<a href="#bib32">Ludwig and Bryant, 2011</a>, <a href="#bib33">2012a</a>,<a href="#bib34">b</a>), so only the subset of the original datasets corresponding to these growth rates has been selected for analysis. We here describe LASSO regression carried out in MATLAB for the subset of gene transcripts corresponding to these 12 growth conditions, but for the sake of clarity, the generation of multi-omic and fluxomic subsets is also demonstrated.</p>
+<ol start="44">
+<li>In MATLAB, create new variables which are subsets of data corresponding to the 12 conditions with available growth rates:</li>
+</ol>
+<div class="textbox">
+<p><code>% Load transcripts</code></p>
+<p><code>load('transcripts.mat')';</code></p>
+<p><code>transcripts = transcripts';</code></p>
+<p><code>% Specify the dimensions of the data</code></p>
+<p><code>t_size = size(transcripts);</code></p>
+<p><code>% Create transcript data corresponding to 12 growth conditions</code></p>
+<p><code>transcripts_subset = ones(1,t_size(2)); % all ones for standard control</code></p>
+<p><code>transcripts_subset(2:12,:) = transcripts([10:12,14:16,18,19,21:23],:);</code></p>
+<p><code>% Load flux data</code></p>
+<p><code>load('all_atp_flux.mat');</code></p>
+<p><code>% Create flux data corresponding to 12 growth</code></p>
+<p><code>conditions</code></p>
+<p><code>all_atp_flux_subset = all_atp_flux([24,10:12,14:16,18,19,21:23],:);</code></p>
+<p><code>% Load multi</code><code>-</code><code>omic data (concatenated transcript and flux data)</code></p>
+<p><code>load('ATPTF.mat');</code></p>
+<p><code>% Create multi</code><code>-</code><code>omic data corresponding to 12 growth conditions</code></p>
+<p><code>ATPTF_subset = ATPTF([24,10:12,14:16,18,19,21:23],:);</code></p>
+<p><code>% Load available growth rates corresponding to 12 growth conditions</code></p>
+<p><code>Y2 = [0.075;0.046153846;0.05;0.035294118;0.173286795;0.266595069;0.266595069;0.038659794;</code></p>
+<p><code>0.068807339;0.089285714;0.076530612;0.027777778];</code></p>
+<p><code>% Create name IDs for growth conditions</code></p>
+<p><code>Y2_names = {'Standard Control', 'N<i>−</i>limited', 'S<i>−</i>limited', 'P<i>−</i>limited', 'Nitrate',</code></p>
+<p><code>'Ammonia', 'Urea', '22C', '30C', 'Mixotrophic', 'Low salt', 'High salt'};</code></p>
+</div>
+<ol start="45">
+<li>Perform LASSO regression with each dataset acting as predictor data (<i>x</i>) and the growth rates as response (<i>y</i>):</li>
+</ol>
+<div class="textbox">
+<p><code>% Perform LASSO regression</code></p>
+<p><code>[B_transcripts,fitInfo_transcripts] = lasso(transcripts_subset,Y2);</code></p>
+<p><code>% Average across all coefficients by finding mean of each row (predictor)</code></p>
+<p><code>B_transcripts_mean = mean(B_transcripts,2);</code></p>
+<p><code>% Find indices of absolute nonzero mean predictor coefficients</code></p>
+<p><code>transcripts_abs_mean = abs(mean(B_transcripts,2));</code></p>
+<p><code>nonzero_transcripts = find(transcripts_abs_mean &gt; 0.01);</code></p>
+<p><code>% Convert data into cell arrays</code></p>
+<p><code>B_transcripts = array2table(B_transcripts);</code></p>
+<p><code>B_transcripts_mean = array2table(B_transcripts_mean,'VariableNames',{'Mean Predictor Coefficient'});</code></p>
+</div>
+<ol start="46">
+<li>Create a table that combines all data relating to nonzero predictors and their coefficients:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create cell array of gene IDs</code></p>
+<p><code>transcripts_IDs = array2table([1:t_size(2)]','VariableNames',{'ID'});</code></p>
+<p><code>% Create table of categorical data from original transcriptomic data</code></p>
+<p><code>Dataset1 = readtable('Dataset1.xlsx');</code></p>
+<p><code>names_transcripts = (Dataset1(:,{'LocusTag','COGCategory','CyanobaseCategory','CyanobaseSubCategory'}));</code></p>
+<p><code>% Concatenate categorical data with B coefficients array and mean predictors</code></p>
+<p><code>B_transcripts_table = horzcat(transcripts_IDs,names_transcripts,B_transcripts,B_transcripts_mean);</code></p>
+<p><code>% Filter for indices with nonzero predictor coefficients &gt; 0.01</code></p>
+<p><code>B_transcripts_nonzero = B_transcripts_table(nonzero_transcripts,:);</code></p>
+<p><code>% Sort coefficients in descending order</code></p>
+<p><code>B_transcripts_zero = sortrows(B_transcripts_nonzero,{'Mean Predictor Coefficient'},{'descend'});</code></p>
+<p><code>% Save table of coefficients as .xlsx file</code></p>
+<p><code>writetable(B_transcripts_nonzero,'B_transcripts_nonzero.xlsx');</code></p>
+</div>
+<h3 id="sec3.7">Correlation analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 10 min</div>
+<p>This analysis indicates the strength of association between gene transcripts and/or flux values and growth rates where all flux fold changes are converted into absolute (non-negative) values prior to calculating their correlations in order to equally represent the activity of reversible reactions. Using the same data as in LASSO regression, the script <i>corrcoef_tf_gr.m</i> calculates the Pearson correlation coefficients between subsets of transcript/flux data (<i>x</i>) and growth rates (<i>y</i>) across 12 conditions. The example below demonstrates how a table of correlation coefficients calculated between the transcript data and growth rates is generated in MATLAB (<i>corr_transcript_table</i>), but the corresponding tables can also be created for flux data, i.e., <i>corr_ATP_table</i>, <i>corr_P1_table</i>, <i>corr_P2_table</i>. Example plots of the positive/negative correlation between the transcript data and growth rates are provided in <a href="#fig17">Figure 17</a>.</p>
+<figure id="fig17"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig17.jpg" alt="Fig17.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 17. Example of PCC scatter plots for transcript data.</div>
+<p>Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<ol start="47">
+<li>In MATLAB, create output vectors to store correlation coefficients, p-values, and lower and upper bounds of confidence intervals, changing the number of rows for transcripts (3187), fluxes (742), or both (3929):</li>
+</ol>
+<div class="textbox">
+<p><code>% Create empty vectors to store outputs</code></p>
+<p><code>corr = zeros(3187,1); % PCC</code></p>
+<p><code>pval = zeros(3187,1); % p<i>−</i>value</code></p>
+<p><code>lb95 = zeros(3187,1); % lower bound for 95% confidence</code></p>
+<p><code>ub95 = zeros(3187,1); % lower bound for 95% confidence</code></p>
+</div>
+<ol start="48">
+<li>Specify the size and type of dataset to be used as <i>x</i> (gene transcripts in this example):</li>
+</ol>
+<div class="textbox">
+<p><code>% Specify the number of scalar observations(N)</code></p>
+<p><code>N = size(transcripts,2);</code></p>
+</div>
+<ol start="49">
+<li>A ‘for’ loop is used to iteratively calculate Pearson correlation coefficients with their respective p−values and 95% confidence intervals over the whole dataset using the <i>corrcoef</i> function:</li>
+</ol>
+<div class="textbox">
+<p><code>% Calculate correlation coefficients (R) with their respective p<i>−</i>values (P) and lower and upper bounds (RL and RU) according to the 95% confidence interval:</code></p>
+<p><code>for i = 1:N</code></p>
+<p><code>    [R,P,RL,RU] = corrcoef(transcripts_subset(:,i),Y2); %Y2 contains growth rates</code></p>
+<p><code>    corr(i) = R(1,2);</code></p>
+<p><code>    pval(i) = P(1,2);</code></p>
+<p><code>    lb95(i) = RL(1,2);</code></p>
+<p><code>    ub95(i) = RU(1,2);</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="50">
+<li>Save the data in an .xlsx table:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create table of correlation coefficients</code></p>
+<p><code>corr_transcripts = array2table(corr,'VariableNames',{'PCC'});</code></p>
+<p><code>corr_transcripts_table = horzcat(transcripts_IDs,names_transcripts,corr_transcripts);</code></p>
+<p><code>% Sort table in descending order of PCC values</code></p>
+<p><code>corr_transcripts_table = sortrows(corr_transcripts_table,{'PCC'},{'descend'});</code></p>
+<p><code>% Save table of correlation coefficients</code></p>
+<p><code>writetable(corr_transcripts_table,'corr_transcripts_table.xlsx');</code></p>
+</div>
+<ol start="51">
+<li>Select data corresponding to predictors yielding the highest correlations:</li>
+</ol>
+<div class="textbox">
+<p><code>% Retrieve IDs for transcripts that yield the top 10 positive PCC</code></p>
+<p><code>top_10_positive_IDs = table2array(corr_transcripts_table([1:10],1));</code></p>
+<p><code>% Retrieve IDs for transcripts that yield the top 10 negative PCC</code></p>
+<p><code>corr_transcripts_table = sortrows(corr_transcripts_table,{'PCC'},{'ascend'});</code></p>
+<p><code>top_10_negative_IDs = table2array(corr_transcripts_table([1:10],1));</code></p>
+<p><code>% Select all data points for transcripts indexed by these top 10 PCC</code></p>
+<p><code>transcripts_positive = transcripts_subset(:,top_10_positive_IDs);</code></p>
+<p><code>transcripts_negative = transcripts_subset_new(:,top_10_negative_IDs);</code></p>
+</div>
+<ol start="52">
+<li>Plot these predictors against the growth rates as follows:</li>
+</ol>
+<div class="textbox">
+<p><code>% Create a scatter plot for the transcript with the highest positive PCC</code></p>
+<p><code>scatter(transcripts_positive(1:12,1),Y2,'filled','black');</code></p>
+<p><code>xlabel('Transcript Value')</code><code>;</code></p>
+<p><code>ylabel('Growth Rate')</code><code>;</code></p>
+<p><code>% Add a trendline</code></p>
+<p><code>h = lsline;</code></p>
+<p><code>h.Color = 'black';</code></p>
+<p><code>% Create a scatter plot for the transcript with the highest negative PCC</code></p>
+<p><code>scatter(transcripts_negative(1:12,1),Y2,'filled','black');</code></p>
+<p><code>xlabel('Transcript Value')</code><code>;</code></p>
+<p><code>ylabel('Growth Rate')</code><code>;</code></p>
+<p><code>% Add a trendline</code></p>
+<p><code>h = lsline;</code></p>
+<p><code>h.Color = 'black';</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Examine correlation plots to check for regression artifacts (see <a href="#sec6.7">troubleshooting problem four</a>).</div>
+<h3 id="sec3.8">Pathway-level correlation analysis</h3>
+<div class="timing">
+<span class="timing-title">Timing:</span>  &lt; 15 min</div>
+<p>Similar to the <a href="#sec3.4">pathway-level PCA</a>, a more detailed functional classification of correlation coefficients can be yielded by performing a pathway-level correlation analysis where mean absolute PCC values are classified according to the subsystems assigned to each reaction in the GSMM (see <a href="#fig18">Figure 18</a> for a bar plot of pathway correlations). This provides an opportunity to study these components in a more detailed manner through expanding the scope of biological insights detected and establishing connections between reactions within the same pathway. In order to account for the differing number of reactions in each pathway, the number of reactions within a binned range of PCC values can also be recorded for each subsystem listed in the model (see <a href="#fig19">Figure 19</a> for a heatmap of pathway correlations). In this way, correlations between flux rates in each pathway and their growth rates can be assessed more fairly. In this section, we demonstrate a pathway-level analysis in MATLAB using a table of correlation coefficients calculated between Biomass - ATP maintenance flux values and growth rates (where <i>corr_ATP_table</i> has been generated using the same steps as in <a href="#sec3.7">correlation analysis</a>).</p>
+<figure id="fig18"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig18.jpg" alt="Fig18.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 18. Example of bar chart for pathway-level mean absolute Pearson correlation coefficient (PCC) values calculated between Biomass - ATP maintenance fluxes (<i>x</i>) and growth rates (<i>y</i>).</div>
+<p>Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<figure id="fig19"><img src="https://prod-shared-star-protocols.s3.amazonaws.com/protocols/1050-Fig19.jpg" alt="Fig19.jpg">
+<figcaption>
+<div class="figcaption-title">Figure 19. Example of PCC heatmap for pathway-level Pearson correlation coefficient (PCC) values calculated between Biomass - ATP maintenance fluxes (<i>x</i>) and growth rates (<i>y</i>)</div>
+<p>Red text in the bin labels indicates a negative correlation coefficient and blue text indicates a positive correlation coefficient. Part of this figure is reprinted with permission from <a href="#bib56">Vijayakumar et al. (2020)</a>.</p>
+</figcaption>
+</figure>
+<ol start="53">
+<li>Extract correlation coefficients for the flux data in MATLAB and convert them into absolute values:</li>
+</ol>
+<div class="textbox">
+<p><code>% Load PCC values from tables generated during the correlation analysis</code></p>
+<p><code>ATP_PCC = table2array(corr_ATP_table(:,3));</code></p>
+<p><code>ATP_PCC(isnan(ATP_PCC)) = 0;</code></p>
+<p><code>% Convert coefficients into absolute values</code></p>
+<p><code>ATP_PCC_abs = abs(ATP_PCC);</code></p>
+</div>
+<div class="critical">
+<span class="critical-title">Critical:</span> Correlation coefficients are converted into absolute values prior to calculating the mean PCC for all pathways since only the magnitude of correlation (and not the direction) is considered when plotting the bar chart in <a href="#fig18">Figure 18</a>. However, the heatmap in <a href="#fig19">Figure 19</a> indicates the signs of individual correlation coefficients as well as the number of reactions within each pathway.</div>
+<ol start="54">
+<li>Calculate mean PCC values for each subsystem using the same number of reactions recorded within each subsystem (<i>cardinality_subsystems</i>) and reaction indices obtained for each subsystem (<i>ixs_subsystems</i>) as in <a href="#sec3.4">Pathway-level PCA</a> (optional):</li>
+</ol>
+<div class="textbox">
+<p><code>% Create an empty vector to store averages of PCC values for subsystems:</code></p>
+<p><code>ATP_PCC_mean = zeros(numel(ixs_subsystems),1);</code></p>
+<p><code>% Calculate mean PCC by subsystem</code></p>
+<p><code>for c = 1:numel(ixs_subsystems)</code></p>
+<p><code>    ATP_PCC_mean(c) = mean(ATP_PCC_abs(ixs_subsystems{c},1));</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="55">
+<li>Plot a bar chart using the mean values:</li>
+</ol>
+<div class="textbox">
+<p><code>% Set subsystem names as x<i>−</i>axis labels</code></p>
+<p><code>X_labels = categorical(list_subsystems);</code></p>
+<p><code>% Plot the subsystems (x) against mean pathway PCC values (y):</code></p>
+<p><code>X = categorical(list_subsystems);</code></p>
+<p><code>bar(X,ATP_PCC_mean);</code></p>
+<p><code>xlabel('Subsystems');</code></p>
+<p><code>ylabel('Mean PCC');</code></p>
+<p><code>hold on</code></p>
+<p><code>set(gca, 'XTickLabelRotation',45);</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Since the mean absolute PCC values disregard the signs of individual correlation coefficients, we can also plot a heatmap recording the number of PCCs within a series of binned ranges for each subsystem. This gives a better indication of the number of reactions within each pathway as well as the direction of correlation.</div>
+<ol start="56">
+<li>Create variables to store PCC values for all reactions within each subsystem:</li>
+</ol>
+<div class="textbox">
+<p><code>all_corr_ATP = cell(numel(ixs_subsystems),1);</code></p>
+<p><code>% Create bins to sort PCC values</code></p>
+<p><code>bin_1 = zeros(numel(ixs_subsystems),1);</code></p>
+<p><code>...</code></p>
+<p><code>bin_7 = zeros(numel(ixs_subsystems),1);</code></p>
+</div>
+<ol start="57">
+<li>Use a ‘for’ loop to record the number of correlation values within a given range for each bin:</li>
+</ol>
+<div class="textbox">
+<p><code>% Store correlation values for each subsystem in a cell array</code></p>
+<p><code>for c = 1:numel(ixs_subsystems)</code></p>
+<p><code>    all_corr_ATP{c} = ATP_PCC(ixs_subsystems{c},1);</code></p>
+<p><code>% Within this loop, temporarily convert each row of cells into numericals</code></p>
+<p><code>    all_corr_ATP_val = cell2mat(all_corr_ATP(c,1));</code></p>
+<p><code>% Record the number of coefficients within each bin</code></p>
+<p><code>    bin_1(c) = numel(find(all_corr_ATP_val &gt;= <i>−</i></code><code>0.7 &amp; all_corr_ATP_val &lt; <i>−</i></code><code>0.5));</code></p>
+<p><code>    bin_2(c) = numel(find(all_corr_ATP_val &gt;= <i>−</i></code><code>0.5 &amp; all_corr_ATP_val &lt; <i>−</i></code><code>0.3));</code></p>
+<p><code>    bin_3(c) = numel(find(all_corr_ATP_val &gt;= <i>−</i></code><code>0.3 &amp; all_corr_ATP_val &lt; <i>−</i></code><code>0.1));</code></p>
+<p><code>    bin_4(c) = numel(find(all_corr_ATP_val &gt;= <i>−</i></code><code>0.1 &amp; all_corr_ATP_val &lt; 0.1));</code></p>
+<p><code>    bin_5(c) = numel(find(all_corr_ATP_val &gt;= 0.1 &amp; all_corr_ATP_val &lt; 0.3));</code></p>
+<p><code>    bin_6(c) = numel(find(all_corr_ATP_val &gt;= 0.3 &amp; all_corr_ATP_val &lt; 0.5));</code></p>
+<p><code>    bin_7(c) = numel(find(all_corr_ATP_val &gt;= 0.5 &amp; all_corr_ATP_val &lt; 0.7));</code></p>
+<p><code>end</code></p>
+</div>
+<ol start="58">
+<li>Plot the number of reactions in each bin and subsystem using a heatmap:</li>
+</ol>
+<div class="textbox">
+<p><code>% Concatenate bins horizontally into an array</code></p>
+<p><code>cdata = horzcat(bin_1,bin_2,bin_3,bin_4,bin_5,bin_6,bin_7);</code></p>
+<p><code>% Label the bins (x)</code></p>
+<p><code>xvalues = {'[<i>−</i></code><code>0.7, <i>−</i></code><code>0.5[','[<i>−</i></code><code>0.5, <i>−</i></code><code>0.3[','[<i>−</i></code><code>0.3, <i>−</i></code><code>0.1[','[<i>−</i></code><code>0.1, 0.1[','[0.1, 0.3[','[0.3, 0.5[','[0.5, 0.7['};</code></p>
+<p><code>% Label the subsystems (y)</code></p>
+<p><code>yvalues = list_subsystems(:)';</code></p>
+<p><code>% Plot the heatmap using a custom colormap (ATPmap):</code></p>
+<p><code>h = heatmap(xvalues,</code><code>yvalues,</code><code>cdata,</code><code>'Title',</code><code>'Biomass <i>−</i> ATP maintenance',</code><code>'XLabel',</code><code>'PCC',</code><code>'YLabel',</code></p>
+<p><code>'Subsystems',</code><code>'Colormap',</code><code>ATPmap,</code><code>'ColorbarVisible',</code><code>'off');</code></p>
+</div>
+<div class="note">
+<span class="note-title">Note:</span> Similar heatmaps can be plotted for the Biomass - Photosystem I and Biomass - Photosystem II correlation coefficients to evaluate the correlation between metabolic flux and growth rates across various pathways.</div>
+</section>
+<section>
+<h2 id="expected-outcomes">Expected outcomes</h2>
+<p>The main outcome of this analysis is to establish a procedure for linking specific genes and/or reactions across trans-omic layers of data belonging to the same biological system. Here we present an example of the pipeline applied to <i>Synechococcus</i> sp. PCC 7002, following the workflow laid out in <a href="#fig3">Figure 3</a>.</p>
+<p>The process begins with tailoring the GSMM according to available transcriptomic data recorded under different conditions that influence growth and photosynthesis. After performing condition-specific FBA with norm-2 regularized bi-level optimization, comparisons can be made between the results of analyses performed upon gene transcription data, metabolic flux data and the multi-omic data resulting from their concatenation. These analyses include PCA, <i>k</i>-means clustering, LASSO regression and Pearson correlation analysis. Features identified through these analyses reflect the coordinated responses shared between different data types, as well as the variability in responses between different growth conditions. Since the flux data is informed by transcriptomic data through the integration of condition-specific growth profiles within the GSMM, the downstream effect of differential gene expression on metabolic pathways can be observed. Analyzing both transcriptomic and fluxomic data provides a more complete picture of cyanobacterial metabolism than single-omic analyses.</p>
+<p>The protocol can be applied for numerous purposes such as model-aided discovery, hypothesis testing, identification of targets for metabolic engineering and comparison between multi-omic data across biological conditions. These processes can be optimized by examining the downstream effects of gene expression on metabolism, thereby contributing to expanding knowledge and meaningful outputs from metabolic models as well as lending biological interpretability to machine learning models. Our code and step-by-step methodology are intended to make these analyses more accessible to non-experts or serve as a guide to other investigators for combining <i>in silico</i> flux simulation with machine learning.</p>
+</section>
+<section>
+<h2 id="limitations">Limitations</h2>
+<p>During <a href="#sec3.1">flux balance analysis</a>, a series of boundary constraints were defined to fine-tune the calculation of flux rates and more closely represent the metabolic capability of cells. The bounds for nutrient uptake were set based on metabolite concentrations in the growth medium, e.g. for the nitrate condition where the medium was supplemented with 12 mM of sodium nitrate, an uptake rate (lower bound) of -12 was assigned to the nitrate exchange reaction (EX_NO3_E). Currently, there exists no standard operating procedure for the definition of nutritional environments for GSMMs, as they are assessed case-by-case by researchers conducting the study (see <a href="#sec6.9">troubleshooting problem five</a>). A recent framework proposed a comprehensive set of guidelines in this regard, paying careful attention to the chemical composition of the growth medium as well the physiology of organism(s) concerned and various inorganic environmental factors (<a href="#bib36">Marinos et al., 2020</a>).</p>
+<p>As photoautotrophs, cyanobacteria absorb light in excess of biomass and other maintenance requirements, which can be difficult to replicate within a GSMM. Critically, the exact photon absorbances of the <i>Synechococcus</i> sp. PCC 7002 cultures were not measured in the same conditions in which the cells were harvested for transcriptomic sequencing. Therefore, constraints for photon exchange reaction (EX_PHOTON_E) had to be approximated using values listed in literature for dry cell weight and photon absorbance for similar species and adjusted based on the availability of light for each growth condition. This process could be improved by specifying directly measured photophysiological parameters (such as light acclimation, cell density, pigment concentration, photon absorbance, oxygen evolution rate and optical density), and using these values to constrain photon uptake more accurately for each culture (<a href="#bib8">Broddrick et al., 2019</a>; <a href="#bib54">Toyoshima et al., 2020</a>).</p>
+<p>Hence, we recommend the use of <i>in vivo</i> experimental data for various growth conditions where feasible to constrain the model and yield more precise flux rates. The prediction of internal fluxes can also be improved by using more specialized FBA techniques that consider constraints on resource allocation between biological processes, such as conditional FBA (<a href="#bib51">Rügen et al., 2015</a>), Resource Balance Analysis (RBA) (<a href="#bib17">Goelzer and Fromion, 2011</a>) or Constrained Allocation Flux Balance Analysis (CAFBA) (<a href="#bib40">Mori et al., 2016</a>).</p>
+<p>A number of linear methods and transformations were adopted in this study to maximize the interpretability of machine learning predictions, using quadratic terms for regularization only. However, a range of techniques for dimensionality reduction or clustering methods could be implemented here, e.g. to elucidate non-linear relationships among different omics.</p>
+</section>
+<section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="sec6.1">Problem 1</h3>
+<p>Raw multi-omic data originating from various sources (transcriptomic, proteomic, metabolomic) differ significantly in terms of their format and structure. Data transformation, normalization or scaling techniques must be applied as forms of pre-processing prior to integration in order to make these data comparable. Particularly, the batch effect must be taken into account both before and after conducting experiments since this gives rise to unwanted variation in datasets caused by differences in technical factors across batches (Step 10 of <a href="#before-you-begin">before you begin</a>).</p>
+<h3 id="sec6.2">Potential solution</h3>
+<p>Methods such as ComBat allow users to adjust for batch effects among samples by utilizing parametric or non-parametric empirical Bayes frameworks (<a href="#bib22">Johnson et al., 2007</a>; <a href="#bib68">Zhang et al., 2020b</a>). Other techniques such as SVASeq or RUVSeq also help to eliminate noise from sequencing experiments and adjust for technical interference (<a href="#bib29">Leek, 2014</a>; <a href="#bib49">Risso et al., 2014</a>). These would be followed by the pre-processing steps. If available, integrating proteomic or metabolomic data into a GSMM can provide a more accurate representation of the cellular phenotype since they include effects downstream of genes and gene transcripts.</p>
+<h3 id="sec6.3">Problem 2</h3>
+<p>There are numerous methods available for integrating multi-omic data within GSMMs, and it can be challenging to choose a single method for data integration (Step 7 of <a href="#step-by-step-method-details">step-by-step method details</a>).</p>
+<h3 id="sec6.4">Potential solution</h3>
+<p>There are many types of approaches to consider for multi-omic data integration, several of which are discussed elsewhere in greater detail (<a href="#bib35">Machado and Herrgård, 2014</a>; <a href="#bib9">Cho et al., 2019</a>).</p>
+<p>In summary, the generation of context-specific metabolic models is divided into two main classes: (i) switch-based approaches (such as GIMME), which remove inactive or lowly expressed genes by setting the corresponding reaction boundaries to zero, and (ii) valve-based approaches (such as E-flux), which increase or decrease the activity of highly (or lowly, respectively) expressed genes by adjusting the upper and lower bounds for their corresponding reactions, proportional to their normalized gene expression values (<a href="#bib55">Vijayakumar et al., 2018</a>).</p>
+<p>The main advantage of GIMME-like methods is that they can re-enable flux associated with false negative values in inactive reactions and record consistencies between gene expression data and flux predictions. On the other hand, non-discretized relative gene expression values are more indicative of protein concentrations since levels of transcription are more comparable across genes. The approach used in this case study is closer to a valve-based approach based on METRADE (<a href="#bib2">Angione and Lió, 2015</a>), where the expression level of each gene set (represented by the vector ϴ) is mapped to a coefficient for the lower and upper bounds of the corresponding reaction in the GSMM. When using our method, it was important to conduct a sensitivity analysis to select the optimal value for the γ parameter, which magnified the level of gene upregulation or downregulation and therefore the metabolic sensitivity for yielding experimentally feasible flux values for different growth conditions.</p>
+<p>In addition to switch- and valve-based integration methods, there are alternative methods that consider the cellular goal specific to each GSMM or remove unnecessary/blocked reactions from the network. Metabolic task derived (MTD) algorithms consider the main objective function(s) that represent the metabolic tasks as the main priority for the cell or community or utilize omics-guided objective functions, as in omFBA (<a href="#bib19">Guo and Feng, 2016</a>). Network-pruning methods (such as MBA) retain only a core set of reactions in the network by iteratively pruning reactions from the model to derive a sub-network that is consistent with the tissue-specific gene expression, among other data. However, these methods are only used to extract a context-specific model and do not provide a corresponding flux distribution. Therefore, the method chosen for data integration depends on the nature of the data, the approach taken for constraining flux bounds and the optimization problem to be solved. During model extraction, the type of thresholding applied (within samples or genes) and the threshold values for gene expression used can also affect the output models (<a href="#bib59">Walakira et al., 2021</a>). Very few methods automate model extraction and flux prediction without <i>a priori</i> knowledge of context-specific functions or binarization of reactions during data integration. However, RegrEx is one such algorithm that uses regularized least-squares optimization for automated model extraction and unbiased flux calculation (<a href="#bib50">Robaina Estévez and Nikoloski, 2015</a>).</p>
+<h3 id="sec6.5">Problem 3</h3>
+<p>The cut-off value for setting fluxes equal to zero (10<sup>−4</sup>) may not be applicable for every model, seeing as fluxes toward biomass building blocks and other important metabolic components are at risk of being eliminated (Step 13 of <a href="#step-by-step-method-details">step-by-step method details</a>).</p>
+<h3 id="sec6.6">Potential solution</h3>
+<p>We advise users of the protocol to conduct a robustness analysis to assess different thresholds for flux and fold change values. Starting from the solver tolerance parameter (10<sup>−6</sup> in our case), we recommend increasing the order of magnitude for setting flux rates to zero until a trade-off can be reached between eliminating noise within the data whilst still retaining the ability to identify and quantify functionally significant contributions of metabolic processes. Values that are below the chosen threshold can then be set to zero based on this adjustment without any statistically significant changes in results.</p>
+<h3 id="sec6.7">Problem 4</h3>
+<p>The correlation analysis may give rise to regression artifacts that do not reflect a true linear correlation between gene transcript/flux data and growth rates, leading to incorrect causal inferences (Step 52 of <a href="#step-by-step-method-details">step-by-step method details</a>).</p>
+<h3 id="sec6.8">Potential solution</h3>
+<p>We advise users to manually inspect each correlation plot to assess the validity of correlation between variables. Alternatively, there are preprocessing techniques that can be applied to data such as global scaling normalization or dropout imputation. In some instances where artifacts have been introduced as a result of data oversmoothing or overfitting, reintroducing random noise into datasets has been shown to increase robustness (<a href="#bib69">Zhang et al., 2021</a>).</p>
+<h3 id="sec6.9">Problem 5</h3>
+<p>There is no standard operating procedure for determining uptake rates (Step 4 of <a href="#step-by-step-method-details">step-by-step method details</a>).</p>
+<h3 id="sec6.10">Potential solution</h3>
+<p>In the absence of <i>in vivo</i> uptake rates obtained from time-course metabolomic experiments, we advise users to approximate uptake rates, starting from the concentration of the organic carbon source in the growth medium (e.g., glucose or glycerol) and convert these values into flux units mmol/gDW h<sup>-1</sup> (<a href="#bib53">Schinn et al., 2021</a>). Methods such as Metabotools already use extracellular concentrations to calculate and adjust constraints by defining growth media in terms of concentrations of metabolites measured in mM (<a href="#bib4">Aurich et al., 2016</a>).</p>
+<p>Although inorganic substrates are not usually constrained, the inorganic carbon uptake rate is accepted in the absence of a carbon substrate for photoautotrophic organisms such as cyanobacteria (<a href="#bib46">Qian et al., 2017</a>). Furthermore, as the availability of nutrients has a major impact on the calculation of metabolic fluxes, we incorporate the extracellular concentrations of metabolites and co-factors present within various growth media for different conditions to constrain the lower and upper bounds of the associated exchange reactions in the model. This application of condition-specific constraints on the exchange reactions ensures that exchange rates emulate uptake and secretion of metabolites in accordance with the experimental data and the computational model therefore more closely resembles the experimental conditions in which the cells are cultured.</p>
+</section>
+<section>
+<h2 id="references">References</h2>
+<p id="bib1">Aikawa, S., Nishida, A., Ho, S.H., Chang, J.S., Hasunuma, T., and Kondo, A. (2014). Glycogen production for biofuels by the euryhaline cyanobacteria <i>Synechococcus</i> sp. strain pcc 7002 from an oceanic environment. Biotechnol. Biofuels <i>7</i>, 88. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref1">View at publisher</a></p>
+<p id="bib2">Angione, C. and Lió, P. (2015). Predictive analytics of environmental adaptability in multi-omic network models. Sci. Rep. <i>5</i>, 1-21. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref2">View at publisher</a></p>
+<p id="bib3">Angione, C. (2019). Human systems biology and metabolic modelling: a review—from disease metabolism to precision medicine. Biomed. Res. Int. <i>2019</i>, 8304260. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref3">View at publisher</a></p>
+<p id="bib4">Aurich, M.K., Fleming, R.M., and Thiele, I. (2016). MetaboTools: a comprehensive toolbox for analysis of genome-scale metabolic models. Front. Physiol. <i>7</i>, 327. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref4">View at publisher</a></p>
+<p id="bib5">Bernstein, H.C., Konopka, A., Melnicki, M.R., Hill, E.A., Kucek, L.A., Zhang, S., Shen, G., Bryant, D.A., and Beliaev, A.S. (2014). Effect of mono-and dichromatic light quality on growth rates and photosynthetic performance of Synechococcus sp. PCC 7002. Front. Microbiol. <i>5</i>, 488. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref5">View at publisher</a></p>
+<p id="bib6">Blazier, A.S. and Papin, J.A. (2012). Integration of expression data in genome-scale metabolic network reconstructions. Front. Physiol. <i>3</i>, 299. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref6">View at publisher</a></p>
+<p id="bib7">Bordbar, A., Monk, J.M., King, Z.A., and Palsson, B.O. (2014). Constraint-based models predict metabolic and associated cellular functions. Nat. Rev. Genet. <i>15</i>, 107-120. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref7">View at publisher</a></p>
+<p id="bib8">Broddrick, J.T., Welkie, D.G., Jallet, D., Golden, S.S., Peers, G., and Palsson, B.O. (2019). Predicting the metabolic capabilities of <i>Synechococcus</i> elongatus pcc 7942 adapted to different light regimes. Metab. Eng. <i>52</i>, 42-56. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref8">View at publisher</a></p>
+<p id="bib9">Cho, J.S., Gu, C., Han, T.H., Ryu, J.Y., and Lee, S.Y. (2019). Reconstruction of context-specific genome-scale metabolic models using multiomics data to study metabolic rewiring. Curr. Opin. Syst. Biol. <i>15</i>, 1-11. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref9">View at publisher</a></p>
+<p id="bib10">Costello, Z. and Martin, H.G. (2018). A machine learning approach to predict metabolic pathway dynamics from time-series multiomics data. NPJ Syst. Biol. Appl. <i>4</i>, 19. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref10">View at publisher</a></p>
+<p id="bib11">Culley, C., Vijayakumar, S., Zampieri, G., and Angione, C. (2020). A mechanism-aware and multiomic machine-learning pipeline characterizes yeast cell growth. Proc. Natl. Acad. Sci. U S A <i>117</i>, 18869-18879. <a class="external-link" href="https://doi.org/10.1073/pnas.2002959117">https://doi.org/10.1073/pnas.2002959117</a></p>
+<p id="bib12">Cuperlovic-Culf, M. (2018). Machine learning methods for analysis of metabolic data and metabolic pathway modeling. Metabolites <i>8</i>, 4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref12">View at publisher</a></p>
+<p id="bib13">Devoid, S., Overbeek, R., DeJongh, M., Vonstein, V., Best, A.A., and Henry, C. (2013). Automated genome annotation and metabolic model reconstruction in the seed and model seed. In Systems Metabolic Engineering, Hal Alper, ed. (Springer), pp. 17-45. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref13">View at publisher</a></p>
+<p id="bib14">Dusad, V., Thiel, D.A., Barahona, M., Keun, H.C., and Oyarzún, D.A. (2020). Opportunities at the interface of network science and metabolic modelling. Front. Bioeng. Biotechnol. <i>8</i>, 1570. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref14">View at publisher</a></p>
+<p id="bib15">Ebrahim, A., Brunk, E., Tan, J., O'brien, E.J., Kim, D., Szubin, R., Lerman, J.A., Lechner, A., Sastry, A., Bordbar, A., et al. (2016). Multi-omic data integration enables discovery of hidden biological regularities. Nat. Commun. <i>7</i>, 1-9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref15">View at publisher</a></p>
+<p id="bib16">Feist, A.M. and Palsson, B.O. (2010). The biomass objective function. Curr. Opin. Microbiol. <i>13</i>, 344-349. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref16">View at publisher</a></p>
+<p id="bib17">Goelzer, A. and Fromion, V. (2011). Bacterial growth rate reflects a bottleneck in resource allocation. Biochim. Biophys. Acta <i>1810</i>, 978-988. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref17">View at publisher</a></p>
+<p id="bib18">Guebila, M.B. and Thiele, I. (2019). Predicting gastrointestinal drug effects using contextualized metabolic models. PLoS Comput. Biol. <i>15</i>, e1007100. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref18">View at publisher</a></p>
+<p id="bib19">Guo, W. and Feng, X. (2016). OM-FBA: integrate transcriptomics data with flux balance analysis to decipher the cell metabolism. PLoS One <i>11</i>, e0154188. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref19">View at publisher</a></p>
+<p id="bib20">Heirendt, L., Arreckx, S., Pfau, T., Mendoza, S.N., Richelle, A., Heinken, A., Haraldsdóttir, H.S., Wachowiak, J., Keating, S.M., Vlasov, V., et al. (2019). Creation and analysis of biochemical constraint-based models using the cobra toolbox v. 3.0. Nat. Protoc. <i>1</i>, 639-702. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref20">View at publisher</a></p>
+<p id="bib21">Hendry, J.I., Prasannan, C.B., Joshi, A., Dasgupta, S., and Wangikar, P.P. (2016). Metabolic model of <i>Synechococcus</i> sp. pcc 7002: prediction of flux distribution and network modification for enhanced biofuel production. Bioresour. Technol. <i>213</i>, 190-197. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref21">View at publisher</a></p>
+<p id="bib22">Johnson, W.E., Li, C., and Rabinovic, A. (2007). Adjusting batch effects in microarray expression data using empirical bayes methods. Biostatistics <i>8</i>, 118-127. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref22">View at publisher</a></p>
+<p id="bib23">Kanehisa, M., Furumichi, M., Tanabe, M., Sato, Y., and Morishima, K. (2016). Kegg: new perspectives on genomes, pathways, diseases and drugs. Nucleic Acids Res. <i>45</i>, gkw1092. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref23">View at publisher</a></p>
+<p id="bib24">Karp, P.D., Billington, R., Caspi, R., Fulcher, C.A., Latendresse, M., Kothari, A., Keseler, I.M., Krummenacker, M., Midford, P.E., Ong, Q., et al. (2019). The biocyc collection of microbial genomes and metabolic pathways. Brief. Bioinform. <i>20</i>, 1085-1093. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref24">View at publisher</a></p>
+<p id="bib25">Kato, A., Takatani, N., Ikeda, K., Maeda, S.I., and Omata, T. (2017). Removal of the product from the culture medium strongly enhances free fatty acid production by genetically engineered <i>Synechococcus</i> elongatus. Biotechnol. Biofuels <i>10</i>, 141. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref25">View at publisher</a></p>
+<p id="bib26">Keating, S.M., Bornstein, B.J., Finney, A., and Hucka, M. (2006). Sbmltoolbox: an sbml toolbox for matlab users. Bioinformatics <i>22</i>, 1275-1277. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref26">View at publisher</a></p>
+<p id="bib27">Kim, G.B., Kim, W.J., Kim, H.U., and Lee, S.Y. (2020). Machine learning applications in systems metabolic engineering. Curr. Opin. Biotechnol. <i>64</i>, 1-9. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref27">View at publisher</a></p>
+<p id="bib28">Lakshmanan, M., Long, S., Ang, K.S., Lewis, N., and Lee, D.Y. (2019). On the impact of biomass composition in constraint-based flux analysis. bioRxiv. 652040. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref28">View at publisher</a></p>
+<p id="bib29">Leek, J.T. (2014). Svaseq: removing batch effects and other unwanted noise from sequencing data. Nucleic Acids Res. <i>42</i>, e161. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref29">View at publisher</a></p>
+<p id="bib30">Li, Y., Wu, F.-X., and Ngom, A. (2018). A review on machine learning principles for multi-view biological data integration. Brief. Bioinform. <i>19</i>, 325-340. <a class="external-link" href="https://doi.org/10.1093/bib/bbw113">https://doi.org/10.1093/bib/bbw113</a></p>
+<p id="bib31">Lieven, C., Beber, M.E., Olivier, B.G., Bergmann, F.T., Ataman, M., Babaei, P., Bartell, J.A., Blank, L.M., Chauhan, S., Correia, K., et al. (2020). Memote for standardized genome-scale metabolic model testing. Nat. Biotechnol. <i>38</i>, 272-276. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref31">View at publisher</a></p>
+<p id="bib32">Ludwig, M. and Bryant, D.A. (2011). Transcription profiling of the model cyanobacterium <i>Synechococcus</i> sp. strain pcc 7002 by next-gen (solid.) sequencing of cdna. Front. Microbiol. <i>2</i>, 41. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref32">View at publisher</a></p>
+<p id="bib33">Ludwig, M. and Bryant, D.A. (2012a). Acclimation of the global transcriptome of the cyanobacterium <i>Synechococcus</i> sp. strain PCC 7002 to nutrient limitations and different nitrogen sources. Front. Microbiol. <i>3</i>, 145. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref33">View at publisher</a></p>
+<p id="bib34">Ludwig, M. and Bryant, D.A. (2012b). <i>Synechococcus</i> sp. strain pcc 7002 transcriptome: acclimation to temperature, salinity, oxidative stress, and mixotrophic growth conditions. Front. Microbiol. <i>3</i>, 354. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref34">View at publisher</a></p>
+<p id="bib35">Machado, D. and Herrgård, M. (2014). Systematic evaluation of methods for integration of transcriptomic data into constraint-based models of metabolism. PLoS Comput. Biol. <i>10</i>, e1003580. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref35">View at publisher</a></p>
+<p id="bib36">Marinos, G., Kaleta, C., and Waschina, S. (2020). Defining the nutritional input for genome-scale metabolic models: a roadmap. PLoS One <i>15</i>, e0236890. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref36">View at publisher</a></p>
+<p id="bib37">McLachlan, G.J., Bean, R.W., and Ng, S.K. (2008). Clustering. Bioinformatics: Structure, Function and Applications (Humana Press), pp. 423-439. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref37">View at publisher</a></p>
+<p id="bib38">Mienda, B.S. (2017). Genome-scale metabolic models as platforms for strain design and biological discovery. J. Biomol. Struct. Dyn. <i>35</i>, 1863-1873. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref38">View at publisher</a></p>
+<p id="bib39">Moretti, S., Tran, V.D.T., Mehl, F., Ibberson, M., and Pagni, M. (2021). Metanetx/mnxref: unified namespace for metabolites and biochemical reactions in the context of metabolic models. Nucleic Acids Res. <i>49</i>, D570-D574. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref39">View at publisher</a></p>
+<p id="bib40">Mori, M., Hwa, T., Martin, O.C., De Martino, A., and Marinari, E. (2016). Constrained allocation flux balance analysis. PLoS Comput. Biol. <i>12</i>, e1004913. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref40">View at publisher</a></p>
+<p id="bib41">Myers, J.A., Curtis, B.S., and Curtis, W.R. (2013). Improving accuracy of cell and chromophore concentration measurements using optical density. BMC Biophys. <i>6</i>, 4. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref41">View at publisher</a></p>
+<p id="bib42">Nandi, S., Subramanian, A., and Sarkar, R.R. (2017). An integrative machine learning strategy for improved prediction of essential genes in escherichia coli metabolism using flux-coupled features. Mol. Biosyst. <i>13</i>, 1584-1596. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref42">View at publisher</a></p>
+<p id="bib43">Norsigian, C.J., Pusarla, N., McConn, J.L., Yurkovich, J.T., Dräger, A., Palsson, B.O., and King, Z. (2020). Bigg models 2020: multistrain genome-scale models and expansion across the phylogenetic tree. Nucleic Acids Res. <i>48</i>, D402-D406. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref43">View at publisher</a></p>
+<p id="bib44">Palsson, B.Ø. (2015). Systems Biology: Constraint-Based Reconstruction and Analysis (Cambridge University Press). <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref44">View at publisher</a></p>
+<p id="bib45">Prigent, S., Frioux, C., Dittami, S.M., Thiele, S., Larhlimi, A., Collet, G., Gutknecht, F., Got, J., Eveillard, D., Bourdon, J., et al. (2017). Meneco, a topology-based gap-filling tool applicable to degraded genome-wide metabolic networks. PLoS Comput. Biol. <i>13</i>, e1005276. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref45">View at publisher</a></p>
+<p id="bib46">Qian, X., Kim, M.K., Kumaraswamy, G.K., Agarwal, A., Lun, D.S., and Dismukes, G.C. (2017). Flux balance analysis of photoautotrophic metabolism: uncovering new biological details of subsystems involved in cyanobacterial photosynthesis. Biochim. Biophys. Acta <i>1858</i>, 276-287. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref46">View at publisher</a></p>
+<p id="bib47">Qiao, C., Duan, Y., Zhang, M., Hagemann, M., Luo, Q., and Lu, X. (2018). Effects of reduced and enhanced glycogen pools on salt-induced sucrose production in a sucrose-secreting strain of <i>Synechococcus</i> elongatus pcc 7942. Appl. Environ. Microbiol. <i>84</i>. e02023–17. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref47">View at publisher</a></p>
+<p id="bib48">Reed, J.L. (2012). Shrinking the metabolic solution space using experimental datasets. PLoS Comput. Biol. <i>8</i>, e1002662. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref48">View at publisher</a></p>
+<p id="bib49">Risso, D., Ngai, J., Speed, T.P., and Dudoit, S. (2014). Normalization of rna-seq data using factor analysis of control genes or samples. Nat. Biotechnol. <i>32</i>, 896-902. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref49">View at publisher</a></p>
+<p id="bib50">Robaina Estévez, S. and Nikoloski, Z. (2015). Context-specific metabolic model extraction based on regularized least squares optimization. PLoS One <i>10</i>, e0131875. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref50">View at publisher</a></p>
+<p id="bib51">Rügen, M., Bockmayr, A., and Steuer, R. (2015). Elucidating temporal resource allocation and diurnal dynamics in phototrophic metabolism using conditional fba. Sci. Rep. <i>5</i>, 1-16. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref51">View at publisher</a></p>
+<p id="bib52">Seaver, S.M., Gerdes, S., Frelin, O., Lerma-Ortiz, C., Bradbury, L.M., Zallot, R., Hasnain, G., Niehaus, T.D., El Yacoubi, B., Pasternak, S., et al. (2014). High-throughput comparison, functional annotation, and metabolic modeling of plant genomes using the PlantSEED resource. Proc. Natl. Acad. Sci. U S A <i>111</i>, 9645-9650. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref52">View at publisher</a></p>
+<p id="bib53">Schinn, S.M., Morrison, C., Wei, W., Zhang, L., and Lewis, N.E. (2021). Systematic evaluation of parameters for genome-scale metabolic models of cultured mammalian cells. Metab. Eng. <i>66</i>, 21-30. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref53">View at publisher</a></p>
+<p id="bib54">Toyoshima, M., Toya, Y., and Shimizu, H. (2020). Flux balance analysis of cyanobacteria reveals selective use of photosynthetic electron transport components under different spectral light conditions. Photosynth. Res. <i>143</i>, 31-43. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref54">View at publisher</a></p>
+<p id="bib55">Vijayakumar, S., Conway, M., Lió, P., and Angione, C. (2018). Seeing the wood for the trees: a forest of methods for optimization and omic-network integration in metabolic modelling. Brief. Bioinform. <i>19</i>, 1218-1235. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref55">View at publisher</a></p>
+<p id="bib56">Vijayakumar, S., Rahman, P.K., and Angione, C. (2020). A hybrid flux balance analysis and machine learning pipeline elucidates metabolic adaptation in cyanobacteria. iScience <i>23</i>, 101818. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref56">View at publisher</a></p>
+<p id="bib57">Volkova, S., Matos, M.R., Mattanovich, M., and Marín de Mas, I. (2020). Metabolic modelling as a framework for metabolomics data integration and analysis. Metabolites <i>10</i>, 303. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref57">View at publisher</a></p>
+<p id="bib58">Vu, T.T., Stolyar, S.M., Pinchuk, G.E., Hill, E.A., Kucek, L.A., Brown, R.N., Lipton, M.S., Osterman, A., Fredrickson, J.K., Konopka, A.E., et al. (2012). Genome-scale modeling of light-driven reductant partitioning and carbon fluxes in diazotrophic unicellular cyanobacterium Cyanothece sp. atcc 51142. PLoS Comput. Biol. <i>8</i>, e1002460. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref58">View at publisher</a></p>
+<p id="bib59">Walakira, A., Rozman, D., Režen, T., Mraz, M., and Moškon, M. (2021). Guided extraction of genome-scale metabolic models for the integration and analysis of omics data. Comput. Struct. Biotechnol. J. <i>19</i>, 3521-3530. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref59">View at publisher</a></p>
+<p id="bib60">Yaneske, E. and Angione, C. (2018). The poly-omics of ageing through individual-based metabolic modelling. BMC Bioinformatics <i>19</i>, 83-96. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref60">View at publisher</a></p>
+<p id="bib61">Yang, Y., Feng, J., Li, T., Ge, F., and Zhao, J. (2015). Cyanomics: An integrated database of omics for the model cyanobacterium synechococcus Sp. Pcc 7002. Database <i>2015</i>, bau127. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref61">View at publisher</a></p>
+<p id="bib62">Yang, J.H., Wright, S.N., Hamblin, M., McCloskey, D., Alcantar, M.A., Schrübbers, L., Lopatkin, A.J., Satish, S., Nili, A., Palsson, B.O., et al. (2019). A white-box machine learning approach for revealing antibiotic mechanisms of action. Cell <i>177</i>, 1649-1661. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref62">View at publisher</a></p>
+<p id="bib63">Yuan, H., Cheung, C.Y., Hilbers, P.A., and van Riel, N.A. (2016). Flux balance analysis of plant metabolism: the effect of biomass composition and model structure on model predictions. Front. Plant Sci. <i>7</i>, 537. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref63">View at publisher</a></p>
+<p id="bib64">Yurkovich, J.T. and Palsson, B.O. (2015). Solving puzzles with missing pieces: the power of systems biology. Proc. IEEE <i>104</i>, 2-7. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref64">View at publisher</a></p>
+<p id="bib65">Yurkovich, J.T. and Palsson, B.O. (2018). Quantitative-omic data empowers bottom-up systems biology. Curr. Opin. Biotechnol. <i>51</i>, 130-136. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref65">View at publisher</a></p>
+<p id="bib66">Zampieri, G., Vijayakumar, S., Yaneske, E., and Angione, C. (2019). Machine and deep learning meet genome-scale metabolic modeling. PLoS Comput. Biol. <i>15</i>, e1007084. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref66">View at publisher</a></p>
+<p id="bib67">Zhang, J., Petersen, S.D., Radivojevic, T., Ramirez, A., Pérez-Manríquez, A., Abeliuk, E., Sánchez, B.J., Costello, Z., Chen, Y., Fero, M.J., et al. (2020a). Combining mechanistic and machine learning models for predictive engineering and optimization of tryptophan metabolism. Nat. Commun. <i>11</i>, 1-13. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref67">View at publisher</a></p>
+<p id="bib68">Zhang, Y., Parmigiani, G., and Johnson, W.E. (2020b). Combat-seq: batch effect adjustment for rna-seq count data. NAR Genom. Bioinform. <i>2</i>, lqaa078. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref68">View at publisher</a></p>
+<p id="bib69">Zhang, R., Atwal, G.S., and Lim, W.K. (2021). Noise regularization removes correlation artifacts in single-cell RNA-seq data preprocessing. Patterns <i>2</i>, 100211. <a class="external-link" href="http://refhub.elsevier.com/S2666-1667(21)00543-8/sref69">View at publisher</a></p>
+</section>
+<section>
+<h2 id="article-info">Article info</h2>
+<h3>Resource availability</h3>
+<h4>Lead contact</h4>
+<p>Further information and requests for resources should be directed to and will be fulfilled by the lead contact, Claudio Angione (<a href="mailto:c.angione@tees.ac.uk">c.angione@tees.ac.uk</a>).</p>
+<h4>Materials availability</h4>
+<p>The study did not generate new unique reagents or other materials.</p>
+<h4>Data and code availability</h4>
+<p>This protocol fully specifies all datasets generated or analyzed during the study. The complete source code relating to all procedures listed within the protocol is freely available on GitHub at: <a href="https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling">https://github.com/Angione-Lab/Synechococcus7002-metabolic-modelling</a>.</p>
+<h3>Acknowledgments</h3>
+<p>We would like to thank Dr John Hendry from Penn State University for providing advice on fixing boundary constraints for the <i>Synechococcus</i> sp. PCC 7002 GSMM and Dr Guido Zampieri from the University of Padova for discussions on the methodology. C.A. and S.V. would like to acknowledge funding from <a href="https://doi.org/10.13039/100014013">UKRI</a> Research England's THYME project.</p>
+<h3>Author contributions</h3>
+<p>Conceptualization, S.V. and C.A.; methodology, S.V. and C.A.; software, S.V. and C.A.; formal analysis, S.V.; investigation, S.V.; writing - original draft, S.V.; writing - review &amp; editing, S.V. and C.A.; visualization, S.V.; supervision, C.A; project administration, C.A.; funding acquisition, C.A.</p>
+<h3>Declaration of interests</h3>
+<p>The authors declare no competing interests.</p>
+</section>
+</article>
